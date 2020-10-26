@@ -1,0 +1,1773 @@
+﻿###############################################################################
+# 
+# SIWA: OASES OF THE WESTERN DESERT EVENTS
+# 
+# siwa.0000-siwa.0009	Misc setup events
+# siwa.0010-siwa.0019	Visit Siwa springs events
+# siwa.0020-siwa.0039	Visit Oracle of Amun/Temple of Hibis events
+# 
+# siwa.0050-siwa.0069	Siwa Flavor Events
+# 
+###############################################################################
+
+namespace = siwa
+
+################################################################################
+# 
+# VISIT SIWA OASIS
+# siwa.0010-siwa.0019 reserved
+# 
+################################################################################
+
+# Choose whether this will be a private or public event
+siwa.0010 = {
+	type = character_event
+	title = siwa.0010.t
+	desc = siwa.0010.desc
+	#desc = {
+	#	first_valid = {
+	#		triggered_desc = {
+	#			trigger = { has_character_flag = RICE_springs_visiting_siwa }
+	#			desc = siwa.0010.desc.a
+	#		}
+	#		triggered_desc = {
+	#			trigger = { has_character_flag = RICE_springs_visiting_local_oasis }
+	#			desc = siwa.0010.desc.b
+	#		}
+	#	}
+	#	desc = siwa.0010.desc.ending
+	#}
+	theme = RICE_theme_egypt_village
+	
+	right_portrait = root
+	
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = {
+			flag = planning_an_activity
+			#days = 15
+		}
+	}
+	
+	option = { # Private
+		name = siwa.0010.a
+		add_character_flag = RICE_siwa_springs_private
+		# Choose appropriate location
+		title:b_siwa.title_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_siwa_spring_visit
+			}	
+		}
+		stress_impact = {
+			gregarious = minor_stress_impact_gain
+		}
+		custom_tooltip = siwa.0010.a.tooltip
+	}	
+	option = { # Public
+		name = siwa.0010.b
+		add_character_flag = RICE_siwa_springs_public
+		# Choose appropriate location
+		title:b_siwa.title_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_siwa_spring_visit
+			}	
+		}
+		stress_impact = {
+			shy = minor_stress_impact_gain
+		}
+		custom_tooltip = siwa.0010.b.tooltip
+	}
+}
+
+
+# Day of the Springs visit
+siwa.0011 = {
+	type = character_event
+	title = siwa.0011.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { has_character_flag = RICE_siwa_springs_public }
+				desc = siwa.0011.desc.public
+			}
+			triggered_desc = {
+				trigger = { has_character_flag = RICE_siwa_springs_private }
+				desc = siwa.0011.desc.private
+			}
+		}
+	}
+	theme = RICE_theme_siwa_spring
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Ok
+		name = siwa.0011.a
+		if = {
+			limit = {
+				has_character_flag = RICE_siwa_springs_private
+			}
+			add_character_modifier = {
+				modifier = RICE_siwa_visited_fountain_of_the_sun_private
+				years = 3
+			}
+			stress_impact = {
+				base = major_stress_impact_loss
+				lazy = minor_stress_impact_loss
+				calm = minor_stress_impact_loss
+			}	
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_siwa_springs_public
+			}
+			add_character_modifier = {
+				modifier = RICE_siwa_visited_fountain_of_the_sun_public
+				years = 3
+			}
+			add_prestige = 25
+			stress_impact = {
+				base = medium_stress_impact_loss
+				lazy = minor_stress_impact_loss
+				calm = minor_stress_impact_loss
+			}
+		}	
+	}
+	
+	after = {
+		remove_character_flag = RICE_siwa_springs_private
+		remove_character_flag = RICE_siwa_springs_public
+		trigger_event = {
+			id = siwa.0012
+			days = 1
+		}
+	}	
+}
+
+
+siwa.0012 = {
+	hidden = yes	
+	immediate = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
+
+
+
+################################################################################
+# 
+# VISIT ORACLE OF AMUN/TEMPLE OF HIBIS
+# siwa.0020-siwa.0039 reserved
+# 
+################################################################################
+
+# Temple visit start
+siwa.0020 = {
+	type = character_event
+	title = siwa.0020.t
+	#title = {
+	#	first_valid = {
+	#		triggered_desc = {
+	#			trigger = { has_character_flag = RICE_visiting_hibis_temple }
+	#			desc = siwa.0020.t.hibis
+	#		}
+	#		triggered_desc = {
+	#			trigger = { has_character_flag = RICE_visiting_siwa_oracle }
+	#			desc = siwa.0020.t.siwa
+	#		}
+	#		desc = siwa.0020.t
+	#	}
+	#}
+	desc = siwa.0020.desc
+	#desc = {
+	#	first_valid = {
+	#		triggered_desc = {
+	#			trigger = { has_character_flag = RICE_visiting_hibis_temple }
+	#			desc = siwa.0020.desc.hibis
+	#		}
+	#		triggered_desc = {
+	#			trigger = { has_character_flag = RICE_visiting_siwa_oracle }
+	#			desc = siwa.0020.desc.siwa
+	#		}
+	#	}
+	#	desc = siwa.0020.desc
+	#	#triggered_desc = {
+	#	#	trigger = { has_character_flag = RICE_visiting_siwa_oracle }
+	#	#	desc = siwa.0020.desc.siwa.ending
+	#	#}
+	#}
+	theme = faith
+	#override_background = { event_background = sitting_room }
+	
+	right_portrait = root
+	
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = {
+			flag = planning_an_activity
+			#days = 15
+		}
+		#if = {
+		#	limit = {
+		#		has_character_flag = RICE_visiting_siwa_oracle
+		#	}
+		#	# Choose appropriate location
+		#	title:b_siwa.title_province = {	
+		#		spawn_activity = {
+		#			owner = root
+		#			type = activity_oracle_amun_visit
+		#		}	
+		#	}
+		#}
+		#if = {
+		#	limit = {
+		#		has_character_flag = RICE_visiting_hibis_temple
+		#	}
+			# Choose appropriate location
+			title:b_kharga.title_province = {	
+				spawn_activity = {
+					owner = root
+					type = activity_temple_hibis_visit
+				}	
+			}
+		#}
+	}
+	
+	option = { # Temple of Hibis
+		name = siwa.0020.a
+		if = {
+			limit = {
+				has_title = title:c_kharga
+			}
+			remove_short_term_gold = 25
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_title = title:c_bahriya
+					has_title = title:c_farafra
+					has_title = title:c_dakhla
+					has_title = title:c_siwa
+				}
+			}
+			remove_short_term_gold = 50
+		}
+		else = {
+			remove_short_term_gold = 75
+		}
+		#trigger = {
+		#	has_character_flag = RICE_visiting_hibis_temple
+		#}
+	}	
+	#option = { # Oracle of Amun
+	#	name = siwa.0020.b
+	#	trigger = {
+	#		has_character_flag = RICE_visiting_siwa_oracle
+	#	}
+	#}
+}
+
+
+# Choose deity to pray to
+siwa.0021 = {
+	type = character_event
+	title = siwa.0021.t
+	#desc = siwa.0021.desc
+	desc = {
+		desc = siwa.0021.desc
+		#triggered_desc = {
+		#	trigger = { has_character_flag = RICE_visiting_siwa_oracle }
+		#	desc = siwa.0021.desc.siwa.ending
+		#}
+	}
+	theme = faith
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	immediate = {
+		add_piety = 100
+	}
+
+	option = { # Amun
+		name = siwa.0021.a
+		hidden_effect = {
+			random_list = {
+				20 = {
+					modifier = {
+						add = 10
+						has_trait = zealous
+					}
+					modifier = {
+						add = 10
+						has_trait = just
+					}
+					modifier = {
+						add = 10
+						has_trait = compassionate
+					}
+					modifier = {
+						add = 10
+						has_trait = generous
+					}
+					modifier = {
+						add = 10
+						has_trait = humble
+					}
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0021.a.toast.major
+						add_character_modifier = {
+							modifier = RICE_siwa_amun_major_blessing
+							years = 5
+						}
+					}
+				}
+				40 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0021.a.toast.minor
+						add_character_modifier = {
+							modifier = RICE_siwa_amun_minor_blessing
+							years = 5
+						}
+					}
+				}
+				40 = {
+					modifier = {
+						add = 10
+						has_trait = cynical
+					}
+					modifier = {
+						add = 10
+						has_trait = arbitrary
+					}
+					modifier = {
+						add = 10
+						has_trait = callous
+					}
+					modifier = {
+						add = 10
+						has_trait = greedy
+					}
+					modifier = {
+						add = 10
+						has_trait = arrogant
+					}
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0021.a.toast.no
+						custom_tooltip = siwa.0021.a.nothing
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Seth
+		name = siwa.0021.b
+		hidden_effect = {
+			random_list = {
+				20 = {
+					modifier = {
+						add = 10
+						has_trait = zealous
+					}
+					modifier = {
+						add = 10
+						has_trait = just
+					}
+					modifier = {
+						add = 10
+						has_trait = brave
+					}
+					modifier = {
+						add = 10
+						has_trait = generous
+					}
+					modifier = {
+						add = 10
+						has_trait = humble
+					}
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0021.b.toast.major
+						add_character_modifier = {
+							modifier = RICE_siwa_seth_major_blessing
+							years = 5
+						}
+					}
+				}
+				40 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0021.b.toast.minor
+						add_character_modifier = {
+							modifier = RICE_siwa_seth_minor_blessing
+							years = 5
+						}
+					}
+				}
+				40 = {
+					modifier = {
+						add = 10
+						has_trait = cynical
+					}
+					modifier = {
+						add = 10
+						has_trait = arbitrary
+					}
+					modifier = {
+						add = 10
+						has_trait = craven
+					}
+					modifier = {
+						add = 10
+						has_trait = greedy
+					}
+					modifier = {
+						add = 10
+						has_trait = arrogant
+					}
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0021.b.toast.no
+						custom_tooltip = siwa.0021.b.nothing
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Ha
+		name = siwa.0021.c
+		hidden_effect = {
+			random_list = {
+				20 = {
+					modifier = {
+						add = 10
+						has_trait = zealous
+					}
+					modifier = {
+						add = 10
+						has_trait = just
+					}
+					modifier = {
+						add = 10
+						has_trait = compassionate
+					}
+					modifier = {
+						add = 10
+						has_trait = generous
+					}
+					modifier = {
+						add = 10
+						has_trait = humble
+					}
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0021.c.toast.major
+						add_character_modifier = {
+							modifier = RICE_siwa_ha_major_blessing
+							years = 5
+						}
+					}
+				}
+				40 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0021.c.toast.minor
+						add_character_modifier = {
+							modifier = RICE_siwa_ha_minor_blessing
+							years = 5
+						}
+					}
+				}
+				40 = {
+					modifier = {
+						add = 10
+						has_trait = cynical
+					}
+					modifier = {
+						add = 10
+						has_trait = arbitrary
+					}
+					modifier = {
+						add = 10
+						has_trait = callous
+					}
+					modifier = {
+						add = 10
+						has_trait = greedy
+					}
+					modifier = {
+						add = 10
+						has_trait = arrogant
+					}
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0021.c.toast.no
+						custom_tooltip = siwa.0021.c.nothing
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Igai
+		name = siwa.0021.d
+		hidden_effect = {
+			random_list = {
+				20 = {
+					modifier = {
+						add = 10
+						has_trait = zealous
+					}
+					modifier = {
+						add = 10
+						has_trait = just
+					}
+					modifier = {
+						add = 10
+						has_trait = compassionate
+					}
+					modifier = {
+						add = 10
+						has_trait = generous
+					}
+					modifier = {
+						add = 10
+						has_trait = humble
+					}
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0021.d.toast.major
+						add_character_modifier = {
+							modifier = RICE_siwa_igai_major_blessing
+							years = 5
+						}
+					}
+				}
+				40 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0021.d.toast.minor
+						add_character_modifier = {
+							modifier = RICE_siwa_igai_minor_blessing
+							years = 5
+						}
+					}
+				}
+				40 = {
+					modifier = {
+						add = 10
+						has_trait = cynical
+					}
+					modifier = {
+						add = 10
+						has_trait = arbitrary
+					}
+					modifier = {
+						add = 10
+						has_trait = callous
+					}
+					modifier = {
+						add = 10
+						has_trait = greedy
+					}
+					modifier = {
+						add = 10
+						has_trait = arrogant
+					}
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0021.d.toast.no
+						custom_tooltip = siwa.0021.d.nothing
+					}
+				}
+			}
+		}
+	}
+	
+	#option = { # Oracle of Amun
+	#	name = siwa.0021.e
+	#	trigger = {
+	#		has_character_flag = RICE_visiting_siwa_oracle
+	#	}
+	#	add_character_flag = RICE_picked_oracle_of_amun_proper
+	#	add_character_flag = RICE_got_siwa_oracle_advice
+	#	custom_tooltip = siwa.0021.e.tooltip
+	#	trigger_event = siwa.0022
+	#}
+	
+	after = {
+		#if = {
+		#	limit = {
+		#		NOT = { has_character_flag = RICE_picked_oracle_of_amun_proper }
+		#	}
+			add_character_modifier = {
+				modifier = RICE_siwa_hibis_timer
+				years = 10
+			}
+		#}
+		remove_character_flag = RICE_visiting_hibis_temple
+		#remove_character_flag = RICE_visiting_siwa_oracle
+		trigger_event = {
+			id = siwa.0023
+			days = 1
+		}
+	}	
+}
+
+
+
+# Oracle of Amun
+siwa.0022 = {
+	type = character_event
+	title = siwa.0022.t
+	desc = siwa.0022.desc
+	theme = faith
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	immediate = {
+		add_piety = 200
+	}
+	
+	option = { # Family and friends
+		name = siwa.0022.a
+		#hidden_effect = {
+			random_list = {
+				10 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0022.oracle_speaks
+						add_character_modifier = {
+							modifier = RICE_siwa_oracle_minor_advice_family
+							years = 10
+						}
+					}
+				}
+				10 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0022.oracle_speaks
+						add_character_modifier = {
+							modifier = RICE_siwa_oracle_major_advice_family
+							years = 10
+						}
+					}
+				}
+				10 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0022.oracle_speaks
+						add_character_modifier = {
+							modifier = RICE_siwa_oracle_grand_advice_family
+							years = 10
+						}
+					}
+				}
+			}			
+		#}
+	}
+	
+	option = { # Military
+		name = siwa.0022.b
+		#hidden_effect = {
+			random_list = {
+				10 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0022.oracle_speaks
+						add_character_modifier = {
+							modifier = RICE_siwa_oracle_minor_advice_military
+							years = 10
+						}
+					}
+				}
+				10 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0022.oracle_speaks
+						add_character_modifier = {
+							modifier = RICE_siwa_oracle_major_advice_military
+							years = 10
+						}
+					}
+				}
+				10 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0022.oracle_speaks
+						add_character_modifier = {
+							modifier = RICE_siwa_oracle_grand_advice_military
+							years = 10
+						}
+					}
+				}
+			}			
+		#}
+	}
+	
+	option = { # Realm
+		name = siwa.0022.c
+		#hidden_effect = {
+			random_list = {
+				10 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0022.oracle_speaks
+						add_character_modifier = {
+							modifier = RICE_siwa_oracle_minor_advice_realm
+							years = 10
+						}
+					}
+				}
+				10 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0022.oracle_speaks
+						add_character_modifier = {
+							modifier = RICE_siwa_oracle_major_advice_realm
+							years = 10
+						}
+					}
+				}
+				10 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0022.oracle_speaks
+						add_character_modifier = {
+							modifier = RICE_siwa_oracle_grand_advice_realm
+							years = 10
+						}
+					}
+				}
+			}			
+		#}
+	}
+	
+	option = { # Intrigue
+		name = siwa.0022.d
+		#hidden_effect = {
+			random_list = {
+				10 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0022.oracle_speaks
+						add_character_modifier = {
+							modifier = RICE_siwa_oracle_minor_advice_intrigue
+							years = 10
+						}
+					}
+				}
+				10 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0022.oracle_speaks
+						add_character_modifier = {
+							modifier = RICE_siwa_oracle_major_advice_intrigue
+							years = 10
+						}
+					}
+				}
+				10 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0022.oracle_speaks
+						add_character_modifier = {
+							modifier = RICE_siwa_oracle_grand_advice_intrigue
+							years = 10
+						}
+					}
+				}
+			}			
+		#}
+	}
+	
+	option = { # Personal
+		name = siwa.0022.e
+		#hidden_effect = {
+			random_list = {
+				10 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0022.oracle_speaks
+						add_character_modifier = {
+							modifier = RICE_siwa_oracle_minor_advice_personal
+							years = 10
+						}
+					}
+				}
+				10 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0022.oracle_speaks
+						add_character_modifier = {
+							modifier = RICE_siwa_oracle_major_advice_personal
+							years = 10
+						}
+					}
+				}
+				10 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = siwa.0022.oracle_speaks
+						add_character_modifier = {
+							modifier = RICE_siwa_oracle_grand_advice_personal
+							years = 10
+						}
+					}
+				}
+			}			
+		#}
+	}
+	
+	after = {
+		if = {
+			limit = {
+				NOT = { has_character_flag = RICE_picked_oracle_of_amun_proper }
+			}
+		}
+		remove_character_flag = RICE_visiting_hibis_temple
+		#remove_character_flag = RICE_visiting_siwa_oracle
+		remove_character_flag = RICE_picked_oracle_of_amun_proper
+		trigger_event = {
+			id = siwa.0023
+			days = 1
+		}
+	}	
+}
+
+
+siwa.0023 = {
+	hidden = yes	
+	immediate = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
+
+
+
+# Temple visit start
+siwa.0024 = {
+	type = character_event
+	title = siwa.0024.t
+	desc = siwa.0024.desc
+	theme = faith
+	#override_background = { event_background = sitting_room }
+	
+	right_portrait = root
+	
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = {
+			flag = planning_an_activity
+			#days = 15
+		}
+		# Choose appropriate location
+		title:b_siwa.title_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_oracle_amun_visit
+			}	
+		}
+	}
+
+	option = { # Oracle of Amun
+		name = siwa.0024.a
+		if = {
+			limit = {
+				has_title = title:c_siwa
+			}
+			remove_short_term_gold = 50
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_title = title:c_bahriya
+					has_title = title:c_farafra
+					has_title = title:c_dakhla
+					has_title = title:c_kharga
+				}
+			}
+			remove_short_term_gold = 75
+		}
+		else = {
+			remove_short_term_gold = 100
+		}
+	}
+	
+	after = {
+		trigger_event = {
+			id = siwa.0023
+			days = 1
+		}
+	}	
+	
+}
+
+
+################################################################################
+# 
+# SIWA FLAVOR EVENTS
+# siwa.0050-siwa.0069 reserved
+# 
+################################################################################
+
+
+
+
+# Kharga Oasis is home to an aqueduct
+siwa.0050 = {
+	type = character_event
+	title = siwa.0050.t
+	desc = siwa.0050.desc
+	theme = realm # RICE_theme_egypt_desert
+	override_background = { event_background = RICE_background_egypt_desert }
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		has_title = title:c_kharga
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	option = { # Interesting
+		name = siwa.0050.a
+		add_prestige = 25
+	}
+	option = { # Can we build an aqueduct?
+		name = siwa.0050.b
+		trigger = {
+			stewardship >= decent_skill_rating
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		skill = stewardship
+		remove_short_term_gold = 50
+		title:c_kharga = {
+			add_county_modifier = {
+				modifier = RICE_siwa_kharga_aqueduct_project
+				years = 10
+			}
+		}		
+	}
+}
+
+
+# Buy a well in the Western Desert?
+siwa.0051 = {
+	type = character_event
+	title = siwa.0051.t
+	desc = siwa.0051.desc
+	theme = RICE_theme_siwa_spring
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		RICE_is_in_western_desert_trigger = yes
+		OR = {
+			gold >= 40
+			is_ai = no
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+	}
+
+	option = { # Buy it
+		name = siwa.0051.a
+		remove_short_term_gold = 30
+		add_character_modifier = {
+			modifier = RICE_siwa_bought_well
+			years = 5
+		}		
+	}
+	option = { # Don't buy it
+		name = siwa.0051.b	
+	}
+	option = { # Haggle
+		name = siwa.0051.c	
+		trigger = {
+			stewardship >= decent_skill_rating			
+		}
+		skill = stewardship
+		remove_short_term_gold = 20
+		add_character_modifier = {
+			modifier = RICE_siwa_bought_well
+			years = 5
+		}		
+	}
+}
+
+
+# Date Farms Doing Well
+siwa.0052 = {
+	type = character_event
+	title = siwa.0052.t
+	desc = siwa.0052.desc
+	theme = realm # RICE_theme_egypt_desert
+	override_background = { event_background = RICE_background_egypt_village }
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	trigger = {
+		RICE_is_in_western_desert_trigger = yes
+		NOT = {
+			any_held_title = {
+				OR = { 
+					has_county_modifier = RICE_siwa_date_farms_good 
+					has_county_modifier = RICE_siwa_date_farms_bad 
+				}
+			}		
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = gluttonous
+		}
+	}
+
+	option = { # Good
+		name = siwa.0052.a
+		if = {
+			limit = {
+				has_title = title:c_bahriya
+			}
+			title:c_bahriya = {
+				add_county_modifier = {
+					modifier = RICE_siwa_date_farms_good
+					years = 5
+				}
+			}	
+		}	
+		if = {
+			limit = {
+				has_title = title:c_farafra
+			}
+			title:c_farafra = {
+				add_county_modifier = {
+					modifier = RICE_siwa_date_farms_good
+					years = 5
+				}
+			}	
+		}	
+		if = {
+			limit = {
+				has_title = title:c_dakhla
+			}
+			title:c_dakhla = {
+				add_county_modifier = {
+					modifier = RICE_siwa_date_farms_good
+					years = 5
+				}
+			}	
+		}
+		if = {
+			limit = {
+				has_title = title:c_siwa
+			}
+			title:c_siwa = {
+				add_county_modifier = {
+					modifier = RICE_siwa_date_farms_good
+					years = 5
+				}
+			}	
+		}
+		if = {
+			limit = {
+				has_title = title:c_kharga
+			}
+			title:c_kharga = {
+				add_county_modifier = {
+					modifier = RICE_siwa_date_farms_good
+					years = 5
+				}
+			}	
+		}	
+	}
+}
+
+
+
+# Date Farms Not Doing Well
+siwa.0053 = {
+	type = character_event
+	title = siwa.0053.t
+	desc = siwa.0053.desc
+	theme = realm # RICE_theme_egypt_desert
+	override_background = { event_background = RICE_background_egypt_village }
+	
+	left_portrait = {
+		character = root
+		animation = personality_callous
+	}
+	
+	trigger = {
+		RICE_is_in_western_desert_trigger = yes
+		NOT = {
+			any_held_title = {
+				OR = { 
+					has_county_modifier = RICE_siwa_date_farms_good 
+					has_county_modifier = RICE_siwa_date_farms_bad 
+				}
+			}		
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = -0.2
+			has_trait = just
+		}
+		modifier = {
+			add = 0.2
+			has_trait = callous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = wrathful
+		}
+		modifier = {
+			add = -0.2
+			has_trait = calm
+		}
+	}
+
+	option = { # Bad
+		name = siwa.0053.a
+		if = {
+			limit = {
+				has_title = title:c_bahriya
+			}
+			title:c_bahriya = {
+				add_county_modifier = {
+					modifier = RICE_siwa_date_farms_bad
+					years = 5
+				}
+			}	
+		}	
+		if = {
+			limit = {
+				has_title = title:c_farafra
+			}
+			title:c_farafra = {
+				add_county_modifier = {
+					modifier = RICE_siwa_date_farms_bad
+					years = 5
+				}
+			}	
+		}	
+		if = {
+			limit = {
+				has_title = title:c_dakhla
+			}
+			title:c_dakhla = {
+				add_county_modifier = {
+					modifier = RICE_siwa_date_farms_bad
+					years = 5
+				}
+			}	
+		}
+		if = {
+			limit = {
+				has_title = title:c_siwa
+			}
+			title:c_siwa = {
+				add_county_modifier = {
+					modifier = RICE_siwa_date_farms_bad
+					years = 5
+				}
+			}	
+		}
+		if = {
+			limit = {
+				has_title = title:c_kharga
+			}
+			title:c_kharga = {
+				add_county_modifier = {
+					modifier = RICE_siwa_date_farms_bad
+					years = 5
+				}
+			}	
+		}	
+	}
+}
+
+
+# Man gets lost in the desert and claims to have come across the legendary city, Zerzura
+siwa.0054 = {
+	type = character_event
+	title = siwa.0054.t
+	desc = siwa.0054.desc
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = personality_cynical
+	}
+	
+	trigger = {
+		RICE_is_in_western_desert_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = fickle
+		}
+		modifier = {
+			add = -0.2
+			has_trait = stubborn
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	option = { # Trust him
+		name = siwa.0054.a
+		add_piety = 25
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+	option = { # Don't trust him
+		name = siwa.0054.b
+		add_prestige = 25	
+		stress_impact = {
+			trusting = minor_stress_impact_gain
+		}
+	}
+}
+
+
+
+# Locals moving into the Mountain of the Dead
+siwa.0055 = {
+	type = character_event
+	title = siwa.0055.t
+	desc = siwa.0055.desc
+	theme = RICE_theme_egypt_desert
+	
+	right_portrait = root
+	
+	trigger = {
+		has_title = title:c_siwa
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	option = { # Let the locals decide
+		name = siwa.0055.a
+		stress_impact = {
+			diligent = medium_stress_impact_gain
+		}
+	}
+	option = { # Who cares? Let them in
+		name = siwa.0055.b
+		add_prestige = 25
+		add_piety = -25
+		stress_impact = {
+			zealous = medium_stress_impact_gain
+		}
+	}
+	option = { # Respect the dead
+		name = siwa.0055.c
+		add_prestige = -25
+		add_piety = 25
+		stress_impact = {
+			cynical = medium_stress_impact_gain
+		}
+	}
+}
+
+
+
+# Hermits of Kharga request aid
+siwa.0056 = {
+	type = character_event
+	title = siwa.0056.t
+	desc = {
+		desc = siwa.0056.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					root.religion = religion:christianity_religion
+				}
+				desc = siwa.0056.desc.christian
+			}
+			desc = siwa.0056.desc.nonchristian
+		}
+	}
+	theme = faith
+	override_background = { event_background = RICE_background_egypt_desert }
+	
+	right_portrait = root
+	
+	trigger = {
+		has_title = title:c_kharga
+		OR = {
+			gold >= 30
+			is_ai = no
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	option = { # Give them aid
+		name = siwa.0056.a
+		remove_short_term_gold = 30
+		if = {
+			limit = {
+				root.religion = religion:christianity_religion
+			}
+			add_piety = 50
+		}
+		else = {
+			add_prestige = 50
+		}
+		stress_impact = {
+			greedy = medium_stress_impact_gain
+		}
+		if = {
+			limit = {
+				NOT = { root.religion = religion:christianity_religion }
+			}
+			stress_impact = {
+				zealous = medium_stress_impact_gain
+			}
+		}
+	}
+	option = { # Don't give them aid
+		name = siwa.0056.b
+		if = {
+			limit = {
+				root.religion = religion:christianity_religion
+			}
+			add_piety = -50
+		}
+		stress_impact = {
+			generous = medium_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+		}
+		if = {
+			limit = {
+				root.religion = religion:christianity_religion
+			}
+			stress_impact = {
+				zealous = medium_stress_impact_gain
+			}
+		}
+	}
+	option = { # Tell them to get out
+		name = siwa.0056.c
+		trigger = {
+			NOT = { root.religion = religion:christianity_religion }
+		}
+		add_dread = 10
+		stress_impact = {
+			compassionate = medium_stress_impact_gain
+			humble = minor_stress_impact_gain
+			patient = minor_stress_impact_gain
+			calm = minor_stress_impact_gain
+		}
+	}
+}
+
+
+
+# Pass by Infidel Rock
+siwa.0057 = {
+	type = character_event
+	title = siwa.0057.t
+	desc = siwa.0057.desc
+	theme = RICE_theme_egypt_desert
+	
+	right_portrait = root
+	
+	trigger = {
+		has_title = title:c_kharga
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	option = { # Ok
+		name = siwa.0057.a
+		random_list = {
+			10 = { add_piety = 25 }
+			10 = { add_prestige = 25 }
+		}
+	}
+}
+
+
+
+# Rock with a Hole
+siwa.0058 = {
+	type = character_event
+	title = siwa.0058.t
+	desc = siwa.0058.desc
+	theme = RICE_theme_egypt_desert
+	
+	right_portrait = root
+	
+	trigger = {
+		has_title = title:c_kharga
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	option = { # Ok
+		name = siwa.0058.a
+		random_list = {
+			10 = { add_piety = 25 }
+			10 = { add_prestige = 25 }
+		}
+	}
+}
+
+
+# Invest in olives?
+siwa.0059 = {
+	type = character_event
+	title = siwa.0059.t
+	desc = siwa.0059.desc
+	theme = RICE_theme_egypt_village
+	
+	left_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+	
+	trigger = {
+		RICE_is_in_western_desert_trigger = yes
+		OR = {
+			gold >= 50
+			is_ai = no
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	option = { # Ok
+		name = siwa.0059.a
+		remove_short_term_gold = 50
+		add_character_modifier = {
+			modifier = RICE_siwa_olive_farm_investments
+			years = 10
+		}
+	}
+	option = { # No
+		name = siwa.0059.b
+	}
+}
+
+
+# Kershef house is very cool
+siwa.0060 = {
+	type = character_event
+	title = siwa.0060.t
+	desc = siwa.0060.desc
+	theme = RICE_theme_egypt_village
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	trigger = {
+		has_title = title:c_siwa
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = -0.2
+			has_trait = paraoid
+		}
+	}
+
+	option = { # Ok
+		name = siwa.0060.a
+		add_prestige = 20
+	}
+}
+
+
+
+

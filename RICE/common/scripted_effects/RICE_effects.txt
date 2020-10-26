@@ -1,0 +1,66 @@
+﻿
+make_siwi_culture_effect = {
+	#Convert your, and your whole family's, culture
+	set_culture = culture:butr
+	if = {
+		limit = { any_spouse = { is_landed = no } }
+		every_spouse = {
+			set_culture = culture:butr
+		}
+	}
+	if = {
+		limit = {
+			any_close_family_member = {
+				is_landed = no
+				NOT = { is_spouse_of = root }
+			}
+		}
+		every_close_family_member = {
+			custom = all_family_members
+			limit = {
+				NOT = { is_spouse_of = root }
+			}
+			set_culture = culture:butr
+		}
+	}
+
+	#Convert appropriate vassals, and their family
+	if = {
+		limit = {
+			any_vassal = {
+				is_ai = yes
+				culture = root.culture
+			}
+		}
+		every_vassal = {
+			limit = {
+				is_ai = yes
+				culture = root.culture
+			}
+			set_culture = culture:butr
+			hidden_effect = {
+				if = {
+					limit = { any_spouse = { is_landed = no } }
+					every_spouse = {
+						set_culture = culture:butr
+					}
+				}
+				if = {
+					limit = {
+						any_close_family_member = {
+							is_landed = no
+							NOT = { is_spouse_of = prev }
+						}
+					}
+					every_close_family_member = {
+						limit = {
+							is_landed = no
+							NOT = { is_spouse_of = prev }
+						}
+						set_culture = culture:butr
+					}
+				}
+			}
+		}
+	}
+}

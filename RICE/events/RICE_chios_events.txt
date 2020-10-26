@@ -1,0 +1,842 @@
+﻿###############################################################################
+# 
+# CHIOS: ISLE OF MASTIC EVENTS
+# 
+# chios.0000-chios.0009	Misc events
+# chios.0010-chios.0019	Build Mastic Village
+# chios.0020-chios.0049	Mostra of Thymiana
+# 
+###############################################################################
+
+namespace = chios
+
+
+
+# Build the Monument
+chios.0005 = {
+	type = character_event
+	title = chios.0005.t
+	desc = {
+		desc = chios.0005.desc.start
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					religion = { is_in_family = rf_pagan }
+				}
+				desc = chios.0005.desc.mid.pagan
+			}
+			desc = chios.0005.desc.mid
+		}
+		desc = chios.0005.desc.end
+	}
+	theme = RICE_theme_chios_meadow
+	
+	left_portrait = root
+	
+	option = { # Ok
+		name = chios.0005.a
+		add_prestige = 250
+		add_character_modifier = {
+			modifier = RICE_reveres_homer
+		}
+		title:c_chios = {
+			add_county_modifier = {
+				modifier = RICE_homer_monument_built
+			}
+		}			
+	}
+}
+
+
+
+
+
+##################################################################
+# 
+# BUILD MASTIC VILLAGE
+# chios.0010-chios.0019 reserved
+# 
+# Sizes: Small - Medium - Large
+# Focuses: Fort - Port - Town
+# 
+##################################################################
+
+
+# Decide on the type
+chios.0010 = {
+	type = character_event
+	title = chios.0010.t
+	desc = chios.0010.desc
+	theme = RICE_theme_mastic_grove
+	
+	left_portrait = root
+	
+	option = { # Fort (Defense)
+		name = chios.0010.a
+		add_character_flag = RICE_mastic_village_fort
+		trigger_event = {
+			id = chios.0011
+			days = { 3 10 }
+		}
+	}	
+	option = { # Port (Trade)
+		name = chios.0010.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 100
+			}
+		}
+		add_character_flag = RICE_mastic_village_port
+		trigger_event = {
+			id = chios.0011
+			days = { 3 10 }
+		}
+	}	
+	option = { # Town (Development)
+		name = chios.0010.c
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 150
+			}
+		}
+		add_character_flag = RICE_mastic_village_town
+		trigger_event = {
+			id = chios.0011
+			days = { 3 10 }
+		}
+	}
+}
+
+
+# Decide on the type
+chios.0011 = {
+	type = character_event
+	title = chios.0011.t
+	desc = chios.0011.desc
+	theme = RICE_theme_mastic_grove
+	
+	left_portrait = root
+	
+	option = { # Small
+		name = chios.0011.a
+		remove_short_term_gold = 50
+		add_character_flag = RICE_mastic_village_small
+		trigger_event = {
+			id = chios.0012
+			days = { 3 10 }
+		}
+	}	
+	option = { # Medium
+		name = chios.0011.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 100
+			}
+		}
+		remove_short_term_gold = 100
+		add_character_flag = RICE_mastic_village_medium
+		trigger_event = {
+			id = chios.0012
+			days = { 3 10 }
+		}
+	}	
+	option = { # Large
+		name = chios.0011.c
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 150
+			}
+		}
+		remove_short_term_gold = 150
+		add_character_flag = RICE_mastic_village_large
+		trigger_event = {
+			id = chios.0012
+			days = { 3 10 }
+		}
+	}
+}
+
+
+
+# It begins!
+chios.0012 = {
+	type = character_event
+	title = chios.0012.t
+	desc = chios.0012.desc
+	theme = RICE_theme_mastic_grove
+	
+	left_portrait = root
+	
+	option = {
+		name = chios.0012.a
+		if = {
+			limit = { has_character_flag = RICE_mastic_village_small }
+			if = {
+				limit = { has_character_flag = RICE_mastic_village_fort }
+				title:c_chios = {
+					add_county_modifier = {
+						modifier = RICE_chios_mastic_village_small_fort
+						years = 20
+					}
+				}				
+			}
+			else_if = {
+				limit = { has_character_flag = RICE_mastic_village_port }
+				title:c_chios = {
+					add_county_modifier = {
+						modifier = RICE_chios_mastic_village_small_port
+						years = 20
+					}
+				}				
+			}
+			else_if = {
+				limit = { has_character_flag = RICE_mastic_village_town }
+				title:c_chios = {
+					add_county_modifier = {
+						modifier = RICE_chios_mastic_village_small_town
+						years = 20
+					}
+				}				
+			}
+		}
+		else_if = {
+			limit = { has_character_flag = RICE_mastic_village_medium }
+			if = {
+				limit = { has_character_flag = RICE_mastic_village_fort }
+				title:c_chios = {
+					add_county_modifier = {
+						modifier = RICE_chios_mastic_village_medium_fort
+						years = 20
+					}
+				}				
+			}
+			else_if = {
+				limit = { has_character_flag = RICE_mastic_village_port }
+				title:c_chios = {
+					add_county_modifier = {
+						modifier = RICE_chios_mastic_village_medium_port
+						years = 20
+					}
+				}				
+			}
+			else_if = {
+				limit = { has_character_flag = RICE_mastic_village_town }
+				title:c_chios = {
+					add_county_modifier = {
+						modifier = RICE_chios_mastic_village_medium_town
+						years = 20
+					}
+				}				
+			}
+		}
+		else_if = {
+			limit = { has_character_flag = RICE_mastic_village_large }
+			if = {
+				limit = { has_character_flag = RICE_mastic_village_fort }
+				title:c_chios = {
+					add_county_modifier = {
+						modifier = RICE_chios_mastic_village_large_fort
+						years = 20
+					}
+				}				
+			}
+			else_if = {
+				limit = { has_character_flag = RICE_mastic_village_port }
+				title:c_chios = {
+					add_county_modifier = {
+						modifier = RICE_chios_mastic_village_large_port
+						years = 20
+					}
+				}				
+			}
+			else_if = {
+				limit = { has_character_flag = RICE_mastic_village_town }
+				title:c_chios = {
+					add_county_modifier = {
+						modifier = RICE_chios_mastic_village_large_town
+						years = 20
+					}
+				}				
+			}
+		}
+		
+	}
+	after = {
+		remove_character_flag = RICE_mastic_village_fort
+		remove_character_flag = RICE_mastic_village_port
+		remove_character_flag = RICE_mastic_village_town
+		remove_character_flag = RICE_mastic_village_small
+		remove_character_flag = RICE_mastic_village_medium
+		remove_character_flag = RICE_mastic_village_large
+	}
+}
+
+
+
+##################################################################
+# 
+# ATTEND MOSTRA OF THYMIANA
+# chios.0020-0049 reserved
+# 
+##################################################################
+
+
+# Start Event
+chios.0020 = {
+	type = character_event
+	title = chios.0020.t
+	desc = chios.0020.desc
+	theme = friendly
+	
+	right_portrait = root
+	
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+	}
+	
+	option = { # Ok
+		name = chios.0020.a
+		# Choose appropriate location
+		title:b_chios.title_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_attend_mostra_of_thymiana
+			}	
+		}
+	}
+}
+
+
+# You arrive in Chios
+chios.0021 = {
+	type = character_event
+	title = chios.0021.t
+	desc = chios.0021.desc
+	theme = realm
+	override_background = { event_background = RICE_background_chios_meadow }
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Ok
+		name = chios.0021.a
+		trigger_event = {
+			id = chios.0022
+			#days = 1
+		}
+	}
+}
+
+
+
+# Friday evening, start of Mostra - villagers walk around in masks in an atmosphere of fun
+chios.0022 = {
+	type = character_event
+	title = chios.0022.t
+	desc = chios.0022.desc
+	theme = RICE_theme_festival_generic
+	
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	immediate = {
+		play_music_cue = mx_cue_banquet
+	}
+	
+	option = { # Take part in the fun
+		name = chios.0022.a
+		if = {
+			limit = {
+				has_trait = shy
+			}
+			stress_impact = {
+				shy = minor_stress_impact_gain
+			}
+		}
+		else = {
+			stress_impact = {
+				base = minor_stress_impact_loss
+				gregarious = minor_stress_impact_loss
+			}		
+		}
+		trigger_event = {
+			id = chios.0023
+			#days = 1
+		}
+	}	
+	option = { # Observe contentedly
+		name = chios.0022.b
+		add_piety = 25
+		trigger_event = {
+			id = chios.0023
+			#days = 1
+		}
+	}
+}
+
+
+
+# Sunday night - solemn visit to the graveyard to pray for the deceased
+chios.0023 = {
+	type = character_event
+	title = chios.0023.t
+	desc = chios.0023.desc
+	theme = faith
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Pray
+		name = chios.0023.a
+		add_piety = 25
+		trigger_event = {
+			id = chios.0024
+			#days = 1
+		}
+	}
+}
+
+
+
+# Recreating the battle between the pirates and the villagers, and then the feast starts!
+chios.0024 = {
+	type = character_event
+	title = chios.0024.t
+	desc = chios.0024.desc
+	theme = battle
+	override_background = { event_background = market }
+	#soundeffect = feast_event
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	immediate = {
+		play_music_cue = mx_cue_banquet
+	}
+	
+	option = { # Fun!
+		name = chios.0024.a
+		# Feast events
+		hidden_effect = {
+			random = {
+				chance = 25
+				trigger_event = {
+					id = chios.0030
+					#days = 1
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = chios.0031
+					#days = 1
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = chios.0032
+					#days = 1
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = chios.0033
+					#days = 1
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = chios.0034
+					#days = 1
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = chios.0035
+					#days = 1
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = chios.0036
+					#days = 1
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = chios.0037
+					#days = 1
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = chios.0038
+					#days = 1
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = chios.0039
+					#days = 1
+				}
+			}		
+		}
+		trigger_event = {
+			id = chios.0025
+			#days = 1
+		}
+	}
+}
+
+
+
+# Mostra ends
+chios.0025 = {
+	type = character_event
+	title = chios.0025.t
+	desc = chios.0025.desc
+	theme = friendly
+	override_background = { event_background = RICE_background_chios_meadow }
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Fun!
+		name = chios.0025.a
+		add_prestige = 100
+		add_character_modifier = {
+			modifier = RICE_chios_attended_mostra_of_thymiana
+			years = 3
+		}
+	}
+	
+	after = {
+		trigger_event = {
+			id = chios.0026
+			days = 1
+		}
+	}	
+}
+
+
+chios.0026 = {
+	hidden = yes	
+	immediate = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
+
+
+
+# Eating some cheese
+chios.0030 = {
+	type = character_event
+	title = chios.0030.t
+	desc = chios.0030.desc
+	theme = RICE_theme_festival_generic
+	
+	left_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+	
+	option = { # Keep it
+		name = chios.0030.a
+		add_character_modifier = {
+			modifier = RICE_chios_chian_cheese_from_mostra
+			days = 365
+		}
+	}	
+	option = { # No thanks
+		name = chios.0030.b
+		add_prestige = 20
+	}
+}
+
+# Listen to music
+chios.0031 = {
+	type = character_event
+	title = chios.0031.t
+	desc = chios.0031.desc
+	theme = RICE_theme_festival_generic
+	
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	option = { # Ok
+		name = chios.0031.a
+		add_piety = 10
+	}
+}
+
+# Observe red and brown houses
+chios.0032 = {
+	type = character_event
+	title = chios.0032.t
+	desc = chios.0032.desc
+	theme = RICE_theme_chios_meadow
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = { # Ok
+		name = chios.0032.a
+		random_list = {
+			10 = { add_piety = 15 }
+			10 = { add_piety = 15 }
+		}
+	}
+}
+
+# Dancing with the villagers?
+chios.0033 = {
+	type = character_event
+	title = chios.0033.t
+	desc = chios.0033.desc
+	theme = friendly
+	override_background = { event_background = market }
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Join in!
+		name = chios.0033.a
+		if = {
+			limit = {
+				has_trait = shy
+			}
+			stress_impact = {
+				shy = minor_stress_impact_gain
+			}
+		}
+		else = {
+			stress_impact = {
+				base = minor_stress_impact_loss
+				gregarious = miniscule_stress_impact_loss
+				lustful = miniscule_stress_impact_loss
+			}		
+		}
+	}	
+	option = { # Stay back
+		name = chios.0033.b
+		add_prestige = 20
+		stress_impact = {
+			gregarious = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+# Hear story about how Tymiana was attacked long ago
+chios.0034 = {
+	type = character_event
+	title = chios.0034.t
+	desc = chios.0034.desc
+	theme = martial
+	override_background = { event_background = market }
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = { # Ok
+		name = chios.0034.a
+		add_character_modifier = {
+			modifier = RICE_chios_heard_thymiana_story
+			years = 3
+		}
+	}
+}
+
+
+# Young man shows some sword moves
+chios.0035 = {
+	type = character_event
+	title = chios.0035.t
+	desc = chios.0035.desc
+	theme = martial
+	override_background = { event_background = market }
+	
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	
+	option = { # Ok
+		name = chios.0035.a
+		trigger = {
+			prowess < medium_skill_rating
+		}
+		random = {
+			add_prowess_skill = 1
+			chance = 25
+		}
+		stress_impact = {
+			craven = miniscule_stress_impact_gain
+		}
+	}	
+	option = { # Let's eat
+		name = chios.0035.b
+		add_piety = 15
+		stress_impact = {
+			brave = miniscule_stress_impact_gain
+		}
+	}	
+	option = { # Let me show you
+		name = chios.0035.c
+		trigger = {
+			prowess >= medium_skill_rating
+		}
+		skill = prowess
+		add_prestige = 25
+	}
+}
+
+
+# What should I eat?
+chios.0036 = {
+	type = character_event
+	title = chios.0036.t
+	desc = chios.0036.desc
+	theme = RICE_theme_festival_generic
+	
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	
+	option = { # Small omelettes
+		name = chios.0036.a
+		random_list = {
+			75 = { add_prestige = 10 }
+			25 = { add_piety = 10 }
+		}
+	}	
+	option = { # Soup
+		name = chios.0036.b
+		random_list = {
+			25 = { add_prestige = 10 }
+			75 = { add_piety = 10 }
+		}
+	}	
+	option = { # Eggplant mix
+		name = chios.0036.c
+		random_list = {
+			50 = { add_prestige = 10 }
+			50 = { add_piety = 10 }
+		}
+	}
+}
+
+
+# Go get some wine?
+chios.0037 = {
+	type = character_event
+	title = chios.0037.t
+	desc = chios.0037.desc
+	theme = RICE_theme_festival_generic
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Yes
+		name = chios.0037.a
+		stress_impact = {
+			base = minor_stress_impact_loss
+		}
+	}	
+	option = { # No
+		name = chios.0037.b
+		add_prestige = 15
+		stress_impact = {
+			drunkard = minor_stress_impact_gain
+		}
+	}
+}
+
+
+# Visit the old watchtowers of Thymiana
+chios.0038 = {
+	type = character_event
+	title = chios.0038.t
+	desc = chios.0038.desc
+	theme = martial
+	override_background = { event_background = RICE_background_chios_meadow	}
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Yes
+		name = chios.0038.a
+		add_character_modifier = {
+			modifier = RICE_chios_visited_thymiana_watchtower
+			year = 3
+		}
+	}
+}
+
+
+# Speaking of Masks
+chios.0039 = {
+	type = character_event
+	title = chios.0039.t
+	desc = chios.0039.desc
+	theme = friendly
+	override_background = { event_background = RICE_background_chios_meadow	}
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = { # Scary!
+		name = chios.0039.a
+		add_piety = 15
+		stress_impact = {
+			brave = miniscule_stress_impact_gain
+		}
+	}	
+	option = { # Not scary!
+		name = chios.0039.b
+		add_prestige = 15
+		stress_impact = {
+			craven = miniscule_stress_impact_gain
+		}
+	}
+}

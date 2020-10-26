@@ -1,0 +1,16 @@
+version="1.0.0"
+tags={
+	"Flavor"
+	"Immersion"
+	"Culture"
+	"Religion"
+	"Historical"
+	"Events"
+	"Decisions"
+	"Gameplay"
+	"cybrxkhan"
+	"RICE"
+}
+name="Regional Immersion and Cultural Enrichment (RICE)"
+supported_version="1.1.*"
+path="mod/RICE"

@@ -1,0 +1,113 @@
+﻿##############################################################################################
+# 
+# RICE Setup
+# 
+# These events set up various aspects of the mod at the start of the game.
+# A lot of this is to maintain compatibility with other mods.
+# 
+##############################################################################################
+
+namespace = RICEintro
+
+# Hello event
+RICEintro.0000 = {
+	type = character_event
+	title = RICEintro.0000.t
+	desc = RICEintro.0000.desc
+	theme = RICE_theme_siwa_spring
+	
+	trigger = {
+		NOT = { has_global_variable = VIET_RICE_no_intro_popup }
+	}
+	
+	#immediate = {
+	#
+	#	#title:b_siwa.title_province = {
+	#	#	add_special_building_slot = RICE_building_oracle_of_amun
+	#	#	set_variable = { #To unlock the building
+	#	#		name = university
+	#	#		value = yes
+	#	#	}
+	#	#}
+	#	
+	#}
+
+	option = { # Ok
+		name = RICEintro.0000.a
+	}	
+	option = { # Ok
+		name = RICEintro.0000.b
+	}	
+	option = { # Ok
+		name = RICEintro.0000.c
+		set_global_variable = {
+			name = VIET_RICE_no_intro_popup
+			value = yes
+		}
+	}	
+	
+}
+
+# Event to set things up
+RICEintro.0001 = {
+	type = empty
+	hidden = yes
+	
+	immediate = {
+	
+		#title:c_chios = {
+		#	add_county_modifier = {
+		#		modifier = RICE_chios_mastic_groves
+		#	}
+		#}	
+		title:c_siwa = {
+			set_county_faith = faith:coptic
+			set_county_culture = culture:butr
+			add_county_modifier = {
+				modifier = RICE_siwa_oasis_defense
+			}
+		}
+		
+		if = {
+			limit = { 
+				title:c_siwa.holder = {
+					highest_held_title_tier = tier_county
+				}
+			}
+			title:c_siwa.holder = { 
+				make_siwi_culture_effect = yes
+			}
+		}
+	
+		## Add Chios buildings
+		title:b_chios.title_province = {
+			add_special_building = RICE_mastic_industry_01
+		}
+	
+		## Add Siwa Oasis buildings
+		title:b_siwa.title_province = {
+			add_special_building_slot = RICE_siwa_oracle_of_amun
+		}
+		title:b_kharga.title_province = {
+			add_special_building_slot = RICE_kharga_temple_of_hibis
+		}
+		
+		every_player = {
+			if = {
+				limit = {
+					is_ai = no
+				}
+				trigger_event = RICEintro.0000
+			}
+		}	
+	}
+}
+
+
+
+
+
+
+
+
+
