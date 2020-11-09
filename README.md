@@ -1,6 +1,6 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Mod)
 
-## Latest Version: BETA VERSION
+## Latest Version: Version 1.0.0 "Odyssey" (Released 10/31/20)
 
 RICE is a mod that adds immersion to different regions, cultures, and religions in CK3. It is a collection of themed flavor "packs" similar to PI's official flavor pack DLCs, but often cover lesser-known places and peoples. It is a spiritual successor to my Immersion Packs for CK2.
 
@@ -12,10 +12,10 @@ Feel free to use my work in your mods - all I ask is that I am credited and (if 
 
 ## Current Flavor Packs
 
-Links are included for the guides.
+At the moment, the following RICE flavor packs are included in the mod (click to view the guides which cover the features included in each pack in more detail).
 
-- Chios: Isle of Mastic
-- Siwa: Oases of the Western Desert
+- [Chios: Isle of Mastic](https://docs.google.com/document/d/1Lu4cGXN7hSaDtYd_wsXKbjAeIOYMoYVuum6zfYfBc_k/pub)
+- [Siwa: Oases of the Western Desert](https://docs.google.com/document/d/1OOXqqBEGv94IBAH-rIsjoBog1YFtVAFg_TPsuIQmhtg/pub)
 
 
 ## Manual Installation Steps
