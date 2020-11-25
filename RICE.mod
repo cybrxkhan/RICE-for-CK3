@@ -1,4 +1,4 @@
-version="1.0.0"
+version="1.0.1"
 tags={
 	"Flavor"
 	"Immersion"
@@ -12,5 +12,5 @@ tags={
 	"RICE"
 }
 name="Regional Immersion and Cultural Enrichment (RICE)"
-supported_version="1.1.*"
+supported_version="1.2.*"
 path="mod/RICE"

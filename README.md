@@ -1,6 +1,6 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Mod)
 
-## Latest Version: Version 1.0.1 "Iliad" (Released 11/15/20)
+## Latest Version: Version 1.0.1.a "Iliad" (Released 11/24/20)
 
 RICE is a mod that adds immersion to different regions, cultures, and religions in CK3. It is a collection of themed flavor "packs" similar to PI's official flavor pack DLCs, but often cover lesser-known places and peoples. It is a spiritual successor to my Immersion Packs for CK2.
 
