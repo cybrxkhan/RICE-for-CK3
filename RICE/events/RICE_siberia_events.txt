@@ -1,0 +1,2655 @@
+﻿###############################################################################
+# 
+# SIBERIA: THE REINDEER PEOPLE
+# 
+# siberia.0000-siberia.0009	Siberian courtier spawn events
+# siberia.0010-siberia.0019 Reindeer Herd Events
+# siberia.0020-siberia.0039 Reindeer Sacrifice Events 
+# siberia.0040-siberia.0069	Siberian Flavor Events
+# 
+###############################################################################
+
+namespace = siberia
+
+
+######################################################################################
+# 
+# SIBERIAN COURTIER SPAWN AND LESSONS siberia.0000-siberia.0009
+# 
+# Courtiers spawn in northern realms
+# Small chance every now and then that they'll pass on skills to another person
+# 
+######################################################################################
+
+
+# Siberian Courtier Arrives
+siberia.0001 = {
+	type = character_event
+	title = siberia.0001.t
+	desc = {
+		desc = siberia.0001.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_evenk_maker
+				}
+				desc = siberia.0001.desc.evenk
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_nivkh_maker
+				}
+				desc = siberia.0001.desc.nivkh
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_yakut_maker
+				}
+				desc = siberia.0001.desc.yakut
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_yeniseian_maker
+				}
+				desc = siberia.0001.desc.yeniseian
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_yukaghir_maker
+				}
+				desc = siberia.0001.desc.yukaghir
+			}
+		}
+	}
+	
+	theme = RICE_theme_pine_landscape
+	
+	left_portrait = {
+		character = root
+		animation = idle
+	}
+	right_portrait = {
+		character = scope:scope_RICE_siberian
+		animation = personality_honorable
+	}
+	
+	trigger = {	
+		any_directly_owned_province = {
+			RICE_is_in_siberian_region_courtier_spawn_trigger = yes
+		}
+		NOT = {
+			any_courtier = {
+				RICE_siberia_siberian_wanderer_trigger = yes
+			}		
+		}
+		#OR = {
+		#	is_ai = no
+		#	short_term_gold >= minor_gold_value
+		#}
+	}
+
+	immediate = {
+		random_list = {
+			10 = {
+				add_character_flag = RICE_siberia_evenk_maker
+				create_character = {
+					location = root.location
+					template = siberian_wanderer_character_template
+					save_scope_as = scope_RICE_siberian
+					culture = culture:evenk
+				}			
+			}
+			10 = {
+				add_character_flag = RICE_siberia_nivkh_maker
+				create_character = {
+					location = root.location
+					template = siberian_wanderer_character_template
+					save_scope_as = scope_RICE_siberian
+					culture = culture:nivkh
+				}			
+			}
+			10 = {
+				add_character_flag = RICE_siberia_yakut_maker
+				create_character = {
+					location = root.location
+					template = siberian_wanderer_character_template
+					save_scope_as = scope_RICE_siberian
+					culture = culture:yakut
+				}			
+			}
+			10 = {
+				add_character_flag = RICE_siberia_yeniseian_maker
+				create_character = {
+					location = root.location
+					template = siberian_wanderer_character_template
+					save_scope_as = scope_RICE_siberian
+					culture = culture:yeniseian
+				}			
+			}
+			10 = {
+				add_character_flag = RICE_siberia_yukaghir_maker
+				create_character = {
+					location = root.location
+					template = siberian_wanderer_character_template
+					save_scope_as = scope_RICE_siberian
+					culture = culture:yukaghir
+				}			
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					scope:scope_RICE_siberian = {
+						culture = culture:evenk
+					}
+				}
+				scope:scope_RICE_siberian = {
+					add_character_modifier = {
+						modifier = RICE_siberia_evenk_wanderer
+					}
+				}
+			}
+			if = {
+				limit = {
+					scope:scope_RICE_siberian = {
+						culture = culture:nivkh
+					}
+				}
+				scope:scope_RICE_siberian = {
+					add_character_modifier = {
+						modifier = RICE_siberia_nivkh_wanderer
+					}
+				}
+			}
+			if = {
+				limit = {
+					scope:scope_RICE_siberian = {
+						culture = culture:yakut
+					}
+				}
+				scope:scope_RICE_siberian = {
+					add_character_modifier = {
+						modifier = RICE_siberia_yakut_wanderer
+					}
+				}
+			}
+			if = {
+				limit = {
+					scope:scope_RICE_siberian = {
+						culture = culture:yeniseian
+					}
+				}
+				scope:scope_RICE_siberian = {
+					add_character_modifier = {
+						modifier = RICE_siberia_yeniseian_wanderer
+					}
+				}
+			}
+			if = {
+				limit = {
+					scope:scope_RICE_siberian = {
+						culture = culture:yukaghir
+					}
+				}
+				scope:scope_RICE_siberian = {
+					add_character_modifier = {
+						modifier = RICE_siberia_yukaghir_wanderer
+					}
+				}
+			}
+		}
+	}
+
+	# Hire them
+	option = {
+		name = siberia.0001.a
+		pay_short_term_gold = {
+			target = scope:scope_RICE_siberian
+			gold = minor_gold_value
+		}
+		add_courtier = scope:scope_RICE_siberian
+		custom_tooltip = siberia.0001.courtier_effect.1
+		#custom_tooltip = siberia.0001.courtier_effect.2 - reindeer herd, no?
+		add_character_flag = {
+			flag = RICE_siberia_courtier_skill_delay # Make it so you won't get the skill boosts right away
+			months = 16
+		}
+	}
+
+	# Don't hire them
+	option = {
+		name = siberia.0001.b
+		hidden_effect = {
+			scope:scope_RICE_siberian = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+	
+	after = {
+		remove_character_flag = RICE_siberia_evenk_maker
+		remove_character_flag = RICE_siberia_nivkh_maker
+		remove_character_flag = RICE_siberia_yakut_maker
+		remove_character_flag = RICE_siberia_yeniseian_maker
+		remove_character_flag = RICE_siberia_yukaghir_maker
+	}
+	
+}
+
+
+# Siberian Courtier improves skills - tombola
+siberia.0002 = {
+
+	type = empty
+	hidden = yes
+	
+	trigger = {
+		# RICE_basic_is_available_adult_trigger = yes # Not needed because on_actions already handles this
+		OR = {
+			any_courtier = {
+				RICE_siberia_siberian_wanderer_trigger = yes
+				RICE_basic_is_available_courtier_adult_trigger = yes
+				is_ai = yes			
+			}
+			any_vassal = {
+				RICE_siberia_siberian_wanderer_trigger = yes
+				RICE_basic_is_available_courtier_adult_trigger = yes
+				is_ai = yes			
+			}		
+		}
+		OR = {
+			RICE_has_siberian_advanced_knowledge_trigger = no
+			any_courtier = {
+				RICE_siberia_siberian_wanderer_trigger = no
+				RICE_basic_is_available_courtier_adult_trigger = yes
+				RICE_has_siberian_advanced_knowledge_trigger = no
+				is_ai = yes			
+			}
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				any_vassal = {
+					RICE_siberia_siberian_wanderer_trigger = yes
+					RICE_basic_is_available_courtier_adult_trigger = yes
+					is_ai = yes			
+				}			
+			}
+			random_vassal = {
+				limit = {
+					RICE_siberia_siberian_wanderer_trigger = yes
+					RICE_basic_is_available_courtier_adult_trigger = yes
+					is_ai = yes				
+				}
+				save_scope_as = scope_RICE_siberian_teacher
+			}
+		}
+		else_if = {
+			limit = {
+				any_courtier = {
+					RICE_siberia_siberian_wanderer_trigger = yes
+					RICE_basic_is_available_courtier_adult_trigger = yes
+					is_ai = yes			
+				}			
+			}
+			random_courtier = {
+				limit = {
+					RICE_siberia_siberian_wanderer_trigger = yes
+					RICE_basic_is_available_courtier_adult_trigger = yes
+					is_ai = yes				
+				}
+				save_scope_as = scope_RICE_siberian_teacher
+			}		
+		}
+		# Choose who gets the lesson - slightly higher chance of another courtier getting it, but this can be changed
+		random_list = {
+			20 = {
+				trigger = {
+					RICE_has_siberian_knowledge_trigger = no
+				}
+				modifier = {
+					add = 5
+					learning >= decent_skill_rating
+				}
+				modifier = {
+					add = 5
+					has_trait = diligent
+				}
+				modifier = {
+					add = 5
+					has_trait = ambitious
+				}
+				modifier = {
+					add = 5
+					probably_intelligent_trigger = yes
+				}
+				add_character_flag = RICE_siberia_self_learner_basic
+				trigger_event = siberia.0003
+			}
+			10 = {
+				trigger = {
+					RICE_has_siberian_knowledge_trigger = no
+				}
+				modifier = {
+					add = 5
+					learning >= decent_skill_rating
+				}
+				modifier = {
+					add = 5
+					has_trait = diligent
+				}
+				modifier = {
+					add = 5
+					has_trait = ambitious
+				}
+				modifier = {
+					add = 5
+					probably_intelligent_trigger = yes
+				}
+				add_character_flag = RICE_siberia_self_learner_master
+				trigger_event = siberia.0003
+			}
+			30 = {
+				modifier = {
+					add = -30
+					NOT = {
+						any_courtier = {
+							RICE_siberia_siberian_wanderer_trigger = no
+							RICE_basic_is_available_courtier_adult_trigger = yes
+							RICE_has_siberian_advanced_knowledge_trigger = no
+							is_ai = yes
+						}					
+					}
+				}
+				add_character_flag = RICE_siberia_other_learner_basic
+				random_courtier = {
+					limit = {
+						RICE_siberia_siberian_wanderer_trigger = no
+						RICE_basic_is_available_courtier_adult_trigger = yes
+						RICE_has_siberian_advanced_knowledge_trigger = no
+						is_ai = yes
+					}
+					save_scope_as = scope_RICE_siberian_learner
+				}
+				trigger_event = siberia.0004
+			}
+			20 = {
+				modifier = {
+					add = -20
+					NOT = {
+						any_courtier = {
+							RICE_siberia_siberian_wanderer_trigger = no
+							RICE_basic_is_available_courtier_adult_trigger = yes
+							RICE_has_siberian_advanced_knowledge_trigger = no
+							is_ai = yes
+						}					
+					}
+				}
+				add_character_flag = RICE_siberia_other_learner_master
+				random_courtier = {
+					limit = {
+						RICE_siberia_siberian_wanderer_trigger = no
+						RICE_basic_is_available_courtier_adult_trigger = yes
+						RICE_has_siberian_advanced_knowledge_trigger = no
+						is_ai = yes
+					}
+					save_scope_as = scope_RICE_siberian_learner
+				}
+				trigger_event = siberia.0004
+			}
+		}
+	}
+}
+
+
+
+
+
+# You learn from the Siberian traveler
+siberia.0003 = {
+	type = character_event
+	title = siberia.0003.t
+	desc = {
+		desc = siberia.0003.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_hunting_lesson
+				}
+				desc = siberia.0003.desc.hunting
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_gathering_lesson
+				}
+				desc = siberia.0003.desc.gathering
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_music_lesson
+				}
+				desc = siberia.0003.desc.music
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_evenk_lesson
+				}
+				desc = siberia.0003.desc.evenk
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_nivkh_lesson
+				}
+				desc = siberia.0003.desc.nivkh
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_yakut_lesson
+				}
+				desc = siberia.0003.desc.yakut
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_yeniseian_lesson
+				}
+				desc = siberia.0003.desc.yeniseian
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_yukaghir_lesson
+				}
+				desc = siberia.0003.desc.yukaghir
+			}
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_self_learner_basic
+					#RICE_has_siberian_knowledge_trigger = no
+				}
+				desc = siberia.0003.desc.basic
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_self_learner_master
+					#RICE_has_siberian_basic_knowledge_trigger = no
+				}
+				desc = siberia.0003.desc.master
+			}
+		}
+	}
+	
+	theme = RICE_theme_pine_landscape #RICE_theme_forest_shaman
+	
+	left_portrait = root
+	right_portrait = scope:scope_RICE_siberian_teacher
+
+	immediate = {
+
+		# Choose the lesson to learn
+		random_list = {
+			# Hunting
+			10 = {
+				modifier = {
+					add = -5
+					scope:scope_RICE_siberian_teacher = { is_female = yes }
+				}
+				modifier = {
+					add = 5
+					scope:scope_RICE_siberian_teacher = { is_female = no }
+				}
+				add_character_flag = RICE_siberia_hunting_lesson
+			}
+			# Gathering
+			10 = {
+				modifier = {
+					add = -5
+					scope:scope_RICE_siberian_teacher = { is_female = no }
+				}
+				modifier = {
+					add = 5
+					scope:scope_RICE_siberian_teacher = { is_female = yes }
+				}
+				add_character_flag = RICE_siberia_gathering_lesson
+			}
+			# Music
+			10 = {
+				add_character_flag = RICE_siberia_music_lesson
+			}
+			# Evenk
+			20 = {
+				trigger = {
+					scope:scope_RICE_siberian_teacher = { has_character_modifier = RICE_siberia_evenk_wanderer }
+				}
+				add_character_flag = RICE_siberia_evenk_lesson
+			}
+			# Nivkh
+			20 = {
+				trigger = {
+					scope:scope_RICE_siberian_teacher = { has_character_modifier = RICE_siberia_nivkh_wanderer }
+				}
+				add_character_flag = RICE_siberia_nivkh_lesson
+			}
+			# Yakut
+			20 = {
+				trigger = {
+					scope:scope_RICE_siberian_teacher = { has_character_modifier = RICE_siberia_yakut_wanderer }
+				}
+				add_character_flag = RICE_siberia_yakut_lesson
+			}
+			# Yeniseian
+			20 = {
+				trigger = {
+					scope:scope_RICE_siberian_teacher = { has_character_modifier = RICE_siberia_yeniseian_wanderer }
+				}
+				add_character_flag = RICE_siberia_yeniseian_lesson
+			}
+			# Yukaghir
+			20 = {
+				trigger = {
+					scope:scope_RICE_siberian_teacher = { has_character_modifier = RICE_siberia_yukaghir_wanderer }
+				}
+				add_character_flag = RICE_siberia_yukaghir_lesson
+			}
+		}		
+
+		# RICE_siberia_evenk_wanderer
+		# RICE_siberia_nivkh_wanderer
+		# RICE_siberia_yakut_wanderer
+		# RICE_siberia_yeniseian_wanderer
+	}
+
+	# Ok
+	option = {
+		name = siberia.0003.a
+		
+		# Learn basic lesson
+		if = {
+			limit = {
+				has_character_flag = RICE_siberia_self_learner_basic
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_siberia_hunting_lesson
+				}
+				add_character_modifier = {
+					modifier = RICE_siberia_lessons_hunting_1
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_gathering_lesson
+				}
+				add_character_modifier = {
+					modifier = RICE_siberia_lessons_gathering_1
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_music_lesson
+				}
+				add_character_modifier = {
+					modifier = RICE_siberia_lessons_music_1
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_evenk_lesson
+				}
+				add_character_modifier = {
+					modifier = RICE_siberia_lessons_evenk_1
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_nivkh_lesson
+				}
+				add_character_modifier = {
+					modifier = RICE_siberia_lessons_nivkh_1
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_yakut_lesson
+				}
+				add_character_modifier = {
+					modifier = RICE_siberia_lessons_yakut_1
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_yeniseian_lesson
+				}
+				add_character_modifier = {
+					modifier = RICE_siberia_lessons_yeniseian_1
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_yukaghir_lesson
+				}
+				add_character_modifier = {
+					modifier = RICE_siberia_lessons_yukaghir_1
+				}
+			}
+		}
+		# Learn advanced lesson
+		else_if = {
+			limit = {
+				has_character_flag = RICE_siberia_self_learner_master
+				RICE_has_siberian_basic_knowledge_trigger = no
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_siberia_hunting_lesson
+				}
+				add_character_modifier = {
+					modifier = RICE_siberia_lessons_hunting_2
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_gathering_lesson
+				}
+				add_character_modifier = {
+					modifier = RICE_siberia_lessons_gathering_2
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_music_lesson
+				}
+				add_character_modifier = {
+					modifier = RICE_siberia_lessons_music_2
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_evenk_lesson
+				}
+				add_character_modifier = {
+					modifier = RICE_siberia_lessons_evenk_2
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_nivkh_lesson
+				}
+				add_character_modifier = {
+					modifier = RICE_siberia_lessons_nivkh_2
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_yakut_lesson
+				}
+				add_character_modifier = {
+					modifier = RICE_siberia_lessons_yakut_2
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_yeniseian_lesson
+				}
+				add_character_modifier = {
+					modifier = RICE_siberia_lessons_yeniseian_2
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_yukaghir_lesson
+				}
+				add_character_modifier = {
+					modifier = RICE_siberia_lessons_yukaghir_2
+				}
+			}		
+		}
+		# Upgrade lesson
+		#else_if = {
+		#	limit = {
+		#		has_character_flag = RICE_siberia_self_learner_master
+		#		RICE_has_siberian_basic_knowledge_trigger = yes
+		#	}
+		#	if = {
+		#		limit = {
+		#			has_character_flag = RICE_siberia_hunting_lesson
+		#		}
+		#		remove_character_modifier = RICE_siberia_lessons_hunting_1
+		#		add_character_modifier = {
+		#			modifier = RICE_siberia_lessons_hunting_2
+		#		}
+		#	}
+		#	else_if = {
+		#		limit = {
+		#			has_character_flag = RICE_siberia_gathering_lesson
+		#		}
+		#		remove_character_modifier = RICE_siberia_lessons_gathering_1
+		#		add_character_modifier = {
+		#			modifier = RICE_siberia_lessons_gathering_2
+		#		}
+		#	}
+		#	else_if = {
+		#		limit = {
+		#			has_character_flag = RICE_siberia_music_lesson
+		#		}
+		#		remove_character_modifier = RICE_siberia_lessons_music_1
+		#		add_character_modifier = {
+		#			modifier = RICE_siberia_lessons_music_2
+		#		}
+		#	}
+		#	else_if = {
+		#		limit = {
+		#			has_character_flag = RICE_siberia_evenk_lesson
+		#		}
+		#		remove_character_modifier = RICE_siberia_lessons_evenk_1
+		#		add_character_modifier = {
+		#			modifier = RICE_siberia_lessons_evenk_2
+		#		}
+		#	}
+		#	else_if = {
+		#		limit = {
+		#			has_character_flag = RICE_siberia_nivkh_lesson
+		#		}
+		#		remove_character_modifier = RICE_siberia_lessons_nivkh_1
+		#		add_character_modifier = {
+		#			modifier = RICE_siberia_lessons_nivkh_2
+		#		}
+		#	}
+		#	else_if = {
+		#		limit = {
+		#			has_character_flag = RICE_siberia_yakut_lesson
+		#		}
+		#		remove_character_modifier = RICE_siberia_lessons_yakut_1
+		#		add_character_modifier = {
+		#			modifier = RICE_siberia_lessons_yakut_2
+		#		}
+		#	}
+		#	else_if = {
+		#		limit = {
+		#			has_character_flag = RICE_siberia_yeniseian_lesson
+		#		}
+		#		remove_character_modifier = RICE_siberia_lessons_yeniseian_1
+		#		add_character_modifier = {
+		#			modifier = RICE_siberia_lessons_yeniseian_2
+		#		}
+		#	}	
+		#	else_if = {
+		#		limit = {
+		#			has_character_flag = RICE_siberia_yukaghir_lesson
+		#		}
+		#		remove_character_modifier = RICE_siberia_lessons_yukaghir_1
+		#		add_character_modifier = {
+		#			modifier = RICE_siberia_lessons_yukaghir_2
+		#		}
+		#	}		
+		#}
+	}
+	
+	after = {
+		remove_character_flag = RICE_siberia_self_learner_basic
+		remove_character_flag = RICE_siberia_self_learner_master
+		remove_character_flag = RICE_siberia_hunting_lesson
+		remove_character_flag = RICE_siberia_gathering_lesson
+		remove_character_flag = RICE_siberia_evenk_lesson
+		remove_character_flag = RICE_siberia_nivkh_lesson
+		remove_character_flag = RICE_siberia_yakut_lesson
+		remove_character_flag = RICE_siberia_yeniseian_lesson
+		remove_character_flag = RICE_siberia_yukaghir_lesson
+	}
+}
+
+
+
+# You learn from the Siberian traveler
+siberia.0004 = {
+	type = character_event
+	title = siberia.0003.t
+	desc = {
+		desc = siberia.0004.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_hunting_lesson
+				}
+				desc = siberia.0003.desc.hunting
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_gathering_lesson
+				}
+				desc = siberia.0003.desc.gathering
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_music_lesson
+				}
+				desc = siberia.0003.desc.music
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_evenk_lesson
+				}
+				desc = siberia.0003.desc.evenk
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_nivkh_lesson
+				}
+				desc = siberia.0003.desc.nivkh
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_yakut_lesson
+				}
+				desc = siberia.0003.desc.yakut
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_yeniseian_lesson
+				}
+				desc = siberia.0003.desc.yeniseian
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_yukaghir_lesson
+				}
+				desc = siberia.0003.desc.yukaghir
+			}
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_other_learner_basic
+				}
+				desc = siberia.0004.desc.basic
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_other_learner_master
+				}
+				desc = siberia.0004.desc.master
+			}
+		}
+	}
+	
+	theme = RICE_theme_pine_landscape #RICE_theme_forest_shaman
+	
+	left_portrait = scope:scope_RICE_siberian_learner
+	right_portrait = scope:scope_RICE_siberian_teacher
+
+	immediate = {
+
+		# Choose the lesson to learn
+		random_list = {
+			# Hunting
+			10 = {
+				modifier = {
+					add = -5
+					scope:scope_RICE_siberian_teacher = { is_female = yes }
+				}
+				modifier = {
+					add = 5
+					scope:scope_RICE_siberian_teacher = { is_female = no }
+				}
+				add_character_flag = RICE_siberia_hunting_lesson
+			}
+			# Gathering
+			10 = {
+				modifier = {
+					add = -5
+					scope:scope_RICE_siberian_teacher = { is_female = no }
+				}
+				modifier = {
+					add = 5
+					scope:scope_RICE_siberian_teacher = { is_female = yes }
+				}
+				add_character_flag = RICE_siberia_gathering_lesson
+			}
+			# Music
+			10 = {
+				add_character_flag = RICE_siberia_music_lesson
+			}
+			# Evenk
+			20 = {
+				trigger = {
+					scope:scope_RICE_siberian_teacher = { has_character_modifier = RICE_siberia_evenk_wanderer }
+				}
+				add_character_flag = RICE_siberia_evenk_lesson
+			}
+			# Nivkh
+			20 = {
+				trigger = {
+					scope:scope_RICE_siberian_teacher = { has_character_modifier = RICE_siberia_nivkh_wanderer }
+				}
+				add_character_flag = RICE_siberia_nivkh_lesson
+			}
+			# Yakut
+			20 = {
+				trigger = {
+					scope:scope_RICE_siberian_teacher = { has_character_modifier = RICE_siberia_yakut_wanderer }
+				}
+				add_character_flag = RICE_siberia_yakut_lesson
+			}
+			# Yeniseian
+			20 = {
+				trigger = {
+					scope:scope_RICE_siberian_teacher = { has_character_modifier = RICE_siberia_yeniseian_wanderer }
+				}
+				add_character_flag = RICE_siberia_yeniseian_lesson
+			}
+			# Yukaghir
+			20 = {
+				trigger = {
+					scope:scope_RICE_siberian_teacher = { has_character_modifier = RICE_siberia_yukaghir_wanderer }
+				}
+				add_character_flag = RICE_siberia_yukaghir_lesson
+			}
+		}		
+
+		# RICE_siberia_evenk_wanderer
+		# RICE_siberia_nivkh_wanderer
+		# RICE_siberia_yakut_wanderer
+		# RICE_siberia_yeniseian_wanderer
+	}
+
+	# Ok
+	option = {
+		name = siberia.0003.a
+		
+		# Learn basic lesson
+		if = {
+			limit = {
+				has_character_flag = RICE_siberia_other_learner_basic
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_siberia_hunting_lesson
+				}
+				scope:scope_RICE_siberian_learner = {
+					add_character_modifier = {
+						modifier = RICE_siberia_lessons_hunting_1
+					}				
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_gathering_lesson
+				}
+				scope:scope_RICE_siberian_learner = {
+					add_character_modifier = {
+						modifier = RICE_siberia_lessons_gathering_1
+					}				
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_music_lesson
+				}
+				scope:scope_RICE_siberian_learner = {
+					add_character_modifier = {
+						modifier = RICE_siberia_lessons_music_1
+					}				
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_evenk_lesson
+				}
+				scope:scope_RICE_siberian_learner = {
+					add_character_modifier = {
+						modifier = RICE_siberia_lessons_evenk_1
+					}				
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_nivkh_lesson
+				}
+				scope:scope_RICE_siberian_learner = {
+					add_character_modifier = {
+						modifier = RICE_siberia_lessons_nivkh_1
+					}				
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_yakut_lesson
+				}
+				scope:scope_RICE_siberian_learner = {
+					add_character_modifier = {
+						modifier = RICE_siberia_lessons_yakut_1
+					}				
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_yeniseian_lesson
+				}
+				scope:scope_RICE_siberian_learner = {
+					add_character_modifier = {
+						modifier = RICE_siberia_lessons_yeniseian_1
+					}				
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_yukaghir_lesson
+				}
+				scope:scope_RICE_siberian_learner = {
+					add_character_modifier = {
+						modifier = RICE_siberia_lessons_yukaghir_1
+					}
+				}
+			}
+		}
+		# Learn advanced lesson
+		else_if = {
+			limit = {
+				has_character_flag = RICE_siberia_other_learner_master
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_siberia_hunting_lesson
+				}
+				scope:scope_RICE_siberian_learner = {
+					add_character_modifier = {
+						modifier = RICE_siberia_lessons_hunting_2
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_gathering_lesson
+				}
+				scope:scope_RICE_siberian_learner = {
+					add_character_modifier = {
+						modifier = RICE_siberia_lessons_gathering_2
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_music_lesson
+				}
+				scope:scope_RICE_siberian_learner = {
+					add_character_modifier = {
+						modifier = RICE_siberia_lessons_music_2
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_evenk_lesson
+				}
+				scope:scope_RICE_siberian_learner = {
+					add_character_modifier = {
+						modifier = RICE_siberia_lessons_evenk_2
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_nivkh_lesson
+				}
+				scope:scope_RICE_siberian_learner = {
+					add_character_modifier = {
+						modifier = RICE_siberia_lessons_nivkh_2
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_yakut_lesson
+				}
+				scope:scope_RICE_siberian_learner = {
+					add_character_modifier = {
+						modifier = RICE_siberia_lessons_yakut_2
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_yeniseian_lesson
+				}
+				scope:scope_RICE_siberian_learner = {
+					add_character_modifier = {
+						modifier = RICE_siberia_lessons_yeniseian_2
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_siberia_yukaghir_lesson
+				}
+				scope:scope_RICE_siberian_learner = {
+					add_character_modifier = {
+						modifier = RICE_siberia_lessons_yukaghir_2
+					}
+				}
+			}		
+		}
+	}
+	
+	after = {
+		remove_character_flag = RICE_siberia_other_learner_basic
+		remove_character_flag = RICE_siberia_other_learner_master
+		remove_character_flag = RICE_siberia_hunting_lesson
+		remove_character_flag = RICE_siberia_gathering_lesson
+		remove_character_flag = RICE_siberia_evenk_lesson
+		remove_character_flag = RICE_siberia_nivkh_lesson
+		remove_character_flag = RICE_siberia_yakut_lesson
+		remove_character_flag = RICE_siberia_yeniseian_lesson
+		remove_character_flag = RICE_siberia_yukaghir_lesson
+	}
+}
+
+
+
+
+
+
+######################################################################################
+# 
+# REINDEER HERD EVENTS siberia.0010-siberia.0019
+# 
+# From decision - generates a province modifier in a taiga province
+# 
+######################################################################################
+
+
+
+
+# Choose province
+siberia.0010 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				capital_province = {
+					terrain = taiga
+				}
+			}
+			capital_province = {
+				county = { save_scope_as = scope_RICE_reindeer_county }
+			}
+		}
+		else = {
+			random_directly_owned_province = {
+				limit = {
+					terrain = taiga
+				}
+				county = { save_scope_as = scope_RICE_reindeer_county }
+			}
+		}	
+		trigger_event = siberia.0011
+	}
+}
+
+
+# Choose how big an effect
+siberia.0011 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		random_list = {
+			# Small Expansion
+			50 = {
+				send_interface_toast = {
+					left_icon = scope:scope_RICE_reindeer_county
+					title = siberia.0011.small
+					scope:scope_RICE_reindeer_county = {
+						add_county_modifier = {
+							modifier = RICE_siberia_expanded_reindeer_herd_small
+							days = 3650
+						}
+					}
+				}			
+			}
+			# Medium Expansion
+			35 = {
+				modifier = { # Is non-Evenk Siberian
+					add = 2
+					NOT = { culture = culture:evenk }
+					culture_group = culture_group:siberian_group
+				}
+				modifier = { # Is Evenk
+					add = 5
+					culture = culture:evenk
+				}
+				modifier = { # Is Sami
+					add = 2
+					culture = culture:sami
+				}
+				modifier = { # Has non-Evenk Siberian courtier
+					add = 1
+					NOT = {
+						culture_group = culture_group:siberian_group
+					}
+					any_courtier = {
+						culture_group = culture_group:siberian_group
+						NOT = { culture = culture:evenk }
+					}
+				}
+				modifier = { # Has Evenk Siberian courtier
+					add = 3
+					NOT = { culture = culture:evenk }
+					any_courtier = {
+						culture = culture:evenk
+					}
+				}
+				modifier = { # Stewardship
+					add = 1
+					stewardship < high_skill_rating
+				}
+				modifier = { # Stewardship
+					add = 1
+					stewardship < decent_skill_rating
+				}
+				modifier = { # Stewardship
+					add = 1
+					stewardship < medium_skill_rating
+				}
+				modifier = { # Traits
+					add = 2
+					OR = {
+						has_trait = ambitious
+						has_trait = diligent
+						has_trait = administrator
+						probably_intelligent_trigger = yes
+					}
+				}
+				modifier = { # Bad Traits
+					add = -5
+					OR = {
+						has_trait = lazy
+						has_trait = impatient
+						probably_unintelligent_trigger = yes
+					}
+				}
+				modifier = { # Reindeer Breeding Modifier Level 1
+					add = 3
+					has_character_modifier = RICE_siberia_lessons_evenk_1
+				}
+				modifier = { # Reindeer Breeding Modifier Level 2
+					add = 5
+					has_character_modifier = RICE_siberia_lessons_evenk_2
+				}
+				send_interface_toast = {
+					left_icon = scope:scope_RICE_reindeer_county
+					title = siberia.0011.medium
+					scope:scope_RICE_reindeer_county = {
+						add_county_modifier = {
+							modifier = RICE_siberia_expanded_reindeer_herd_medium
+							days = 3650
+						}
+					}
+				}			
+			}
+			# Large Expansion
+			15 = {
+				modifier = { # Is non-Evenk Siberian
+					add = 2
+					NOT = { culture = culture:evenk }
+					culture_group = culture_group:siberian_group
+				}
+				modifier = { # Is Evenk
+					add = 5
+					culture = culture:evenk
+				}
+				modifier = { # Is Sami
+					add = 2
+					culture = culture:sami
+				}
+				modifier = { # Has non-Evenk Siberian courtier
+					add = 1
+					NOT = {
+						culture_group = culture_group:siberian_group
+					}
+					any_courtier = {
+						culture_group = culture_group:siberian_group
+						NOT = { culture = culture:evenk }
+					}
+				}
+				modifier = { # Has Evenk Siberian courtier
+					add = 3
+					NOT = { culture = culture:evenk }
+					any_courtier = {
+						culture = culture:evenk
+					}
+				}
+				modifier = { # Stewardship
+					add = 1
+					stewardship < high_skill_rating
+				}
+				modifier = { # Stewardship
+					add = 1
+					stewardship < decent_skill_rating
+				}
+				modifier = { # Stewardship
+					add = 1
+					stewardship < medium_skill_rating
+				}
+				modifier = { # Traits
+					add = 2
+					OR = {
+						has_trait = ambitious
+						has_trait = diligent
+						has_trait = administrator
+						probably_intelligent_trigger = yes
+					}
+				}
+				modifier = { # Bad Traits
+					add = -5
+					OR = {
+						has_trait = lazy
+						has_trait = impatient
+						probably_unintelligent_trigger = yes
+					}
+				}
+				modifier = { # Reindeer Breeding Modifier Level 1
+					add = 3
+					has_character_modifier = RICE_siberia_lessons_evenk_1
+				}
+				modifier = { # Reindeer Breeding Modifier Level 2
+					add = 5
+					has_character_modifier = RICE_siberia_lessons_evenk_2
+				}
+				send_interface_toast = {
+					left_icon = scope:scope_RICE_reindeer_county
+					title = siberia.0011.large
+					scope:scope_RICE_reindeer_county = {
+						add_county_modifier = {
+							modifier = RICE_siberia_expanded_reindeer_herd_large
+							days = 3650
+						}
+					}
+				}			
+			}
+		}
+	}
+}
+
+
+
+
+
+##################################################################
+# 
+# HOLD REINDEER SACRIFICE
+# siberia.0020-0039 reserved
+# 
+##################################################################
+
+
+# Start Event - pick how to notify
+siberia.0020 = {
+	type = character_event
+	title = siberia.0020.t
+	desc = siberia.0020.desc
+	theme = faith
+	override_background = { event_background = sitting_room }
+	
+	left_portrait = root
+	
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+		# Choose appropriate location
+		capital_province = {
+			spawn_activity = {
+				type = activity_hold_reindeer_sacrifice
+				owner = root
+			}
+		}
+	}
+	
+	option = { # Notches
+		name = siberia.0020.a
+		add_piety = 20
+	}	
+	option = { # Knots
+		name = siberia.0020.b
+		add_prestige = 20
+	}
+}
+
+# Location is chosen
+siberia.0021 = {
+	type = character_event
+	title = siberia.0021.t
+	desc = siberia.0021.desc
+	theme = RICE_theme_pine_landscape
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = { # Ok
+		name = siberia.0021.a
+		trigger_event = {
+			id = siberia.0022
+			days = { 5 15 }
+		}
+	}
+}
+
+
+# Reindeer sacrifice - participate in socializing activities or not?
+siberia.0022 = {
+	type = character_event
+	title = siberia.0022.t
+	desc = siberia.0022.desc
+	theme = friendly
+	override_background = { event_background = RICE_background_pine_landscape }
+	
+	left_portrait = root
+	
+	option = { # Look after children
+		name = siberia.0022.a
+		add_piety = 15
+		stress_impact = {
+			callous = minor_stress_impact_gain
+			shy = minor_stress_impact_gain
+		}
+		trigger_event = {
+			id = siberia.0023
+			days = { 2 4 }
+		}
+	}	
+	option = { # Compete in contests
+		name = siberia.0022.b
+		add_prestige = 15
+		stress_impact = {
+			craven = minor_stress_impact_gain
+			shy = minor_stress_impact_gain
+		}
+		trigger_event = {
+			id = siberia.0023
+			days = { 2 4 }
+		}
+	}
+	option = { # Admire nature
+		name = siberia.0022.c
+		stress_impact = {
+			base = minor_stress_impact_loss
+		}
+		trigger_event = {
+			id = siberia.0023
+			days = { 2 4 }
+		}
+	}
+}
+
+
+
+# Divination rites with the chirta-ko - ask for advice on what?
+siberia.0023 = {
+	type = character_event
+	title = siberia.0023.t
+	desc = siberia.0023.desc
+	theme = faith
+	override_background = { event_background = feast }
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	immediate = {
+		hidden_effect = {
+			random_list = {
+				10 = {
+				
+				}
+				10 = {
+					add_character_flag = RICE_siberia_reindeer_divination_you_are_chosen
+				}
+				10 = {
+					trigger = {
+						any_courtier = {
+							RICE_basic_is_available_courtier_adult_trigger = yes
+							is_ai = yes
+							religion = religion:siberian_religion
+						}
+					}
+					add_character_flag = RICE_siberia_reindeer_divination_courtier_is_chosen
+				}
+			}
+		}
+	}
+	
+	option = { # Healthy
+		name = siberia.0023.a
+		add_character_flag = RICE_siberia_reindeer_divination_health
+		trigger_event = {
+			id = siberia.0024
+			days = { 2 4 }
+		}
+	}	
+	option = { # Abundance
+		name = siberia.0023.b
+		add_character_flag = RICE_siberia_reindeer_divination_abundance
+		trigger_event = {
+			id = siberia.0024
+			days = { 2 4 }
+		}
+	}	
+	option = { # Abundance
+		name = siberia.0023.c
+		add_character_flag = RICE_siberia_reindeer_divination_spirits
+		trigger_event = {
+			id = siberia.0024
+			days = { 2 4 }
+		}
+	}
+}
+
+
+
+# Divination rites with the chirta-ko - advice is given
+siberia.0024 = {
+	type = character_event
+	title = siberia.0024.t
+	desc = {
+		desc = siberia.0024.desc.start
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_reindeer_divination_you_are_chosen
+				}
+				desc = siberia.0024.desc.self
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_siberia_reindeer_divination_courtier_is_chosen
+				}
+				desc = siberia.0024.desc.courtier
+			}
+			desc = siberia.0024.desc.none
+		}
+	}
+	theme = faith
+	override_background = { event_background = feast }
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				has_character_flag = RICE_siberia_reindeer_divination_courtier_is_chosen
+			}
+			random_courtier = {
+				limit = {
+					RICE_basic_is_available_courtier_adult_trigger = yes
+					is_ai = yes
+					religion = religion:siberian_religion					
+				}
+				save_scope_as = scope_RICE_siberia_reindeer_high_courtier
+			}
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_siberia_reindeer_divination_you_are_chosen
+			}
+			add_piety = 50
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_siberia_reindeer_divination_you_are_chosen
+			}
+			scope:scope_RICE_siberia_reindeer_high_courtier = {
+				add_piety = 50
+			}		
+		}
+		else = {
+			add_piety = 15
+		}
+		
+		if = {
+			limit = { has_character_flag = RICE_siberia_reindeer_divination_health }
+			random_list = {
+				10 = {
+					add_character_modifier = {
+						modifier = RICE_siberia_diviniation_health_advice_1
+						years = 3
+					}
+				}
+				10 = {
+					add_character_modifier = {
+						modifier = RICE_siberia_diviniation_health_advice_2
+						years = 3
+					}
+				}
+				10 = {
+					add_character_modifier = {
+						modifier = RICE_siberia_diviniation_health_advice_3
+						years = 3
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = { has_character_flag = RICE_siberia_reindeer_divination_abundance }
+			random_list = {
+				10 = {
+					add_character_modifier = {
+						modifier = RICE_siberia_diviniation_abundance_advice_1
+						years = 3
+					}
+				}
+				10 = {
+					add_character_modifier = {
+						modifier = RICE_siberia_diviniation_abundance_advice_2
+						years = 3
+					}
+				}
+				10 = {
+					add_character_modifier = {
+						modifier = RICE_siberia_diviniation_abundance_advice_3
+						years = 3
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = { has_character_flag = RICE_siberia_reindeer_divination_spirits }
+			random_list = {
+				10 = {
+					add_character_modifier = {
+						modifier = RICE_siberia_diviniation_spirits_advice_1
+						years = 3
+					}
+				}
+				10 = {
+					add_character_modifier = {
+						modifier = RICE_siberia_diviniation_spirits_advice_2
+						years = 3
+					}
+				}
+				10 = {
+					add_character_modifier = {
+						modifier = RICE_siberia_diviniation_spirits_advice_3
+						years = 3
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Spirits have spoken!
+		name = siberia.0024.a
+		trigger_event = {
+			id = siberia.0025
+			days = { 2 4 }
+		}
+	}
+	
+	after = {
+		hidden_effect = {
+			remove_character_flag = RICE_siberia_reindeer_divination_you_are_chosen
+			remove_character_flag = RICE_siberia_reindeer_divination_courtier_is_chosen
+			remove_character_flag = RICE_siberia_reindeer_divination_health
+			remove_character_flag = RICE_siberia_reindeer_divination_abundance
+			remove_character_flag = RICE_siberia_reindeer_divination_spirits
+		}		
+	}
+}
+
+
+
+
+# Arrive at the altar the next day
+siberia.0025 = {
+	type = character_event
+	title = siberia.0025.t
+	desc = siberia.0025.desc
+	theme = RICE_theme_forest_shaman
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # ok
+		name = siberia.0025.a
+		trigger_event = {
+			id = siberia.0026
+			days = { 2 4 }
+		}
+	}
+}
+
+
+# Prayers and reindeer sacrifice
+siberia.0026 = {
+	type = character_event
+	title = siberia.0026.t
+	desc = siberia.0026.desc
+	theme = RICE_theme_forest_shaman
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # ok
+		name = siberia.0026.a
+		hidden_effect = {
+			random = {
+				chance = 15
+				modifier = {
+					add = -10
+					has_trait = cynical
+				}
+				modifier = {
+					add = 10
+					has_trait = zealous
+				}
+				modifier = {
+					add = 10
+					has_trait = hunter
+				}
+				trigger_event = siberia.0027
+			}		
+		}
+		trigger_event = {
+			id = siberia.0028
+			days = { 2 4 }
+		}
+	}
+}
+
+
+
+# One of the reindeer sacrificed is discovered to have been pregnant
+siberia.0027 = {
+	type = character_event
+	title = siberia.0027.t
+	desc = siberia.0027.desc
+	theme = RICE_theme_forest_shaman
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # ok
+		name = siberia.0027.a
+		add_piety = 25
+	}
+}
+
+
+
+# The formal ritual is over
+siberia.0028 = {
+	type = character_event
+	title = siberia.0028.t
+	desc = siberia.0028.desc
+	theme = faith
+	override_background = { event_background = feast }
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # ok
+		name = siberia.0028.a
+		trigger_event = {
+			id = siberia.0029
+			days = { 2 4 }
+		}
+	}
+}
+
+
+
+# Reindeer sacrifice ends
+siberia.0029 = {
+	type = character_event
+	title = siberia.0029.t
+	desc = siberia.0029.desc
+	theme = RICE_theme_pine_landscape
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Fun!
+		name = siberia.0029.a
+		add_piety = 100
+		add_prestige = 50
+		add_character_modifier = {
+			modifier = RICE_siberia_sacrificed_reindeer
+			years = 5
+		}
+	}
+	
+	after = {
+		trigger_event = {
+			id = siberia.0030
+			days = 1
+		}
+	}	
+}
+
+
+siberia.0030 = {
+	hidden = yes	
+	immediate = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
+
+
+######################################################################################
+# 
+# SIBERIAN FLAVOR EVENTS siberia.0040-siberia.0059
+# 
+# Misc flavor events for rulers in Siberian regions
+# 
+######################################################################################
+
+
+# Woolly mammoth remains discovered
+siberia.0040 = {
+	type = character_event
+	title = siberia.0040.t
+	desc = siberia.0040.desc
+	theme = RICE_theme_pine_landscape
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {		
+		any_directly_owned_province = {
+			RICE_is_in_siberian_region_courtier_spawn_trigger = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = -0.2
+			has_trait = paranoid
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	option = { # Sell them to merchants
+		name = siberia.0040.a
+		add_gold = 20
+	}
+	option = { # Sell them to merchants for a better price
+		name = siberia.0040.b	
+		trigger = {
+			diplomacy >= medium_skill_rating
+		}
+		skill = diplomacy
+		add_gold = 35
+	}
+	option = { # Use in our traditional artwork
+		name = siberia.0040.c	
+		add_piety = 40
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+	option = { # For my throne
+		name = siberia.0040.d	
+		add_prestige = 40
+		stress_impact = {
+			humble = minor_stress_impact_gain
+		}
+	}
+	option = { # Try eating the meat
+		name = siberia.0040.e
+		stress_impact = {
+			craven = medium_stress_impact_gain
+			paranoid = medium_stress_impact_gain
+		}
+		random_list = {
+			50 = {
+				send_interface_toast = {
+					title = siberia.0040.e.good
+					add_character_modifier = {
+						modifier = RICE_siberia_ate_mammoth_meat_good
+						years = 4
+					}
+				}			
+			}
+			50 = {
+				send_interface_toast = {
+					title = siberia.0040.e.bad
+					add_character_modifier = {
+						modifier = RICE_siberia_ate_mammoth_meat_bad
+						years = 4
+					}
+				}			
+			}
+		}
+	}
+}
+
+
+# Locals stumble upon an ancient Siberian kurgan
+siberia.0041 = {
+	type = character_event
+	title = siberia.0041.t
+	desc = siberia.0041.desc
+	theme = RICE_theme_pine_landscape
+	
+	right_portrait = root
+	
+	trigger = {		
+		any_directly_owned_province = {
+			RICE_is_in_siberian_region_courtier_spawn_trigger = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	option = { # Seal off the area, pray to spirits
+		name = siberia.0041.a
+		add_piety = 40
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+	option = { # Let priests and scholars study
+		name = siberia.0041.b
+		add_character_modifier = {
+			modifier = RICE_siberia_studying_kurgan
+			years = 5
+		}
+	}
+	option = { # Steal goods
+		name = siberia.0041.c
+		add_piety = -50
+		add_gold = 25
+		stress_impact = {
+			zealous = medium_stress_impact_gain
+			humble = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+			just = minor_stress_impact_gain
+		}
+	}
+	option = { # Use goods to decorate
+		name = siberia.0041.d
+		add_piety = -50
+		add_character_modifier = {
+			modifier = RICE_siberia_kurgan_decorations
+			years = 15
+		}
+		stress_impact = {
+			zealous = medium_stress_impact_gain
+			humble = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+			just = minor_stress_impact_gain
+		}
+	}
+}
+
+
+
+# Recent bear attack
+siberia.0042 = {
+	type = character_event
+	title = siberia.0042.t
+	desc = siberia.0042.desc
+	theme = RICE_theme_pine_landscape
+	
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	
+	trigger = {		
+		any_directly_owned_province = {
+			RICE_is_in_siberian_region_courtier_spawn_trigger = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = paranoid
+		}
+		modifier = {
+			add = -0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = 0.2
+			has_trait = vengeful
+		}
+		modifier = {
+			add = -0.2
+			has_trait = forgiving
+		}
+	}
+
+	option = { # Can't do anything
+		name = siberia.0042.a
+		stress_impact = {
+			compassionate = medium_stress_impact_gain
+			just = minor_stress_impact_gain
+		}
+	}
+	option = { # Help out families in need
+		name = siberia.0042.b
+		trigger = {
+			OR = {
+				gold >= 25
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 25
+		add_piety = 20
+		add_prestige = 20
+	}
+}
+
+
+
+
+# Hunters give a gift of kolonok furs
+siberia.0043 = {
+	type = character_event
+	title = siberia.0043.t
+	desc = siberia.0043.desc
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	trigger = {		
+		any_directly_owned_province = {
+			RICE_is_in_siberian_region_courtier_spawn_trigger = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	option = { # Thanks
+		name = siberia.0043.a
+		add_character_modifier = {
+			modifier = RICE_siberia_kolonok_furs
+			years = 7
+		}
+	}
+	option = { # Sell them
+		name = siberia.0043.b
+		add_gold = 20
+	}
+	option = { # No need for gifts
+		name = siberia.0043.c
+		add_prestige = 40
+		stress_impact = {
+			humble = minor_stress_impact_gain
+		}
+	}
+}
+
+
+
+# Come across mound with deer antlers - likely a burial site
+siberia.0044 = {
+	type = character_event
+	title = siberia.0044.t
+	desc = siberia.0044.desc
+	theme = RICE_theme_pine_landscape
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	trigger = {		
+		any_directly_owned_province = {
+			RICE_is_in_siberian_region_courtier_spawn_trigger = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+	}
+
+	option = { # Pray
+		name = siberia.0044.a
+		add_piety = 20
+	}
+	option = { # Reflect
+		name = siberia.0044.b
+		add_prestige = 20
+	}
+}
+
+
+
+# Eating frozen Siberian dumplings during a trip
+siberia.0045 = {
+	type = character_event
+	title = siberia.0045.t
+	desc = siberia.0045.desc
+	theme = RICE_theme_forest_shaman
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {		
+		any_directly_owned_province = {
+			RICE_is_in_siberian_region_courtier_spawn_trigger = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+	}
+
+	option = { # Cool
+		name = siberia.0045.a
+		add_character_modifier = {
+			modifier = RICE_siberia_delicious_frozen_dumplings
+			years = 3
+		}
+	}
+}
+
+
+
+# Eating shaved fish
+siberia.0046 = {
+	type = character_event
+	title = siberia.0046.t
+	desc = siberia.0046.desc
+	theme = feast_activity
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {		
+		any_directly_owned_province = {
+			RICE_is_in_siberian_region_courtier_spawn_trigger = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+	}
+
+	option = { # Cool
+		name = siberia.0046.a
+		add_prestige = 25
+	}
+}
+
+
+
+
+# Come across a reindeer stone
+siberia.0047 = {
+	type = character_event
+	title = siberia.0047.t
+	desc = siberia.0047.desc
+	theme = RICE_theme_pine_landscape
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {		
+		any_directly_owned_province = {
+			RICE_is_in_siberian_region_courtier_spawn_trigger = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = sadistic
+		}
+	}
+
+	option = { # Leave the stones be
+		name = siberia.0047.a
+		stress_impact = {
+			base = minor_stress_impact_loss
+		}
+	}
+	option = { # Use for burials
+		name = siberia.0047.b
+		add_prestige = 35
+	}
+	option = { # Maintain sacrifices
+		name = siberia.0047.c
+		add_piety = 35
+	}
+}
+
+
+# Gift of reindeer and moose fat
+siberia.0048 = {
+	type = character_event
+	title = siberia.0048.t
+	desc = siberia.0048.desc
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	trigger = {		
+		any_directly_owned_province = {
+			RICE_is_in_siberian_region_courtier_spawn_trigger = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+	}
+
+	option = { # Ok
+		name = siberia.0048.a
+		add_character_modifier = {
+			modifier = RICE_siberia_reindeer_moose_fat
+			years = 3
+		}
+	}
+}
+
+
+
+# Drinking fireweed tea
+siberia.0049 = {
+	type = character_event
+	title = siberia.0049.t
+	desc = siberia.0049.desc
+	theme = medicine
+	override_background = { event_background = sitting_room }
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	trigger = {		
+		any_directly_owned_province = {
+			RICE_is_in_siberian_region_courtier_spawn_trigger = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+	}
+
+	option = { # Ok
+		name = siberia.0049.a
+		add_character_modifier = {
+			modifier = RICE_siberia_fireweed_tea
+			years = 3
+		}
+	}
+}
+
+
+
+
+# Maidservants make birch shavings
+siberia.0050 = {
+	type = character_event
+	title = siberia.0050.t
+	desc = siberia.0050.desc
+	theme = friendly
+	
+	right_portrait = root
+	
+	trigger = {		
+		any_directly_owned_province = {
+			RICE_is_in_siberian_region_courtier_spawn_trigger = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = stubborn
+		}
+		modifier = {
+			add = -0.2
+			has_trait = fickle
+		}
+	}
+
+	option = { # Ok
+		name = siberia.0050.a
+		add_character_modifier = {
+			modifier = RICE_siberia_birch_shavings
+			years = 3
+		}
+	}
+}
+
+
+
+# Reindeer sled race
+siberia.0051 = {
+	type = character_event
+	title = siberia.0051.t
+	desc = siberia.0051.desc
+	theme = RICE_theme_pine_landscape
+	
+	left_portrait = root
+	
+	trigger = {		
+		any_directly_owned_province = {
+			RICE_is_in_siberian_region_courtier_spawn_trigger = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = honest
+		}
+		modifier = {
+			add = -0.2
+			has_trait = deceitful
+		}
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = fickle
+		}
+		modifier = {
+			add = -0.2
+			has_trait = stubborn
+		}
+	}
+
+	option = { # Ok
+		name = siberia.0051.a
+		add_prestige = 25
+	}
+	option = { # No
+		name = siberia.0051.b
+		stress_impact = {
+			base = minor_stress_impact_loss
+			gregarious = medium_stress_impact_gain
+		}
+	}
+}
+
+
+
