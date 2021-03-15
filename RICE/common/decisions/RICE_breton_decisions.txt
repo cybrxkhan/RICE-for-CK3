@@ -1,0 +1,111 @@
+﻿
+RICE_erect_calvary_sculpture = {
+	picture = "gfx/interface/illustrations/decisions/decision_european_market.dds"
+
+	ai_check_interval = 36
+
+	cooldown = { days = 9125 } #1825
+	
+	desc = RICE_erect_calvary_sculpture_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		religion = religion:christianity_religion
+		#NOT = { has_character_flag = RICE_breton_calvary_builder_already }
+		OR = {
+			culture = culture:breton
+			#custom_description = {
+			#	text = RICE_breton_decision_calvary_requirement
+				any_directly_owned_province = {
+					culture = culture:breton
+				}
+			#}		
+		}
+	}
+	
+	is_valid = {
+		gold >= 100
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		#add_character_flag = RICE_breton_calvary_builder_already
+		custom_tooltip = RICE_erect_calvary_sculpture_effect_tooltip
+		custom_tooltip = RICE_erect_calvary_sculpture_extra_cost_tooltip
+		trigger_event = {
+			id = breton.0010
+		}
+	}
+
+	cost = { 
+		#gold = { value = minor_gold_value } # Will depend 
+		prestige = { value = medium_prestige_value } 
+	}	
+
+	ai_potential = {
+		short_term_gold >= minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 80
+		modifier = {
+			add = 20
+			has_trait = zealous
+		}
+		modifier = {
+			add = -20
+			has_trait = cynical
+		}
+	}
+}
+
+RICE_tro_breizh = {
+	picture = "gfx/interface/illustrations/decisions/decision_christian_pilgrimage.dds"
+
+	ai_check_interval = 24
+
+	cooldown = { days = 7300 } #3650 1825
+	
+	desc = RICE_tro_breizh_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		RICE_has_breton_land_trigger = yes
+		religion = religion:christianity_religion
+		NOT = { has_character_flag = RICE_breton_doing_tro_breizh }
+		NOT = { has_character_modifier = RICE_breton_recent_tro_breizh }
+	}
+	
+	is_valid = {
+		gold >= 25
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		add_character_flag = RICE_breton_doing_tro_breizh
+		custom_tooltip = RICE_tro_breizh_effect_tooltip
+		trigger_event = {
+			id = breton.0020
+		}
+	}
+
+	cost = { 
+		gold = { value = minor_gold_value } # Will depend
+	}	
+
+	ai_potential = {
+		short_term_gold > standard_activity_cost
+	}
+
+	ai_will_do = {
+		base = 40
+	}
+}
