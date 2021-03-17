@@ -1,6 +1,6 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Mod)
 
-## Latest Version: Version 1.1.0 "Reindeer" (Released 12/28/20)
+## Latest Version: Version 1.1.1 "Brocéliande" (Released 3/16/20)
 
 RICE is a mod that adds immersion to different regions, cultures, and religions in CK3. It is a collection of themed flavor "packs" similar to PI's official flavor pack DLCs, but often cover lesser-known places and peoples. It is a spiritual successor to my Immersion Packs for CK2.
 
@@ -14,6 +14,7 @@ Feel free to use my work in your mods - all I ask is that I am credited and (if 
 
 At the moment, the following RICE flavor packs are included in the mod (click to view the guides which cover the features included in each pack in more detail).
 
+- [Brittany: The Western Duchy](https://docs.google.com/document/d/e/2PACX-1vTzGuR_ffwqfpm6rwh27hq71K4Fs35pcLZioPLbHulhHn2ZV25SD2HrGipPofvBYngi5S_O4Yino4Y7/pub)
 - [Chios: Isle of Mastic](https://docs.google.com/document/d/1Lu4cGXN7hSaDtYd_wsXKbjAeIOYMoYVuum6zfYfBc_k/pub)
 - [Siberia: People of the Reindeer](https://docs.google.com/document/d/e/2PACX-1vTOr-vq1KkHRJ_gxPOlb9brCKde3TRzN_1TVZwfPmSiIIW5TEAJGkQ0eNGwiEfvgape1pDAKau3ZcvD/pub)
 - [Siwa: Oases of the Western Desert](https://docs.google.com/document/d/1OOXqqBEGv94IBAH-rIsjoBog1YFtVAFg_TPsuIQmhtg/pub)
@@ -28,4 +29,4 @@ DO NOT manually download the master branch unless you know what you're doing as 
 3. Launch CKIII and select RICE in the launcher.
 4. Enjoy and play!
 
-NOTE: If you are re-installing a mod, delete the old version of the mod first before copy and pasting the new one! While it's not always necessary, it's a good habit to do to prevent any potential issues.
+NOTE: If you are re-installing a mod amnually, delete the old version of the mod first before copy and pasting the new one! While it's not always necessary, it's a good habit to do to prevent any potential issues.
