@@ -1,4 +1,4 @@
-version="1.1.0"
+version="1.2.0"
 tags={
 	"Culture"
 	"Events"
@@ -9,5 +9,5 @@ tags={
 	"Religion"
 }
 name="Regional Immersion and Cultural Enrichment (RICE)"
-supported_version="1.2.*"
+supported_version="1.3.*"
 remote_file_id="2273832430"
