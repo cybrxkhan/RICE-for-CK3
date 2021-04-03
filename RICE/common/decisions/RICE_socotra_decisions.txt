@@ -1,0 +1,513 @@
+
+
+RICE_socotra_collaborate_with_pirates = {
+	picture = "gfx/interface/illustrations/decisions/decision_middle_eastern_port.dds"
+	major = yes
+	ai_check_interval = 120
+
+	desc = RICE_socotra_collaborate_with_pirates_desc
+	selection_tooltip = RICE_socotra_collaborate_with_pirates_tooltip
+
+	is_shown = {
+		is_landed = yes
+		exists = capital_province
+		# is_coastal_county = yes
+		capital_province = {
+			RICE_socotra_indian_ocean_port_trigger = yes
+		}
+		NOT = {
+			any_held_county = {
+				RICE_socotra_has_pirate_den_trigger = yes
+			}			
+		}
+	}
+
+	is_valid = {
+		#prestige_level >= 2
+		custom_description = {
+			text = RICE_socotra_collaborate_with_pirates_requirement_1
+			capital_province = {
+				RICE_socotra_indian_ocean_port_trigger = yes
+			}
+		}
+		custom_description = {
+			text = RICE_socotra_collaborate_with_pirates_requirement_3
+			NOT = {
+				any_held_county = {
+					RICE_socotra_has_pirate_den_trigger = yes
+				}			
+			}
+		}
+		custom_description = {
+			text = RICE_socotra_collaborate_with_pirates_requirement_2
+			dynasty = {
+				has_dynasty_perk = RICE_socotra_indian_ocean_legacy_3
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_ruler = yes
+		is_available_adult = yes
+	}
+
+	effect = {
+		add_prestige = 800
+		add_dynasty_prestige = 400
+		custom_tooltip = RICE_socotra_collaborate_with_pirates_effect_tooltip
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_socotra_collaborate_with_pirates_context_tooltip
+		}
+		trigger_event = socotra.0005
+	}
+
+	cost = {
+		gold = massive_gold_value
+		prestige = medium_prestige_gain
+	}
+	
+	ai_potential = {
+		short_term_gold > massive_gold_value
+	}
+
+	ai_will_do = {
+		base = 5
+		modifier = {
+			add = 20
+			has_trait = greedy
+		}
+	}
+}
+
+
+RICE_socotra_invest_in_socotran_trade_goods = {
+	picture = "gfx/interface/illustrations/decisions/decision_middle_eastern_market.dds"
+	ai_check_interval = 48
+	
+	cooldown = { days = 7300 } #1825
+
+	desc = RICE_socotra_invest_in_socotran_trade_goods_desc
+	selection_tooltip = RICE_socotra_invest_in_socotran_trade_goods_tooltip
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_title = title:c_socotra
+		NOT = { has_character_flag = RICE_socotra_currently_choosing_trade_good_investment }
+	}
+	
+	is_valid = {
+		OR = {
+			custom_description = {
+				text = RICE_socotra_invest_in_socotran_trade_goods_requirement_1
+				NOT = { has_character_flag = RICE_socotra_chose_trade_good_once_already }
+			}
+			custom_description = {
+				text = RICE_socotra_invest_in_socotran_trade_goods_requirement_2
+				dynasty = {
+					has_dynasty_perk = RICE_socotra_indian_ocean_legacy_1
+				}	
+			}		
+		}
+		custom_description = {
+			text = RICE_socotra_invest_in_socotran_trade_goods_requirement_3
+			NOR = {
+				has_character_modifier = RICE_socotra_invest_myrrh
+				has_character_modifier = RICE_socotra_invest_socotrine_aloe
+				has_character_modifier = RICE_socotra_invest_frankincense
+				has_character_modifier = RICE_socotra_invest_desert_rose
+				has_character_modifier = RICE_socotra_invest_dragons_blood
+			}
+		}
+		custom_description = {
+			text = RICE_socotra_invest_in_socotran_trade_goods_requirement_4
+			title:c_socotra = {
+				NOR = {
+					has_county_modifier = RICE_socotra_county_invest_myrrh
+					has_county_modifier = RICE_socotra_county_invest_socotrine_aloe
+					has_county_modifier = RICE_socotra_county_invest_frankincense
+					has_county_modifier = RICE_socotra_county_invest_desert_rose
+					has_county_modifier = RICE_socotra_county_invest_dragons_blood
+				}
+			}
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		#custom_tooltip = RICE_socotra_invest_in_socotran_trade_goods_effect_tooltip
+		# Show the possible options.
+		show_as_tooltip = {
+			random_list = {
+				desc = RICE_socotra_invest_in_socotran_trade_goods_tt
+				100 = {
+					show_chance = no
+					desc = RICE_socotra_invest_in_socotran_trade_goods.select_myrrh
+					add_character_modifier = {
+						modifier = RICE_socotra_invest_myrrh
+						years = 10
+					}
+					title:c_socotra = {
+						add_county_modifier = {
+							modifier = RICE_socotra_county_invest_myrrh
+							years = 20
+						}
+					}
+				}
+				100 = {
+					show_chance = no
+					desc = RICE_socotra_invest_in_socotran_trade_goods.select_socotrine_aloe
+					add_character_modifier = {
+						modifier = RICE_socotra_invest_socotrine_aloe
+						years = 10
+					}
+					title:c_socotra = {
+						add_county_modifier = {
+							modifier = RICE_socotra_county_invest_socotrine_aloe
+							years = 20
+						}
+					}
+				}
+				100 = {
+					show_chance = no
+					desc = RICE_socotra_invest_in_socotran_trade_goods.select_frankincense
+					add_character_modifier = {
+						modifier = RICE_socotra_invest_frankincense
+						years = 10
+					}
+					title:c_socotra = {
+						add_county_modifier = {
+							modifier = RICE_socotra_county_invest_frankincense
+							years = 20
+						}
+					}
+				}
+				100 = {
+					show_chance = no
+					desc = RICE_socotra_invest_in_socotran_trade_goods.select_desert_rose
+					add_character_modifier = {
+						modifier = RICE_socotra_invest_desert_rose
+						years = 10
+					}
+					title:c_socotra = {
+						add_county_modifier = {
+							modifier = RICE_socotra_county_invest_desert_rose
+							years = 20
+						}
+					}
+				}
+				100 = {
+					show_chance = no
+					desc = RICE_socotra_invest_in_socotran_trade_goods.select_dragons_blood
+					add_character_modifier = {
+						modifier = RICE_socotra_invest_dragons_blood
+						years = 10
+					}
+					title:c_socotra = {
+						add_county_modifier = {
+							modifier = RICE_socotra_county_invest_dragons_blood
+							years = 20
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_socotra_invest_in_socotran_trade_goods_context_tooltip
+		}
+		trigger_event = socotra.0006
+	}
+
+	cost = {
+		gold = medium_gold_value # Will depend
+		prestige = minor_prestige_gain
+	}
+	
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 20
+		modifier = {
+			add = 8
+			has_trait = greedy
+		}
+		modifier = {
+			add = 8
+			has_trait = diligent
+		}
+		modifier = {
+			add = 8
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -8
+			has_trait = lazy
+		}
+		modifier = {
+			add = -8
+			has_trait = arbitrary
+		}
+	}
+}
+
+
+
+RICE_socotra_draft_bawarij_pirates = {
+	picture = "gfx/interface/illustrations/decisions/decision_middle_eastern_port.dds"
+	major = yes
+	ai_check_interval = 48
+	
+	cooldown = { days = 3650 } # 10 years
+
+	desc = RICE_socotra_draft_bawarij_pirates_desc
+	selection_tooltip = RICE_socotra_draft_bawarij_pirates_tooltip
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_title = title:c_socotra
+		is_at_war = yes
+	}
+	
+	#is_valid = {
+	#
+	#}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		#custom_tooltip = RICE_socotra_draft_bawarij_pirates_effect_tooltip
+		RICE_socotra_bawarij_spawn_effect = yes
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_socotra_draft_bawarij_pirates_context_tooltip
+		}
+	}
+
+	cost = {
+		gold = medium_gold_value # Will depend
+		prestige = medium_prestige_gain
+	}
+	
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 20
+		modifier = {
+			add = 8
+			has_trait = greedy
+		}
+		modifier = {
+			add = 8
+			has_trait = diligent
+		}
+		modifier = {
+			add = 8
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -8
+			has_trait = lazy
+		}
+		modifier = {
+			add = -8
+			has_trait = arbitrary
+		}
+	}
+}
+
+
+RICE_socotra_host_poetry_competition = {
+	picture = "gfx/interface/illustrations/decisions/decision_hammerfell.dds"
+
+	ai_check_interval = 24
+
+	cooldown = { days = 3650 } #3650 1825
+	
+	desc = RICE_socotra_host_poetry_competition_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			has_title = title:c_socotra
+			culture = culture:south_arabian
+		}
+	}
+	
+	is_valid = {
+		OR = {
+			has_title = title:c_socotra
+			culture = culture:south_arabian
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = RICE_socotra_host_poetry_competition_effect_tooltip
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_socotra_host_poetry_competition_context_tooltip
+		}
+		trigger_event = {
+			id = socotra.0020
+		}
+	}
+
+	cost = { 
+		gold = { value = minor_gold_value } # Will depend
+	}	
+
+	ai_potential = {
+		short_term_gold > standard_activity_cost
+	}
+
+	ai_will_do = {
+		base = 35
+	}
+}
+
+
+
+
+
+RICE_socotra_moon_sacrifice = {
+	picture = "gfx/interface/illustrations/decisions/decision_night_moon.dds"
+	ai_check_interval = 120
+	
+	cooldown = { days = 7300 } #1825
+
+	desc = RICE_socotra_moon_sacrifice_desc
+	selection_tooltip = RICE_socotra_moon_sacrifice_tooltip
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_title = title:c_socotra
+	}
+	
+	is_valid = {
+		OR = {
+			NOT = { has_trait = zealous }
+			custom_description = {
+				text = RICE_socotra_moon_sacrifice_requirement_1
+				faith.religion = { is_in_family = rf_pagan }
+			}
+		}
+		custom_description = {
+			text = RICE_socotra_moon_sacrifice_requirement_2
+			title:c_socotra = {
+				NOR = {
+					has_county_modifier = RICE_socotra_moon_sacrifice_pos_major
+					has_county_modifier = RICE_socotra_moon_sacrifice_pos_minor
+					has_county_modifier = RICE_socotra_moon_sacrifice_neg_minor
+					has_county_modifier = RICE_socotra_moon_sacrifice_neg_major
+				}
+			}
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = RICE_socotra_moon_sacrifice_effect_tooltip
+		# Show the possible options.
+		#show_as_tooltip = {
+		#	random_list = {
+		#		desc = RICE_socotra_moon_sacrifice_tt
+		#		100 = {
+		#			show_chance = no
+		#			title:c_socotra = {
+		#				add_county_modifier = {
+		#					modifier = RICE_socotra_moon_sacrifice_pos_major
+		#					years = 5
+		#				}
+		#			}
+		#		}
+		#		100 = {
+		#			show_chance = no
+		#			title:c_socotra = {
+		#				add_county_modifier = {
+		#					modifier = RICE_socotra_moon_sacrifice_pos_minor
+		#					years = 5
+		#				}
+		#			}
+		#		}
+		#		100 = {
+		#			show_chance = no
+		#			title:c_socotra = {
+		#				add_county_modifier = {
+		#					modifier = RICE_socotra_moon_sacrifice_neg_minor
+		#					years = 5
+		#				}
+		#			}
+		#		}
+		#		100 = {
+		#			show_chance = no
+		#			title:c_socotra = {
+		#				add_county_modifier = {
+		#					modifier = RICE_socotra_moon_sacrifice_neg_major
+		#					years = 5
+		#				}
+		#			}
+		#		}
+		#	}
+		#}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_socotra_moon_sacrifice_context_tooltip
+		}
+		trigger_event = socotra.0040
+	}
+
+	cost = {
+		gold = minor_gold_value # Will depend
+		piety = medium_piety_gain
+	}
+	
+	ai_potential = {
+		short_term_gold > minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 20
+		modifier = {
+			add = -8
+			has_trait = lazy
+		}
+		modifier = {
+			add = -8
+			has_trait = cynical
+		}
+		modifier = {
+			add = 8
+			has_trait = arbitrary
+		}
+	}
+}

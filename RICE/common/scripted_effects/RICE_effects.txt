@@ -64,3 +64,255 @@ make_siwi_culture_effect = {
 		}
 	}
 }
+
+make_south_arabian_culture_effect = {
+	#Convert your, and your whole family's, culture
+	set_culture = culture:south_arabian
+	if = {
+		limit = { any_spouse = { is_landed = no } }
+		every_spouse = {
+			set_culture = culture:south_arabian
+		}
+	}
+	if = {
+		limit = {
+			any_close_family_member = {
+				is_landed = no
+				NOT = { is_spouse_of = root }
+			}
+		}
+		every_close_family_member = {
+			custom = all_family_members
+			limit = {
+				NOT = { is_spouse_of = root }
+			}
+			set_culture = culture:south_arabian
+		}
+	}
+
+	#Convert appropriate vassals, and their family
+	if = {
+		limit = {
+			any_vassal = {
+				is_ai = yes
+				culture = root.culture
+			}
+		}
+		every_vassal = {
+			limit = {
+				is_ai = yes
+				culture = root.culture
+			}
+			set_culture = culture:south_arabian
+			hidden_effect = {
+				if = {
+					limit = { any_spouse = { is_landed = no } }
+					every_spouse = {
+						set_culture = culture:south_arabian
+					}
+				}
+				if = {
+					limit = {
+						any_close_family_member = {
+							is_landed = no
+							NOT = { is_spouse_of = prev }
+						}
+					}
+					every_close_family_member = {
+						limit = {
+							is_landed = no
+							NOT = { is_spouse_of = prev }
+						}
+						set_culture = culture:south_arabian
+					}
+				}
+			}
+		}
+	}
+}
+
+RICE_add_pirate_den_effect = {
+	capital_province = {
+		add_special_building = RICE_pirate_den_01
+	}
+	capital_county = {
+		add_county_modifier = {
+			modifier = RICE_socotra_pirate_infestation
+			years = 20
+		}
+	}
+}
+
+
+RICE_socotra_bawarij_spawn_effect = {
+	# Bawarij Pirates to the rescue... right?
+	spawn_army = {
+		levies = 600
+		men_at_arms = {
+			type = khandayat
+			stacks = 1
+		}
+		men_at_arms = {
+			type = light_footmen
+			stacks = 3
+		}
+		men_at_arms = {
+			type = bowmen
+			stacks = 3
+		}
+		men_at_arms = {
+			type = pikemen_unit
+			stacks = 2
+		}
+		location = title:c_socotra.title_province
+		war = war
+		#inheritable = no
+		name = RICE_socotra_bawarij_spawn_event_troops
+	}
+	# Oops
+	title:c_socotra = {
+		add_county_modifier = {
+			modifier = RICE_socotra_bawarij_infestation
+			years = 10
+		}
+	}
+}
+
+
+RICE_generate_small_family = {
+	$CHARACTER$ = {
+		liege = {
+			save_scope_as = employer
+		}
+		#If not married, create spouse
+		if = {
+			limit = {
+				is_married = no
+			}
+			create_character = {
+				location = $CHARACTER$.location
+				culture = $CHARACTER$.culture
+				faith = $CHARACTER$.faith
+				gender_female_chance = {
+					if = {
+						limit = { $CHARACTER$ = { is_male = yes } }
+						value = 100
+					}
+					else = {
+						value = 0
+					}
+				}
+				age = $CHARACTER$.age
+				employer = scope:employer
+				save_scope_as = spouse
+			}
+
+			if = {
+				limit = { is_male = yes }
+				marry = scope:spouse
+			}
+			else = {
+				marry_matrilineal = scope:spouse
+			}
+		}
+		else = {
+			primary_spouse = { save_scope_as = spouse }
+		}
+
+		if = {
+			limit = { is_male = yes }
+			save_scope_as = father
+			scope:spouse = { save_scope_as = mother }
+		}
+		else = {
+			save_scope_as = mother
+			scope:spouse = { save_scope_as = father }
+		}
+
+		#Create child 1 (mother age 17+)
+		if = {
+			limit = { scope:mother.age >= 17 }
+			create_character = {
+				location = $CHARACTER$.location
+				culture = $CHARACTER$.culture
+				faith = $CHARACTER$.faith
+				gender_female_chance = {
+					if = {
+						limit = {
+							is_ruler = yes
+							$CHARACTER$ = { has_realm_law = male_only_law }
+						}
+						value = 0
+					}
+					else = {
+						limit = {
+							is_ruler = yes
+							$CHARACTER$ = { has_realm_law = female_only_law }
+						}
+						value = 100
+					}
+					else = {
+						value = 50
+					}
+				}
+				age = {
+					value = scope:mother.age
+					subtract = 17
+				}
+				father = scope:father
+				mother = scope:mother
+				dynasty = inherit
+				employer = scope:employer
+				save_scope_as = child_1
+			}
+		}
+
+		#Create child 2 (mother age 25+)
+		if = {
+			limit = { scope:mother.age >= 25 }
+
+			create_character = {
+				location = $CHARACTER$.location
+				culture = $CHARACTER$.culture
+				faith = $CHARACTER$.faith
+				gender_female_chance = {
+					value = 50
+				}
+				age = {
+					value = scope:mother.age
+					subtract = 25
+				}
+				father = scope:father
+				mother = scope:mother
+				dynasty = inherit
+				employer = scope:employer
+				save_scope_as = child_2
+			}
+		}
+
+		#Create child 3 (mother age 33+)
+		if = {
+			limit = { scope:mother.age >= 33 }
+
+			create_character = {
+				location = $CHARACTER$.location
+				culture = $CHARACTER$.culture
+				faith = $CHARACTER$.faith
+				gender_female_chance = {
+					value = 50
+				}
+				age = {
+					value = scope:mother.age
+					subtract = 33
+				}
+				father = scope:father
+				mother = scope:mother
+				dynasty = inherit
+				employer = scope:employer
+				save_scope_as = child_3
+			}
+		}
+	}
+}
+
+

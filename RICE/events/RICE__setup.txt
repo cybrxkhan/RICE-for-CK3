@@ -9,12 +9,91 @@
 
 namespace = RICEintro
 
+# RICE debug testing event
+RICEintro.9999 = {
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				NOT = { has_global_variable = RICE_debug_testing_on }
+			}
+			set_global_variable = {
+				name = RICE_debug_testing_on
+				value = yes
+			}
+		}
+		#if = {
+		#	limit = {
+		#		has_global_variable = RICE_debug_testing_on
+		#	}
+		#	remove_global_variable = RICE_debug_testing_on
+		#}
+	}
+}
+
+
+# Test 1
+RICEintro.9998 = {
+	type = character_event
+	title = RICEintro.9998.t
+	desc = RICEintro.9998.desc
+	theme = RICE_theme_socotra_tree
+	
+	#trigger = {
+	#	NOT = { has_game_rule = RICE_intro_event_off }
+	#	#NOT = { has_global_variable = VIET_RICE_no_intro_popup }
+	#}
+	
+	option = { # Ok
+		name = RICEintro.9999.a
+	}	
+	
+}
+
+# Test 2
+RICEintro.9997 = {
+	type = character_event
+	title = RICEintro.9997.t
+	desc = RICEintro.9997.desc
+	theme = RICE_theme_socotra_beach
+	
+	#trigger = {
+	#	NOT = { has_game_rule = RICE_intro_event_off }
+	#	#NOT = { has_global_variable = VIET_RICE_no_intro_popup }
+	#}
+	
+	option = { # Ok
+		name = RICEintro.9999.a
+	}	
+	
+}
+
+# Test 3
+RICEintro.9996 = {
+	type = character_event
+	title = RICEintro.9996.t
+	desc = RICEintro.9996.desc
+	theme = RICE_theme_socotra_village
+	
+	#trigger = {
+	#	NOT = { has_game_rule = RICE_intro_event_off }
+	#	#NOT = { has_global_variable = VIET_RICE_no_intro_popup }
+	#}
+	
+	option = { # Ok
+		name = RICEintro.9999.a
+	}	
+	
+}
+
+
 # Hello event
 RICEintro.0002 = {
 	type = character_event
 	title = RICEintro.0000.t
 	desc = RICEintro.0000.desc
-	theme = RICE_theme_breton_castle
+	theme = RICE_theme_socotra_tree
 	
 	trigger = {
 		NOT = { has_game_rule = RICE_intro_event_off }
@@ -44,6 +123,149 @@ RICEintro.0001 = {
 	hidden = yes
 	
 	immediate = {
+	
+	
+		############################################################
+		#
+		# GENERAL CULTURE CHANGES
+		#
+		############################################################
+
+		culture:yemeni = { save_scope_as = yemeni }
+		culture:somali = { save_scope_as = somali }
+		culture:south_arabian = {
+			get_all_innovations_from = scope:yemeni
+		}		
+		culture:swahili = {
+			get_all_innovations_from = scope:somali
+		}			
+		culture:malagasy = {
+			get_all_innovations_from = scope:somali
+		}			
+		culture:shona = {
+			get_all_innovations_from = scope:somali
+		}		
+		title:c_socotra = {
+			set_county_culture = culture:south_arabian
+		}		
+		title:c_al-asa = {
+			set_county_culture = culture:south_arabian
+		}		
+		title:c_dhofar = {
+			set_county_culture = culture:south_arabian
+		}		
+		title:c_mahra = {
+			set_county_culture = culture:south_arabian
+		}		
+		title:c_duqm = {
+			set_county_culture = culture:south_arabian
+		}
+		if = {
+			limit = {
+				title:c_socotra.holder = {
+					#highest_held_title_tier = tier_county
+					has_culture_group = culture_group:arabic_group
+				}
+			}
+			title:c_socotra.holder = {
+				make_south_arabian_culture_effect = yes
+			}
+		}	
+		if = {
+			limit = {
+				title:c_al-asa.holder = {
+					highest_held_title_tier = tier_county
+					has_culture_group = culture_group:arabic_group
+				}
+			}
+			title:c_al-asa.holder = {
+				make_south_arabian_culture_effect = yes
+			}
+		}	
+		if = {
+			limit = {
+				title:c_dhofar.holder = {
+					highest_held_title_tier = tier_county
+					has_culture_group = culture_group:arabic_group
+				}
+			}
+			title:c_dhofar.holder = {
+				make_south_arabian_culture_effect = yes
+			}
+		}	
+		if = {
+			limit = {
+				title:c_mahra.holder = {
+					highest_held_title_tier = tier_county
+					has_culture_group = culture_group:arabic_group
+				}
+			}
+			title:c_mahra.holder = {
+				make_south_arabian_culture_effect = yes
+			}
+		}	
+		if = {
+			limit = {
+				title:c_duqm.holder = {
+					highest_held_title_tier = tier_county
+					has_culture_group = culture_group:arabic_group
+				}
+			}
+			title:c_duqm.holder = {
+				make_south_arabian_culture_effect = yes
+			}
+		}
+		
+		
+		############################################################
+		#
+		# BUILDINGS
+		#
+		############################################################	
+
+
+		## Add Chios buildings
+		title:b_chios.title_province = {
+			add_special_building = RICE_mastic_industry_01
+		}
+	
+		## Add Siwa Oasis buildings
+		title:b_siwa.title_province = {
+			add_special_building_slot = RICE_siwa_oracle_of_amun
+		}
+		title:b_kharga.title_province = {
+			add_special_building_slot = RICE_kharga_temple_of_hibis
+		}
+		
+		## Add Bawarij Base
+		title:b_suq-socotra.title_province = {
+			add_special_building = RICE_bawarij_den_01
+		}
+		
+		## Add Indian Ocean Pirate Bases
+		title:b_huzu.title_province = { # Kish Island
+			add_special_building = RICE_pirate_den_01
+		}
+		title:b_dahlak_kebir.title_province = { # Dahlak
+			add_special_building = RICE_pirate_den_01
+		}
+		title:b_debul.title_province = { # Sindh
+			add_special_building = RICE_pirate_den_01
+		}
+		title:b_mahoyadapuram.title_province = { # Kerala
+			add_special_building = RICE_pirate_den_01
+		}
+		title:b_uwal.title_province = { # Bahrain
+			add_special_building = RICE_pirate_den_01
+		}
+
+		
+		
+		############################################################
+		#
+		# MISC
+		#
+		############################################################		
 	
 		title:c_nantes = { # Make a building later or not? It's not a major industry and wasn't made into a state monopoly until the 1300s/1400s
 			add_county_modifier = {
@@ -76,18 +298,7 @@ RICEintro.0001 = {
 			}
 		}
 	
-		## Add Chios buildings
-		title:b_chios.title_province = {
-			add_special_building = RICE_mastic_industry_01
-		}
-	
-		## Add Siwa Oasis buildings
-		title:b_siwa.title_province = {
-			add_special_building_slot = RICE_siwa_oracle_of_amun
-		}
-		title:b_kharga.title_province = {
-			add_special_building_slot = RICE_kharga_temple_of_hibis
-		}
+
 		
 		every_player = {
 			if = {

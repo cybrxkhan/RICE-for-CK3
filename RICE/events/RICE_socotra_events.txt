@@ -1,0 +1,3695 @@
+﻿###############################################################################
+# 
+# SOCOTRA (Indian Ocean): Isle of Dragon's Blood
+# 
+# socotra.0000-socotra.0009	Misc events
+# socotra.0010-socotra.0019	Courtier Spawn Events
+# socotra.0020-socotra.0029	Poetry Contest
+# socotra.0030-socotra.0039	Zahra the Socotran History Events
+# socotra.0040-socotra.0049	Moon Sacrifice
+# socotra.0050-socotra.0099	Socotra Generic Flavor Events
+# 
+###############################################################################
+
+namespace = socotra
+
+
+
+# kill existing courtiers and put randos in Socotra
+
+
+
+######################################################################################
+# 
+# MISCELLANEOUS EVENTS
+# 
+# socotra.0000-socotra.0009 reserved
+# 
+######################################################################################
+
+
+# Work together with the pirates
+socotra.0005 = {
+	type = character_event
+	title = socotra.0005.t
+	desc = socotra.0005.desc
+	theme = realm
+	
+	left_portrait = root
+	
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		RICE_add_pirate_den_effect = yes
+		play_music_cue = "mx_cue_combat_3"
+	}
+	
+	option = { # Ok
+		name = socotra.0005.a	
+	}
+}
+
+
+# Choose to invest in a Socotran trade good
+socotra.0006 = {
+	type = character_event
+	title = socotra.0006.t
+	desc = socotra.0006.desc
+	theme = stewardship_wealth_focus
+	override_background = { event_background = RICE_background_socotra_tree }
+	
+	right_portrait = root
+	
+	immediate = {
+		add_character_flag = RICE_socotra_currently_choosing_trade_good_investment
+		add_character_flag = RICE_socotra_chose_trade_good_once_already
+	}
+	
+	option = { # Myrrh
+		name = socotra.0006.a
+		add_character_modifier = {
+			modifier = RICE_socotra_invest_myrrh
+			years = 10
+		}
+		title:c_socotra = {
+			add_county_modifier = {
+				modifier = RICE_socotra_county_invest_myrrh
+				years = 20
+			}
+		}
+	}	
+	option = { # Aloe
+		name = socotra.0006.b
+		add_character_modifier = {
+			modifier = RICE_socotra_invest_aloe
+			years = 10
+		}
+		title:c_socotra = {
+			add_county_modifier = {
+				modifier = RICE_socotra_county_invest_aloe
+				years = 20
+			}
+		}
+	}	
+	option = { # Frankincense
+		name = socotra.0006.c
+		add_character_modifier = {
+			modifier = RICE_socotra_invest_frankincense
+			years = 10
+		}
+		title:c_socotra = {
+			add_county_modifier = {
+				modifier = RICE_socotra_county_invest_frankincense
+				years = 20
+			}
+		}
+	}
+	option = { # Desert Rose
+		name = socotra.0006.d
+		add_character_modifier = {
+			modifier = RICE_socotra_invest_desert_rose
+			years = 10
+		}
+		title:c_socotra = {
+			add_county_modifier = {
+				modifier = RICE_socotra_county_invest_desert_rose
+				years = 20
+			}
+		}
+	}
+	option = { # Dragon's Blood
+		name = socotra.0006.e
+		add_character_modifier = {
+			modifier = RICE_socotra_invest_dragons_blood
+			years = 10
+		}
+		title:c_socotra = {
+			add_county_modifier = {
+				modifier = RICE_socotra_county_invest_dragons_blood
+				years = 20
+			}
+		}
+	}
+	
+	after = {
+		remove_character_flag = RICE_socotra_currently_choosing_trade_good_investment
+	}
+}
+
+
+
+
+######################################################################################
+# 
+# COURTIER SPAWN EVENTS
+# 
+# socotra.0010-socotra.0019 reserved
+# 
+######################################################################################
+
+
+
+
+# Runaway slave escapes to Socotra
+socotra.0010 = {
+	type = character_event
+	title = socotra.0010.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:scope_RICE_socotran_spawn_runaway_slave = {
+						has_education_diplomacy_trigger = yes
+					}
+				}
+				desc = socotra.0010.desc.diplomacy
+			}
+			triggered_desc = {
+				trigger = {
+					scope:scope_RICE_socotran_spawn_runaway_slave = {
+						has_education_martial_trigger = yes
+					}
+				}
+				desc = socotra.0010.desc.martial
+			}
+			triggered_desc = {
+				trigger = {
+					scope:scope_RICE_socotran_spawn_runaway_slave = {
+						has_education_stewardship_trigger = yes
+					}
+				}
+				desc = socotra.0010.desc.stewardship
+			}
+			triggered_desc = {
+				trigger = {
+					scope:scope_RICE_socotran_spawn_runaway_slave = {
+						has_education_intrigue_trigger = yes
+					}
+				}
+				desc = socotra.0010.desc.intrigue
+			}
+			triggered_desc = {
+				trigger = {
+					scope:scope_RICE_socotran_spawn_runaway_slave = {
+						has_education_learning_trigger = yes
+					}
+				}
+				desc = socotra.0010.desc.learning
+			}
+		}
+	}
+	
+	theme = vassal
+	
+	#left_portrait = root
+	right_portrait = {
+		character = scope:scope_RICE_socotran_spawn_runaway_slave
+		animation = personality_honorable
+	}
+	
+	trigger = {	
+		has_title = title:c_socotra
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = -0.3
+			has_character_flag = RICE_socotra_already_spawned_male_slave
+		}
+	}
+
+	immediate = {
+		add_character_flag = RICE_socotra_already_spawned_male_slave
+		random_list = {
+			50 = {
+				create_character = {
+					location = root.location
+					template = socotran_runaway_slave_character_template
+					save_scope_as = scope_RICE_socotran_spawn_runaway_slave
+					culture = culture:ethiopian
+				}			
+			}
+			50 = {
+				create_character = {
+					location = root.location
+					template = socotran_runaway_slave_character_template
+					save_scope_as = scope_RICE_socotran_spawn_runaway_slave
+					culture = culture:swahili
+				}			
+			}
+			30 = {
+				create_character = {
+					location = root.location
+					template = socotran_runaway_slave_character_template
+					save_scope_as = scope_RICE_socotran_spawn_runaway_slave
+					culture = culture:nubian
+				}			
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = socotran_runaway_slave_character_template
+					save_scope_as = scope_RICE_socotran_spawn_runaway_slave
+					culture = culture:welayta
+				}			
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = socotran_runaway_slave_character_template
+					save_scope_as = scope_RICE_socotran_spawn_runaway_slave
+					culture = culture:daju
+				}			
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = socotran_runaway_slave_character_template
+					save_scope_as = scope_RICE_socotran_spawn_runaway_slave
+					culture = culture:somali
+				}			
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = socotran_runaway_slave_character_template
+					save_scope_as = scope_RICE_socotran_spawn_runaway_slave
+					culture = culture:shona
+				}			
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = socotran_runaway_slave_character_template
+					save_scope_as = scope_RICE_socotran_spawn_runaway_slave
+					culture = culture:malagasy
+				}			
+			}
+		}
+		hidden_effect = {
+			scope:scope_RICE_socotran_spawn_runaway_slave = {
+				add_character_modifier = {
+					modifier = RICE_socotra_former_slave_modifier
+				}
+			}
+		}	
+	}
+
+	# Hire him
+	option = {
+		name = socotra.0010.a
+		pay_short_term_gold = {
+			target = scope:scope_RICE_socotran_spawn_runaway_slave
+			gold = minor_gold_value
+		}
+		add_courtier = scope:scope_RICE_socotran_spawn_runaway_slave
+	}
+
+	# Don't hire him, and just let him be
+	option = {
+		name = socotra.0010.b
+		hidden_effect = {
+			random = {
+				chance = 66
+				scope:scope_RICE_socotran_spawn_runaway_slave = {
+					death = {
+						death_reason = death_disappearance
+					}
+				}
+			}
+		}
+	}
+	
+	# Send him back to his master!
+	option = {
+		name = socotra.0010.c
+		add_dread = 10
+		stress_impact = {
+			compassionate = medium_stress_impact_gain
+		}
+		hidden_effect = {
+			scope:scope_RICE_socotran_spawn_runaway_slave = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+	
+}
+
+
+
+
+# Runaway slave escapes to Socotra - female version
+socotra.0011 = {
+	type = character_event
+	title = socotra.0011.t
+	desc = socotra.0011.desc
+	
+	theme = vassal
+	
+	#left_portrait = root
+	right_portrait = {
+		character = scope:scope_RICE_socotran_spawn_runaway_slave_female
+		animation = personality_honorable
+	}
+	
+	trigger = {	
+		has_title = title:c_socotra
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = -0.3
+			has_character_flag = RICE_socotra_already_spawned_female_slave
+		}
+	}
+
+	immediate = {
+		add_character_flag = RICE_socotra_already_spawned_female_slave
+		random_list = {
+			50 = {
+				create_character = {
+					location = root.location
+					template = socotran_runaway_slave_female_character_template
+					save_scope_as = scope_RICE_socotran_spawn_runaway_slave_female
+					culture = culture:ethiopian
+				}			
+			}
+			50 = {
+				create_character = {
+					location = root.location
+					template = socotran_runaway_slave_female_character_template
+					save_scope_as = scope_RICE_socotran_spawn_runaway_slave_female
+					culture = culture:swahili
+				}			
+			}
+			30 = {
+				create_character = {
+					location = root.location
+					template = socotran_runaway_slave_female_character_template
+					save_scope_as = scope_RICE_socotran_spawn_runaway_slave_female
+					culture = culture:nubian
+				}			
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = socotran_runaway_slave_female_character_template
+					save_scope_as = scope_RICE_socotran_spawn_runaway_slave_female
+					culture = culture:welayta
+				}			
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = socotran_runaway_slave_female_character_template
+					save_scope_as = scope_RICE_socotran_spawn_runaway_slave_female
+					culture = culture:daju
+				}			
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = socotran_runaway_slave_female_character_template
+					save_scope_as = scope_RICE_socotran_spawn_runaway_slave_female
+					culture = culture:somali
+				}			
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = socotran_runaway_slave_female_character_template
+					save_scope_as = scope_RICE_socotran_spawn_runaway_slave_female
+					culture = culture:shona
+				}			
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = socotran_runaway_slave_female_character_template
+					save_scope_as = scope_RICE_socotran_spawn_runaway_slave_female
+					culture = culture:malagasy
+				}			
+			}
+		}
+		hidden_effect = {
+			scope:scope_RICE_socotran_spawn_runaway_slave_female = {
+				add_character_modifier = {
+					modifier = RICE_socotra_former_slave_modifier
+				}
+			}
+		}
+	}
+
+	# Hire her
+	option = {
+		name = socotra.0011.a
+		pay_short_term_gold = {
+			target = scope:scope_RICE_socotran_spawn_runaway_slave_female
+			gold = minor_gold_value
+		}
+		add_courtier = scope:scope_RICE_socotran_spawn_runaway_slave_female
+	}
+
+	# Don't hire her, and just let her be
+	option = {
+		name = socotra.0011.b
+		hidden_effect = {
+			random = {
+				chance = 66
+				scope:scope_RICE_socotran_spawn_runaway_slave_female = {
+					death = {
+						death_reason = death_disappearance
+					}
+				}
+			}
+		}
+	}
+	
+	# Send her back to her master!
+	option = {
+		name = socotra.0011.c
+		add_dread = 10
+		stress_impact = {
+			compassionate = medium_stress_impact_gain
+		}
+		hidden_effect = {
+			scope:scope_RICE_socotran_spawn_runaway_slave_female = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+}
+
+
+
+# Bawarij Pirate offers services
+socotra.0012 = {
+	type = character_event
+	title = socotra.0012.t
+	desc = socotra.0012.desc
+	
+	theme = vassal
+	
+	left_portrait = {
+		character = scope:scope_RICE_socotran_bawarij_spawn
+		animation = spymaster
+	}
+	
+	trigger = {
+		OR = {
+			has_title = title:c_socotra
+			dynasty = {
+				has_dynasty_perk = RICE_socotra_indian_ocean_legacy_2
+			}
+		}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = -0.1
+			has_character_flag = RICE_socotra_already_spawned_bawarij
+		}
+		modifier = {
+			add = -0.8
+			NOT = {
+				has_title = title:c_socotra
+			}
+		}
+		modifier = {
+			add = 0.4
+			has_title = title:c_socotra
+			dynasty = {
+				has_dynasty_perk = RICE_socotra_indian_ocean_legacy_2
+			}
+		}
+	}
+
+	immediate = {
+		add_character_flag = RICE_socotra_already_spawned_bawarij
+		random_list = {
+			125 = {
+				create_character = {
+					location = root.location
+					template = socotran_bawarij_spawn_template
+					save_scope_as = scope_RICE_socotran_bawarij_spawn
+					culture = culture:gujarati
+				}				
+			}
+			125 = {
+				create_character = {
+					location = root.location
+					template = socotran_bawarij_spawn_template
+					save_scope_as = scope_RICE_socotran_bawarij_spawn
+					culture = culture:sindhi
+				}				
+			}
+			30 = {
+				create_character = {
+					location = root.location
+					template = socotran_bawarij_spawn_template
+					save_scope_as = scope_RICE_socotran_bawarij_spawn
+					culture = culture:marathi
+				}				
+			}
+			30 = {
+				create_character = {
+					location = root.location
+					template = socotran_bawarij_spawn_template
+					save_scope_as = scope_RICE_socotran_bawarij_spawn
+					culture = culture:tamil
+				}				
+			}
+			30 = {
+				create_character = {
+					location = root.location
+					template = socotran_bawarij_spawn_template
+					save_scope_as = scope_RICE_socotran_bawarij_spawn
+					culture = culture:kannada
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = socotran_bawarij_spawn_template
+					save_scope_as = scope_RICE_socotran_bawarij_spawn
+					culture = culture:sinhala
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = socotran_bawarij_spawn_template
+					save_scope_as = scope_RICE_socotran_bawarij_spawn
+					culture = culture:rajput
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = socotran_bawarij_spawn_template
+					save_scope_as = scope_RICE_socotran_bawarij_spawn
+					culture = culture:punjabi
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = socotran_bawarij_spawn_template
+					save_scope_as = scope_RICE_socotran_bawarij_spawn
+					culture = culture:hindustani
+				}				
+			}
+		}
+		hidden_effect = {
+			scope:scope_RICE_socotran_bawarij_spawn = {
+				add_character_modifier = {
+					modifier = RICE_socotra_bawarij_character_modifier
+				}
+			}
+		}
+	}
+
+	# Okay
+	option = {
+		name = socotra.0012.a
+		pay_short_term_gold = {
+			target = scope:scope_RICE_socotran_bawarij_spawn
+			gold = minor_gold_value #minor_gold_value
+		}
+		add_courtier = scope:scope_RICE_socotran_bawarij_spawn
+	}
+
+	# Not interested
+	option = {
+		name = socotra.0012.b
+		hidden_effect = {
+			random = {
+				chance = 66
+				scope:scope_RICE_socotran_bawarij_spawn = {
+					death = {
+						death_reason = death_disappearance
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+# Foreign merchant offers services (can spawn anywhere in the Indian Ocean)
+socotra.0013 = {
+	type = character_event
+	title = socotra.0013.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_title = title:c_socotra
+				}
+				desc = socotra.0013.desc
+			}
+			desc = socotra.0013.desc.socotra
+		}
+	}
+	
+	theme = stewardship_wealth_focus
+	override_background = { event_background = throne_room }
+	
+	
+	left_portrait = {
+		character = scope:scope_RICE_socotran_merchant_spawn
+		animation = steward
+	}
+	
+	trigger = {
+		capital_province = {
+			RICE_socotra_indian_ocean_port_trigger = yes
+		}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = -0.2
+			has_character_flag = RICE_socotra_already_spawned_merchant
+		}
+		modifier = {
+			add = -0.5
+			NOT = {
+				has_title = title:c_socotra
+			}
+		}
+		modifier = {
+			add = -0.2
+			AND = {
+				is_ruler = yes
+				has_government = tribal_government
+			}
+		}
+	}
+
+	immediate = {
+		add_character_flag = RICE_socotra_already_spawned_merchant
+		random_list = {
+			# Levantine
+			# Egyptian
+			# Yemeni
+			# Ethiopian
+			# Somali
+			# Persian
+			# Sogdian
+			# Khwarezmian
+			# Greek
+			# Armenian
+			# Gujarati
+			# Sindhi
+			# Tamil
+			# Kannada
+			# Telugu
+			# Sinhala
+			# Swahili
+			# Shona
+			# South Arabian
+			# Malagasy
+			20 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:levantine
+					faith = faith:ashari
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:egyptian
+					faith = faith:coptic
+				}				
+			}
+			20 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:yemeni
+					faith = faith:ashari
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:ethiopian
+					faith = faith:coptic
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:somali
+					faith = faith:ashari
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:persian
+					faith = faith:maturidi
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:persian
+					faith = faith:mazdayasna
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:sogdian
+					faith = faith:manichean
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:sogdian
+					faith = faith:khurmazta
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:khwarezmian
+					faith = faith:manichean
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:khwarezmian
+					faith = faith:mahayana
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:greek
+					faith = faith:orthodox
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:greek
+					faith = faith:armenian_apostolic
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:gujarati
+					faith = faith:kalikula_shaktism
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:sindhi
+					faith = faith:smartism
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:tamil
+					faith = faith:vaishnavism
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:telugu
+					faith = faith:shaivism
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:kannada
+					faith = faith:shaivism
+				}				
+			}
+			20 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:sinhala
+					faith = faith:theravada
+				}				
+			}
+			20 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:bengali
+					faith = faith:mahayana
+				}				
+			}
+			40 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:swahili
+					faith = faith:ashari
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:shona
+					faith = faith:waaqism_pagan	# Should be something else
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:south_arabian
+					faith = faith:ibadi
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_merchant_template
+					save_scope_as = scope_RICE_socotran_merchant_spawn
+					culture = culture:malagasy
+					faith = faith:ashari # Should be something else
+				}				
+			}
+		}
+		hidden_effect = {
+			scope:scope_RICE_socotran_merchant_spawn = {
+				add_character_modifier = {
+					modifier = RICE_socotra_indian_ocean_merchant_modifier
+				}
+			}
+		}
+	}
+
+	# Okay
+	option = {
+		name = socotra.0013.a
+		pay_short_term_gold = {
+			target = scope:scope_RICE_socotran_merchant_spawn
+			gold = minor_gold_value #minor_gold_value
+		}
+		add_courtier = scope:scope_RICE_socotran_merchant_spawn
+		hidden_effect = {
+			random = {
+				chance = 50
+				RICE_generate_small_family = { CHARACTER = scope:scope_RICE_socotran_merchant_spawn }
+			}
+		}
+	}
+
+	# Not interested
+	option = {
+		name = socotra.0013.b
+		hidden_effect = {
+			random = {
+				chance = 66
+				scope:scope_RICE_socotran_merchant_spawn = {
+					death = {
+						death_reason = death_disappearance
+					}
+				}
+			}
+		}
+	}
+}
+
+
+# Foreign sailor offers services (can spawn anywhere in the Indian Ocean)
+socotra.0014 = {
+	type = character_event
+	title = socotra.0014.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_title = title:c_socotra
+				}
+				desc = socotra.0014.desc
+			}
+			desc = socotra.0014.desc.socotra
+		}
+	}
+	
+	theme = stewardship_wealth_focus
+	override_background = { event_background = throne_room }
+	
+	
+	left_portrait = {
+		character = scope:scope_RICE_socotran_sailor_spawn
+		animation = marshal
+	}
+	
+	trigger = {
+		capital_province = {
+			RICE_socotra_indian_ocean_port_trigger = yes
+		}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = -0.2
+			has_character_flag = RICE_socotra_already_spawned_sailor
+		}
+		modifier = {
+			add = -0.5
+			NOT = {
+				has_title = title:c_socotra
+			}
+		}
+		modifier = {
+			add = -0.2
+			AND = {
+				is_ruler = yes
+				has_government = tribal_government
+			}
+		}
+	}
+
+	immediate = {
+		add_character_flag = RICE_socotra_already_spawned_sailor
+		random_list = {
+			# Levantine
+			# Egyptian
+			# Yemeni
+			# Ethiopian
+			# Somali
+			# Persian
+			# Sogdian
+			# Khwarezmian
+			# Greek
+			# Armenian
+			# Gujarati
+			# Sindhi
+			# Tamil
+			# Kannada
+			# Telugu
+			# Sinhala
+			# Swahili
+			# Shona
+			# South Arabian
+			# Malagasy
+			20 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:levantine
+					faith = faith:ashari
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:egyptian
+					faith = faith:coptic
+				}				
+			}
+			20 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:yemeni
+					faith = faith:ashari
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:ethiopian
+					faith = faith:coptic
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:somali
+					faith = faith:ashari
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:persian
+					faith = faith:maturidi
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:persian
+					faith = faith:mazdayasna
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:sogdian
+					faith = faith:manichean
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:sogdian
+					faith = faith:khurmazta
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:khwarezmian
+					faith = faith:manichean
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:khwarezmian
+					faith = faith:mahayana
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:greek
+					faith = faith:orthodox
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:greek
+					faith = faith:armenian_apostolic
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:gujarati
+					faith = faith:kalikula_shaktism
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:sindhi
+					faith = faith:smartism
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:tamil
+					faith = faith:vaishnavism
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:telugu
+					faith = faith:shaivism
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:kannada
+					faith = faith:shaivism
+				}				
+			}
+			20 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:sinhala
+					faith = faith:theravada
+				}				
+			}
+			20 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:bengali
+					faith = faith:mahayana
+				}				
+			}
+			40 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:swahili
+					faith = faith:ashari
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:shona
+					faith = faith:waaqism_pagan	# Should be something else
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:south_arabian
+					faith = faith:ibadi
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:malagasy
+					faith = faith:ashari # Should be something else
+				}				
+			}
+		}
+		hidden_effect = {
+			scope:scope_RICE_socotran_sailor_spawn = {
+				add_character_modifier = {
+					modifier = RICE_socotra_indian_ocean_sailor_modifier
+				}
+			}
+		}
+	}
+
+	# Okay
+	option = {
+		name = socotra.0014.a
+		pay_short_term_gold = {
+			target = scope:scope_RICE_socotran_sailor_spawn
+			gold = minor_gold_value #minor_gold_value
+		}
+		add_courtier = scope:scope_RICE_socotran_sailor_spawn
+		hidden_effect = {
+			set_character_flag = RICE_courtier_spawns_family
+			random = {
+				chance = 50
+				RICE_generate_small_family = { CHARACTER = scope:scope_RICE_socotran_sailor_spawn }
+			}
+		}
+	}
+
+	# Not interested
+	option = {
+		name = socotra.0014.b
+		hidden_effect = {
+			random = {
+				chance = 66
+				scope:scope_RICE_socotran_sailor_spawn = {
+					death = {
+						death_reason = death_disappearance
+					}
+				}
+			}
+		}
+	}
+	
+}
+
+
+# Foreign adventurer offers services (can spawn anywhere in the Indian Ocean)
+socotra.0015 = {
+	type = character_event
+	title = socotra.0015.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_title = title:c_socotra
+				}
+				desc = socotra.0015.desc
+			}
+			desc = socotra.0015.desc.socotra
+		}
+	}
+	
+	theme = stewardship_wealth_focus
+	override_background = { event_background = throne_room }
+	
+	
+	left_portrait = {
+		character = scope:scope_RICE_socotran_sailor_spawn
+		animation = steward
+	}
+	
+	trigger = {
+		capital_province = {
+			RICE_socotra_indian_ocean_port_trigger = yes
+		}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = -0.2
+			has_character_flag = RICE_socotra_already_spawned_sailor
+		}
+		modifier = {
+			add = -0.5
+			NOT = {
+				has_title = title:c_socotra
+			}
+		}
+		modifier = {
+			add = -0.2
+			AND = {
+				is_ruler = yes
+				has_government = tribal_government
+			}
+		}
+	}
+
+	immediate = {
+		add_character_flag = RICE_socotra_already_spawned_sailor
+		random_list = {
+			# Levantine
+			# Egyptian
+			# Yemeni
+			# Ethiopian
+			# Somali
+			# Persian
+			# Sogdian
+			# Khwarezmian
+			# Greek
+			# Armenian
+			# Gujarati
+			# Sindhi
+			# Tamil
+			# Kannada
+			# Telugu
+			# Sinhala
+			# Swahili
+			# Shona
+			# South Arabian
+			# Malagasy
+			20 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:levantine
+					faith = faith:ashari
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:egyptian
+					faith = faith:coptic
+				}				
+			}
+			20 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:yemeni
+					faith = faith:ashari
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:ethiopian
+					faith = faith:coptic
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:somali
+					faith = faith:ashari
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:persian
+					faith = faith:maturidi
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:persian
+					faith = faith:mazdayasna
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:sogdian
+					faith = faith:manichean
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:sogdian
+					faith = faith:khurmazta
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:khwarezmian
+					faith = faith:manichean
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:khwarezmian
+					faith = faith:mahayana
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:greek
+					faith = faith:orthodox
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:greek
+					faith = faith:armenian_apostolic
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:gujarati
+					faith = faith:kalikula_shaktism
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:sindhi
+					faith = faith:smartism
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:tamil
+					faith = faith:vaishnavism
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:telugu
+					faith = faith:shaivism
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:kannada
+					faith = faith:shaivism
+				}				
+			}
+			20 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:sinhala
+					faith = faith:theravada
+				}				
+			}
+			20 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:bengali
+					faith = faith:mahayana
+				}				
+			}
+			40 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:swahili
+					faith = faith:ashari
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:shona
+					faith = faith:waaqism_pagan	# Should be something else
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:south_arabian
+					faith = faith:ibadi
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = indian_ocean_sailor_template
+					save_scope_as = scope_RICE_socotran_sailor_spawn
+					culture = culture:malagasy
+					faith = faith:ashari # Should be something else
+				}				
+			}
+		}
+		hidden_effect = {
+			scope:scope_RICE_socotran_sailor_spawn = {
+				add_character_modifier = {
+					modifier = RICE_socotra_indian_ocean_sailor_modifier
+				}
+			}
+		}
+	}
+
+	# Okay
+	option = {
+		name = socotra.0015.a
+		pay_short_term_gold = {
+			target = scope:scope_RICE_socotran_sailor_spawn
+			gold = minor_gold_value #minor_gold_value
+		}
+		add_courtier = scope:scope_RICE_socotran_sailor_spawn
+		hidden_effect = {
+			random = {
+				chance = 50
+				RICE_generate_small_family = { CHARACTER = scope:scope_RICE_socotran_sailor_spawn }
+			}
+		}
+	}
+
+	# Not interested
+	option = {
+		name = socotra.0015.b
+		hidden_effect = {
+			random = {
+				chance = 66
+				scope:scope_RICE_socotran_sailor_spawn = {
+					death = {
+						death_reason = death_disappearance
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+######################################################################################
+# 
+# POETRY CONTEST
+# 
+# socotra.0020-socotra.0029 reserved
+# 
+######################################################################################
+
+
+# Poetry contest begins
+socotra.0020 = {
+	type = character_event
+	title = socotra.0020.t
+	desc = socotra.0020.desc
+	theme = realm
+	override_icon = {
+		reference = "gfx/interface/icons/event_types/type_diplomacy.dds"
+	}
+	
+	left_portrait = root
+	
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+	}
+	
+	option = { # Ok
+		name = socotra.0020.a
+		# Choose appropriate location
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_socotra_host_poetry_contest
+			}	
+		}
+	}
+}
+
+
+
+# Planning for the poetry contest - what prize?
+socotra.0021 = {
+	type = character_event
+	title = socotra.0021.t
+	desc = socotra.0021.desc
+	theme = realm
+	override_icon = {
+		reference = "gfx/interface/icons/event_types/type_diplomacy.dds"
+	}
+	
+	right_portrait = root
+	
+	option = { # No money prize
+		name = socotra.0021.a
+		custom_tooltip = socotra.0021.tooltip
+		trigger_event = {
+			id = socotra.0022
+			days = { 5 15 }
+		}
+	}	
+	option = { # Small prize
+		name = socotra.0021.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 25
+			}
+		}
+		remove_short_term_gold = 25
+		custom_tooltip = socotra.0021.tooltip
+		add_character_flag = RICE_socotra_poetry_contest_small_prize
+		trigger_event = {
+			id = socotra.0022
+			days = { 5 15 }
+		}
+	}	
+	option = { # Medium prize
+		name = socotra.0021.c
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		custom_tooltip = socotra.0021.tooltip
+		add_character_flag = RICE_socotra_poetry_contest_medium_prize
+		trigger_event = {
+			id = socotra.0022
+			days = { 5 15 }
+		}
+	}
+	option = { # Large prize
+		name = socotra.0021.d
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 100
+			}
+		}
+		remove_short_term_gold = 100
+		custom_tooltip = socotra.0021.tooltip
+		add_character_flag = RICE_socotra_poetry_contest_large_prize
+		trigger_event = {
+			id = socotra.0022
+			days = { 5 15 }
+		}
+	}
+}
+
+
+# Poetry contest begins
+socotra.0022 = {
+	type = character_event
+	title = socotra.0022.t
+	desc = socotra.0022.desc
+	theme = RICE_theme_festival_generic
+	override_icon = {
+		reference = "gfx/interface/icons/event_types/type_diplomacy.dds"
+	}
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+	}
+	
+	option = { # Ok
+		name = socotra.0022.a
+		#trigger = {
+		#	NOR = {
+		#		learning >= decent_skill_rating
+		#		has_trait = poet
+		#	}
+		#}
+		trigger_event = {
+			id = socotra.0023
+			days = { 5 9 }
+		}
+	}	
+	option = { # Ok
+		name = socotra.0022.b		
+		trigger = {
+			learning >= decent_skill_rating
+		}
+		skill = learning
+		custom_tooltip = socotra.0022.tooltip # STRESS
+		if = {
+			limit = {
+				has_trait = gregarious
+			}
+			stress_impact = {
+				base = minor_stress_impact_gain
+				shy = minor_stress_impact_gain
+				diligent = miniscule_stress_impact_gain
+			}
+		}
+		else = {
+			stress_impact = {
+				base = medium_stress_impact_gain
+				shy = medium_stress_impact_gain
+				diligent = minor_stress_impact_gain
+			}
+		}
+		add_character_flag = RICE_socotra_poetry_contest_judge
+		trigger_event = {
+			id = socotra.0023
+			days = { 5 9 }
+		}
+	}	
+	option = { # Ok
+		name = socotra.0022.c		
+		trigger = {
+			diplomacy >= decent_skill_rating
+		}
+		skill = diplomacy
+		custom_tooltip = socotra.0022.tooltip # STRESS
+		if = {
+			limit = {
+				has_trait = gregarious
+			}
+			stress_impact = {
+				base = minor_stress_impact_gain
+				shy = minor_stress_impact_gain
+				diligent = miniscule_stress_impact_gain
+			}
+		}
+		else = {
+			stress_impact = {
+				base = medium_stress_impact_gain
+				shy = medium_stress_impact_gain
+				diligent = minor_stress_impact_gain
+			}
+		}
+		add_character_flag = RICE_socotra_poetry_contest_judge
+		trigger_event = {
+			id = socotra.0023
+			days = { 5 9 }
+		}
+	}	
+	option = { # Ok
+		name = socotra.0022.d		
+		trigger = {
+			has_trait = poet
+		}
+		trait = poet
+		custom_tooltip = socotra.0022.tooltip # STRESS
+		if = {
+			limit = {
+				has_trait = gregarious
+			}
+			stress_impact = {
+				base = minor_stress_impact_gain
+				shy = minor_stress_impact_gain
+				diligent = miniscule_stress_impact_gain
+			}
+		}
+		else = {
+			stress_impact = {
+				base = medium_stress_impact_gain
+				shy = medium_stress_impact_gain
+				diligent = minor_stress_impact_gain
+			}
+		}
+		add_character_flag = RICE_socotra_poetry_contest_judge
+		trigger_event = {
+			id = socotra.0023
+			days = { 5 9 }
+		}
+	}
+}
+
+
+
+# Poetry contest - almost final round
+socotra.0023 = {
+	type = character_event
+	title = socotra.0023.t
+	desc = socotra.0023.desc
+	theme = RICE_theme_festival_generic
+	override_icon = {
+		reference = "gfx/interface/icons/event_types/type_diplomacy.dds"
+	}
+	
+	left_portrait = {
+		character = root
+		animation = personality_cynical
+	}
+	
+	option = { # Ok
+		name = socotra.0023.a
+		
+
+		hidden_effect = {
+			#Determine if a courtier of yours wins
+			if = {
+				limit = {
+					any_courtier = {
+						is_available_ai_adult = yes
+						OR = {
+							has_trait = poet
+							learning >= medium_skill_rating
+							diplomacy >= medium_skill_rating
+						}
+						NOT = { learning < mediocre_skill_rating }
+						NOT = { diplomacy < mediocre_skill_rating }
+					}
+				}
+				random = {
+					chance = 20 # 95
+					add_character_flag = RICE_socotra_poetry_contest_courtier_winner
+					random_courtier = {
+						limit = {
+							is_available_ai_adult = yes
+							OR = {
+								has_trait = poet
+								learning >= medium_skill_rating
+								diplomacy >= medium_skill_rating
+							}
+							NOT = { learning < mediocre_skill_rating }
+							NOT = { diplomacy < mediocre_skill_rating }
+						}
+						save_scope_as = RICE_courtier_poet_winner
+					}
+				}
+			}
+		}
+		
+		trigger_event = {
+			id = socotra.0024
+			days = { 2 5 }
+		}
+	}
+}
+
+
+# Poetry contest - the winner is declared, and the winning poem discussed
+socotra.0024 = {
+	type = character_event
+	title = socotra.0024.t
+	desc = {
+		desc = socotra.0024.desc.start
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_courtier_winner
+				}
+				desc = socotra.0024.desc.winner.courtier
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_1
+				}
+				desc = socotra.0024.desc.winner_1
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_2
+				}
+				desc = socotra.0024.desc.winner_2
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_3
+				}
+				desc = socotra.0024.desc.winner_3
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_4
+				}
+				desc = socotra.0024.desc.winner_4
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_5
+				}
+				desc = socotra.0024.desc.winner_5
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_6
+				}
+				desc = socotra.0024.desc.winner_6
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_7
+				}
+				desc = socotra.0024.desc.winner_7
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_8
+				}
+				desc = socotra.0024.desc.winner_8
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_9
+				}
+				desc = socotra.0024.desc.winner_9
+			}
+			desc = socotra.0024.desc.mid
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_1
+				}
+				desc = socotra.0024.desc.poem_1 # Hotel Del Luna - it's a pretty damn good bittersweet and thoughtful K-Drama
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_2
+				}
+				desc = socotra.0024.desc.poem_2 # True Beauty - very funny K-Drama even if the story is cliche
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_3
+				}
+				desc = socotra.0024.desc.poem_3
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_4
+				}
+				desc = socotra.0024.desc.poem_4
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_5
+				}
+				desc = socotra.0024.desc.poem_5
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_6
+				}
+				desc = socotra.0024.desc.poem_6
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_7
+				}
+				desc = socotra.0024.desc.poem_7
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_8
+				}
+				desc = socotra.0024.desc.poem_8
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_9
+				}
+				desc = socotra.0024.desc.poem_9
+			}
+		}
+		#desc = socotra.0024.desc.end
+	}
+	theme = RICE_theme_festival_generic
+	override_icon = {
+		reference = "gfx/interface/icons/event_types/type_diplomacy.dds"
+	}
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	immediate = {
+	
+		# Choose winner
+		if = {
+			limit = {
+				NOT = { has_character_flag = RICE_socotra_poetry_contest_courtier_winner }
+			}
+		}
+		random_list = {
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_1 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_2 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_3 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_4 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_5 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_6 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_7 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_8 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_9 days = 1 } }
+		}
+	
+		# Choose winning poem
+		random_list = {
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_1 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_2 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_3 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_4 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_5 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_6 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_7 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_8 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_9 days = 1 } }
+		}
+		
+	}
+	
+	option = { # Ok
+		name = socotra.0024.a
+		trigger_event = {
+			id = socotra.0025
+			days = { 2 5 }
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_socotra_poetry_contest_courtier_winner
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_socotra_poetry_contest_small_prize
+				}
+				scope:RICE_courtier_poet_winner = {
+					add_gold = 25
+					add_prestige = 150
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_socotra_poetry_contest_medium_prize
+				}
+				scope:RICE_courtier_poet_winner = {
+					add_gold = 50					
+					add_prestige = 200
+				}
+			}
+			else_if = {
+				limit = {
+					has_character_flag = RICE_socotra_poetry_contest_large_prize
+				}
+				scope:RICE_courtier_poet_winner = {
+					add_gold = 100					
+					add_prestige = 250
+				}
+			}
+			else = {
+				scope:RICE_courtier_poet_winner = {				
+					add_prestige = 100
+				}		
+			}
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_socotra_poetry_contest_courtier_winner
+				scope:RICE_courtier_poet_winner = {
+					NOT = { has_trait = poet }
+				}
+			}
+			scope:RICE_courtier_poet_winner = {
+				add_trait = poet
+			}
+		}
+	}
+}
+
+
+
+
+# Poetry contest ends
+socotra.0025 = {
+	type = character_event
+	title = socotra.0025.t
+	desc = socotra.0025.desc
+	theme = realm
+	override_icon = {
+		reference = "gfx/interface/icons/event_types/type_diplomacy.dds"
+	}
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Ok
+		name = socotra.0025.a
+		if = {
+			limit = {
+				has_character_flag = RICE_socotra_poetry_contest_small_prize
+			}
+			add_character_modifier = {
+				modifier = RICE_socotra_hosted_poetry_contest_small_prize
+				years = 5
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_socotra_poetry_contest_judge
+				}
+				add_prestige = 200
+			}
+			else = {				
+				add_prestige = 100
+			}
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_socotra_poetry_contest_medium_prize
+			}
+			add_character_modifier = {
+				modifier = RICE_socotra_hosted_poetry_contest_medium_prize
+				years = 5
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_socotra_poetry_contest_judge
+				}
+				add_prestige = 300
+			}
+			else = {				
+				add_prestige = 150
+			}
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_socotra_poetry_contest_large_prize
+			}
+			add_character_modifier = {
+				modifier = RICE_socotra_hosted_poetry_contest_large_prize
+				years = 5
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_socotra_poetry_contest_judge
+				}
+				add_prestige = 400
+			}
+			else = {				
+				add_prestige = 200
+			}
+		}
+		else = { # No prize
+			add_character_modifier = {
+				modifier = RICE_socotra_hosted_poetry_contest_no_prize
+				years = 5
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_socotra_poetry_contest_judge
+				}
+				add_prestige = 100
+			}
+			else = {				
+				add_prestige = 50
+			}
+		}
+	}
+	
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_socotra_poetry_contest_courtier_winner
+			}
+			remove_character_flag = RICE_socotra_poetry_contest_courtier_winner
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_socotra_poetry_contest_judge
+			}
+			remove_character_flag = RICE_socotra_poetry_contest_judge
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_socotra_poetry_contest_small_prize
+			}
+			remove_character_flag = RICE_socotra_poetry_contest_small_prize
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_socotra_poetry_contest_medium_prize
+			}
+			remove_character_flag = RICE_socotra_poetry_contest_medium_prize
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_socotra_poetry_contest_large_prize
+			}
+			remove_character_flag = RICE_socotra_poetry_contest_large_prize
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_socotra_hosted_poetry_contest_no_prize
+			}
+			remove_character_flag = RICE_socotra_hosted_poetry_contest_no_prize
+		}
+		trigger_event = {
+			id = socotra.0026
+			days = 1
+		}
+	}	
+}
+
+socotra.0026 = {
+	hidden = yes	
+	immediate = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
+
+
+
+######################################################################################
+# 
+# ZAHRA THE SOCOTRAN
+# 
+# socotra.0030-socotra.0039 reserved
+# 
+######################################################################################
+
+# Rumors of Zahra and Muslim discontent
+socotra.0030 = {
+	type = character_event
+	title = socotra.0030.t
+	desc = socotra.0030.desc
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		has_title = title:c_socotra
+		NOT = { has_global_variable = RICE_socotra_zahra_event_part_1 }
+		NOT = { faith = { religion_tag = islam_religion } }
+		# Happened sometime between c. 850-880 CE IRL
+		current_date <= 900.1.1
+		# Zahra appealed to the authorities in Oman
+		#OR = {
+		#	AND = {
+		#		exists = title:d_oman.holder
+		#		title:d_oman.holder = {
+		#			faith = { religion_tag = islam_religion }
+		#		}
+		#	}
+		#	title:c_nizwa.holder = {
+		#		faith = { religion_tag = islam_religion }
+		#	}
+		#	title:c_julfar.holder = {
+		#		faith = { religion_tag = islam_religion }
+		#	}
+		#	title:c_batina.holder = {
+		#		faith = { religion_tag = islam_religion }
+		#	}
+		#	title:c_az-dhahira.holder = {
+		#		faith = { religion_tag = islam_religion }
+		#	}
+		#	title:c_duqm.holder = {
+		#		faith = { religion_tag = islam_religion }
+		#	}
+		#}
+		
+	}
+	
+	immediate = {
+		set_global_variable = {
+			name = RICE_socotra_zahra_event_part_1
+			value = yes
+		}
+	}
+
+	option = { # Ok
+		name = socotra.0030.a
+	}
+}
+
+# Zahra spawns in Socotra court; if not Muslim, she will asks to reduce restrictions on Muslims; if Muslims, she will hail you as a savior
+socotra.0031 = {
+	type = character_event
+	title = socotra.0031.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					faith = { religion_tag = islam_religion }
+				}
+				desc = socotra.0031.desc.muslim
+			}
+			desc = socotra.0031.desc
+		}
+	}
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+	right_portrait = {
+		character = scope:RICE_socotra_zahra_character
+		animation = personality_bold
+	}
+	
+	trigger = {
+		has_title = title:c_socotra
+		has_global_variable = RICE_socotra_zahra_event_part_1
+		NOT = { has_global_variable = RICE_socotra_zahra_event_part_2 }
+		# Happened sometime between c. 850-880 CE
+		current_date <= 910.1.1
+		# Zahra appealed to the authorities in Oman
+		#OR = {
+		#	AND = {
+		#		exists = title:d_oman.holder
+		#		title:d_oman.holder = {
+		#			faith = { religion_tag = islam_religion }
+		#		}
+		#	}
+		#	title:c_nizwa.holder = {
+		#		faith = { religion_tag = islam_religion }
+		#	}
+		#	title:c_julfar.holder = {
+		#		faith = { religion_tag = islam_religion }
+		#	}
+		#	title:c_batina.holder = {
+		#		faith = { religion_tag = islam_religion }
+		#	}
+		#	title:c_az-dhahira.holder = {
+		#		faith = { religion_tag = islam_religion }
+		#	}
+		#	title:c_duqm.holder = {
+		#		faith = { religion_tag = islam_religion }
+		#	}
+		#}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = { # Get rid of Muslim unrest quickly
+			add = 10
+			faith = { religion_tag = islam_religion }
+		}
+	}
+	
+	immediate = {
+		set_global_variable = {
+			name = RICE_socotra_zahra_event_part_2
+			value = yes
+		}
+		#title:c_socotra = {
+		#	remove_county_modifier = RICE_socotra_muslim_discontent
+		#}
+		create_character = {
+			name = "Zahra"
+			location = root.location
+			template = socotran_zahra_template
+			save_scope_as = RICE_socotra_zahra_character
+			culture = culture:south_arabian
+		}
+		hidden_effect = {
+			scope:RICE_socotra_zahra_character = {
+				add_character_modifier = {
+					modifier = RICE_socotra_zahra_modifier
+				}
+			}
+		}
+		if = {
+			limit = {
+				AND = {
+					exists = title:d_oman.holder
+					title:d_oman.holder = {
+						faith = { religion_tag = islam_religion }
+					}
+				}			
+			}
+			title:d_oman.holder = {
+				save_scope_as = RICE_socotra_oman_muslim_savior
+			}
+		}
+		else_if = {
+			limit = {
+				title:c_nizwa.holder = {
+					faith = { religion_tag = islam_religion }
+				}
+			}
+			title:c_nizwa.holder = {
+				save_scope_as = RICE_socotra_oman_muslim_savior
+			}
+		}
+		else_if = {
+			limit = {
+				title:c_julfar.holder = {
+					faith = { religion_tag = islam_religion }
+				}
+			}
+			title:c_julfar.holder = {
+				save_scope_as = RICE_socotra_oman_muslim_savior
+			}
+		}
+		else_if = {
+			limit = {
+				title:c_batina.holder = {
+					faith = { religion_tag = islam_religion }
+				}
+			}
+			title:c_batina.holder = {
+				save_scope_as = RICE_socotra_oman_muslim_savior
+			}
+		}
+		else_if = {
+			limit = {
+				title:c_az-dhahira.holder = {
+					faith = { religion_tag = islam_religion }
+				}
+			}
+			title:c_az-dhahira.holder = {
+				save_scope_as = RICE_socotra_oman_muslim_savior
+			}
+		}
+		else_if = {
+			limit = {
+				title:c_duqm.holder = {
+					faith = { religion_tag = islam_religion }
+				}
+			}
+			title:c_duqm.holder = {
+				save_scope_as = RICE_socotra_oman_muslim_savior
+			}
+		}
+		else = {
+			set_character_flag = RICE_socotra_no_oman_found
+		}
+	}
+
+	option = { # Nice, problem solved
+		name = socotra.0031.a
+		trigger = {
+			faith = { religion_tag = islam_religion }
+			NOT = { has_character_flag = RICE_socotra_no_oman_found }
+		}
+		add_piety = 100
+		#if = {
+		#	limit = {
+		#		can_set_relation_friend_trigger = { CHARACTER = scope:RICE_socotra_zahra_character }
+		#	}
+		#	set_relation_friend = scope:RICE_socotra_zahra_character
+		#}
+		#add_courtier = scope:RICE_socotra_zahra_character
+	}
+	option = { # Compromise!
+		name = socotra.0031.b
+		trigger = {
+			NOT = { faith = { religion_tag = islam_religion } }
+			#NOT = { has_character_flag = RICE_socotra_no_oman_found }
+		}
+		add_prestige = -100
+		title:c_socotra = {
+			add_county_modifier = {
+				modifier = RICE_socotra_muslim_concessions
+				years = 25
+			}
+		}
+		trigger_event = socotra.0032
+		# To prevent AI Oman from easily taking over
+		ai_chance = {
+			base = 100
+			modifier = {	
+				add = -10
+				has_trait = zealous
+			}
+		}
+	}
+	option = { # No compromise
+		name = socotra.0031.c
+		trigger = {
+			NOT = { faith = { religion_tag = islam_religion } }
+			#NOT = { has_character_flag = RICE_socotra_no_oman_found }
+		}
+		add_prestige = 100
+		add_piety = 100
+		title:c_socotra = {
+			add_county_modifier = {
+				modifier = RICE_socotra_muslim_discontent
+				years = 25
+			}
+		}
+		trigger_event = socotra.0033
+		# To prevent AI Muslims from easily taking over
+		ai_chance = {
+			base = 10
+			modifier = {	
+				add = 80
+				has_trait = zealous
+			}
+		}		
+	}
+	#option = { # Oman is not Muslim for some reason, no compromise
+	#	name = socotra.0031.d
+	#	trigger = {
+	#		NOT = { faith = { religion_tag = islam_religion } }
+	#		has_character_flag = RICE_socotra_no_oman_found
+	#	}
+	#	add_prestige = 100
+	#	add_piety = 100
+	#	title:c_socotra = {
+	#		add_county_modifier = {
+	#			modifier = RICE_socotra_muslim_discontent_great
+	#			years = 30
+	#		}
+	#	}
+	#	scope:RICE_socotra_zahra_character = { select_and_move_to_pool_effect = yes }	
+	#	# To prevent AI Muslims from easily taking over
+	#	ai_chance = {
+	#		base = 10
+	#		modifier = {	
+	#			add = 80
+	#			has_trait = zealous
+	#		}
+	#	}	
+	#}
+}
+
+
+
+# You agree to compromise - Zahra becomes friend, everyone's happy
+socotra.0032 = {
+	type = character_event
+	title = socotra.0032.t
+	desc = socotra.0032.desc
+	theme = realm
+	override_icon = {
+		reference = "gfx/interface/icons/event_types/type_diplomacy.dds"
+	}
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}	
+	right_portrait = {
+		character = scope:RICE_socotra_zahra_character
+		animation = personality_compassionate
+	}
+	
+	option = { # Ok
+		name = socotra.0032.a
+		if = {
+			limit = {
+				can_set_relation_friend_trigger = { CHARACTER = scope:RICE_socotra_zahra_character }
+			}
+			set_relation_friend = scope:RICE_socotra_zahra_character
+		}
+		add_courtier = scope:RICE_socotra_zahra_character
+	}
+}
+
+
+# You refuse to reduce restrictions - ruler of Oman gets a claim on Socotra, be prepared, Zahra becomes rival
+socotra.0033 = {
+	type = character_event
+	title = socotra.0033.t
+	desc = socotra.0033.desc
+	theme = realm
+	override_icon = {
+		reference = "gfx/interface/icons/event_types/type_diplomacy.dds"
+	}
+	
+	left_portrait = {
+		character = root
+		animation = disapproval
+	}	
+	right_portrait = {
+		character = scope:RICE_socotra_zahra_character
+		animation = anger
+	}
+	
+	option = { # Ok
+		name = socotra.0033.a
+		if = {
+			limit = {
+				has_character_flag = RICE_socotra_no_oman_found
+			}
+			scope:RICE_socotra_zahra_character = { select_and_move_to_pool_effect = yes }
+		}
+		else = {
+			scope:RICE_socotra_oman_muslim_savior = {
+				show_as_tooltip = { 
+					add_unpressed_claim = title:c_socotra
+					add_unpressed_claim = title:d_socotra
+				}
+			}		
+		}
+		if = {
+			limit = {
+				can_set_relation_rival_trigger = { CHARACTER = scope:RICE_socotra_zahra_character }
+			}
+			set_relation_rival = scope:RICE_socotra_zahra_character
+		}
+		scope:RICE_socotra_oman_muslim_savior = {
+			hidden_effect = {
+				trigger_event = socotra.0034
+			}
+		}	
+	}
+}
+
+
+
+# Poem sent to the Sultan in Oman
+socotra.0034 = {
+	type = letter_event
+	opening = {
+		desc = socotra.0034.opening
+	}
+	desc = socotra.0034.desc
+	
+	sender = {
+		character = scope:RICE_socotra_zahra_character
+		animation = personality_zealous
+	}
+
+	option = {
+		name = socotra.0034.a
+		add_unpressed_claim = title:c_socotra
+		add_unpressed_claim = title:d_socotra	
+		add_courtier = scope:RICE_socotra_zahra_character		
+	}
+}
+
+
+
+# If conquered by Muslim
+
+
+
+######################################################################################
+# 
+# MOON SACRIFICE EVENTS
+# 
+# socotra.0040-socotra.0049 reserved
+# 
+######################################################################################
+
+
+socotra.0040 = {
+	hidden = yes	
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+		# Choose appropriate location
+		title:b_suq-socotra.title_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_socotra_moon_sacrifice
+			}	
+		}
+	}
+}
+
+
+
+
+# Moon Sacrifice
+socotra.0041 = {
+	type = character_event
+	title = socotra.0041.t
+	desc = socotra.0041.desc
+	theme = RICE_theme_desert_night
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				NOT = { religion = { is_in_family = rf_pagan } }
+				exists = cp:councillor_court_chaplain
+			}
+			cp:councillor_court_chaplain = { save_scope_as = court_chaplain }
+			scope:court_chaplain = {
+				add_opinion = {
+					target = root
+					modifier = RICE_socotra_opinion_moon_heathen
+				}
+			}			
+		}
+	}
+	
+	option = { # Normal sacrifice
+		name = socotra.0041.a
+	}	
+	option = { # Great sacrifice
+		name = socotra.0041.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 25
+			}
+		}
+		remove_short_term_gold = 25
+		if = {
+			limit = {
+				NOT = { religion = { is_in_family = rf_pagan } }
+			}
+			add_piety = -50
+		}
+		stress_impact = {
+			greedy = medium_stress_impact_gain
+		}
+		add_character_flag = { flag = RICE_socotra_moon_sacrifice_great days = 1 }
+	}
+	option = { # Sacrifice commoner's hand
+		name = socotra.0041.c
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		if = {
+			limit = {
+				NOT = { religion = { is_in_family = rf_pagan } }
+			}
+			add_piety = -200
+		}
+		stress_impact = {
+			compassionate = medium_stress_impact_gain
+		}
+		add_character_flag = { flag = RICE_socotra_moon_sacrifice_commoners_hand days = 1 }
+	}
+	
+	after = {
+		hidden_effect = {
+			random_list = {
+				20 = {
+					modifier = {
+						add = 25
+						has_character_flag = RICE_socotra_moon_sacrifice_commoners_hand
+					}
+					modifier = {
+						add = 15
+						has_character_flag = RICE_socotra_moon_sacrifice_great
+					}
+					modifier = {
+						add = 5
+						has_trait = zealous
+					}
+					modifier = {
+						add = 5
+						has_trait = just
+					}
+					modifier = {
+						add = 5
+						has_trait = compassionate
+					}
+					modifier = {
+						add = 5
+						has_trait = generous
+					}
+					modifier = {
+						add = 5
+						has_trait = humble
+					}
+					send_interface_toast = {
+						left_icon = ROOT
+						title = socotra.0041.pos_major
+						title:c_socotra = {
+							add_county_modifier = {
+								modifier = RICE_socotra_moon_sacrifice_pos_major
+								years = 10
+							}
+						}
+					}
+				}
+				55 = {
+					modifier = {
+						add = 25
+						has_character_flag = RICE_socotra_moon_sacrifice_commoners_hand
+					}
+					modifier = {
+						add = 15
+						has_character_flag = RICE_socotra_moon_sacrifice_great
+					}
+					modifier = {
+						add = 5
+						has_trait = zealous
+					}
+					modifier = {
+						add = 5
+						has_trait = just
+					}
+					modifier = {
+						add = 5
+						has_trait = compassionate
+					}
+					modifier = {
+						add = 5
+						has_trait = generous
+					}
+					modifier = {
+						add = 5
+						has_trait = humble
+					}
+					send_interface_toast = {
+						left_icon = ROOT
+						title = socotra.0041.pos_minor
+						title:c_socotra = {
+							add_county_modifier = {
+								modifier = RICE_socotra_moon_sacrifice_pos_minor
+								years = 10
+							}
+						}
+					}
+				}
+				40 = {
+					modifier = {
+						add = 5
+						has_trait = cynical
+					}
+					modifier = {
+						add = 5
+						has_trait = arbitrary
+					}
+					modifier = {
+						add = 5
+						has_trait = callous
+					}
+					modifier = {
+						add = 5
+						has_trait = greedy
+					}
+					modifier = {
+						add = 5
+						has_trait = arrogant
+					}
+					send_interface_toast = {
+						left_icon = ROOT
+						title = socotra.0041.neg_minor
+						title:c_socotra = {
+							add_county_modifier = {
+								modifier = RICE_socotra_moon_sacrifice_neg_minor
+								years = 10
+							}
+						}
+					}
+				}
+				10 = {
+					modifier = {
+						add = 5
+						has_trait = cynical
+					}
+					modifier = {
+						add = 5
+						has_trait = arbitrary
+					}
+					modifier = {
+						add = 5
+						has_trait = callous
+					}
+					modifier = {
+						add = 5
+						has_trait = greedy
+					}
+					modifier = {
+						add = 5
+						has_trait = arrogant
+					}
+					send_interface_toast = {
+						left_icon = ROOT
+						title = socotra.0041.neg_major
+						title:c_socotra = {
+							add_county_modifier = {
+								modifier = RICE_socotra_moon_sacrifice_neg_major
+								years = 5
+							}
+						}
+					}
+				}
+			}
+		}	
+	}
+	
+
+	
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_socotra_moon_sacrifice_commoners_hand
+			}
+			remove_character_flag = RICE_socotra_moon_sacrifice_commoners_hand
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_socotra_moon_sacrifice_great
+			}
+			remove_character_flag = RICE_socotra_moon_sacrifice_great
+		}
+		trigger_event = {
+			id = socotra.0042
+			days = 1
+		}
+	}		
+	
+}
+
+
+
+socotra.0042 = {
+	hidden = yes	
+	immediate = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
+
+
+
+#####################################################################
+# 
+# GENERIC FLAVOR EVENTS FOR SOCOTRA
+# 
+# socotra.0050-0099 reserved
+# 
+#####################################################################
+
+
+
+# Overgrazing on Socotra
+socotra.0050 = {
+	type = character_event
+	title = socotra.0050.t
+	desc = socotra.0050.desc
+	theme = RICE_theme_socotra_tree
+	
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	
+	trigger = {
+		has_title = title:c_socotra
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+		modifier = {
+			add = 0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = generous
+		}
+	}
+
+	option = { # Ok
+		name = socotra.0050.a
+		title:c_socotra = {
+			add_county_modifier = {
+				modifier = RICE_socotra_goats_overgrazing
+				years = 10
+			}
+		}	
+	}
+}
+
+
+
+# Visit a pool in Socotra
+socotra.0051 = {
+	type = character_event
+	title = socotra.0051.t
+	desc = socotra.0051.desc
+	theme = RICE_theme_socotra_tree
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		has_title = title:c_socotra
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+	}
+
+	option = { # Ok
+		name = socotra.0051.a
+		stress_impact = {
+			base = minor_stress_impact_loss
+		}
+	}
+}
+
+
+# Visit Diksam Plateau to learn about Dragon's Blood
+socotra.0052 = {
+	type = character_event
+	title = socotra.0052.t
+	desc = socotra.0052.desc
+	theme = RICE_theme_socotra_tree
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		has_title = title:c_socotra
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	option = { # Ok
+		name = socotra.0052.a
+		add_character_modifier = {
+			modifier = RICE_socotra_learning_about_dragons_blood
+			years = 8
+		}
+	}
+}
+
+
+# Where does Dragon Blood come from?
+socotra.0053 = {
+	type = character_event
+	title = socotra.0053.t
+	desc = socotra.0053.desc
+	theme = RICE_theme_socotra_tree
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		has_title = title:c_socotra
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = fickle
+		}
+		modifier = {
+			add = -0.2
+			has_trait = stubborn
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+	}
+
+	option = { # Ok
+		name = socotra.0053.a
+		add_prestige = 15
+	}
+	option = { # Ok
+		name = socotra.0053.b
+		add_piety = 15
+	}
+}
+
+
+# Foreign traveler marvels at Socotra
+socotra.0054 = {
+	type = character_event
+	title = socotra.0054.t
+	desc = socotra.0054.desc
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	trigger = {
+		has_title = title:c_socotra
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = -0.2
+			has_trait = paranoid
+		}
+	}
+
+	option = { # Ok
+		name = socotra.0054.a
+		add_prestige = 50
+	}
+	option = { # Ok
+		name = socotra.0054.b
+		add_piety = 50
+	}
+	option = { # Ok
+		name = socotra.0054.c
+		add_prestige = 25
+		add_piety = 25
+	}
+}
+
+
+# Bawarij are rowdy this year
+socotra.0055 = {
+	type = character_event
+	title = socotra.0055.t
+	desc = socotra.0055.desc
+	theme = martial
+	override_background = { event_background = throne_room }
+	
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	
+	trigger = {
+		has_title = title:c_socotra
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = fickle
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+		modifier = {
+			add = 0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = -0.2
+			has_trait = stubborn
+		}
+	}
+
+	option = { # Send in soldiers to intimidate them
+		name = socotra.0055.a
+		add_prestige = -100
+		random_list = {
+			# Success
+			50 = {
+				modifier = {
+					add = 8
+					martial >= 10
+				}
+				modifier = {
+					add = 8
+					martial >= 15
+				}
+				modifier = {
+					add = 8
+					dread >= 50
+				}
+				modifier = {
+					add = 8
+					dread >= 75
+				}
+				modifier = {
+					add = 8
+					has_trait = wrathful
+				}
+				modifier = {
+					add = 8
+					has_trait = sadistic
+				}
+				desc = socotra.0055.a.success
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = socotra.0055.success
+					add_prestige = 50
+				}			
+			}
+			# Fail to hold it in until the dignitary is done
+			50 = {
+				modifier = {
+					add = 8
+					martial <= 4
+				}
+				modifier = {
+					add = 8
+					martial <= 8
+				}
+				modifier = {
+					add = 8
+					has_trait = craven
+				}
+				modifier = {
+					add = 8
+					has_trait = lazy
+				}
+				modifier = {
+					add = 8
+					has_trait = compassionate
+				}
+				modifier = {
+					add = 8
+					has_trait = forgiving
+				}
+				desc = socotra.0055.a.failure
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = socotra.0055.failure
+					title:c_socotra = {
+						add_county_modifier = {
+							modifier = RICE_socotra_bawarij_out_of_control
+							years = 10
+						}
+					}
+				}			
+			}
+		}
+	}
+	option = { # Negotiate with their leaders
+		name = socotra.0055.b
+		add_prestige = -100
+		random_list = {
+			# Success
+			50 = {
+				modifier = {
+					add = 8
+					diplomacy >= 10
+				}
+				modifier = {
+					add = 8
+					diplomacy >= 15
+				}
+				modifier = {
+					add = 8
+					dread >= 50
+				}
+				modifier = {
+					add = 8
+					dread >= 75
+				}
+				modifier = {
+					add = 8
+					has_trait = gregarious
+				}
+				modifier = {
+					add = 8
+					has_trait = calm
+				}
+				desc = socotra.0055.b.success
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = socotra.0055.success
+					add_prestige = 50
+				}			
+			}
+			# Fail to hold it in until the dignitary is done
+			50 = {
+				modifier = {
+					add = 8
+					diplomacy <= 4
+				}
+				modifier = {
+					add = 8
+					diplomacy <= 8
+				}
+				modifier = {
+					add = 8
+					has_trait = craven
+				}
+				modifier = {
+					add = 8
+					has_trait = lazy
+				}
+				modifier = {
+					add = 8
+					has_trait = trusting
+				}
+				modifier = {
+					add = 8
+					has_trait = paranoid
+				}
+				desc = socotra.0055.b.failure
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = socotra.0055.failure
+					title:c_socotra = {
+						add_county_modifier = {
+							modifier = RICE_socotra_bawarij_out_of_control
+							years = 10
+						}
+					}
+				}			
+			}
+		}
+	}
+	option = { # Not my problem
+		name = socotra.0055.c
+		title:c_socotra = {
+			add_county_modifier = {
+				modifier = RICE_socotra_bawarij_out_of_control
+				years = 10
+			}
+		}
+	}
+}
+
+
+# Socotra used to produce so much frankincense... alas!
+socotra.0056 = {
+	type = character_event
+	title = socotra.0056.t
+	desc = socotra.0056.desc
+	theme = realm
+	
+	right_portrait = root
+	
+	trigger = {
+		has_title = title:c_socotra
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = generous
+		}
+	}
+
+	option = { # Ok
+		name = socotra.0056.a
+		add_prestige = 25
+	}
+}
+
+
+# Visiting scholar asks about Socotra
+socotra.0057 = {
+	type = character_event
+	title = socotra.0057.t
+	desc = socotra.0057.desc
+	theme = realm
+	
+	right_portrait = root
+	
+	trigger = {
+		has_title = title:c_socotra
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+	}
+
+	option = { # Plants
+		name = socotra.0057.a
+		add_piety = 50
+	}
+	option = { # Family
+		name = socotra.0057.b
+		dynasty = { add_dynasty_prestige = 50 }
+	}
+	option = { # Trade
+		name = socotra.0057.c
+		add_prestige = 50
+	}
+	option = { # People
+		name = socotra.0057.d
+		add_prestige = 25
+		add_piety = 25
+	}
+}
+
+
+# Good luck from dolphins?
+socotra.0058 = {
+	type = character_event
+	title = socotra.0058.t
+	desc = socotra.0058.desc
+	theme = RICE_theme_socotra_beach
+	
+	right_portrait = root
+	
+	trigger = {
+		has_title = title:c_socotra
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+	}
+
+	option = { # Ok
+		name = socotra.0058.a
+		add_character_modifier = {
+			modifier = RICE_socotra_dolphin_sightings
+			years = 5
+		}
+	}
+}
