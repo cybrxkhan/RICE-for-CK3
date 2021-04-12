@@ -12,13 +12,12 @@ make_siwi_culture_effect = {
 		limit = {
 			any_close_family_member = {
 				is_landed = no
-				NOT = { is_spouse_of = root }
 			}
 		}
 		every_close_family_member = {
 			custom = all_family_members
 			limit = {
-				NOT = { is_spouse_of = root }
+				is_landed = no
 			}
 			set_culture = culture:butr
 		}
@@ -49,13 +48,11 @@ make_siwi_culture_effect = {
 					limit = {
 						any_close_family_member = {
 							is_landed = no
-							NOT = { is_spouse_of = prev }
 						}
 					}
 					every_close_family_member = {
 						limit = {
 							is_landed = no
-							NOT = { is_spouse_of = prev }
 						}
 						set_culture = culture:butr
 					}
@@ -69,7 +66,10 @@ make_south_arabian_culture_effect = {
 	#Convert your, and your whole family's, culture
 	set_culture = culture:south_arabian
 	if = {
-		limit = { any_spouse = { is_landed = no } }
+		limit = {
+			is_married = yes
+			any_spouse = { is_landed = no }
+		}
 		every_spouse = {
 			set_culture = culture:south_arabian
 		}
@@ -78,13 +78,12 @@ make_south_arabian_culture_effect = {
 		limit = {
 			any_close_family_member = {
 				is_landed = no
-				NOT = { is_spouse_of = root }
 			}
 		}
 		every_close_family_member = {
 			custom = all_family_members
 			limit = {
-				NOT = { is_spouse_of = root }
+				is_landed = no
 			}
 			set_culture = culture:south_arabian
 		}
@@ -115,13 +114,11 @@ make_south_arabian_culture_effect = {
 					limit = {
 						any_close_family_member = {
 							is_landed = no
-							NOT = { is_spouse_of = prev }
 						}
 					}
 					every_close_family_member = {
 						limit = {
 							is_landed = no
-							NOT = { is_spouse_of = prev }
 						}
 						set_culture = culture:south_arabian
 					}
@@ -145,13 +142,11 @@ make_south_arabian_culture_effect = {
 					limit = {
 						any_close_family_member = {
 							is_landed = no
-							NOT = { is_spouse_of = prev }
 						}
 					}
 					every_close_family_member = {
 						limit = {
 							is_landed = no
-							NOT = { is_spouse_of = prev }
 						}
 						set_culture = culture:south_arabian
 					}
@@ -162,13 +157,31 @@ make_south_arabian_culture_effect = {
 }
 
 RICE_add_pirate_den_effect = {
-	capital_province = {
-		add_special_building = RICE_pirate_den_01
-	}
 	capital_county = {
 		add_county_modifier = {
 			modifier = RICE_socotra_pirate_infestation
-			years = 20
+			years = 10
+		}
+	}
+	if = {
+		limit = {
+			capital_province = {
+				is_coastal = yes
+			}
+		}
+		capital_province = {
+			add_special_building = RICE_pirate_den_01
+		}
+	}
+	else = {
+		capital_county = {
+			random_county_province = {
+				limit = {
+					is_coastal = yes
+					has_holding = yes
+				}
+				add_special_building = RICE_pirate_den_01
+			}		
 		}
 	}
 }
@@ -346,156 +359,6 @@ RICE_generate_small_family = {
 					employer = scope:employer
 					save_scope_as = child_3
 				}
-			}
-		}
-	}
-}
-
-make_socotra_diverse_effect = {
-	every_courtier = {
-		limit = {
-			is_close_or_extended_family_of = no
-			NOT = { is_spouse_of = root }
-		}
-		death = {
-			death_reason = death_disappearance
-		}		
-	}
-	# South Arabian female
-	create_character = {
-		gender = female
-		faith = root.faith
-		culture = culture:south_arabian
-		random_traits = yes
-	}
-	# South Arabian male
-	create_character = {
-		gender = male
-		faith = root.faith
-		culture = culture:south_arabian
-		random_traits = yes
-	}
-	# Female - random
-	create_character = {
-		gender = female
-		faith = root.faith
-		random_culture = {
-		    culture:swahili = { weight = { base 10 } }
-		    culture:ethiopian = { weight = { base 10 } }
-		    culture:somali = { weight = { base 10 } }
-		    culture:gujarati = { weight = { base 10 } }
-		    culture:sindhi = { weight = { base 10 } }
-		    culture:kannada = { weight = { base 10 } }
-		    culture:persian = { weight = { base 10 } }
-		    culture:egyptian = { weight = { base 10 } }
-		    culture:yemeni = { weight = { base 10 } }
-		}
-		random_traits = yes
-	}
-	# South Arabian male
-	create_character = {
-		gender = male
-		faith = root.faith
-		culture = culture:south_arabian
-		random_traits = yes
-	}
-	# Iranian male
-	create_character = {
-		gender = male
-		faith = root.faith
-		random_culture = {
-		    culture:persian = { weight = { base 10 } }
-		    culture:sogdian = { weight = { base 10 } }
-		    culture:khwarezmian = { weight = { base 10 } }
-		}
-		random_traits = yes
-		after_creation = {
-			# Set religion randomly - Zoroastrian, Buddhist, Muslim, Manichean, Nestorian, or Socotran ruler's religion (if it's something else)
-			random_list = {
-				10 = { }
-				10 = { set_character_faith = faith:mahayana }
-				10 = { set_character_faith = faith:nestorian }
-				10 = { set_character_faith = faith:maturidi }
-				10 = { set_character_faith = faith:mazdayasna }
-				10 = { set_character_faith = faith:khurramism }
-				10 = { set_character_faith = faith:manichean }
-			}
-		}
-	}
-	# Arabic male
-	create_character = {
-		gender = male
-		faith = root.faith
-		random_culture = {
-		    culture:yemeni = { weight = { base 10 } }
-		    culture:egyptian = { weight = { base 10 } }
-		    culture:levantine = { weight = { base 10 } }
-		    culture:bedouin = { weight = { base 10 } }
-		}
-		random_traits = yes
-		after_creation = {
-			# Set religion randomly - Zoroastrian, Buddhist, Muslim, Manichean, Nestorian, or Socotran ruler's religion (if it's something else)
-			random_list = {
-				10 = { }
-				10 = { set_character_faith = faith:nestorian }
-				10 = { set_character_faith = faith:ashari }
-				10 = { set_character_faith = faith:ismaili }
-				10 = { set_character_faith = faith:ibadi }
-			}
-		}
-	}
-	# Indian male
-	create_character = {
-		gender = male
-		faith = root.faith
-		random_culture = {
-		    culture:gujarati = { weight = { base 10 } }
-		    culture:sindhi = { weight = { base 10 } }
-		    culture:marathi = { weight = { base 10 } }
-		    culture:tamil = { weight = { base 10 } }
-		    culture:kannada = { weight = { base 10 } }
-		    culture:sinhala = { weight = { base 10 } }
-		}
-		random_traits = yes
-		after_creation = {
-			# Set religion randomly - Hindu, Buddhist, Nestorian, Muslim, or Socotran ruler's religion (if it's something else)
-			random_list = {
-				10 = { }
-				25 = { set_character_faith = faith:vaishnavism }
-				25 = { set_character_faith = faith:advaitism }
-				25 = { set_character_faith = faith:shaivism }
-				25 = { set_character_faith = faith:srikula_shaktism }
-				25 = { set_character_faith = faith:kalikula_shaktism }
-				25 = { set_character_faith = faith:smartism }
-				25 = { set_character_faith = faith:krishnaism }
-				10 = { set_character_faith = faith:theravada }
-				10 = { set_character_faith = faith:vajrayana }
-				10 = { set_character_faith = faith:mahayana }
-				10 = { set_character_faith = faith:nestorian }
-				10 = { set_character_faith = faith:ashari }
-				10 = { set_character_faith = faith:maturidi }
-			}
-		}
-	}
-	# African male
-	create_character = {
-		gender = male
-		faith = root.faith
-		random_culture = {
-		    culture:ethiopian = { weight = { base 10 } }
-		    culture:nubian = { weight = { base 10 } }
-		    culture:somali = { weight = { base 10 } }
-		    culture:swahili = { weight = { base 10 } }
-		}
-		random_traits = yes
-		after_creation = {
-			# Set religion randomly - Hindu, Buddhist, Nestorian, Muslim, or Socotran ruler's religion (if it's something else)
-			random_list = {
-				10 = { }
-				10 = { set_character_faith = faith:nestorian }
-				10 = { set_character_faith = faith:coptic }
-				10 = { set_character_faith = faith:ashari }
-				10 = { set_character_faith = faith:waaqism_pagan }
 			}
 		}
 	}

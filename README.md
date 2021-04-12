@@ -1,6 +1,10 @@
-# Regional Immersion and Cultural Enrichment (a CK3 Mod)
+# Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.1.2 "Bard" (Released 3/21/21)
+## Latest Version: Version 1.2.0 "Dragon's Blood" (Released 4/11/21)
+
+**Newest Flavor Pack: Socotra, Isle of Dragon's Blood**
+
+**Next Flavor Pack: TBD**
 
 RICE is a mod that adds immersion to different regions, cultures, and religions in CK3. It is a collection of themed flavor "packs" similar to PI's official flavor pack DLCs, but often cover lesser-known places and peoples. It is a spiritual successor to my Immersion Packs for CK2.
 
@@ -18,6 +22,7 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 - [Chios: Isle of Mastic](https://docs.google.com/document/d/1Lu4cGXN7hSaDtYd_wsXKbjAeIOYMoYVuum6zfYfBc_k/pub)
 - [Siberia: People of the Reindeer](https://docs.google.com/document/d/e/2PACX-1vTOr-vq1KkHRJ_gxPOlb9brCKde3TRzN_1TVZwfPmSiIIW5TEAJGkQ0eNGwiEfvgape1pDAKau3ZcvD/pub)
 - [Siwa: Oases of the Western Desert](https://docs.google.com/document/d/1OOXqqBEGv94IBAH-rIsjoBog1YFtVAFg_TPsuIQmhtg/pub)
+- [Socotra: Isle of Dragon's Blood](https://docs.google.com/document/d/e/2PACX-1vRs_x_9wjofcveP_yhymlL5TWPB1UdSQyi_C_M1z4dWpFg3lqHgHwGpFD2xfkf0-RdsKIlRekQsLD4s/pub)
 
 
 ## Manual Installation Steps

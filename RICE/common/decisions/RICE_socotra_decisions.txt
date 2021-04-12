@@ -1,5 +1,4 @@
 ﻿
-
 RICE_socotra_collaborate_with_pirates = {
 	picture = "gfx/interface/illustrations/decisions/decision_middle_eastern_port.dds"
 	major = yes
@@ -11,9 +10,21 @@ RICE_socotra_collaborate_with_pirates = {
 	is_shown = {
 		is_landed = yes
 		exists = capital_province
+		#any_sub_realm_county = {
+		#	any_county_province = {
+		#		is_coastal = yes
+		#	}
+		#	RICE_socotra_has_pirate_den_trigger = no
+		#	RICE_socotra_indian_ocean_port_trigger = yes
+		#}
 		# is_coastal_county = yes
-		capital_province = {
-			RICE_socotra_indian_ocean_port_trigger = yes
+		# Must have a capital coastal county that does not have a pirate den
+		capital_county = {
+			any_county_province = {
+				RICE_socotra_indian_ocean_region_trigger = yes
+				is_coastal = yes
+				has_holding = yes
+			}
 		}
 		NOT = {
 			any_held_county = {
@@ -21,21 +32,26 @@ RICE_socotra_collaborate_with_pirates = {
 			}			
 		}
 	}
+	
 
 	is_valid = {
 		#prestige_level >= 2
 		custom_description = {
 			text = RICE_socotra_collaborate_with_pirates_requirement_1
-			capital_province = {
-				RICE_socotra_indian_ocean_port_trigger = yes
+			capital_county = {
+				any_county_province = {
+					RICE_socotra_indian_ocean_region_trigger = yes
+					is_coastal = yes
+					has_holding = yes
+				}
 			}
 		}
 		custom_description = {
 			text = RICE_socotra_collaborate_with_pirates_requirement_3
 			NOT = {
-				any_held_county = {
+				any_held_county = { 
 					RICE_socotra_has_pirate_den_trigger = yes
-				}			
+				}		
 			}
 		}
 		custom_description = {
@@ -55,6 +71,14 @@ RICE_socotra_collaborate_with_pirates = {
 		add_prestige = 800
 		dynasty = { add_dynasty_prestige = 400 }
 		custom_tooltip = RICE_socotra_collaborate_with_pirates_effect_tooltip
+		show_as_tooltip = {
+			capital_county = {
+				add_county_modifier = {
+					modifier = RICE_socotra_pirate_infestation
+					years = 10
+				}
+			}
+		}
 		if = {
 			limit = {
 				has_game_rule = RICE_historical_context_on

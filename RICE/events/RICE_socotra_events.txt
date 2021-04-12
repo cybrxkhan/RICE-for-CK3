@@ -28,6 +28,349 @@ namespace = socotra
 ######################################################################################
 
 
+# Socotra court at game start
+socotra.0001 = {
+	hidden = yes
+
+	immediate = {
+		hidden_effect = {
+		
+			cp:councillor_chancellor = { save_scope_as = chancellor }
+			cp:councillor_marshal = { save_scope_as = marshal }
+			cp:councillor_steward = { save_scope_as = steward }
+			cp:councillor_spymaster = { save_scope_as = spymaster }
+			cp:councillor_court_chaplain = { save_scope_as = chaplain }
+		
+			# This is to prevent the "Fire Councillor" popups from appearing
+			if = {
+				limit = {
+					scope:chancellor = { is_landed = no }
+				}
+				fire_councillor = scope:chancellor
+			}
+			if = {
+				limit = {
+					scope:marshal = { is_landed = no }
+				}
+				fire_councillor = scope:marshal
+			}
+			if = {
+				limit = {
+					scope:steward = { is_landed = no }
+				}
+				fire_councillor = scope:steward
+			}
+			if = {
+				limit = {
+					scope:spymaster = { is_landed = no }
+				}
+				fire_councillor = scope:spymaster
+			}
+			scope:chaplain = {
+				add_character_flag = RICE_socotra_dont_kill
+			}
+			
+			# They ded
+			every_courtier = {
+				limit = {
+					NOR = {
+						is_landed = yes
+						is_close_or_extended_family_of = root
+						is_spouse_of = root
+						has_character_flag = RICE_socotra_dont_kill
+					}
+				}
+				death = {
+					death_reason = death_disappearance
+				}		
+			}
+			
+			# South Arabian female
+			create_character = {
+				#location = root.location
+				gender = female
+				faith = root.faith
+				culture = culture:south_arabian
+				random_traits = yes
+				employer = root
+			}
+			# South Arabian male
+			create_character = {
+				#location = root.location
+				gender = male
+				faith = root.faith
+				culture = culture:south_arabian
+				random_traits = yes
+				employer = root
+			}
+			# Female - random
+			create_character = {
+				#location = root.location
+				gender = female
+				faith = root.faith
+				random_culture = {
+					culture:swahili = { weight = { base 10 } }
+					culture:ethiopian = { weight = { base 10 } }
+					culture:somali = { weight = { base 10 } }
+					culture:gujarati = { weight = { base 10 } }
+					culture:sindhi = { weight = { base 10 } }
+					culture:kannada = { weight = { base 10 } }
+					culture:persian = { weight = { base 10 } }
+					culture:egyptian = { weight = { base 10 } }
+					culture:yemeni = { weight = { base 10 } }
+				}
+				random_traits = yes
+				employer = root
+			}
+			# Iranian male
+			create_character = {
+				#location = root.location
+				gender = male
+				faith = root.faith
+				random_culture = {
+					culture:persian = { weight = { base 10 } }
+					culture:sogdian = { weight = { base 10 } }
+					culture:khwarezmian = { weight = { base 10 } }
+				}
+				random_traits = yes
+				employer = root
+				after_creation = {
+					# Set religion randomly - Zoroastrian, Buddhist, Muslim, Manichean, Nestorian, or Socotran ruler's religion (if it's something else)
+					random_list = {
+						10 = { }
+						10 = { set_character_faith = faith:mahayana }
+						10 = { set_character_faith = faith:nestorian }
+						10 = { set_character_faith = faith:maturidi }
+						10 = { set_character_faith = faith:mazdayasna }
+						10 = { set_character_faith = faith:khurramism }
+						10 = { set_character_faith = faith:manichean }
+					}
+				}
+			}
+			# Arabic male
+			create_character = {
+				#location = root.location
+				gender = male
+				faith = root.faith
+				random_culture = {
+					culture:yemeni = { weight = { base 10 } }
+					culture:egyptian = { weight = { base 10 } }
+					culture:levantine = { weight = { base 10 } }
+					culture:bedouin = { weight = { base 10 } }
+				}
+				random_traits = yes
+				employer = root
+				after_creation = {
+					# Set religion randomly - Zoroastrian, Buddhist, Muslim, Manichean, Nestorian, or Socotran ruler's religion (if it's something else)
+					random_list = {
+						10 = { }
+						10 = { set_character_faith = faith:nestorian }
+						10 = { set_character_faith = faith:ashari }
+						10 = { set_character_faith = faith:ismaili }
+						10 = { set_character_faith = faith:ibadi }
+					}
+				}
+			}
+			# Indian male
+			create_character = {
+				#location = root.location
+				gender = male
+				faith = root.faith
+				random_culture = {
+					culture:gujarati = { weight = { base 10 } }
+					culture:sindhi = { weight = { base 10 } }
+					culture:marathi = { weight = { base 10 } }
+					culture:tamil = { weight = { base 10 } }
+					culture:kannada = { weight = { base 10 } }
+					culture:sinhala = { weight = { base 10 } }
+				}
+				random_traits = yes
+				employer = root
+				after_creation = {
+					# Set religion randomly - Hindu, Buddhist, Nestorian, Muslim, or Socotran ruler's religion (if it's something else)
+					random_list = {
+						10 = { }
+						25 = { set_character_faith = faith:vaishnavism }
+						25 = { set_character_faith = faith:advaitism }
+						25 = { set_character_faith = faith:shaivism }
+						25 = { set_character_faith = faith:srikula_shaktism }
+						25 = { set_character_faith = faith:kalikula_shaktism }
+						25 = { set_character_faith = faith:smartism }
+						25 = { set_character_faith = faith:krishnaism }
+						10 = { set_character_faith = faith:theravada }
+						10 = { set_character_faith = faith:vajrayana }
+						10 = { set_character_faith = faith:mahayana }
+						10 = { set_character_faith = faith:nestorian }
+						10 = { set_character_faith = faith:ashari }
+						10 = { set_character_faith = faith:maturidi }
+					}
+				}
+			}
+			# African male
+			create_character = {
+				#location = root.location
+				gender = male
+				faith = root.faith
+				random_culture = {
+					culture:ethiopian = { weight = { base 10 } }
+					culture:nubian = { weight = { base 10 } }
+					culture:somali = { weight = { base 10 } }
+					culture:swahili = { weight = { base 10 } }
+				}
+				random_traits = yes
+				employer = root
+				after_creation = {
+					# Set religion randomly - Hindu, Buddhist, Nestorian, Muslim, or Socotran ruler's religion (if it's something else)
+					random_list = {
+						10 = { }
+						10 = { set_character_faith = faith:nestorian }
+						10 = { set_character_faith = faith:coptic }
+						10 = { set_character_faith = faith:ashari }
+						10 = { set_character_faith = faith:waaqism_pagan }
+					}
+				}
+			}
+			random_list = {
+				10 = {
+					# South Arabian male
+					create_character = {
+						#location = root.location
+						gender = male
+						faith = root.faith
+						culture = culture:south_arabian
+						random_traits = yes
+						employer = root
+					}				
+				}
+				10 = {
+					# Iranian male
+					create_character = {
+						#location = root.location
+						gender = male
+						faith = root.faith
+						random_culture = {
+							culture:persian = { weight = { base 10 } }
+							culture:sogdian = { weight = { base 10 } }
+							culture:khwarezmian = { weight = { base 10 } }
+						}
+						random_traits = yes
+						employer = root
+						after_creation = {
+							# Set religion randomly - Zoroastrian, Buddhist, Muslim, Manichean, Nestorian, or Socotran ruler's religion (if it's something else)
+							random_list = {
+								10 = { }
+								10 = { set_character_faith = faith:mahayana }
+								10 = { set_character_faith = faith:nestorian }
+								10 = { set_character_faith = faith:maturidi }
+								10 = { set_character_faith = faith:mazdayasna }
+								10 = { set_character_faith = faith:khurramism }
+								10 = { set_character_faith = faith:manichean }
+							}
+						}
+					}				
+				}
+				10 = {
+					# Arabic male
+					create_character = {
+						#location = root.location
+						gender = male
+						faith = root.faith
+						random_culture = {
+							culture:yemeni = { weight = { base 10 } }
+							culture:egyptian = { weight = { base 10 } }
+							culture:levantine = { weight = { base 10 } }
+							culture:bedouin = { weight = { base 10 } }
+						}
+						random_traits = yes
+						employer = root
+						after_creation = {
+							# Set religion randomly - Zoroastrian, Buddhist, Muslim, Manichean, Nestorian, or Socotran ruler's religion (if it's something else)
+							random_list = {
+								10 = { }
+								10 = { set_character_faith = faith:nestorian }
+								10 = { set_character_faith = faith:ashari }
+								10 = { set_character_faith = faith:ismaili }
+								10 = { set_character_faith = faith:ibadi }
+							}
+						}
+					}				
+				}
+				10 = {
+					# Indian male
+					create_character = {
+						#location = root.location
+						gender = male
+						faith = root.faith
+						random_culture = {
+							culture:gujarati = { weight = { base 10 } }
+							culture:sindhi = { weight = { base 10 } }
+							culture:marathi = { weight = { base 10 } }
+							culture:tamil = { weight = { base 10 } }
+							culture:kannada = { weight = { base 10 } }
+							culture:sinhala = { weight = { base 10 } }
+						}
+						random_traits = yes
+						employer = root
+						after_creation = {
+							# Set religion randomly - Hindu, Buddhist, Nestorian, Muslim, or Socotran ruler's religion (if it's something else)
+							random_list = {
+								10 = { }
+								25 = { set_character_faith = faith:vaishnavism }
+								25 = { set_character_faith = faith:advaitism }
+								25 = { set_character_faith = faith:shaivism }
+								25 = { set_character_faith = faith:srikula_shaktism }
+								25 = { set_character_faith = faith:kalikula_shaktism }
+								25 = { set_character_faith = faith:smartism }
+								25 = { set_character_faith = faith:krishnaism }
+								10 = { set_character_faith = faith:theravada }
+								10 = { set_character_faith = faith:vajrayana }
+								10 = { set_character_faith = faith:mahayana }
+								10 = { set_character_faith = faith:nestorian }
+								10 = { set_character_faith = faith:ashari }
+								10 = { set_character_faith = faith:maturidi }
+							}
+						}
+					}				
+				}
+				10 = {
+					# African male
+					create_character = {
+						#location = root.location
+						gender = male
+						faith = root.faith
+						random_culture = {
+							culture:ethiopian = { weight = { base 10 } }
+							culture:nubian = { weight = { base 10 } }
+							culture:somali = { weight = { base 10 } }
+							culture:swahili = { weight = { base 10 } }
+						}
+						random_traits = yes
+						employer = root
+						after_creation = {
+							# Set religion randomly - Hindu, Buddhist, Nestorian, Muslim, or Socotran ruler's religion (if it's something else)
+							random_list = {
+								10 = { }
+								10 = { set_character_faith = faith:nestorian }
+								10 = { set_character_faith = faith:coptic }
+								10 = { set_character_faith = faith:ashari }
+								10 = { set_character_faith = faith:waaqism_pagan }
+							}
+						}
+					}				
+				}
+			}
+		}	
+	}
+	
+	after = {
+		scope:chaplain = {
+			remove_character_flag = RICE_socotra_dont_kill
+		}	
+	}
+	
+}
+
+
 # Work together with the pirates
 socotra.0005 = {
 	type = character_event
@@ -2028,6 +2371,132 @@ socotra.0024 = {
 				}
 				desc = socotra.0024.desc.winner_9
 			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_10
+				}
+				desc = socotra.0024.desc.winner_10
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_11
+				}
+				desc = socotra.0024.desc.winner_11
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_12
+				}
+				desc = socotra.0024.desc.winner_12
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_13
+				}
+				desc = socotra.0024.desc.winner_13
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_14
+				}
+				desc = socotra.0024.desc.winner_14
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_15
+				}
+				desc = socotra.0024.desc.winner_15
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_16
+				}
+				desc = socotra.0024.desc.winner_16
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_17
+				}
+				desc = socotra.0024.desc.winner_17
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_18
+				}
+				desc = socotra.0024.desc.winner_18
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_19
+				}
+				desc = socotra.0024.desc.winner_19
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_20
+				}
+				desc = socotra.0024.desc.winner_20
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_21
+				}
+				desc = socotra.0024.desc.winner_21
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_22
+				}
+				desc = socotra.0024.desc.winner_22
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_23
+				}
+				desc = socotra.0024.desc.winner_23
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_24
+				}
+				desc = socotra.0024.desc.winner_24
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_25
+				}
+				desc = socotra.0024.desc.winner_25
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_26
+				}
+				desc = socotra.0024.desc.winner_26
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_27
+				}
+				desc = socotra.0024.desc.winner_27
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_28
+				}
+				desc = socotra.0024.desc.winner_28
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_29
+				}
+				desc = socotra.0024.desc.winner_29
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_winner_30
+				}
+				desc = socotra.0024.desc.winner_30
+			}
 			#desc = socotra.0024.desc.mid
 		}
 		first_valid = {
@@ -2085,6 +2554,132 @@ socotra.0024 = {
 				}
 				desc = socotra.0024.desc.poem_9
 			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_10
+				}
+				desc = socotra.0024.desc.poem_10
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_11
+				}
+				desc = socotra.0024.desc.poem_11
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_12
+				}
+				desc = socotra.0024.desc.poem_12
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_13
+				}
+				desc = socotra.0024.desc.poem_13
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_14
+				}
+				desc = socotra.0024.desc.poem_14
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_15
+				}
+				desc = socotra.0024.desc.poem_15
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_16
+				}
+				desc = socotra.0024.desc.poem_16
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_17
+				}
+				desc = socotra.0024.desc.poem_17
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_18
+				}
+				desc = socotra.0024.desc.poem_18
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_19
+				}
+				desc = socotra.0024.desc.poem_19
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_20
+				}
+				desc = socotra.0024.desc.poem_20
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_21
+				}
+				desc = socotra.0024.desc.poem_21
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_22
+				}
+				desc = socotra.0024.desc.poem_22
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_23
+				}
+				desc = socotra.0024.desc.poem_23
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_24
+				}
+				desc = socotra.0024.desc.poem_24
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_25
+				}
+				desc = socotra.0024.desc.poem_25
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_26
+				}
+				desc = socotra.0024.desc.poem_26
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_27
+				}
+				desc = socotra.0024.desc.poem_27
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_28
+				}
+				desc = socotra.0024.desc.poem_28
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_29
+				}
+				desc = socotra.0024.desc.poem_29
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_socotra_poetry_contest_poem_30
+				}
+				desc = socotra.0024.desc.poem_30
+			}
 		}
 		#desc = socotra.0024.desc.end
 	}
@@ -2116,6 +2711,27 @@ socotra.0024 = {
 			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_7 days = 1 } }
 			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_8 days = 1 } }
 			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_9 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_10 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_11 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_12 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_13 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_14 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_15 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_16 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_17 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_18 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_19 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_20 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_21 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_22 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_23 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_24 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_25 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_26 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_27 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_28 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_29 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_winner_30 days = 1 } }
 		}
 	
 		# Choose winning poem
@@ -2129,6 +2745,27 @@ socotra.0024 = {
 			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_7 days = 1 } }
 			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_8 days = 1 } }
 			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_9 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_10 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_11 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_12 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_13 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_14 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_15 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_16 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_17 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_18 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_19 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_20 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_21 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_22 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_23 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_24 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_25 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_26 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_27 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_28 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_29 days = 1 } }
+			10 = { add_character_flag = { flag = RICE_socotra_poetry_contest_poem_30 days = 1 } }
 		}
 		
 	}
