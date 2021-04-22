@@ -1,0 +1,78 @@
+﻿
+RICE_send_qinghaicong_horses = {
+	category = interaction_category_friendly
+	common_interaction = yes
+
+	auto_accept = yes
+	
+	ai_targets = {
+		ai_recipients = scripted_relations
+	}
+	ai_targets = {
+		ai_recipients = liege
+	}
+	ai_targets = {
+		ai_recipients = neighboring_rulers
+		ai_recipients = peer_vassals
+		max = 10
+	}
+	ai_targets = {
+		ai_recipients = vassals
+		max = 10
+	}
+	ai_target_quick_trigger = {
+		adult = yes
+	}
+	
+	cooldown = { years = 1 }
+	cooldown_against_recipient = { years = 15 }
+	
+	is_shown = {
+		NOT = {
+			scope:recipient = scope:actor
+		}
+		scope:actor = {	
+			has_character_modifier = RICE_tuyuhun_character_owns_qinghaicong_horses
+		}
+		scope:recipient = {
+			#is_ai = yes
+			is_adult = yes
+		}
+	}
+	
+	is_valid = {
+		scope:actor = {
+			#OR = {
+			#	is_ai = no
+				gold >= medium_gold_value
+			#}
+		}
+	}
+	
+	on_accept = {
+		scope:actor = {
+			remove_short_term_gold = medium_gold_value
+			#trigger_event = tuyuhun.0010
+			trigger_event = {
+				id = tuyuhun.0010
+				days = 1
+			}
+		}
+		scope:recipient = {
+			show_as_tooltip = {
+				add_character_modifier = {
+					modifier = RICE_tuyuhun_character_gifted_qinghaicong_horses
+				}
+				add_opinion = {
+					target = scope:actor
+					modifier = RICE_tuyuhun_opinion_qinghaicong_horses
+				}				
+			}
+			#trigger_event = tuyuhun.0011
+			trigger_event = {
+				id = tuyuhun.0011
+				days = 1
+			}
+		}
+	}
+}

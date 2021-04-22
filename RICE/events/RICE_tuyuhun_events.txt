@@ -1,0 +1,644 @@
+﻿###############################################################################
+# 
+# TUYUHUN: Horsemen of Qinghai
+# 
+# tuyuhun.0000-tuyuhun.0019	Misc Events
+# tuyuhun.0020-tuyuhun.0039	Nadun Events
+# tuyuhun.0040-tuyuhun.0059	Tuyuhun Flavor Events
+# 
+###############################################################################
+
+namespace = tuyuhun
+
+######################################################################################
+# 
+# MISCELLANEOUS EVENTS
+# 
+# tuyuhun.0000-tuyuhun.0019 reserved
+# 
+######################################################################################
+
+
+# Tuyuhun Kingdom restored
+tuyuhun.0001 = {
+	type = character_event
+	title = tuyuhun.0001.t
+	desc = tuyuhun.0001.desc
+	theme = realm
+	
+	left_portrait = {
+		character = scope:tuyuhun_ruler
+		animation = personality_bold
+	}
+	
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		restore_tuyuhun_kingdom_effect = yes
+	}
+
+	option = {
+		name = tuyuhun.0001.a
+		every_player = {
+			limit = {
+				#NOT = { this = scope:tuyuhun_ruler }
+				is_within_diplo_range = { CHARACTER = scope:tuyuhun_ruler }
+			}
+			trigger_event = tuyuhun.0002
+		}
+	}
+}
+
+# Tuyuhun Kingdom restored
+tuyuhun.0002 = {
+	type = character_event
+	title = tuyuhun.0002.t
+	desc = tuyuhun.0002.desc
+	theme = realm
+	
+	left_portrait = {
+		character = scope:tuyuhun_ruler
+		animation = personality_bold
+	}
+
+	option = { # OK
+		name = tuyuhun.0002.a
+	}
+}
+
+# Change Tuyuhun horse modifiers
+tuyuhun.0003 = {
+	hidden = yes
+	trigger = {
+		OR = {
+			scope:title = title:c_fuqi
+			scope:title = title:c_gerqen
+		}
+	}
+	immediate = {
+		if = {
+			limit = { 
+				scope:previous_holder = { 
+					is_alive = yes
+					has_character_modifier = RICE_tuyuhun_character_owns_qinghaicong_horses
+					NOR = {
+						has_title = title:c_fuqi
+						has_title = title:c_gerqen
+					}
+				}
+			}
+			scope:previous_holder = { remove_character_modifier = RICE_tuyuhun_character_owns_qinghaicong_horses }
+		}
+		add_character_modifier = {
+			modifier = RICE_tuyuhun_character_owns_qinghaicong_horses
+		}
+	}
+}
+
+
+
+# Gift target receives Qinghaicong horses
+tuyuhun.0010 = {
+	type = character_event
+	title = tuyuhun.0010.t
+	desc = tuyuhun.0010.desc
+	theme = realm
+	
+	left_portrait = scope:recipient
+	
+	immediate = {
+		scope:recipient = {
+			show_as_tooltip = {
+				add_character_modifier = {
+					modifier = RICE_tuyuhun_character_gifted_qinghaicong_horses
+				}
+				add_opinion = {
+					target = scope:actor
+					modifier = RICE_tuyuhun_opinion_qinghaicong_horses
+				}			
+			}
+		}	
+	}
+
+	option = { # OK
+		name = tuyuhun.0010.a
+	}
+}
+
+
+
+# Gift target receives Qinghaicong horses
+tuyuhun.0011 = {
+	type = letter_event
+	opening = {
+		desc = tuyuhun.0011.opening
+	}
+	desc = tuyuhun.0011.desc
+	
+	sender = scope:actor
+	
+	immediate = {
+		add_character_modifier = {
+			modifier = RICE_tuyuhun_character_gifted_qinghaicong_horses
+		}
+		add_opinion = {
+			target = scope:actor
+			modifier = RICE_tuyuhun_opinion_qinghaicong_horses
+		}	
+	}
+
+	option = {
+		name = tuyuhun.0011.a
+	}
+}
+
+
+
+
+######################################################################################
+# 
+# NADUN EVENTS
+# 
+# tuyuhun.0020-tuyuhun.0039 reserved
+# 
+######################################################################################
+
+# Prepare for Nadun
+tuyuhun.0020 = {
+	type = character_event
+	title = tuyuhun.0020.t
+	desc = tuyuhun.0020.desc
+	theme = friendly
+	
+	right_portrait = root
+	
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+	}
+	
+	option = { # Ok
+		name = tuyuhun.0020.a
+		# Choose appropriate location
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_tuyuhun_nadun_festival
+			}	
+		}
+	}
+}
+
+
+# Nadun begins
+tuyuhun.0021 = {
+	type = character_event
+	title = tuyuhun.0021.t
+	desc = tuyuhun.0021.desc
+	theme = RICE_theme_festival_generic
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Ok
+		name = tuyuhun.0021.a
+		hidden_effect = {
+			random = {
+				chance = 20
+				trigger_event = {
+					id = tuyuhun.0024
+					days = { 5 32 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = tuyuhun.0025
+					days = { 5 32 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = tuyuhun.0026
+					days = { 5 32 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = tuyuhun.0027
+					days = { 5 32 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = tuyuhun.0028
+					days = { 5 32 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = tuyuhun.0029
+					days = { 5 32 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = tuyuhun.0030
+					days = { 5 32 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = tuyuhun.0031
+					days = { 5 32 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = tuyuhun.0032
+					days = { 5 32 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = tuyuhun.0033
+					days = { 5 32 }
+				}
+			}
+		}
+		trigger_event = {
+			id = tuyuhun.0022
+			days = { 35 50 }
+		}
+	}
+}
+
+# Nadun ends
+tuyuhun.0022 = {
+	type = character_event
+	title = tuyuhun.0022.t
+	desc = tuyuhun.0022.desc
+	theme = RICE_theme_festival_generic
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Fun!
+		name = tuyuhun.0022.a
+		add_character_modifier = {
+			modifier = RICE_tuyuhun_recently_went_to_nadun_festival
+			years = 3
+		}
+	}
+	
+	after = {
+		trigger_event = {
+			id = tuyuhun.0023
+			days = 1
+		}
+	}	
+}
+
+# Misc cleanup
+tuyuhun.0023 = {
+	hidden = yes	
+	immediate = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
+
+
+
+
+# Nadun flavor - sharing good news
+tuyuhun.0024 = {
+	type = character_event
+	title = tuyuhun.0024.t
+	desc = tuyuhun.0024.desc
+	theme = RICE_theme_festival_generic
+	
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	option = { # Share it
+		name = tuyuhun.0024.a
+		add_prestige = 30
+		stress_impact = {
+			gregarious = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+		}
+	}	
+	option = { # Observe others
+		name = tuyuhun.0024.b
+		add_piety = 30
+		stress_impact = {
+			shy = minor_stress_impact_loss
+			humble = minor_stress_impact_loss
+		}
+	}
+}
+
+
+# Nadun flavor - dancing in honor of heaven
+tuyuhun.0025 = {
+	type = character_event
+	title = tuyuhun.0025.t
+	desc = tuyuhun.0025.desc
+	theme = RICE_theme_festival_generic
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # ok
+		name = tuyuhun.0025.a
+		add_piety = 15
+	}
+}
+
+
+# Nadun flavor - eating Supan cake
+tuyuhun.0026 = {
+	type = character_event
+	title = tuyuhun.0026.t
+	desc = tuyuhun.0026.desc
+	theme = RICE_theme_festival_generic
+	
+	left_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+	
+	option = { # eat a lot
+		name = tuyuhun.0026.a
+		add_prestige = 15
+		stress_impact = {
+			gluttonous = minor_stress_impact_loss
+			temperate = minor_stress_impact_gain
+		}
+	}	
+	option = { # restrained eating
+		name = tuyuhun.0026.b
+		add_piety = 15
+		stress_impact = {
+			gluttonous = minor_stress_impact_gain
+			temperate = minor_stress_impact_loss
+		}
+	}
+}
+
+
+# Nadun flavor - toasting the dancers
+tuyuhun.0027 = {
+	type = character_event
+	title = tuyuhun.0027.t
+	desc = tuyuhun.0027.desc
+	theme = RICE_theme_festival_generic
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Observe others
+		name = tuyuhun.0027.a
+		add_piety = 15
+		stress_impact = {
+			shy = minor_stress_impact_loss
+			humble = minor_stress_impact_loss
+		}
+	}	
+	option = { # toast!
+		name = tuyuhun.0027.b
+		add_prestige = 15
+		stress_impact = {
+			gregarious = minor_stress_impact_loss
+			arrogant = minor_stress_impact_loss
+		}
+	}
+}
+
+
+# Nadun flavor - theatre story about farmers
+tuyuhun.0028 = {
+	type = character_event
+	title = tuyuhun.0028.t
+	desc = tuyuhun.0028.desc
+	theme = RICE_theme_festival_generic
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Ok
+		name = tuyuhun.0028.a
+		add_prestige = 15
+	}
+}
+
+
+# Nadun flavor - theatre story about the Three Kingdoms
+tuyuhun.0029 = {
+	type = character_event
+	title = tuyuhun.0029.t
+	desc = tuyuhun.0029.desc
+	theme = RICE_theme_festival_generic
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = { # Liu Bei
+		name = tuyuhun.0029.a
+		add_piety = 30
+		stress_impact = {
+			deceitful = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+		}
+	}	
+	option = { # Cao Cao
+		name = tuyuhun.0029.b
+		add_prestige = 20
+		add_piety = 10
+		stress_impact = {
+			honest = miniscule_stress_impact_gain
+			trusting = miniscule_stress_impact_gain
+		}
+	}	
+	option = { # Sun Quan
+		name = tuyuhun.0029.c
+		add_prestige = 10
+		add_piety = 20
+		stress_impact = {
+			impatient = miniscule_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+		}
+	}	
+	option = { # Sima Yi
+		name = tuyuhun.0029.d
+		add_prestige = 30
+		stress_impact = {
+			humble = miniscule_stress_impact_gain
+			wrathful = miniscule_stress_impact_gain
+		}
+	}	
+	option = { # Lu Bu
+		name = tuyuhun.0029.e
+		add_dread = 15
+		stress_impact = {
+			compassionate = miniscule_stress_impact_gain
+			craven = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+# Nadun flavor - visit friends in village?
+tuyuhun.0030 = {
+	type = character_event
+	title = tuyuhun.0030.t
+	desc = tuyuhun.0030.desc
+	theme = RICE_theme_festival_generic
+	
+	left_portrait = root
+	
+	option = { # Enjoy the festival
+		name = tuyuhun.0030.a
+		random_list = {
+			10 = { add_prestige = 25 }
+			10 = { add_piety = 25 }
+		}
+		stress_impact = {
+			content = miniscule_stress_impact_loss
+			lazy = miniscule_stress_impact_loss
+		}
+	}	
+	option = { # Good idea!
+		name = tuyuhun.0030.b
+		add_piety = 25
+		stress_impact = {
+			gregarious = miniscule_stress_impact_loss
+			diligent = miniscule_stress_impact_loss
+		}
+	}	
+	option = { # Meet new friends
+		name = tuyuhun.0030.c
+		add_piety = 25
+		stress_impact = {
+			gregarious = miniscule_stress_impact_loss
+			trusting = miniscule_stress_impact_loss
+		}
+	}
+}
+
+
+# Nadun flavor - food at feast
+tuyuhun.0031 = {
+	type = character_event
+	title = tuyuhun.0031.t
+	desc = tuyuhun.0031.desc
+	theme = RICE_theme_festival_generic
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Food is good
+		name = tuyuhun.0031.a
+		add_prestige = -40
+		add_piety = 40
+		stress_impact = {
+			arrogant = miniscule_stress_impact_gain
+			impatient = miniscule_stress_impact_gain
+			gluttonous = miniscule_stress_impact_gain
+		}
+	}	
+	option = { # Is okay
+		name = tuyuhun.0031.b
+	}	
+	option = { # Tastes bad
+		name = tuyuhun.0031.a
+		add_prestige = 40
+		add_piety = -40
+		stress_impact = {
+			humble = miniscule_stress_impact_gain
+			patient = miniscule_stress_impact_gain
+			temperate = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+
+# Nadun flavor - traditional songs
+tuyuhun.0032 = {
+	type = character_event
+	title = tuyuhun.0032.t
+	desc = tuyuhun.0032.desc
+	theme = RICE_theme_festival_generic
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # ok
+		name = tuyuhun.0032.a
+		add_piety = 15
+	}
+}
+
+
+# Nadun flavor - love is blossoming
+tuyuhun.0033 = {
+	type = character_event
+	title = tuyuhun.0033.t
+	desc = tuyuhun.0033.desc
+	theme = RICE_theme_festival_generic
+	
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	option = { # young love
+		name = tuyuhun.0033.a
+		add_piety = 10
+		stress_impact = {
+			humble = miniscule_stress_impact_loss
+			lustful = miniscule_stress_impact_loss
+			compassionate = miniscule_stress_impact_loss
+		}
+	}	
+	option = { # cynical
+		name = tuyuhun.0033.b
+		add_prestige = 10
+		stress_impact = {
+			cynical = miniscule_stress_impact_loss
+			chaste = miniscule_stress_impact_loss
+			arrogant = miniscule_stress_impact_loss
+		}
+	}
+}
+
+
