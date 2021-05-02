@@ -1,10 +1,12 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.2.0 "Dragon's Blood" (Released 4/11/21)
+## Latest Version: Version 1.2.1 "Qinghaicong" (Released 5/1/21)
 
-**Newest Flavor Pack: Socotra, Isle of Dragon's Blood**
+**Newest Flavor Pack: Tuyuhun, Horsemen of Qinghai**
 
-**Next Flavor Pack: TBD**
+_The circumference of Qinghai Lake (青海) is more than one thousand li and there is a hill in it. After the lake freezes over in winter, people send healthy mares onto the hill. When people get them back the next spring, the mares are all pregnant. The foals born of these mares are called ‘descendants of dragon’ and many of them are fabulous. The people of Tuyuhun once got Persian (波斯) mares and sent them into the lake, and hence fine horses were foaled by the Persian mares. These horses could cover a thousand li in a single day and were famous by the name of Qinghaicong (青海驄) in the world._
+
+_- History of the Northern Dynasties (北史)_
 
 RICE is a mod that adds immersion to different regions, cultures, and religions in CK3. It is a collection of themed flavor "packs" similar to PI's official flavor pack DLCs, but often cover lesser-known places and peoples. It is a spiritual successor to my Immersion Packs for CK2.
 
@@ -23,6 +25,7 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 - [Siberia: People of the Reindeer](https://docs.google.com/document/d/e/2PACX-1vTOr-vq1KkHRJ_gxPOlb9brCKde3TRzN_1TVZwfPmSiIIW5TEAJGkQ0eNGwiEfvgape1pDAKau3ZcvD/pub)
 - [Siwa: Oases of the Western Desert](https://docs.google.com/document/d/1OOXqqBEGv94IBAH-rIsjoBog1YFtVAFg_TPsuIQmhtg/pub)
 - [Socotra: Isle of Dragon's Blood](https://docs.google.com/document/d/e/2PACX-1vRs_x_9wjofcveP_yhymlL5TWPB1UdSQyi_C_M1z4dWpFg3lqHgHwGpFD2xfkf0-RdsKIlRekQsLD4s/pub)
+- [Tuyuhun: Horsemen of Qinghai](https://docs.google.com/document/d/e/2PACX-1vSLTlVseJqHCut1xBqm9tY2AVgfunhUTX0m8oN-OvHpMgexvpbFO8OIXVC2xDkgo9UvMYnv4qnjBUqP/pub)
 
 
 ## Manual Installation Steps
