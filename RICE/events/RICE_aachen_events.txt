@@ -3,8 +3,8 @@
 # AACHEN: Charlemagne's Capital
 # 
 # aachen.0000-aachen.0019	Misc Events (including Decisions)
-# aachen.0020-aachen.0049	Pilgrimage to Aachen Events
-# aachen.0050-aachen.0099	Aachen Generic Flavor Events
+# aachen.0020-aachen.0029	Pilgrimage to Aachen Events
+# aachen.0030-aachen.0049	Aachen Generic Flavor Events
 # 
 ###############################################################################
 
@@ -143,6 +143,45 @@ aachen.0005 = {
 	left_portrait = {
 		character = root
 		animation = worry
+	}
+	
+	trigger = {
+		# Happened in 1275 IRL
+		current_date > 1000.1.1
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_aachen_meuse_bridge_collapsed
+			}
+		}	
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.8
+			current_date > 1050.1.1
+		}
+		modifier = {
+			add = 0.8
+			current_date > 1100.1.1
+		}
+		modifier = {
+			add = 0.8
+			current_date > 1150.1.1
+		}
+		modifier = {
+			add = 1.2
+			current_date > 1250.1.1
+		}
+		modifier = {
+			add = 1.2
+			current_date > 1300.1.1
+		}
+		modifier = {
+			add = 1.2
+			current_date > 1350.1.1
+		}
 	}
 	
 	immediate = {		
@@ -777,4 +816,706 @@ aachen.0027 = {
 			complete_activity = yes
 		}
 	}
+}
+
+
+#####################################################################
+# 
+# GENERIC FLAVOR EVENTS FOR AACHEN
+# 
+# aachen.0030-0049 reserved
+# 
+#####################################################################
+
+
+
+# What about Charlemagne inspires one the most?
+aachen.0030 = {
+	type = character_event
+	title = aachen.0030.t
+	desc = aachen.0030.desc
+	theme = RICE_theme_aachen_gatehouse
+	
+	left_portrait = root
+	
+	trigger = {
+		has_title = title:c_aachen
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = -0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+	}
+
+	option = { # Ok
+		name = aachen.0030.a
+		add_character_modifier = {
+			modifier = RICE_aachen_inspired_by_charlemagne_conquests
+			years = 8
+		}
+	}
+	option = { # Ok
+		name = aachen.0030.b
+		add_character_modifier = {
+			modifier = RICE_aachen_inspired_by_charlemagne_faith
+			years = 8
+		}
+	}
+	option = { # Ok
+		name = aachen.0030.c
+		add_character_modifier = {
+			modifier = RICE_aachen_inspired_by_charlemagne_learning
+			years = 8
+		}
+	}
+}
+
+
+# Firebrand priest claims Charlemagne is a saint
+aachen.0031 = {
+	type = character_event
+	title = aachen.0031.t
+	desc = aachen.0031.desc
+	theme = faith
+	
+	left_portrait = {
+		character = root
+		animation = personality_cynical
+	}
+	
+	trigger = {
+		has_title = title:c_aachen
+		religion = religion:christianity_religion
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = -0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = fickle
+		}
+		modifier = {
+			add = -0.2
+			has_trait = stubborn
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+	}
+
+	option = { # Lock him up
+		name = aachen.0031.a
+		add_dread = 10
+		add_character_modifier = {
+			modifier = RICE_aachen_arrested_charlemagne_preacher
+			years = 5
+		}
+		#add_tyranny = 15
+	}
+	option = { # He isn't a threat
+		name = aachen.0031.b
+		add_prestige = 50
+	}
+	option = { # He is divinely inspired
+		name = aachen.0031.c
+		add_piety = 50
+	}
+}
+
+
+# Courtier returns from visit to Aachen spas
+aachen.0032 = {
+	type = character_event
+	title = aachen.0032.t
+	desc = aachen.0032.desc
+	theme = friendly
+	override_background = { event_background = throne_room }
+	
+	left_portrait = { 	
+		character = scope:RICE_aachen_spa_goer
+		animation = personality_content
+	}	
+	
+
+	trigger = {
+		OR = {
+			has_title = title:c_aachen
+			has_title = title:c_cleves
+			has_title = title:c_maastricht
+			title:c_aachen = {
+				squared_distance = {
+					target = root.capital_province
+					value <= squared_distance_small
+				}
+			}
+		}
+		any_courtier = {
+			is_available_ai_adult = yes
+		}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = sadistic
+		}
+	}
+	
+	immediate = {
+		random_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+			}
+			save_scope_as = RICE_aachen_spa_goer
+			stress_impact = {
+				base = minor_stress_impact_loss
+				lazy = miniscule_stress_impact_loss
+				calm = miniscule_stress_impact_loss
+			}
+		}
+	}
+	
+	option = { # ok
+		name = aachen.0032.a
+	}
+}
+
+
+# Pewter badges on sale in Aachen as pilgrimage souvenirs
+aachen.0033 = {
+	type = character_event
+	title = aachen.0033.t
+	desc = aachen.0033.desc
+	theme = RICE_theme_aachen_gatehouse
+	
+	right_portrait = root	
+
+	trigger = {
+		has_title = title:c_aachen
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = fickle
+		}
+		modifier = {
+			add = -0.2
+			has_trait = stubborn
+		}
+	}
+
+	
+	option = { # Easy way to make money off fools
+		name = aachen.0033.a
+		add_prestige = 20
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+			trusting = miniscule_stress_impact_gain
+		}
+	}	
+	option = { # Faith of these people
+		name = aachen.0033.b
+		add_piety = 20
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+		}
+	}	
+	option = { # Pilgrimage is more important
+		name = aachen.0033.c
+		trigger = {
+			religion = religion:christianity_religion
+		}
+		add_piety = 10
+		add_prestige = 10
+		stress_impact = {
+			arrogant = miniscule_stress_impact_gain
+		}
+	}	
+	option = { # I am not a Christian
+		name = aachen.0033.d
+		trigger = {
+			NOT = { religion = religion:christianity_religion }
+		}
+		add_piety = 10
+		add_prestige = 10
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+# Taking a swim near Aachen
+aachen.0034 = {
+	type = character_event
+	title = aachen.0034.t
+	desc = aachen.0034.desc
+	theme = RICE_theme_aachen_forest
+	
+	left_portrait = {
+		character = root
+		animation = personality_forgiving
+	}	
+
+	trigger = {
+		has_title = title:c_aachen
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+	}
+
+	
+	option = { # Ok
+		name = aachen.0034.a
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			content = miniscule_stress_impact_loss
+		}
+	}
+}
+
+
+# Overhear an argument about whether Charlemagne was a Saint or not
+aachen.0035 = {
+	type = character_event
+	title = aachen.0035.t
+	desc = aachen.0035.desc
+	theme = RICE_theme_aachen_gatehouse
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		has_title = title:c_aachen
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = paranoid
+		}
+		modifier = {
+			add = -0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	
+	option = { # Ok
+		name = aachen.0035.a
+		add_prestige = 25
+	}	
+	option = { # Ok
+		name = aachen.0035.b
+		add_piety = 25
+	}
+}
+
+
+
+
+# Courtier returns from visit to Aachen spas but it was a bad experience
+aachen.0036 = {
+	type = character_event
+	title = aachen.0036.t
+	desc = aachen.0036.desc
+	theme = unfriendly
+	override_background = { event_background = throne_room }
+	
+	left_portrait = { 	
+		character = scope:RICE_aachen_spa_goer_bad
+		animation = disapproval
+	}	
+	
+
+	trigger = {
+		OR = {
+			has_title = title:c_aachen
+			has_title = title:c_cleves
+			has_title = title:c_maastricht
+			title:c_aachen = {
+				squared_distance = {
+					target = root.capital_province
+					value <= squared_distance_small
+				}
+			}
+		}
+		any_courtier = {
+			is_available_ai_adult = yes
+		}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = sadistic
+		}
+	}
+	
+	immediate = {
+		random_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+			}
+			save_scope_as = RICE_aachen_spa_goer_bad
+			stress_impact = {
+				base = minor_stress_impact_gain
+				wrathful = miniscule_stress_impact_gain
+				vengeful = miniscule_stress_impact_gain
+				arrogant = miniscule_stress_impact_gain
+				impatient = miniscule_stress_impact_gain
+			}
+		}
+	}
+	
+	option = { # other person sounds bad
+		name = aachen.0036.a
+		scope:RICE_aachen_spa_goer_bad = {
+			add_opinion = {
+				target = root
+				modifier = RICE_aachen_sympathized_with_me
+			}
+		}
+		stress_impact = {
+			impatient = miniscule_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+		}
+	}	
+	option = { # why didn't you relax?
+		name = aachen.0036.b
+		scope:RICE_aachen_spa_goer_bad = {
+			add_opinion = {
+				target = root
+				modifier = RICE_aachen_didnt_sympathized_with_me
+			}
+		}
+		stress_impact = {
+			humble = miniscule_stress_impact_gain
+			patient = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+# More pilgrims arrive in Aachen than before
+aachen.0037 = {
+	type = character_event
+	title = aachen.0037.t
+	desc = aachen.0037.desc
+	theme = faith
+	override_background = { event_background = RICE_background_aachen_gatehouse }
+	
+	left_portrait = root	
+
+	trigger = {
+		has_title = title:c_aachen
+		religion = religion:christianity_religion
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+	}
+	
+	option = { # ok
+		name = aachen.0037.a
+		title:c_aachen = {
+			add_county_modifier = {
+				modifier = RICE_aachen_more_christian_pilgrims
+				years = 20
+			}
+		}
+	}
+}
+
+
+# Brassworkers settle down in Aache/Maastricht
+aachen.0038 = {
+	type = character_event
+	title = aachen.0038.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_maastricht_brassworkers
+				}
+				desc = aachen.0038.desc.maastricht
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_aachen_brassworkers
+				}
+				desc = aachen.0038.desc.aachen
+			}
+		}
+	}
+	theme = realm
+	
+	left_portrait = root	
+
+	trigger = {
+		OR = {
+			has_title = title:c_aachen
+			has_title = title:c_maastricht
+		}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = sadistic
+		}
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				has_title = title:c_aachen
+				has_title = title:c_maastricht				
+			}
+			random_list = {
+				10 = { add_character_flag = RICE_aachen_brassworkers }
+				10 = { add_character_flag = RICE_maastricht_brassworkers }
+			}
+		}
+		else_if = {
+			limit = {
+				has_title = title:c_maastricht				
+			}
+			add_character_flag = RICE_maastricht_brassworkers	
+		}
+		else_if = {
+			limit = {
+				has_title = title:c_aachen				
+			}
+			add_character_flag = RICE_aachen_brassworkers		
+		}
+	}
+	
+	option = { # ok
+		name = aachen.0038.a
+		add_prestige = 50
+		if = {
+			limit = {
+				has_character_flag = RICE_aachen_brassworkers
+			}
+			title:c_aachen = {
+				add_county_modifier = {
+					modifier = RICE_aachen_new_brassworkers
+					years = 10
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_maastricht_brassworkers
+			}
+			title:c_maastricht = {
+				add_county_modifier = {
+					modifier = RICE_aachen_new_brassworkers
+					years = 10
+				}
+			}
+		}
+	}
+	
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_aachen_brassworkers
+			}
+			remove_character_flag = RICE_aachen_brassworkers
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_maastricht_brassworkers
+			}
+			remove_character_flag = RICE_maastricht_brassworkers
+		}
+	}	
 }

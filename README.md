@@ -1,12 +1,12 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.2.1 "Qinghaicong" (Released 5/1/21)
+## Latest Version: Version 1.2.2 "Carolus Magnus" (Released 5/15/21)
 
-**Newest Flavor Pack: Tuyuhun, Horsemen of Qinghai**
+**Newest Flavor Pack: Aachen, Charlemagne's Capital**
 
-_The circumference of Qinghai Lake (青海) is more than one thousand li and there is a hill in it. After the lake freezes over in winter, people send healthy mares onto the hill. When people get them back the next spring, the mares are all pregnant. The foals born of these mares are called ‘descendants of dragon’ and many of them are fabulous. The people of Tuyuhun once got Persian (波斯) mares and sent them into the lake, and hence fine horses were foaled by the Persian mares. These horses could cover a thousand li in a single day and were famous by the name of Qinghaicong (青海驄) in the world._
+_I would rather commit my story [of Charlemagne's biography] to writing, and hand it down to posterity in partnership with others, so to speak, than to suffer the most glorious life of this most excellent king, the greatest of all the princes of his day, and his illustrious deeds, hard for men of later times to imitate, to be wrapped in the darkness of oblivion._
 
-_- History of the Northern Dynasties (北史)_
+_- Einhard (c. 775 - 840 CE), The Life of Charlemagne_
 
 RICE is a mod that adds immersion to different regions, cultures, and religions in CK3. It is a collection of themed flavor "packs" similar to PI's official flavor pack DLCs, but often cover lesser-known places and peoples. It is a spiritual successor to my Immersion Packs for CK2.
 
@@ -20,6 +20,7 @@ Feel free to use my work in your mods - all I ask is that I am credited and (if 
 
 At the moment, the following RICE flavor packs are included in the mod (click to view the guides which cover the features included in each pack in more detail).
 
+- [Aachen: Charlemagne's Capital](https://docs.google.com/document/d/e/2PACX-1vQNflzrfD7oYcEYcMWDW07MsWCW-8cwIO8-JxSIm_WTnB1Ij0Dr-b3PRNu8mKmUFRXfHW3QDax2Z0DD/pub)
 - [Brittany: The Western Duchy](https://docs.google.com/document/d/e/2PACX-1vTzGuR_ffwqfpm6rwh27hq71K4Fs35pcLZioPLbHulhHn2ZV25SD2HrGipPofvBYngi5S_O4Yino4Y7/pub)
 - [Chios: Isle of Mastic](https://docs.google.com/document/d/1Lu4cGXN7hSaDtYd_wsXKbjAeIOYMoYVuum6zfYfBc_k/pub)
 - [Siberia: People of the Reindeer](https://docs.google.com/document/d/e/2PACX-1vTOr-vq1KkHRJ_gxPOlb9brCKde3TRzN_1TVZwfPmSiIIW5TEAJGkQ0eNGwiEfvgape1pDAKau3ZcvD/pub)
@@ -38,3 +39,4 @@ DO NOT manually download the master branch unless you know what you're doing as 
 4. Enjoy and play!
 
 NOTE: If you are re-installing a mod amnually, delete the old version of the mod first before copy and pasting the new one! While it's not always necessary, it's a good habit to do to prevent any potential issues.
+ 
