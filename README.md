@@ -8,9 +8,7 @@ _I would rather commit my story [of Charlemagne's biography] to writing, and han
 
 _- Einhard (c. 775 - 840 CE), The Life of Charlemagne_
 
-RICE is a mod that adds immersion to different regions, cultures, and religions in CK3. It is a collection of themed flavor "packs" similar to PI's official flavor pack DLCs, but often cover lesser-known places and peoples. It is a spiritual successor to my Immersion Packs for CK2.
-
-Each RICE flavor pack adds new features to a region, culture, or religion, such as a few simple mechanics and decisions, a smattering of cultural flavor events, and other miscellany. The guiding philosophy of RICE is to keep a tight, focused scope that doesn’t change gameplay significantly, but adds more flavor across the world.
+RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. The guiding philosophy of RICE is to keep a tight, focused scope that doesn’t change gameplay significantly, but adds more flavor across the world, especially for lesser-known places, peoples, and histories.
 
 RICE will be designed with compatibility in mind; wherever possible, I avoid editing vanilla files to prevent conflicts with other mods. For example, title history and culture changes are done via hidden events at game start. As this mod grows, I may add in game rules to help with potential compatibility conflicts (for instance, game rules that disable features that could clash with map mods).
 
