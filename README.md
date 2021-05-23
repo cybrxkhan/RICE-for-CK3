@@ -21,6 +21,7 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 - [Aachen: Charlemagne's Capital](https://docs.google.com/document/d/e/2PACX-1vQNflzrfD7oYcEYcMWDW07MsWCW-8cwIO8-JxSIm_WTnB1Ij0Dr-b3PRNu8mKmUFRXfHW3QDax2Z0DD/pub)
 - [Brittany: The Western Duchy](https://docs.google.com/document/d/e/2PACX-1vTzGuR_ffwqfpm6rwh27hq71K4Fs35pcLZioPLbHulhHn2ZV25SD2HrGipPofvBYngi5S_O4Yino4Y7/pub)
 - [Chios: Isle of Mastic](https://docs.google.com/document/d/1Lu4cGXN7hSaDtYd_wsXKbjAeIOYMoYVuum6zfYfBc_k/pub)
+- [Harran: The Last Hellenic Pagans](https://docs.google.com/document/d/e/2PACX-1vQOVaDq59Adp5PsNw7r8KhK9cgHMBBWGPWG085FdTKegkD8G8BFLa_e1lz8usY164B42gAVZD4D_2Rs/pub)
 - [Siberia: People of the Reindeer](https://docs.google.com/document/d/e/2PACX-1vTOr-vq1KkHRJ_gxPOlb9brCKde3TRzN_1TVZwfPmSiIIW5TEAJGkQ0eNGwiEfvgape1pDAKau3ZcvD/pub)
 - [Siwa: Oases of the Western Desert](https://docs.google.com/document/d/1OOXqqBEGv94IBAH-rIsjoBog1YFtVAFg_TPsuIQmhtg/pub)
 - [Socotra: Isle of Dragon's Blood](https://docs.google.com/document/d/e/2PACX-1vRs_x_9wjofcveP_yhymlL5TWPB1UdSQyi_C_M1z4dWpFg3lqHgHwGpFD2xfkf0-RdsKIlRekQsLD4s/pub)
