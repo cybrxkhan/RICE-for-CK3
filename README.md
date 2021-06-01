@@ -1,6 +1,6 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.2.3 "Thabit ibn Qurra" (Released 5/22/21)
+## Latest Version: Version 1.2.4 "Plotinus" (Released 5/30/21)
 
 **Newest Flavor Pack - Harran: The Last Hellenic Pagans**
 
