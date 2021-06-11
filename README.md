@@ -1,12 +1,11 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.2.4 "Plotinus" (Released 5/30/21)
+## Latest Version: Version 1.3.0 "Tammuz" (Released 6/10/21)
 
 **Newest Flavor Pack - Harran: The Last Hellenic Pagans**
 
-_We are the heirs and the transmitters to our heirs of paganism, which is honored gloriously in this world. [...] Who has made the world to be inhabited and filled it with cities except the good men and kings of paganism? Who has constructed harbors and canals? Who has made manifest the occult sciences? On whom has dawned the divinity which gives divination and teaches the knowledge of future events except the wise men of the pagans? [Pagans] have made to arise the medicine of souls, and have made to shine forth their redemption; have filled the world with the correctness of modes of life and with the and it is they also who have made to arise the medicine for bodies and the wisdom which is the beginning of excellence. Without these products of paganism the world would be an empty and a needy place, and it would have been enveloped in sheer want and misery._
-
-_- Thabit ibn Qurra (836-901 CE), as quoted by Bar Hebraeus, a 13th century Syriac Orthodox bishop and saint_
+_“Tammuz, radiant in the temple and on earth!”_
+_- Hymn to Ishtar, goddess of war and love, and wife of the Mesopotamian deity Tammuz_
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. The guiding philosophy of RICE is to keep a tight, focused scope that doesn’t change gameplay significantly, but adds more flavor across the world, especially for lesser-known places, peoples, and histories.
 
