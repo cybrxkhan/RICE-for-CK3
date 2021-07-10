@@ -1,0 +1,561 @@
+﻿###############################################################################
+# 
+# AACHEN: Charlemagne's Capital
+# 
+# red_sea.0000-red_sea.0019	Misc Events (including Decisions)
+# red_sea.0020-red_sea.0029	al-'Umari Events
+# red_sea.0030-red_sea.0049	Red Sea Flavor Events
+# 
+###############################################################################
+
+namespace = red_sea
+
+######################################################################################
+# 
+# MISCELLANEOUS EVENTS (including decisions)
+# 
+# red_sea.0000-red_sea.0019 reserved
+# 
+######################################################################################
+
+
+# Seek help from investors
+red_sea.0001 = {
+	type = character_event
+	title = red_sea.0001.t
+	desc = {
+		desc = red_sea.0001.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_title = title:k_egypt
+				}
+				desc = red_sea.0001.desc.egypt_ruler
+			}
+			triggered_desc = {
+				trigger = {
+					NOT = { has_title = title:k_egypt }
+				}
+				desc = red_sea.0001.desc.not_egypt_ruler
+			}
+		}
+	}
+	theme = realm
+	
+	left_portrait = scope:gold_miner
+	
+	immediate = {
+		title:c_allaqi = {
+			save_scope_as = wadi_allaqi_region
+			add_county_modifier = {
+				modifier = RICE_red_sea_aswan_investors
+				years = 10
+			}
+		}
+		title:c_aswan = { # for loc
+			save_scope_as = aswan_region
+		}
+		if = {
+			limit = {
+				exists = title:k_egypt.holder
+			}
+			title:k_egypt.holder = { # for loc
+				save_scope_as = egypt_ruler
+			}
+		}
+		root = { # for loc
+			save_scope_as = gold_miner
+		}
+	
+	}
+
+	option = {
+		name = red_sea.0001.a
+		if = {
+			limit = {
+				exists = title:k_egypt.holder
+				NOT = { has_title = title:k_egypt }
+			}
+			scope:egypt_ruler = {
+				add_opinion = {
+					target = root
+					modifier = RICE_red_sea_gold_rush_rivals
+				}
+				reverse_add_opinion = {
+					target = root
+					modifier = RICE_red_sea_gold_rush_rivals
+				}
+			}
+			title:k_egypt.holder = { # for loc
+				trigger_event = red_sea.0002
+			}
+		}
+	}
+}
+
+# King of Egypt reaction
+red_sea.0002 = {
+	type = character_event
+	title = red_sea.0002.t
+	desc = red_sea.0002.desc
+	theme = realm
+	
+	left_portrait = {
+		character = scope:gold_miner
+		animation = personality_greedy
+	}
+	right_portrait = {
+		character = root
+		animation = personality_callous
+	}
+	
+	immediate = {
+		show_as_tooltip = {
+			title:c_allaqi = {
+				add_county_modifier = {
+					modifier = RICE_red_sea_aswan_investors
+					years = 10
+				}
+			}
+			add_opinion = {
+				target = scope:gold_miner
+				modifier = RICE_red_sea_gold_rush_rivals
+			}
+			reverse_add_opinion = {
+				target = scope:gold_miner
+				modifier = RICE_red_sea_gold_rush_rivals
+			}		
+		}
+	}
+
+	option = {
+		name = red_sea.0002.a
+	}
+}
+
+
+
+# Levy Extra taxes on Aydhab
+red_sea.0010 = {
+	type = character_event
+	title = red_sea.0010.t
+	desc = red_sea.0010.desc
+	theme = corruption
+	override_background = { event_background = RICE_background_red_sea_beach }
+	
+	left_portrait = {
+		character = root
+		animation = personality_dishonorable
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				NOT = { has_title = title:c_suakin }
+				title:c_aydhab = {
+					has_county_modifier = RICE_red_sea_suakin_increased_pilgrims
+				}			
+			}
+			title:c_suakin.holder = {
+				add_character_flag = RICE_red_sea_display_pilgrim_loser
+			}
+		}
+		RICE_red_sea_aydhab_extra_taxes_effect = yes
+		title:c_aydhab = { # for loc
+			save_scope_as = aydhab_region
+		}
+		title:c_suakin = { # for loc
+			save_scope_as = suakin_region
+		}
+	
+	}
+
+	option = {
+		name = red_sea.0010.a
+		if = {
+			limit = {
+				NOT = { has_title = title:c_suakin }
+			}
+			root = { # for loc
+				save_scope_as = extra_taxer
+			}
+			title:c_suakin.holder = {
+				add_character_flag = RICE_red_sea_dont_display_pilgrim_loser
+				trigger_event = red_sea.0011
+			}
+		}
+	}
+}
+
+# Levy Extra taxes on Aydhab - ruler of Suakin reacts
+red_sea.0011 = {
+	type = character_event
+	title = red_sea.0011.t
+	desc = {
+		desc = red_sea.0011.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = {
+						title:c_suakin = {
+							has_county_modifier = RICE_red_sea_suakin_extra_hajj_taxes
+						}					
+					}
+				}
+				desc = red_sea.0011.desc.no_tax
+			}
+			triggered_desc = {
+				trigger = {
+					title:c_suakin = {
+						has_county_modifier = RICE_red_sea_suakin_extra_hajj_taxes
+					}
+				}
+				desc = red_sea.0011.desc.tax
+			}
+		}	
+	}
+	theme = stewardship_domain_focus
+	
+	right_portrait = {
+		character = scope:extra_taxer
+		animation = personality_dishonorable
+	}
+	
+	immediate = {
+		show_as_tooltip = {
+			scope:extra_taxer = {
+				RICE_red_sea_aydhab_extra_taxes_effect = yes
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_red_sea_display_pilgrim_loser
+				}
+				title:c_aydhab = {
+					remove_county_modifier = RICE_red_sea_aydhab_increased_pilgrims
+				}
+			}
+		}	
+	}
+
+	option = {
+		name = red_sea.0011.a
+		remove_character_flag = RICE_red_sea_dont_display_pilgrim_loser
+	}
+}
+
+# Levy Extra taxes on Suakin
+red_sea.0012 = {
+	type = character_event
+	title = red_sea.0012.t
+	desc = red_sea.0012.desc
+	theme = corruption
+	override_background = { event_background = RICE_background_red_sea_beach }
+	
+	left_portrait = {
+		character = root
+		animation = personality_dishonorable
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				NOT = { has_title = title:c_aydhab }
+				title:c_suakin = {
+					has_county_modifier = RICE_red_sea_suakin_increased_pilgrims
+				}			
+			}
+			title:c_aydhab.holder = {
+				add_character_flag = RICE_red_sea_display_pilgrim_loser
+			}
+		}
+		RICE_red_sea_suakin_extra_taxes_effect = yes
+		title:c_aydhab = { # for loc
+			save_scope_as = aydhab_region
+		}
+		title:c_suakin = { # for loc
+			save_scope_as = suakin_region
+		}
+	
+	}
+
+	option = {
+		name = red_sea.0012.a
+		if = {
+			limit = {
+				NOT = { has_title = title:c_aydhab }
+			}
+			root = { # for loc
+				save_scope_as = extra_taxer
+			}
+			title:c_aydhab.holder = {
+				add_character_flag = RICE_red_sea_dont_display_pilgrim_loser
+				trigger_event = red_sea.0013
+			}
+		}
+	}
+}
+
+# Levy Extra taxes on Suakin - ruler of Aydhab reacts
+red_sea.0013 = {
+	type = character_event
+	title = red_sea.0013.t
+	desc = {
+		desc = red_sea.0013.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = {
+						title:c_aydhab = {
+							has_county_modifier = RICE_red_sea_aydhab_extra_hajj_taxes
+						}					
+					}
+				}
+				desc = red_sea.0013.desc.no_tax
+			}
+			triggered_desc = {
+				trigger = {
+					title:c_aydhab = {
+						has_county_modifier = RICE_red_sea_aydhab_extra_hajj_taxes
+					}
+				}
+				desc = red_sea.0013.desc.tax
+			}
+		}	
+	}
+	theme = stewardship_domain_focus
+	
+	right_portrait = {
+		character = scope:extra_taxer
+		animation = personality_dishonorable
+	}
+	
+	immediate = {
+		show_as_tooltip = {
+			scope:extra_taxer = {
+				RICE_red_sea_suakin_extra_taxes_effect = yes
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_red_sea_display_pilgrim_loser
+				}
+				title:c_suakin = {
+					remove_county_modifier = RICE_red_sea_suakin_increased_pilgrims
+				}
+			}
+		}	
+	}
+
+	option = {
+		name = red_sea.0013.a
+		remove_character_flag = RICE_red_sea_dont_display_pilgrim_loser
+	}
+}
+
+
+######################################################################################
+# 
+# AL-'UMARI EVENTS
+# 
+# red_sea.0020-red_sea.0029 reserved
+# 
+######################################################################################
+
+
+
+# Play as al-'Umari
+red_sea.0020 = {
+	type = character_event
+	title = red_sea.0020.t
+	desc = red_sea.0020.desc
+	theme = RICE_theme_egypt_desert
+	
+	left_portrait = root
+	
+	immediate = {
+		title:k_egypt.holder = {
+			save_scope_as = ibn_tulun
+		}	
+		title:c_allaqi = {
+			save_scope_as = wadi_allaqi_region
+		}
+		# Bawarij Pirates to the rescue... right?
+		spawn_army = {
+			levies = 500
+			men_at_arms = {
+				type = mubarizun
+				stacks = 2
+			}
+			men_at_arms = {
+				type = light_footmen
+				stacks = 1
+			}
+			men_at_arms = {
+				type = camel_rider
+				stacks = 1
+			}
+			men_at_arms = {
+				type = light_horsemen
+				stacks = 1
+			}
+			location = title:c_allaqi.title_province
+			war = war
+			#inheritable = no
+			name = RICE_red_sea_al_umari_spawn_event_troops
+		}
+		show_as_tooltip = {
+			add_character_modifier = {
+				modifier = RICE_red_sea_is_al_umari
+			}		
+		}
+	}
+	
+	option = {
+		name = red_sea.0020.a
+		trigger_event = red_sea.0021
+	}
+}
+
+# Background and pick an inspiration
+red_sea.0021 = {
+	type = character_event
+	title = red_sea.0021.t
+	desc = red_sea.0021.desc
+	theme = dynasty
+	
+	left_portrait = root
+	
+	option = {
+		name = red_sea.0021.a
+		add_prestige = 100
+		add_piety = 100
+		trigger_event = red_sea.0022
+	}	
+	option = {
+		name = red_sea.0021.b
+		add_piety = 200
+		trigger_event = red_sea.0022
+	}	
+	option = {
+		name = red_sea.0021.c
+		add_prestige = 200
+		trigger_event = red_sea.0022
+	}
+}
+
+# Pick a starting situation
+red_sea.0022 = {
+	type = character_event
+	title = red_sea.0022.t
+	desc = red_sea.0022.desc
+	theme = RICE_theme_egypt_desert
+	
+	left_portrait = root
+	
+	option = {
+		name = red_sea.0022.a
+		add_character_flag = RICE_red_sea_focus_tulun
+		add_unpressed_claim = title:c_qus
+		add_unpressed_claim = title:c_aswan
+		add_prestige = 200
+		trigger_event = red_sea.0023
+	}	
+	option = {
+		name = red_sea.0022.b
+		add_character_flag = RICE_red_sea_focus_nubia
+		#add_unpressed_claim = title:c_qasr_ibrim
+		add_unpressed_claim = title:c_qurta
+		add_unpressed_claim = title:c_naqis
+		add_piety = 200
+		trigger_event = red_sea.0023
+	}	
+	option = {
+		name = red_sea.0022.c
+		#trigger = {
+		#	is_ai = no
+		#}
+		add_character_flag = RICE_red_sea_focus_allies
+		create_title_and_vassal_change = {
+			type = swear_fealty
+			save_scope_as = change
+		}
+		root = {
+			change_liege = {
+				liege = scope:ibn_tulun
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+		add_prestige = 100
+		add_piety = 100
+		trigger_event = red_sea.0023
+	}	
+	option = {
+		name = red_sea.0022.d
+		add_character_flag = RICE_red_sea_focus_build
+		add_character_modifier = {
+			modifier = RICE_red_sea_expanding_mining_operations
+			years = 10
+		}
+		title:c_allaqi = {
+			add_county_modifier = {
+				modifier = RICE_red_sea_expanding_eastern_desert_mining_infrastruture
+				years = 10
+			}
+		}
+		trigger_event = red_sea.0023
+	}
+}
+
+# Conclusion
+red_sea.0023 = {
+	type = character_event
+	title = red_sea.0023.t
+	desc = {
+		desc = red_sea.0023.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_red_sea_focus_tulun
+				}
+				desc = red_sea.0023.desc.focus_tulun
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_red_sea_focus_nubia
+				}
+				desc = red_sea.0023.desc.focus_nubia
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_red_sea_focus_allies
+				}
+				desc = red_sea.0023.desc.focus_allies
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_red_sea_focus_build
+				}
+				desc = red_sea.0023.desc.focus_build
+			}
+		}
+	}
+	theme = RICE_theme_egypt_desert
+	
+	left_portrait = root
+	
+	option = {
+		name = red_sea.0023.a
+	}
+}
+
+
+
+######################################################################################
+# 
+# FLAVOR EVENTS
+# 
+# red_sea.0030-red_sea.0049 reserved
+# 
+######################################################################################
+
+

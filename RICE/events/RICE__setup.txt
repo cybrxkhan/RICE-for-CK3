@@ -15,7 +15,7 @@ RICEintro.0002 = {
 	type = character_event
 	title = RICEintro.0000.t
 	desc = RICEintro.0000.desc
-	theme = RICE_theme_harran_town
+	theme = RICE_theme_red_sea_beach
 	
 	trigger = {
 		NOT = { has_game_rule = RICE_intro_event_off }
@@ -232,31 +232,50 @@ RICEintro.0001 = {
 			}
 		}
 		
+		## Add Red Sea Mines
+		title:b_north_jbl_quzlum.title_province = {
+			add_special_building = RICE_red_sea_mount_smaragdus_mines_01
+		}
+		title:b_allaqi.title_province = {
+			add_special_building = RICE_red_sea_wadi_allaqi_mines_01
+		}
+		title:b_bisha.title_province = {
+			add_special_building = RICE_red_sea_al_baha_mines_01
+		}
+		
+		## Add Red Sea Hajj Ferries
+		title:b_suakin.title_province = {
+			add_special_building = RICE_red_sea_ferry_01
+		}
+		title:b_aydhab.title_province = {
+			add_special_building = RICE_red_sea_ferry_01
+		}
+		title:b_jidda.title_province = {
+			add_special_building = RICE_red_sea_ferry_01
+		}
+		
 		
 		############################################################
 		#
-		# MISC
+		# MODIFIERS
 		#
 		############################################################		
 	
+		#BRITTANY
 		title:c_nantes = { # Make a building later or not? It's not a major industry and wasn't made into a state monopoly until the 1300s/1400s
 			add_county_modifier = {
 				modifier = RICE_breton_guerande_salterns
 			}
 		}	
 		
+		#AACHEN
 		title:c_maastricht = {
 			add_county_modifier = {
 				modifier = RICE_aachen_maastricht_mosan_art
 			}
 		}
 	
-		#title:c_chios = {
-		#	add_county_modifier = {
-		#		modifier = RICE_chios_mastic_groves
-		#	}
-		#}
-		
+		#TUYUHUN
 		title:c_fuqi = {
 			add_county_modifier = {
 				modifier = RICE_tuyuhun_qinghaicong_horses
@@ -276,7 +295,73 @@ RICEintro.0001 = {
 			add_character_modifier = {
 				modifier = RICE_tuyuhun_character_owns_qinghaicong_horses
 			}
-		}	
+		}
+		
+		#RED SEA
+		title:c_fayyum = {
+			add_county_modifier = {
+				modifier = RICE_red_sea_egypt_textile_industry
+			}
+		}
+		title:c_aswan = {
+			add_county_modifier = {
+				modifier = RICE_red_sea_egypt_textile_industry
+			}
+		}		
+		if = {
+			limit = {
+				current_date < 900.1.1
+			}
+			title:c_allaqi = {
+				add_county_modifier = {
+					modifier = RICE_red_sea_allaqi_mines_rediscovered
+					years = 50
+				}
+			}
+		}
+		
+
+		############################################################
+		#
+		# HISTORICAL CHARACTERS MISC
+		#
+		############################################################
+		
+
+		
+		if = {
+			limit = {
+				current_date < 900.1.1
+			}
+			character:247407 = { # Give claim to Murong Fu, last known claimant of the Tuyuhun Kingdom
+				add_pressed_claim = title:d_tuyuhun
+				#add_pressed_claim = title:k_tuyuhun_restored
+			}
+			character:bedouin0018 = { # Set up al-Umari's situation
+				RICE_remove_education_traits_effect = yes
+				RICE_remove_personality_traits_effect = yes
+				add_trait = education_learning_3
+				add_trait = intellect_good_2
+				add_trait = scholar
+				add_trait = ambitious
+				add_trait = brave
+				add_trait = callous
+				add_gold = 150
+				get_title = title:c_allaqi
+				#get_title = title:c_aswan
+				refund_all_perks = yes
+				add_character_modifier = {
+					modifier = RICE_red_sea_is_al_umari
+				}
+				#trigger_event = red_sea.0020
+			}
+		}
+
+		############################################################
+		#
+		# MISC
+		#
+		############################################################		
 
 		
 		title:c_siwa = {
@@ -300,16 +385,6 @@ RICEintro.0001 = {
 			}
 			title:c_siwa.holder = { 
 				make_siwi_culture_effect = yes
-			}
-		}
-		
-		if = {
-			limit = {
-				current_date < 900.1.1
-			}
-			character:247407 = { # Give claim to Murong Fu, last known claimant of the Tuyuhun Kingdom
-				add_pressed_claim = title:d_tuyuhun
-				#add_pressed_claim = title:k_tuyuhun_restored
 			}
 		}
 	
@@ -408,27 +483,43 @@ RICEintro.0001 = {
 				}
 				trigger_event = siberia.0001
 			}
+		}
+
+		
+		title:b_aydhab.title_province = {
+			set_holding_type = castle_holding
+			add_building = common_tradeport_01
 		}		
+		title:b_badi.title_province = {
+			set_holding_type = castle_holding
+			add_building = common_tradeport_01
+			add_building = watchtowers_01
+		}		
+		title:b_suakin.title_province = {
+			add_building = common_tradeport_01
+		}
+		
 	}
 }
 
 
 
 
-# Trigger events to ask if player wants to play as X characters added by the mod
+# Trigger events for unique starting situations, including asking if player wants to play as X characters added by the mod
 RICEintro.0003 = {
 	type = empty
 	hidden = yes
 	
-	trigger = {
-		NOT = { has_game_rule = RICE_new_characters_off }
-	}
+	#trigger = {
+	#	NOT = { has_game_rule = RICE_new_characters_off }
+	#}
 	
 	immediate = {
 		# Play as Thabit ibn Qurra
 		if = {
 			limit = {
 				current_date < 900.1.1
+				NOT = { has_game_rule = RICE_new_characters_off }
 			}
 			every_ruler = {
 				limit = {
@@ -460,6 +551,7 @@ RICEintro.0003 = {
 			limit = {
 				current_date < 1100.1.1
 				current_date > 1000.1.1
+				NOT = { has_game_rule = RICE_new_characters_off }
 			}
 			every_ruler = {
 				limit = {
@@ -495,6 +587,15 @@ RICEintro.0003 = {
 				}
 				trigger_event = harran.0060
 			}
+		}
+		# Chose to play various other characters
+		if = {
+			limit = {
+				current_date < 900.1.1
+			}
+		}
+		character:bedouin0018 = { # Play al-Umari
+			trigger_event = red_sea.0020
 		}
 	}	
 }
