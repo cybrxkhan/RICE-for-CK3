@@ -558,4 +558,780 @@ red_sea.0023 = {
 # 
 ######################################################################################
 
+# Mu'allim vs Rubban navigators
+red_sea.0030 = {
+	type = character_event
+	title = red_sea.0030.t
+	desc = red_sea.0030.desc
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		RICE_red_sea_event_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	option = { # Ok
+		name = red_sea.0030.a
+		add_prestige = 25
+		stress_impact = {
+			humble = minor_stress_impact_gain
+		}
+	}
+	option = { # Ok
+		name = red_sea.0030.b
+		add_piety = 25
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+		}
+	}
+}
+
+# Traders get shipwrecked by the Red Sea - what to do with survivors?
+red_sea.0031 = {
+	type = character_event
+	title = red_sea.0031.t
+	desc = red_sea.0031.desc
+	theme = RICE_theme_red_sea_beach
+	
+	left_portrait = root
+	
+	trigger = {
+		RICE_red_sea_coastal_event_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = paranoid
+		}
+		modifier = {
+			add = -0.2
+			has_trait = trusting
+		}
+	}
+
+	option = { # Enslave
+		name = red_sea.0031.a
+		random_list = {
+			30 = { add_gold = 50 }
+			30 = { add_gold = 75 }
+			20 = { add_gold = 100 }
+			10 = { add_gold = 125 }
+		}
+		if = {
+			limit = {
+				faith = {
+					OR = {
+						trait_is_virtue = just
+						trait_is_virtue = compassionate
+						trait_is_virtue = generous
+					}
+				}
+			}
+			add_piety = -100
+		}
+		stress_impact = {
+			just = medium_stress_impact_gain
+			compassionate = medium_stress_impact_gain
+			generous = medium_stress_impact_gain
+		}
+	}
+	option = { # Rob
+		name = red_sea.0031.b
+		random_list = {
+			10 = { add_gold = 10 }
+			10 = { add_gold = 20 }
+			10 = { add_gold = 30 }
+			10 = { add_gold = 40 }
+			10 = { add_gold = 50 }
+		}
+		if = {
+			limit = {
+				faith = {
+					OR = {
+						trait_is_virtue = just
+						trait_is_virtue = compassionate
+						trait_is_virtue = generous
+					}
+				}
+			}
+			add_piety = -50
+		}
+		stress_impact = {
+			just = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+		}
+	}
+	option = { # Help
+		name = red_sea.0031.c
+		add_prestige = 50
+		if = {
+			limit = {
+				faith = {
+					OR = {
+						trait_is_virtue = just
+						trait_is_virtue = compassionate
+						trait_is_virtue = generous
+					}
+				}
+			}
+			add_piety = 50
+		}
+		stress_impact = {
+			greedy = medium_stress_impact_gain
+			sadistic = medium_stress_impact_gain
+			callous = medium_stress_impact_gain
+			ambitious = minor_stress_impact_gain
+		}
+	}
+}
+
+
+# Buy Chinese ceramics for a courtier?
+red_sea.0032 = {
+	type = character_event
+	title = red_sea.0032.t
+	desc = red_sea.0032.desc
+	theme = realm
+	override_background = { event_background = market }
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		RICE_red_sea_event_trigger = yes
+		any_courtier = {
+			is_available_ai_adult = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+	}
+	
+	immediate = {
+		random_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+			}
+			save_scope_as = ceramic_lover
+		}
+	}
+
+	option = { # Buy
+		name = red_sea.0032.a
+		trigger = {
+			OR = {
+				gold >= 20
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 20
+		scope:ceramic_lover = {
+			add_character_modifier = {
+				modifier = RICE_red_sea_chinese_ceramics
+				years = 10
+			}
+			add_opinion = {
+				target = root
+				modifier = gift_opinion
+				opinion = 15
+			}		
+		}
+		stress_impact = {
+			compassionate = minor_stress_impact_loss
+			generous = minor_stress_impact_loss
+		}
+	}
+	option = { # Buy for self
+		name = red_sea.0032.b
+		trigger = {
+			OR = {
+				gold >= 20
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 20
+		add_character_modifier = {
+			modifier = RICE_red_sea_chinese_ceramics
+			years = 10
+		}
+		stress_impact = {
+			arrogant = minor_stress_impact_loss
+		}
+	}
+	option = { # No need
+		name = red_sea.0032.c
+	}
+}
+
+
+
+
+# Arrogant Hajj pilgrim in town
+red_sea.0033 = {
+	type = character_event
+	title = red_sea.0033.t
+	desc = red_sea.0033.desc
+	theme = diplomacy_foreign_affairs_focus
+	
+	left_portrait = root
+	
+	trigger = {
+		RICE_red_sea_event_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	option = { # ok
+		name = red_sea.0033.a
+		add_piety = 50
+	}
+	option = { # ok
+		name = red_sea.0033.b
+		add_prestige = 50
+	}
+}
+
+
+# Gazelles near residence?
+red_sea.0034 = {
+	type = character_event
+	title = red_sea.0034.t
+	desc = red_sea.0034.desc
+	theme = RICE_theme_egypt_desert
+	
+	left_portrait = root
+	
+	trigger = {
+		RICE_red_sea_event_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+	}
+
+	option = { # let them stay
+		name = red_sea.0034.a
+		add_character_modifier = {
+			modifier = RICE_red_sea_gazelles_nearby
+			years = 5
+		}
+		stress_impact = {
+			compassionate = miniscule_stress_impact_loss
+			content = miniscule_stress_impact_loss
+		}
+	}
+	option = { # hunt them
+		name = red_sea.0034.b
+		add_character_modifier = {
+			modifier = RICE_red_sea_gazelles_meat
+			years = 5
+		}
+		stress_impact = {
+			gluttonous = miniscule_stress_impact_loss
+		}
+	}
+	option = { # chase them away
+		name = red_sea.0034.c
+		add_prestige = 50
+	}
+}
+
+
+# Ostricht egg gift
+red_sea.0035 = {
+	type = character_event
+	title = red_sea.0035.t
+	desc = red_sea.0035.desc
+	theme = realm
+	
+	right_portrait = root
+	
+	trigger = {
+		RICE_red_sea_event_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = -0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	option = { # let them stay
+		name = red_sea.0035.a
+		add_character_modifier = {
+			modifier = RICE_red_sea_beautiful_ostrich_egg
+			years = 10
+		}
+	}
+}
+
+
+
+# Hyena attack on a merchant caravan
+red_sea.0036 = {
+	type = character_event
+	title = red_sea.0036.t
+	desc = red_sea.0036.desc
+	theme = stewardship_wealth_focus
+	override_background = { event_background = RICE_background_red_sea_beach }
+	
+	right_portrait = root
+	
+	trigger = {
+		RICE_red_sea_eastern_desert_event_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = -0.2
+			has_trait = just
+		}
+		modifier = {
+			add = 0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = -0.2
+			has_trait = brave
+		}
+	}
+
+	option = { # don't help
+		name = red_sea.0036.a
+		stress_impact = {
+			generous = medium_stress_impact_gain
+			just = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+		}
+	}
+	option = { # help him
+		name = red_sea.0036.b
+		trigger = {
+			OR = {
+				gold >= 50
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 50
+		if = {
+			limit = {
+				faith = {
+					OR = {
+						trait_is_virtue = just
+						trait_is_virtue = compassionate
+						trait_is_virtue = generous
+					}
+				}
+			}
+			add_piety = 100
+		}
+		else = {
+			add_piety = 50
+		}
+		stress_impact = {
+			greedy = medium_stress_impact_gain
+			callous = minor_stress_impact_gain
+		}
+	}
+}
+
+
+
+# Pilgrim recounts seasickness on the Red Sea
+red_sea.0037 = {
+	type = character_event
+	title = red_sea.0037.t
+	desc = red_sea.0037.desc
+	theme = realm
+	
+	left_portrait = root
+	
+	trigger = {
+		RICE_red_sea_event_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+	}
+
+	option = { # not easy!
+		name = red_sea.0037.a
+		add_piety = 25
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+			sadistic = minor_stress_impact_gain
+		}
+	}
+	option = { # loyal slave
+		name = red_sea.0037.b
+		add_prestige = 25
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+			sadistic = minor_stress_impact_gain
+		}
+	}
+	option = { # hahaha
+		name = red_sea.0037.c
+		add_dread = 10
+		stress_impact = {
+			compassionate = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+		}
+	}
+}
+
+
+
+# Walk along the Red Sea
+red_sea.0038 = {
+	type = character_event
+	title = red_sea.0038.t
+	desc = red_sea.0038.desc
+	theme = RICE_theme_red_sea_beach
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	trigger = {
+		RICE_red_sea_coastal_event_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+	}
+
+	option = { # not easy!
+		name = red_sea.0038.a
+		stress_impact = {
+			base = minor_stress_impact_loss
+			content = minor_stress_impact_loss
+			calm = minor_stress_impact_loss
+		}		
+	}
+}
+
+
+
+
+# Meet some herdsmen by the Red Sea
+red_sea.0039 = {
+	type = character_event
+	title = red_sea.0039.t
+	desc = red_sea.0039.desc
+	theme = RICE_theme_red_sea_beach
+	
+	left_portrait = {
+		character = root
+		animation = personality_forgiving
+	}
+	
+	trigger = {
+		RICE_red_sea_coastal_event_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = -0.2
+			has_trait = paranoid
+		}
+	}
+
+	option = { # buy goats, milk, butter
+		name = red_sea.0039.a
+		trigger = {
+			OR = {
+				gold >= 20
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 20
+		add_character_modifier = {
+			modifier = RICE_red_sea_bought_dairy
+			years = 5
+		}		
+	}
+	option = { # buy ostrich egg
+		name = red_sea.0039.b
+		trigger = {
+			OR = {
+				gold >= 35
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 35
+		add_character_modifier = {
+			modifier = RICE_red_sea_bought_ostrich_egg
+			years = 10
+		}		
+	}
+	option = { # buy slave
+		name = red_sea.0039.c
+		trigger = {
+			OR = {
+				gold >= 50
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 50
+		add_character_modifier = {
+			modifier = RICE_red_sea_bought_slave
+			years = 10
+		}		
+	}
+	option = { # buy camels
+		name = red_sea.0039.d
+		trigger = {
+			OR = {
+				gold >= 20
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 20
+		add_character_modifier = {
+			modifier = RICE_red_sea_bought_camels
+			years = 5
+		}		
+	}
+	option = { # no thanks
+		name = red_sea.0039.e
+	}
+}
+
+
 
