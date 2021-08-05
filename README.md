@@ -1,6 +1,6 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.3.1 "Suakin" (Released 7/20/21)
+## Latest Version: Version 1.3.2 "Aydhab" (Released 8/5/21)
 
 **Newest Flavor Pack - Red Sea: Treasures of the Eastern Desert**
 
