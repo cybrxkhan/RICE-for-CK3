@@ -4,8 +4,8 @@
 
 **Newest Flavor Pack - Red Sea: Treasures of the Eastern Desert**
 
-_“We took ship at Suakin for Yemen. No sailing is done on this sea at night because of the number of rocks in it. At nightfall they land and embark again at sunrise. The captain of the ship stands constantly at the prow to warn the steersman of rocks.”_
-_- Ibn Battuta, writing about his journey across the Red Sea_
+_“Aydhab [is] a large town, well supplied with milk and fish; dates and grain are imported from Upper Egypt. Its inhabitants are Bejas. These people are black-skinned; they wrap themselves in yellow blankets and tie headbands about a fingerbreadth wide round their heads.”_
+_- Ibn Battuta, writing about the port of Adyhab_
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. The guiding philosophy of RICE is to keep a tight, focused scope that doesn’t change gameplay significantly, but adds more flavor across the world, especially for lesser-known places, peoples, and histories.
 
