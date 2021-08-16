@@ -427,6 +427,146 @@ RICE_generate_small_family = {
 }
 
 
+RICE_generate_small_family_as_ruler = {
+	$CHARACTER$ = {
+		#If not married, create spouse
+		if = {
+			limit = {
+				is_married = no
+			}
+			create_character = {
+				location = $CHARACTER$.location
+				culture = $CHARACTER$.culture
+				faith = $CHARACTER$.faith
+				gender_female_chance = {
+					if = {
+						limit = { $CHARACTER$ = { is_male = yes } }
+						value = 100
+					}
+					else = {
+						value = 0
+					}
+				}
+				age = $CHARACTER$.age
+				#employer = scope:employer
+				save_scope_as = spouse
+			}
+
+			if = {
+				limit = { is_male = yes }
+				marry = scope:spouse
+			}
+			else = {
+				marry_matrilineal = scope:spouse
+			}
+		}
+		else = {
+			primary_spouse = { save_scope_as = spouse }
+		}
+
+		if = {
+			limit = { is_male = yes }
+			save_scope_as = father
+			scope:spouse = { save_scope_as = mother }
+		}
+		else = {
+			save_scope_as = mother
+			scope:spouse = { save_scope_as = father }
+		}
+
+		#Create child 1 (mother age 17+)
+		if = {
+			limit = { scope:mother.age >= 17 }
+			create_character = {
+				location = $CHARACTER$.location
+				culture = $CHARACTER$.culture
+				faith = $CHARACTER$.faith
+				gender_female_chance = {
+					if = {
+						limit = {
+							is_ruler = yes
+							$CHARACTER$ = { has_realm_law = male_only_law }
+						}
+						value = 0
+					}
+					else = {
+						limit = {
+							is_ruler = yes
+							$CHARACTER$ = { has_realm_law = female_only_law }
+						}
+						value = 100
+					}
+					else = {
+						value = 50
+					}
+				}
+				age = {
+					value = scope:mother.age
+					subtract = 17
+				}
+				father = scope:father
+				mother = scope:mother
+				dynasty = inherit
+				#employer = scope:employer
+				save_scope_as = child_1
+			}
+		}
+
+		#Create child 2 (mother age 25+)
+		if = {
+			limit = { scope:mother.age >= 25 }
+			
+			random = {
+				chance = 50
+				create_character = {
+					location = $CHARACTER$.location
+					culture = $CHARACTER$.culture
+					faith = $CHARACTER$.faith
+					gender_female_chance = {
+						value = 50
+					}
+					age = {
+						value = scope:mother.age
+						subtract = 25
+					}
+					father = scope:father
+					mother = scope:mother
+					dynasty = inherit
+					#employer = scope:employer
+					save_scope_as = child_2
+				}			
+			}
+		}
+
+		#Create child 3 (mother age 33+)
+		if = {
+			limit = { scope:mother.age >= 33 }
+			
+			random = {
+				chance = 50
+				create_character = {
+					location = $CHARACTER$.location
+					culture = $CHARACTER$.culture
+					faith = $CHARACTER$.faith
+					gender_female_chance = {
+						value = 50
+					}
+					age = {
+						value = scope:mother.age
+						subtract = 33
+					}
+					father = scope:father
+					mother = scope:mother
+					dynasty = inherit
+					#employer = scope:employer
+					save_scope_as = child_3
+				}
+			}
+		}
+	}
+}
+
+
 
 restore_tuyuhun_kingdom_effect = {
 	#Create the title and make it primary
@@ -711,6 +851,585 @@ RICE_red_sea_suakin_extra_taxes_effect = {
 			can_perform_the_hajj_trigger = yes # For example Qarmatians should be able to extort these silly pilgrims into oblivion
 		}
 		add_piety_level = -1
+	}
+}
+
+
+
+RICE_pamir_nasir_khusraw_shrine_effect = {
+	add_piety_level = 1
+	add_piety = 250
+	title:c_badakhshan = {
+		add_county_modifier = {
+			modifier = RICE_pamir_nasir_khusraw_shrine
+		}
+	}
+}
+
+RICE_pamir_nasir_khusraw_comission_done_effect = {
+	add_piety = 150
+	add_character_modifier = {
+		modifier = RICE_pamir_illuminated_by_nasir_khusraw
+	}
+}
+
+RICE_pamir_zun_goat_sacrifice_effect = {
+	random_list = {
+		40 = {
+			modifier = {
+				add = 10
+				num_sinful_traits >= 1
+			}
+		}
+		30 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_zun_blessing_small
+				years = 5
+			}
+		}
+		20 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			modifier = {
+				add = 5
+				num_virtuous_traits <= 1
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_zun_blessing_medium
+				years = 5
+			}
+		}
+		10 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			modifier = {
+				add = 5
+				num_virtuous_traits <= 2
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_zun_blessing_large
+				years = 5
+			}
+		}
+	}
+}
+
+RICE_pamir_dezaw_goat_sacrifice_effect = {
+	random_list = {
+		40 = {
+			modifier = {
+				add = 10
+				num_sinful_traits >= 1
+			}
+		}
+		30 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_dezaw_blessing_small
+				years = 5
+			}
+		}
+		20 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			modifier = {
+				add = 5
+				num_virtuous_traits <= 1
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_dezaw_blessing_medium
+				years = 5
+			}
+		}
+		10 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			modifier = {
+				add = 5
+				num_virtuous_traits <= 2
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_dezaw_blessing_large
+				years = 5
+			}
+		}
+	}
+}
+
+RICE_pamir_mahandeo_goat_sacrifice_effect = {
+	random_list = {
+		40 = {
+			modifier = {
+				add = 10
+				num_sinful_traits >= 1
+			}
+		}
+		30 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_mahandeo_blessing_small
+				years = 5
+			}
+		}
+		20 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			modifier = {
+				add = 5
+				num_virtuous_traits <= 1
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_mahandeo_blessing_medium
+				years = 5
+			}
+		}
+		10 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			modifier = {
+				add = 5
+				num_virtuous_traits <= 2
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_mahandeo_blessing_large
+				years = 5
+			}
+		}
+	}
+}
+
+
+
+RICE_pamir_indra_goat_sacrifice_effect = {
+	random_list = {
+		40 = {
+			modifier = {
+				add = 10
+				num_sinful_traits >= 1
+			}
+		}
+		30 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_indra_blessing_small
+				years = 5
+			}
+		}
+		20 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			modifier = {
+				add = 5
+				num_virtuous_traits <= 1
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_indra_blessing_medium
+				years = 5
+			}
+		}
+		10 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			modifier = {
+				add = 5
+				num_virtuous_traits <= 2
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_indra_blessing_large
+				years = 5
+			}
+		}
+	}
+}
+
+
+
+RICE_pamir_dezalik_goat_sacrifice_effect = {
+	random_list = {
+		40 = {
+			modifier = {
+				add = 10
+				num_sinful_traits >= 1
+			}
+		}
+		30 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_dezalik_blessing_small
+				years = 5
+			}
+		}
+		20 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			modifier = {
+				add = 5
+				num_virtuous_traits <= 1
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_dezalik_blessing_medium
+				years = 5
+			}
+		}
+		10 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			modifier = {
+				add = 5
+				num_virtuous_traits <= 2
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_dezalik_blessing_large
+				years = 5
+			}
+		}
+	}
+}
+
+
+
+RICE_pamir_balumain_goat_sacrifice_effect = {
+	random_list = {
+		40 = {
+			modifier = {
+				add = 10
+				num_sinful_traits >= 1
+			}
+		}
+		30 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_balumain_blessing_small
+				years = 5
+			}
+		}
+		20 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			modifier = {
+				add = 5
+				num_virtuous_traits <= 1
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_balumain_blessing_medium
+				years = 5
+			}
+		}
+		10 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			modifier = {
+				add = 5
+				num_virtuous_traits <= 2
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_balumain_blessing_large
+				years = 5
+			}
+		}
+	}
+}
+
+
+
+RICE_pamir_jestak_goat_sacrifice_effect = {
+	random_list = {
+		40 = {
+			modifier = {
+				add = 10
+				num_sinful_traits >= 1
+			}
+		}
+		30 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_jestak_blessing_small
+				years = 5
+			}
+		}
+		20 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			modifier = {
+				add = 5
+				num_virtuous_traits <= 1
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_jestak_blessing_medium
+				years = 5
+			}
+		}
+		10 = {
+			modifier = {
+				add = 5
+				has_character_flag = RICE_pamir_goat_sacrifice_small
+			}
+			modifier = {
+				add = 10
+				has_character_flag = RICE_pamir_goat_sacrifice_medium
+			}
+			modifier = {
+				add = 15
+				has_character_flag = RICE_pamir_goat_sacrifice_large
+			}
+			modifier = {
+				add = 5
+				num_virtuous_traits <= 2
+			}
+			add_character_modifier = {
+				modifier = RICE_pamir_jestak_blessing_large
+				years = 5
+			}
+		}
+	}
+}
+
+
+
+RICE_pamir_restore_zun_idol_effect = {
+	add_piety = 200
+	add_piety_level = 1
+	add_character_modifier = {
+		modifier = RICE_pamir_restored_zun_idol
+	}
+	title:c_zamindawar = {
+		add_county_modifier = {
+			modifier = RICE_pamir_zun_idol_is_restored
+		}
+	}
+	faith = {
+		change_fervor = 10
+	}
+}
+
+RICE_pamir_brahui_migration_effect = {
+	set_global_variable = {
+		name = RICE_pamir_brahui_migrations_happened
+		value = yes
+	}
+	custom_tooltip = RICE_pamir_brahui_migrations_happened_text
+	title:c_kalat = {
+		add_county_modifier = {
+			modifier = RICE_pamir_brahui_tribes
+		}
+	}
+	title:c_sibi = {
+		add_county_modifier = {
+			modifier = RICE_pamir_brahui_tribes
+		}
+	}
+	title:c_turan = {
+		add_county_modifier = {
+			modifier = RICE_pamir_brahui_tribes
+		}
 	}
 }
 

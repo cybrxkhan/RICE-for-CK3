@@ -1,0 +1,742 @@
+﻿
+
+
+RICE_pamir_expand_nasir_khusraws_shrine = {
+	picture = "gfx/interface/illustrations/decisions/decision_muslim_scholar.dds"
+	major = yes
+	ai_check_interval = 48
+
+	#cooldown = { days = 10 } #1825
+	
+	desc = RICE_pamir_expand_nasir_khusraws_shrine_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_title = title:c_badakhshan
+		has_global_variable = RICE_pamir_nasir_khusraw_passed_away
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_pamir_nasir_khusraw_shrine_decision_done
+			}
+		}
+	}
+	
+	is_valid = {
+		religion = religion:islam_religion
+		has_title = title:c_badakhshan
+		highest_held_title_tier > tier_county
+		piety_level >= 3
+		custom_description = {
+			text = RICE_pamir_nasir_khusraw_passed_away_req
+			has_global_variable = RICE_pamir_nasir_khusraw_passed_away
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_pamir_nasir_khusraw_shrine_decision_done
+		}
+		save_scope_as = pamir_nasir_khusraw_shrine_expander
+		custom_tooltip = RICE_pamir_expand_nasir_khusraws_shrine_effect_tooltip
+		show_as_tooltip = {
+			RICE_pamir_nasir_khusraw_shrine_effect = yes
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_pamir_expand_nasir_khusraws_shrine_context_tooltip
+		}
+		trigger_event = {
+			id = pamir.0102
+		}
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value }
+		prestige = { value = medium_prestige_value } 
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 25
+	}
+}
+
+RICE_pamir_restore_the_idol_of_zun = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_hellenic_temple.dds"
+	major = yes
+	ai_check_interval = 64
+
+	#cooldown = { days = 10 } #1825
+	
+	desc = RICE_pamir_restore_the_idol_of_zun_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_title = title:c_zamindawar
+		religion = religion:zunism_religion
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_pamir_zun_idol_has_been_restored
+			}
+		}
+	}
+	
+	is_valid = {
+		has_title = title:c_zamindawar
+		religion = religion:zunism_religion
+		OR = {
+			highest_held_title_tier > tier_duchy
+			AND = {
+				highest_held_title_tier > tier_county
+				sub_realm_size >= 8
+				is_independent_ruler = yes
+			}
+			custom_description = {
+				text = faith_is_reformed
+				subject = root
+				faith = { NOT = { has_doctrine_parameter = unreformed } }
+			}
+		}
+		piety_level >= 3
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_pamir_zun_idol_has_been_restored
+		}
+		show_as_tooltip = {
+			RICE_pamir_restore_zun_idol_effect = yes
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_pamir_restore_the_idol_of_zun_context_tooltip
+		}
+		trigger_event = {
+			id = pamir.0038
+		}
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value }
+		prestige = { value = medium_prestige_value } 
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 35
+	}
+}
+
+RICE_pamir_comission_nasir_khusraw_work = {
+	picture = "gfx/interface/illustrations/decisions/decision_muslim_scholar.dds"
+	major = yes
+	ai_check_interval = 64
+
+	#cooldown = { days = 10 } #1825
+	
+	desc = RICE_pamir_comission_nasir_khusraw_work_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_title = title:d_badakhshan
+		religion = religion:islam_religion
+		NOT = { has_global_variable = RICE_pamir_nasir_khusraw_passed_away }
+		NOT = { has_global_variable = RICE_pamir_nasir_khusraw_wrote_the_stuff }
+		any_courtier_or_guest = {
+			has_character_modifier = RICE_pamir_nasir_khusraw
+		}
+	}
+	
+	is_valid = {
+		religion = religion:islam_religion
+		has_title = title:d_badakhshan
+		custom_description = {
+			text = RICE_pamir_nasir_khusraw_at_court_req
+			any_courtier_or_guest = {
+				has_character_modifier = RICE_pamir_nasir_khusraw
+			}
+		}
+		OR = {
+			learning >= decent_skill_rating
+			has_trait = scholar
+			has_trait = theologian
+			has_trait = poet
+			has_trait = shrewd
+			has_trait = intellect_good_1
+			has_trait = intellect_good_2
+			has_trait = intellect_good_3
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		set_global_variable = {
+			name = RICE_pamir_nasir_khusraw_wrote_the_stuff
+			value = yes
+		}
+		custom_tooltip = RICE_pamir_comission_nasir_khusraw_work_effect_tooltip
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_pamir_comission_nasir_khusraw_work_context_tooltip
+		}
+		trigger_event = {
+			id = pamir.0104
+		}
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value }
+		prestige = { value = medium_prestige_value } 
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+
+
+
+
+RICE_pamir_go_on_nasir_khusraw_pilgrimage = {
+	picture = "gfx/interface/illustrations/decisions/decision_desert_pilgrimage.dds"
+
+	ai_check_interval = 64
+
+	cooldown = { days = 7300 }
+	
+	desc = RICE_pamir_go_on_nasir_khusraw_pilgrimage_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		religion = religion:islam_religion
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_pamir_nasir_khusraw_shrine_decision_done
+		}
+		title:c_badakhshan = {
+			squared_distance = {
+				target = root.capital_province
+				value <= squared_distance_medium
+			}
+		}
+	}
+	
+	is_valid = {
+		custom_description = {
+			text = RICE_pamir_nasir_khusraw_pilgrimage_distance_req
+			title:c_badakhshan = {
+				squared_distance = {
+					target = root.capital_province
+					value <= squared_distance_medium
+				}
+			}
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = RICE_pamir_go_on_nasir_khusraw_pilgrimage_effect_tooltip
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_pamir_go_on_nasir_khusraw_pilgrimage_context_tooltip
+		}
+		trigger_event = {
+			id = pamir.0130
+		}
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # Will depend
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 20
+			has_trait = zealous
+			has_faith = faith:ismaili
+		}
+		modifier = {
+			add = -15
+			NOT = { has_faith = faith:ismaili }
+		}
+		modifier = {
+			add = -15
+			has_trait = cynical
+		}
+	}
+}
+
+
+
+RICE_pamir_attend_chawmos_festival = {
+	picture = "gfx/interface/illustrations/decisions/decision_pamir_village.dds" #decision_pamir_river #decision_wakhan_corridor
+
+	ai_check_interval = 24
+
+	cooldown = { days = 3650 } #3650 1825
+	
+	desc = RICE_pamir_attend_chawmos_festival_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_faith = faith:nuristani_pagan
+	}
+	
+	is_valid = {
+		has_faith = faith:nuristani_pagan
+		custom_description = {
+			text = RICE_decision_chawmos_month_requirement
+			current_month >= 9
+			current_month <= 11
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = RICE_pamir_attend_chawmos_festival_effect_tooltip
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_pamir_attend_chawmos_festival_context_tooltip
+		}
+		trigger_event = {
+			id = pamir.0150
+		}
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # Will depend
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+
+
+RICE_pamir_sacrifice_goats = {
+	picture = "gfx/interface/illustrations/decisions/decision_wakhan_corridor.dds" #decision_pamir_river #decision_wakhan_corridor
+
+	ai_check_interval = 24
+
+	cooldown = { days = 1825 } #3650 1825
+	
+	desc = RICE_pamir_sacrifice_goats_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			religion = religion:peristani_religion
+			religion = religion:zunism_religion		
+		}
+	}
+	
+	is_valid = {
+		OR = {
+			religion = religion:peristani_religion
+			religion = religion:zunism_religion		
+		}
+		gold >= 50
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = RICE_pamir_sacrifice_goats_effect_tooltip
+		custom_tooltip = RICE_pamir_goat_sacrifice_costs_tooltip
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_pamir_sacrifice_goats_context_tooltip
+		}
+		trigger_event = {
+			id = pamir.0035
+		}
+	}
+
+	#cost = { 
+	#	gold = { value = minor_gold_value } # Will depend
+	#}	
+
+	ai_potential = {
+		short_term_gold > 50
+	}
+
+	ai_will_do = {
+		base = 40
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 10
+			has_trait = zealous
+		}
+		modifier = {
+			add = -10
+			has_trait = cynical
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+	}
+}
+
+
+
+
+RICE_pamir_attend_chinir_festival = {
+	picture = "gfx/interface/illustrations/decisions/decision_pamir_village.dds" #decision_pamir_river #decision_wakhan_corridor
+
+	ai_check_interval = 24
+
+	cooldown = { days = 3650 } #3650 1825
+	
+	desc = RICE_pamir_attend_chinir_festival_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		culture_group = culture_group:iranian_group
+		OR = {
+			has_title = title:c_badakhshan
+			has_title = title:c_munjan
+			has_title = title:c_wakhan
+			has_title = title:c_shughnan
+			has_title = title:c_karran
+			has_title = title:c_gilgit
+		}
+	}
+	
+	is_valid = {
+		culture_group = culture_group:iranian_group
+		OR = {
+			has_title = title:c_badakhshan
+			has_title = title:c_munjan
+			has_title = title:c_wakhan
+			has_title = title:c_shughnan
+			has_title = title:c_karran
+			has_title = title:c_gilgit
+		}
+		custom_description = {
+			text = RICE_decision_tuyuhun_nadun_month_requirement
+			current_month >= 7
+			current_month <= 10
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = RICE_pamir_attend_chinir_festival_effect_tooltip
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_pamir_attend_chinir_festival_context_tooltip
+		}
+		trigger_event = {
+			id = pamir.0050
+		}
+	}
+
+	cost = { 
+		gold = { value = minor_gold_value } # Will depend
+	}	
+
+	ai_potential = {
+		short_term_gold > standard_activity_cost
+	}
+
+	ai_will_do = {
+		base = 40
+	}
+}
+
+
+
+
+
+RICE_pamir_visit_bibi_fatima = {
+	picture = "gfx/interface/illustrations/decisions/decision_pamir_river.dds"
+	desc = RICE_pamir_visit_bibi_fatima_desc
+
+	ai_check_interval = 40
+	
+	cooldown = { days = 3650 }
+
+	is_shown = {
+		is_landed = yes
+		OR = {
+			has_title = title:c_badakhshan
+			has_title = title:c_munjan
+			has_title = title:c_wakhan
+			has_title = title:c_shughnan
+			has_title = title:c_karran
+			has_title = title:c_gilgit
+		}
+	}
+
+	is_valid = {
+		OR = {
+			has_title = title:c_badakhshan
+			has_title = title:c_munjan
+			has_title = title:c_wakhan
+			has_title = title:c_shughnan
+			has_title = title:c_karran
+			has_title = title:c_gilgit
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_available = yes
+	}
+
+	cost = {
+		gold = {
+			value = minor_gold_value
+		}
+	}
+	
+	ai_potential = {
+		short_term_gold > minor_gold_value
+	}
+
+	effect = {
+
+		custom_tooltip = RICE_pamir_visit_bibi_fatima_effect_tooltip
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_pamir_visit_bibi_fatima_context_tooltip
+		}
+		
+		trigger_event = pamir.0030
+
+		add_to_list = notification_sent
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = lazy
+		}
+	}
+}
+
+RICE_pamir_repair_watchposts_wakhan = {
+	picture = "gfx/interface/illustrations/decisions/decision_wakhan_corridor.dds"
+	desc = RICE_pamir_repair_watchposts_wakhan_desc
+
+	ai_check_interval = 40
+	
+	#cooldown = { days = 3650 }
+
+	is_shown = {
+		is_landed = yes
+		has_title = title:c_wakhan
+		title:c_wakhan = {
+			NOR = {
+				has_county_modifier = RICE_pamir_wakhan_recently_repaired_small
+				has_county_modifier = RICE_pamir_wakhan_recently_repaired_medium
+				has_county_modifier = RICE_pamir_wakhan_recently_repaired_big
+			}
+		}
+	}
+
+	is_valid = {
+		has_title = title:c_wakhan
+		custom_description = {
+			text = RICE_pamir_wakhan_recently_repaired_req
+			title:c_wakhan = {
+				NOR = {
+					has_county_modifier = RICE_pamir_wakhan_recently_repaired_small
+					has_county_modifier = RICE_pamir_wakhan_recently_repaired_medium
+					has_county_modifier = RICE_pamir_wakhan_recently_repaired_big
+				}
+			}
+		}
+		gold >= 80
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_available = yes
+	}
+
+	#cost = {
+	#	gold = {
+	#		value = 50
+	#	}
+	#}
+	
+	ai_potential = {
+		short_term_gold > 80
+	}
+
+	effect = {
+
+		custom_tooltip = RICE_pamir_repair_watchposts_wakhan_effect_tooltip
+		custom_tooltip = RICE_pamir_watchpost_costs_tooltip
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_pamir_repair_watchposts_wakhan_context_tooltip
+		}
+		
+		trigger_event = pamir.0033
+
+		add_to_list = notification_sent
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+	}
+}
+
+RICE_pamir_repair_watchposts_karakoram = {
+	picture = "gfx/interface/illustrations/decisions/decision_wakhan_corridor.dds"
+	desc = RICE_pamir_repair_watchposts_karakoram_desc
+
+	ai_check_interval = 40
+	
+	#cooldown = { days = 3650 }
+
+	is_shown = {
+		is_landed = yes
+		has_title = title:c_gilgit
+		title:c_gilgit = {
+			NOR = {
+				has_county_modifier = RICE_pamir_gilgit_recently_repaired_small
+				has_county_modifier = RICE_pamir_gilgit_recently_repaired_medium
+				has_county_modifier = RICE_pamir_gilgit_recently_repaired_big
+			}
+		}
+	}
+
+	is_valid = {
+		has_title = title:c_gilgit
+		custom_description = {
+			text = RICE_pamir_karakoram_recently_repaired_req
+			title:c_gilgit = {
+				NOR = {
+					has_county_modifier = RICE_pamir_gilgit_recently_repaired_small
+					has_county_modifier = RICE_pamir_gilgit_recently_repaired_medium
+					has_county_modifier = RICE_pamir_gilgit_recently_repaired_big
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_available = yes
+	}
+
+	#cost = {
+	#	gold = {
+	#		value = 50
+	#	}
+	#}
+	
+	ai_potential = {
+		short_term_gold > 50
+	}
+
+	effect = {
+
+		custom_tooltip = RICE_pamir_repair_watchposts_karakoram_effect_tooltip
+		custom_tooltip = RICE_pamir_watchpost_costs_tooltip
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_pamir_repair_watchposts_karakoram_context_tooltip
+		}
+		
+		trigger_event = pamir.0034
+
+		add_to_list = notification_sent
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+	}
+}
+
