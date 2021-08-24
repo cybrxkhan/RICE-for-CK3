@@ -94,7 +94,7 @@ pamir.0003 = {
 		get_title = title:c_karran
 		get_title = title:d_badakhshan
 		RICE_generate_small_family = { CHARACTER = scope:ali_ibn_asad }
-		set_relation_friend = scope:nasir_khusraw
+		#set_relation_friend = scope:nasir_khusraw
 		add_courtier = scope:nasir_khusraw
 		trigger_event = { # Give Ali ibn Asad the modifiers and choose his religion IF he is AI
 			id = pamir.0010
@@ -317,7 +317,7 @@ pamir.0009 = {
 		animation = personality_content
 	}
 	
-	immediate = {
+	immediate = {	# Have to do this for some reason even though it shows an error, as otherwise Nasir Khusraw will visit someone else's court even though he's your courtier
 		add_courtier = scope:nasir_khusraw	
 	}
 	
@@ -378,6 +378,60 @@ pamir.0010 = {
 				}
 			}
 		}
+	}
+}
+
+
+
+
+# Add purity of youth modifier
+pamir.0011 = {
+	hidden = yes
+	
+	trigger = {
+		OR = {
+			AND = {
+				religion = religion:peristani_religion
+				is_dharmachakra_loaded = no
+			}
+			AND = {
+				religion = religion:zunism_religion
+				NOT = { has_faith = faith:zun_pagan }
+				is_dharmachakra_loaded = yes
+			}
+		}
+		NOT = { has_character_modifier = RICE_pamir_purity_of_youth }
+		OR = {
+			AND = {
+				is_female = no
+				faith = { has_doctrine = doctrine_gender_male_dominated }
+			}
+			AND = {
+				is_female = yes
+				faith = { has_doctrine = doctrine_gender_female_dominated }
+			}
+			faith = { has_doctrine = doctrine_gender_equal }
+		}
+	}
+	
+	immediate = {
+		add_character_modifier = {
+			modifier = RICE_pamir_purity_of_youth
+		}
+	}
+}
+
+
+# Remove purity of youth modifier
+pamir.0012 = {
+	hidden = yes
+	
+	trigger = {
+		has_character_modifier = RICE_pamir_purity_of_youth
+	}
+	
+	immediate = {
+		remove_character_modifier = RICE_pamir_purity_of_youth
 	}
 }
 
@@ -602,13 +656,6 @@ pamir.0022 = {
 			template = kafir_warrior_spawn_template
 			save_scope_as = RICE_kafir_warrior_spawn
 			culture = culture:nuristani
-		}	
-		hidden_effect = {
-			scope:RICE_kafir_warrior_spawn = {
-				add_character_modifier = {
-					modifier = RICE_pamir_burusho_courtier_warrior
-				}
-			}
 		}
 	}
 
@@ -779,13 +826,6 @@ pamir.0024 = {
 			template = brahui_warrior_spawn_template
 			save_scope_as = RICE_brahui_warrior_spawn
 			culture = culture:brahui
-		}	
-		hidden_effect = {
-			scope:RICE_brahui_warrior_spawn = {
-				add_character_modifier = {
-					modifier = RICE_pamir_burusho_courtier_warrior
-				}
-			}
 		}
 	}
 
@@ -1235,7 +1275,22 @@ pamir.0035 = {
 pamir.0036 = {
 	type = character_event
 	title = pamir.0036.t
-	desc = pamir.0036.desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { has_faith = faith:zun_pagan }
+				}
+				desc = pamir.0036.desc.normal
+			}
+			triggered_desc = {
+				trigger = {
+					has_faith = faith:zun_pagan
+				}
+				desc = pamir.0036.desc.zun
+			}
+		}
+	}
 	theme = RICE_theme_pamir_valley
 	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
 	
@@ -1443,10 +1498,13 @@ pamir.0053 = {
 	type = character_event
 	title = pamir.0053.t
 	desc = pamir.0053.desc
-	theme = feast_activity
-	override_background = { event_background = RICE_background_tibet_inner_altar }
+	theme = RICE_theme_tibet_inner_altar_feast
 	
 	right_portrait = root
+	
+	immediate = {
+		play_music_cue = mx_cue_banquet
+	}
 	
 	option = { # Feast events randomizer
 		name = pamir.0053.a
@@ -1510,15 +1568,22 @@ pamir.0053 = {
 			random = {
 				chance = 20
 				trigger_event = {
-					id = pamir.0073
-					days = { 2 12 }
+					id = pamir.0067
+					days = { 2 8 }
 				}			
 			}
 			random = {
 				chance = 20
 				trigger_event = {
-					id = pamir.0074
-					days = { 2 12 }
+					id = pamir.0068
+					days = { 2 8 }
+				}			
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = pamir.0069
+					days = { 2 8 }
 				}			
 			}
 		}
@@ -1534,8 +1599,7 @@ pamir.0054 = {
 	type = character_event
 	title = pamir.0054.t
 	desc = pamir.0054.desc
-	theme = feast_activity
-	override_background = { event_background = RICE_background_tibet_inner_altar }
+	theme = RICE_theme_tibet_inner_altar_feast
 	
 	left_portrait = root
 	
@@ -1652,47 +1716,49 @@ pamir.0056 = {
 			days = { 10 15 }
 		}
 		#Fruit picking events randomizer
-		random = {
-			chance = 20
-			trigger_event = {
-				id = pamir.0067
-				days = { 2 8 }
-			}			
-		}
-		random = {
-			chance = 20
-			trigger_event = {
-				id = pamir.0068
-				days = { 2 8 }
-			}			
-		}
-		random = {
-			chance = 20
-			trigger_event = {
-				id = pamir.0069
-				days = { 2 8 }
-			}			
-		}
-		random = {
-			chance = 20
-			trigger_event = {
-				id = pamir.0070
-				days = { 2 8 }
-			}			
-		}
-		random = {
-			chance = 20
-			trigger_event = {
-				id = pamir.0071
-				days = { 2 8 }
-			}			
-		}
-		random = {
-			chance = 20
-			trigger_event = {
-				id = pamir.0072
-				days = { 2 8 }
-			}			
+		hidden_effect = {
+			random = {
+				chance = 25
+				trigger_event = {
+					id = pamir.0070
+					days = { 2 8 }
+				}			
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = pamir.0071
+					days = { 2 8 }
+				}			
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = pamir.0072
+					days = { 2 8 }
+				}			
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = pamir.0073
+					days = { 2 8 }
+				}			
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = pamir.0074
+					days = { 2 12 }
+				}			
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = pamir.0075
+					days = { 2 12 }
+				}			
+			}		
 		}
 	}
 }
@@ -1741,6 +1807,588 @@ pamir.0058 = {
 
 
 
+# There is only one piece of meat left
+pamir.0059 = {
+	type = character_event
+	title = pamir.0059.t
+	desc = pamir.0059.desc
+	theme = RICE_theme_tibet_inner_altar_feast
+	
+	right_portrait = {
+		character = root
+		animation = personality_irrational
+	}
+	
+	option = { # They can have it
+		name = pamir.0059.a
+		add_piety = 10
+		stress_impact = {
+			gluttonous = minor_stress_impact_gain
+			arrogant = minor_stress_impact_gain
+			greedy = minor_stress_impact_gain
+			sadistic = minor_stress_impact_gain
+		}
+	}		
+	option = { # Take it for myself
+		name = pamir.0059.b
+		add_dread = 5
+		stress_impact = {
+			temperate = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+			content = minor_stress_impact_gain
+		}
+	}	
+}
+
+
+
+# Show generosity by bringing sweet wheat porridge and other foods to the feast?
+pamir.0060 = {
+	type = character_event
+	title = pamir.0060.t
+	desc = pamir.0060.desc
+	theme = RICE_theme_tibet_inner_altar_feast
+	
+	left_portrait = root
+	
+	option = { # They should give me food!
+		name = pamir.0060.a
+		add_prestige = -25
+		stress_impact = {
+			generous = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+			just = minor_stress_impact_gain
+			temperate = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+		}
+	}	
+	option = { # Brought a little food
+		name = pamir.0060.b
+		remove_short_term_gold = 10
+	}	
+	option = { # Brought lots of  food
+		name = pamir.0060.c
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 30
+			}
+		}
+		remove_short_term_gold = 30
+		add_prestige = 50
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			arrogant = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+		}
+	}	
+	option = { # Brought crazy amounts of  of  food
+		name = pamir.0060.d
+		trigger = {
+			has_trait = generous
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		trait = generous
+		remove_short_term_gold = 50
+		add_prestige = 100
+	}
+}
+
+
+
+# Prayers or socialization?
+pamir.0061 = {
+	type = character_event
+	title = pamir.0061.t
+	desc = pamir.0061.desc
+	theme = RICE_theme_tibet_inner_altar_feast
+	
+	left_portrait = root
+	
+	option = { # Prayers
+		name = pamir.0061.a
+		add_prestige = -20
+		add_piety = 20
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			gregarious = minor_stress_impact_gain
+		}
+	}	
+	option = { # Balance
+		name = pamir.0061.b
+		stress_impact = {
+			gregarious = minor_stress_impact_gain
+			zealous = minor_stress_impact_gain
+		}
+	}	
+	option = { # Socialize
+		name = pamir.0061.c
+		add_piety = -20
+		add_prestige = 20
+		stress_impact = {
+			shy = minor_stress_impact_gain
+			zealous = minor_stress_impact_gain
+		}
+	}
+}
+
+
+
+# People should remember about cooperation within a community
+pamir.0062 = {
+	type = character_event
+	title = pamir.0062.t
+	desc = pamir.0062.desc
+	theme = RICE_theme_tibet_inner_altar_feast
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Prayers
+		name = pamir.0062.a
+		add_piety = 15
+	}
+}
+
+
+# Kurut, the horny curd cheese
+pamir.0063 = {
+	type = character_event
+	title = pamir.0063.t
+	desc = pamir.0063.desc
+	theme = RICE_theme_tibet_inner_altar_feast
+	override_icon = { reference = "gfx/interface/icons/event_types/type_love.dds" }
+	
+	left_portrait = {
+		character = root
+		animation = flirtation_left
+	}
+	
+	option = { # Ok
+		name = pamir.0063.a
+		trigger = {
+			is_female = no
+		}
+		add_character_modifier = {
+			modifier = RICE_pamir_ate_kurut_cheese
+			years = 2
+		}
+		stress_impact = {
+			shy = minor_stress_impact_gain
+			chaste = minor_stress_impact_gain
+		}
+	}	
+	option = { # Not in the mood
+		name = pamir.0063.b
+		trigger = {
+			is_female = no
+		}
+		add_piety = 20
+		stress_impact = {
+			gregarious = minor_stress_impact_gain
+			lustful = minor_stress_impact_gain
+		}
+	}
+	option = { # Tease the men
+		name = pamir.0063.c
+		trigger = {
+			is_female = yes
+		}
+		stress_impact = {
+			base = minor_stress_impact_loss
+			gregarious = minor_stress_impact_loss
+			lustful = minor_stress_impact_loss
+		}
+	}
+}
+
+
+
+
+# Moch - soup made with cheese curds and vegetables
+pamir.0064 = {
+	type = character_event
+	title = pamir.0064.t
+	desc = pamir.0064.desc
+	theme = RICE_theme_tibet_inner_altar_feast
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Ok
+		name = pamir.0064.a
+		add_character_modifier = {
+			modifier = RICE_pamir_ate_moch
+			years = 2
+		}
+	}
+}
+
+
+# Observing the house of the host you are in
+pamir.0065 = {
+	type = character_event
+	title = pamir.0065.t
+	desc = pamir.0065.desc
+	theme = RICE_theme_tibet_inner_altar_feast
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = { # Ok
+		name = pamir.0065.a
+		add_piety = 15
+	}	
+	option = { # Ok
+		name = pamir.0065.b
+		add_prestige = 15
+	}
+}
+
+# Learning about others' experiences
+pamir.0066 = {
+	type = character_event
+	title = pamir.0066.t
+	desc = pamir.0066.desc
+	theme = RICE_theme_tibet_inner_altar_feast
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = { # Ok
+		name = pamir.0066.a
+		if = {
+			limit = { has_lifestyle = diplomacy_lifestyle }
+			add_diplomacy_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = martial_lifestyle }
+			add_martial_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = stewardship_lifestyle }
+			add_stewardship_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = intrigue_lifestyle }
+			add_intrigue_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = learning_lifestyle }
+			add_learning_lifestyle_xp = minor_lifestyle_xp
+		}
+	}
+}
+
+
+
+# Help bring food to the elderly and ill?
+pamir.0067 = {
+	type = character_event
+	title = pamir.0067.t
+	desc = pamir.0067.desc
+	theme = RICE_theme_tibet_inner_altar_feast
+	
+	right_portrait = {
+		character = root
+		animation = personality_forgiving
+	}
+	
+	option = { # Don't help
+		name = pamir.0067.a
+		stress_impact = {
+			compassionate = minor_stress_impact_gain
+			gregarious = minor_stress_impact_gain
+			just = minor_stress_impact_gain
+			diligent = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+		}		
+	}	
+	option = { # Help
+		name = pamir.0067.b
+		add_piety = 25
+		stress_impact = {
+			callous = minor_stress_impact_gain
+			shy = minor_stress_impact_gain
+			sadistic = minor_stress_impact_gain
+			lazy = minor_stress_impact_gain
+			arrogant = minor_stress_impact_gain
+			paranoid = minor_stress_impact_gain
+		}
+		random = {
+			chance = 33
+			send_interface_toast = {
+				type = event_toast_effect_bad
+				left_icon = ROOT
+				title = pamir.0067.toast
+				add_character_modifier = {
+					modifier = RICE_pamir_chinir_minor_illness
+					years = 3
+				}
+			}			
+		}
+	}
+}
+
+
+# Interesting conversations
+pamir.0068 = {
+	type = character_event
+	title = pamir.0068.t
+	desc = pamir.0068.desc
+	theme = RICE_theme_tibet_inner_altar_feast
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = { # Don't help
+		name = pamir.0068.a
+		random_list = {
+			40 = { }
+			10 = { add_diplomacy_skill = 1 }
+			10 = { add_martial_skill = 1 }
+			10 = { add_stewardship_skill = 1 }
+			10 = { add_intrigue_skill = 1 }
+			10 = { add_learning_skill = 1 }
+			10 = { add_prowess_skill = 1 }
+		}
+	}
+}
+
+
+# Eating nigan and baat
+pamir.0069 = {
+	type = character_event
+	title = pamir.0069.t
+	desc = pamir.0069.desc
+	theme = RICE_theme_tibet_inner_altar_feast
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Yes
+		name = pamir.0069.a
+		add_piety = 20
+	}	
+	option = { # No
+		name = pamir.0069.b
+		add_prestige = 20
+	}
+}
+
+# Sticky fruit sauce
+pamir.0070 = {
+	type = character_event
+	title = pamir.0070.t
+	desc = pamir.0070.desc
+	theme = RICE_theme_pamir_valley
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Yes
+		name = pamir.0070.a
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			gluttonous = miniscule_stress_impact_loss
+			content = miniscule_stress_impact_loss
+		}
+	}
+}
+
+# Offering of goat or sheep meat
+pamir.0071 = {
+	type = character_event
+	title = pamir.0071.t
+	desc = pamir.0071.desc
+	theme = RICE_theme_pamir_valley
+	
+	left_portrait = {
+		character = root
+		animation = personality_forgiving
+	}
+	
+	option = { # Yes
+		name = pamir.0071.a
+		add_prestige = 20
+	}
+}
+
+# Learning about village agricultural life
+pamir.0072 = {
+	type = character_event
+	title = pamir.0072.t
+	desc = pamir.0072.desc
+	theme = RICE_theme_pamir_valley
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = { # Yes
+		name = pamir.0072.a
+		if = {
+			limit = { has_lifestyle = diplomacy_lifestyle }
+			add_diplomacy_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = martial_lifestyle }
+			add_martial_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = stewardship_lifestyle }
+			add_stewardship_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = intrigue_lifestyle }
+			add_intrigue_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = learning_lifestyle }
+			add_learning_lifestyle_xp = minor_lifestyle_xp
+		}
+	}
+}
+
+
+
+# Gathering leaves to use as animal fodder in the winter
+pamir.0073 = {
+	type = character_event
+	title = pamir.0073.t
+	desc = pamir.0073.desc
+	theme = RICE_theme_pamir_valley
+	
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	option = { # Yes
+		name = pamir.0073.a
+		add_piety = 20
+		add_prestige = -20
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+			lazy = minor_stress_impact_gain
+		}
+	}	
+	option = { # Yes
+		name = pamir.0073.b
+		add_prestige = 20
+		add_piety = -20
+		stress_impact = {
+			humble = minor_stress_impact_gain
+			gregarious = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+		}
+	}
+}
+
+
+# Help pick some fruits?
+pamir.0074 = {
+	type = character_event
+	title = pamir.0074.t
+	desc = pamir.0074.desc
+	theme = RICE_theme_pamir_valley
+	
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	option = { # No
+		name = pamir.0074.a
+		stress_impact = {
+			humble = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+			just = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+		}
+	}	
+	option = { # Yes (female)
+		name = pamir.0074.b
+		trigger = {
+			is_female = yes
+		}
+		add_prestige = -25
+		add_piety = 25
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+			lazy = minor_stress_impact_gain
+		}
+	}	
+	option = { # Yes (male)
+		name = pamir.0074.c
+		trigger = {
+			is_female = yes
+		}
+		add_prestige = -25
+		add_piety = 25
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+			lazy = minor_stress_impact_gain
+		}
+	}
+}
+
+
+# Snacking on the fruits
+pamir.0075 = {
+	type = character_event
+	title = pamir.0075.t
+	desc = pamir.0075.desc
+	theme = RICE_theme_pamir_valley
+	
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	option = { # Ok
+		name = pamir.0075.a
+		add_prestige = 15
+		stress_impact = {
+			temperate = minor_stress_impact_gain
+		}
+	}	
+	option = { # restrain self
+		name = pamir.0075.b
+		add_piety = 15
+		stress_impact = {
+			gluttonous = minor_stress_impact_gain
+		}
+	}
+}
+
+
+
+
+
 ######################################################################################
 # 
 # HISTORICAL EVENTS
@@ -1770,9 +2418,23 @@ pamir.0100 = {
 		#title:c_badakhshan.holder = {
 		#	save_scope_as = badakhshan_ruler
 		#}
-		character:248022 = {
-			save_scope_as = nasir_khusraw
-		}		
+		if = {
+			limit = {
+				has_global_variable = RICE_pamir_nasir_khusraw_was_randomly_generated
+			}
+			ordered_in_global_list = {
+				variable = RICE_pamir_nasir_khusraw_random_list
+				save_scope_as = nasir_khusraw
+			}
+		}
+		else_if = {
+			limit = {
+				has_global_variable = RICE_pamir_nasir_khusraw_born_1066_start
+			}
+			character:248022 = {
+				save_scope_as = nasir_khusraw
+			}		
+		}	
 		set_global_variable = {
 			name = RICE_pamir_nasir_khusraw_passed_away
 			value = yes
@@ -1838,8 +2500,22 @@ pamir.0102 = {
 	
 	immediate = {
 		#play_music_cue = "mx_cue_ck3_vocal_maintheme"
-		character:248022 = {
-			save_scope_as = nasir_khusraw
+		if = {
+			limit = {
+				has_global_variable = RICE_pamir_nasir_khusraw_was_randomly_generated
+			}
+			ordered_in_global_list = {
+				variable = RICE_pamir_nasir_khusraw_random_list
+				save_scope_as = nasir_khusraw
+			}
+		}
+		else_if = {
+			limit = {
+				has_global_variable = RICE_pamir_nasir_khusraw_born_1066_start
+			}
+			character:248022 = {
+				save_scope_as = nasir_khusraw
+			}		
 		}
 		title:c_badakhshan = { #For loc.
 			save_scope_as = badakhshan_county
@@ -1913,8 +2589,22 @@ pamir.0104 = {
 	}
 	
 	immediate = {
-		character:248022 = {
-			save_scope_as = nasir_khusraw
+		if = {
+			limit = {
+				has_global_variable = RICE_pamir_nasir_khusraw_was_randomly_generated
+			}
+			ordered_in_global_list = {
+				variable = RICE_pamir_nasir_khusraw_random_list
+				save_scope_as = nasir_khusraw
+			}
+		}
+		else_if = {
+			limit = {
+				has_global_variable = RICE_pamir_nasir_khusraw_born_1066_start
+			}
+			character:248022 = {
+				save_scope_as = nasir_khusraw
+			}		
 		}
 	}
 	
@@ -2083,6 +2773,154 @@ pamir.0111 = {
 }
 
 
+# A wild Nasir Khusraw appears!
+pamir.0112 = {
+	hidden = yes
+	
+	trigger = {
+		NOT = { has_global_variable = RICE_pamir_nasir_khusraw_born_1066_start }
+		NOT = { has_global_variable = RICE_pamir_nasir_khusraw_was_randomly_generated }
+		# Someone in Badakhshan is Muslim
+		OR = {
+			title:c_badakhshan.holder = {
+				religion = religion:islam_religion
+			}	
+			title:c_munjan.holder = {
+				religion = religion:islam_religion
+			}	
+			title:c_wakhan.holder = {
+				religion = religion:islam_religion
+			}	
+			title:c_shughnan.holder = {
+				religion = religion:islam_religion
+			}	
+			title:c_karran.holder = {
+				religion = religion:islam_religion
+			}		
+		}
+		current_date > 925.1.1
+	}
+	
+	immediate = { # Ok
+		set_global_variable = {
+			name = RICE_pamir_nasir_khusraw_was_randomly_generated
+			value = yes
+		}
+		if = {
+			limit = {
+				title:c_badakhshan.holder = {
+					religion = religion:islam_religion
+				}			
+			}
+			title:c_badakhshan = {
+				save_scope_as = nasir_khusraw_county
+			}
+			title:c_badakhshan.holder = {
+				save_scope_as = nasir_khusraw_buddy
+				RICE_pamir_spawn_nasir_khusraw_effect = yes
+				set_relation_friend = scope:nasir_khusraw
+			}
+		}
+		else_if = {
+			limit = {
+				title:c_munjan.holder = {
+					religion = religion:islam_religion
+				}			
+			}
+			title:c_munjan = {
+				save_scope_as = nasir_khusraw_county
+			}
+			title:c_munjan.holder = {
+				save_scope_as = nasir_khusraw_buddy
+				RICE_pamir_spawn_nasir_khusraw_effect = yes
+				set_relation_friend = scope:nasir_khusraw
+			}
+		}
+		else_if = {
+			limit = {
+				title:c_wakhan.holder = {
+					religion = religion:islam_religion
+				}			
+			}
+			title:c_wakhan = {
+				save_scope_as = nasir_khusraw_county
+			}
+			title:c_wakhan.holder = {
+				save_scope_as = nasir_khusraw_buddy
+				RICE_pamir_spawn_nasir_khusraw_effect = yes
+				set_relation_friend = scope:nasir_khusraw
+			}
+		}
+		else_if = {
+			limit = {
+				title:c_shughnan.holder = {
+					religion = religion:islam_religion
+				}			
+			}
+			title:c_shughnan = {
+				save_scope_as = nasir_khusraw_county
+			}
+			title:c_shughnan.holder = {
+				save_scope_as = nasir_khusraw_buddy
+				RICE_pamir_spawn_nasir_khusraw_effect = yes
+				set_relation_friend = scope:nasir_khusraw
+			}
+		}
+		else_if = {
+			limit = {
+				title:c_karran.holder = {
+					religion = religion:islam_religion
+				}			
+			}
+			title:c_karran = {
+				save_scope_as = nasir_khusraw_county
+			}
+			title:c_karran.holder = {
+				save_scope_as = nasir_khusraw_buddy
+				RICE_pamir_spawn_nasir_khusraw_effect = yes
+				set_relation_friend = scope:nasir_khusraw
+			}
+		}
+		every_player = {
+			limit = {
+				is_ai = no
+				capital_province = {
+					OR = {
+						geographical_region = world_middle_east_persia
+						geographical_region = world_india_rajastan
+						geographical_region = world_steppe_tarim
+						geographical_region = world_tibet
+					}
+				}
+			}
+			trigger_event = pamir.0113
+		}
+	}
+}
+
+# Nasir Khusraw notification event
+pamir.0113 = {
+	type = character_event
+	title = pamir.0113.t
+	desc = pamir.0113.desc
+	theme = RICE_theme_pamir_valley
+	
+	left_portrait = {
+		character = scope:nasir_khusraw_buddy
+		animation = personality_honorable
+	}	
+	right_portrait = {
+		character = scope:nasir_khusraw
+		animation = personality_content
+	}
+
+	option = { # OK
+		name = pamir.0113.a
+		custom_tooltip = pamir.0113.tooltip
+	}
+}
+
+
 ######################################################################################
 # 
 # NASIR KHUSRAW PILGRIMAGE
@@ -2109,8 +2947,22 @@ pamir.0130 = {
 		title:c_badakhshan = { #For loc.
 			save_scope_as = badakhshan_county
 		}
-		character:248022 = {
-			save_scope_as = nasir_khusraw
+		if = {
+			limit = {
+				has_global_variable = RICE_pamir_nasir_khusraw_was_randomly_generated
+			}
+			ordered_in_global_list = {
+				variable = RICE_pamir_nasir_khusraw_random_list
+				save_scope_as = nasir_khusraw
+			}
+		}
+		else_if = {
+			limit = {
+				has_global_variable = RICE_pamir_nasir_khusraw_born_1066_start
+			}
+			character:248022 = {
+				save_scope_as = nasir_khusraw
+			}		
 		}
 		# Stop characters from planning multiple activities at once
 		add_character_flag = planning_an_activity
@@ -2145,8 +2997,22 @@ pamir.0131 = {
 		title:c_badakhshan = { #For loc.
 			save_scope_as = badakhshan_county
 		}
-		character:248022 = {
-			save_scope_as = nasir_khusraw
+		if = {
+			limit = {
+				has_global_variable = RICE_pamir_nasir_khusraw_was_randomly_generated
+			}
+			ordered_in_global_list = {
+				variable = RICE_pamir_nasir_khusraw_random_list
+				save_scope_as = nasir_khusraw
+			}
+		}
+		else_if = {
+			limit = {
+				has_global_variable = RICE_pamir_nasir_khusraw_born_1066_start
+			}
+			character:248022 = {
+				save_scope_as = nasir_khusraw
+			}		
 		}
 		play_music_cue = "mx_cue_epic_sacral_moment"
 	}
@@ -2852,7 +3718,7 @@ pamir.0153 = {
 	type = character_event
 	title = pamir.0153.t
 	desc = pamir.0153.desc
-	theme = RICE_theme_tibet_inner_altar
+	theme = RICE_theme_tibet_inner_altar_feast
 	
 	left_portrait = {
 		character = root
@@ -3189,3 +4055,2963 @@ pamir.0161 = {
 	}
 }
 
+
+######################################################################################
+# 
+# FLAVOR EVENTS
+# 
+# pamir.0200-pamir.0249 reserved
+# 
+######################################################################################
+
+# Come across juniper forest
+pamir.0200 = {
+	type = character_event
+	title = pamir.0200.t
+	desc = pamir.0200.desc
+	theme = RICE_theme_pamir_valley
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		RICE_pamir_full_pamir_and_hindu_kush_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = fickle
+		}
+		modifier = {
+			add = -0.2
+			has_trait = stubborn
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0200.a
+		add_character_modifier = {
+			modifier = RICE_pamir_collected_juniper
+			years = 3
+		}
+	}
+}
+
+
+
+# Hunters in the Pamirs argue and ask you to resolve argument
+pamir.0201 = {
+	type = character_event
+	title = pamir.0201.t
+	desc = pamir.0201.desc
+	theme = RICE_theme_wakhan_fortress
+	
+	left_portrait = {
+		character = root
+		animation = bored
+	}
+	
+	trigger = {
+		RICE_pamir_full_pamir_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0201.a
+		random_list = {
+			10 = { add_prestige = 30 }
+			10 = { add_piety = -30 }
+		}
+	}
+	
+	option = { # Ok
+		name = pamir.0201.b
+		random_list = {
+			10 = { add_piety = 30 }
+			10 = { add_prestige = -30 }
+		}
+	}
+	
+	option = { # Ok
+		name = pamir.0201.c
+		trigger = {
+			has_trait = paranoid
+		}
+		trait = paranoid
+		add_prestige = 15
+	}
+	
+	option = { # Ok
+		name = pamir.0201.d
+		add_dread = 5
+		stress_impact = {
+			humble = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+			just = minor_stress_impact_gain
+		}
+	}
+}
+
+
+
+
+# Gift of lapis lazuli from locals
+pamir.0202 = {
+	type = character_event
+	title = pamir.0202.t
+	desc = pamir.0202.desc
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	trigger = {
+		RICE_pamir_lapis_lazuli_owner_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0202.a
+		add_gold = 25
+		add_prestige = 50
+	}
+}
+
+
+# Lapis lazuli miners complain about harsh taskmasters
+pamir.0203 = {
+	type = character_event
+	title = pamir.0203.t
+	desc = pamir.0203.desc
+	theme = RICE_theme_wakhan_fortress
+	override_icon = { reference = "gfx/interface/icons/event_types/type_stewardship.dds" }
+	
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	trigger = {
+		RICE_pamir_lapis_lazuli_owner_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+	}
+
+	option = { # Taskmasters are wrong
+		name = pamir.0203.a
+		add_piety = 50
+		stress_impact = {
+			diligent = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+			greedy = minor_stress_impact_gain
+		}		
+	}
+	option = { # Miners are wrong
+		name = pamir.0203.b
+		add_prestige = 50
+		stress_impact = {
+			compassionate = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+			forgiving = minor_stress_impact_gain
+		}		
+	}
+	option = { # Negotiate an agreement
+		name = pamir.0203.c
+		trigger = {
+			diplomacy >= medium_skill_rating
+		}
+		skill = diplomacy
+		add_prestige = 50
+		add_piety = 50	
+	}
+}
+
+
+# Ruby miners complain about harsh taskmasters
+pamir.0204 = {
+	type = character_event
+	title = pamir.0204.t
+	desc = pamir.0204.desc
+	theme = RICE_theme_wakhan_fortress
+	override_icon = { reference = "gfx/interface/icons/event_types/type_stewardship.dds" }
+	
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	trigger = {
+		RICE_pamir_ruby_mines_owner_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+	}
+
+	option = { # Taskmasters are wrong
+		name = pamir.0204.a
+		add_piety = 50
+		stress_impact = {
+			diligent = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+			greedy = minor_stress_impact_gain
+		}		
+	}
+	option = { # Miners are wrong
+		name = pamir.0204.b
+		add_prestige = 50
+		stress_impact = {
+			compassionate = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+			forgiving = minor_stress_impact_gain
+		}		
+	}
+	option = { # Negotiate an agreement
+		name = pamir.0204.c
+		trigger = {
+			diplomacy >= medium_skill_rating
+		}
+		skill = diplomacy
+		add_prestige = 50
+		add_piety = 50	
+	}
+}
+
+
+
+# Miners accused of smuggling lapis lazuli
+pamir.0205 = {
+	type = character_event
+	title = pamir.0205.t
+	desc = pamir.0205.desc
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = personality_irrational
+	}
+	
+	trigger = {
+		RICE_pamir_lapis_lazuli_owner_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = sadistic
+		}
+		modifier = {
+			add = -0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = generous
+		}
+	}
+
+	option = { # Trying to feed families, let them go
+		name = pamir.0205.a
+		add_piety = 25
+		stress_impact = {
+			vengeful = minor_stress_impact_gain
+			greedy = minor_stress_impact_gain
+			sadistic = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+		}		
+	}
+	option = { # Imprison them for their crimes
+		name = pamir.0205.b
+		add_prestige = 25
+		stress_impact = {
+			forgiving = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+		}		
+	}
+	option = { # Execute them for this
+		name = pamir.0205.c
+		add_dread = 10
+		stress_impact = {
+			forgiving = medium_stress_impact_gain
+			generous = medium_stress_impact_gain
+			compassionate = medium_stress_impact_gain
+			patient = miniscule_stress_impact_gain
+			calm = miniscule_stress_impact_gain
+		}		
+	}
+}
+
+
+
+# Miners accused of smuggling rubies
+pamir.0206 = {
+	type = character_event
+	title = pamir.0206.t
+	desc = pamir.0206.desc
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = personality_irrational
+	}
+	
+	trigger = {
+		RICE_pamir_ruby_mines_owner_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = sadistic
+		}
+		modifier = {
+			add = -0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = generous
+		}
+	}
+
+	option = { # Trying to feed families, let them go
+		name = pamir.0206.a
+		add_piety = 25
+		stress_impact = {
+			vengeful = minor_stress_impact_gain
+			greedy = minor_stress_impact_gain
+			sadistic = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+		}		
+	}
+	option = { # Imprison them for their crimes
+		name = pamir.0206.b
+		add_prestige = 25
+		stress_impact = {
+			forgiving = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+		}		
+	}
+	option = { # Execute them for this
+		name = pamir.0206.c
+		add_dread = 10
+		stress_impact = {
+			forgiving = medium_stress_impact_gain
+			generous = medium_stress_impact_gain
+			compassionate = medium_stress_impact_gain
+			patient = miniscule_stress_impact_gain
+			calm = miniscule_stress_impact_gain
+		}		
+	}
+}
+
+
+
+# Trip to obscure Pamir hot spring
+pamir.0207 = {
+	type = character_event
+	title = pamir.0207.t
+	desc = pamir.0207.desc
+	theme = RICE_theme_pamir_valley
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	trigger = {
+		RICE_pamir_full_pamir_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0207.a
+		stress_impact = {
+			base = minor_stress_impact_loss
+			calm = minor_stress_impact_loss
+			lazy = minor_stress_impact_loss
+		}		
+	}
+}
+
+
+
+
+# Beautiful Lake
+pamir.0208 = {
+	type = character_event
+	title = pamir.0208.t
+	desc = pamir.0208.desc
+	theme = RICE_theme_pamir_valley
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	trigger = {
+		RICE_pamir_full_pamir_and_hindu_kush_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0208.a
+		add_piety = 10
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			calm = miniscule_stress_impact_loss
+			humble = miniscule_stress_impact_loss
+		}		
+	}
+}
+
+# Find a petroglyph of hunters, animals, and nature
+pamir.0209 = {
+	type = character_event
+	title = pamir.0209.t
+	desc = pamir.0209.desc
+	theme = RICE_theme_wakhan_fortress
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		RICE_pamir_full_pamir_and_hindu_kush_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0209.a
+		add_piety = 25
+		stress_impact = {
+			scholar = miniscule_stress_impact_loss
+			education_learning_3 = miniscule_stress_impact_loss
+			education_learning_4 = miniscule_stress_impact_loss
+		}		
+	}
+}
+
+
+# Find a petroglyph of people and text
+pamir.0210 = {
+	type = character_event
+	title = pamir.0210.t
+	desc = pamir.0210.desc
+	theme = RICE_theme_wakhan_fortress
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		RICE_pamir_full_pamir_and_hindu_kush_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0210.a
+		add_prestige = 25
+		stress_impact = {
+			scholar = miniscule_stress_impact_loss
+			education_learning_3 = miniscule_stress_impact_loss
+			education_learning_4 = miniscule_stress_impact_loss
+		}		
+	}
+}
+
+
+
+# Passing through the Wakhan Corridor
+pamir.0211 = {
+	type = character_event
+	title = pamir.0211.t
+	desc = pamir.0211.desc
+	theme = RICE_theme_wakhan_fortress
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		has_title = title:c_wakhan
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0211.a
+		random_list = {
+			10 = { add_prestige = 10 }
+			10 = { add_piety = 10 }
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			calm = miniscule_stress_impact_loss
+			humble = miniscule_stress_impact_loss
+		}
+	}
+}
+
+
+# A few families of nomads move into a Pamir province
+pamir.0212 = {
+	type = character_event
+	title = pamir.0212.t
+	desc = pamir.0212.desc
+	theme = RICE_theme_pamir_valley
+	
+	left_portrait = root
+	
+	trigger = {
+		RICE_pamir_full_pamir_region_trigger = yes
+	}
+	
+	immediate = {
+		random_list = {
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_gilgit }
+				}
+				title:c_gilgit = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_yasin }
+				}
+				title:c_yasin = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_golaghmuli }
+				}
+				title:c_golaghmuli = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_chitral }
+				}
+				title:c_chitral = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_badakhshan }
+				}
+				title:c_badakhshan = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_munjan }
+				}
+				title:c_munjan = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_wakhan }
+				}
+				title:c_wakhan = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_shughnan }
+				}
+				title:c_shughnan = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_karran }
+				}
+				title:c_karran = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_skardu }
+				}
+				title:c_skardu = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_shigar }
+				}
+				title:c_shigar = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_astore }
+				}
+				title:c_astore = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_allai }
+				}
+				title:c_allai = {
+					save_scope_as = nomad_county
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0212.a
+		random_list = {
+			10 = {
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = pamir.0212.toast.good
+					scope:nomad_county = {
+						add_county_modifier = {
+							modifier = RICE_pamir_nomad_clans_good
+							years = 10
+						}
+					}
+				}				
+			}
+			10 = {
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					left_icon = ROOT
+					title = pamir.0212.toast.bad
+					scope:nomad_county = {
+						add_county_modifier = {
+							modifier = RICE_pamir_nomad_clans_bad
+							years = 10
+						}
+					}
+				}				
+			}
+		}
+	}
+}
+
+
+
+# Nomad warriors into a Pamir province
+pamir.0213 = {
+	type = character_event
+	title = pamir.0213.t
+	desc = pamir.0213.desc
+	theme = RICE_theme_pamir_valley
+	
+	right_portrait = root
+	
+	trigger = {
+		RICE_pamir_full_pamir_region_trigger = yes
+	}
+	
+	immediate = {
+		random_list = {
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_gilgit }
+				}
+				title:c_gilgit = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_yasin }
+				}
+				title:c_yasin = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_golaghmuli }
+				}
+				title:c_golaghmuli = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_chitral }
+				}
+				title:c_chitral = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_badakhshan }
+				}
+				title:c_badakhshan = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_munjan }
+				}
+				title:c_munjan = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_wakhan }
+				}
+				title:c_wakhan = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_shughnan }
+				}
+				title:c_shughnan = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_karran }
+				}
+				title:c_karran = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_skardu }
+				}
+				title:c_skardu = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_shigar }
+				}
+				title:c_shigar = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_astore }
+				}
+				title:c_astore = {
+					save_scope_as = nomad_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_allai }
+				}
+				title:c_allai = {
+					save_scope_as = nomad_county
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0213.a
+		trigger = {
+			OR = {
+				gold >= 70
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 70
+		add_prestige = -100
+		RICE_pamir_nomad_spawn_effect = yes
+	}
+	option = { # Ok
+		name = pamir.0213.b
+		trigger = {
+			OR = {
+				gold >= 40
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 40
+		add_prestige = -50
+		scope:nomad_county = {
+			add_county_modifier = {
+				modifier = RICE_pamir_nomad_clans_training
+				years = 15
+			}
+		}
+	}
+	option = { # Ok
+		name = pamir.0213.c
+	}
+}
+
+
+
+# Pamir herder gifts a bowl made from the horn of the Marco Polo sheep
+pamir.0214 = {
+	type = character_event
+	title = pamir.0214.t
+	desc = pamir.0214.desc
+	theme = RICE_theme_pamir_road
+	
+	right_portrait = root
+	
+	trigger = {
+		RICE_pamir_full_pamir_region_trigger = yes
+	}
+	
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0214.a
+		add_character_modifier = {
+			modifier = RICE_pamir_horny_bowls
+			years = 5
+		}
+	}
+}
+
+
+# Learning about Marco Polo sheep from a local herder
+pamir.0215 = {
+	type = character_event
+	title = pamir.0215.t
+	desc = pamir.0215.desc
+	theme = RICE_theme_pamir_road
+	
+	left_portrait = root
+	
+	trigger = {
+		RICE_pamir_full_pamir_region_trigger = yes
+	}
+	
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = -0.2
+			has_trait = paranoid
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0215.a
+		if = {
+			limit = { has_lifestyle = diplomacy_lifestyle }
+			add_diplomacy_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = martial_lifestyle }
+			add_martial_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = stewardship_lifestyle }
+			add_stewardship_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = intrigue_lifestyle }
+			add_intrigue_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = learning_lifestyle }
+			add_learning_lifestyle_xp = minor_lifestyle_xp
+		}
+	}
+}
+
+
+# Feud between two Burusho clans
+pamir.0216 = {
+	type = character_event
+	title = pamir.0216.t
+	desc = pamir.0216.desc
+	theme = martial_strategy_focus	
+	override_background = { event_background = RICE_background_pamir_valley }
+	
+	left_portrait = {
+		character = root
+		animation = boredom
+	}
+	
+	trigger = {
+		RICE_pamir_in_pamir_region_trigger = yes
+	}
+	
+	immediate = {
+		random_list = {
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_gilgit }
+				}
+				title:c_gilgit = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_yasin }
+				}
+				title:c_yasin = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_golaghmuli }
+				}
+				title:c_golaghmuli = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_chitral }
+				}
+				title:c_chitral = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_skardu }
+				}
+				title:c_skardu = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_shigar }
+				}
+				title:c_shigar = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_astore }
+				}
+				title:c_astore = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_allai }
+				}
+				title:c_allai = {
+					save_scope_as = burusho_county
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = -0.2
+			has_trait = just
+		}
+		modifier = {
+			add = 0.2
+			has_trait = callous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = compassionate
+		}
+	}
+
+	option = { # Can't we do something?
+		name = pamir.0216.a
+		random_list = {
+			65 = {
+				modifier = {
+					add = 5
+					has_trait = arbitrary
+				}	
+				modifier = {
+					add = -5
+					has_trait = just
+				}	
+				modifier = {
+					add = 5
+					has_trait = lazy
+				}	
+				modifier = {
+					add = -5
+					has_trait = diligent
+				}	
+				modifier = {
+					add = 5
+					has_trait = trusting
+				}	
+				modifier = {
+					add = -5
+					has_trait = sadistic
+				}	
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					left_icon = ROOT
+					title = pamir.0216.toast.bad
+					scope:burusho_county = {
+						add_county_modifier = {
+							modifier = RICE_pamir_burusho_feud
+							years = 10
+						}		
+					}
+				}			
+			}
+			35 = {	
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = pamir.0216.toast.good
+					add_prestige = 100
+				}			
+			}
+		}
+	}
+
+	option = { # Use diplomacy to resolve (best)
+		name = pamir.0216.b
+		trigger = {
+			diplomacy >= decent_skill_rating
+		}
+		skill = diplomacy
+		random_list = {
+			20 = {
+				modifier = {
+					add = 3
+					has_trait = arbitrary
+				}	
+				modifier = {
+					add = -3
+					has_trait = just
+				}	
+				modifier = {
+					add = 3
+					has_trait = lazy
+				}	
+				modifier = {
+					add = -5
+					has_trait = diligent
+				}	
+				modifier = {
+					add = 3
+					has_trait = shy
+				}	
+				modifier = {
+					add = -3
+					has_trait = gregarious
+				}		
+				modifier = {
+					add = 3
+					has_trait = deceitful
+				}	
+				modifier = {
+					add = -3
+					has_trait = honest
+				}		
+				modifier = {
+					add = 3
+					has_trait = wrathful
+				}	
+				modifier = {
+					add = -3
+					has_trait = calm
+				}
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					left_icon = ROOT
+					title = pamir.0216.toast.bad
+					scope:burusho_county = {
+						add_county_modifier = {
+							modifier = RICE_pamir_burusho_feud
+							years = 10
+						}		
+					}
+				}			
+			}
+			80 = {	
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = pamir.0216.toast.good
+					add_prestige = 100
+				}			
+			}
+		}
+	}
+
+	option = { # Use cunning and trickery (okay)
+		name = pamir.0216.c
+		trigger = {
+			intrigue >= decent_skill_rating
+		}
+		skill = intrigue
+		random_list = {
+			30 = {
+				modifier = {
+					add = 3
+					has_trait = arbitrary
+				}	
+				modifier = {
+					add = -3
+					has_trait = just
+				}	
+				modifier = {
+					add = 3
+					has_trait = lazy
+				}	
+				modifier = {
+					add = -3
+					has_trait = diligent
+				}	
+				modifier = {
+					add = 3
+					has_trait = honest
+				}	
+				modifier = {
+					add = -3
+					has_trait = deceitful
+				}		
+				modifier = {
+					add = 3
+					has_trait = impatient
+				}	
+				modifier = {
+					add = -3
+					has_trait = patient
+				}		
+				modifier = {
+					add = 3
+					has_trait = wrathful
+				}	
+				modifier = {
+					add = -3
+					has_trait = calm
+				}
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					left_icon = ROOT
+					title = pamir.0216.toast.bad
+					scope:burusho_county = {
+						add_county_modifier = {
+							modifier = RICE_pamir_burusho_feud
+							years = 10
+						}		
+					}
+				}			
+			}
+			70 = {	
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = pamir.0216.toast.good
+					add_prestige = 100
+				}			
+			}
+		}
+	}
+
+	option = { # Use military threats (worst)
+		name = pamir.0216.d
+		trigger = {
+			martial >= decent_skill_rating
+		}
+		skill = martial
+		random_list = {
+			40 = {
+				modifier = {
+					add = 3
+					has_trait = lazy
+				}	
+				modifier = {
+					add = -3
+					has_trait = diligent
+				}	
+				modifier = {
+					add = 3
+					has_trait = deceitful
+				}	
+				modifier = {
+					add = -3
+					has_trait = honest
+				}		
+				modifier = {
+					add = 3
+					has_trait = craven
+				}	
+				modifier = {
+					add = -3
+					has_trait = brave
+				}		
+				modifier = {
+					add = 3
+					has_trait = cynical
+				}	
+				modifier = {
+					add = -3
+					has_trait = zealous
+				}		
+				modifier = {
+					add = 3
+					has_trait = forgiving
+				}	
+				modifier = {
+					add = -3
+					has_trait = vengeful
+				}
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					left_icon = ROOT
+					title = pamir.0216.toast.bad
+					scope:burusho_county = {
+						add_county_modifier = {
+							modifier = RICE_pamir_burusho_feud
+							years = 10
+						}		
+					}
+				}			
+			}
+			60 = {	
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = pamir.0216.toast.good
+					add_prestige = 100
+				}			
+			}
+		}
+	}
+}
+
+
+
+
+# Burusho peasant offers humble gift of Diram Fitti
+pamir.0217 = {
+	type = character_event
+	title = pamir.0217.t
+	desc = pamir.0217.desc
+	theme = RICE_theme_pamir_road
+	
+	left_portrait = root
+	
+	trigger = {
+		RICE_pamir_in_pamir_region_trigger = yes
+	}
+	
+	immediate = {
+		random_list = {
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_gilgit }
+				}
+				title:c_gilgit = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_yasin }
+				}
+				title:c_yasin = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_golaghmuli }
+				}
+				title:c_golaghmuli = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_chitral }
+				}
+				title:c_chitral = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_skardu }
+				}
+				title:c_skardu = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_shigar }
+				}
+				title:c_shigar = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_astore }
+				}
+				title:c_astore = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_allai }
+				}
+				title:c_allai = {
+					save_scope_as = burusho_county
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0217.a
+		add_prestige = 15
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+		}
+	}
+	option = { # You need it
+		name = pamir.0217.b
+		add_piety = 15
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			gluttonous = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+		}
+	}
+	option = { # Begone!
+		name = pamir.0217.c
+		add_dread = 10
+		stress_impact = {
+			compassionate = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+			just = minor_stress_impact_gain
+			calm = minor_stress_impact_gain
+		}
+	}
+	option = { # Have this money
+		name = pamir.0217.d
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 20
+			}
+		}
+		remove_short_term_gold = 20
+		add_piety = 50
+		stress_impact = {
+			greedy = medium_stress_impact_gain
+			arrogant = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+			sadistic = minor_stress_impact_gain
+		}
+	}
+}
+
+
+
+# Burusho headman offers food before a meeting
+pamir.0218 = {
+	type = character_event
+	title = pamir.0218.t
+	desc = pamir.0218.desc
+	theme = feast_activity
+	
+	left_portrait = root
+	
+	trigger = {
+		RICE_pamir_in_pamir_region_trigger = yes
+	}
+	
+	immediate = {
+		random_list = {
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_gilgit }
+				}
+				title:c_gilgit = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_yasin }
+				}
+				title:c_yasin = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_golaghmuli }
+				}
+				title:c_golaghmuli = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_chitral }
+				}
+				title:c_chitral = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_skardu }
+				}
+				title:c_skardu = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_shigar }
+				}
+				title:c_shigar = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_astore }
+				}
+				title:c_astore = {
+					save_scope_as = burusho_county
+				}
+			}
+			10 = {
+				modifier = {
+					add = -10
+					NOT = { has_title = title:c_allai }
+				}
+				title:c_allai = {
+					save_scope_as = burusho_county
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0218.a
+		stress_impact = {
+			base = minor_stress_impact_loss
+			gluttonous = minor_stress_impact_loss
+			gregarious = minor_stress_impact_loss
+		}
+	}
+	option = { # Let's get down to business
+		name = pamir.0218.b
+		add_prestige = 50
+		stress_impact = {
+			gluttonous = minor_stress_impact_gain
+			gregarious = minor_stress_impact_gain
+			lazy = minor_stress_impact_gain
+		}
+	}
+}
+
+
+
+# Craving of baht porridge
+pamir.0219 = {
+	type = character_event
+	title = pamir.0219.t
+	desc = pamir.0219.desc
+	theme = RICE_theme_tibet_inner_altar_feast
+	
+	left_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+	
+	trigger = {
+		RICE_pamir_iranian_pamir_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0219.a
+		stress_impact = {
+			base = miniscule_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+			gluttonous = minor_stress_impact_gain
+		}
+	}
+	option = { # Ok
+		name = pamir.0219.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 25
+			}
+		}
+		remove_short_term_gold = 25
+		add_character_modifier = {
+			modifier = RICE_pamir_ate_baht_porridge
+			years = 3
+		}
+	}
+}
+
+
+
+
+# What to use mulberries for?
+pamir.0220 = {
+	type = character_event
+	title = pamir.0220.t
+	desc = pamir.0220.desc
+	theme = realm
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		RICE_pamir_iranian_pamir_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = lustful
+		}
+		modifier = {
+			add = -0.2
+			has_trait = chaste
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0220.a
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			lazy = miniscule_stress_impact_loss
+			gregarious = miniscule_stress_impact_loss
+			gluttonous = minor_stress_impact_loss
+		}
+	}
+	option = { # Fruit jams and syrups
+		name = pamir.0220.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 20
+			}
+		}
+		remove_short_term_gold = 20
+		add_character_modifier = {
+			modifier = RICE_pamir_mulberry_jam_syrup
+			years = 5
+		}
+	}
+	option = { # Pikht - dried mulberry flour
+		name = pamir.0220.c
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 20
+			}
+		}
+		remove_short_term_gold = 20
+		add_character_modifier = {
+			modifier = RICE_pamir_mulberry_pikht
+			years = 5
+		}
+	}
+}
+
+
+
+# Planting a mulberry tree before beginning construction
+pamir.0221 = {
+	type = character_event
+	title = pamir.0221.t
+	desc = pamir.0221.desc
+	theme = RICE_theme_pamir_valley
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		RICE_pamir_iranian_pamir_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0221.a
+		add_prestige = 40
+	}
+}
+
+
+
+
+# Pamiri villagers provide some humble food to you
+pamir.0222 = {
+	type = character_event
+	title = pamir.0222.t
+	desc = pamir.0222.desc
+	theme = RICE_theme_tibet_inner_altar_feast
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		RICE_pamir_iranian_pamir_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	option = { # Accept food
+		name = pamir.0222.a
+		add_piety = 25
+		add_prestige = -25
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			paranoid = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+		}
+	}
+
+	option = { # No
+		name = pamir.0222.b
+		add_prestige = 25
+		add_piety = -25
+		stress_impact = {
+			humble = minor_stress_impact_gain
+			gluttonous = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+		}
+	}
+}
+
+
+
+# Come across an Oston, a lone sacred tree
+pamir.0223 = {
+	type = character_event
+	title = pamir.0223.t
+	desc = pamir.0223.desc
+	theme = RICE_theme_pamir_road
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	trigger = {
+		RICE_pamir_iranian_pamir_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+	}
+
+	option = { # Leave nothing
+		name = pamir.0223.a
+		#add_piety = -25
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+	}
+	option = { # Leave a strip of cloth
+		name = pamir.0223.b
+		remove_short_term_gold = 10
+		add_piety = 30
+	}
+	option = { # Leave common stones
+		name = pamir.0223.c
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 20
+			}
+		}
+		remove_short_term_gold = 20
+		add_piety = 60
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+	option = { # Leave precious stones
+		name = pamir.0223.d
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 30
+			}
+		}
+		remove_short_term_gold = 30
+		add_piety = 90
+		stress_impact = {
+			cynical = medium_stress_impact_gain
+		}
+	}
+}
+
+
+
+
+# Come across a qadamgoh, a special place where a saint visited
+pamir.0224 = {
+	type = character_event
+	title = pamir.0224.t
+	desc = pamir.0224.desc
+	theme = RICE_theme_wakhan_fortress
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	trigger = {
+		RICE_pamir_iranian_pamir_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = fickle
+		}
+		modifier = {
+			add = -0.2
+			has_trait = stubborn
+		}
+	}
+
+	option = { # Wait
+		name = pamir.0224.a
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+	}
+	option = { # Pray
+		name = pamir.0224.b
+		add_piety = 25
+		add_prestige = -25
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+}
+
+
+
+# Come across an ancient rock carving depicting a Buddha
+pamir.0225 = {
+	type = character_event
+	title = pamir.0225.t
+	desc = pamir.0225.desc
+	theme = RICE_theme_wakhan_fortress
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	trigger = {
+		RICE_pamir_iranian_pamir_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = fickle
+		}
+		modifier = {
+			add = -0.2
+			has_trait = stubborn
+		}
+	}
+
+	option = { # Pray
+		name = pamir.0225.a
+		trigger = {
+			religion = religion:buddhism_religion
+		}
+		add_piety = 30
+	}
+	option = { # Move on
+		name = pamir.0225.b
+		if = {
+			limit = {
+				religion = religion:buddhism_religion
+			}
+			add_piety = 30
+		}
+		else = {
+			add_prestige = 30
+		}
+	}
+	option = { # Infidel!
+		name = pamir.0225.c
+		trigger = {
+			NOT = { religion = religion:buddhism_religion }
+		}
+		add_piety = 30
+	}
+	option = { # Interesting art
+		name = pamir.0225.d
+		add_character_modifier = {
+			modifier = RICE_pamir_admiring_buddhist_rock_art
+			years = 3
+		}
+	}
+}
+
+
+
+# Meeting with a Burusho shaman who claims to give advice from Peris (fairies)
+pamir.0226 = {
+	type = character_event
+	title = pamir.0226.t
+	desc = pamir.0226.desc
+	theme = faith
+	override_background = { event_background = RICE_background_tibet_inner_altar }
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	trigger = {
+		RICE_pamir_in_pamir_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+	}
+
+	option = { # No
+		name = pamir.0226.a
+		trigger = {
+			NOT = { faith.religion = { is_in_family = rf_pagan } }
+			NOT = { faith = { has_doctrine = tenet_unreformed_syncretism } }
+		}
+		add_piety = 25
+	}
+	option = { # Ok
+		name = pamir.0226.b
+		if = {
+			limit = {
+				NOT = { faith.religion = { is_in_family = rf_pagan } }
+			}
+			add_piety = -100
+		}
+		add_character_modifier = {
+			modifier = RICE_pamir_fairy_advice
+			years = 5
+		}
+	}
+}
+
+
+
+# Local woman accused of being a Belas spirit
+pamir.0227 = {
+	type = character_event
+	title = pamir.0227.t
+	desc = pamir.0227.desc
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+	right_portrait = {
+		character = scope:belas_girl
+		animation = beg
+	}
+	
+	trigger = {
+		RICE_pamir_full_pamir_region_trigger = yes
+	}
+	
+	immediate = {
+		create_character = {
+			location = root.location
+			template = belas_girl_courtier_template
+			save_scope_as = belas_girl
+			culture = root.culture
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+	}
+
+	option = { # Not my concern
+		name = pamir.0227.a
+		add_prestige = 25
+		stress_impact = {
+			just = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+		}
+		hidden_effect = {
+			scope:belas_girl = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+	option = { # Let her go
+		name = pamir.0227.b
+		add_piety = 25
+		stress_impact = {
+			paranoid = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+			sadistic = minor_stress_impact_gain
+		}
+		hidden_effect = {
+			scope:belas_girl = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+	option = { # Imprison her
+		name = pamir.0227.c
+		add_dread = 10
+		add_prestige = 25
+		stress_impact = {
+			compassionate = minor_stress_impact_gain
+			just = minor_stress_impact_gain
+			cynical = minor_stress_impact_gain
+			forgiving = minor_stress_impact_gain
+			patient = minor_stress_impact_gain
+			calm = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+		}
+		hidden_effect = {
+			scope:belas_girl = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+	option = { # Bring her to the court
+		name = pamir.0227.d
+		scope:belas_girl = {
+			add_opinion = {
+				target = root
+				modifier = RICE_pamir_opinion_saved_me_belas
+			}
+		}
+		add_prestige = -100
+		add_piety = 25
+		add_courtier = scope:belas_girl	
+		stress_impact = {
+			paranoid = medium_stress_impact_gain
+			callous = medium_stress_impact_gain
+			arrogant = minor_stress_impact_gain
+			sadistic = minor_stress_impact_gain
+			greedy = minor_stress_impact_gain
+		}
+	}
+}
+
+
+# Village headsman tells family legend about being descended from local fairies
+pamir.0228 = {
+	type = character_event
+	title = pamir.0228.t
+	desc = pamir.0228.desc
+	theme = RICE_theme_pamir_valley
+	
+	left_portrait = {
+		character = root
+		animation = personality_forgiving
+	}
+	
+	trigger = {
+		RICE_pamir_full_pamir_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0228.a
+		add_piety = 25
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+	option = { # Ok
+		name = pamir.0228.b
+		add_prestige = 25
+		stress_impact = {
+			trusting = minor_stress_impact_gain
+		}
+	}
+}
+
+
+
+# Hear about the ancient Hephthalites
+pamir.0229 = {
+	type = character_event
+	title = pamir.0229.t
+	desc = pamir.0229.desc
+	theme = RICE_theme_wakhan_fortress
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		RICE_pamir_full_pamir_and_hindu_kush_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0229.a
+		add_character_modifier = {
+			modifier = RICE_pamir_hephthalite_war_inspiration
+			years = 5
+		}
+	}
+	option = { # Ok
+		name = pamir.0229.b
+		add_character_modifier = {
+			modifier = RICE_pamir_hephthalite_peace_inspiration
+			years = 5
+		}
+	}
+}
+
+
+
+
+# Villager explains the Pamiri concept of "huk"
+pamir.0230 = {
+	type = character_event
+	title = pamir.0230.t
+	desc = pamir.0230.desc
+	theme = RICE_theme_pamir_valley
+	
+	left_portrait = {
+		character = root
+		animation = personality_cynical
+	}
+	
+	trigger = {
+		RICE_pamir_iranian_pamir_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+		modifier = {
+			add = 0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = -0.2
+			has_trait = paranoid
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0230.a
+		add_piety = 30
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+	option = { # Ok
+		name = pamir.0230.b
+		add_piety = 15
+		add_prestige = 15
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+		}
+	}
+	option = { # Ok
+		name = pamir.0230.c
+		add_prestige = 30
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+	}
+}
+
+
+# Enter a gorgeous valley in the Pamirs
+pamir.0231 = {
+	type = character_event
+	title = pamir.0231.t
+	desc = pamir.0231.desc
+	theme = RICE_theme_pamir_valley
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		RICE_pamir_full_pamir_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	option = { # Ok
+		name = pamir.0231.a
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			calm = miniscule_stress_impact_loss
+			humble = miniscule_stress_impact_loss
+		}
+	}
+}

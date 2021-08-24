@@ -310,38 +310,48 @@ RICEintro.0001 = {
 		
 		############################################################
 		#
-		# GENERAL RELIGION CHANGES
+		# RELIGION TERRITORY CHANGES
 		#
 		############################################################
 
 		title:c_harran = {
 			set_county_faith = faith:harranian_pagan
 		}
-		title:c_chitral = {
-			set_county_faith = faith:nuristani_pagan
-		}	
-		title:c_munjan = {
-			set_county_faith = faith:nuristani_pagan
+		if = {
+			limit = {
+				is_dharmachakra_loaded = no
+			}
+			title:c_chitral = {
+				set_county_faith = faith:nuristani_pagan
+			}	
+			title:c_munjan = {
+				set_county_faith = faith:nuristani_pagan
+			}
+			if = {
+				limit = {
+					current_date < 900.1.1
+				}
+				title:c_gilgit = {
+					set_county_faith = faith:nuristani_pagan
+				}		
+				title:c_yasin = {
+					set_county_faith = faith:nuristani_pagan
+				}		
+				title:c_golaghmuli = {
+					set_county_faith = faith:nuristani_pagan
+				}	
+				title:c_karran = {
+					set_county_faith = faith:nuristani_pagan
+				}	
+				title:c_shughnan = {
+					set_county_faith = faith:nuristani_pagan
+				}
+			}
 		}
 		if = {
 			limit = {
 				current_date < 900.1.1
 			}
-			title:c_gilgit = {
-				set_county_faith = faith:nuristani_pagan
-			}		
-			title:c_yasin = {
-				set_county_faith = faith:nuristani_pagan
-			}		
-			title:c_golaghmuli = {
-				set_county_faith = faith:nuristani_pagan
-			}	
-			title:c_karran = {
-				set_county_faith = faith:nuristani_pagan
-			}	
-			title:c_shughnan = {
-				set_county_faith = faith:nuristani_pagan
-			}	
 			#title:c_rudbar = {
 			#	set_county_faith = faith:zun_pagan
 			#}	
@@ -577,20 +587,25 @@ RICEintro.0001 = {
 			add_county_modifier = {
 				modifier = RICE_pamir_wakhan_watchposts_default
 			}
-		}	
-		title:c_kalat = {
-			add_county_modifier = {
-				modifier = RICE_pamir_brahui_tribes
+		}
+		if = {
+			limit = {
+				current_date > 1000.1.1
 			}
-		}	
-		title:c_sibi = {
-			add_county_modifier = {
-				modifier = RICE_pamir_brahui_tribes
-			}
-		}	
-		title:c_turan = {
-			add_county_modifier = {
-				modifier = RICE_pamir_brahui_tribes
+			title:c_kalat = {
+				add_county_modifier = {
+					modifier = RICE_pamir_brahui_tribes
+				}
+			}	
+			title:c_sibi = {
+				add_county_modifier = {
+					modifier = RICE_pamir_brahui_tribes
+				}
+			}	
+			title:c_turan = {
+				add_county_modifier = {
+					modifier = RICE_pamir_brahui_tribes
+				}
 			}
 		}
 		
@@ -698,7 +713,6 @@ RICEintro.0001 = {
 				current_date > 1000.1.1
 				current_date < 1100.1.1
 			}
-			destroy_title = title:d_badakhshan
 			character:248022 = { # Make Nasir Khusraw better
 				remove_trait = education_learning_2
 				add_trait = education_learning_4
@@ -721,6 +735,7 @@ RICEintro.0001 = {
 				save_scope_as = seljuk_alp_arslan
 			}
 			character:248023 = {
+				destroy_title = title:d_badakhshan
 				save_scope_as = muhtajid_ruler
 				get_title = title:c_chaghaniyan
 				get_title = title:c_wakhsh
@@ -734,6 +749,26 @@ RICEintro.0001 = {
 				trigger_event = pamir.0002
 			}
 		}		
+		
+
+		############################################################
+		#
+		# RELIGION DOCTRINE/TENET CHANGES
+		#
+		############################################################
+		
+		if = {
+			limit = {
+				is_dharmachakra_loaded = no
+			}
+			faith:mahayana = {
+				if = {
+					limit = { has_doctrine = doctrine_monogamy }
+					remove_doctrine = doctrine_monogamy
+					add_doctrine = doctrine_concubines
+				}
+			}
+		}
 		
 
 		############################################################
@@ -1044,6 +1079,16 @@ RICEintro.0001 = {
 		}		
 		title:b_suakin.title_province = {
 			add_building = common_tradeport_01
+		}
+		
+		if = {
+			limit = {
+				current_date > 1000.1.1
+			}
+			set_global_variable = {
+				name = RICE_pamir_nasir_khusraw_born_1066_start
+				value = yes
+			}
 		}
 		
 		if = {
