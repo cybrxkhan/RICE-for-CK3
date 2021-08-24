@@ -1,15 +1,19 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.3.2 "Aydhab" (Released 8/5/21)
+## Latest Version: Version 1.4.0 "Badakhshan" (Released 8/23/21)
 
-**Newest Flavor Pack - Red Sea: Treasures of the Eastern Desert**
+**Newest Flavor Pack - Pamir and Zunist: Roof of the World**
 
-_“Aydhab [is] a large town, well supplied with milk and fish; dates and grain are imported from Upper Egypt. Its inhabitants are Bejas. These people are black-skinned; they wrap themselves in yellow blankets and tie headbands about a fingerbreadth wide round their heads.”_
-_- Ibn Battuta, writing about the port of Adyhab_
+_Good deeds stand tall like a green pine, evil deeds bloom like flowers;_
+_The pine is not as brilliant as the flowers, it seems._
+_When the frost comes, the pine will still stand tall,_
+_While the flowers, withered, can be seen no more_
+
+_- Nasir Khusraw_
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. The guiding philosophy of RICE is to keep a tight, focused scope that doesn’t change gameplay significantly, but adds more flavor across the world, especially for lesser-known places, peoples, and histories.
 
-RICE will be designed with compatibility in mind; wherever possible, I avoid editing vanilla files to prevent conflicts with other mods. For example, title history and culture changes are done via hidden events at game start. As this mod grows, I may add in game rules to help with potential compatibility conflicts (for instance, game rules that disable features that could clash with map mods).
+RICE is designed with compatibility win mind, and technically compatible with most mods; I avoid editing vanilla files to prevent conflicts with other mods. For example, new cultures are added via hidden events at game start instead of directly through province history. If you are a mod author or user and concerned about compatibiliy with RICE, don't hesitate to contact me on the forums or Discord!
 
 Feel free to use my work in your mods - all I ask is that I am credited and (if possible) to give me a heads up.
 
@@ -21,6 +25,7 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 - [Brittany: The Western Duchy](https://docs.google.com/document/d/e/2PACX-1vTzGuR_ffwqfpm6rwh27hq71K4Fs35pcLZioPLbHulhHn2ZV25SD2HrGipPofvBYngi5S_O4Yino4Y7/pub)
 - [Chios: Isle of Mastic](https://docs.google.com/document/d/1Lu4cGXN7hSaDtYd_wsXKbjAeIOYMoYVuum6zfYfBc_k/pub)
 - [Harran: The Last Hellenic Pagans](https://docs.google.com/document/d/e/2PACX-1vQOVaDq59Adp5PsNw7r8KhK9cgHMBBWGPWG085FdTKegkD8G8BFLa_e1lz8usY164B42gAVZD4D_2Rs/pub)
+- [Pamir and Zunist: Roof of the World](https://docs.google.com/document/d/e/2PACX-1vQmHEFpko8WE1fnHLHyG-4t01Xyka4eTe88WuLJWRL6jk0S3ju3fA1CFyX_dDArSduFlzqUl58pjRRO/pub)
 - [Red Sea: Treasures of the Eastern Desert](https://docs.google.com/document/d/e/2PACX-1vQzLb-MR90fMQvjqZsxceuydKihTehAlpxexdhdim5pfxi_aGVBeLl1rJMmuR-89nVB7PVLfboZKBuy/pub)
 - [Siberia: People of the Reindeer](https://docs.google.com/document/d/e/2PACX-1vTOr-vq1KkHRJ_gxPOlb9brCKde3TRzN_1TVZwfPmSiIIW5TEAJGkQ0eNGwiEfvgape1pDAKau3ZcvD/pub)
 - [Siwa: Oases of the Western Desert](https://docs.google.com/document/d/1OOXqqBEGv94IBAH-rIsjoBog1YFtVAFg_TPsuIQmhtg/pub)
