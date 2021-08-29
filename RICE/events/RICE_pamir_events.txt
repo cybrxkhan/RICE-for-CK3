@@ -8,7 +8,8 @@
 # pamir.0050-pamir.0099		Chinir Festival Events
 # pamir.0100-pamir.0129		Historical Events (Nasir Khusraw, migration of the Brahui, etc.)
 # pamir.0130-pamir.0149		Nasir Khusraw Pilgrimage
-# pamir.0150-pamir.0199		Chawmos events
+# pamir.0150-pamir.0179		Chawmos events
+# pamir.0180-pamir.0199		Thumsiling events
 # pamir.0200-pamir.0249		Generic flavor events
 # 
 ###############################################################################
@@ -149,6 +150,9 @@ pamir.0005 = {
 		title:d_badakhshan = { #For loc.
 			save_scope_as = badakhshan_duchy
 		}
+		character:RICE_pamir_013 = { # Azur Jamshid
+			save_scope_as = azur_jamshid
+		}
 	}
 	
 	option = {
@@ -194,6 +198,14 @@ pamir.0005 = {
 			trigger_event = pamir.0007
 		}
 		custom_tooltip = pamir.0005.tooltip
+	}		
+	option = {
+		name = pamir.0005.g
+		set_player_character = scope:azur_jamshid
+		scope:azur_jamshid = {
+			trigger_event = pamir.0013
+		}
+		custom_tooltip = pamir.0005.tooltip.azur_jamshid
 	}
 }
 
@@ -432,6 +444,58 @@ pamir.0012 = {
 	
 	immediate = {
 		remove_character_modifier = RICE_pamir_purity_of_youth
+	}
+}
+
+# Azur Jamshid Introduction
+pamir.0013 = {
+	type = character_event
+	title = pamir.0013.t
+	desc = pamir.0013.desc
+	theme = RICE_theme_pamir_valley
+	
+	left_portrait = scope:azur_jamshid
+	
+	immediate = {
+		title:c_gilgit = { #For loc.
+			save_scope_as = gilgit_county
+		}
+		character:RICE_pamir_011 = {
+			save_scope_as = shri_badat
+		}
+		character:RICE_pamir_012 = {
+			save_scope_as = nur_bakht
+		}
+		character:RICE_pamir_022 = {
+			save_scope_as = jataylotu
+		}
+	}
+	
+	option = {
+		name = pamir.0013.a
+		trigger_event = pamir.0014
+	}
+}
+
+# Azur Jamshid Introduction - Part 2
+pamir.0014 = {
+	type = character_event
+	title = pamir.0014.t
+	desc = pamir.0014.desc
+	theme = RICE_theme_pamir_valley
+	
+	left_portrait = scope:azur_jamshid
+	
+	option = {
+		name = pamir.0014.a
+	}	
+	option = {
+		name = pamir.0014.b
+		set_character_faith_with_conversion = faith:vajrayana
+	}	
+	option = {
+		name = pamir.0014.c
+		set_character_faith_with_conversion = faith:ashari
 	}
 }
 
@@ -2919,6 +2983,63 @@ pamir.0113 = {
 		custom_tooltip = pamir.0113.tooltip
 	}
 }
+
+
+
+
+# Azur Jamshid dies
+pamir.0114 = {
+	type = empty
+	hidden = yes
+	
+	trigger = {
+		has_character_modifier = RICE_pamir_nasir_khusraw
+	}
+	
+	immediate = {
+		title:c_gilgit = { #For loc.
+			save_scope_as = gilgit_county
+		}
+		character:RICE_pamir_013 = {
+			save_scope_as = azur_jamshid
+		}	
+		set_global_variable = {
+			name = RICE_pamir_azur_jamshid_passed_away
+			value = yes
+		}
+		every_player = {
+			limit = {
+				#is_within_diplo_range = { CHARACTER = scope:badakhshan_ruler }
+				religion = religion:islam_religion
+				is_ai = no
+				RICE_pamir_duchy_of_pamir_region_trigger = yes			
+			}
+			trigger_event = pamir.0115
+		}
+	}
+}
+
+# Azur Jamshid dies announcement
+pamir.0115 = {
+	type = character_event
+	title = pamir.0115.t
+	desc = pamir.0115.desc
+	theme = RICE_theme_pamir_valley
+	
+	left_portrait = {
+		character = scope:azur_jamshid
+		animation = personality_compassionate
+	}
+	
+	option = { # Ok
+		name = pamir.0115.a
+		custom_tooltip = pamir.0115.tooltip
+	}
+}
+
+
+
+
 
 
 ######################################################################################
