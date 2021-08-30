@@ -1,6 +1,153 @@
 ﻿
 
 
+RICE_pamir_conciliate_kafir_tribes = {
+	picture = "gfx/interface/illustrations/decisions/decision_wakhan_corridor.dds"
+	major = yes
+	ai_check_interval = 48
+
+	cooldown = { days = 7300 } #1825
+	
+	desc = RICE_pamir_conciliate_kafir_tribes_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		RICE_pamir_kafir_decision_region_trigger = yes
+		OR = {
+			AND = {
+				highest_held_title_tier > tier_duchy
+				OR = {
+					religion = religion:peristani_religion
+					religion = religion:zunism_religion		
+				}
+			}			
+			top_liege = {
+				highest_held_title_tier > tier_duchy
+				OR = {
+					religion = religion:peristani_religion
+					religion = religion:zunism_religion		
+				}			
+			}
+		}
+	}
+	
+	is_valid = {
+		RICE_pamir_kafir_decision_region_trigger = yes
+		OR = {
+			AND = {
+				highest_held_title_tier > tier_duchy
+				OR = {
+					religion = religion:peristani_religion
+					religion = religion:zunism_religion		
+				}
+			}			
+			top_liege = {
+				highest_held_title_tier > tier_duchy
+				OR = {
+					religion = religion:peristani_religion
+					religion = religion:zunism_religion		
+				}			
+			}
+		}
+		prestige_level >= 3
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = RICE_pamir_conciliate_kafir_tribes_effect_tooltip
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_pamir_conciliate_kafir_tribes_context_tooltip
+		}
+		trigger_event = {
+			id = pamir.0042
+		}
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value }
+		prestige = { value = medium_prestige_value } 
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 25
+	}
+}
+
+
+RICE_pamir_raze_shri_badats_palace = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_burning_building.dds"
+	major = yes
+	ai_check_interval = 48
+
+	#cooldown = { days = 10 } #1825
+	
+	desc = RICE_pamir_raze_shri_badats_palace_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_title = title:c_gilgit
+		title:c_gilgit = {
+			has_county_modifier = RICE_pamir_shri_badats_palace
+		}
+	}
+	
+	is_valid = {
+		has_title = title:c_gilgit
+		title:c_gilgit = {
+			has_county_modifier = RICE_pamir_shri_badats_palace
+		}
+		prestige_level >= 3
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_pamir_shri_badat_palace_destroyed
+		}
+		custom_tooltip = RICE_pamir_raze_shri_badats_palace_effect_tooltip
+		show_as_tooltip = {
+			RICE_pamir_raze_shri_badats_palace_effect = yes
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_pamir_raze_shri_badats_palace_context_tooltip
+		}
+		trigger_event = {
+			id = pamir.0043
+		}
+	}
+
+	cost = { 
+		gold = { value = minor_gold_value }
+	}	
+
+	ai_potential = {
+		short_term_gold > minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 25
+	}
+}
+
 RICE_pamir_expand_nasir_khusraws_shrine = {
 	picture = "gfx/interface/illustrations/decisions/decision_muslim_scholar.dds"
 	major = yes
@@ -134,6 +281,95 @@ RICE_pamir_restore_the_idol_of_zun = {
 		}
 		trigger_event = {
 			id = pamir.0038
+		}
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value }
+		prestige = { value = medium_prestige_value } 
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 35
+	}
+}
+
+RICE_pamir_reclaim_mount_aruna = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_hellenic_temple.dds"
+	major = yes
+	ai_check_interval = 64
+
+	#cooldown = { days = 10 } #1825
+	
+	desc = RICE_pamir_reclaim_mount_aruna_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_title = title:c_kabul
+		religion = religion:zunism_religion
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_pamir_zun_idol_has_been_restored
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_pamir_zun_idol_has_been_restored_aruna
+			}
+		}
+	}
+	
+	is_valid = {
+		has_title = title:c_kabul
+		religion = religion:zunism_religion
+		custom_description = {
+			text = RICE_pamir_zun_restored_req
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_pamir_zun_idol_has_been_restored
+			}
+		}
+		OR = {
+			highest_held_title_tier > tier_duchy
+			AND = {
+				highest_held_title_tier > tier_county
+				sub_realm_size >= 8
+				is_independent_ruler = yes
+			}
+			custom_description = {
+				text = faith_is_reformed
+				subject = root
+				faith = { NOT = { has_doctrine_parameter = unreformed } }
+			}
+		}
+		piety_level >= 3
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_pamir_zun_idol_has_been_restored_aruna
+		}
+		show_as_tooltip = {
+			RICE_pamir_restore_zun_idol_mount_aruna_effect = yes
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_pamir_reclaim_mount_aruna_context_tooltip
+		}
+		trigger_event = {
+			id = pamir.0039
 		}
 	}
 
@@ -366,6 +602,95 @@ RICE_pamir_attend_chawmos_festival = {
 		base = 30
 	}
 }
+
+
+RICE_pamir_offer_riches_to_zun = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_hellenic_temple.dds"
+
+	ai_check_interval = 48
+
+	cooldown = { days = 3650 } #3650 1825
+	
+	desc = RICE_pamir_offer_riches_to_zun_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		religion = religion:zunism_religion
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_pamir_zun_idol_has_been_restored
+		}
+		############################# IN ZUNIST REGION
+	}
+	
+	is_valid = {
+		religion = religion:zunism_religion
+		gold >= 100
+		OR = {
+			custom_description = {
+				text = RICE_pamir_zun_restored_req
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_pamir_zun_idol_has_been_restored
+				}
+			}
+			custom_description = {
+				text = RICE_pamir_zun_restored_aruna_req
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_pamir_zun_idol_has_been_restored_aruna
+				}
+			}		
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = RICE_pamir_offer_riches_to_zun_effect_tooltip
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_pamir_offer_riches_to_zun_context_tooltip
+		}
+		trigger_event = {
+			id = pamir.0046
+		}
+	}
+
+	#cost = { 
+	#	gold = { value = minor_gold_value } # Will depend
+	#}	
+
+	ai_potential = {
+		short_term_gold > 50
+	}
+
+	ai_will_do = {
+		base = 40
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 10
+			has_trait = zealous
+		}
+		modifier = {
+			add = -10
+			has_trait = cynical
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+	}
+}
+
 
 
 RICE_pamir_sacrifice_goats = {
@@ -737,6 +1062,67 @@ RICE_pamir_repair_watchposts_karakoram = {
 			add = 10
 			has_trait = diligent
 		}
+	}
+}
+
+
+
+RICE_pamir_hold_thumsiling_festival = {
+	picture = "gfx/interface/illustrations/decisions/decision_pamir_village.dds" #decision_pamir_river #decision_wakhan_corridor
+
+	ai_check_interval = 24
+
+	cooldown = { days = 3650 } #3650 1825
+	
+	desc = RICE_pamir_hold_thumsiling_festival_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		RICE_pamir_duchy_of_pamir_region_trigger = yes
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_pamir_shri_badat_palace_destroyed
+		}
+		has_global_variable = RICE_pamir_azur_jamshid_passed_away
+	}
+	
+	is_valid = {
+		RICE_pamir_duchy_of_pamir_region_trigger = yes
+		custom_description = {
+			text = RICE_decision_tuyuhun_nadun_month_requirement
+			current_month >= 10
+			current_month <= 1
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = RICE_pamir_hold_thumsiling_festival_effect_tooltip
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_pamir_hold_thumsiling_festival_context_tooltip
+		}
+		trigger_event = {
+			id = pamir.0180
+		}
+	}
+
+	cost = { 
+		gold = { value = minor_gold_value } # Will depend
+	}	
+
+	ai_potential = {
+		short_term_gold > standard_activity_cost
+	}
+
+	ai_will_do = {
+		base = 40
 	}
 }
 

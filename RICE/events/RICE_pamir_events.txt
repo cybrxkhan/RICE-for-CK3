@@ -402,15 +402,15 @@ pamir.0011 = {
 	
 	trigger = {
 		OR = {
-			AND = {
+			#AND = {
 				religion = religion:peristani_religion
-				is_dharmachakra_loaded = no
-			}
-			AND = {
+			#	is_dharmachakra_loaded = no
+			#}
+			#AND = {
 				religion = religion:zunism_religion
-				NOT = { has_faith = faith:zun_pagan }
-				is_dharmachakra_loaded = yes
-			}
+			#	NOT = { has_faith = faith:zun_pagan }
+			#	is_dharmachakra_loaded = yes
+			#}
 		}
 		NOT = { has_character_modifier = RICE_pamir_purity_of_youth }
 		OR = {
@@ -460,7 +460,7 @@ pamir.0013 = {
 		title:c_gilgit = { #For loc.
 			save_scope_as = gilgit_county
 		}
-		character:RICE_pamir_011 = {
+		character:RICE_pamir_010 = {
 			save_scope_as = shri_badat
 		}
 		character:RICE_pamir_012 = {
@@ -488,13 +488,28 @@ pamir.0014 = {
 	
 	option = {
 		name = pamir.0014.a
+		trigger_event = pamir.0015
+	}
+}
+
+# Azur Jamshid Introduction - Part 3
+pamir.0015 = {
+	type = character_event
+	title = pamir.0015.t
+	desc = pamir.0015.desc
+	theme = RICE_theme_pamir_valley
+	
+	left_portrait = scope:azur_jamshid
+	
+	option = {
+		name = pamir.0015.a
 	}	
 	option = {
-		name = pamir.0014.b
+		name = pamir.0015.b
 		set_character_faith_with_conversion = faith:vajrayana
 	}	
 	option = {
-		name = pamir.0014.c
+		name = pamir.0015.c
 		set_character_faith_with_conversion = faith:ashari
 	}
 }
@@ -1468,11 +1483,258 @@ pamir.0038 = {
 			save_scope_as = zamindawar_county
 		}
 		play_music_cue = "mx_cue_epic_sacral_moment"
+		save_scope_as = zun_idol_restorer
 	}
 	
 	option = { # Small
 		name = pamir.0038.a
-		RICE_pamir_restore_zun_idol_effect = yes	
+		RICE_pamir_restore_zun_idol_effect = yes
+		custom_tooltip = pamir.0038.tooltip
+		every_player = {
+			limit = {
+				#is_within_diplo_range = { CHARACTER = scope:pamir_nasir_khusraw_shrine_expander }
+				is_ai = no
+				OR = {
+					capital_province = {
+						OR = {
+							geographical_region = world_transoxiana
+							geographical_region = world_makran
+							geographical_region = world_kabulistan
+							geographical_region = world_khorasan
+						}
+					}	
+					religion = religion:peristani_religion
+					religion = religion:zunism_religion			
+				}
+			}
+			trigger_event = pamir.0040
+		}
+	}
+}
+
+# Restoring the Idol of Zun on Mount Aruna
+pamir.0039 = {
+	type = character_event
+	title = pamir.0039.t
+	desc = pamir.0039.desc
+	theme = faith
+	
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	immediate = {
+		title:c_kabul = { #For loc.
+			save_scope_as = kabul_county
+		}
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		save_scope_as = zun_mount_aruna_relcaimer
+	}
+	
+	option = { # Small
+		name = pamir.0039.a
+		RICE_pamir_restore_zun_idol_mount_aruna_effect = yes
+		custom_tooltip = pamir.0039.tooltip	
+		every_player = {
+			limit = {
+				#is_within_diplo_range = { CHARACTER = scope:pamir_nasir_khusraw_shrine_expander }
+				is_ai = no
+				OR = {
+					capital_province = {
+						OR = {
+							geographical_region = world_transoxiana
+							geographical_region = world_makran
+							geographical_region = world_kabulistan
+							geographical_region = world_khorasan
+						}
+					}	
+					religion = religion:peristani_religion
+					religion = religion:zunism_religion			
+				}
+			}
+			trigger_event = pamir.0041
+		}
+	}
+}
+
+# Restoring the Idol of Zun notification
+pamir.0040 = {
+	type = character_event
+	title = pamir.0040.t
+	desc = pamir.0040.desc
+	theme = faith
+	
+	left_portrait = {
+		character = scope:zun_idol_restorer
+		animation = personality_honorable
+	}
+	
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+	
+	option = { # Small
+		name = pamir.0040.a		
+		custom_tooltip = pamir.0038.tooltip	
+	}
+}
+
+# Restoring the Idol of Zun notification
+pamir.0041 = {
+	type = character_event
+	title = pamir.0041.t
+	desc = pamir.0041.desc
+	theme = faith
+	
+	left_portrait = {
+		character = scope:zun_mount_aruna_relcaimer
+		animation = personality_honorable
+	}
+	
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+	
+	option = { # Small
+		name = pamir.0041.a		
+		custom_tooltip = pamir.0039.tooltip	
+	}
+}
+
+# Concessions to the Kafirs
+pamir.0042 = {
+	type = character_event
+	title = pamir.0042.t
+	desc = pamir.0042.desc
+	theme = RICE_theme_pamir_valley
+	
+	left_portrait = {
+		character = root
+		animation = personality_callous
+	}
+	
+	immediate = {
+		title:c_munjan = { #For loc.
+			save_scope_as = munjan_county
+		}
+		title:c_chitral = { #For loc.
+			save_scope_as = chitral_county
+		}
+		title:c_yasin = { #For loc.
+			save_scope_as = yasin_county
+		}
+		title:c_gilgit = { #For loc.
+			save_scope_as = gilgit_county
+		}
+		title:c_golaghmuli = { #For loc.
+			save_scope_as = golaghmuli_county
+		}	
+	}
+	
+	option = { # Munjan
+		name = pamir.0042.a
+		trigger = {
+			has_title = title:c_munjan
+		}
+		title:c_munjan = {
+			remove_county_modifier = RICE_pamir_land_of_the_kafirs
+			add_county_modifier = {
+				modifier = RICE_pamir_kafir_concessions
+				years = 25
+			}
+		}
+	}	
+	option = { # Chitral
+		name = pamir.0042.b
+		trigger = {
+			has_title = title:c_chitral
+		}
+		title:c_chitral = {
+			remove_county_modifier = RICE_pamir_land_of_the_kafirs
+			add_county_modifier = {
+				modifier = RICE_pamir_kafir_concessions
+				years = 25
+			}
+		}
+	}	
+	option = { # Yasin
+		name = pamir.0042.c
+		trigger = {
+			has_title = title:c_yasin
+		}
+		title:c_yasin = {
+			remove_county_modifier = RICE_pamir_land_of_the_kafirs
+			add_county_modifier = {
+				modifier = RICE_pamir_kafir_concessions
+				years = 25
+			}
+		}
+	}	
+	option = { # Gilgit
+		name = pamir.0042.d
+		trigger = {
+			has_title = title:c_gilgit
+		}
+		title:c_gilgit = {
+			remove_county_modifier = RICE_pamir_land_of_the_kafirs
+			add_county_modifier = {
+				modifier = RICE_pamir_kafir_concessions
+				years = 25
+			}
+		}
+	}	
+	option = { # Golaghmuli
+		name = pamir.0042.e
+		trigger = {
+			has_title = title:c_golaghmuli
+		}
+		title:c_golaghmuli = {
+			remove_county_modifier = RICE_pamir_land_of_the_kafirs
+			add_county_modifier = {
+				modifier = RICE_pamir_kafir_concessions
+				years = 25
+			}
+		}
+	}
+}
+
+
+# Raze Shri Badat's palace
+pamir.0043 = {
+	type = character_event
+	title = pamir.0043.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_modifier = RICE_pamir_is_azur_jamshid
+				}
+				desc = pamir.0043.desc.azur_jamshid
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_modifier = RICE_pamir_is_azur_jamshid
+				}
+				desc = pamir.0043.desc.generic
+			}
+		}
+	}
+	theme = vassal
+	override_background = { event_background = burning_building }
+	
+	left_portrait = {
+		character = root
+		animation = personality_callous
+	}
+	
+	immediate = {
+		play_music_cue = mx_cue_sacredrite
+	}
+	
+	option = {
+		name = pamir.0043.a
+		RICE_pamir_raze_shri_badats_palace_effect = yes
 	}
 }
 
@@ -2993,7 +3255,7 @@ pamir.0114 = {
 	hidden = yes
 	
 	trigger = {
-		has_character_modifier = RICE_pamir_nasir_khusraw
+		has_character_modifier = RICE_pamir_is_azur_jamshid
 	}
 	
 	immediate = {
