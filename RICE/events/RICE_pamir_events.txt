@@ -271,7 +271,7 @@ pamir.0007 = {
 	}
 }
 
-# Choose to play Ali ibn Asad or not
+# Choose to play Ali ibn Asad or Gilgit Kayanis or not
 pamir.0008 = {
 	type = character_event
 	title = pamir.0008.t
@@ -294,8 +294,17 @@ pamir.0008 = {
 		character:248022 = {
 			save_scope_as = nasir_khusraw
 		}
+		character:RICE_pamir_021 = {
+			save_scope_as = nur_kayani
+		}
 		title:d_badakhshan = { #For loc.
 			save_scope_as = badakhshan_duchy
+		}
+		title:c_gilgit = { #For loc.
+			save_scope_as = gilgit_county
+		}
+		character:RICE_pamir_013 = { # Azur Jamshid
+			save_scope_as = azur_jamshid
 		}
 	}
 	
@@ -309,6 +318,14 @@ pamir.0008 = {
 		custom_tooltip = pamir.0008.tooltip.yes
 		scope:ali_ibn_asad = {
 			trigger_event = pamir.0009
+		}
+	}	
+	option = {
+		name = pamir.0008.c
+		set_player_character = scope:nur_kayani
+		custom_tooltip = pamir.0008.tooltip.kayani
+		scope:nur_kayani = {
+			trigger_event = pamir.0016
 		}
 	}
 }
@@ -510,6 +527,39 @@ pamir.0015 = {
 	}	
 	option = {
 		name = pamir.0015.c
+		set_character_faith_with_conversion = faith:nuristani_pagan
+	}	
+	option = {
+		name = pamir.0015.d
+		set_character_faith_with_conversion = faith:ashari
+	}
+}
+
+
+# Nur Kayani Introduction
+pamir.0016 = {
+	type = character_event
+	title = pamir.0016.t
+	desc = pamir.0016.desc
+	theme = RICE_theme_pamir_valley
+	
+	left_portrait = scope:nur_kayani
+	
+	option = {
+		name = pamir.0016.a
+	}
+	option = {
+		name = pamir.0016.b
+		trigger = {
+			is_ai = no
+		}
+		set_character_faith_with_conversion = faith:nuristani_pagan
+	}	
+	option = {
+		name = pamir.0016.c
+		trigger = {
+			is_ai = no
+		}
 		set_character_faith_with_conversion = faith:ashari
 	}
 }
@@ -1073,7 +1123,6 @@ pamir.0030 = {
 			}	
 		}
 	}	
-	
 }
 
 
@@ -1708,15 +1757,15 @@ pamir.0043 = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					has_character_modifier = RICE_pamir_is_azur_jamshid
+					NOT = { has_character_modifier = RICE_pamir_is_azur_jamshid }
 				}
-				desc = pamir.0043.desc.azur_jamshid
+				desc = pamir.0043.desc.generic
 			}
 			triggered_desc = {
 				trigger = {
 					has_character_modifier = RICE_pamir_is_azur_jamshid
 				}
-				desc = pamir.0043.desc.generic
+				desc = pamir.0043.desc.azur_jamshid
 			}
 		}
 	}
@@ -1726,9 +1775,19 @@ pamir.0043 = {
 	left_portrait = {
 		character = root
 		animation = personality_callous
+	}	
+	right_portrait = {
+		character = scope:shri_badat
+		animation = personality_callous
 	}
 	
 	immediate = {
+		character:RICE_pamir_010 = {
+			save_scope_as = shri_badat
+		}
+		character:RICE_pamir_012 = {
+			save_scope_as = nur_bakht
+		}
 		play_music_cue = mx_cue_sacredrite
 	}
 	
@@ -1739,6 +1798,498 @@ pamir.0043 = {
 }
 
 
+
+# Refurbishing the Mural of Dokhtar-i Noshirwan
+pamir.0044 = {
+	type = character_event
+	title = pamir.0044.t
+	desc = pamir.0044.desc
+	theme = RICE_theme_wakhan_fortress
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	immediate = {
+		title:c_bamian = { #For loc.
+			save_scope_as = bamian_county
+		}
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+	
+	option = { # Small
+		name = pamir.0044.a
+		RICE_pamir_refurbish_dokhtar_i_noshirwan_effect = yes
+	}
+}
+
+
+
+# Offering gold to which idol?
+pamir.0045 = {
+	type = character_event
+	title = pamir.0045.t
+	desc = {
+		desc = pamir.0045.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:RICE_pamir_zun_idol_has_been_restored_aruna
+					}
+				}
+				desc = pamir.0045.desc.choose
+			}
+		}
+	}
+	theme = stewardship_duty_focus
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	right_portrait = root
+	
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+	}
+	
+	option = { # Zamindawar
+		name = pamir.0045.a
+		if = {
+			limit = {
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_pamir_zun_idol_has_been_restored_aruna
+				}			
+			}
+			custom_tooltip = pamir.0045.a.tooltip
+		}
+		add_character_flag = RICE_pamir_zun_offering_zamindawar
+		# Choose appropriate location
+		title:b_zamindawar.title_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_pamir_offer_riches_to_zun
+			}	
+		}
+	}	
+	option = { # Mount Aruna
+		name = pamir.0045.b
+		trigger = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_pamir_zun_idol_has_been_restored_aruna
+			}
+		}
+		custom_tooltip = pamir.0045.b.tooltip
+		add_character_flag = RICE_pamir_zun_offering_mount_aruna
+		# Choose appropriate location
+		title:b_kabul.title_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_pamir_offer_riches_to_zun
+			}	
+		}
+	}
+}
+
+
+
+# How much money to give to Zun?
+pamir.0046 = {
+	type = character_event
+	title = pamir.0046.t
+	desc = pamir.0046.desc
+	theme = stewardship_duty_focus
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = { # Small
+		name = pamir.0046.a
+		remove_short_term_gold = 100
+		add_character_flag = RICE_pamir_zun_offering_small
+		trigger_event = {
+			id = pamir.0047
+			days = { 10 30 }
+		}
+	}	
+	option = { # Medium
+		name = pamir.0046.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 200
+			}
+		}
+		remove_short_term_gold = 200
+		add_character_flag = RICE_pamir_zun_offering_medium
+		trigger_event = {
+			id = pamir.0047
+			days = { 10 30 }
+		}
+	}	
+	option = { # Large
+		name = pamir.0046.c
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 300
+			}
+		}
+		remove_short_term_gold = 300
+		add_character_flag = RICE_pamir_zun_offering_large
+		trigger_event = {
+			id = pamir.0047
+			days = { 10 30 }
+		}	
+	}
+}
+
+
+
+
+# Offering to Zun
+pamir.0047 = {
+	type = character_event
+	title = pamir.0047.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_pamir_zun_offering_zamindawar
+				}
+				desc = pamir.0047.desc.zamindawar
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_pamir_zun_offering_mount_aruna
+				}
+				desc = pamir.0047.desc.mount_aruna
+			}
+		}
+	}
+	theme = faith
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = pamir.0047.a
+		hidden_effect = {			
+			send_interface_toast = {
+				type = event_toast_effect_good
+				left_icon = ROOT
+				title = pamir.0047.message
+				# Piety award
+				random_list = {
+					10 = {
+						modifier = {
+							add = 15
+							has_character_flag = RICE_pamir_zun_offering_small
+						}
+						modifier = {
+							add = 10
+							num_sinful_traits >= 2
+						}
+						modifier = {
+							add = 10
+							num_sinful_traits >= 1
+						}
+						add_piety = 25
+					}
+					10 = {
+						modifier = {
+							add = 15
+							has_character_flag = RICE_pamir_zun_offering_small
+						}
+						modifier = {
+							add = 10
+							num_sinful_traits >= 1
+						}
+						add_piety = 50
+					}
+					10 = {
+						modifier = {
+							add = 10
+							has_character_flag = RICE_pamir_zun_offering_small
+						}
+						modifier = {
+							add = 10
+							num_sinful_traits >= 1
+						}
+						add_piety = 75
+					}
+					10 = {
+						add_piety = 100
+					}
+					10 = {
+						add_piety = 125
+					}
+					10 = {
+						modifier = {
+							add = 5
+							has_character_flag = RICE_pamir_zun_offering_medium
+						}
+						modifier = {
+							add = 10
+							has_character_flag = RICE_pamir_zun_offering_large
+						}
+						add_piety = 150
+					}
+					10 = {
+						modifier = {
+							add = 5
+							has_character_flag = RICE_pamir_zun_offering_medium
+						}
+						modifier = {
+							add = 10
+							has_character_flag = RICE_pamir_zun_offering_large
+						}
+						modifier = {
+							add = 10
+							num_virtuous_traits >= 1
+						}
+						add_piety = 175
+					}
+					10 = {
+						modifier = {
+							add = -5
+							NOT = { has_character_flag = RICE_pamir_zun_offering_zamindawar }
+						}
+						modifier = {
+							add = 10
+							num_virtuous_traits >= 1
+						}
+						modifier = {
+							add = 5
+							has_character_flag = RICE_pamir_zun_offering_medium
+						}
+						modifier = {
+							add = 10
+							has_character_flag = RICE_pamir_zun_offering_large
+						}
+						add_piety = 200
+					}
+					10 = {
+						modifier = {
+							add = -20
+							NOT = { has_character_flag = RICE_pamir_zun_offering_zamindawar }
+						}
+						modifier = {
+							add = 5
+							has_character_flag = RICE_pamir_zun_offering_medium
+						}
+						modifier = {
+							add = 10
+							has_character_flag = RICE_pamir_zun_offering_large
+						}
+						modifier = {
+							add = 10
+							num_virtuous_traits >= 1
+						}
+						add_piety = 225
+					}
+					10 = {
+						modifier = {
+							add = -25
+							NOT = { has_character_flag = RICE_pamir_zun_offering_zamindawar }
+						}
+						modifier = {
+							add = 5
+							has_character_flag = RICE_pamir_zun_offering_medium
+						}
+						modifier = {
+							add = 10
+							has_character_flag = RICE_pamir_zun_offering_large
+						}
+						modifier = {
+							add = 10
+							num_virtuous_traits >= 1
+						}
+						add_piety = 250
+					}
+				}
+				# Prestige award
+				random_list = {
+					10 = {
+						modifier = {
+							add = 15
+							has_character_flag = RICE_pamir_zun_offering_small
+						}
+						modifier = {
+							add = 10
+							num_sinful_traits >= 2
+						}
+						modifier = {
+							add = 10
+							num_sinful_traits >= 1
+						}
+						add_prestige = 25
+					}
+					10 = {
+						modifier = {
+							add = 15
+							has_character_flag = RICE_pamir_zun_offering_small
+						}
+						modifier = {
+							add = 10
+							num_sinful_traits >= 1
+						}
+						add_prestige = 50
+					}
+					10 = {
+						modifier = {
+							add = 10
+							has_character_flag = RICE_pamir_zun_offering_small
+						}
+						modifier = {
+							add = 10
+							num_sinful_traits >= 1
+						}
+						add_prestige = 75
+					}
+					10 = {
+						add_prestige = 100
+					}
+					10 = {
+						add_prestige = 125
+					}
+					10 = {
+						modifier = {
+							add = 5
+							has_character_flag = RICE_pamir_zun_offering_medium
+						}
+						modifier = {
+							add = 10
+							has_character_flag = RICE_pamir_zun_offering_large
+						}
+						add_prestige = 150
+					}
+					10 = {
+						modifier = {
+							add = 5
+							has_character_flag = RICE_pamir_zun_offering_medium
+						}
+						modifier = {
+							add = 10
+							has_character_flag = RICE_pamir_zun_offering_large
+						}
+						modifier = {
+							add = 10
+							num_virtuous_traits >= 1
+						}
+						add_prestige = 175
+					}
+					10 = {
+						modifier = {
+							add = -5
+							NOT = { has_character_flag = RICE_pamir_zun_offering_mount_aruna }
+						}
+						modifier = {
+							add = 10
+							num_virtuous_traits >= 1
+						}
+						modifier = {
+							add = 5
+							has_character_flag = RICE_pamir_zun_offering_medium
+						}
+						modifier = {
+							add = 10
+							has_character_flag = RICE_pamir_zun_offering_large
+						}
+						add_prestige = 200
+					}
+					10 = {
+						modifier = {
+							add = -20
+							NOT = { has_character_flag = RICE_pamir_zun_offering_mount_aruna }
+						}
+						modifier = {
+							add = 5
+							has_character_flag = RICE_pamir_zun_offering_medium
+						}
+						modifier = {
+							add = 10
+							has_character_flag = RICE_pamir_zun_offering_large
+						}
+						modifier = {
+							add = 10
+							num_virtuous_traits >= 1
+						}
+						add_prestige = 225
+					}
+					10 = {
+						modifier = {
+							add = -25
+							NOT = { has_character_flag = RICE_pamir_zun_offering_mount_aruna }
+						}
+						modifier = {
+							add = 5
+							has_character_flag = RICE_pamir_zun_offering_medium
+						}
+						modifier = {
+							add = 10
+							has_character_flag = RICE_pamir_zun_offering_large
+						}
+						modifier = {
+							add = 10
+							num_virtuous_traits >= 1
+						}
+						add_prestige = 250
+					}
+				}
+			}
+		}
+		trigger_event = {
+			id = pamir.0048
+			days = 1
+		}
+	}
+	
+
+	
+	after = {
+		if = {
+			limit = { has_character_flag = RICE_pamir_zun_offering_small }
+			remove_character_flag = RICE_pamir_zun_offering_small
+		}
+		if = {
+			limit = { has_character_flag = RICE_pamir_zun_offering_medium }
+			remove_character_flag = RICE_pamir_zun_offering_medium
+		}
+		if = {
+			limit = { has_character_flag = RICE_pamir_zun_offering_large }
+			remove_character_flag = RICE_pamir_zun_offering_large
+		}
+		if = {
+			limit = { has_character_flag = RICE_pamir_zun_offering_zamindawar }
+			remove_character_flag = RICE_pamir_zun_offering_zamindawar
+		}
+		if = {
+			limit = { has_character_flag = RICE_pamir_zun_offering_mount_aruna }
+			remove_character_flag = RICE_pamir_zun_offering_mount_aruna
+		}
+	}	
+}
+
+
+# Misc cleanup
+pamir.0048 = {
+	hidden = yes	
+	immediate = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
 
 
 
@@ -3272,7 +3823,6 @@ pamir.0114 = {
 		every_player = {
 			limit = {
 				#is_within_diplo_range = { CHARACTER = scope:badakhshan_ruler }
-				religion = religion:islam_religion
 				is_ai = no
 				RICE_pamir_duchy_of_pamir_region_trigger = yes			
 			}
@@ -4437,6 +4987,151 @@ pamir.0161 = {
 		}
 	}
 }
+
+
+
+
+
+######################################################################################
+# 
+# TUMSHILING FESTIVAL EVENTS
+# 
+# pamir.0180-pamir.0199 reserved
+# 
+######################################################################################
+
+
+
+# Prepare for the Tumshiling Festival
+pamir.0180 = {
+	type = character_event
+	title = pamir.0180.t
+	desc = pamir.0180.desc
+	theme = friendly
+	
+	right_portrait = root
+	
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		title:c_gilgit = { #For loc.
+			save_scope_as = gilgit_county
+		}
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+		# For loc
+		character:RICE_pamir_010 = {
+			save_scope_as = shri_badat
+		}
+		character:RICE_pamir_013 = { # Azur Jamshid
+			save_scope_as = azur_jamshid
+		}	
+	}
+	
+	option = { # Ok
+		name = pamir.0180.a
+		# Choose appropriate location
+		scope:capital_province = {
+			spawn_activity = {
+				owner = root
+				type = activity_pamir_tumshiling_festival
+			}	
+		}
+	}
+}
+
+# Tumshiling festival - set aside the food and stuff
+pamir.0181 = {
+	type = character_event
+	title = pamir.0181.t
+	desc = pamir.0181.desc
+	theme = RICE_theme_pamir_valley
+	
+	right_portrait = root
+	
+	immediate = {
+		title:c_gilgit = { #For loc.
+			save_scope_as = gilgit_county
+		}
+		# For loc
+		character:RICE_pamir_010 = {
+			save_scope_as = shri_badat
+		}
+		character:RICE_pamir_013 = { # Azur Jamshid
+			save_scope_as = azur_jamshid
+		}	
+	}
+	
+	option = { # Small
+		name = pamir.0181.a
+		trigger_event = {
+			id = pamir.0182
+			days = { 3 8 }
+		}
+	}
+}
+
+
+# Tumshiling festival starts
+pamir.0182 = {
+	type = character_event
+	title = pamir.0182.t
+	desc = pamir.0182.desc
+	theme = RICE_theme_desert_night
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	
+	option = { # Small
+		name = pamir.0182.a
+		trigger_event = {
+			id = pamir.0183
+			days = { 3 8 }
+		}
+	}
+}
+
+
+# Tumshiling festival ends
+pamir.0183 = {
+	type = character_event
+	title = pamir.0183.t
+	desc = pamir.0183.desc
+	theme = RICE_theme_desert_night
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Small
+		name = pamir.0183.a
+		add_piety = 50
+		add_prestige = 50
+		add_character_modifier = {
+			modifier = RICE_pamir_sponsored_tumshiling
+			years = 3
+		}
+		trigger_event = {
+			id = pamir.0184
+			days = 1
+		}
+	}
+}
+
+
+# Misc cleanup
+pamir.0184 = {
+	hidden = yes	
+	immediate = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
+
 
 
 ######################################################################################
