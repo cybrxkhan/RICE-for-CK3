@@ -4,12 +4,9 @@
 
 **Newest Flavor Pack - Pamir and Zunist: Roof of the World**
 
-_Good deeds stand tall like a green pine, evil deeds bloom like flowers;_
-_The pine is not as brilliant as the flowers, it seems._
-_When the frost comes, the pine will still stand tall,_
-_While the flowers, withered, can be seen no more_
+_On [Mount Aruna] is its statue called Zhun. The ceremonial institution is extremely gorgeous. The shrine is roofed with both gold and silver plates and paved with silver on the floor._
 
-_- Nasir Khusraw_
+_- The Book of Sui on Zun_
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. The guiding philosophy of RICE is to keep a tight, focused scope that doesn’t change gameplay significantly, but adds more flavor across the world, especially for lesser-known places, peoples, and histories.
 
