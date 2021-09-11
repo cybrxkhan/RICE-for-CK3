@@ -1,6 +1,6 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.4.0 "Badakhshan" (Released 8/23/21)
+## Latest Version: Version 1.4.1 "Zun" (Released 9/10/21)
 
 **Newest Flavor Pack - Pamir and Zunist: Roof of the World**
 
@@ -43,4 +43,24 @@ DO NOT manually download the master branch unless you know what you're doing as 
 4. Enjoy and play!
 
 NOTE: If you are re-installing a mod amnually, delete the old version of the mod first before copy and pasting the new one! While it's not always necessary, it's a good habit to do to prevent any potential issues.
- 
+
+## Latest Changelog for Version 1.4.1 "Zun"
+
+- Added Kayani Dynasty in Gilgit at the 867 and 1066 start dates
+- New Zunist decisions:
+    - Reclaim Mount Aruna for Zun
+    - Offer Riches to Zun
+    - Refurbish the Mural of Dokhtar-i Noshirwan
+- New game concepts: Azur Jamshid and Idol of Zun
+- Added special modifier for Azur Jamshid, Kayani ruler in 867
+- New decision in the Duchies of Pamir and Ladakh to Sponsor the Tumshiling Festival
+- New decision to Conciliate Kafir Tribes (i.e. remove Land of the Kafirs negative modifier)
+- Taoism and Vajrayana have male dominated doctrine instead of equal
+- New art for the Sacrifice Goats and Restore Idol of Zun decisions
+- Changed art for Harranian Write Scholarly Treatise decision
+- Peristani, Burusho, and Brahui now use EPE’s new South Asian ethnicity templates as appropriate if running the RICE-EPE compatch
+- Nearby players now notified if someone restored the Idol of Zun
+- Slightly reduced faith conversion/creation bonus for restoring the Idol of Zun
+- Sacrifice Goats decision now provides a message notifying you of the result
+- Fixed missing icon for Chinir Festival activity
+- Miscellaneous bugfixes
