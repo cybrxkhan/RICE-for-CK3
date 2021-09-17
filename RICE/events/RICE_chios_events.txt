@@ -5,11 +5,20 @@
 # chios.0000-chios.0009	Misc events
 # chios.0010-chios.0019	Build Mastic Village
 # chios.0020-chios.0049	Mostra of Thymiana
-# chios.0050-chios.0069	Chios Flavor Events
+# chios.0050-chios.0099	Chios Flavor Events
+# chios.0100-chios.0119	Patmos/Cave of the Apocalypse events
 # 
 ###############################################################################
 
 namespace = chios
+
+
+##################################################################
+# 
+# MISCELLANEOUS CHIOS EVENTS
+# chios.0000-chios.0009 reserved
+# 
+##################################################################
 
 
 
@@ -1829,3 +1838,442 @@ chios.0065 = {
 		}
 	}
 }
+
+
+
+
+##################################################################
+# 
+# Pilgrimage of Patmos
+# chios.0100-0119 reserved
+# 
+##################################################################
+
+
+
+# Repopulating Patmos with monastics
+chios.0100 = {
+	type = character_event
+	title = chios.0100.t
+	desc = chios.0100.desc
+	theme = faith
+	override_background = { event_background = RICE_background_greek_beach }
+	
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	immediate = {
+		title:c_chios = { #For loc.
+			save_scope_as = chios_county
+		}
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		save_scope_as = patmos_repopulator
+	}
+	
+	option = { # Small
+		name = chios.0100.a
+		RICE_chios_repopulate_patmos_effect = yes
+		custom_tooltip = chios.0100.tooltip	
+		every_player = {
+			limit = {
+				is_ai = no
+				capital_province = {
+					OR = {
+						geographical_region = world_asia_minor
+						geographical_region = world_europe_south_east
+					}
+				}	
+			}
+			trigger_event = chios.0101
+		}
+	}
+}
+
+# Repopulating Patmos with monastics notification
+chios.0101 = {
+	type = character_event
+	title = chios.0101.t
+	desc = chios.0101.desc
+	theme = faith
+	override_background = { event_background = RICE_background_greek_beach }
+	
+	left_portrait = {
+		character = scope:patmos_repopulator
+		animation = personality_honorable
+	}
+	
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+	
+	option = { # Small
+		name = chios.0101.a		
+		custom_tooltip = chios.0101.tooltip	
+	}
+}
+
+
+
+
+# Make preparations to begin the pilgrimage
+chios.0102 = {
+	type = character_event
+	title = chios.0102.t
+	desc = chios.0102.desc
+	theme = friendly
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	right_portrait = root
+	
+	immediate = {
+		title:c_chios = { #For loc.
+			save_scope_as = chios_county
+		}
+		# Stop characters from planning multiple activities at once
+		add_character_flag = planning_an_activity
+	}
+	
+	option = { # Ok
+		name = chios.0102.a
+		# Choose appropriate location - Badakhshan
+		title:b_samos.title_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_chios_patmos_pilgrimage
+			}	
+		}
+	}
+}
+
+# Pilgrimage begins - sail to Patmos
+chios.0103 = {
+	type = character_event
+	title = chios.0103.t
+	desc = chios.0103.desc
+	theme = RICE_theme_greek_beach
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	immediate = {
+		title:c_chios = { #For loc.
+			save_scope_as = chios_county
+		}
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+	
+	option = { # Ok
+		name = chios.0103.a
+		hidden_effect = {
+			random_list = {
+				60 = { }
+				20 = {
+					trigger_event = {
+						id = chios.0104
+						days = { 10 20 }
+					}				
+				}
+				20 = {
+					trigger_event = {
+						id = chios.0105
+						days = { 10 20 }
+					}				
+				}
+			}
+		}
+		trigger_event = {
+			id = chios.0106
+			days = { 25 35 }
+		}
+	}
+}
+
+
+
+
+# Caught in a storm!
+chios.0104 = {
+	type = character_event
+	title = chios.0104.t
+	desc = chios.0104.desc
+	theme = unfriendly
+	override_background = { event_background = fp1_ocean }
+	
+	left_portrait = {
+		character = root
+		animation = paranoia
+	}
+	
+	option = { # Ok
+		name = chios.0104.a
+		stress_impact = {
+			base = minor_stress_impact_gain
+			craven = minor_stress_impact_gain
+		}
+		random = {
+			chance = 25
+			send_interface_toast = {
+				type = event_toast_effect_bad
+				left_icon = ROOT
+				title = chios.0104.toast
+				increase_wounds_effect = { REASON = wounds }
+			}		
+		}		
+	}
+}
+
+
+
+# Attacked by pirates
+chios.0105 = {
+	type = character_event
+	title = chios.0105.t
+	desc = chios.0105.desc
+	theme = battle
+	override_background = { event_background = fp1_ocean }
+	
+	left_portrait = {
+		character = root
+		animation = fear
+	}
+	
+	option = { # Pay the gold to avoid the bloodshed
+		name = chios.0105.a
+		remove_short_term_gold = 50
+		stress_impact = {
+			brave = minor_stress_impact_gain
+			greedy = minor_stress_impact_gain
+		}		
+	}
+	option = { # Fight back
+		name = chios.0105.b
+		add_prestige = 50
+		stress_impact = {
+			craven = medium_stress_impact_gain
+		}
+		random = {
+			chance = 40
+			modifier = {
+				add = -4
+				has_education_martial_trigger = yes
+			}
+			modifier = {
+				add = -4
+				prowess >= medium_skill_rating
+			}
+			modifier = {
+				add = -4
+				prowess >= high_skill_rating
+			}
+			modifier = {
+				add = 4
+				prowess < mediocre_skill_rating
+			}
+			modifier = {
+				add = 4
+				prowess < low_skill_rating
+			}
+			modifier = {
+				add = -4
+				martial >= medium_skill_rating
+			}
+			modifier = {
+				add = -4
+				martial >= high_skill_rating
+			}
+			modifier = {
+				add = 4
+				martial < mediocre_skill_rating
+			}
+			modifier = {
+				add = 4
+				martial < low_skill_rating
+			}
+			send_interface_toast = {
+				type = event_toast_effect_bad
+				left_icon = ROOT
+				title = chios.0105.b.toast
+				increase_wounds_effect = { REASON = pilgrimage_bandit_attack }
+			}		
+		}		
+	}
+	option = { # Convince to leave alone
+		name = chios.0105.c
+		trigger = {
+			diplomacy >= decent_skill_rating
+		}
+		skill = diplomacy
+		add_prestige = -50
+		stress_impact = {
+			wrathful = minor_stress_impact_gain
+			vengeful = minor_stress_impact_gain
+		}		
+	}
+}
+
+
+
+
+# Landed on Patmos
+chios.0106 = {
+	type = character_event
+	title = chios.0106.t
+	desc = chios.0106.desc
+	theme = RICE_theme_greek_beach
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Ok
+		name = chios.0106.a		
+		trigger_event = {
+			id = chios.0107
+			days = { 5 10 }
+		}
+	}
+}
+
+
+
+# Go into the Cave of the Apocalypse
+chios.0107 = {
+	type = character_event
+	title = chios.0107.t
+	desc = chios.0107.desc
+	theme = RICE_theme_desert_cave
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	immediate = {
+		play_music_cue = mx_cue_sacredrite
+	}
+	
+	option = { # Ok
+		name = chios.0107.a	
+		hidden_effect = {
+			random_list = {
+				50 = { }
+				10 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = chios.0107.toast.white_horse
+						add_character_modifier = {
+							modifier = RICE_chios_white_horse_vision
+							years = 6
+						}
+					}					
+				}
+				10 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = chios.0107.toast.red_horse
+						add_character_modifier = {
+							modifier = RICE_chios_red_horse_vision
+							years = 6
+						}
+					}					
+				}
+				10 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = chios.0107.toast.black_horse
+						add_character_modifier = {
+							modifier = RICE_chios_black_horse_vision
+							years = 6
+						}
+					}					
+				}
+				10 = {
+					send_interface_toast = {
+						left_icon = ROOT
+						title = chios.0107.toast.pale_horse
+						add_character_modifier = {
+							modifier = RICE_chios_pale_horse_vision
+							years = 6
+						}
+					}					
+				}
+			}
+		}
+		trigger_event = {
+			id = chios.0108
+			days = { 5 10 }
+		}
+	}
+}
+
+
+# Back from the Cave of the Apocalypse
+chios.0108 = {
+	type = character_event
+	title = chios.0108.t
+	desc = chios.0108.desc
+	theme = RICE_theme_greek_beach
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Ok
+		name = chios.0108.a
+		trigger_event = {
+			id = chios.0109
+			days = { 5 10 }
+		}
+	}
+}
+
+
+# Home again
+chios.0109 = {
+	type = character_event
+	title = chios.0109.t
+	desc = chios.0109.desc
+	theme = faith
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Ok
+		name = chios.0109.a
+		add_piety = 150
+		pilgrimage_additional_reward_effect = yes
+		add_trait = pilgrim
+	}
+
+	after = {
+		trigger_event = {
+			id = chios.0110
+			days = 1
+		}
+	}	
+}
+
+# Clean up activity
+chios.0110 = {
+	hidden = yes	
+	immediate = {
+		remove_character_flag = RICE_chios_patmos_pilgrimage
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
+
+
