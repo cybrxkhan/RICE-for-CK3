@@ -1,6 +1,6 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.4.1 "Zun" (Released 9/10/21)
+## Latest Version: Version 1.4.1.a "Zun" (Released 9/17/21)
 
 **Newest Flavor Pack - Pamir and Zunist: Roof of the World**
 
@@ -41,7 +41,13 @@ DO NOT manually download the master branch unless you know what you're doing as 
 
 NOTE: If you are re-installing a mod amnually, delete the old version of the mod first before copy and pasting the new one! While it's not always necessary, it's a good habit to do to prevent any potential issues.
 
-## Latest Changelog for Version 1.4.1 "Zun"
+## Latest Changelog 
+
+### Version 1.4.1.a Hotfix
+
+- Fixed South Arabian characters being naked when using RICE with EPE
+
+### Version 1.4.1 "Zun"
 
 - Added Kayani Dynasty in Gilgit at the 867 and 1066 start dates
 - New Zunist decisions:
