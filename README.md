@@ -1,12 +1,12 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.4.1.a "Zun" (Released 9/17/21)
+## Latest Version: Version 1.4.2 "Samos" (Released 9/19/21)
 
 **Newest Flavor Pack - Pamir and Zunist: Roof of the World**
 
-_On [Mount Aruna] is its statue called Zhun. The ceremonial institution is extremely gorgeous. The shrine is roofed with both gold and silver plates and paved with silver on the floor._
+_“There is geometry in the humming of the strings, there is music in the spacing of the spheres.”_
 
-_- The Book of Sui on Zun_
+_- Pythagoras of Samos_
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. The guiding philosophy of RICE is to keep a tight, focused scope that doesn’t change gameplay significantly, but adds more flavor across the world, especially for lesser-known places, peoples, and histories.
 
@@ -43,27 +43,20 @@ NOTE: If you are re-installing a mod amnually, delete the old version of the mod
 
 ## Latest Changelog 
 
-### Version 1.4.1.a Hotfix
+### Version 1.4.2 "Samos"
 
-- Fixed South Arabian characters being naked when using RICE with EPE
-
-### Version 1.4.1 "Zun"
-
-- Added Kayani Dynasty in Gilgit at the 867 and 1066 start dates
-- New Zunist decisions:
-    - Reclaim Mount Aruna for Zun
-    - Offer Riches to Zun
-    - Refurbish the Mural of Dokhtar-i Noshirwan
-- New game concepts: Azur Jamshid and Idol of Zun
-- Added special modifier for Azur Jamshid, Kayani ruler in 867
-- New decision in the Duchies of Pamir and Ladakh to Sponsor the Tumshiling Festival
-- New decision to Conciliate Kafir Tribes (i.e. remove Land of the Kafirs negative modifier)
-- Taoism and Vajrayana have male dominated doctrine instead of equal
-- New art for the Sacrifice Goats and Restore Idol of Zun decisions
-- Changed art for Harranian Write Scholarly Treatise decision
-- Peristani, Burusho, and Brahui now use EPE’s new South Asian ethnicity templates as appropriate if running the RICE-EPE compatch
-- Nearby players now notified if someone restored the Idol of Zun
-- Slightly reduced faith conversion/creation bonus for restoring the Idol of Zun
-- Sacrifice Goats decision now provides a message notifying you of the result
-- Fixed missing icon for Chinir Festival activity
+- Added new Chios related decisions:
+    - Repopulate Patmos with Monastics
+    - Go on a Pilgrimage to Patmos
+- Added the Heraion as a constructible special building for pagans or faiths with syncretic folk traditions on Samos
+- Added 14 flavor events for Chios, Samos, and nearby minor islands
+- Added new game concept: Pilgrimage to Patmos
+- Erect Monument to Homer is now a major decision
+- Azur Jamshid’s dynasty, the Kayanis, now have a unique dynasty COA
+- Fixed Tumshiling Festival decision not being available from the 1066 start date (works on new games only)
+- Fixed Kemet religious events not firing
+- Fixed Maastricht bridge collapse event triggering for random rulers
+- Fixed Taoist religions not being changed to male dominated
+- Fixed several modifiers decreasing build cost not reducing building piety costs
+- Fixed Nur of Gilgit’s grandmother not being female and not having a proper name
 - Miscellaneous bugfixes
