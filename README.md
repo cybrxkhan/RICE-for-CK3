@@ -1,6 +1,6 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.4.2 "Samos" (Released 9/19/21)
+## Latest Version: Version 1.4.2 "Samos" (Released 9/20/21)
 
 **Newest Flavor Pack - Pamir and Zunist: Roof of the World**
 
