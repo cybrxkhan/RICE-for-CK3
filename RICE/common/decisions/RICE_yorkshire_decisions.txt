@@ -94,11 +94,11 @@ RICE_yorkshire_grant_scarborough_fair_charter = {
 	}
 
 	cost = { 
-		gold = { value = minor_gold_value }
+		gold = { value = medium_gold_value }
 	}	
 
 	ai_potential = {
-		short_term_gold > minor_gold_value
+		short_term_gold > medium_gold_value
 	}
 
 	ai_will_do = {
@@ -200,11 +200,11 @@ RICE_yorkshire_grant_stourbridge_charter_fair = {
 	}
 
 	cost = { 
-		gold = { value = minor_gold_value }
+		gold = { value = medium_gold_value }
 	}	
 
 	ai_potential = {
-		short_term_gold > minor_gold_value
+		short_term_gold > medium_gold_value
 	}
 
 	ai_will_do = {
@@ -837,14 +837,14 @@ RICE_yorkshire_secure_canonization_of_john_of_beverley = {
 		religion = religion:christianity_religion
 		has_title = title:c_east_riding
 		piety_level >= 4
-		#custom_description = {
-		#	text = RICE_yorkshire_beverley_century_passed_req
-		#	NOT = {
-		#		title:c_east_riding = {
-		#			has_county_modifier = RICE_yorkshire_beverley_sanctuary_timer
-		#		}		
-		#	}
-		#}
+		custom_description = {
+			text = RICE_yorkshire_beverley_century_passed_req
+			NOT = {
+				title:c_east_riding = {
+					has_county_modifier = RICE_yorkshire_beverley_sanctuary_timer
+				}		
+			}
+		}
 	}
 	
 	is_valid_showing_failures_only = {
@@ -972,6 +972,12 @@ RICE_yorkshire_go_on_a_pilgrimage_to_beverley = {
 
 	effect = {
 		if = {
+			limit = {
+				NOT = { has_character_flag = RICE_yorkshire_completed_beverley_pilgrimage }
+			}
+			add_character_flag = RICE_yorkshire_completed_beverley_pilgrimage
+		}
+		if = {
 			limit = { NOT = { exists = var:RICE_yorkshire_beverley_pilgrimage_count } }
 			set_variable = {
 				name = RICE_yorkshire_beverley_pilgrimage_count
@@ -1029,36 +1035,75 @@ RICE_yorkshire_borrow_banner_of_saint_john = {
 		is_landed = yes
 		religion = religion:christianity_religion
 		OR = {
-			highest_held_title_tier >= tier_kingdom
-			has_title = title:d_york
-		}
-		OR = {
-			has_title = title:c_east_riding	
-			completely_controls = title:d_york
+			AND = {
+				highest_held_title_tier >= tier_kingdom
+				any_vassal_or_below = { has_title = title:c_east_riding }
+			}
+			AND = {
+				has_title = title:d_york
+				any_vassal_or_below = { has_title = title:c_east_riding }
+			}
+			has_title = title:c_east_riding
 		}
 		NOT = { has_character_flag = RICE_yorkshire_borrowed_st_johns_banner }
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_yorkshire_john_of_beverley_canonized
+		}
 	}
 	
 	is_valid = {
 		religion = religion:christianity_religion
-		OR = {
-			AND = {
-				highest_held_title_tier >= tier_kingdom
-				piety_level >= 3
-			}
-			AND = {
-				has_title = title:d_york
-				piety_level >= 5
-			}
-		}
-		OR = {
-			has_title = title:c_east_riding	
-			completely_controls = title:d_york
+		custom_description = {
+			text = RICE_yorkshire_st_john_banner_pilgrimage_req
+			has_character_flag = RICE_yorkshire_completed_beverley_pilgrimage	
 		}
 		custom_description = {
 			text = RICE_yorkshire_st_john_banner_not_taken_req
 			NOT = { has_global_variable = RICE_yorkshire_st_johns_banner_taken }	
 		}
+		OR = {
+			AND = {
+				highest_held_title_tier >= tier_kingdom
+				custom_description = {
+					text = RICE_yorkshire_st_john_banner_east_riding_req
+					OR = {
+						has_title = title:c_east_riding
+						any_vassal_or_below = { has_title = title:c_east_riding }
+					}
+				}
+				piety_level >= 3
+			}
+			AND = {
+				has_title = title:d_york
+				custom_description = {
+					text = RICE_yorkshire_st_john_banner_east_riding_req
+					OR = {
+						has_title = title:c_east_riding
+						any_vassal_or_below = { has_title = title:c_east_riding }
+					}
+				}
+				piety_level >= 4
+			}
+			AND = {
+				has_title = title:c_east_riding
+				piety_level >= 5
+			}
+		}
+		#OR = {
+		#	AND = {
+		#		highest_held_title_tier >= tier_kingdom
+		#		piety_level >= 3
+		#	}
+		#	AND = {
+		#		has_title = title:d_york
+		#		piety_level >= 5
+		#	}
+		#}
+		#OR = {
+		#	has_title = title:c_east_riding	
+		#	completely_controls = title:d_york
+		#}
 	}
 	
 	is_valid_showing_failures_only = {
@@ -1071,9 +1116,9 @@ RICE_yorkshire_borrow_banner_of_saint_john = {
 			name = RICE_yorkshire_st_johns_banner_taken
 			value = yes
 		}
-		#show_as_tooltip = {
+		show_as_tooltip = {
 			RICE_yorkshire_st_johns_banner_effect = yes
-		#}
+		}
 		custom_tooltip = RICE_yorkshire_borrow_banner_of_saint_john_effect_tooltip
 		custom_tooltip = RICE_yorkshire_borrow_banner_of_saint_john_effect_2_tooltip
 		if = {
@@ -1082,17 +1127,16 @@ RICE_yorkshire_borrow_banner_of_saint_john = {
 			}
 			custom_tooltip = RICE_yorkshire_borrow_banner_of_saint_john_context_tooltip
 		}
-		trigger_event = yorkshire.0066
+		trigger_event = yorkshire.0024
 	}
 
 	cost = { 
-		gold = { value = medium_gold_value } # Will depend
-		piety = { value = major_piety_value } # Will depend
+		piety = { value = massive_piety_value } # Will depend
 	}	
 
-	ai_potential = {
-		short_term_gold > major_piety_value
-	}
+	#ai_potential = {
+	#	short_term_gold > massive_piety_value
+	#}
 
 	ai_will_do = {
 		base = 30

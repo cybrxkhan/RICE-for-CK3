@@ -1,0 +1,345 @@
+﻿
+RICE_remove_education_traits_effect = {
+	remove_trait = education_diplomacy_1
+	remove_trait = education_diplomacy_2
+	remove_trait = education_diplomacy_3
+	remove_trait = education_diplomacy_4
+	remove_trait = education_martial_1
+	remove_trait = education_martial_2
+	remove_trait = education_martial_3
+	remove_trait = education_martial_4
+	remove_trait = education_stewardship_1
+	remove_trait = education_stewardship_2
+	remove_trait = education_stewardship_3
+	remove_trait = education_stewardship_4
+	remove_trait = education_intrigue_1
+	remove_trait = education_intrigue_2
+	remove_trait = education_intrigue_3
+	remove_trait = education_intrigue_4
+	remove_trait = education_learning_1
+	remove_trait = education_learning_2
+	remove_trait = education_learning_3
+	remove_trait = education_learning_4
+}
+
+RICE_remove_personality_traits_effect = {
+	remove_trait = brave
+	remove_trait = craven
+	remove_trait = calm
+	remove_trait = wrathful
+	remove_trait = chaste
+	remove_trait = lustful
+	remove_trait = content
+	remove_trait = ambitious
+	remove_trait = diligent
+	remove_trait = lazy
+	remove_trait = fickle
+	remove_trait = stubborn
+	remove_trait = forgiving
+	remove_trait = vengeful
+	remove_trait = generous
+	remove_trait = greedy
+	remove_trait = gregarious
+	remove_trait = shy
+	remove_trait = honest
+	remove_trait = deceitful
+	remove_trait = humble
+	remove_trait = arrogant
+	remove_trait = just
+	remove_trait = arbitrary
+	remove_trait = patient
+	remove_trait = impatient
+	remove_trait = temperate
+	remove_trait = gluttonous
+	remove_trait = trusting
+	remove_trait = paranoid
+	remove_trait = zealous
+	remove_trait = cynical
+	remove_trait = sadistic
+	remove_trait = callous
+	remove_trait = compassionate
+}
+
+RICE_generate_small_family = {
+	$CHARACTER$ = {
+		liege = {
+			save_scope_as = employer
+		}
+		#If not married, create spouse
+		if = {
+			limit = {
+				is_married = no
+			}
+			create_character = {
+				#location = $CHARACTER$.location
+				culture = $CHARACTER$.culture
+				faith = $CHARACTER$.faith
+				gender_female_chance = {
+					if = {
+						limit = { $CHARACTER$ = { is_male = yes } }
+						value = 100
+					}
+					else = {
+						value = 0
+					}
+				}
+				age = $CHARACTER$.age
+				employer = scope:employer
+				save_scope_as = spouse
+			}
+
+			if = {
+				limit = { is_male = yes }
+				marry = scope:spouse
+			}
+			else = {
+				marry_matrilineal = scope:spouse
+			}
+		}
+		else = {
+			primary_spouse = { save_scope_as = spouse }
+		}
+
+		if = {
+			limit = { is_male = yes }
+			save_scope_as = father
+			scope:spouse = { save_scope_as = mother }
+		}
+		else = {
+			save_scope_as = mother
+			scope:spouse = { save_scope_as = father }
+		}
+
+		#Create child 1 (mother age 17+)
+		if = {
+			limit = { scope:mother.age >= 17 }
+			create_character = {
+				#location = $CHARACTER$.location
+				culture = $CHARACTER$.culture
+				faith = $CHARACTER$.faith
+				gender_female_chance = {
+					if = {
+						limit = {
+							is_ruler = yes
+							$CHARACTER$ = { has_realm_law = male_only_law }
+						}
+						value = 0
+					}
+					else = {
+						limit = {
+							is_ruler = yes
+							$CHARACTER$ = { has_realm_law = female_only_law }
+						}
+						value = 100
+					}
+					else = {
+						value = 50
+					}
+				}
+				age = {
+					value = scope:mother.age
+					subtract = 17
+				}
+				father = scope:father
+				mother = scope:mother
+				dynasty = inherit
+				employer = scope:employer
+				save_scope_as = child_1
+			}
+		}
+
+		#Create child 2 (mother age 25+)
+		if = {
+			limit = { scope:mother.age >= 25 }
+			
+			random = {
+				chance = 50
+				create_character = {
+					#location = $CHARACTER$.location
+					culture = $CHARACTER$.culture
+					faith = $CHARACTER$.faith
+					gender_female_chance = {
+						value = 50
+					}
+					age = {
+						value = scope:mother.age
+						subtract = 25
+					}
+					father = scope:father
+					mother = scope:mother
+					dynasty = inherit
+					employer = scope:employer
+					save_scope_as = child_2
+				}			
+			}
+		}
+
+		#Create child 3 (mother age 33+)
+		if = {
+			limit = { scope:mother.age >= 33 }
+			
+			random = {
+				chance = 50
+				create_character = {
+					#location = $CHARACTER$.location
+					culture = $CHARACTER$.culture
+					faith = $CHARACTER$.faith
+					gender_female_chance = {
+						value = 50
+					}
+					age = {
+						value = scope:mother.age
+						subtract = 33
+					}
+					father = scope:father
+					mother = scope:mother
+					dynasty = inherit
+					employer = scope:employer
+					save_scope_as = child_3
+				}
+			}
+		}
+	}
+}
+
+
+RICE_generate_small_family_as_ruler = {
+	$CHARACTER$ = {
+		#If not married, create spouse
+		if = {
+			limit = {
+				is_married = no
+			}
+			create_character = {
+				location = $CHARACTER$.location
+				culture = $CHARACTER$.culture
+				faith = $CHARACTER$.faith
+				gender_female_chance = {
+					if = {
+						limit = { $CHARACTER$ = { is_male = yes } }
+						value = 100
+					}
+					else = {
+						value = 0
+					}
+				}
+				age = $CHARACTER$.age
+				#employer = scope:employer
+				save_scope_as = spouse
+			}
+
+			if = {
+				limit = { is_male = yes }
+				marry = scope:spouse
+			}
+			else = {
+				marry_matrilineal = scope:spouse
+			}
+		}
+		else = {
+			primary_spouse = { save_scope_as = spouse }
+		}
+
+		if = {
+			limit = { is_male = yes }
+			save_scope_as = father
+			scope:spouse = { save_scope_as = mother }
+		}
+		else = {
+			save_scope_as = mother
+			scope:spouse = { save_scope_as = father }
+		}
+
+		#Create child 1 (mother age 17+)
+		if = {
+			limit = { scope:mother.age >= 17 }
+			create_character = {
+				location = $CHARACTER$.location
+				culture = $CHARACTER$.culture
+				faith = $CHARACTER$.faith
+				gender_female_chance = {
+					if = {
+						limit = {
+							is_ruler = yes
+							$CHARACTER$ = { has_realm_law = male_only_law }
+						}
+						value = 0
+					}
+					else = {
+						limit = {
+							is_ruler = yes
+							$CHARACTER$ = { has_realm_law = female_only_law }
+						}
+						value = 100
+					}
+					else = {
+						value = 50
+					}
+				}
+				age = {
+					value = scope:mother.age
+					subtract = 17
+				}
+				father = scope:father
+				mother = scope:mother
+				dynasty = inherit
+				#employer = scope:employer
+				save_scope_as = child_1
+			}
+		}
+
+		#Create child 2 (mother age 25+)
+		if = {
+			limit = { scope:mother.age >= 25 }
+			
+			random = {
+				chance = 50
+				create_character = {
+					location = $CHARACTER$.location
+					culture = $CHARACTER$.culture
+					faith = $CHARACTER$.faith
+					gender_female_chance = {
+						value = 50
+					}
+					age = {
+						value = scope:mother.age
+						subtract = 25
+					}
+					father = scope:father
+					mother = scope:mother
+					dynasty = inherit
+					#employer = scope:employer
+					save_scope_as = child_2
+				}			
+			}
+		}
+
+		#Create child 3 (mother age 33+)
+		if = {
+			limit = { scope:mother.age >= 33 }
+			
+			random = {
+				chance = 50
+				create_character = {
+					location = $CHARACTER$.location
+					culture = $CHARACTER$.culture
+					faith = $CHARACTER$.faith
+					gender_female_chance = {
+						value = 50
+					}
+					age = {
+						value = scope:mother.age
+						subtract = 33
+					}
+					father = scope:father
+					mother = scope:mother
+					dynasty = inherit
+					#employer = scope:employer
+					save_scope_as = child_3
+				}
+			}
+		}
+	}
+}
+
+

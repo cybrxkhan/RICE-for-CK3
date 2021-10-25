@@ -43,43 +43,43 @@ yorkshire.0001 = {
 	option = { # Small
 		name = yorkshire.0001.a
 		RICE_yorkshire_grant_scarborough_fair_charter_effect = yes
-		custom_tooltip = yorkshire.0001.tooltip	
-		every_player = {
-			limit = {
-				is_ai = no
-				capital_province = {
-					OR = {
-						geographical_region = world_asia_minor
-						geographical_region = world_europe_south_east
-					}
-				}	
-			}
-			trigger_event = yorkshire.0002
-		}
+		#custom_tooltip = yorkshire.0001.tooltip	
+		#every_player = {
+		#	limit = {
+		#		is_ai = no
+		#		capital_province = {
+		#			OR = {
+		#				geographical_region = world_asia_minor
+		#				geographical_region = world_europe_south_east
+		#			}
+		#		}	
+		#	}
+		#	trigger_event = yorkshire.0002
+		#}
 	}
 }
 
-# Granting Scarbrough Fair the Charter notification
-yorkshire.0002 = {
-	type = character_event
-	title = yorkshire.0002.t
-	desc = yorkshire.0002.desc
-	theme = RICE_theme_england_scarborough_fair
-	
-	left_portrait = {
-		character = scope:scarborough_fair_person
-		animation = personality_bold
-	}
-	
-	immediate = {
-		play_music_cue = "mx_cue_epic_sacral_moment"
-	}
-	
-	option = { # Small
-		name = yorkshire.0002.a		
-		custom_tooltip = yorkshire.0002.tooltip
-	}
-}
+## Granting Scarbrough Fair the Charter notification
+#yorkshire.0002 = {
+#	type = character_event
+#	title = yorkshire.0002.t
+#	desc = yorkshire.0002.desc
+#	theme = RICE_theme_england_scarborough_fair
+#	
+#	left_portrait = {
+#		character = scope:scarborough_fair_person
+#		animation = personality_bold
+#	}
+#	
+#	immediate = {
+#		play_music_cue = "mx_cue_epic_sacral_moment"
+#	}
+#	
+#	option = { # Small
+#		name = yorkshire.0002.a		
+#		custom_tooltip = yorkshire.0002.tooltip
+#	}
+#}
 
 # Granting Stourbridge in Cambridge the Charter
 yorkshire.0003 = {
@@ -105,28 +105,7 @@ yorkshire.0003 = {
 	}
 }
 
-# Humber ferries are built
-yorkshire.0004 = {
-	type = character_event
-	title = yorkshire.0004.t
-	desc = yorkshire.0004.desc
-	theme = RICE_theme_england_scarborough_fair
-	
-	left_portrait = {
-		character = root
-		animation = personality_bold
-	}
-	
-	immediate = {
-		show_as_tooltip = {
-			RICE_yorkshire_build_humber_ferries_effect = yes
-		}
-	}
-	
-	option = { # Ok
-		name = yorkshire.0004.a
-	}
-}
+
 
 
 
@@ -229,7 +208,6 @@ yorkshire.0022 = {
 		custom_tooltip = yorkshire.0022.tooltip
 		every_player = {
 			limit = {
-				#is_within_diplo_range = { CHARACTER = scope:pamir_nasir_khusraw_shrine_expander }
 				is_ai = no
 				capital_province = {
 					OR = {
@@ -280,11 +258,11 @@ yorkshire.0024 = {
 	
 	immediate = {
 		RICE_yorkshire_st_johns_banner_effect = yes
+		custom_tooltip = yorkshire.0024.tooltip
 	}
 	
 	option = { # ok
 		name = yorkshire.0024.a
-		custom_tooltip = yorkshire.0024.tooltip
 	}
 }
 
@@ -299,7 +277,35 @@ yorkshire.0025 = {
 	
 	immediate = {
 		remove_global_variable = RICE_yorkshire_st_johns_banner_taken
-		remove_character_modifier = RICE_yorkshire_st_johns_banner_taken
+	}
+}
+
+# Maintenance event to remove Saint John's Banner once character has held it for 10 years
+yorkshire.0026 = {
+	type = empty
+	hidden = yes
+
+	trigger = {
+		RICE_yorkshire_has_saint_johns_banner_trigger = yes
+	}
+	
+	immediate = {
+		remove_global_variable = RICE_yorkshire_st_johns_banner_taken
+	}
+}
+
+# Maintenance event to remove Saint John's Banner if character doesn't have anymore titles
+yorkshire.0027 = {
+	type = empty
+	hidden = yes
+
+	trigger = {
+		RICE_yorkshire_has_saint_johns_banner_trigger = yes
+		is_landed = no
+	}
+	
+	immediate = {
+		remove_global_variable = RICE_yorkshire_st_johns_banner_taken
 	}
 }
 
@@ -419,8 +425,15 @@ yorkshire.0033 = {
 	
 	option = { # Ok
 		name = yorkshire.0033.a
-		random = {
-			25 = {
+		hidden_effect = {
+		
+		}
+		if = {
+			limit = {
+				RICE_yorkshire_has_saint_johns_banner_trigger = no
+			}
+			random = {
+				chance = 33
 				send_interface_toast = {
 					type = event_toast_effect_good
 					left_icon = ROOT
@@ -429,8 +442,8 @@ yorkshire.0033 = {
 						modifier = RICE_yorkshire_saint_john_banner_inspired
 						years = 3
 					}		
-				}			
-			}		
+				}					
+			}
 		}
 		trigger_event = {
 			id = yorkshire.0034
@@ -476,6 +489,9 @@ yorkshire.0035 = {
 	
 	option = { # Ok
 		name = yorkshire.0035.a
+		add_piety = 150
+		pilgrimage_additional_reward_effect = yes
+		add_trait = pilgrim
 		trigger_event = {
 			id = yorkshire.0036
 			days = 1
@@ -847,6 +863,7 @@ yorkshire.0058 = {
 	
 	option = { # Ok
 		name = yorkshire.0058.a
+		add_prestige = 50
 		add_character_modifier = {
 			modifier = RICE_yorkshire_was_at_stamford_bull_run
 			years = 8
@@ -1554,3 +1571,881 @@ yorkshire.0091 = {
 		name = yorkshire.0091.a		
 	}
 }
+
+
+
+######################################################################################
+# 
+# FLAVOR EVENTS
+# 
+# yorkshire.0100-yorkshire.0149 reserved
+# 
+######################################################################################
+
+# Cutlery from Sheffield
+yorkshire.0100 = {
+	type = character_event
+	title = yorkshire.0100.t
+	desc = yorkshire.0100.desc
+	theme = friendly
+	override_background = { event_background = market }
+	
+	right_portrait = root
+	
+	trigger = {
+		capital_province = {
+			RICE_english_wool_industry_requirement = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = vengeful
+		}
+		modifier = {
+			add = -0.2
+			has_trait = forgiving
+		}
+		modifier = {
+			add = 0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = -0.2
+			has_trait = paranoid
+		}
+	}
+	
+	immediate = {
+		title:b_sheffield = { #For loc.
+			save_scope_as = sheffield_barony
+		}	
+	}
+
+	option = { # Ok
+		name = yorkshire.0100.a
+		trigger = {
+			OR = {
+				gold >= 35
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 35
+		add_character_modifier = {
+			modifier = RICE_yorkshire_sheffield_cutlery
+			years = 10
+		}
+	}
+	option = { # No
+		name = yorkshire.0100.b
+	}
+}
+
+
+
+
+# Stamford ware
+yorkshire.0101 = {
+	type = character_event
+	title = yorkshire.0101.t
+	desc = yorkshire.0101.desc
+	theme = friendly
+	override_background = { event_background = market }
+	
+	right_portrait = root
+	
+	trigger = {
+		capital_province = {
+			RICE_english_wool_industry_requirement = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = fickle
+		}
+		modifier = {
+			add = -0.2
+			has_trait = stubborn
+		}
+	}
+	
+	immediate = {
+		title:b_stamford = { #For loc.
+			save_scope_as = stamford_barony
+		}	
+	}
+
+	option = { # Ok
+		name = yorkshire.0101.a
+		trigger = {
+			OR = {
+				gold >= 30
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 30
+		add_character_modifier = {
+			modifier = RICE_yorkshire_stamford_ware_feasts
+			years = 7
+		}
+		stress_impact = {
+			temperate = minor_stress_impact_gain
+			shy = minor_stress_impact_gain
+		}
+	}
+	option = { # Ok
+		name = yorkshire.0101.b
+		trigger = {
+			OR = {
+				gold >= 30
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 30
+		add_character_modifier = {
+			modifier = RICE_yorkshire_stamford_ware_pots
+			years = 7
+		}
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+		}
+	}
+	option = { # Ok
+		name = yorkshire.0101.c
+		trigger = {
+			OR = {
+				gold >= 30
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 30
+		add_character_modifier = {
+			modifier = RICE_yorkshire_stamford_ware_decor
+			years = 7
+		}
+		stress_impact = {
+			humble = minor_stress_impact_gain
+		}
+	}
+	option = { # No
+		name = yorkshire.0101.d
+	}
+}
+
+
+
+
+# Nobleman shows snakestones from Whitby
+yorkshire.0102 = {
+	type = character_event
+	title = yorkshire.0102.t
+	desc = yorkshire.0102.desc
+	theme = learning
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		RICE_yorkshire_duchy_of_york_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+	}
+	
+	immediate = {
+		title:b_whitby = { #For loc.
+			save_scope_as = whitby_barony
+		}	
+	}
+
+	option = { # Ok
+		name = yorkshire.0102.a
+		add_piety = 30
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+	option = { # Ok
+		name = yorkshire.0102.b
+		add_prestige = 20
+		add_piety = 10
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+	}
+	option = { # Ok
+		name = yorkshire.0102.c
+		add_prestige = 10
+		add_piety = 20
+		stress_impact = {
+			callous = minor_stress_impact_gain
+		}
+	}
+	option = { # Ok
+		name = yorkshire.0102.d
+		add_prestige = 30
+		stress_impact = {
+			humble = minor_stress_impact_gain
+		}
+	}
+}
+
+
+
+
+# Vale of York is very fertile
+yorkshire.0103 = {
+	type = character_event
+	title = yorkshire.0103.t
+	desc = yorkshire.0103.desc
+	theme = RICE_theme_england_scarborough_fair
+	
+	left_portrait = root
+	
+	trigger = {
+		has_title = title:c_north_riding
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+	}
+	
+	immediate = {
+		title:b_york = { #For loc.
+			save_scope_as = york_barony
+		}	
+	}
+
+	option = { # Ok
+		name = yorkshire.0103.a		
+		title:c_north_riding = {
+			add_county_modifier = {
+				modifier = RICE_yorkshire_vale_of_york
+				years = 5
+			}
+		}
+	}
+}
+
+
+
+# A game of knurr and spell
+yorkshire.0104 = {
+	type = character_event
+	title = yorkshire.0104.t
+	desc = yorkshire.0104.desc
+	theme = party
+	override_background = { event_background = tavern }
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		RICE_yorkshire_duchy_of_york_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+	}
+
+	option = { # Ok
+		name = yorkshire.0104.a
+		stress_impact = {
+			base = minor_stress_impact_loss
+		}
+		custom_tooltip = yorkshire.0104.tooltip
+		hidden_effect = {
+			random_list = {
+				30 = {
+					modifier = {
+						add = 10
+						prowess > 9
+					}
+					modifier = {
+						add = 15
+						prowess > 12
+					}
+					modifier = {
+						add = 20
+						prowess > 15
+					}
+					modifier = {
+						add = 25
+						prowess > 18
+					}
+					send_interface_toast = {
+						type = event_toast_effect_good
+						left_icon = ROOT
+						title = yorkshire.0104.toast.win
+						add_prestige = 50	
+					}			
+				}	
+				70 = {
+					send_interface_toast = {
+						type = event_toast_effect_bad
+						left_icon = ROOT
+						title = yorkshire.0104.toast.lose	
+					}			
+				}		
+			}		
+		}
+	}
+	option = { # Ok
+		name = yorkshire.0104.b
+		add_prestige = 25
+	}
+}
+
+
+
+
+
+
+# A gift of Wensleydale cheese
+yorkshire.0105 = {
+	type = character_event
+	title = yorkshire.0105.t
+	desc = yorkshire.0105.desc
+	theme = realm
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		has_title = title:c_north_riding
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = charitable
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+	}
+
+	immediate = {
+		title:c_north_riding = { #For loc.
+			save_scope_as = north_riding_county
+		}
+	}
+
+	option = { # Ok
+		name = yorkshire.0105.a
+		add_character_modifier = {
+			modifier = RICE_yorkshire_wensleydale_cheese
+			years = 3
+		}
+	}
+}
+
+
+
+
+
+# Thinking about Alcuin
+yorkshire.0106 = {
+	type = character_event
+	title = yorkshire.0106.t
+	desc = yorkshire.0106.desc
+	theme = RICE_theme_england_church_outside
+	override_icon = { reference = "gfx/interface/icons/event_types/type_learning.dds" }
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	trigger = {
+		RICE_yorkshire_duchy_of_york_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+	}
+
+	option = { # Ok
+		name = yorkshire.0106.a
+		add_character_modifier = {
+			modifier = RICE_yorkshire_alcuin_spiritual_quote
+			years = 8
+		}
+	}
+	option = { # Ok
+		name = yorkshire.0106.b
+		add_character_modifier = {
+			modifier = RICE_yorkshire_alcuin_masses_quote
+			years = 8
+		}
+	}
+}
+
+
+
+
+# Thinking about Caedmon
+yorkshire.0107 = {
+	type = character_event
+	title = yorkshire.0107.t
+	desc = yorkshire.0107.desc
+	theme = RICE_theme_england_church_inside
+	override_icon = { reference = "gfx/interface/icons/event_types/type_learning.dds" }
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	trigger = {
+		OR = {
+			capital_province = {
+				geographical_region = custom_england
+			}
+			culture_group = culture_group:west_germanic_group
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = charitable
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+	}
+	
+	immediate = {
+		title:b_whitby = { #For loc.
+			save_scope_as = whitby_barony
+		}	
+	}
+
+	option = { # Ok
+		name = yorkshire.0107.a
+		add_character_modifier = {
+			modifier = RICE_yorkshire_caedmons_hymn
+			years = 8
+		}
+	}
+}
+
+
+
+
+
+# More pilgrims coming to Crowland to visit the shrine of Saint Guthlac
+yorkshire.0108 = {
+	type = character_event
+	title = yorkshire.0108.t
+	desc = yorkshire.0108.desc
+	theme = RICE_theme_england_church_outside
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	trigger = {
+		has_title = title:c_lincolnshire
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = charitable
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+	}
+	
+	immediate = {
+		title:c_lincolnshire = { #For loc.
+			save_scope_as = lincolnshire_county
+		}	
+	}
+
+	option = { # Ok
+		name = yorkshire.0108.a	
+		title:c_lincolnshire = {
+			add_county_modifier = {
+				modifier = RICE_yorkshire_crowland_pilgrims
+				years = 5
+			}
+		}
+	}
+}
+
+
+
+
+
+# Lead mining by the river Swale
+yorkshire.0109 = {
+	type = character_event
+	title = yorkshire.0109.t
+	desc = yorkshire.0109.desc
+	theme = RICE_theme_england_scarborough_fair
+	
+	right_portrait = root
+	
+	trigger = {
+		has_title = title:c_north_riding
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = charitable
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+	
+	immediate = {
+		title:c_north_riding = { #For loc.
+			save_scope_as = north_riding_county
+		}	
+	}
+
+	option = { # Ok
+		name = yorkshire.0109.a	
+		title:c_north_riding = {
+			add_county_modifier = {
+				modifier = RICE_yorkshire_river_swale_lead
+				years = 5
+			}
+		}
+	}
+}
+
+
+
+
+# Penny Hedge of Whitby
+yorkshire.0110 = {
+	type = character_event
+	title = yorkshire.0110.t
+	desc = yorkshire.0110.desc
+	theme = RICE_theme_england_scarborough_fair
+	
+	left_portrait = root
+	
+	trigger = {
+		RICE_yorkshire_duchy_of_york_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = -0.2
+			has_trait = paranoid
+		}
+	}
+	
+	immediate = {
+		title:b_whitby = { #For loc.
+			save_scope_as = whitby_barony
+		}	
+	}
+
+	option = { # Ok
+		name = yorkshire.0110.a
+		add_prestige = 25
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+	}
+	option = { # Ok
+		name = yorkshire.0110.b
+		add_piety = 25
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+}
+
+
+
+
+# Passing by Cow and Calf in Ilkley Moor
+yorkshire.0111 = {
+	type = character_event
+	title = yorkshire.0111.t
+	desc = yorkshire.0111.desc
+	theme = RICE_theme_england_scarborough_fair
+	
+	left_portrait = root
+	
+	trigger = {
+		RICE_yorkshire_duchy_of_york_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = -0.2
+			has_trait = paranoid
+		}
+	}
+	
+	immediate = {
+		title:c_west_riding = { #For loc.
+			save_scope_as = west_riding_county
+		}	
+	}
+
+	option = { # Ok
+		name = yorkshire.0111.a
+		add_piety = 20
+	}
+}
+
+

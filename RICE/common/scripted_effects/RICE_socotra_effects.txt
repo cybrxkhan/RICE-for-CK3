@@ -1,0 +1,194 @@
+﻿
+
+make_south_arabian_culture_effect = {
+	#Convert your, and your whole family's, culture
+	set_culture = culture:south_arabian
+	if = {
+		limit = {
+			is_married = yes
+			any_spouse = { is_landed = no }
+		}
+		every_spouse = {
+			set_culture = culture:south_arabian
+		}
+	}
+	if = {
+		limit = {
+			any_close_family_member = {
+				is_landed = no
+			}
+		}
+		every_close_family_member = {
+			custom = all_family_members
+			limit = {
+				is_landed = no
+			}
+			set_culture = culture:south_arabian
+		}
+	}
+
+	#Convert appropriate vassals, and their family
+	if = {
+		limit = {
+			any_vassal = {
+				is_ai = yes
+				#culture = root.culture
+			}
+		}
+		every_vassal = {
+			limit = {
+				is_ai = yes
+				#culture = root.culture
+			}
+			set_culture = culture:south_arabian
+			hidden_effect = {
+				if = {
+					limit = { any_spouse = { is_landed = no } }
+					every_spouse = {
+						set_culture = culture:south_arabian
+					}
+				}
+				if = {
+					limit = {
+						any_close_family_member = {
+							is_landed = no
+						}
+					}
+					every_close_family_member = {
+						limit = {
+							is_landed = no
+						}
+						set_culture = culture:south_arabian
+					}
+				}
+			}
+		}
+		every_courtier = {
+			limit = {
+				is_ai = yes
+				#culture = root.culture
+			}
+			set_culture = culture:south_arabian
+			hidden_effect = {
+				if = {
+					limit = { any_spouse = { is_landed = no } }
+					every_spouse = {
+						set_culture = culture:south_arabian
+					}
+				}
+				if = {
+					limit = {
+						any_close_family_member = {
+							is_landed = no
+						}
+					}
+					every_close_family_member = {
+						limit = {
+							is_landed = no
+						}
+						set_culture = culture:south_arabian
+					}
+				}
+			}
+		}
+	}
+}
+
+RICE_add_pirate_den_effect = {
+	capital_county = {
+		add_county_modifier = {
+			modifier = RICE_socotra_pirate_infestation
+			years = 10
+		}
+	}
+	if = {
+		limit = {
+			capital_province = {
+				is_coastal = yes
+			}
+		}
+		capital_province = {
+			add_special_building = RICE_pirate_den_01
+		}
+	}
+	else = {
+		capital_county = {
+			random_county_province = {
+				limit = {
+					is_coastal = yes
+					has_holding = yes
+				}
+				add_special_building = RICE_pirate_den_01
+			}		
+		}
+	}
+}
+
+
+RICE_socotra_bawarij_spawn_effect = {
+	# Bawarij Pirates to the rescue... right?
+	spawn_army = {
+		levies = 500
+		men_at_arms = {
+			type = khandayat
+			stacks = 1
+		}
+		men_at_arms = {
+			type = light_footmen
+			stacks = 3
+		}
+		men_at_arms = {
+			type = bowmen
+			stacks = 2
+		}
+		men_at_arms = {
+			type = pikemen_unit
+			stacks = 1
+		}
+		location = title:c_socotra.title_province
+		war = war
+		#inheritable = no
+		name = RICE_socotra_bawarij_spawn_event_troops
+	}
+	# Oops
+	title:c_socotra = {
+		add_county_modifier = {
+			modifier = RICE_socotra_bawarij_infestation
+			years = 10
+		}
+	}
+}
+
+
+
+
+
+form_socotra_kingdom_kingdom_effect = {
+	#Create the title and make it primary
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:k_socotra = {
+		set_de_jure_liege_title = title:e_arabia
+		change_title_holder = {
+			holder = root
+			change = scope:title_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:title_change
+	set_primary_title_to = title:k_socotra
+	
+	set_realm_capital = title:c_socotra
+
+	title:c_socotra = {
+		add_county_modifier = {
+			modifier = RICE_socotra_new_kingdom
+			years = 25
+		}
+	}
+	title:d_socotra = {
+		set_de_jure_liege_title = title:k_socotra
+	}
+}
