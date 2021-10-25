@@ -9,6 +9,8 @@ _Parsley, sage, rosemary and thyme_
 _Remember me to one who lives there_
 _He/she once was a true love of mine_
 
+_This update serves as the official one year anniversary update since the mod's release, as there likely won't be a major update until after November - thanks for all your continued support, and let's hope that RICE continues to grow!_
+
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. The guiding philosophy of RICE is to keep a tight, focused scope that doesn’t change gameplay significantly, but adds more flavor across the world, especially for lesser-known places, peoples, and histories.
 
 RICE is designed with compatibility win mind, and technically compatible with most mods; I avoid editing vanilla files to prevent conflicts with other mods. For example, new cultures are added via hidden events at game start instead of directly through province history. If you are a mod author or user and concerned about compatibiliy with RICE, don't hesitate to contact me on the forums or Discord!
