@@ -54,7 +54,7 @@ NOTE: If you are re-installing a mod manually, delete the old version of the mod
 - A few history changes are now disabled when playing with the TIP mod (to let its changes take precedence)
 - Scripted effects and scripted triggers are now split up by Flavor Pack in the code for convenience
 - Changed the jingle noises of some event themes to be faith based as appropriate
-- Changed the description of Zunism into something more accurate
+- Changed the description of Zunism to something (somewhat) more accurate
 - Rebalanced the gold costs of several festival decisions
 - Fixed Azur Jamshid and Zunbils retaining clan governments at the 867 bookmark
 - Miscellaneous bugfixes
