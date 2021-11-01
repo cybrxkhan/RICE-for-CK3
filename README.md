@@ -49,6 +49,7 @@ NOTE: If you are re-installing a mod manually, delete the old version of the mod
 
 ### Version 1.4.3.a Hotfix
 
+- RICE+EPE compatch: South Arabian culture now includes new Yemeni ethnicity templates
 - Fixed RICE flavor events not triggering properly
 
 ### Version 1.4.3 "Scarborough Fair"
