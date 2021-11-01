@@ -1,6 +1,6 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.4.3 "Scarborough Fair" (Released 10/24/21)
+## Latest Version: Version 1.4.3.a "Scarborough Fair" (Released 10/24/21)
 
 **Newest Flavor Pack - Yorkshire: To Scarborough Fair**
 
@@ -45,7 +45,11 @@ DO NOT manually download the master branch unless you know what you're doing as 
 
 NOTE: If you are re-installing a mod manually, delete the old version of the mod first before copy and pasting the new one! While it's not always necessary, it's a good habit to do to prevent any potential issues.
 
-## Latest Changelog 
+## Latest Changelog
+
+### Version 1.4.3.a Hotfix
+
+- Fixed RICE flavor events not triggering properly
 
 ### Version 1.4.3 "Scarborough Fair"
 
