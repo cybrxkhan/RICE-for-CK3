@@ -1,0 +1,2136 @@
+﻿###############################################################################
+# 
+# GUANCHE/CANARY ISLANDS/MADEIRA
+# 
+# guanche.0000-guanche.0009		Setup Events and Misc stuff
+# guanche.0010-guanche.0019		Praying for rain
+# guanche.0030-guanche.0049		Benesmen
+# guanche.0050-guanche.0059		Madeira Sugarcane Industry
+# guanche.0060-guanche.0099		Generic flavor events
+# 
+###############################################################################
+
+namespace = guanche
+
+######################################################################################
+# 
+# SETUP EVENTS AND MISC STUFF
+# 
+# guanche.0000-guanche.0009 reserved
+# 
+######################################################################################
+
+# Hand out titles to Guanche folks
+guanche.0001 = {
+	hidden = yes	
+	immediate = {
+		canary_islands_de_jure_effect = yes
+		trigger_event = guanche.0004
+	}
+}
+
+# Replace with actual Guanche
+guanche.0002 = {
+	hidden = yes	
+	immediate = {
+	
+		# Kill wrong culture characters and add proper Guanche characters
+		
+		cp:councillor_chancellor = { save_scope_as = chancellor }
+		cp:councillor_marshal = { save_scope_as = marshal }
+		cp:councillor_steward = { save_scope_as = steward }
+		cp:councillor_spymaster = { save_scope_as = spymaster }
+		cp:councillor_court_chaplain = {
+			save_scope_as = chaplain
+			set_culture = culture:guanche
+		}
+		every_spouse = {
+			add_character_flag = RICE_guanche_dont_kill
+		}
+		every_close_family_member = {
+			add_character_flag = RICE_guanche_dont_kill
+		}
+
+		# This is to prevent the "Fire Councillor" popups from appearing
+		if = {
+			limit = {
+				scope:chancellor = { is_landed = no }
+			}
+			fire_councillor = scope:chancellor
+		}
+		if = {
+			limit = {
+				scope:marshal = { is_landed = no }
+			}
+			fire_councillor = scope:marshal
+		}
+		if = {
+			limit = {
+				scope:steward = { is_landed = no }
+			}
+			fire_councillor = scope:steward
+		}
+		if = {
+			limit = {
+				scope:spymaster = { is_landed = no }
+			}
+			fire_councillor = scope:spymaster
+		}
+		scope:chaplain = {
+			add_character_flag = RICE_guanche_dont_kill
+		}
+		
+		# They ded
+		every_courtier_or_guest = {
+			limit = {
+				NOR = {
+					is_landed = yes
+					has_character_flag = RICE_guanche_dont_kill
+				}
+			}
+			death = {
+				death_reason = death_disappearance
+			}		
+		}
+		
+		# Guanche female
+		create_character = {
+			gender = female
+			faith = root.faith
+			culture = culture:guanche
+			random_traits = yes
+			employer = root
+		}	
+		# Guanche female
+		create_character = {
+			gender = female
+			faith = root.faith
+			culture = culture:guanche
+			random_traits = yes
+			employer = root
+		}	
+		# Guanche male
+		create_character = {
+			gender = male
+			faith = root.faith
+			culture = culture:guanche
+			random_traits = yes
+			employer = root
+		}	
+		# Guanche male
+		create_character = {
+			gender = male
+			faith = root.faith
+			culture = culture:guanche
+			random_traits = yes
+			employer = root
+		}	
+		# Guanche male
+		create_character = {
+			gender = male
+			faith = root.faith
+			culture = culture:guanche
+			random_traits = yes
+			employer = root
+		}	
+		# Guanche male
+		create_character = {
+			gender = male
+			faith = root.faith
+			culture = culture:guanche
+			random_traits = yes
+			employer = root
+		}
+	}
+	
+	after = {
+		every_courtier_or_guest = {
+			limit = {
+				has_character_flag = RICE_guanche_dont_kill
+			}
+			remove_character_flag = RICE_guanche_dont_kill
+		}	
+	}
+}
+
+
+# Change Guanche madeira timber modifier
+guanche.0003 = {
+	hidden = yes
+	
+	trigger = {
+		scope:title = title:c_madeira
+		NOT = { has_global_variable = RICE_guanche_sugar_industry_crashed }
+	}
+	
+	immediate = {
+		if = {
+			limit = { 
+				scope:previous_holder = { 
+					is_alive = yes
+					has_character_modifier = RICE_guanche_madeira_owner_timber
+					NOT = { has_title = title:c_madeira }
+				}
+			}
+			scope:previous_holder = { remove_character_modifier = RICE_guanche_madeira_owner_timber }
+		}
+		add_character_modifier = {
+			modifier = RICE_guanche_madeira_owner_timber
+		}
+	}
+}
+
+
+
+
+# Character selection
+guanche.0004 = {
+	type = character_event
+	title = guanche.0004.t
+	desc = guanche.0004.desc
+	theme = RICE_theme_guanche_shrine
+	
+	lower_left_portrait = scope:fuerteventura_chieftain
+	lower_center_portrait = scope:canarias_chieftain
+	lower_right_portrait = scope:madeira_chieftain
+	
+	immediate = {
+		title:c_canarias.holder = {
+			save_scope_as = canarias_chieftain
+		}
+		title:c_fuerteventura.holder = {
+			save_scope_as = fuerteventura_chieftain
+		}
+		title:c_madeira.holder = {
+			save_scope_as = madeira_chieftain
+		}
+		title:d_canarias = {
+			save_scope_as = canarias_duchy
+		}
+		hidden_effect = {
+			game_rule_create_spouse_and_children = { CHARACTER = scope:fuerteventura_chieftain }
+			game_rule_create_spouse_and_children = { CHARACTER = scope:madeira_chieftain }		
+		}
+	}
+	
+	option = {
+		name = guanche.0004.a
+		custom_tooltip = guanche.0004.tooltip
+	}	
+	option = {
+		name = guanche.0004.b
+		set_player_character = scope:fuerteventura_chieftain
+		custom_tooltip = guanche.0004.tooltip
+	}	
+	option = {
+		name = guanche.0004.c
+		set_player_character = scope:madeira_chieftain
+		custom_tooltip = guanche.0004.tooltip
+	}
+}
+
+
+
+
+
+# Foundation of the Kingdom of Canarias
+guanche.0005 = {
+	type = character_event
+	title = guanche.0005.t
+	desc = guanche.0005.desc
+	theme = RICE_theme_guanche_shrine
+	override_icon = { reference = "gfx/interface/icons/event_types/type_majesty.dds" }
+	
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	
+	immediate = {
+		title:k_canary_islands = { #For loc.
+			save_scope_as = canarias_kingdom
+		}
+		save_scope_as = canarias_king
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+	
+	option = { # ok
+		name = guanche.0005.a
+		add_character_modifier = {
+			modifier = RICE_guanche_kingdom_unified_fortunate_isles
+		}
+		title:c_canarias = {
+			add_county_modifier = {
+				modifier = RICE_guanche_kingdom_fortunate_isles
+			}
+		}
+		title:c_fuerteventura = {
+			add_county_modifier = {
+				modifier = RICE_guanche_kingdom_fortunate_isles
+			}
+		}
+		title:c_madeira = {
+			add_county_modifier = {
+				modifier = RICE_guanche_kingdom_fortunate_isles
+			}
+		}
+		every_player = {
+			limit = {
+				is_ai = no
+				OR = {
+					is_within_diplo_range = { CHARACTER = scope:canarias_king }
+					capital_province = {
+						OR = {
+							geographical_region = world_europe_west_iberia
+							geographical_region = world_europe_south_italy
+							geographical_region = world_africa_north
+						}
+					}				
+				}
+			}
+			trigger_event = guanche.0006
+		}
+	}
+	
+	option = { # ok
+		name = guanche.0005.b
+		add_character_modifier = {
+			modifier = RICE_guanche_kingdom_unified_worlds_edge
+		}
+		title:c_canarias = {
+			add_county_modifier = {
+				modifier = RICE_guanche_kingdom_worlds_edge
+			}
+		}
+		title:c_fuerteventura = {
+			add_county_modifier = {
+				modifier = RICE_guanche_kingdom_worlds_edge
+			}
+		}
+		title:c_madeira = {
+			add_county_modifier = {
+				modifier = RICE_guanche_kingdom_worlds_edge
+			}
+		}
+		every_player = {
+			limit = {
+				is_ai = no
+				OR = {
+					is_within_diplo_range = { CHARACTER = scope:canarias_king }
+					capital_province = {
+						OR = {
+							geographical_region = world_europe_west_iberia
+							geographical_region = world_europe_south_italy
+							geographical_region = world_africa_north
+						}
+					}				
+				}
+			}
+			trigger_event = guanche.0006
+		}
+	}
+	
+}
+
+
+# Sugarcane comes to Madeira - announcement
+guanche.0006 = {
+	type = character_event
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					title:c_canarias = {
+						has_county_modifier = RICE_guanche_kingdom_fortunate_isles
+					}
+				}
+				desc = guanche.0006.t.fortunate_isles
+			}
+			triggered_desc = {
+				trigger = {
+					title:c_canarias = {
+						has_county_modifier = RICE_guanche_kingdom_worlds_edge
+					}
+				}
+				desc = guanche.0006.t.worlds_edge
+			}
+		}
+	}
+	desc = {
+		desc = guanche.0006.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					title:c_canarias = {
+						has_county_modifier = RICE_guanche_kingdom_fortunate_isles
+					}
+				}
+				desc = guanche.0006.desc.fortunate_isles
+			}		
+			triggered_desc = {
+				trigger = {
+					title:c_canarias = {
+						has_county_modifier = RICE_guanche_kingdom_worlds_edge
+					}
+				}
+				desc = guanche.0006.desc.worlds_edge
+			}			
+		}
+	}
+	theme = RICE_theme_guanche_shrine
+	override_icon = { reference = "gfx/interface/icons/event_types/type_majesty.dds" }
+	
+	left_portrait = {
+		character = scope:canarias_king
+		animation = personality_bold
+	}
+	
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		show_as_tooltip = {
+			if = {
+				limit = {
+					title:c_canarias = {
+						has_county_modifier = RICE_guanche_kingdom_fortunate_isles
+					}					
+				}
+				scope:canarias_king = {				
+					add_character_modifier = {
+						modifier = RICE_guanche_kingdom_unified_fortunate_isles
+					}
+				}
+				title:c_canarias = {
+					add_county_modifier = {
+						modifier = RICE_guanche_kingdom_fortunate_isles
+					}
+				}
+				title:c_fuerteventura = {
+					add_county_modifier = {
+						modifier = RICE_guanche_kingdom_fortunate_isles
+					}
+				}
+				title:c_madeira = {
+					add_county_modifier = {
+						modifier = RICE_guanche_kingdom_fortunate_isles
+					}
+				}				
+			}
+			else_if = {
+				limit = {
+					title:c_canarias = {
+						has_county_modifier = RICE_guanche_kingdom_worlds_edge
+					}					
+				}
+				scope:canarias_king = {				
+					add_character_modifier = {
+						modifier = RICE_guanche_kingdom_unified_worlds_edge
+					}
+				}
+				title:c_canarias = {
+					add_county_modifier = {
+						modifier = RICE_guanche_kingdom_worlds_edge
+					}
+				}
+				title:c_fuerteventura = {
+					add_county_modifier = {
+						modifier = RICE_guanche_kingdom_worlds_edge
+					}
+				}
+				title:c_madeira = {
+					add_county_modifier = {
+						modifier = RICE_guanche_kingdom_worlds_edge
+					}
+				}			
+			}
+		}
+	}
+	
+	option = { # ok
+		name = guanche.0006.a
+	}
+}
+
+
+
+
+######################################################################################
+# 
+# PRAYING FOR RAIN
+# 
+# guanche.0010-guanche.0019 reserved
+# 
+######################################################################################
+
+
+guanche.0010 = {
+	hidden = yes	
+	immediate = {
+		capital_province = { save_scope_as = rain_ritual_province } #For loc.
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+		# Choose appropriate location
+		scope:rain_ritual_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_guanche_rain_ritual
+			}	
+		}
+	}
+}
+
+
+
+
+# Rain rituals
+guanche.0011 = {
+	type = character_event
+	title = guanche.0011.t
+	desc = guanche.0011.desc
+	theme = RICE_theme_guanche_shrine
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	immediate = {
+		capital_county = { save_scope_as = rain_ritual_county } #For loc.
+	}
+	
+	option = { # Normal effort
+		name = guanche.0011.a
+		custom_tooltip = guanche.0011.tooltip
+		#add_character_flag = { flag = RICE_guanche_rain_ritual_normal days = 1 }
+	}	
+	option = { # Large effort
+		name = guanche.0011.b
+		custom_tooltip = guanche.0011.tooltip
+		add_prestige = medium_prestige_loss
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			gluttonous = miniscule_stress_impact_gain
+		}
+		if = {
+			limit = {
+				OR = {
+					is_healthy = no
+					has_trait = gluttonous
+					has_trait = physique_bad
+					has_trait = disfigured
+					has_trait = inbred
+					has_trait = spindly
+					has_trait = weak
+				}
+			}
+			random = {
+				chance = 35
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					left_icon = ROOT
+					title = guanche.0011.fasting_weakness
+					add_character_modifier = {
+						modifier = RICE_guanche_fasting_weakness
+						years = 3
+					}		
+				}
+			}
+		}
+		else = {
+			random = {
+				chance = 15
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					left_icon = ROOT
+					title = guanche.0011.fasting_weakness
+					add_character_modifier = {
+						modifier = RICE_guanche_fasting_weakness
+						years = 3
+					}		
+				}
+			}		
+		}
+		#random = {
+		#	chance = 15
+		#	modifier = {
+		#		add = 15
+		#		is_healthy = no
+		#	}
+		#	modifier = {
+		#		add = 5
+		#		has_trait = gluttonous
+		#	}
+		#	modifier = {
+		#		add = 5
+		#		has_trait = physique_bad
+		#	}
+		#	modifier = {
+		#		add = 5
+		#		has_trait = disfigured
+		#	}
+		#	modifier = {
+		#		add = 5
+		#		has_trait = inbred
+		#	}
+		#	modifier = {
+		#		add = 5
+		#		has_trait = spindly
+		#	}
+		#	modifier = {
+		#		add = 5
+		#		has_trait = weak
+		#	}
+		#	send_interface_toast = {
+		#		type = event_toast_effect_bad
+		#		left_icon = ROOT
+		#		title = guanche.0011.fasting_weakness
+		#		add_character_modifier = {
+		#			modifier = RICE_guanche_fasting_weakness
+		#			years = 3
+		#		}		
+		#	}					
+		#}
+		add_character_flag = { flag = RICE_guanche_rain_ritual_large days = 1 }
+	}
+	option = { # Huge effort
+		name = guanche.0011.c
+		custom_tooltip = guanche.0011.tooltip
+		add_prestige = major_prestige_loss
+		stress_impact = {
+			cynical = medium_stress_impact_gain
+			gluttonous = minor_stress_impact_gain
+		}
+		if = {
+			limit = {
+				OR = {
+					is_healthy = no
+					has_trait = gluttonous
+					has_trait = physique_bad
+					has_trait = disfigured
+					has_trait = inbred
+					has_trait = spindly
+					has_trait = weak
+				}
+			}
+			random = {
+				chance = 50
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					left_icon = ROOT
+					title = guanche.0011.fasting_weakness
+					add_character_modifier = {
+						modifier = RICE_guanche_fasting_weakness
+						years = 3
+					}		
+				}
+			}
+		}
+		else = {
+			random = {
+				chance = 30
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					left_icon = ROOT
+					title = guanche.0011.fasting_weakness
+					add_character_modifier = {
+						modifier = RICE_guanche_fasting_weakness
+						years = 3
+					}		
+				}
+			}		
+		}
+		#random = {
+		#	chance = 30
+		#	modifier = {
+		#		add = 15
+		#		is_healthy = no
+		#	}
+		#	modifier = {
+		#		add = 5
+		#		has_trait = gluttonous
+		#	}
+		#	modifier = {
+		#		add = 5
+		#		has_trait = physique_bad
+		#	}
+		#	modifier = {
+		#		add = 5
+		#		has_trait = disfigured
+		#	}
+		#	modifier = {
+		#		add = 5
+		#		has_trait = inbred
+		#	}
+		#	modifier = {
+		#		add = 5
+		#		has_trait = spindly
+		#	}
+		#	modifier = {
+		#		add = 5
+		#		has_trait = weak
+		#	}
+		#	send_interface_toast = {
+		#		type = event_toast_effect_bad
+		#		left_icon = ROOT
+		#		title = guanche.0011.fasting_weakness
+		#		add_character_modifier = {
+		#			modifier = RICE_guanche_fasting_weakness
+		#			years = 3
+		#		}		
+		#	}					
+		#}
+		add_character_flag = { flag = RICE_guanche_rain_ritual_huge days = 1 }
+	}
+	
+	after = {
+		hidden_effect = {
+			random_list = {
+				# Amazing
+				10 = {
+					modifier = {
+						add = 15
+						has_character_flag = RICE_guanche_rain_ritual_huge
+					}
+					modifier = {
+						add = 10
+						has_character_flag = RICE_guanche_rain_ritual_large
+					}
+					modifier = {
+						add = 5
+						has_trait = zealous
+					}
+					modifier = {
+						add = 5
+						num_virtuous_traits >= 2
+					}
+					modifier = {
+						add = 5
+						num_virtuous_traits >= 1
+					}
+					add_character_flag = { flag = RICE_guanche_rain_ritual_result_amazing days = 5 }
+				}
+				# Great
+				20 = {
+					modifier = {
+						add = 20
+						has_character_flag = RICE_guanche_rain_ritual_huge
+					}
+					modifier = {
+						add = 15
+						has_character_flag = RICE_guanche_rain_ritual_large
+					}
+					modifier = {
+						add = 5
+						has_trait = zealous
+					}
+					modifier = {
+						add = 5
+						num_virtuous_traits >= 2
+					}
+					modifier = {
+						add = 5
+						num_virtuous_traits >= 1
+					}
+					add_character_flag = { flag = RICE_guanche_rain_ritual_result_great days = 5 }
+				}
+				# Good
+				30 = {
+					modifier = {
+						add = 25
+						has_character_flag = RICE_guanche_rain_ritual_huge
+					}
+					modifier = {
+						add = 20
+						has_character_flag = RICE_guanche_rain_ritual_large
+					}
+					modifier = {
+						add = 5
+						has_trait = zealous
+					}
+					modifier = {
+						add = 5
+						num_virtuous_traits >= 2
+					}
+					modifier = {
+						add = 5
+						num_virtuous_traits >= 1
+					}
+					add_character_flag = { flag = RICE_guanche_rain_ritual_result_good days = 5 }
+				}
+				# Nothing
+				60 = {
+					modifier = {
+						add = 5
+						has_trait = cynical
+					}
+					modifier = {
+						add = 5
+						num_sinful_traits >= 2
+					}
+					modifier = {
+						add = 5
+						num_sinful_traits >= 1
+					}
+					#add_character_flag = { flag = RICE_guanche_rain_ritual_result_nothing days = 5 }
+				}
+			}
+		}
+		trigger_event = {
+			id = guanche.0012
+			days = 3
+		}
+	}
+}
+
+
+# Conclude rain ritual
+guanche.0012 = {
+	type = character_event
+	title = guanche.0012.t
+	desc = guanche.0012.desc
+	theme = RICE_theme_guanche_shrine
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				has_character_flag = RICE_guanche_rain_ritual_result_amazing
+			}
+			add_piety = 100
+			capital_county = {
+				add_county_modifier = {
+					modifier = RICE_guanche_rain_blessing_amazing
+					years = 5
+				}			
+			}
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_guanche_rain_ritual_result_great
+			}
+			add_piety = 75
+			capital_county = {
+				add_county_modifier = {
+					modifier = RICE_guanche_rain_blessing_great
+					years = 5
+				}			
+			}
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_guanche_rain_ritual_result_good
+			}
+			add_piety = 50
+			capital_county = {
+				add_county_modifier = {
+					modifier = RICE_guanche_rain_blessing_good
+					years = 5
+				}			
+			}
+		}
+		else = {
+			add_piety = 25
+			custom_tooltip = RICE_guanche_rain_blessing_nothing_tooltip
+		}
+	}
+	
+	option = { # Results
+		name = guanche.0012.a
+	}
+	
+	after = {
+		trigger_event = {
+			id = guanche.0013
+			days = 1
+		}
+	
+	}
+}
+
+
+
+guanche.0013 = {
+	hidden = yes	
+	immediate = {	
+		if = {
+			limit = {
+				has_character_flag = RICE_guanche_rain_ritual_result_amazing
+			}
+			remove_character_flag = RICE_guanche_rain_ritual_result_amazing
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_guanche_rain_ritual_result_great
+			}
+			remove_character_flag = RICE_guanche_rain_ritual_result_great
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_guanche_rain_ritual_result_good
+			}
+			remove_character_flag = RICE_guanche_rain_ritual_result_good
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_guanche_rain_ritual_normal
+			}
+			remove_character_flag = RICE_guanche_rain_ritual_normal
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_guanche_rain_ritual_large
+			}
+			remove_character_flag = RICE_guanche_rain_ritual_large
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_guanche_rain_ritual_huge
+			}
+			remove_character_flag = RICE_guanche_rain_ritual_huge
+		}
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
+
+
+
+
+
+######################################################################################
+# 
+# BENESMEN FESTIVAL
+# 
+# guanche.0030-guanche.0049 reserved
+# 
+######################################################################################
+
+
+# Prepare for Benesmen
+guanche.0030 = {
+	type = character_event
+	title = guanche.0030.t
+	desc = guanche.0030.desc
+	theme = friendly
+	
+	right_portrait = root
+	
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+	}
+	
+	option = { # Ok
+		name = guanche.0030.a
+		# Choose appropriate location
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_guanche_benesmen_festival
+			}	
+		}
+	}
+}
+
+
+# Benesmen begins
+guanche.0031 = {
+	type = character_event
+	title = guanche.0031.t
+	desc = guanche.0031.desc
+	theme = RICE_theme_guanche_shrine
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_banquet
+	}
+	
+	option = { # Ok
+		name = guanche.0031.a
+		hidden_effect = {
+			random = {
+				chance = 20
+				trigger_event = {
+					id = guanche.0034
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = guanche.0035
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = guanche.0036
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = guanche.0037
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = guanche.0038
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = guanche.0039
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = guanche.0040
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = guanche.0041
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = guanche.0042
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = guanche.0043
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = guanche.0044
+					days = { 5 23 }
+				}
+			}
+		}
+		trigger_event = {
+			id = guanche.0032
+			days = { 25 30 }
+		}
+	}
+}
+
+# Benesmen ends
+guanche.0032 = {
+	type = character_event
+	title = guanche.0032.t
+	desc = guanche.0032.desc
+	theme = RICE_theme_guanche_shrine
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Fun!
+		name = guanche.0032.a
+		add_character_modifier = {
+			modifier = RICE_guanche_recently_celebrated_benesmen
+			years = 3
+		}
+	}
+	
+	after = {
+		trigger_event = {
+			id = guanche.0033
+			days = 1
+		}
+	}	
+}
+
+# Misc cleanup
+guanche.0033 = {
+	hidden = yes	
+	immediate = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
+
+# Assigning Tasks
+guanche.0034 = {
+	type = character_event
+	title = guanche.0034.t
+	desc = guanche.0034.desc
+	theme = RICE_theme_guanche_shrine
+	override_icon = { reference = "gfx/interface/icons/event_types/type_domain.dds" }
+	
+	right_portrait = root
+	
+	option = { # Fun!
+		name = guanche.0034.a
+		add_prestige = 25
+	}
+}
+
+# Prayer to the fertility deity
+guanche.0035 = {
+	type = character_event
+	title = guanche.0035.t
+	desc = guanche.0035.desc
+	theme = RICE_theme_guanche_shrine
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Fun!
+		name = guanche.0035.a
+		add_piety = 15
+		hidden_effect = {
+			random = {
+				chance = 33
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = guanche.0035.toast
+					add_character_modifier = {
+						modifier = RICE_guanche_fertility_prayer
+						years = 3
+					}		
+				}
+			}		
+		}
+	}
+}
+
+# Watching the mountains and hills with awe
+guanche.0036 = {
+	type = character_event
+	title = guanche.0036.t
+	desc = guanche.0036.desc
+	theme = RICE_theme_guanche_coast #RICE_theme_guanche_madeira
+	
+	left_portrait = {
+		character = root
+		animation = admiration
+	}
+	
+	option = { # Fun!
+		name = guanche.0035.a
+		add_piety = 15
+		stress_impact = {
+			content = miniscule_stress_impact_loss
+			zealous = miniscule_stress_impact_loss
+		}
+	}
+}
+
+# Offering skulls of goats and sheep
+guanche.0037 = {
+	type = character_event
+	title = guanche.0037.t
+	desc = guanche.0037.desc
+	theme = RICE_theme_guanche_shrine
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = guanche.0037.a
+		add_piety = 25
+	}
+}
+
+# Lithophones
+guanche.0038 = {
+	type = character_event
+	title = guanche.0038.t
+	desc = guanche.0038.desc
+	theme = RICE_theme_guanche_shrine
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = guanche.0038.a
+		stress_impact = {
+			base = minor_stress_impact_loss
+			zealous = miniscule_stress_impact_loss
+			humble = miniscule_stress_impact_loss
+			content = miniscule_stress_impact_loss
+			lazy = miniscule_stress_impact_loss
+		}
+	}
+}
+
+# Food
+guanche.0039 = {
+	type = character_event
+	title = guanche.0039.t
+	desc = guanche.0039.desc
+	theme = RICE_theme_guanche_shrine
+	override_icon = { reference = "gfx/interface/icons/event_types/type_domain.dds" }
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Ok
+		name = guanche.0039.a
+		stress_impact = {
+			base = minor_stress_impact_loss
+			gluttonous = minor_stress_impact_loss
+			gregarious = miniscule_stress_impact_loss
+			content = miniscule_stress_impact_loss
+			lazy = miniscule_stress_impact_loss
+		}
+	}
+}
+
+# Juniper
+guanche.0040 = {
+	type = character_event
+	title = guanche.0040.t
+	desc = guanche.0040.desc
+	theme = RICE_theme_guanche_shrine
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = guanche.0040.a
+		add_piety = 15
+	}
+}
+
+# Dancing fun!
+guanche.0041 = {
+	type = character_event
+	title = guanche.0041.t
+	desc = guanche.0041.desc
+	theme = RICE_theme_guanche_madeira
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Ok
+		name = guanche.0041.a
+		stress_impact = {
+			base = minor_stress_impact_loss
+			gregarious = minor_stress_impact_loss
+			content = miniscule_stress_impact_loss
+			lustful = miniscule_stress_impact_loss
+		}
+	}
+}
+
+# What songs to sing?
+guanche.0042 = {
+	type = character_event
+	title = guanche.0042.t
+	desc = guanche.0042.desc
+	theme = RICE_theme_guanche_madeira
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = { # Somber
+		name = guanche.0042.a
+		add_piety = 20
+	}	
+	option = { # Heroic
+		name = guanche.0042.b
+		add_prestige = 20
+	}
+}
+
+# Spectacle of sport
+guanche.0043 = {
+	type = character_event
+	title = guanche.0043.t
+	desc = guanche.0043.desc
+	theme = RICE_theme_guanche_coast
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = { # Somber
+		name = guanche.0043.a
+		add_prestige = 20
+	}
+}
+
+# Resolving disputes
+guanche.0044 = {
+	type = character_event
+	title = guanche.0044.t
+	desc = guanche.0044.desc
+	theme = RICE_theme_guanche_shrine
+	
+	right_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	option = { # Somber
+		name = guanche.0044.a
+		add_prestige = 30
+	}
+}
+
+
+
+
+######################################################################################
+# 
+# MADEIRA SUGARCANE INDUSTRY
+# 
+# guanche.0050-guanche.0059 reserved
+# 
+######################################################################################
+
+
+
+# Sugarcane comes to Madeira
+guanche.0050 = {
+	type = character_event
+	title = guanche.0050.t
+	desc = guanche.0050.desc
+	theme = RICE_theme_guanche_madeira
+	
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	
+	immediate = {
+		title:c_madeira = { #For loc.
+			save_scope_as = madeira_county
+		}
+		save_scope_as = madeira_ruler
+	}
+	
+	option = { # ok
+		name = guanche.0050.a
+		introduce_sugarcane_to_madeira_effect = yes
+		every_player = {
+			limit = {
+				is_ai = no
+				OR = {
+					is_within_diplo_range = { CHARACTER = scope:madeira_ruler }
+					capital_province = {
+						OR = {
+							geographical_region = world_europe_west_iberia
+							geographical_region = world_europe_south_italy
+							geographical_region = world_africa_north
+						}
+					}				
+				}
+			}
+			trigger_event = guanche.0051
+		}
+	}
+}
+
+
+# Sugarcane comes to Madeira - announcement
+guanche.0051 = {
+	type = character_event
+	title = guanche.0051.t
+	desc = guanche.0051.desc
+	theme = RICE_theme_guanche_madeira
+	
+	left_portrait = {
+		character = scope:madeira_ruler
+		animation = personality_bold
+	}
+	
+	immediate = {
+		show_as_tooltip = {
+			scope:madeira_ruler = {
+				introduce_sugarcane_to_madeira_effect = yes
+			}
+		}
+	}
+	
+	option = { # ok
+		name = guanche.0051.a
+	}
+}
+
+
+
+# Sugarcane industry on Madeira crashes due to deforestation
+guanche.0052 = {
+	type = character_event
+	title = guanche.0052.t
+	desc = guanche.0052.desc
+	theme = RICE_theme_guanche_madeira
+	
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	
+	trigger = {
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_guanche_introduce_sugarcane_to_madeira_flag
+		}
+		has_global_variable = RICE_guanche_sugar_industry_spread_to_canaries
+		NOT = {
+			title:c_madeira = {
+				has_county_modifier = RICE_guanche_madeira_sugarcane_beginning
+			}		
+		}
+		NOT = { has_global_variable = RICE_guanche_sugar_industry_crashed }
+		has_title = title:c_madeira
+	}
+	
+	immediate = {
+		play_music_cue = mx_cue_secret
+		title:c_madeira = { #For loc.
+			save_scope_as = madeira_county
+		}
+		save_scope_as = madeira_ruler
+		set_global_variable = {
+			name = RICE_guanche_sugar_industry_crashed
+			value = yes
+		}
+	}
+	
+	option = { # ok
+		name = guanche.0052.a
+		madeira_sugarcane_crash_effect = yes
+		every_player = {
+			limit = {
+				is_ai = no
+				is_within_diplo_range = { CHARACTER = scope:madeira_ruler }
+			}
+			trigger_event = guanche.0053
+		}
+	}
+}
+
+
+# Sugarcane industry on Madeira crashes due to deforestation - announcement
+guanche.0053 = {
+	type = character_event
+	title = guanche.0053.t
+	desc = guanche.0053.desc
+	theme = RICE_theme_guanche_madeira
+	
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	
+	immediate = {
+		show_as_tooltip = {
+			scope:madeira_ruler = {
+				madeira_sugarcane_crash_effect = yes
+			}
+		}
+	}
+	
+	option = { # ok
+		name = guanche.0053.a
+	}
+}
+
+
+# Sugarcane comes to the Canary Islands
+guanche.0054 = {
+	hidden = yes
+	
+	trigger = {
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_guanche_introduce_sugarcane_to_madeira_flag
+		}
+		NOT = { has_global_variable = RICE_guanche_sugar_industry_spread_to_canaries }
+		has_title = title:c_canarias
+	}
+	
+	immediate = {
+		set_global_variable = {
+			name = RICE_guanche_sugar_industry_spread_to_canaries
+			value = yes
+		}
+		title:c_madeira = {
+			save_scope_as = madeira_county
+		}
+		title:c_canarias = {
+			save_scope_as = canarias_county
+			add_county_modifier = {
+				modifier = RICE_guanche_canary_islands_sugar_industry_booming
+				years = 25
+			}
+		}
+		title:c_canarias.holder = {
+			save_scope_as = canarias_ruler
+		}
+		title:c_fuerteventura = {
+			save_scope_as = fuerteventura_county
+			add_county_modifier = {
+				modifier = RICE_guanche_canary_islands_sugar_industry_booming
+				years = 25
+			}
+		}
+		title:c_fuerteventura.holder = {
+			save_scope_as = fuerteventura_ruler
+		}
+		every_player = {
+			limit = {
+				is_ai = no
+				is_within_diplo_range = { CHARACTER = scope:canarias_ruler }
+			}
+			trigger_event = guanche.0055
+		}
+	}
+}
+
+
+# Sugarcane comes to the Canary Islands - announcement
+guanche.0055 = {
+	type = character_event
+	title = guanche.0055.t
+	desc = guanche.0055.desc
+	theme = RICE_theme_guanche_coast
+	
+	#left_portrait = {
+	#	character = root
+	#	animation = worry
+	#}
+	
+	immediate = {
+		show_as_tooltip = {
+			title:c_canarias = {
+				add_county_modifier = {
+					modifier = RICE_guanche_canary_islands_sugar_industry_booming
+					years = 25
+				}
+			}
+			title:c_fuerteventura = {
+				add_county_modifier = {
+					modifier = RICE_guanche_canary_islands_sugar_industry_booming
+					years = 25
+				}
+			}
+		}
+	}
+	
+	option = { # ok
+		name = guanche.0055.a
+	}
+}
+
+
+
+######################################################################################
+# 
+# FLAVOR EVENTS
+# 
+# guanche.0060-guanche.0099 reserved
+# 
+######################################################################################
+
+# Rumors of tibicena nearby
+guanche.0060 = {
+	type = character_event
+	title = guanche.0060.t
+	desc = guanche.0060.desc
+	theme = secret
+	override_background = { event_background = RICE_background_guanche_coast }
+	
+	right_portrait = {
+		character = root
+		animation = worry
+	}
+	
+	trigger = {
+		OR = {
+			culture = culture:guanche
+			has_faith = faith:guanche_pagan
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = paranoid
+		}
+		modifier = {
+			add = -0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = sadistic
+		}
+		modifier = {
+			add = -0.2
+			has_trait = compassionate
+		}
+	}
+
+	option = { # Pray
+		name = guanche.0060.a
+		add_piety = 25
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+	option = { # No
+		name = guanche.0060.b
+		add_prestige = 25
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+	}
+}
+
+
+# Meeting other important people at a tagoror
+guanche.0061 = {
+	type = character_event
+	title = guanche.0061.t
+	desc = guanche.0061.desc
+	theme = RICE_theme_guanche_shrine
+	override_icon = { reference = "gfx/interface/icons/event_types/type_domain.dds" }
+	
+	right_portrait = root
+	
+	trigger = {
+		culture = culture:guanche
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	option = { # Daydream
+		name = guanche.0061.a
+		stress_impact = {
+			base = minor_stress_impact_loss
+			lazy = minor_stress_impact_loss
+			content = miniscule_stress_impact_loss
+		}
+	}
+	option = { # Resolve disputes
+		name = guanche.0061.b
+		add_prestige = 50
+		stress_impact = {
+			lazy = minor_stress_impact_gain
+			craven = miniscule_stress_impact_loss
+		}
+	}
+	option = { # Listen to suggestions
+		name = guanche.0061.c
+		if = {
+			limit = { has_lifestyle = diplomacy_lifestyle }
+			add_diplomacy_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = martial_lifestyle }
+			add_martial_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = stewardship_lifestyle }
+			add_stewardship_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = intrigue_lifestyle }
+			add_intrigue_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = learning_lifestyle }
+			add_learning_lifestyle_xp = minor_lifestyle_xp
+		}
+		stress_impact = {
+			lazy = minor_stress_impact_gain
+			impatient = minor_stress_impact_gain
+			arrogant = minor_stress_impact_gain
+		}
+	}
+}
+
+
+
+# Got new whistlers (el silbo - once widespread in the Canaries but now limited to La Gomera)
+guanche.0062 = {
+	type = character_event
+	title = guanche.0062.t
+	desc = guanche.0062.desc
+	theme = RICE_theme_guanche_coast
+	
+	right_portrait = root
+	
+	trigger = {
+		culture = culture:guanche
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	option = { # Daydream
+		name = guanche.0062.a
+		add_character_modifier = {
+			modifier = RICE_guanche_new_whistlers
+			years = 8
+		}
+	}
+}
+
+
+# Observing a Shepherd's Leap competition
+guanche.0063 = {
+	type = character_event
+	title = guanche.0063.t
+	desc = guanche.0063.desc
+	theme = martial
+	override_background = { event_background = RICE_background_guanche_coast }	
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		culture = culture:guanche
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+	}
+
+	option = { # Nice
+		name = guanche.0063.a
+		add_prestige = 20
+		#stress_impact = {
+		#	base = minor_stress_impact_loss
+		#}
+	}
+	option = { # Offer a prize
+		name = guanche.0063.b
+		trigger = {
+			OR = {
+				gold >= 25
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 25
+		add_prestige = 100
+	}
+	option = { # Participate
+		name = guanche.0063.c
+		trigger = {
+			prowess >= medium_skill_rating
+			is_healthy = yes
+		}
+		skill = prowess
+		add_prestige = 50
+	}
+}
+
+
+
+# Guanche necklace
+guanche.0064 = {
+	type = character_event
+	title = guanche.0064.t
+	desc = guanche.0064.desc
+	theme = friendly
+	override_background = { event_background = RICE_background_guanche_madeira }	
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	trigger = {
+		culture = culture:guanche
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = sadistic
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+	}
+
+	option = { # Nice
+		name = guanche.0064.a
+		add_prestige = 20
+	}
+}
+
+
+# Guanche fire offerings - good
+guanche.0065 = {
+	type = character_event
+	title = guanche.0065.t
+	desc = guanche.0065.desc
+	theme = RICE_theme_guanche_shrine
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		has_faith = faith:guanche_pagan
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = sadistic
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			num_virtuous_traits >= 1
+		}
+		modifier = {
+			add = -0.2
+			num_sinful_traits >= 1
+		}
+	}
+
+	option = { # Nice
+		name = guanche.0065.a
+		add_piety = 50
+	}
+}
+
+
+
+# Guanche fire offerings - bad
+guanche.0066 = {
+	type = character_event
+	title = guanche.0066.t
+	desc = guanche.0066.desc
+	theme = RICE_theme_guanche_shrine
+	
+	left_portrait = {
+		character = root
+		animation = sadness
+	}
+	
+	trigger = {
+		has_faith = faith:guanche_pagan
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = sadistic
+		}
+		modifier = {
+			add = -0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = -0.2
+			has_trait = just
+		}
+		modifier = {
+			add = 0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = -0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = 0.2
+			num_sinful_traits >= 1
+		}
+		modifier = {
+			add = -0.2
+			num_virtuous_traits >= 1
+		}
+	}
+
+	option = { # Nice
+		name = guanche.0066.a
+		add_piety = -50
+	}
+}
+
+
+
+
+# Pass by a Guanche lithophone
+guanche.0067 = {
+	type = character_event
+	title = guanche.0067.t
+	desc = guanche.0067.desc
+	theme = RICE_theme_guanche_madeira
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	left_portrait = root
+	
+	trigger = {
+		has_faith = faith:guanche_pagan
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = -0.2
+			has_trait = paranoid
+		}
+	}
+
+	option = { # Nice
+		name = guanche.0067.a
+		add_piety = 25
+	}
+	option = { # Nice
+		name = guanche.0067.b
+		add_prestige = 25
+	}
+}
+
+
+# What to do about Guanche mummies found nearby?
+guanche.0068 = {
+	type = character_event
+	title = guanche.0068.t
+	desc = guanche.0068.desc
+	theme = RICE_theme_guanche_coast
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	left_portrait = root
+	
+	trigger = {
+		has_faith = faith:guanche_pagan
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+	}
+
+	option = { # Nice
+		name = guanche.0068.a
+		add_piety = 50
+	}
+	option = { # Nice
+		name = guanche.0068.b
+		add_prestige = 50
+	}
+}
+
+

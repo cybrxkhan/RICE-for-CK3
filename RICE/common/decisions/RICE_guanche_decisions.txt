@@ -1,0 +1,289 @@
+﻿
+RICE_guanche_unite_canary_islands = {
+	picture = "gfx/interface/illustrations/decisions/decision_hammerfell.dds"
+	major = yes
+	desc = RICE_guanche_unite_canary_islands_desc
+
+	ai_check_interval = 120
+
+	is_shown = {
+		is_landed = yes
+		OR = {
+			has_title = title:c_canarias
+			has_title = title:c_fuerteventura
+			has_title = title:c_madeira		
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_guanche_unite_canary_islands_flag
+			}
+		}
+		#OR = {
+		#	has_faith = faith:guanche_religion
+		#	culture = culture:guanche
+		#}
+	}
+
+	is_valid = {
+		OR = {
+			has_faith = faith:guanche_pagan
+			culture = culture:guanche
+		}
+		highest_held_title_tier = tier_duchy
+		#highest_held_title_tier < tier_kingdom
+		prestige_level >= 3
+		piety_level >= 3
+		dynasty = { dynasty_prestige_level >= 3 }
+		completely_controls = title:d_canarias
+		NOT = { has_government = tribal_government }
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_available = yes
+		is_independent_ruler = yes
+	}
+
+	cost = {
+		gold = {
+			value = 500
+		}
+		prestige = {
+			value = 1000
+		}
+	}
+
+	effect = {	
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_guanche_unite_canary_islands_flag
+		}
+
+		save_scope_as = guanche_uniter
+
+		#show_as_tooltip = {
+		#	unite_canary_islands_effect = yes
+		#}
+		unite_canary_islands_effect = yes
+		custom_tooltip = RICE_guanche_unite_canary_islands_effect_tooltip
+		trigger_event = guanche.0005
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_guanche_unite_canary_islands_context_tooltip
+		}
+
+		add_to_list = notification_sent
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+RICE_guanche_introduce_sugarcane_to_madeira = {
+	picture = "gfx/interface/illustrations/decisions/decision_hammerfell.dds"
+	major = yes
+	desc = RICE_guanche_introduce_sugarcane_to_madeira_desc
+
+	ai_check_interval = 120
+
+	is_shown = {
+		is_landed = yes
+		has_title = title:c_madeira
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_guanche_introduce_sugarcane_to_madeira_flag
+			}
+		}
+		#OR = {
+		#	has_faith = faith:guanche_religion
+		#	culture = culture:guanche
+		#}
+	}
+
+	is_valid = {
+		highest_held_title_tier > tier_county
+		prestige_level >= 3		
+		culture = {
+			OR = {
+				has_innovation = innovation_development_03
+				has_cultural_era_or_later = culture_era_late_medieval
+			}
+		}
+		NOT = { has_government = tribal_government }
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_available = yes
+		is_independent_ruler = yes
+	}
+
+	cost = { 
+		gold = { value = major_gold_value }
+	}	
+
+	ai_potential = {
+		short_term_gold > major_gold_value
+	}
+
+	effect = {	
+		hidden_effect = {
+			title:c_madeira = { save_scope_as = madeira_county }
+			title:c_canarias = { save_scope_as = canarias_county }
+			title:c_fuerteventura = { save_scope_as = fuerteventura_county }
+		}
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_guanche_introduce_sugarcane_to_madeira_flag
+		}
+
+		save_scope_as = guanche_uniter
+
+		#show_as_tooltip = {
+		#	introduce_sugarcane_to_madeira_effect = yes
+		#}
+		introduce_sugarcane_to_madeira_effect = yes
+		custom_tooltip = RICE_guanche_introduce_sugarcane_to_madeira_effect_tooltip_1
+		custom_tooltip = RICE_guanche_introduce_sugarcane_to_madeira_effect_tooltip_2
+		custom_tooltip = RICE_guanche_introduce_sugarcane_to_madeira_effect_tooltip_3
+		trigger_event = guanche.0050
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_guanche_introduce_sugarcane_to_madeira_context_tooltip
+		}
+
+		add_to_list = notification_sent
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+
+
+
+RICE_guanche_celebrate_benesmen_festival = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_pagan_shrine.dds"
+
+	ai_check_interval = 24
+
+	cooldown = { days = 3650 } #3650 1825
+	
+	desc = RICE_guanche_celebrate_benesmen_festival_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_faith = faith:guanche_pagan
+	}
+	
+	is_valid = {
+		has_faith = faith:guanche_pagan
+		custom_description = {
+			text = RICE_decision_tuyuhun_nadun_month_requirement
+			current_month >= 7
+			current_month <= 10
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = RICE_guanche_celebrate_benesmen_festival_effect_tooltip
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_guanche_celebrate_benesmen_festival_context_tooltip
+		}
+		trigger_event = {
+			id = guanche.0030
+		}
+	}
+
+	cost = { 
+		gold = { value = standard_activity_cost } # Will depend
+	}	
+
+	ai_potential = {
+		short_term_gold > standard_activity_cost
+	}
+
+	ai_will_do = {
+		base = 40
+	}
+}
+
+RICE_guanche_pray_for_good_rain = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_thunderstorm.dds"
+	ai_check_interval = 120
+	
+	cooldown = { days = 3650 } #1825
+
+	desc = RICE_guanche_pray_for_good_rain_desc
+	selection_tooltip = RICE_guanche_pray_for_good_rain_tooltip
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_faith = faith:guanche_pagan
+	}
+	
+	is_valid = {
+		has_faith = faith:guanche_pagan
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = RICE_guanche_pray_for_good_rain_effect_tooltip_1
+		custom_tooltip = RICE_guanche_pray_for_good_rain_effect_tooltip_2
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_guanche_pray_for_good_rain_context_tooltip
+		}
+		trigger_event = guanche.0010
+	}
+
+	cost = {
+		gold = minor_gold_value # Will depend
+	}
+	
+	ai_potential = {
+		short_term_gold > minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 20
+		modifier = {
+			add = -8
+			has_trait = lazy
+		}
+		modifier = {
+			add = -8
+			has_trait = cynical
+		}
+		modifier = {
+			add = 8
+			has_trait = arbitrary
+		}
+	}
+}
+
+

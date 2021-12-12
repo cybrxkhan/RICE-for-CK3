@@ -1,0 +1,188 @@
+﻿RICE_setup_guanche_flavor_pack_effect = { #RICE_guanche_madeira_levadas
+
+	# Culture and Religion map
+	culture:butr = { save_scope_as = butr }	
+	culture:guanche = {
+		get_all_innovations_from = scope:butr
+	}	
+	title:c_canarias = {
+		set_county_culture = culture:guanche
+		set_county_faith = faith:guanche_pagan
+	}	
+	title:c_fuerteventura = {
+		set_county_culture = culture:guanche
+		set_county_faith = faith:guanche_pagan
+	}	
+	title:c_madeira = {
+		set_county_culture = culture:guanche
+		set_county_faith = faith:guanche_pagan
+	}
+	
+	# Set up rulers and geography
+	title:c_canarias.holder = {
+		if = {
+			limit = {
+				has_culture_group = culture_group:berber_group
+			}
+			make_guanche_culture_effect = yes
+			trigger_event = guanche.0002
+		}
+		trigger_event = guanche.0001
+	}	
+	
+	# Levadas
+	title:b_madeira.title_province = {
+		add_special_building_slot = RICE_guanche_madeira_levadas
+	}	
+	title:c_madeira = {
+		add_county_modifier = {
+			modifier = RICE_guanche_madeira_timber
+		}
+	}
+	
+}
+
+unite_canary_islands_effect = {
+	#Create the title and make it primary
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:k_canary_islands = {
+		change_title_holder = {
+			holder = root
+			change = scope:title_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:title_change
+	set_primary_title_to = title:k_canary_islands	
+	set_realm_capital = title:c_canarias
+}
+
+canary_islands_de_jure_effect = {
+	title:k_canary_islands = {
+		set_de_jure_liege_title = title:e_maghreb
+	}
+
+	title:d_canarias = {
+		set_de_jure_liege_title = title:k_canary_islands
+	}
+	
+	# Split up de facto Canarias territories
+	create_character = {
+		location = root.location
+		gender = male
+		faith = root.faith
+		culture = culture:guanche
+		random_traits = yes
+		save_scope_as = fuerteventura_ruler
+	}
+	scope:fuerteventura_ruler = {	
+		get_title = title:c_fuerteventura
+		add_gold = 25
+	}
+	create_character = {
+		location = root.location
+		gender = male
+		faith = root.faith
+		culture = culture:guanche
+		random_traits = yes
+		save_scope_as = madeira_ruler
+	}
+	scope:madeira_ruler = {	
+		get_title = title:c_madeira
+		add_gold = 25
+	}
+	
+}
+
+make_guanche_culture_effect = {
+	#Convert your, and your whole family's, culture
+	set_culture = culture:guanche
+	set_character_faith_with_conversion = faith:guanche_pagan
+	if = {
+		limit = {
+			is_married = yes
+			any_spouse = { is_landed = no }
+		}
+		every_spouse = {
+			set_culture = culture:guanche
+			set_character_faith_with_conversion = faith:guanche_pagan
+		}
+	}
+	if = {
+		limit = {
+			any_close_family_member = {
+				is_landed = no
+			}
+		}
+		every_close_family_member = {
+			custom = all_family_members
+			limit = {
+				is_landed = no
+			}
+			set_culture = culture:guanche
+			set_character_faith_with_conversion = faith:guanche_pagan
+		}
+	}
+
+	#Convert appropriate vassals, and their family
+	if = {
+		limit = {
+			any_vassal = {
+				is_ai = yes
+				#culture = scope:canary_ruler.culture
+			}
+		}
+		every_vassal = {
+			limit = {
+				is_ai = yes
+				#culture = scope:canary_ruler.culture
+			}
+			set_culture = culture:guanche
+			hidden_effect = {
+				if = {
+					limit = { any_spouse = { is_landed = no } }
+					every_spouse = {
+						set_culture = culture:guanche
+					}
+				}
+				if = {
+					limit = {
+						any_close_family_member = {
+							is_landed = no
+						}
+					}
+					every_close_family_member = {
+						limit = {
+							is_landed = no
+						}
+						set_culture = culture:guanche
+					}
+				}
+			}
+		}
+	}
+}
+
+introduce_sugarcane_to_madeira_effect = {
+	add_prestige = 200
+	title:c_madeira = {
+		add_county_modifier = {
+			modifier = RICE_guanche_madeira_sugarcane_beginning
+			years = 50 #50
+		}
+	}
+}
+
+madeira_sugarcane_crash_effect = {
+	remove_character_modifier = RICE_guanche_madeira_owner_timber
+	title:c_madeira = {
+		remove_county_modifier = RICE_guanche_madeira_timber
+		add_county_modifier = {
+			modifier = RICE_guanche_madeira_sugarcane_crash
+			years = 20
+		}
+	}
+}
