@@ -4,8 +4,7 @@
 
 **Newest Flavor Packs - Sus: Door of the Sahara & Guanche: The Fortunate Isles**
 
-[**Discord**](https://discord.gg/9KuyXv2uZA)
-[**Official Website**](https://cybrxkhansmods.godaddysites.com)
+[**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com)
 
 _Though ‘Berber’ is commonly used to describe the indigenous inhabitants of the Maghreb, even in scholarly literature, the term ‘Amazigh’ is the appellation they often used to describe themselves. They speak a branch of the Afro-Asiatic languages and historically have spread across all of North Africa, from the Guanches of the Canary Islands to the native inhabitants of Siwa Oasis in Egypt._
 
