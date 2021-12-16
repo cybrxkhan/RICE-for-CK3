@@ -1,59 +1,76 @@
 ﻿RICE_sus_increase_sijilmasa_prosperity_effect = {
-	if = { # Failsafe in case no prosperity level
-		limit = {
+	custom_tooltip = RICE_sus_resolve_conflicts_in_sijilmasa_effect_tooltip
+	hidden_effect = {
+		if = { # Failsafe in case no prosperity level
+			limit = {
+				title:c_sijilmasa = {
+					NOR = {
+						has_county_modifier = RICE_sus_sijilmasa_prosperity_0
+						has_county_modifier = RICE_sus_sijilmasa_prosperity_1
+						has_county_modifier = RICE_sus_sijilmasa_prosperity_2
+						has_county_modifier = RICE_sus_sijilmasa_prosperity_3
+						has_county_modifier = RICE_sus_sijilmasa_prosperity_4
+					}
+				}
+			}
 			title:c_sijilmasa = {
-				NOR = {
-					has_county_modifier = RICE_sus_sijilmasa_prosperity_0
-					has_county_modifier = RICE_sus_sijilmasa_prosperity_1
-					has_county_modifier = RICE_sus_sijilmasa_prosperity_2
-					has_county_modifier = RICE_sus_sijilmasa_prosperity_3
+				add_county_modifier = {
+					modifier = RICE_sus_sijilmasa_prosperity_1
 				}
 			}
 		}
-		title:c_sijilmasa = {
-			add_county_modifier = {
-				modifier = RICE_sus_sijilmasa_prosperity_1
+		else_if = {
+			limit = {
+				title:c_sijilmasa = {
+					has_county_modifier = RICE_sus_sijilmasa_prosperity_0
+				}
 			}
-		}
-	}
-	else_if = {
-		limit = {
 			title:c_sijilmasa = {
-				has_county_modifier = RICE_sus_sijilmasa_prosperity_0
+				remove_county_modifier = RICE_sus_sijilmasa_prosperity_0
+				add_county_modifier = {
+					modifier = RICE_sus_sijilmasa_prosperity_1
+				}
 			}
 		}
-		title:c_sijilmasa = {
-			remove_county_modifier = RICE_sus_sijilmasa_prosperity_0
-			add_county_modifier = {
-				modifier = RICE_sus_sijilmasa_prosperity_1
+		else_if = {
+			limit = {
+				title:c_sijilmasa = {
+					has_county_modifier = RICE_sus_sijilmasa_prosperity_1
+				}
 			}
-		}
-	}
-	else_if = {
-		limit = {
 			title:c_sijilmasa = {
-				has_county_modifier = RICE_sus_sijilmasa_prosperity_1
+				remove_county_modifier = RICE_sus_sijilmasa_prosperity_1
+				add_county_modifier = {
+					modifier = RICE_sus_sijilmasa_prosperity_2
+				}
 			}
 		}
-		title:c_sijilmasa = {
-			remove_county_modifier = RICE_sus_sijilmasa_prosperity_1
-			add_county_modifier = {
-				modifier = RICE_sus_sijilmasa_prosperity_2
+		else_if = {
+			limit = {
+				title:c_sijilmasa = {
+					has_county_modifier = RICE_sus_sijilmasa_prosperity_2
+				}
 			}
-		}
-	}
-	else_if = {
-		limit = {
 			title:c_sijilmasa = {
-				has_county_modifier = RICE_sus_sijilmasa_prosperity_2
+				remove_county_modifier = RICE_sus_sijilmasa_prosperity_2
+				add_county_modifier = {
+					modifier = RICE_sus_sijilmasa_prosperity_3
+				}
 			}
 		}
-		title:c_sijilmasa = {
-			remove_county_modifier = RICE_sus_sijilmasa_prosperity_2
-			add_county_modifier = {
-				modifier = RICE_sus_sijilmasa_prosperity_3
+		else_if = {
+			limit = {
+				title:c_sijilmasa = {
+					has_county_modifier = RICE_sus_sijilmasa_prosperity_3
+				}
 			}
-		}
+			title:c_sijilmasa = {
+				remove_county_modifier = RICE_sus_sijilmasa_prosperity_3
+				add_county_modifier = {
+					modifier = RICE_sus_sijilmasa_prosperity_4
+				}
+			}
+		}	
 	}
 }
 
@@ -125,6 +142,12 @@ RICE_sus_clean_up_trans_saharan_merchant_effect = {
 		}
 		remove_character_flag = RICE_trans_saharan_networking_boost_huge
 	}
+	if = {
+		limit = {
+			has_character_flag = RICE_trans_saharan_guaranteed_spawn
+		}
+		remove_character_flag = RICE_trans_saharan_guaranteed_spawn
+	}
 }
 
 # Clean up Trans-Saharan modifiers and flags
@@ -166,6 +189,343 @@ RICE_sus_determine_merchant_skill_effect = {
 				20 = { add_gold = 200 }
 				10 = { add_gold = 250 }
 			}		
+		}
+	}
+}
+
+# Clean up Trans-Saharan modifiers and flags
+RICE_sus_walled_oasis_effect = {
+	RICE_sus_increase_sijilmasa_prosperity_effect = yes
+	add_prestige_level = 1
+	dynasty = { add_dynasty_prestige = 250 }
+	title:c_sijilmasa = {
+		add_county_modifier = {
+			modifier = RICE_sus_wall_tafilalt
+		}
+	}
+}
+
+# Either trigger the event, or increase the chances of the events happening
+RICE_sus_trade_networking_randomizer_effect = {
+	random_list = {
+		40 = {
+			modifier = {
+				add = 3
+				has_trait = lazy
+			}
+			modifier = {
+				add = 3
+				has_trait = shy
+			}
+			modifier = {
+				add = 2
+				stewardship <= mediocre_skill_rating
+			}
+			modifier = {
+				add = 3
+				stewardship <= low_skill_rating
+			}
+			modifier = {
+				add = 2
+				diplomacy <= mediocre_skill_rating
+			}
+			modifier = {
+				add = 3
+				diplomacy <= low_skill_rating
+			}
+			add_character_flag = RICE_trans_saharan_networking_boost_tiny
+		}
+		60 = {
+			add_character_flag = RICE_trans_saharan_networking_boost_small
+		}
+		30 = {
+			modifier = {
+				add = 2
+				stewardship >= medium_skill_rating
+			}
+			modifier = {
+				add = 2
+				stewardship >= high_skill_rating
+			}
+			modifier = {
+				add = 2
+				diplomacy >= medium_skill_rating
+			}
+			modifier = {
+				add = 2
+				diplomacy >= high_skill_rating
+			}
+			modifier = {
+				add = 3
+				has_trait = gregarious
+			}
+			modifier = {
+				add = 3
+				has_trait = diligent
+			}
+			modifier = {
+				add = 3
+				has_trait = ambitious
+			}
+			modifier = {
+				add = -4
+				has_trait = lazy
+			}
+			modifier = {
+				add = -4
+				has_trait = shy
+			}
+			add_character_flag = RICE_trans_saharan_networking_boost_medium
+		}
+		20 = {
+			modifier = {
+				add = 3
+				stewardship >= medium_skill_rating
+			}
+			modifier = {
+				add = 3
+				stewardship >= high_skill_rating
+			}
+			modifier = {
+				add = 3
+				diplomacy >= medium_skill_rating
+			}
+			modifier = {
+				add = 3
+				diplomacy >= high_skill_rating
+			}
+			modifier = {
+				add = 3
+				has_trait = gregarious
+			}
+			modifier = {
+				add = 3
+				has_trait = diligent
+			}
+			modifier = {
+				add = 3
+				has_trait = ambitious
+			}
+			modifier = {
+				add = -4
+				has_trait = lazy
+			}
+			modifier = {
+				add = -4
+				has_trait = shy
+			}
+			add_character_flag = RICE_trans_saharan_networking_boost_large
+		}
+		10 = {
+			modifier = {
+				add = 4
+				stewardship >= medium_skill_rating
+			}
+			modifier = {
+				add = 4
+				stewardship >= high_skill_rating
+			}
+			modifier = {
+				add = 4
+				diplomacy >= medium_skill_rating
+			}
+			modifier = {
+				add = 4
+				diplomacy >= high_skill_rating
+			}
+			modifier = {
+				add = 3
+				has_trait = gregarious
+			}
+			modifier = {
+				add = 3
+				has_trait = diligent
+			}
+			modifier = {
+				add = 3
+				has_trait = ambitious
+			}
+			modifier = {
+				add = -4
+				has_trait = lazy
+			}
+			modifier = {
+				add = -4
+				has_trait = shy
+			}
+			add_character_flag = RICE_trans_saharan_networking_boost_huge
+		}
+		10 = {
+			modifier = {
+				add = 3
+				stewardship >= medium_skill_rating
+			}
+			modifier = {
+				add = 3
+				stewardship >= high_skill_rating
+			}
+			modifier = {
+				add = 3
+				diplomacy >= medium_skill_rating
+			}
+			modifier = {
+				add = 3
+				diplomacy >= high_skill_rating
+			}
+			modifier = {
+				add = 3
+				has_trait = gregarious
+			}
+			modifier = {
+				add = 3
+				has_trait = diligent
+			}
+			modifier = {
+				add = 3
+				has_trait = ambitious
+			}
+			modifier = {
+				add = -4
+				has_trait = lazy
+			}
+			modifier = {
+				add = -4
+				has_trait = shy
+			}
+			add_character_flag = RICE_trans_saharan_guaranteed_spawn
+			trigger_event = {
+				id = sus.0030
+				days = { 180 1095 }
+			}
+		}
+		10 = {
+			modifier = {
+				add = 3
+				stewardship >= medium_skill_rating
+			}
+			modifier = {
+				add = 3
+				stewardship >= high_skill_rating
+			}
+			modifier = {
+				add = 3
+				diplomacy >= medium_skill_rating
+			}
+			modifier = {
+				add = 3
+				diplomacy >= high_skill_rating
+			}
+			modifier = {
+				add = 3
+				has_trait = gregarious
+			}
+			modifier = {
+				add = 3
+				has_trait = diligent
+			}
+			modifier = {
+				add = 3
+				has_trait = ambitious
+			}
+			modifier = {
+				add = -4
+				has_trait = lazy
+			}
+			modifier = {
+				add = -4
+				has_trait = shy
+			}
+			add_character_flag = RICE_trans_saharan_guaranteed_spawn
+			trigger_event = {
+				id = sus.0031
+				days = { 180 1095 }
+			}
+		}
+		10 = {
+			modifier = {
+				add = 3
+				stewardship >= medium_skill_rating
+			}
+			modifier = {
+				add = 3
+				stewardship >= high_skill_rating
+			}
+			modifier = {
+				add = 3
+				diplomacy >= medium_skill_rating
+			}
+			modifier = {
+				add = 3
+				diplomacy >= high_skill_rating
+			}
+			modifier = {
+				add = 3
+				has_trait = gregarious
+			}
+			modifier = {
+				add = 3
+				has_trait = diligent
+			}
+			modifier = {
+				add = 3
+				has_trait = ambitious
+			}
+			modifier = {
+				add = -4
+				has_trait = lazy
+			}
+			modifier = {
+				add = -4
+				has_trait = shy
+			}
+			add_character_flag = RICE_trans_saharan_guaranteed_spawn
+			trigger_event = {
+				id = sus.0032
+				days = { 180 1095 }
+			}
+		}
+		10 = {
+			modifier = {
+				add = 3
+				stewardship >= medium_skill_rating
+			}
+			modifier = {
+				add = 3
+				stewardship >= high_skill_rating
+			}
+			modifier = {
+				add = 3
+				diplomacy >= medium_skill_rating
+			}
+			modifier = {
+				add = 3
+				diplomacy >= high_skill_rating
+			}
+			modifier = {
+				add = 3
+				has_trait = gregarious
+			}
+			modifier = {
+				add = 3
+				has_trait = diligent
+			}
+			modifier = {
+				add = 3
+				has_trait = ambitious
+			}
+			modifier = {
+				add = -4
+				has_trait = lazy
+			}
+			modifier = {
+				add = -4
+				has_trait = shy
+			}
+			add_character_flag = RICE_trans_saharan_guaranteed_spawn
+			trigger_event = {
+				id = sus.0033
+				days = { 180 1095 }
+			}
 		}
 	}
 }

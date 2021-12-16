@@ -46,6 +46,7 @@ RICEintro.0001 = {
 		culture:somali = { save_scope_as = somali }
 		culture:komi = { save_scope_as = komi }
 		culture:afghan = { save_scope_as = afghan }
+		culture:sephardi = { save_scope_as = sephardi }
 		culture:evenk = {
 			get_all_innovations_from = scope:komi
 			add_innovation = innovation_RICE_taiga_survival
@@ -68,6 +69,7 @@ RICEintro.0001 = {
 		}		
 		culture:south_arabian = {
 			get_all_innovations_from = scope:yemeni
+			#add_innovation = innovation_RICE_qanats
 		}		
 		culture:swahili = {
 			get_all_innovations_from = scope:somali
@@ -90,8 +92,21 @@ RICEintro.0001 = {
 		culture:burusho = {
 			get_all_innovations_from = scope:afghan
 		}	
-		#culture:pamiri = {
-		#	get_all_innovations_from = scope:afghan
+		culture:mizrahi = {
+			get_all_innovations_from = scope:sephardi
+		}
+		
+		#culture:persian = {
+		#	add_innovation = innovation_RICE_qanats		
+		#}
+		#culture:sogdian = {
+		#	add_innovation = innovation_RICE_qanats		
+		#}
+		#culture:afghan = {
+		#	add_innovation = innovation_RICE_qanats		
+		#}
+		#culture:tajik = {
+		#	add_innovation = innovation_RICE_qanats		
 		#}
 
 		
@@ -431,7 +446,14 @@ RICEintro.0001 = {
 		#
 		# MODIFIERS
 		#
-		############################################################		
+		############################################################
+		
+		# Church of Saint Nickholas / Santa Claus
+		title:c_lycia = {
+			add_county_modifier = {
+				modifier = RICE_misc_myra_santa_claus
+			}
+		}		
 	
 		#BRITTANY
 		title:c_nantes = { # Make a building later or not? It's not a major industry and wasn't made into a state monopoly until the 1300s/1400s
@@ -698,18 +720,11 @@ RICEintro.0001 = {
 					get_title = title:c_tun
 				}
 			}
-			character:188710 = { # Zunbils are pagan and independent until 870 CE
+			character:188712 = { # Zunbils are pagan and independent until 870 CE, ID# 188710 is the cousin
 				get_title = title:c_zamindawar
 				get_title = title:c_rukhaj
 				get_title = title:c_zabulistan
 				get_title = title:d_zabulistan
-				set_character_faith_with_conversion = faith:zun_pagan
-				every_vassal = {
-					set_character_faith_with_conversion = faith:zun_pagan
-				}
-				every_courtier = {
-					set_character_faith_with_conversion = faith:zun_pagan
-				}
 				create_title_and_vassal_change = {
 					type = independency
 					save_scope_as = indpendence_change
@@ -719,6 +734,17 @@ RICEintro.0001 = {
 					change = scope:indpendence_change
 				}
 				resolve_title_and_vassal_change = scope:indpendence_change
+				hidden_effect = {
+					change_government = feudal_government
+					convert_whole_realm_to_feudalism_effect = yes
+				}
+				set_character_faith_with_conversion = faith:zun_pagan
+				every_vassal = {
+					set_character_faith_with_conversion = faith:zun_pagan
+				}
+				every_courtier = {
+					set_character_faith_with_conversion = faith:zun_pagan
+				}
 			}
 			character:RICE_pamir_022 = { # Give titles and bonuses to Azur Jamshid
 				save_scope_as = jataylotu_minister
@@ -835,6 +861,13 @@ RICEintro.0001 = {
 					remove_doctrine = doctrine_gender_equal
 					add_doctrine = doctrine_gender_male_dominated
 				}
+			}
+		}
+		faith:sufri = {
+			if = {
+				limit = { has_doctrine = doctrine_gender_equal }
+				remove_doctrine = doctrine_gender_equal
+				add_doctrine = doctrine_gender_male_dominated
 			}
 		}
 		
@@ -1138,15 +1171,69 @@ RICEintro.0001 = {
 		
 		title:b_aydhab.title_province = {
 			set_holding_type = castle_holding
-			add_building = common_tradeport_01
 		}		
 		title:b_badi.title_province = {
 			set_holding_type = castle_holding
-			add_building = common_tradeport_01
-			add_building = watchtowers_01
-		}		
-		title:b_suakin.title_province = {
-			add_building = common_tradeport_01
+		}
+		if = {
+			limit = {
+				title:b_suakin.title_province = {
+					NOT = { has_building = common_tradeport_01 }
+				}				
+			}
+			title:b_suakin.title_province = {
+				add_building = common_tradeport_01
+			}
+		}
+		if = {
+			limit = {
+				title:b_aydhab.title_province = {
+					NOT = { has_building = common_tradeport_01 }
+				}				
+			}
+			title:b_aydhab.title_province = {
+				add_building = common_tradeport_01
+			}
+		}
+		if = {
+			limit = {
+				title:b_badi.title_province = {
+					NOT = { has_building = common_tradeport_01 }
+				}				
+			}
+			title:b_badi.title_province = {
+				add_building = common_tradeport_01
+			}
+		}
+		if = {
+			limit = {
+				title:b_suakin.title_province = {
+					NOT = { has_building = watchtowers_01 }
+				}				
+			}
+			title:b_suakin.title_province = {
+				add_building = watchtowers_01
+			}
+		}
+		if = {
+			limit = {
+				title:b_aydhab.title_province = {
+					NOT = { has_building = watchtowers_01 }
+				}				
+			}
+			title:b_aydhab.title_province = {
+				add_building = watchtowers_01
+			}
+		}
+		if = {
+			limit = {
+				title:b_badi.title_province = {
+					NOT = { has_building = watchtowers_01 }
+				}				
+			}
+			title:b_badi.title_province = {
+				add_building = watchtowers_01
+			}
 		}
 		
 		###############################
@@ -1239,7 +1326,6 @@ RICEintro.0003 = {
 					OR = {
 						capital_province = {
 							OR = {
-								geographical_region = world_makran
 								geographical_region = world_transoxiana
 								geographical_region = world_kabulistan
 							}
@@ -1302,6 +1388,9 @@ RICEintro.0003 = {
 			}
 			character:bedouin0018 = { # Play al-Umari
 				trigger_event = red_sea.0020
+			}
+			character:188710 = { # Zunbils
+				trigger_event = pamir.0017
 			}
 		}
 	}	
