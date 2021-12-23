@@ -1,6 +1,6 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.4.4 "Amazigh" (Released 12/16/21)
+## Latest Version: Version 1.4.4.a "Amazigh" (Released 12/16/21)
 
 **Newest Flavor Packs - Sus: Door of the Sahara & Guanche: The Fortunate Isles**
 
@@ -43,6 +43,13 @@ DO NOT manually download the master branch unless you know what you're doing as 
 NOTE: If you are re-installing a mod manually, delete the old version of the mod first before copy and pasting the new one! While it's not always necessary, it's a good habit to do to prevent any potential issues.
 
 ## Latest Changelog
+
+### Versioin 1.4.4.a Hotfix
+
+- Several counties now start off with Amazigh and Illuism (Tuareg) paganism present in the 867 bookmark to be consistent with BAP
+- Added more French translations, in particular for Yorkshire and other misc stuff (thanks to French translators!)
+- Fixed Butr having no innovations at game start (only affects new games)
+- Fixed pronoun localization issue with Guanche witch deity
 
 ### Version 1.4.4 "Amazigh"
 
