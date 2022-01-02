@@ -1,0 +1,973 @@
+﻿###############################################################################
+# 
+# YAZD/KERMAN
+# 
+# yazd.0000-yazd.0019		Setup and history events
+# yazd.0020-yazd.0029		Misc decisions (Xwedodah, Jayš-al-šorāt, windcatchers)
+# yazd.0030-yazd.0049		Sadeh Festival
+# yazd.0050-yazd.0099		Generic flavor events
+# 
+###############################################################################
+
+namespace = yazd
+
+######################################################################################
+# 
+# SETUP EVENTS AND MISC STUFF
+# 
+# yazd.0000-yazd.0009 reserved
+# 
+######################################################################################
+
+# Change Yazd's Abode of Worship ruler modifier
+yazd.0001 = {
+	hidden = yes
+	trigger = {
+		scope:title = title:c_yazd
+	}
+	immediate = {
+		if = {
+			limit = { 
+				scope:previous_holder = { 
+					is_alive = yes
+					has_character_modifier = RICE_yazd_abode_of_worship_ruler
+					NOT = {
+						has_title = title:c_yazd
+					}
+				}
+			}
+			scope:previous_holder = { remove_character_modifier = RICE_yazd_abode_of_worship_ruler }
+		}
+		add_character_modifier = {
+			modifier = RICE_yazd_abode_of_worship_ruler
+		}
+	}
+}
+
+# 867 Character selection for Saffarids and Kharijite remnants
+yazd.0002 = {
+	type = character_event
+	title = yazd.0002.t
+	desc = yazd.0002.desc
+	theme = martial
+	override_background = { event_background = RICE_background_khorasan_village }
+	
+	left_portrait = {
+		character = scope:tahirid_guy
+		animation = personality_dishonorable
+	}	
+	right_portrait = {
+		character = scope:yaqub_saffarid
+		animation = personality_honorable
+	}
+	
+	immediate = {
+		character:RICE_yazd_001 = { # Esmail ibn Musa, last leader of the Kharijite remnants in Bam
+			save_scope_as = bammer_guy
+		}
+		
+		character:RICE_yazd_003 = { # Sebuk-eri, slave captured in Zabulistan who became a power player in later Saffird history, was governor of Fars later
+			save_scope_as = sebuk_eri_guy
+		}
+		
+		character:163101 = { # Ya'qub ibn al-Layth
+			save_scope_as = yaqub_saffarid
+		}
+		
+		character:163164 = { # Amr ibn al-Layth
+			save_scope_as = amr_saffarid
+		}
+		
+		character:163165 = { # Ali ibn al-Layth
+			save_scope_as = ali_saffarid
+		}
+		
+		character:163100 = { # Muhammad ibn Tahir
+			save_scope_as = tahirid_guy
+		}
+		
+		character:RICE_yazd_004 = { # Abd-al-Rahman, Kharijite rebel in Herat c. 872
+			save_scope_as = abd_al_rahman_kharijite
+		}
+		
+		character:RICE_yazd_007 = { # Uzayr ibn al-Sari, governor of Nishapur under Saffarids
+			save_scope_as = uzayr_al_sari
+		}
+		
+		title:c_bam = {
+			save_scope_as = bam_county
+		}
+		
+		title:c_badghis = {
+			save_scope_as = badghis_county
+		}
+		
+	}
+	
+	option = {
+		name = yazd.0002.a
+		if = {
+			limit = {
+				OR = {
+					has_character_modifier = RICE_yazd_saffarid_yaqub
+					has_character_modifier = RICE_yazd_saffarid_amr
+				}
+				
+			}
+			trigger_event = yazd.0003
+		}
+		custom_tooltip = yazd.0002.tooltip.no
+	}	
+	option = {
+		name = yazd.0002.b
+		custom_tooltip = yazd.0002.tooltip.saffarids
+		trigger_event = yazd.0003
+	}	
+	option = {
+		name = yazd.0002.c
+		custom_tooltip = yazd.0002.tooltip.kharijites
+		trigger_event = yazd.0004
+	}
+}
+
+# 867 - Saffarid or Saffarid officials selection
+yazd.0003 = {
+	type = character_event
+	title = yazd.0003.t
+	desc = yazd.0003.desc
+	theme = martial
+	override_background = { event_background = RICE_background_iranian_throne_room }
+	
+	left_portrait = {
+		character = scope:yaqub_saffarid
+		animation = personality_bold
+	}	
+	right_portrait = {
+		character = scope:amr_saffarid
+		animation = personality_forgiving
+	}
+	lower_left_portrait = scope:sebuk_eri_guy
+	lower_center_portrait = scope:uzayr_al_sari
+	lower_right_portrait = scope:ali_saffarid
+	
+	option = {
+		name = yazd.0003.a
+		if = {
+			limit = {
+				NOT = { has_character_modifier = RICE_yazd_saffarid_yaqub }
+			}
+			set_player_character = scope:yaqub_saffarid
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = yazd.0003.a.info
+			}
+		}
+	}	
+	option = {
+		name = yazd.0003.b
+		if = {
+			limit = {
+				NOT = { has_character_modifier = RICE_yazd_saffarid_amr }
+			}
+			set_player_character = scope:amr_saffarid
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = yazd.0003.b.info
+			}
+		}
+	}	
+	option = {
+		name = yazd.0003.c
+		set_player_character = scope:ali_saffarid
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = yazd.0003.c.info
+			}
+		}
+	}	
+	option = {
+		name = yazd.0003.d
+		set_player_character = scope:sebuk_eri_guy
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = yazd.0003.d.info
+			}
+		}
+	}
+	option = {
+		name = yazd.0003.e
+		set_player_character = scope:uzayr_al_sari
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = yazd.0003.e.info
+			}
+		}
+	}
+}
+
+# 867 - Kharijites selection
+yazd.0004 = {
+	type = character_event
+	title = yazd.0004.t
+	desc = yazd.0004.desc
+	theme = faith
+	override_background = { event_background = RICE_background_iranian_desert }
+	
+	left_portrait = {
+		character = scope:bammer_guy
+		animation = worry
+	}	
+	right_portrait = {
+		character = scope:abd_al_rahman_kharijite
+		animation = personality_callous
+	}
+	
+	option = {
+		name = yazd.0004.a
+		set_player_character = scope:bammer_guy
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = yazd.0004.a.info
+			}
+		}
+	}
+	
+	option = {
+		name = yazd.0004.b
+		set_player_character = scope:abd_al_rahman_kharijite
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = yazd.0004.b.info
+			}
+		}
+	}
+}
+
+# 1066 - Kakuyids introduction
+yazd.0005 = {
+	type = character_event
+	title = yazd.0005.t
+	desc = yazd.0005.desc
+	theme = martial
+	override_background = { event_background = RICE_background_iranian_throne_room }
+	
+	right_portrait = {
+		character = root
+		animation = sadness
+	}
+	
+	immediate = {	
+		character:1231052 = {
+			save_scope_as = ala_al_dawla
+		}	
+		character:3038 = {
+			save_scope_as = tughril_beg
+		}		
+		character:1231056 = {
+			save_scope_as = kakuyid_son
+		}		
+		character:1231055 = {
+			save_scope_as = abu_harb
+		}		
+		character:1231054 = {
+			save_scope_as = garshasp
+		}		
+		character:1000229910 = {
+			save_scope_as = arslan_khatun
+		}		
+		character:3040 = {
+			save_scope_as = alp_arslan
+		}		
+		title:c_yazd = {
+			save_scope_as = yazd_county
+		}
+		title:d_isfahan = {
+			save_scope_as = isfahan_duchy
+		}
+		
+		show_as_tooltip = {
+			dynasty = {
+				add_dynasty_modifier = {
+					modifier = RICE_yazd_patrons_of_avicenna
+				}
+			}
+			scope:abu_harb = {
+				add_opinion = {
+					target = root
+					modifier = RICE_yazd_kakuyid_reconciled
+				}
+				reverse_add_opinion = {
+					target = root
+					modifier = RICE_yazd_kakuyid_reconciled
+				}			
+			}
+			scope:alp_arslan = {
+				add_opinion = {
+					target = root
+					modifier = RICE_yazd_kakuyid_reconciled
+				}
+				reverse_add_opinion = {
+					target = root
+					modifier = RICE_yazd_kakuyid_reconciled
+				}			
+			}	
+		}
+		
+	}
+	
+	option = {
+		name = yazd.0005.a
+		add_trait = content
+	}	
+	option = {
+		name = yazd.0005.b
+		add_trait = deceitful
+	}
+	after = {		
+		trigger_event = yazd.0006
+	}
+}
+
+# 1066 - Kakuyids introduction part 2
+yazd.0006 = {
+	type = character_event
+	title = yazd.0006.t
+	desc = yazd.0006.desc
+	theme = RICE_theme_yazd_town
+	
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	option = {
+		name = yazd.0006.a
+		add_diplomacy_skill = 1
+		add_diplomacy_lifestyle_perk_points = 1
+		add_prestige = 200
+	}	
+	option = {
+		name = yazd.0006.b
+		add_stewardship_skill = 1
+		add_stewardship_lifestyle_perk_points = 1
+		add_prestige = 100
+		add_piety = 100
+	}	
+	option = {
+		name = yazd.0006.c
+		add_learning_skill = 1
+		add_learning_lifestyle_perk_points = 1
+		add_piety = 200
+	}
+	after = {		
+		trigger_event = yazd.0007
+	}
+}
+
+# 1066 - Kakuyids introduction part 3
+yazd.0007 = {
+	type = character_event
+	title = yazd.0007.t
+	desc = yazd.0007.desc
+	theme = RICE_theme_iranian_throne_room
+	override_icon = { reference = "gfx/interface/icons/event_types/type_dynasty.dds" }
+	
+	right_portrait = {
+		character = root
+		animation = personality_forgiving
+	}
+	
+	option = {
+		name = yazd.0007.a
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = yazd.0007.info
+			}
+		}
+	}
+}
+
+
+######################################################################################
+# 
+# MISC DECISIONS
+# 
+# yazd.0020-yazd.0049 reserved
+# 
+######################################################################################
+
+
+# Yazd infrastructure expanded
+yazd.0020 = {
+	type = character_event
+	title = yazd.0020.t
+	desc = yazd.0020.desc
+	theme = RICE_theme_yazd_town
+	
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	
+	immediate = {
+		title:c_yazd = { #For loc.
+			save_scope_as = yazd_county
+		}
+		save_scope_as = yazd_ruler
+	}
+	
+	option = { # ok
+		name = yazd.0020.a
+		add_piety = 150
+		RICE_yazd_expand_infrastructure_effect = yes
+		every_player = {
+			limit = {
+				is_ai = no
+				capital_province = {
+					OR = {
+						geographical_region = world_middle_east_persia
+						geographical_region = world_middle_east
+					}
+				}
+			}
+			trigger_event = yazd.0021
+		}
+	}
+}
+
+
+# Yazd infrastructure expanded notification to other rulers
+yazd.0021 = {
+	type = character_event
+	title = yazd.0021.t
+	desc = yazd.0021.desc
+	theme = RICE_theme_yazd_town
+	
+	left_portrait = {
+		character = scope:yazd_ruler
+		animation = personality_bold
+	}
+	
+	immediate = {
+		show_as_tooltip = {
+			scope:yazd_ruler = {
+				RICE_yazd_expand_infrastructure_effect = yes
+			}
+		}
+		play_music_cue = mx_cue_sacredrite
+	}
+	
+	option = { # ok
+		name = yazd.0021.a
+	}
+}
+
+
+# What qanat to build?
+yazd.0022 = {
+	type = character_event
+	title = yazd.0022.t
+	desc = yazd.0022.desc
+	theme = RICE_theme_qanat_canal
+	
+	left_portrait = root
+	
+	immediate = {
+		capital_county = {
+			save_scope_as = qanat_county
+		}
+	}
+	
+	option = { # Small
+		name = yazd.0022.a
+		if = {
+			limit = {
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_yazd_expand_infrastructure_flag
+				}	
+				has_title = title:c_yazd			
+			}
+			remove_short_term_gold = 40
+		}
+		else = {
+			remove_short_term_gold = 50
+		}
+		add_prestige = 75
+		add_character_modifier = {
+			modifier = RICE_funded_qanat_small
+			years = 10
+		}
+		scope:qanat_county = {
+			add_county_modifier = {
+				modifier = RICE_qanat_constructed_small
+				years = 10
+			}
+		}
+	}	
+	option = { # Medium
+		name = yazd.0022.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 100
+				AND = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:RICE_yazd_expand_infrastructure_flag
+					}	
+					has_title = title:c_yazd
+					gold >= 80
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_title = title:c_yazd
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_yazd_expand_infrastructure_flag
+				}				
+			}
+			remove_short_term_gold = 80
+		}
+		else = {
+			remove_short_term_gold = 100
+		}
+		add_prestige = 150
+		add_character_modifier = {
+			modifier = RICE_funded_qanat_medium
+			years = 10
+		}
+		scope:qanat_county = {
+			add_county_modifier = {
+				modifier = RICE_qanat_constructed_medium
+				years = 10
+			}
+		}
+	}	
+	option = { # Large
+		name = yazd.0022.c
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 150
+				AND = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:RICE_yazd_expand_infrastructure_flag
+					}	
+					has_title = title:c_yazd
+					gold >= 120
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_title = title:c_yazd
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_yazd_expand_infrastructure_flag
+				}				
+			}
+			remove_short_term_gold = 120
+		}
+		else = {
+			remove_short_term_gold = 150
+		}
+		add_prestige = 225
+		add_character_modifier = {
+			modifier = RICE_funded_qanat_large
+			years = 10
+		}
+		scope:qanat_county = {
+			add_county_modifier = {
+				modifier = RICE_qanat_constructed_large
+				years = 10
+			}
+		}
+	}	
+	option = { # Grand
+		name = yazd.0022.d
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 200
+				AND = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:RICE_yazd_expand_infrastructure_flag
+					}	
+					has_title = title:c_yazd
+					gold >= 160
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_title = title:c_yazd
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_yazd_expand_infrastructure_flag
+				}				
+			}
+			remove_short_term_gold = 160
+		}
+		else = {
+			remove_short_term_gold = 200
+		}
+		add_prestige = 300
+		add_character_modifier = {
+			modifier = RICE_funded_qanat_grand
+			years = 10
+		}
+		scope:qanat_county = {
+			add_county_modifier = {
+				modifier = RICE_qanat_constructed_grand
+				years = 10
+			}
+		}
+	}
+}
+
+
+# Start the debate!
+yazd.0023 = {
+	type = character_event
+	title = yazd.0023.t
+	desc = yazd.0023.desc
+	theme = faith
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	immediate = {
+		play_music_cue = mx_cue_sacredrite
+	}
+	
+	option = { # ok
+		name = yazd.0023.a
+		add_piety = 250
+		every_player = {
+			limit = {
+				is_ai = no
+			}
+			trigger_event = yazd.0024
+		}
+		trigger_event = {
+			id = yazd.0025
+			days = { 10 30 }
+		}
+	}
+}
+
+
+
+# Xwedodah debate started - notify other rulers
+yazd.0024 = {
+	type = character_event
+	title = yazd.0024.t
+	desc = yazd.0024.desc
+	theme = faith
+	
+	left_portrait = {
+		character = scope:xwedodah_resolver
+		animation = personality_zealous
+	}
+	
+	option = { # ok
+		name = yazd.0024.a
+	}
+}
+
+
+
+# Decide the fate of Xwedodah
+yazd.0025 = {
+	type = character_event
+	title = yazd.0025.t
+	desc = yazd.0025.desc
+	theme = faith
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"	
+	}
+	
+	option = { # Cousins!
+		name = yazd.0025.a
+		
+		RICE_yazd_change_xwedodah_to_cousins_effect = yes
+		custom_tooltip = RICE_yazd_change_xwedodah_warning_tooltip
+		
+		if = {
+			limit = {
+				has_faith = faith:mazdayasna
+			}
+			set_global_variable = {
+				name = RICE_zoroastrian_xwedodah_incest_changed
+				value = yes
+			}
+		}
+		
+		if = {
+			limit = {
+				has_faith = faith:zurvanism
+			}
+			set_global_variable = {
+				name = RICE_zurvanite_xwedodah_incest_changed
+				value = yes
+			}
+		}
+			
+
+		
+		# AI is more likely to choose this to make it more historical
+		ai_chance = {
+			base = 40
+		}
+	}
+	
+	option = { # family
+		name = yazd.0025.b
+		
+		custom_tooltip = RICE_yazd_keep_xwedodah_tooltip_1
+		custom_tooltip = RICE_yazd_keep_xwedodah_tooltip_2
+		custom_tooltip = RICE_yazd_change_xwedodah_warning_tooltip
+		
+		if = {
+			limit = {
+				has_faith = faith:mazdayasna
+			}
+			set_global_variable = {
+				name = RICE_zoroastrian_xwedodah_incest_kept
+				value = yes
+			}
+		}
+		
+		if = {
+			limit = {
+				has_faith = faith:zurvanism
+			}
+			set_global_variable = {
+				name = RICE_zurvanite_xwedodah_incest_kept
+				value = yes
+			}
+		}
+		
+		# AI is less likely to choose this, but it's still possible
+		ai_chance = {
+			base = 10
+		}
+	}
+	
+	after = {
+		every_player = {
+			limit = {
+				is_ai = no
+			}
+			trigger_event = yazd.0026
+		}	
+	}
+}
+
+
+# The fate of Xwedodah has been decided - notify other rulers
+yazd.0026 = {
+	type = character_event
+	title = yazd.0026.t
+	desc = {
+		desc = yazd.0026.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					OR = {
+						has_global_variable = RICE_zoroastrian_xwedodah_incest_changed
+						has_global_variable = RICE_zurvanite_xwedodah_incest_changed					
+					}
+				}
+				desc = yazd.0026.desc.no_incest
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {
+						has_global_variable = RICE_zoroastrian_xwedodah_incest_kept
+						has_global_variable = RICE_zurvanite_xwedodah_incest_kept					
+					}
+				}
+				desc = yazd.0026.desc.yes_incest
+			}
+			
+		}
+		desc = yazd.0026.desc.conclusion
+	}
+	theme = faith
+	
+	left_portrait = {
+		character = scope:xwedodah_resolver
+		animation = personality_zealous
+	}
+	
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"	
+	}
+	
+	option = { # ok
+		name = yazd.0026.a
+		if = {
+			limit = {
+				OR = {
+					has_global_variable = RICE_zoroastrian_xwedodah_incest_changed
+					has_global_variable = RICE_zurvanite_xwedodah_incest_changed					
+				}
+			}
+			show_as_tooltip = {
+				RICE_yazd_change_xwedodah_to_cousins_effect = yes
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_global_variable = RICE_zoroastrian_xwedodah_incest_kept
+					has_global_variable = RICE_zurvanite_xwedodah_incest_kept					
+				}
+			}
+			custom_tooltip = RICE_yazd_keep_xwedodah_tooltip_1
+			custom_tooltip = RICE_yazd_keep_xwedodah_tooltip_2
+		}
+		custom_tooltip = yazd.0026.tooltip
+	}
+}
+
+######################################################################################
+# 
+# SADEH FESTIVAL
+# 
+# yazd.0030-yazd.0049 reserved
+# 
+######################################################################################
+
+
+# Prepare for Sadeh
+yazd.0030 = {
+	type = character_event
+	title = yazd.0030.t
+	desc = yazd.0030.desc
+	theme = friendly
+	
+	right_portrait = root
+	
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+	}
+	
+	option = { # Ok
+		name = yazd.0030.a
+		# Choose appropriate location
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_yazd_sadeh_festival
+			}	
+		}
+	}
+}
+
+
+# Sadeh begins
+yazd.0031 = {
+	type = character_event
+	title = yazd.0031.t
+	desc = yazd.0031.desc
+	theme = party
+	override_background = { event_background = RICE_background_iranian_throne_room }
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_banquet
+		capital_province = { save_scope_as = capital_province } #For loc.
+	}
+	
+	option = { # Ok
+		name = yazd.0031.a
+		#hidden_effect = {
+		#	random = {
+		#		chance = 20
+		#		trigger_event = {
+		#			id = yazd.0034
+		#			days = { 5 23 }
+		#		}
+		#	}
+		#}
+		trigger_event = {
+			id = yazd.0032
+			days = { 25 30 }
+		}
+	}
+}
+
+# Sadeh ends
+yazd.0032 = {
+	type = character_event
+	title = yazd.0032.t
+	desc = yazd.0032.desc
+	theme = friendly
+	override_background = { event_background = RICE_background_iranian_throne_room }
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Fun!
+		name = yazd.0032.a
+		add_character_modifier = {
+			modifier = RICE_yazd_recently_celebrated_sadeh
+			years = 3
+		}
+	}
+	
+	after = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
