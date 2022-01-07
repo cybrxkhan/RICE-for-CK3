@@ -1,4 +1,207 @@
-﻿RICE_sus_increase_sijilmasa_prosperity_effect = {
+﻿RICE_setup_sus_flavor_pack_effect = {
+
+	############################################################
+	#
+	# GENERAL CULTURE CHANGES
+	#
+	############################################################
+
+	culture:sephardi = { save_scope_as = sephardi }	
+
+	culture:mizrahi = {
+		get_all_innovations_from = scope:sephardi
+	}		
+	
+	
+	
+	############################################################
+	#
+	# RELIGION TERRITORY CHANGES
+	#
+	############################################################
+
+	if = {
+		limit = {
+			current_date < 900.1.1
+		}
+		#Sahara
+		title:c_djanet = {
+			set_county_faith = faith:tuareg_pagan
+		}
+		title:c_air = {
+			set_county_faith = faith:tuareg_pagan
+		}
+		title:c_takkeda = {
+			set_county_faith = faith:tuareg_pagan
+		}
+		title:c_tadmekka = {
+			set_county_faith = faith:tuareg_pagan
+		}
+		title:c_tessalit = {
+			set_county_faith = faith:tuareg_pagan
+		}
+		title:c_azukki = {
+			set_county_faith = faith:amazigh_pagan
+		}
+		title:c_wadan = {
+			set_county_faith = faith:amazigh_pagan
+		}		
+		title:c_amatlus = {
+			set_county_faith = faith:amazigh_pagan
+		}
+	}
+	
+	############################################################
+	#
+	# BUILDINGS
+	#
+	############################################################
+	
+	## Sus Buildings
+	title:b_tarudant.title_province = {
+		add_special_building = RICE_sus_argan_forest_01
+	}	
+	title:b_agadir.title_province = {
+		add_special_building = RICE_sus_argan_forest_01
+	}	
+	title:b_ifni.title_province = {
+		add_special_building = RICE_sus_argan_forest_01
+	}	
+	title:b_tindouf.title_province = {
+		add_special_building = RICE_sus_argan_forest_01
+	}	
+	title:b_asfi.title_province = {
+		add_special_building = RICE_sus_argan_forest_01
+	}	
+	if = {
+		limit = {
+			current_date > 950.1.1
+		}
+		title:b_tafilalt.title_province = {
+			add_special_building = RICE_sus_sijilmasan_mints_01
+		}
+	}
+	else = {
+		title:b_tafilalt.title_province = {
+			add_special_building_slot = RICE_sus_sijilmasan_mints_01
+		}		
+	}
+	
+		
+	############################################################
+	#
+	# MODIFIERS
+	#
+	############################################################		
+	
+	## Sus Modifiers
+	title:c_draa = {
+		add_county_modifier = {
+			modifier = RICE_sus_draa_dates
+		}
+	}
+	if = {
+		limit = {
+			current_date > 823.1.1
+			current_date < 877.1.1
+		}
+		title:c_sijilmasa = {
+			add_county_modifier = {
+				modifier = RICE_sus_sijilmasa_prosperity_0
+			}
+		}
+	}
+	if = { # Before times
+		limit = {
+			current_date <= 823.1.1
+		}
+		# No conflict to begin with
+		set_global_variable = {
+			name = RICE_sus_sijilmasa_civil_unrest_ended
+			value = yes
+		}
+		title:c_sijilmasa = {
+			add_county_modifier = {
+				modifier = RICE_sus_sijilmasa_prosperity_1
+			}
+		}
+	}
+	if = { # Mint established
+		limit = {
+			current_date >= 877.1.1
+		}
+		set_global_variable = {
+			name = RICE_sus_sijilmasa_civil_unrest_ended
+			value = yes
+		}
+		set_global_variable = {
+			name = RICE_sus_sijilmasa_mint_created
+			value = yes
+		}
+		title:c_sijilmasa = {
+			add_county_modifier = {
+				modifier = RICE_sus_sijilmasa_prosperity_2
+			}
+		}
+	}
+	
+	############################################################
+	#
+	# HISTORICAL CHARACTERS MISC
+	#
+	############################################################
+	
+
+	
+	if = {
+		limit = {
+			current_date < 900.1.1
+		}
+		
+		# AMAZIGH PAGANS
+		
+		character:1228871 = {
+			set_character_faith_with_conversion = faith:tuareg_pagan
+			every_courtier = {
+				set_character_faith_with_conversion = faith:tuareg_pagan
+			}
+		}			
+		character:1228872 = {
+			set_character_faith_with_conversion = faith:tuareg_pagan
+			every_courtier = {
+				set_character_faith_with_conversion = faith:tuareg_pagan
+			}
+		}			
+		character:248802 = {
+			set_character_faith_with_conversion = faith:tuareg_pagan
+			every_courtier = {
+				set_character_faith_with_conversion = faith:tuareg_pagan
+			}
+		}
+	}		
+	
+
+	############################################################
+	#
+	# RELIGION DOCTRINE/TENET CHANGES
+	#
+	############################################################		
+	
+	faith:sufri = {
+		if = {
+			limit = {					
+				has_game_rule = default_gender_equality
+				has_doctrine = doctrine_gender_equal
+			}
+			remove_doctrine = doctrine_gender_equal
+			add_doctrine = doctrine_gender_male_dominated
+		}
+	}
+
+}
+
+
+RICE_sus_increase_sijilmasa_prosperity_effect = {
 	custom_tooltip = RICE_sus_resolve_conflicts_in_sijilmasa_effect_tooltip
 	hidden_effect = {
 		if = { # Failsafe in case no prosperity level

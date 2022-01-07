@@ -1,4 +1,18 @@
-﻿RICE_setup_yazd_flavor_pack_effect = { 	
+﻿RICE_setup_yazd_flavor_pack_effect = { 
+
+	# Modifiers
+	
+	# Kerman Pistachios
+	title:c_kirman = {
+		add_county_modifier = {
+			modifier = RICE_yazd_kerman_pistachios
+		}
+	}
+	title:c_sirjan = {
+		add_county_modifier = {
+			modifier = RICE_yazd_kerman_pistachios
+		}
+	}
 
 	# Give Qanat innovation to Iranian, Arabic, Berber, and Turkic cultures as necessary
 	
@@ -219,6 +233,29 @@
 		}
 		
 
+		# Qavord/Qawurd, senior Seljuk prince who attempted a rebellion against Malik Shah in 1073
+		character:3041 = { 
+			RICE_remove_personality_traits_effect = yes
+			remove_trait = education_martial_2
+			add_trait = arrogant
+			add_trait = temperate
+			add_trait = ambitious 				# Tried to claim the Seljuk throne for himself
+			add_trait = just 					# Was said to be a just ruler by later historical sources
+			add_trait = education_martial_3 	# Conquered Oman for the Seljuks, so can't be that bad a military commander
+			add_unpressed_claim = title:e_persia
+			add_character_modifier = {
+				modifier = RICE_yazd_qawurd_seljuk
+			}
+			save_scope_as = seljuk_qawurd
+		}
+		
+		# Turan Shah, Qawurd's son who was given Kerman back again
+		character:144027 = {
+			RICE_remove_personality_traits_effect = yes
+			add_trait = just			# Had a reputation as a good ruler, his tomb later became a site of pilgrimage
+			add_trait = diligent		# See above
+			add_trait = compassionate	# See above
+		}
 		
 		character:1231053 = {
 			RICE_remove_personality_traits_effect = yes
@@ -252,6 +289,14 @@
 				target = scope:faramurz_yazd
 				modifier = RICE_yazd_kakuyid_reconciled
 			}
+			add_opinion = {
+				target = scope:seljuk_qawurd
+				modifier = RICE_yazd_alp_arslan_distrust_qawurd
+			}
+			reverse_add_opinion = {
+				target = scope:seljuk_qawurd
+				modifier = RICE_yazd_qawurd_resent_alp_arslan
+			}
 		}		
 		character:1231055 = {
 			add_opinion = {
@@ -264,6 +309,17 @@
 			}
 		}		
 		
+	}
+	
+	if = {
+		limit = {
+			current_date > 1037.1.1
+		}
+		# Was built in 1037
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_yazd_construct_shrine_of_the_twelve_imams_flag
+		}		
 	}
 	
 }
@@ -339,10 +395,32 @@ RICE_yazd_change_xwedodah_to_cousins_effect = {
 		remove_doctrine = tenet_divine_marriage
 		add_doctrine = tenet_communal_identity
 	}
-	#faith:mazdayasna = {
-	#	remove_doctrine = doctrine_consanguinity_unrestricted
-	#	add_doctrine = doctrine_consanguinity_cousins
-	#	remove_doctrine = tenet_divine_marriage
-	#	add_doctrine = tenet_communal_identity
-	#}
+}
+
+
+RICE_yazd_construct_shrine_of_the_twelve_imams_effect = {
+
+	if = {
+		limit = {
+			faith = { has_doctrine = muhammad_succession_shia_doctrine }
+		}
+		add_piety = 500
+		add_prestige = 200
+	}
+	else = {
+		add_piety = 250
+		add_prestige = 100
+	}
+	
+	title:c_yazd = {
+		add_county_modifier = {
+			modifier = RICE_yazd_shrine_of_the_twelve_imams_recently_constructed
+			years = 30
+		}
+	}
+	
+	add_character_modifier = {
+		modifier = RICE_yazd_constructed_shrine_of_the_twelve_imams
+	}
+	
 }
