@@ -3,7 +3,7 @@
 # YAZD/KERMAN
 # 
 # yazd.0000-yazd.0019		Setup and history events
-# yazd.0020-yazd.0029		Misc decisions (Xwedodah, Jayš-al-šorāt, windcatchers)
+# yazd.0020-yazd.0029		Misc decisions (Xwedodah, Jayš-al-šorāt, windcatchers, Shrine of the 12 Imams)
 # yazd.0030-yazd.0049		Sadeh Festival
 # yazd.0050-yazd.0099		Generic flavor events
 # 
@@ -410,6 +410,111 @@ yazd.0007 = {
 				text = yazd.0007.info
 			}
 		}
+	}
+}
+
+# 1066 - Qawurd/Qavort introduction
+yazd.0008 = {
+	type = character_event
+	title = yazd.0008.t
+	desc = yazd.0008.desc
+	theme = martial
+	override_background = { event_background = RICE_background_iranian_throne_room }
+	
+	right_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	immediate = {
+		character:3036 = {
+			save_scope_as = chagri_beg
+		}	
+		character:3038 = {
+			save_scope_as = tughril_beg
+		}	
+		character:3040 = {
+			save_scope_as = alp_arslan
+		}		
+		title:d_kirman = {
+			save_scope_as = kerman_duchy
+		}
+		title:d_oman = {
+			save_scope_as = oman_duchy
+		}
+		
+	}
+	
+	option = {
+		name = yazd.0008.a
+		add_martial_skill = 1
+		add_prowess_skill = 1
+		add_martial_lifestyle_perk_points = 1
+		add_piety = 200
+	}	
+	option = {
+		name = yazd.0008.b
+		add_diplomacy_skill = 1
+		add_intrigue_skill = 1
+		add_diplomacy_lifestyle_perk_points = 1
+		add_prestige = 100
+		add_piety = 100
+	}	
+	option = {
+		name = yazd.0008.c
+		add_stewardship_skill = 1
+		add_learning_skill = 1
+		add_stewardship_lifestyle_perk_points = 1
+		add_prestige = 200
+	}
+	after = {		
+		trigger_event = yazd.0009
+	}
+}
+
+
+# 1066 - Qawurd/Qavort introduction
+yazd.0009 = {
+	type = character_event
+	title = yazd.0009.t
+	desc = yazd.0009.desc
+	theme = martial
+	override_background = { event_background = RICE_background_iranian_throne_room }
+	
+	right_portrait = {
+		character = root
+		animation = personality_callous
+	}
+	
+	immediate = {		
+		show_as_tooltip = {
+			add_unpressed_claim = title:e_persia
+			add_character_modifier = {
+				modifier = RICE_yazd_qawurd_seljuk
+			}
+			scope:alp_arslan = {
+				add_opinion = {
+					target = root
+					modifier = RICE_yazd_alp_arslan_distrust_qawurd
+				}
+				reverse_add_opinion = {
+					target = root
+					modifier = RICE_yazd_qawurd_resent_alp_arslan
+				}			
+			}
+			if = {
+				limit = {
+					has_game_rule = RICE_historical_context_on
+				}
+				custom_description_no_bullet = {
+					text = yazd.0009.info
+				}
+			}			
+		}	
+	}
+	
+	option = {
+		name = yazd.0009.a
 	}
 }
 
@@ -868,6 +973,51 @@ yazd.0026 = {
 			custom_tooltip = RICE_yazd_keep_xwedodah_tooltip_2
 		}
 		custom_tooltip = yazd.0026.tooltip
+	}
+}
+
+
+
+
+# Ordering the construction of the Shrine of the 12 Imams
+yazd.0027 = {
+	type = character_event
+	title = yazd.0027.t
+	desc = {
+		desc = yazd.0027.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					faith = { has_doctrine = muhammad_succession_shia_doctrine }
+				}
+				desc = yazd.0027.desc.shiite
+			}
+			triggered_desc = {
+				trigger = {
+					NOT = { faith = { has_doctrine = muhammad_succession_shia_doctrine } }
+				}
+				desc = yazd.0027.desc.not_shiite
+			}
+			
+		}
+	}
+	theme = faith
+	override_background = { event_background = RICE_background_yazd_town }
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		show_as_tooltip = {
+			RICE_yazd_construct_shrine_of_the_twelve_imams_effect = yes
+		}
+	}
+	
+	option = { # Ok
+		name = yazd.0027.a
 	}
 }
 

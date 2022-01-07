@@ -204,7 +204,9 @@ RICE_yazd_expand_infrastructure = {
 		has_title = title:c_yazd
 		prestige_level >= 3		
 		culture = {
+			has_innovation = innovation_city_planning
 			has_innovation = innovation_development_01
+			has_innovation = innovation_RICE_qanats
 			has_cultural_era_or_later = culture_era_early_medieval
 		}
 		NOT = { has_government = tribal_government }
@@ -255,6 +257,93 @@ RICE_yazd_expand_infrastructure = {
 			}
 			custom_tooltip = RICE_yazd_expand_infrastructure_context_tooltip
 		}
+
+		add_to_list = notification_sent
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+
+RICE_yazd_construct_shrine_of_the_twelve_imams = {
+	picture = "gfx/interface/illustrations/decisions/decision_small_town_arabic.dds"
+	major = yes
+	desc = RICE_yazd_construct_shrine_of_the_twelve_imams_desc
+
+	ai_check_interval = 64
+
+	is_shown = {
+		is_landed = yes
+		has_title = title:c_yazd
+		religion = religion:islam_religion
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_yazd_construct_shrine_of_the_twelve_imams_flag
+			}
+		}
+	}
+
+	is_valid = {
+		has_title = title:c_yazd
+		piety_level >= 3
+		OR = {
+			faith = { has_doctrine = muhammad_succession_shia_doctrine }
+			AND = {
+				religion = religion:islam_religion
+				NOT = { has_trait = zealous }
+				OR = {
+					has_trait = generous
+					has_trait = just
+					has_trait = compassionate
+					has_trait = ambitious
+				}
+			}
+		}	
+		culture = {
+			has_innovation = innovation_city_planning
+			has_cultural_era_or_later = culture_era_early_medieval
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value }
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	effect = {
+	
+		hidden_effect = {
+			title:c_yazd = { save_scope_as = yazd_county }
+		}
+		
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_yazd_construct_shrine_of_the_twelve_imams_flag
+		}
+			
+		custom_tooltip = RICE_yazd_construct_shrine_of_the_twelve_imams_effect_tooltip	
+
+		RICE_yazd_construct_shrine_of_the_twelve_imams_effect = yes	
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_yazd_construct_shrine_of_the_twelve_imams_context_tooltip
+		}
+		
+		trigger_event = yazd.0027
 
 		add_to_list = notification_sent
 	}
