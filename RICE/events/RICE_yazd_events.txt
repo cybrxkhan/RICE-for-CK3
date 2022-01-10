@@ -22,9 +22,15 @@ namespace = yazd
 # Change Yazd's Abode of Worship ruler modifier
 yazd.0001 = {
 	hidden = yes
+	
 	trigger = {
 		scope:title = title:c_yazd
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_yazd_expand_infrastructure_flag
+		}
 	}
+	
 	immediate = {
 		if = {
 			limit = { 
@@ -441,6 +447,22 @@ yazd.0008 = {
 		}
 		title:d_oman = {
 			save_scope_as = oman_duchy
+		}		
+		show_as_tooltip = {
+			add_unpressed_claim = title:e_persia
+			add_character_modifier = {
+				modifier = RICE_yazd_qawurd_seljuk
+			}
+			scope:alp_arslan = {
+				add_opinion = {
+					target = root
+					modifier = RICE_yazd_alp_arslan_distrust_qawurd
+				}
+				reverse_add_opinion = {
+					target = root
+					modifier = RICE_yazd_qawurd_resent_alp_arslan
+				}			
+			}			
 		}
 		
 	}
@@ -486,35 +508,19 @@ yazd.0009 = {
 		animation = personality_callous
 	}
 	
-	immediate = {		
-		show_as_tooltip = {
-			add_unpressed_claim = title:e_persia
-			add_character_modifier = {
-				modifier = RICE_yazd_qawurd_seljuk
-			}
-			scope:alp_arslan = {
-				add_opinion = {
-					target = root
-					modifier = RICE_yazd_alp_arslan_distrust_qawurd
-				}
-				reverse_add_opinion = {
-					target = root
-					modifier = RICE_yazd_qawurd_resent_alp_arslan
-				}			
-			}
-			if = {
-				limit = {
-					has_game_rule = RICE_historical_context_on
-				}
-				custom_description_no_bullet = {
-					text = yazd.0009.info
-				}
-			}			
-		}	
+	immediate = {	
 	}
 	
 	option = {
 		name = yazd.0009.a
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = yazd.0009.info
+			}
+		}
 	}
 }
 
@@ -934,7 +940,6 @@ yazd.0026 = {
 				}
 				desc = yazd.0026.desc.yes_incest
 			}
-			
 		}
 		desc = yazd.0026.desc.conclusion
 	}
@@ -1034,19 +1039,75 @@ yazd.0027 = {
 yazd.0030 = {
 	type = character_event
 	title = yazd.0030.t
-	desc = yazd.0030.desc
+	desc = {
+		desc = yazd.0030.desc
+		triggered_desc = {
+			trigger = {
+				has_title = title:c_yazd
+				religion = religion:zoroastrianism_religion
+			}
+			desc = yazd.0030.desc.chak_chak
+		}
+	}
 	theme = friendly
 	
 	right_portrait = root
 	
 	immediate = {
 		capital_province = { save_scope_as = capital_province } #For loc.
+		if = {
+			limit = {
+				has_title = title:c_yazd
+				religion = religion:zoroastrianism_religion				
+			}
+			# Chak-Chak Stuff
+			title:c_yazd = {
+				save_scope_as = yazd_county
+			}
+		}
 		# Stop characters from planning multiple activities at once.
 		add_character_flag = planning_an_activity
 	}
 	
-	option = { # Ok
+	option = { # Normal result
 		name = yazd.0030.a
+		trigger = {
+			NOT = { religion = religion:zoroastrianism_religion }		
+		}
+		# Choose appropriate location
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_yazd_sadeh_festival
+			}	
+		}
+	}	
+	option = { # Visit Chak Chak
+		name = yazd.0030.b
+		trigger = {
+			has_title = title:c_yazd
+			religion = religion:zoroastrianism_religion	
+			OR = {
+				is_ai = no
+				short_term_gold >= 25			
+			}
+		}
+		remove_short_term_gold = 25
+		# Choose appropriate location
+		title:b_yazd.title_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_yazd_sadeh_festival_chak_chak
+			}	
+		}
+		custom_tooltip = yazd.0030.chak_chak.tooltip
+	}	
+	option = { # Don't Visit Chak Chak
+		name = yazd.0030.c
+		trigger = {
+			has_title = title:c_yazd
+			religion = religion:zoroastrianism_religion	
+		}
 		# Choose appropriate location
 		scope:capital_province = {	
 			spawn_activity = {
@@ -1058,7 +1119,7 @@ yazd.0030 = {
 }
 
 
-# Sadeh begins
+# Sadeh begins (normal)
 yazd.0031 = {
 	type = character_event
 	title = yazd.0031.t
@@ -1078,15 +1139,65 @@ yazd.0031 = {
 	
 	option = { # Ok
 		name = yazd.0031.a
-		#hidden_effect = {
-		#	random = {
-		#		chance = 20
-		#		trigger_event = {
-		#			id = yazd.0034
-		#			days = { 5 23 }
-		#		}
-		#	}
-		#}
+		hidden_effect = {
+			# Random Sadeh events
+			random = {
+				chance = 25
+				trigger_event = {
+					id = yazd.0034
+					days = { 5 22 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = yazd.0035
+					days = { 5 22 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = yazd.0036
+					days = { 5 22 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = yazd.0037
+					days = { 5 22 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = yazd.0038
+					days = { 5 22 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = yazd.0039
+					days = { 5 22 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = yazd.0040
+					days = { 5 22 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = yazd.0041
+					days = { 5 22 }
+				}
+			}
+		}
 		trigger_event = {
 			id = yazd.0032
 			days = { 25 30 }
@@ -1097,8 +1208,24 @@ yazd.0031 = {
 # Sadeh ends
 yazd.0032 = {
 	type = character_event
-	title = yazd.0032.t
-	desc = yazd.0032.desc
+	title = yazd.0032.t	
+	desc = {
+		desc = yazd.0032.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					in_activity_type = activity_yazd_sadeh_festival
+				}
+				desc = yazd.0032.desc.no_chak_chak
+			}
+			triggered_desc = {
+				trigger = {
+					in_activity_type = activity_yazd_sadeh_festival_chak_chak
+				}
+				desc = yazd.0032.desc.chak_chak
+			}
+		}
+	}
 	theme = friendly
 	override_background = { event_background = RICE_background_iranian_throne_room }
 	
@@ -1109,9 +1236,23 @@ yazd.0032 = {
 	
 	option = { # Fun!
 		name = yazd.0032.a
-		add_character_modifier = {
-			modifier = RICE_yazd_recently_celebrated_sadeh
-			years = 3
+		if = {
+			limit = {
+				in_activity_type = activity_yazd_sadeh_festival
+			}
+			add_character_modifier = {
+				modifier = RICE_yazd_recently_celebrated_sadeh
+				years = 3
+			}
+		}
+		if = {
+			limit = {
+				in_activity_type = activity_yazd_sadeh_festival_chak_chak
+			}
+			add_character_modifier = {
+				modifier = RICE_yazd_recently_celebrated_sadeh_chak_chak
+				years = 3
+			}
 		}
 	}
 	
@@ -1121,3 +1262,1431 @@ yazd.0032 = {
 		}
 	}
 }
+
+
+
+
+# Gathering firewood
+yazd.0033 = {
+	type = character_event
+	title = yazd.0033.t
+	desc = yazd.0033.desc
+	theme = RICE_theme_khorasan_village
+	
+	left_portrait = root
+	
+	option = { # Ok
+		name = yazd.0033.a
+		add_prestige = 20
+		add_piety = -20
+	}	
+	option = { # Ok
+		name = yazd.0033.b
+		add_prestige = -20
+		add_piety = 20
+	}	
+	option = { # Ok
+		name = yazd.0033.c
+		add_prestige = -20
+		add_piety = 40
+		stress_impact = {
+			base = miniscule_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+}
+
+# Light fires near the qanats
+yazd.0034 = {
+	type = character_event
+	title = yazd.0034.t
+	desc = yazd.0034.desc
+	theme = RICE_theme_qanat_canal
+	
+	left_portrait = root
+	
+	option = { # Ok
+		name = yazd.0034.a
+		add_piety = 10
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+		}
+	}	
+	option = { # Ok
+		name = yazd.0034.b
+		add_prestige = 10
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+			trusting = miniscule_stress_impact_gain
+		}
+	}
+}
+
+# Stand near a fire
+yazd.0035 = {
+	type = character_event
+	title = yazd.0035.t
+	desc = yazd.0035.desc
+	theme = RICE_theme_desert_night
+	
+	right_portrait = {
+		character = root
+		animation = personality_irrational
+	}
+	
+	option = { # Ok
+		name = yazd.0035.a
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+	}
+}
+
+# Hearing about the legend of Hushang
+yazd.0036 = {
+	type = character_event
+	title = yazd.0036.t
+	desc = yazd.0036.desc
+	theme = martial
+	override_background = { event_background = RICE_background_iranian_throne_room }
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Ok
+		name = yazd.0036.a
+		add_prestige = 15
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+			trusting = miniscule_stress_impact_gain
+		}
+	}	
+	option = { # Ok
+		name = yazd.0036.b
+		add_piety = 15
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+			arbitrary = miniscule_stress_impact_gain
+		}
+	}
+}
+
+# Listening to Sadeh poetry
+yazd.0037 = {
+	type = character_event
+	title = yazd.0037.t
+	desc = yazd.0037.desc
+	theme = RICE_theme_iranian_throne_room
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Nature poem
+		name = yazd.0037.a
+		add_prestige = 15
+		add_piety = 15
+		add_character_modifier = {
+			modifier = RICE_yazd_sadeh_nature_poem
+			years = 3
+		}
+	}	
+	option = { # Good vs Evil poem
+		name = yazd.0037.b
+		add_piety = 30
+		add_character_modifier = {
+			modifier = RICE_yazd_sadeh_good_evil_poem
+			years = 3
+		}
+	}	
+	option = { # Ancient Heroes poem
+		name = yazd.0037.c
+		add_prestige = 30
+		add_character_modifier = {
+			modifier = RICE_yazd_sadeh_hero_poem
+			years = 3
+		}
+	}
+}
+
+# Eating good food during sadeh
+yazd.0038 = {
+	type = character_event
+	title = yazd.0038.t
+	desc = yazd.0038.desc
+	theme = feast_activity
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # ok
+		name = yazd.0038.a
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			gluttonous = miniscule_stress_impact_loss
+			gregarious = miniscule_stress_impact_loss
+			lustful = miniscule_stress_impact_loss
+		}
+	}
+}
+
+# Donating to others during Sadeh
+yazd.0039 = {
+	type = character_event
+	title = yazd.0039.t
+	desc = yazd.0039.desc
+	theme = RICE_theme_khorasan_village
+	
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	option = { # gave only a little
+		name = yazd.0039.a
+		remove_short_term_gold = 5
+		stress_impact = {
+			generous = minor_stress_impact_gain
+			zealous = miniscule_stress_impact_gain
+			compassionate = miniscule_stress_impact_gain
+			just = miniscule_stress_impact_gain
+		}
+	}	
+	option = { # gave expected amount
+		name = yazd.0039.b
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 15			
+			}
+		}
+		remove_short_term_gold = 15
+		add_piety = 20
+	}	
+	option = { # gave a lot
+		name = yazd.0039.c
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 45			
+			}
+		}
+		remove_short_term_gold = 45
+		add_piety = 60
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+			sadistic = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+# Light some animals on fire or not? (Medieval Sadeh practice)
+yazd.0040 = {
+	type = character_event
+	title = yazd.0040.t
+	desc = yazd.0040.desc
+	theme = friendly
+	override_background = { event_background = RICE_background_iranian_throne_room }
+	
+	left_portrait = root
+	
+	immediate = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = yazd.0040.info
+		}	
+	}
+	
+	option = { # Don't do it
+		name = yazd.0040.a
+		add_piety = 50
+		add_prestige = -50
+		stress_impact = {
+			gregarious = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+			sadistic = miniscule_stress_impact_gain
+		}
+	}
+	option = { # Do it!
+		name = yazd.0040.b
+		add_prestige = 50
+		add_piety = -50
+		add_character_modifier = {
+			modifier = RICE_yazd_sadeh_burned_animals
+			years = 3
+		}
+		stress_impact = {
+			compassionate = major_stress_impact_gain
+			zealous = minor_stress_impact_gain
+		}
+		every_courtier_or_guest = {
+			limit = {
+				is_clergy = no
+				NOR = {
+					has_trait = zealous
+					has_trait = compassionate
+					has_trait = just
+				}
+				OR = {
+					has_trait = callous
+					has_trait = sadistic
+					has_trait = arrogant
+					has_trait = arbitrary
+				}
+			}
+			add_opinion = {
+				target = root
+				modifier = RICE_yazd_sadeh_animal_cruelty_approve
+			}
+		}
+		every_courtier_or_guest = {
+			limit = {
+				OR = {
+					is_clergy = yes
+					has_trait = zealous
+					has_trait = compassionate
+					has_trait = just
+				}
+				NOR = {
+					has_trait = callous
+					has_trait = sadistic
+					has_trait = arrogant
+					has_trait = arbitrary
+				}
+			}
+			add_opinion = {
+				target = root
+				modifier = RICE_yazd_sadeh_animal_cruelty_disapprove
+			}
+		}
+	}
+}
+
+
+
+# Dance around the bonfires
+yazd.0041 = {
+	type = character_event
+	title = yazd.0041.t
+	desc = yazd.0041.desc
+	theme = feast_activity
+	override_background = { event_background = RICE_background_desert_night }
+	
+	left_portrait = root
+	
+	immediate = {
+		play_music_cue = mx_cue_banquet
+	}
+	
+	option = { # Join the dancing
+		name = yazd.0041.a
+		add_prestige = 10
+		stress_impact = {
+			gregarious = miniscule_stress_impact_loss
+			shy = miniscule_stress_impact_gain
+		}
+	}	
+	option = { # Don't join the dancing
+		name = yazd.0041.b
+		add_piety = 10
+		stress_impact = {
+			shy = miniscule_stress_impact_loss
+			gregarious = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+
+
+
+# Sadeh begins (Chak Chak)
+yazd.0042 = {
+	type = character_event
+	title = yazd.0042.t
+	desc = yazd.0042.desc
+	theme = RICE_theme_yazd_tower_of_silence
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	immediate = {		
+		title:c_yazd = {
+			save_scope_as = yazd_county
+		}
+	}
+	
+	option = { # Ok
+		name = yazd.0042.a
+		hidden_effect = {
+			# Random Chak-Chak events
+			random = {
+				chance = 30
+				trigger_event = {
+					id = yazd.0043
+					days = { 5 22 }
+				}
+			}
+			random = {
+				chance = 30
+				trigger_event = {
+					id = yazd.0044
+					days = { 5 22 }
+				}
+			}
+			random = {
+				chance = 30
+				trigger_event = {
+					id = yazd.0045
+					days = { 5 22 }
+				}
+			}
+			random = {
+				chance = 30
+				trigger_event = {
+					id = yazd.0046
+					days = { 5 22 }
+				}
+			}
+			random = {
+				chance = 30
+				trigger_event = {
+					id = yazd.0047
+					days = { 5 22 }
+				}
+			}
+		}
+		hidden_effect = {
+			# Random Sadeh events - less likely than normal Sadeh
+			random = {
+				chance = 15
+				trigger_event = {
+					id = yazd.0034
+					days = { 5 22 }
+				}
+			}
+			random = {
+				chance = 15
+				trigger_event = {
+					id = yazd.0035
+					days = { 5 22 }
+				}
+			}
+			random = {
+				chance = 15
+				trigger_event = {
+					id = yazd.0036
+					days = { 5 22 }
+				}
+			}
+			random = {
+				chance = 15
+				trigger_event = {
+					id = yazd.0037
+					days = { 5 22 }
+				}
+			}
+			random = {
+				chance = 15
+				trigger_event = {
+					id = yazd.0038
+					days = { 5 22 }
+				}
+			}
+			random = {
+				chance = 15
+				trigger_event = {
+					id = yazd.0039
+					days = { 5 22 }
+				}
+			}
+			random = {
+				chance = 15
+				trigger_event = {
+					id = yazd.0040
+					days = { 5 22 }
+				}
+			}
+			random = {
+				chance = 15
+				trigger_event = {
+					id = yazd.0041
+					days = { 5 22 }
+				}
+			}
+		}
+		trigger_event = {
+			id = yazd.0032
+			days = { 25 30 }
+		}
+	}
+}
+
+
+# Drinking from the sacred water
+yazd.0043 = {
+	type = character_event
+	title = yazd.0043.t
+	desc = yazd.0043.desc
+	theme = RICE_theme_desert_cave
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = yazd.0043.a
+		add_piety = 20
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+	}
+}
+
+
+# Tree in Chak-Chak
+yazd.0044 = {
+	type = character_event
+	title = yazd.0044.t
+	desc = yazd.0044.desc
+	theme = RICE_theme_qanat_canal
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	option = { # Ok
+		name = yazd.0044.a
+		add_piety = 20
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+	}
+}
+
+
+# Holy fire in Chak-Chak
+yazd.0045 = {
+	type = character_event
+	title = yazd.0045.t
+	desc = yazd.0045.desc
+	theme = faith
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = yazd.0045.a
+		add_piety = 20
+	}
+}
+
+
+# Thinking of good thoughts, good words, and good deeds
+yazd.0046 = {
+	type = character_event
+	title = yazd.0046.t
+	desc = yazd.0046.desc
+	theme = faith
+	
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	option = { # Ok
+		name = yazd.0046.a
+		add_piety = 15
+		add_prestige = 15
+	}
+}
+
+
+# Donate or nah?
+yazd.0047 = {
+	type = character_event
+	title = yazd.0047.t
+	desc = yazd.0047.desc
+	theme = faith
+	
+	left_portrait = root
+	
+	option = { # Ok
+		name = yazd.0047.a
+		add_piety = -25
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+			compassionate = miniscule_stress_impact_gain
+			just = miniscule_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+			honest = miniscule_stress_impact_gain
+		}
+	}	
+	option = { # Give a little donation
+		name = yazd.0047.b
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 15			
+			}
+		}
+		remove_short_term_gold = 15
+		add_piety = 25
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+			greedy = miniscule_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+			deceitful = miniscule_stress_impact_gain
+			arbitrary = miniscule_stress_impact_gain
+		}
+	}	
+	option = { # Give a medium donation
+		name = yazd.0047.c
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 30			
+			}
+		}
+		remove_short_term_gold = 30
+		add_piety = 50
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			greedy = minor_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+			deceitful = miniscule_stress_impact_gain
+			arbitrary = miniscule_stress_impact_gain
+		}
+	}	
+	option = { # Give a large donation
+		name = yazd.0047.d
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 45			
+			}
+		}
+		remove_short_term_gold = 45
+		add_piety = 75
+		stress_impact = {
+			cynical = medium_stress_impact_gain
+			greedy = medium_stress_impact_gain
+			callous = minor_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+			deceitful = miniscule_stress_impact_gain
+			arbitrary = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+
+######################################################################################
+# 
+# FLAVOR EVENTS
+# 
+# yazd.0050-yazd.0099 reserved
+# 
+######################################################################################
+
+# Legends of lost treasure nearby
+yazd.0050 = {
+	type = character_event
+	title = yazd.0050.t
+	desc = yazd.0050.desc
+	theme = RICE_theme_yazd_tower_of_silence
+	override_icon = { reference = "gfx/interface/icons/event_types/type_stewardship.dds" }
+	
+	right_portrait = root
+	
+	trigger = {
+		has_title = title:c_yazd
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = fickle
+		}
+		modifier = {
+			add = -0.2
+			has_trait = stubborn
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+	
+	immediate = {		
+		title:c_yazd = {
+			save_scope_as = yazd_county
+		}	
+	}
+
+	option = { # ok
+		name = yazd.0050.a
+		add_piety = 25
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+		}
+		add_character_modifier = {
+			modifier = RICE_yazd_treasure_reports
+			years = 5
+		}
+	}
+	option = { # ok
+		name = yazd.0050.b
+		add_prestige = 25
+		stress_impact = {
+			trusting = miniscule_stress_impact_gain
+		}
+		add_character_modifier = {
+			modifier = RICE_yazd_treasure_reports
+			years = 5
+		}
+	}
+}
+
+
+
+# Qanat makers of Yazd are doing well
+yazd.0051 = {
+	type = character_event
+	title = yazd.0051.t
+	desc = yazd.0051.desc
+	theme = RICE_theme_qanat_canal
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	trigger = {
+		has_title = title:c_yazd
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+	}
+	
+	immediate = {		
+		title:c_yazd = {
+			save_scope_as = yazd_county
+		}	
+	}
+
+	option = { # ok
+		name = yazd.0051.a
+		title:c_yazd = {
+			add_county_modifier = {
+				modifier = RICE_yazd_qanat_makers_contracts
+				years = 8
+			}
+		}
+	}
+}
+
+
+# Meeting with important scholars in Yazd
+yazd.0052 = {
+	type = character_event
+	title = yazd.0052.t
+	desc = yazd.0052.desc
+	theme = learning
+	override_background = { event_background = garden }
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		has_title = title:c_yazd
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+	
+	immediate = {		
+		title:c_yazd = {
+			save_scope_as = yazd_county
+		}	
+	}
+
+	option = { # ok
+		name = yazd.0052.a
+		add_piety = 15
+		add_prestige = 15
+	}
+	option = { # ok
+		name = yazd.0052.b
+		add_prestige = 30
+	}
+	option = { # ok
+		name = yazd.0052.c
+		add_piety = 30
+	}
+}
+
+
+
+
+# Replace old Zoroastrian temple with a non-Zoroastrian one or not?
+yazd.0053 = {
+	type = character_event
+	title = yazd.0053.t
+	desc = yazd.0053.desc
+	theme = RICE_theme_yazd_tower_of_silence
+	
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	
+	trigger = {
+		has_title = title:c_yazd
+		NOT = { religion = religion:zoroastrianism_religion }
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+	
+	immediate = {		
+		title:c_yazd = {
+			save_scope_as = yazd_county
+		}	
+	}
+
+	option = { # Do it
+		name = yazd.0053.a
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 50			
+			}
+		}
+		remove_short_term_gold = 50
+		add_piety = 100
+		add_character_modifier = {
+			modifier = RICE_yazd_built_new_yazd_mosque
+			years = 10
+		}
+		title:c_yazd = {
+			add_county_modifier = {
+				modifier = RICE_yazd_new_yazd_mosque
+				years = 10
+			}
+		}
+		every_courtier_or_guest = {
+			limit = {
+				faith = root.faith
+				NOT = { has_trait = cynical }
+				NOT = { has_trait = compassionate }
+				NOT = { has_trait = arbitrary }
+			}
+			add_opinion = {
+				target = root
+				modifier = RICE_yazd_new_yazd_mosque_muslim_opinion
+			}
+		}
+		every_courtier_or_guest = {
+			limit = {
+				religion = religion:zoroastrianism_religion
+			}
+			add_opinion = {
+				target = root
+				modifier = RICE_yazd_new_yazd_mosque_zoroastrian_opinion
+			}
+		}
+		stress_impact = {
+			just = minor_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+			compassionate = miniscule_stress_impact_gain
+		}
+	}
+	option = { # Don't do it
+		name = yazd.0053.b
+		#add_prestige = 50
+	}
+}
+
+
+
+# Sponsor building a new structure in Yazd or not?
+yazd.0054 = {
+	type = character_event
+	title = yazd.0054.t
+	desc = yazd.0054.desc
+	theme = RICE_theme_yazd_town
+	
+	left_portrait = root
+	
+	trigger = {
+		has_title = title:c_yazd
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+	}
+	
+	immediate = {		
+		title:c_yazd = {
+			save_scope_as = yazd_county
+		}	
+	}
+
+	option = { # Build a new house of worship
+		name = yazd.0054.a
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 40			
+			}
+		}
+		remove_short_term_gold = 40
+		add_piety = 100
+		add_character_modifier = {
+			modifier = RICE_yazd_built_house_of_worship
+			years = 10
+		}
+	}
+	option = { # Build a new school
+		name = yazd.0054.b
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 40			
+			}
+		}
+		remove_short_term_gold = 40
+		add_prestige = 100
+		add_character_modifier = {
+			modifier = RICE_yazd_built_school
+			years = 10
+		}
+	}
+	option = { # Build a new mausoleum
+		name = yazd.0054.c
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 40			
+			}
+		}
+		remove_short_term_gold = 40
+		add_piety = 50
+		add_prestige = 50
+		add_character_modifier = {
+			modifier = RICE_yazd_built_shrine
+			years = 10
+		}
+	}
+	option = { # Don't do it
+		name = yazd.0054.d
+	}
+}
+
+
+# Yazd silk is selling well
+yazd.0055 = {
+	type = character_event
+	title = yazd.0055.t
+	desc = yazd.0055.desc
+	theme = RICE_theme_khorasan_village
+	
+	left_portrait = root
+	
+	trigger = {
+		has_title = title:c_yazd
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+	}
+	
+	immediate = {		
+		title:c_yazd = {
+			save_scope_as = yazd_county
+		}	
+	}
+
+	option = { # Ok
+		name = yazd.0055.a
+		title:c_yazd = {
+			add_county_modifier = {
+				modifier = RICE_yazd_silk_boom
+				years = 10
+			}
+		}
+	}
+}
+
+
+
+
+# Come to the Sarv-e Abarkuh, an ancient cypress tree said to be planted by Zoroaster
+yazd.0056 = {
+	type = character_event
+	title = yazd.0056.t
+	desc = yazd.0056.desc
+	theme = RICE_theme_khorasan_village
+	
+	left_portrait = root
+	
+	trigger = {
+		has_title = title:c_yazd
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+	}
+	
+	immediate = {		
+		title:c_yazd = {
+			save_scope_as = yazd_county
+		}		
+		title:b_abarquh = {
+			save_scope_as = abarquh_barony
+		}	
+	}
+
+	option = { # Doubt Zoroaster planted it
+		name = yazd.0056.a
+		trigger = {
+			religion = religion:zoroastrianism_religion
+		}
+		add_prestige = 25
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+		}
+	}
+	option = { # It's a cool tree
+		name = yazd.0056.b
+		trigger = {
+			NOT = { religion = religion:zoroastrianism_religion }
+		}
+		add_prestige = 25
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+		}
+	}
+	option = { # Relax here
+		name = yazd.0056.c
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			calm = miniscule_stress_impact_loss
+			lazy = miniscule_stress_impact_loss
+			content = miniscule_stress_impact_loss
+			shy = miniscule_stress_impact_loss
+		}
+	}
+	option = { # Don't care about it too much
+		name = yazd.0056.d
+		trigger = {
+			NOT = { religion = religion:zoroastrianism_religion }
+		}
+		add_piety = 25
+		stress_impact = {
+			compassionate = miniscule_stress_impact_gain
+		}
+	}
+	option = { # Pray here
+		name = yazd.0056.e
+		trigger = {
+			religion = religion:zoroastrianism_religion
+		}
+		add_piety = 25
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+
+# Someone is praising the wonders of Yazd
+yazd.0057 = {
+	type = character_event
+	title = yazd.0057.t
+	desc = yazd.0057.desc
+	theme = RICE_theme_yazd_town
+	
+	right_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	
+	trigger = {
+		has_title = title:c_yazd
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+	}
+	
+	immediate = {		
+		title:c_yazd = {
+			save_scope_as = yazd_county
+		}
+	}
+
+	option = { # ok
+		name = yazd.0057.a
+		add_prestige = 20
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+		}
+	}
+	option = { # ok
+		name = yazd.0057.b
+		add_piety = 20
+		stress_impact = {
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+
+
+# Enjoying baklava from Yazd, which is said to be the best baklava in Iran
+yazd.0058 = {
+	type = character_event
+	title = yazd.0058.t
+	desc = yazd.0058.desc
+	theme = RICE_theme_yazd_town
+	
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+	
+	trigger = {
+		has_title = title:c_yazd
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+	}
+	
+	immediate = {		
+		title:c_yazd = {
+			save_scope_as = yazd_county
+		}
+	}
+
+	option = { # ok
+		name = yazd.0058.a
+		add_character_modifier = {
+			modifier = RICE_yazd_baklava
+			years = 5
+		}
+		stress_impact = {
+			base = minor_stress_impact_loss
+			gluttonous = minor_stress_impact_loss
+			patient = miniscule_stress_impact_loss
+			lazy = miniscule_stress_impact_loss
+			content = miniscule_stress_impact_loss
+			calm = miniscule_stress_impact_loss
+		}
+	}
+}
+
+
+# Returning after a trek to the desert near Yazd
+yazd.0059 = {
+	type = character_event
+	title = yazd.0059.t
+	desc = yazd.0059.desc
+	theme = RICE_theme_iranian_desert
+	
+	left_portrait = {
+		character = root
+		animation = personality_irrational
+	}
+	
+	trigger = {
+		has_title = title:c_yazd
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+		modifier = {
+			add = 0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = gluttonous
+		}
+	}
+	
+	immediate = {		
+		title:c_yazd = {
+			save_scope_as = yazd_county
+		}
+	}
+
+	option = { # ok
+		name = yazd.0059.a
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			lazy = miniscule_stress_impact_loss
+		}
+	}
+}
+
+
+
+
+
+
