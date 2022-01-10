@@ -1,12 +1,14 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.4.4.a "Amazigh" (Released 12/16/21)
+## Latest Version: Version 1.4.5 "Avesta" (Released 1/10/22)
 
-**Newest Flavor Packs - Sus: Door of the Sahara & Guanche: The Fortunate Isles**
+**Newest Flavor Pack - Yazd: Abode of Worship**
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com)
 
-_Though ‘Berber’ is commonly used to describe the indigenous inhabitants of the Maghreb, even in scholarly literature, the term ‘Amazigh’ is the appellation they often used to describe themselves. They speak a branch of the Afro-Asiatic languages and historically have spread across all of North Africa, from the Guanches of the Canary Islands to the native inhabitants of Siwa Oasis in Egypt._
+_“I profess myself a worshipper of Ahura Mazda and a follower of Zoroaster [...] I pledge myself to good thoughts, good words, and good deeds.”_
+
+_Yasna 12.8_
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. The guiding philosophy of RICE is to keep a tight, focused scope that doesn’t change gameplay significantly, but adds more flavor across the world, especially for lesser-known places, peoples, and histories.
 
@@ -28,6 +30,7 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 - [Socotra: Isle of Dragon's Blood](https://docs.google.com/document/d/e/2PACX-1vRs_x_9wjofcveP_yhymlL5TWPB1UdSQyi_C_M1z4dWpFg3lqHgHwGpFD2xfkf0-RdsKIlRekQsLD4s/pub)
 - [Sus: Door of the Sahara](https://docs.google.com/document/d/e/2PACX-1vQo9H7CnvJxD-KEjrwKEZ6GUUAJSqtF8-3oHW8YyoOntDliMBNHEOxRMNJRt8VFdpNs9LOGdgX9jCtZ/pub)
 - [Tuyuhun: Horsemen of Qinghai](https://docs.google.com/document/d/e/2PACX-1vSLTlVseJqHCut1xBqm9tY2AVgfunhUTX0m8oN-OvHpMgexvpbFO8OIXVC2xDkgo9UvMYnv4qnjBUqP/pub)
+- [Yazd: Abode of Worship](https://docs.google.com/document/d/e/2PACX-1vSPDkkP1PqCoPsi_HM29C5MM5L-as_SyKkmx_jNtOEqoW2mQx2APneBmbHNhi5hNePLHAxqm9QTm8y3/pub)
 - [Yorkshire: To Scarborough Fair](https://docs.google.com/document/d/e/2PACX-1vQpl_JscDm-mK927vAdVA3-EUVdZ6A_htNKej7_cAKC1NcnYxHz8uvOT-bidmyLCNrfrYAsPun1QW3X/pub)
 
 
@@ -44,26 +47,18 @@ NOTE: If you are re-installing a mod manually, delete the old version of the mod
 
 ## Latest Changelog
 
-### Versioin 1.4.4.a Hotfix
+### Versioin 1.4.5 "Avesta"
 
-- Several counties now start off with Amazigh and Illuism (Tuareg) paganism present in the 867 bookmark to be consistent with BAP
-- Added more French translations, in particular for Yorkshire and other misc stuff (thanks to French translators!)
-- Fixed Butr having no innovations at game start (only affects new games)
-- Fixed pronoun localization issue with Guanche witch deity
-
-### Version 1.4.4 "Amazigh"
-
-- Added Sus Flavor Pack: Door of the Sahara
-- Added Guanche Flavor Pack: Edge of the World
-- Added 5 new Middle Eastern themed music tracks
-- Added a very minor county modifier to Myra, “Land of St. Nicholas” as a Christmas easter egg
-- Added French translation to some of the Chios and Yorkshire Flavor Packs
-- Tweaked Zunbil situation in 867 to be somewhat more historically accurate - there are now two playable Zunbil cousins, one Muslim and one Zunist, with a startup event explaining their situation (thanks to Tundragrass on Discord for pointing this out)
-- Sufri is now male-dominated instead of gender equal
-- Added global variable to detect RICE (for Stik)
-- Split RICE landed titles into separate files per flavor pack
-- Fixed missing icons for Stamford Bull Run and Pilgrimage to Beverley activities/decisions
-- Fixed it being impossible to upgrade the Dragon Blood Forest duchy building in Socotra
-- Fixed the Kingdoms of Socotra and Tuyuhun not having the “Kingdom of” prefix
-- Fixed Zunbils and Azur Jamshid having clan government (hopefully for real this time)
+- **Added Yazd Flavor Pack: Abode of Worship**
+- Reduced the development growth bonus of the Salterns of Guérande modifier
+- Dezawist clerical appointment is changed to temporal revocable to be consistent with other pagan faiths
+- Trade legacy perks no longer have bullet points awkwardly in their description
+- Several decisions can no longer be taken by baron-tier rulers
+- Erect Monument to Homer now shows the modifier bonuses you get for taking the decision
+- Changed activity icon for the Guanche rain ritual decision
+- Uniting the Canaries now requires being any Amazigh faith instead of just Guanche
+- Rulers of Madeira and Fuerteventura randomly generated at game start now begin with a bit of prestige and piety
+- Transferred most setup code to scripted effects for convenience and better organization
+- Fixed gender equality rules not applying to Taoist, Mahayana, Vajrasana, and Sufri faiths due to RICE's default gender doctrine tweaks
+- Fixed Ahaggar holy site and holy building slot not lining up properly, so Ahaggar now starts with a temple holding
 - Miscellaneous bugfixes
