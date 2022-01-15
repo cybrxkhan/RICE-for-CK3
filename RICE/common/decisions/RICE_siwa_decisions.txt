@@ -207,3 +207,86 @@ RICE_visit_fountain_of_the_sun = {
 		}
 	}
 }
+
+
+
+
+RICE_siwa_restore_the_necropolis_of_el_bagawat = {
+	picture = "gfx/interface/illustrations/decisions/decision_small_town_arabic.dds"
+	major = yes
+	desc = RICE_siwa_restore_the_necropolis_of_el_bagawat_desc
+
+	ai_check_interval = 64
+
+	is_shown = {
+		is_landed = yes
+		has_title = title:c_kharga
+		religion = religion:christianity_religion
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_siwa_restore_the_necropolis_of_el_bagawat_flag
+			}
+		}
+	}
+
+	is_valid = {
+		has_title = title:c_kharga
+		prestige_level >= 3
+		religion = religion:christianity_religion
+		OR = {
+			highest_held_title_tier >= tier_duchy
+			top_liege = {
+				highest_held_title_tier >= tier_kingdom
+				religion = religion:christianity_religion
+			}
+		}
+		title:c_kharga = {
+			religion = religion:christianity_religion
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value }
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	effect = {
+	
+		hidden_effect = {
+			title:c_kharga = { save_scope_as = kharga_county }
+		}
+		
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_siwa_restore_the_necropolis_of_el_bagawat_flag
+		}
+
+		RICE_siwa_necropolis_of_el_bagawat_effect = yes	
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_siwa_restore_the_necropolis_of_el_bagawat_context_tooltip
+		}
+		
+		trigger_event = siwa.0013
+
+		add_to_list = notification_sent
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+
