@@ -6,9 +6,7 @@
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com)
 
-_“I profess myself a worshipper of Ahura Mazda and a follower of Zoroaster [...] I pledge myself to good thoughts, good words, and good deeds.”_
-
-_Yasna 12.8_
+_The Dhow is a type of sailing vessel traditionally used throughout the Indian Ocean by a variety of peoples, such as the Arabs, Persians, Swahili, Sindhi, and more, it played a key role in the growth of the so-called maritime Silk Road. Thousands of sailors, merchants, pilgrims, slaves, adventurers, and more journeyed across the Indian Ocean in these dependable ships over the centuries._
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. The guiding philosophy of RICE is to keep a tight, focused scope that doesn’t change gameplay significantly, but adds more flavor across the world, especially for lesser-known places, peoples, and histories.
 
