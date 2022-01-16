@@ -1,6 +1,6 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.4.5 "Avesta" (Released 1/10/22)
+## Latest Version: Version 1.4.6 "Dhow" (Released 1/10/22)
 
 **Newest Flavor Pack - Yazd: Abode of Worship**
 
@@ -45,18 +45,15 @@ NOTE: If you are re-installing a mod manually, delete the old version of the mod
 
 ## Latest Changelog
 
-### Versioin 1.4.5 "Avesta"
+### Versioin 1.4.6 "Dhow"
 
-- **Added Yazd Flavor Pack: Abode of Worship**
-- Reduced the development growth bonus of the Salterns of Guérande modifier
-- Dezawist clerical appointment is changed to temporal revocable to be consistent with other pagan faiths
-- Trade legacy perks no longer have bullet points awkwardly in their description
-- Several decisions can no longer be taken by baron-tier rulers
-- Erect Monument to Homer now shows the modifier bonuses you get for taking the decision
-- Changed activity icon for the Guanche rain ritual decision
-- Uniting the Canaries now requires being any Amazigh faith instead of just Guanche
-- Rulers of Madeira and Fuerteventura randomly generated at game start now begin with a bit of prestige and piety
-- Transferred most setup code to scripted effects for convenience and better organization
-- Fixed gender equality rules not applying to Taoist, Mahayana, Vajrasana, and Sufri faiths due to RICE's default gender doctrine tweaks
-- Fixed Ahaggar holy site and holy building slot not lining up properly, so Ahaggar now starts with a temple holding
-- Miscellaneous bugfixes
+- Added two new faiths (that only appear with random character spawn from the Socotra Flavor Pack): Fomba Gasy (Malagasy), and Mwarism (Shona)
+- Added decision to Restore the Necropolis of El-Bagawat for Christian rulers of Kharga
+- Added a secret, optional decision to renovate Shri Badat’s palace instead of razing it, at the cost of losing the ability for anyone to celebrate Tumshiling forever (only available to characters who meet certain trait requirements)
+- Added historical context tooltips to give brief overviews of the histories of Thabit ibn-Qurra, ibn Nabhan, the Banijurids, Azur Jamshid, Zunbils, and the various counts of Badakhshan in 867
+- Assyrian and Mizrahi cultures now start the game with the Qanat innovation
+- Iberian culture group and Sicilian and Sephardi cultures can now discover the Qanat innovation (but do not start the game with it)
+- Runaway slave courtiers spawned in the Indian Ocean now sometimes have an appropriate religion matching their culture, rather than the potential employer’s religion
+- Darkened icons for most pagan faiths in RICE to be more consistent with vanilla icons
+- Increased chances AI will take the decision to Raze Shri Badat’s palace
+- Miscellaneous bugfxies as usual
