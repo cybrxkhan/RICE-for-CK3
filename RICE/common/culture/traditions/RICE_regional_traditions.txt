@@ -1,0 +1,256 @@
+﻿#######################
+# CULTURAL TRADITIONS #
+#######################
+
+######################
+# MAA Traditions 	 #
+######################
+
+tradition_RICE_siberian_survivalists = {
+	category = regional
+
+	layers = {
+		0 = martial
+		1 = mena
+		4 = forest.dds
+	}
+	
+	is_shown = {
+		has_cultural_pillar = heritage_siberian
+	}
+	can_pick = {
+		has_cultural_pillar = heritage_siberian
+	}
+	
+	parameters = {
+		unlock_RICE_siberian_hunters = yes
+		winter_soldier_trait_more_common = yes
+		winter_trait_bonuses = yes
+		can_recruit_winter_specialist = yes
+	}
+
+	character_modifier = {
+		health = 0.25
+	}	
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = { value = 100 }
+}
+
+
+tradition_RICE_swahili_contacts = {
+	category = regional
+
+	layers = {
+		0 = steward
+		1 = mena
+		4 = ship.dds
+	}
+	
+	is_shown = {
+		has_cultural_pillar = heritage_east_bantu
+	}
+	can_pick = {
+		has_cultural_pillar = heritage_east_bantu
+	}
+	
+	parameters = {
+		unlock_RICE_swahili_sailors = yes
+		wanderers_gain_extra_economic_skills = yes
+		wanderers_learn_languages = yes
+		extra_language_cap = yes
+	}
+
+	character_modifier = {
+		diplomacy = 1
+		diplomatic_range_mult = 0.1
+	}	
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = { value = 100 }
+}
+
+
+
+tradition_RICE_ubiquity_of_poetry = {
+	category = regional
+
+	layers = {
+		0 = diplo
+		1 = mena
+		4 = desert.dds
+	}
+	
+	is_shown = {
+		any_culture_county = {
+			title_province = {
+				OR = {
+					geographical_region = world_middle_east_arabia
+					geographical_region = ghw_region_horn_of_africa
+				}
+			}
+		}
+	}
+	can_pick = {
+		any_culture_county = {
+			title_province = {
+				OR = {
+					geographical_region = world_middle_east_arabia
+					geographical_region = ghw_region_horn_of_africa
+				}
+			}
+		}
+	}
+	
+	parameters = {
+		poet_trait_more_common = yes
+		unlock_RICE_decision_poetry_contest = yes
+		diplomacy_education_better_outcomes = yes
+	}
+
+	character_modifier = {
+		diplomacy = 2
+		owned_personal_scheme_success_chance_add = 5
+	}	
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						any_in_list = { list = traits this = flag:ethos_courtly }
+						any_in_list = { list = traits this = flag:ethos_communal }
+						any_in_list = { list = traits this = flag:ethos_spiritual }
+						any_in_list = { list = traits this = flag:ethos_egalitarian }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_courtly_communal_or_spiritual_desc
+				}
+			}
+			if = {
+				limit = {
+					trigger_if = {
+						limit = {
+							scope:character = {
+								is_ai = no
+							}
+						}
+						NOT = {
+							any_ruler = {
+								count >= 3
+								culture = prev
+								primary_title.tier >= tier_county
+								has_trait = poet
+							}
+						}
+					}
+					trigger_else = {
+						always = no
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = rulers_with_poet_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	ai_will_do = { value = 50 }
+}
+
+
+tradition_RICE_xianbei_scions = {
+	category = regional
+
+	layers = {
+		0 = diplo
+		1 = mena
+		4 = crown.dds
+	}
+	
+	is_shown = {
+		any_parent_culture_or_above = {
+			OR = {
+				this = culture:tuyuhun
+				this = culture:qiang
+			}
+		}
+	}
+	can_pick = {
+		any_parent_culture_or_above = {
+			OR = {
+				this = culture:tuyuhun
+				this = culture:qiang
+			}
+		}
+	}
+	
+	parameters = {
+		unlock_rice_decision_nadun_festival = yes
+		unlock_rice_decision_restore_tuyuhun_kingdom = yes
+		extra_language_cap = yes
+	}
+
+	character_modifier = {
+		monthly_county_control_change_factor = 0.2
+		different_culture_opinion = 10
+	}	
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						any_in_list = { list = traits this = flag:ethos_courtly }
+						any_in_list = { list = traits this = flag:ethos_spiritual }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_courtly_communal_or_spiritual_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	ai_will_do = { value = 50 }
+}
+
+

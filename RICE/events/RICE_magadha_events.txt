@@ -1,0 +1,3448 @@
+﻿###############################################################################
+# 
+# YAZD/KERMAN
+# 
+# magadha.0000-magadha.0019			Setup, history events, Miscellaneous decisions
+# magadha.0020-magadha.0029			Pithipati decision and events
+# magadha.0030-magadha.0049			Mahabodhi Decisions
+# 	magadha.0030-magadha.0039		Bodhi Tree Bathing
+# 	magadha.0040-magadha.0049		Mahabodhi Donations
+# magadha.0050-magadha.0069			Life Release for Mahayana/Vajrayana Buddhists
+# magadha.0070-magadha.0089			Vassa Retreat for Theravada/Pudgalavada Buddhists
+# magadha.0090-magadha.0099			Nalanda Donations
+# magadha.0100-magadha.0149			Generic Flavor Events
+# 
+# 
+###############################################################################
+
+namespace = magadha
+
+
+
+######################################################################################
+# 
+# SETUP EVENTS AND MISC STUFF
+# 
+# magadha.0000-magadha.0019
+# 
+######################################################################################
+
+
+# What kind of sacred site to build?
+magadha.0010 = {
+	type = character_event
+	title = magadha.0010.t
+	desc = magadha.0010.desc
+	theme = faith
+	override_background = { event_background = throne_room }
+	
+	left_portrait = root
+
+	immediate = {
+		add_character_flag = RICE_magadha_currently_building_buddhist_site
+	}
+	
+	option = { # Temple
+		name = magadha.0010.a
+		add_character_flag = RICE_magadha_building_buddhist_temple
+		custom_tooltip = magadha.0010.tooltip.temple_1
+		custom_tooltip = magadha.0010.tooltip.temple_2
+	}	
+	option = { # Monastery
+		name = magadha.0010.b
+		add_character_flag = RICE_magadha_building_buddhist_monastery
+		custom_tooltip = magadha.0010.tooltip.monastery_1
+		custom_tooltip = magadha.0010.tooltip.monastery_2
+	}	
+	option = { # Stupa
+		name = magadha.0010.c
+		add_character_flag = RICE_magadha_building_buddhist_stupa
+		custom_tooltip = magadha.0010.tooltip.stupa_1
+		custom_tooltip = magadha.0010.tooltip.stupa_2
+	}	
+	option = { # Pagoda
+		name = magadha.0010.d
+		trigger = {
+			faith = { has_doctrine_parameter = RICE_pagodas_unlocked_active }
+		}
+		add_character_flag = RICE_magadha_building_buddhist_pagoda
+		custom_tooltip = magadha.0010.tooltip.pagoda_1
+		custom_tooltip = magadha.0010.tooltip.pagoda_2
+		custom_tooltip = magadha.0010.tooltip.pagoda_3
+		custom_tooltip = magadha.0010.tooltip.pagoda_4
+	}
+
+	after = {
+		trigger_event = magadha.0011
+	}
+}
+
+
+# How big will the sacred site be?
+magadha.0011 = {
+	type = character_event
+	title = magadha.0011.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_building_buddhist_temple
+				}
+				desc = magadha.0011.desc.temple
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_building_buddhist_monastery
+				}
+				desc = magadha.0011.desc.monastery
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_building_buddhist_stupa
+				}
+				desc = magadha.0011.desc.stupa
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_building_buddhist_pagoda
+				}
+				desc = magadha.0011.desc.pagoda
+			}
+		}
+		desc = magadha.0011.desc.conclusion
+	}
+	theme = faith
+	override_background = { event_background = throne_room }
+	
+	left_portrait = root
+	
+	# immediate = {
+	# 	capital_county = {
+	# 		save_scope_as = county
+	# 	}
+	# }
+	
+	option = { # Small
+		name = magadha.0011.a
+		if = {
+			limit = {
+				has_character_flag = RICE_magadha_building_buddhist_pagoda
+			}
+			remove_short_term_gold = 125
+		}
+		else = {
+			remove_short_term_gold = 100
+		}
+		add_character_flag = RICE_magadha_building_buddhist_site_small
+		# Show the effects
+		custom_tooltip = magadha.0011.disclaimer
+		show_as_tooltip = {
+			RICE_magadha_build_holy_site_small = yes
+		}
+	}	
+	option = { # Medium
+		name = magadha.0011.b
+		trigger = {
+			OR = {
+				is_ai = no
+				AND = {
+					NOT = { has_character_flag = RICE_magadha_building_buddhist_pagoda }
+					short_term_gold >= 200
+				}		
+				AND = {
+					has_character_flag = RICE_magadha_building_buddhist_pagoda
+					short_term_gold >= 250
+				}		
+			}
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_magadha_building_buddhist_pagoda
+			}
+			remove_short_term_gold = 250
+		}
+		else = {
+			remove_short_term_gold = 200
+		}
+		add_character_flag = RICE_magadha_building_buddhist_site_medium
+		# Show the effects
+		custom_tooltip = magadha.0011.disclaimer
+		show_as_tooltip = {
+			RICE_magadha_build_holy_site_medium = yes
+		}
+	}	
+	option = { # Large
+		name = magadha.0011.c
+		trigger = {
+			OR = {
+				is_ai = no
+				AND = {
+					NOT = { has_character_flag = RICE_magadha_building_buddhist_pagoda }
+					short_term_gold >= 375
+				}		
+				AND = {
+					has_character_flag = RICE_magadha_building_buddhist_pagoda
+					short_term_gold >= 300
+				}		
+			}
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_magadha_building_buddhist_pagoda
+			}
+			remove_short_term_gold = 375
+		}
+		else = {
+			remove_short_term_gold = 300
+		}
+		add_character_flag = RICE_magadha_building_buddhist_site_large
+		# Show the effects
+		custom_tooltip = magadha.0011.disclaimer
+		show_as_tooltip = {
+			RICE_magadha_build_holy_site_large = yes
+		}
+	}
+
+	after = {
+		trigger_event = {
+			id = magadha.0012
+			months = { 11 25 }
+		}
+	}
+
+}
+
+
+# The site is built
+magadha.0012 = {
+	type = character_event
+	title = magadha.0012.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_building_buddhist_temple
+				}
+				desc = magadha.0012.desc.temple
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_building_buddhist_monastery
+				}
+				desc = magadha.0012.desc.monastery
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_building_buddhist_stupa
+				}
+				desc = magadha.0012.desc.stupa
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_building_buddhist_pagoda
+				}
+				desc = magadha.0012.desc.pagoda
+			}
+		}
+	}
+	theme = faith
+	
+	left_portrait = root
+
+	trigger = {
+		is_alive = yes
+		is_landed = yes
+		religion = religion:buddhism_religion
+	}
+
+	on_trigger_fail = { #Trigger different flavor if you switched religions
+		if = {
+			limit = {
+				NOT = { religion = religion:buddhism_religion }
+			}
+			trigger_event = magadha.0013
+		}
+		# Clear flags just in case
+		else = {
+			RICE_magadha_build_holy_site_clear_flags = yes
+		}
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"	
+	}
+	
+	option = { # Ok
+		name = magadha.0012.a
+		if = {
+			limit = {
+				has_character_flag = RICE_magadha_building_buddhist_site_small
+			}
+			RICE_magadha_build_holy_site_small = yes
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_magadha_building_buddhist_site_medium
+			}
+			RICE_magadha_build_holy_site_medium = yes
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_magadha_building_buddhist_site_large
+			}
+			RICE_magadha_build_holy_site_large = yes
+		}
+	}
+
+	after = {
+		RICE_magadha_build_holy_site_clear_flags = yes
+	}
+
+}
+
+
+# You switched religions
+magadha.0013 = {
+	type = character_event
+	title = magadha.0013.t
+	desc = magadha.0013.desc
+	theme = faith
+	
+	left_portrait = root
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"	
+	}
+	
+	option = { # Keep the structure
+		name = magadha.0013.a
+		custom_tooltip = magadha.0013.a.tooltip
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+		add_prestige = 150
+		add_piety = -150
+		if = {
+			limit = {
+				has_character_flag = RICE_magadha_building_buddhist_site_small
+			}
+			RICE_magadha_build_holy_site_small_converted = yes
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_magadha_building_buddhist_site_medium
+			}
+			RICE_magadha_build_holy_site_medium_converted = yes
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_magadha_building_buddhist_site_large
+			}
+			RICE_magadha_build_holy_site_large_converted = yes
+		}
+	}
+	option = { # Get rid of it
+		name = magadha.0013.b
+		custom_tooltip = magadha.0013.b.tooltip
+		stress_impact = {
+			just = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+		}
+		add_piety = 150
+	}
+
+	after = {
+		RICE_magadha_build_holy_site_clear_flags = yes
+	}
+
+}
+
+
+
+# Transform Rajgir
+magadha.0014 = {
+	type = character_event
+	title = magadha.0014.t
+	desc = magadha.0014.desc
+	theme = RICE_theme_magadha_landscape
+	override_icon = {
+		reference = "gfx/interface/icons/event_types/type_faith.dds"
+	}
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_sacredrite
+		title:b_rajagrha = { #For loc.
+			save_scope_as = rajgir_barony
+		}
+		RICE_magadha_convert_rajgir_hot_springs_effect = yes
+	}
+	
+	option = { # Ok
+		name = magadha.0014.a
+	}
+}
+
+
+
+
+# Setup activity
+magadha.0015 = {
+	type = character_event
+	title = magadha.0015.t
+	desc = magadha.0015.desc
+	theme = friendly
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	immediate = {
+		title:b_rajagrha = { #For loc.
+			save_scope_as = rajgir_barony
+		}
+		# Stop characters from planning multiple activities at once
+		add_character_flag = planning_an_activity
+	}
+	
+	option = { # Ok
+		name = magadha.0015.a
+		# Choose appropriate location
+		title:b_rajagrha.title_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_magadha_rajgir_hot_springs_visit
+			}	
+		}
+	}	
+}
+
+
+# Day of the Springs visit
+magadha.0016 = {
+	type = character_event
+	title = magadha.0016.t
+	desc = magadha.0016.desc
+	theme = RICE_theme_jungle_generic
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	immediate = {
+		title:b_rajagrha = { #For loc.
+			save_scope_as = rajgir_barony
+		}
+	}
+	
+	option = { # Ok
+		name = magadha.0016.a
+		RICE_magadha_visit_rajgir_effect = yes
+	}
+	
+	after = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}	
+}
+
+
+
+
+######################################################################################
+# 
+# PITHIPATI
+# 
+# magadha.0020-magadha.0029			Pithipati decision and events
+# 
+######################################################################################
+
+# Become the Pithipati
+magadha.0020 = {
+	type = character_event
+	title = magadha.0020.t
+	desc = magadha.0020.desc
+	theme = RICE_theme_mahabodhi
+	
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+
+	immediate = {
+		# For loc
+		title:c_gaya = { save_scope_as = gaya_county }
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		RICE_magadha_claim_pithipati_effect = yes
+		save_scope_as = pithipati
+		custom_tooltip = magadha.0020.tooltip
+	}
+	
+	option = { # ok
+		name = magadha.0020.a
+		every_player = {
+			limit = {
+				is_ai = no
+				OR = {
+					title:c_gaya = {
+						squared_distance = {
+							target = root.capital_province
+							value <= squared_distance_medium
+						}
+					}
+					AND = {
+						religion = religion:buddhism_religion
+						capital_province = {
+							OR = {
+								geographical_region = world_india
+								geographical_region = world_burma
+								geographical_region = world_tibet
+							}
+						}
+					}
+				}	
+			}
+			trigger_event = magadha.0021
+		}
+	}
+}
+
+# Become the Pithipati notification
+magadha.0021 = {
+	type = character_event
+	title = magadha.0021.t
+	desc = magadha.0021.desc
+	theme = RICE_theme_mahabodhi
+	
+	left_portrait = {
+		character = scope:pithipati
+		animation = personality_honorable
+	}
+	
+	immediate = {
+		show_as_tooltip = {
+			RICE_magadha_claim_pithipati_effect = yes
+		}
+		custom_tooltip = magadha.0020.tooltip
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+	
+	option = { # ok
+		name = magadha.0021.a
+	}
+}
+
+# Change Gaya's Pithipati ruler modifier (for title transition)
+magadha.0022 = {
+	hidden = yes
+	
+	trigger = {
+		scope:title = title:c_gaya
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_magadha_pithipati_claimed_flag
+		}
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				religion = religion:buddhism_religion
+				scope:previous_holder = { 
+					is_alive = yes
+					has_character_modifier = RICE_magadha_pithipati_of_bodh_gaya
+					NOT = {
+						has_title = title:c_gaya
+					}
+				}
+			}
+			scope:previous_holder = { remove_character_modifier = RICE_magadha_pithipati_of_bodh_gaya }
+		}
+		add_character_modifier = {
+			modifier = RICE_magadha_pithipati_of_bodh_gaya
+		}
+	}
+}
+
+# Change Gaya's Pithipati ruler modifier (for religious conversion)
+magadha.0023 = {
+	hidden = yes
+	
+	trigger = {
+		has_title = title:c_gaya
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_magadha_pithipati_claimed_flag
+		}
+	}
+	
+	immediate = {
+		# Lose it if you convert away from Buddhism
+		if = {
+			limit = {
+				NOT = { religion = religion:buddhism_religion }
+			}
+			remove_character_modifier = RICE_magadha_pithipati_of_bodh_gaya
+		}
+		# Gain it if you convert away to Buddhism
+		if = {
+			limit = {
+				religion = religion:buddhism_religion
+			}
+			add_character_modifier = {
+				modifier = RICE_magadha_pithipati_of_bodh_gaya
+			}
+		}
+	}
+}
+
+
+
+######################################################################################
+# 
+# MAHABODHI DECISIONS
+# 
+# magadha.0030-magadha.0039		Bodhi Tree Bathing
+# magadha.0040-magadha.0049		Mahabodhi Donations
+# 
+######################################################################################
+
+
+
+# Prepare to go to Gaya
+magadha.0030 = {
+	type = character_event
+	title = magadha.0030.t
+	desc = magadha.0030.desc
+	theme = faith
+	override_background = { event_background = sitting_room }
+	
+	right_portrait = root
+	
+	immediate = {
+		title:c_gaya = { save_scope_as = gaya_county }
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+	}
+	
+	option = { # Ok
+		name = magadha.0030.a
+		# Choose appropriate location
+		title:b_bodh_gaya.title_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_magadha_wash_bodhi_tree
+			}	
+		}
+	}
+}
+
+# Wash the Bodhi Tree
+magadha.0031 = {
+	type = character_event
+	title = magadha.0031.t
+	desc = magadha.0031.desc
+	theme = RICE_theme_mahabodhi
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	trigger = {
+		religion = religion:buddhism_religion
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_sacredrite
+		title:c_gaya = { save_scope_as = gaya_county }
+		random_list = {
+			15 = { add_piety = 20 }
+			15 = { add_piety = 30 }
+			15 = { add_piety = 40 }
+			20 = { add_piety = 50 }
+			20 = { add_piety = 60 }
+			15 = { add_piety = 70 }
+			10 = { add_piety = 80 }
+			10 = { add_piety = 90 }
+			10 = { add_piety = 100 }
+		}
+	}
+	
+	
+	option = { # Ok
+		name = magadha.0031.a
+		custom_tooltip = magadha.0031.tooltip
+		hidden_effect = {
+			random = {
+				chance = 25
+				modifier = {
+					has_trait = cynical
+					add = -5
+				}
+				modifier = {
+					has_trait = zealous
+					add = 5
+				}
+				modifier = {
+					num_sinful_traits >= 1
+					add = -10
+				}
+				modifier = {
+					num_virtuous_traits >= 1
+					add = 10
+				}
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = magadha.0031.toast
+					random_list = {
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_magadha_inspired_bodhi_tree_ashoka
+								years = 4
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_magadha_inspired_bodhi_tree_mara
+								years = 4
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_magadha_inspired_bodhi_tree_sujata
+								years = 4
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_magadha_inspired_bodhi_tree_pushyamitra
+								years = 4
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_magadha_inspired_bodhi_tree_jaya_sri_maha_bodhi
+								years = 4
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_magadha_inspired_bodhi_tree_navel_of_the_earth
+								years = 4
+							}
+						}
+					}		
+				}
+			}		
+		}
+	}
+
+	after = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+
+}
+
+
+# Converted to a non-Buddhist religion
+magadha.0032 = {
+	type = character_event
+	title = magadha.0032.t
+	desc = magadha.0032.desc
+	theme = faith
+	
+	left_portrait = {
+		character = scope:bodhi_visitor
+		animation = personality_callous
+	}
+	
+	option = {
+		name = magadha.0032.a
+	}
+
+}
+
+
+
+# What kind of donation to make?
+magadha.0040 = {
+	type = character_event
+	title = magadha.0040.t
+	desc = magadha.0040.desc
+	theme = RICE_theme_mahabodhi
+	
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+
+	immediate = {
+		# For loc
+		title:c_gaya = { save_scope_as = gaya_county }
+	}
+	
+	option = { # Small
+		name = magadha.0040.a
+		remove_short_term_gold = 50
+		add_piety = 100
+		add_character_modifier = {
+			modifier = RICE_magadha_mahabodhi_donation_small
+			years = 10
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	
+	option = { # Medium
+		name = magadha.0040.b
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 100
+			}
+		}
+		remove_short_term_gold = 100
+		stress_impact = {
+			greedy = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+		}
+		add_piety = 200
+		add_prestige = 50
+		add_character_modifier = {
+			modifier = RICE_magadha_mahabodhi_donation_medium
+			years = 10
+		}
+		ai_chance = {
+			factor = 75
+			modifier = {
+				has_trait = zealous
+				add = 25
+			}
+			modifier = {
+				has_trait = ambitious
+				add = 15
+			}
+			modifier = {
+				has_trait = generous
+				add = 15
+			}
+			modifier = {
+				has_trait = greedy
+				add = -30
+			}
+			modifier = {
+				has_trait = cynical
+				add = -30
+			}
+			ai_value_modifier = {
+				ai_zeal = 2
+				ai_greed = -1
+			}
+		}
+	}
+	
+	option = { # Large
+		name = magadha.0040.c
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 150
+			}
+		}
+		remove_short_term_gold = 150
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+		}
+		add_piety = 300
+		add_prestige = 100
+		if = {
+			limit = { exists = dynasty }
+			dynasty = {
+				add_dynasty_prestige = 50
+			}
+		}
+		add_character_modifier = {
+			modifier = RICE_magadha_mahabodhi_donation_large
+			years = 10
+		}
+		ai_chance = {
+			factor = 50
+			modifier = {
+				has_trait = zealous
+				add = 35
+			}
+			modifier = {
+				has_trait = ambitious
+				add = 20
+			}
+			modifier = {
+				has_trait = generous
+				add = 20
+			}
+			modifier = {
+				has_trait = greedy
+				add = -20
+			}
+			modifier = {
+				has_trait = cynical
+				add = -20
+			}
+			ai_value_modifier = {
+				ai_zeal = 2
+				ai_greed = -1
+			}
+		}
+	}
+	
+	option = { # Massive
+		name = magadha.0040.d
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 300
+			}
+			highest_held_title_tier >= tier_kingdom
+			NOT = {
+				title:c_gaya = {
+					has_county_modifier = RICE_magadha_great_royal_donation_mahabodhi
+				}				
+			}
+			NOT = { has_character_flag = RICE_magadha_great_royal_donor_mahabodhi_flag }
+		}
+		save_scope_as = mahabodhi_donator
+		add_character_flag = RICE_magadha_great_royal_donor_mahabodhi_flag
+		#play_music_cue = "mx_cue_epic_sacral_moment"
+		custom_tooltip = magadha.0040.d.tooltip.1
+		remove_short_term_gold = 300
+		custom_tooltip = magadha.0040.d.tooltip.2
+		stress_impact = {
+			greedy = medium_stress_gain
+			cynical = minor_stress_impact_gain
+		}
+		add_piety = 500
+		add_prestige = 250
+		if = {
+			limit = { exists = dynasty }
+			dynasty = {
+				add_dynasty_prestige = 150
+			}
+		}
+		add_character_modifier = {
+			modifier = RICE_magadha_great_royal_donation_mahabodhi_character
+			years = 20
+		}
+		title:c_gaya = {
+			add_county_modifier = {
+				modifier = RICE_magadha_great_royal_donation_mahabodhi
+				years = 25
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_title = title:c_gaya }
+			}
+			title:c_gaya.holder = {
+				add_piety = 50
+				add_prestige = 50
+			}
+			if = {
+				limit = {
+					exists = title:c_gaya.holder.dynasty
+				}
+				dynasty = {
+					add_dynasty_prestige = 50
+				}
+			}
+		}
+		every_player = {
+			limit = {
+				is_ai = no
+				religion = religion:buddhism_religion
+			}
+			trigger_event = magadha.0041
+		}	
+		ai_chance = {
+			factor = 125
+			modifier = {
+				has_trait = zealous
+				add = 35
+			}
+			modifier = {
+				has_trait = ambitious
+				add = 20
+			}
+			modifier = {
+				has_trait = generous
+				add = 20
+			}
+			modifier = {
+				has_trait = greedy
+				add = -50
+			}
+			modifier = {
+				has_trait = cynical
+				add = -50
+			}
+			ai_value_modifier = {
+				ai_zeal = 2
+				ai_greed = -3
+			}
+		}
+	}
+}
+
+# Mahabodhi Massive Donation notification to other rulers
+magadha.0041 = {
+	type = character_event
+	title = magadha.0041.t
+	desc = magadha.0041.desc
+	theme = RICE_theme_mahabodhi
+	
+	left_portrait = {
+		character = scope:mahabodhi_donator
+		animation = personality_honorable
+	}
+	
+	immediate = {
+		show_as_tooltip = {
+			title:c_gaya = {
+				add_county_modifier = {
+					modifier = RICE_magadha_great_royal_donation_mahabodhi
+					years = 25
+				}
+			}
+			if = {
+				limit = {
+					scope:mahabodhi_donator = { NOT = { has_title = title:c_gaya } }
+				}
+				title:c_gaya.holder = {
+					add_piety = 50
+					add_prestige = 50
+				}
+				if = {
+					limit = {
+						exists = title:c_gaya.holder.dynasty
+					}
+					dynasty = {
+						add_dynasty_prestige = 50
+					}
+				}
+			}
+		}
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+	
+	option = { # ok
+		name = magadha.0041.a
+	}
+	option = { # jealousy
+		name = magadha.0041.b
+		trigger = {
+			NOT = { has_character_flag = RICE_magadha_great_royal_donor_mahabodhi_flag }
+			highest_held_title_tier >= tier_kingdom
+			religion = religion:buddhism_religion
+			has_trait = ambitious
+		}
+		trait = ambitious
+		add_prestige = 25
+		stress_impact = {
+			ambitious = minor_stress_impact_gain
+		}
+	}
+}
+
+
+
+######################################################################################
+# 
+# LIFE RELEASE
+# 
+# magadha.0050-magadha.0069
+# 
+######################################################################################
+
+
+# Prepare for the life release
+magadha.0050 = {
+	type = character_event
+	title = magadha.0050.t
+	desc = magadha.0050.desc
+	theme = faith
+	override_background = { event_background = sitting_room }
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+	}
+	
+	option = { # Birds
+		name = magadha.0050.a
+		add_character_flag = RICE_magadha_liberating_birds
+		custom_tooltip = magadha.0050.tooltip.birds
+		# Choose appropriate location
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_magadha_life_release
+			}	
+		}
+	}
+	option = { # Turtles
+		name = magadha.0050.b
+		add_character_flag = RICE_magadha_liberating_turtles
+		custom_tooltip = magadha.0050.tooltip.turtles
+		# Choose appropriate location
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_magadha_life_release
+			}	
+		}
+	}
+	option = { # Fish
+		name = magadha.0050.c
+		add_character_flag = RICE_magadha_liberating_fish
+		custom_tooltip = magadha.0050.tooltip.fish
+		# Choose appropriate location
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_magadha_life_release
+			}	
+		}
+	}
+	option = { # Insects
+		name = magadha.0050.d
+		add_character_flag = RICE_magadha_liberating_insects
+		custom_tooltip = magadha.0050.tooltip.insects
+		# Choose appropriate location
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_magadha_life_release
+			}	
+		}
+	}
+}
+
+
+
+# Invitation to the life release
+magadha.0051 = {
+	type = letter_event
+	opening = {
+		desc = magadha.0051.opening
+	}
+	desc = magadha.0051.desc
+	sender = scope:sender
+
+	trigger = {
+		is_available_for_activity_trigger = yes
+		NOT = { exists = var:is_handling_life_release_invitation }
+	}
+
+	on_trigger_fail = { #Trigger invitation again if it was blocked because the character was handling another invitation
+		if = {
+			limit = {
+				is_available_for_activity_trigger = yes
+				exists = var:is_handling_life_release_invitation
+			}
+			trigger_event = {
+				id = magadha.0051
+				days = 1
+			}
+		}
+	}
+
+	immediate = {
+		add_character_flag = planning_an_activity # Just in case
+		scope:activity.activity_owner = {
+			save_scope_as = sender
+		}
+		scope:activity.activity_province = {
+			barony = {
+				save_scope_as = barony
+			}
+		}
+		set_variable = {
+			name = is_handling_life_release_invitation
+			value = scope:sender
+			days = 20
+		}
+	}
+
+	option = {
+		name = magadha.0051.a
+		scope:activity = {
+			accept_invitation_for_character = prev
+		}
+		set_variable = {
+			name = booked_for_a_party
+			value = scope:sender
+			days = 20
+		}
+		stress_impact = {
+			compassionate = minor_stress_loss
+			callous = minor_stress_impact_gain
+			sadistic = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 100
+			opinion_modifier = {
+				opinion_target = scope:sender
+			}
+			modifier = {
+				add = 15
+				has_trait = compassionate
+			}
+			modifier = {
+				add = -25
+				has_trait = callous
+			}
+			modifier = {
+				add = -25
+				has_trait = sadistic
+			}
+			modifier = {
+				add = -25
+				has_trait = cynical
+			}
+			modifier = {
+				add = -25
+				NOT = { religion = religion:buddhism_religion }
+			}
+			modifier = {
+				add = 15
+				faith = { has_doctrine_parameter = RICE_life_liberation_active }
+			}
+		}
+	}
+
+	option = {
+		name = magadha.0051.b
+		scope:activity = {
+			decline_invitation_for_character = prev
+		}
+		stress_impact = {
+			compassionate = minor_stress_impact_gain
+			just = miniscule_stress_impact_gain
+		}
+		remove_character_flag = planning_an_activity
+		ai_chance = {
+			base = 25
+			modifier = {
+				add = 15
+				scope:sender = {
+					target_is_liege_or_above = scope:sender
+				}
+			}
+			ai_value_modifier = {
+				ai_boldness = 0.2
+			}
+		}
+	}
+
+	# Reject it vehemently
+	option = {
+		name = magadha.0051.c
+		trigger = {
+			NOR = {
+				has_trait = compassionate
+				AND = {
+					has_trait = zealous
+					religion = religion:buddhism_religion
+				}
+			}
+		}
+		remove_character_flag = planning_an_activity
+		add_prestige = 50
+		custom_tooltip = magadha.0051.c.tooltip
+		save_scope_as = life_release_rejector
+		scope:activity.activity_owner = {
+			add_opinion = {
+				target = root
+				modifier = RICE_magadha_criticized_life_release
+			}
+			reverse_add_opinion = {
+				target = root
+				modifier = RICE_magadha_disapproves_of_life_release
+			}			
+		}
+		scope:activity = {
+			decline_invitation_for_character = prev
+		}
+		scope:activity.activity_owner = {
+			trigger_event = magadha.0052
+		}
+		if = {
+			limit = {
+				NOR = {
+					has_trait = callous
+					has_trait = sadistic
+				}
+			}
+			stress_impact = {
+				just = minor_stress_impact_gain
+				calm = miniscule_stress_impact_gain
+				content = miniscule_stress_impact_gain
+				generous = miniscule_stress_impact_gain
+				temperate = miniscule_stress_impact_gain
+			}
+		}
+		else = {
+			stress_impact = {
+				callous = minor_stress_loss
+				sadistic = minor_stress_loss
+			}
+		}
+		ai_chance = {
+			base = 5
+			modifier = {
+				add = 10
+				has_trait = sadistic
+			}
+			modifier = {
+				add = 10
+				has_trait = callous
+			}
+			modifier = {
+				add = 5
+				has_trait = gluttonous
+			}
+			modifier = {
+				add = 15
+				NOT = { religion = religion:buddhism_religion }
+				has_trait = zealous
+			}
+			modifier = {
+				add = 15
+				scope:sender = {
+					target_is_liege_or_above = scope:sender
+				}
+			}
+			ai_value_modifier = {
+				ai_boldness = 0.2
+			}
+		}
+	}
+
+	after = {
+		remove_variable = is_handling_life_release_invitation
+	}
+}
+
+
+
+
+
+# Letter or rejection
+magadha.0052 = {
+	type = letter_event
+	opening = {
+		desc = magadha.0052.opening
+	}
+	desc = magadha.0052.desc
+	sender = scope:life_release_rejector
+	
+	immediate = {
+		save_scope_as = host
+		show_as_tooltip = {
+			scope:activity.activity_owner = {
+				add_opinion = {
+					target = scope:life_release_rejector
+					modifier = RICE_magadha_criticized_life_release
+				}
+				reverse_add_opinion = {
+					target = scope:life_release_rejector
+					modifier = RICE_magadha_disapproves_of_life_release
+				}			
+			}
+		}
+	}
+	
+	option = { # React calmly
+		name = magadha.0052.a
+		add_piety = 5
+		stress_impact = {
+			wrathful = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+			stubborn = miniscule_stress_impact_gain
+		}
+	}
+	option = { # React angrily
+		name = magadha.0052.b
+		add_prestige = 5
+		stress_impact = {
+			calm = miniscule_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+			forgiving = miniscule_stress_impact_gain
+			content = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		clear_saved_scope = life_release_rejector
+	}
+}
+
+
+
+# Host died
+magadha.0053 = {
+	type = character_event
+	title = magadha.0053.t
+	desc = magadha.0053.desc
+	theme = faith
+	override_icon = {
+		reference = "gfx/interface/icons/event_types/type_illness.dds"
+	}
+	left_portrait = scope:host
+	
+	option = {
+		name = magadha.0053.a
+	}
+
+}
+
+# Host imprisoned - for guests
+magadha.0054 = {
+	type = character_event
+	title = magadha.0054.t
+	desc = magadha.0054.desc
+	theme = faith
+	override_icon = {
+		reference = "gfx/interface/icons/event_types/type_prison.dds"
+	}
+	left_portrait = {
+		character = scope:host
+		animation = prison_dungeon
+	}
+	
+	option = {
+		name = magadha.0054.a
+	}
+
+}
+
+
+
+# Host imprisoned - for host
+magadha.0055 = {
+	type = character_event
+	title = magadha.0055.t
+	desc = magadha.0055.desc
+	theme = faith
+	override_icon = {
+		reference = "gfx/interface/icons/event_types/type_prison.dds"
+	}
+	left_portrait = {
+		character = scope:host
+		animation = prison_dungeon
+	}
+	
+	option = {
+		name = magadha.0055.a
+	}
+
+}
+
+
+
+
+# Life release for host's POV
+magadha.0060 = {
+	type = character_event
+	title = magadha.0060.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_liberating_birds
+				}
+				desc = magadha.0060.desc.birds
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_liberating_turtles
+				}
+				desc = magadha.0060.desc.turtles
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_liberating_fish
+				}
+				desc = magadha.0060.desc.fish
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_liberating_insects
+				}
+				desc = magadha.0060.desc.insects
+			}
+		}
+		desc = magadha.0060.desc
+	}
+	theme = faith
+	override_background = { event_background = garden }
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	trigger = {
+		this = scope:activity.activity_owner
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_touching_moment
+		RICE_magadha_life_release_finished = yes
+		scope:activity = {
+			every_participant = {
+				limit = { NOT = { this = root } }
+				custom = every_guest_scope_tt
+				add_opinion = {
+					target = root
+					modifier = RICE_magadha_invited_me_to_life_release
+				}
+				show_as_tooltip = {
+					add_character_modifier = {
+						modifier = RICE_magadha_participated_in_life_release
+						years = 5
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = magadha.0060.a
+	}
+
+	after = {
+		scope:activity = {
+			complete_activity = yes
+		}
+		RICE_magadha_life_release_cleanup = yes
+	}
+}
+
+
+# Life release for guests POV
+magadha.0061 = {
+	type = character_event
+	title = magadha.0061.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:host = {
+						has_character_flag = RICE_magadha_liberating_birds
+					}
+				}
+				desc = magadha.0061.desc.birds
+			}
+			triggered_desc = {
+				trigger = {
+					scope:host = {
+						has_character_flag = RICE_magadha_liberating_turtles
+					}
+				}
+				desc = magadha.0061.desc.turtles
+			}
+			triggered_desc = {
+				trigger = {
+					scope:host = {
+						has_character_flag = RICE_magadha_liberating_fish
+					}
+				}
+				desc = magadha.0061.desc.fish
+			}
+			triggered_desc = {
+				trigger = {
+					scope:host = {
+						has_character_flag = RICE_magadha_liberating_insects
+					}
+				}
+				desc = magadha.0061.desc.insects
+			}
+		}
+		desc = magadha.0061.desc
+	}
+	theme = faith
+	override_background = { event_background = garden }
+
+	left_portrait = {
+		character = scope:host
+		animation = personality_zealous
+	}
+	right_portrait = root
+
+	trigger = {
+		# Guests only.
+		NOT = { this = scope:activity.activity_owner }
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_touching_moment
+		scope:activity.activity_owner = {
+			save_scope_as = host
+		}
+		add_character_modifier = {
+			modifier = RICE_magadha_participated_in_life_release
+			years = 5
+		}
+	}
+
+	option = {
+		name = magadha.0061.a
+		add_piety = 25
+		stress_impact = {
+			callous = miniscule_stress_impact_gain
+			sadistic = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+		}
+	}
+	option = {
+		name = magadha.0061.b
+		add_prestige = 25
+		stress_impact = {
+			compassionate = miniscule_stress_impact_gain
+			zealous = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		remove_character_flag = planning_an_activity
+	}
+}
+
+
+
+
+
+######################################################################################
+# 
+# VASSA RETREAT
+# 
+# magadha.0070-magadha.0089			Vassa Retreat for Theravada/Pudgalavada Buddhists
+# 
+######################################################################################
+
+
+# Prepare for the Vassa Retreat
+magadha.0070 = {
+	type = character_event
+	title = magadha.0070.t
+	desc = magadha.0070.desc
+	theme = faith
+	override_background = { event_background = sitting_room }
+	
+	right_portrait = root
+	
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+	}
+	
+	option = { # Ok
+		name = magadha.0070.a
+		# Choose appropriate location
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_magadha_vassa_retreat
+			}	
+		}
+	}
+}
+
+
+# Prepare for the Vassa Retreat
+magadha.0071 = {
+	type = character_event
+	title = magadha.0071.t
+	desc = magadha.0071.desc
+	theme = faith
+	
+	right_portrait = root
+
+	trigger = {
+		religion = religion:buddhism_religion
+	}
+	
+	immediate = {
+		add_character_modifier = RICE_magadha_currently_abstaining_vassa
+	}
+	
+	option = { # Ok
+		name = magadha.0071.a
+		if = {
+			limit = {
+				RICE_magadha_has_vassa_vice = yes
+			}
+			RICE_magadha_display_potential_vassa_trait_reform = yes
+		}
+		trigger_event = {
+			id = magadha.0072
+			months = 3
+		}
+		hidden_effect = {
+			# Random Vassa events
+			random = {
+				chance = 20
+				trigger_event = {
+					id = magadha.0074
+					days = { 10 80 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = magadha.0075
+					days = { 10 80 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = magadha.0076
+					days = { 10 80 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = magadha.0077
+					days = { 10 80 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = magadha.0078
+					days = { 10 80 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = magadha.0079
+					days = { 10 80 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = magadha.0080
+					days = { 10 80 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = magadha.0081
+					days = { 10 80 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = magadha.0082
+					days = { 10 80 }
+				}
+			}
+			if = {
+				limit = {
+					RICE_magadha_has_vassa_vice = yes
+				}
+				random = {
+					chance = 30
+					modifier = {
+						add = 9
+						has_trait = zealous
+					}
+					modifier = {
+						add = -9
+						has_trait = cynical
+					}
+					modifier = {
+						add = 9
+						has_trait = diligent
+					}
+					modifier = {
+						add = -9
+						has_trait = lazy
+					}
+					modifier = {
+						add = 9
+						has_trait = just
+					}
+					modifier = {
+						add = -9
+						has_trait = arbitrary
+					}
+					modifier = {
+						add = 9
+						has_trait = compassionate
+					}
+					modifier = {
+						add = -9
+						has_trait = callous
+					}
+					trigger_event = {
+						id = magadha.0073
+						days = { 10 80 }
+					}
+				}
+			}
+		}
+	}
+}
+
+# Vassa is over - celebrate Kathina and donate to give 
+magadha.0072 = {
+	type = character_event
+	title = magadha.0072.t
+	desc = magadha.0072.desc
+	theme = faith
+	
+	right_portrait = root
+
+	trigger = {
+		religion = religion:buddhism_religion
+	}
+
+	immediate = {
+		remove_character_modifier = RICE_magadha_currently_abstaining_vassa
+	}
+	
+	option = { # No donation
+		name = magadha.0072.a
+		add_piety = -100
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+		}
+	}
+	option = { # Donate some basic necessities
+		name = magadha.0072.b
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 25
+			}
+		}
+		remove_short_term_gold = 25
+		add_piety = 50
+	}
+	option = { # Donate robes
+		name = magadha.0072.c
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		add_piety = 100
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			cynical = minor_stress_impact_gain
+		}
+	}
+
+	after = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+
+}
+
+# Try to give up vices during Vassa
+magadha.0073 = {
+	type = character_event
+	title = magadha.0073.t
+	desc = {
+		desc = magadha.0073.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_vassa_lustful_ruler
+				}
+				desc = magadha.0073.desc.lustful
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_vassa_greedy_ruler
+				}
+				desc = magadha.0073.desc.greedy
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_vassa_sadistic_ruler
+				}
+				desc = magadha.0073.desc.sadistic
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_vassa_callous_ruler
+				}
+				desc = magadha.0073.desc.callous
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_vassa_wrathful_ruler
+				}
+				desc = magadha.0073.desc.wrathful
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_vassa_vengeful_ruler
+				}
+				desc = magadha.0073.desc.vengeful
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_vassa_gluttonous_ruler
+				}
+				desc = magadha.0073.desc.gluttonous
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_vassa_arrogant_ruler
+				}
+				desc = magadha.0073.desc.arrogant
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_magadha_vassa_impatient_ruler
+				}
+				desc = magadha.0073.desc.impatient
+			}
+		}
+		desc = magadha.0073.desc.conclusion
+	}
+	theme = faith
+	override_background = { event_background = sitting_room }
+	
+	left_portrait = {
+		character = root
+		animation = personality_irrational
+	}
+
+	trigger = {
+		religion = religion:buddhism_religion # In case converted while Vassa is ongoing
+		RICE_magadha_has_vassa_vice = yes
+	}
+
+	immediate = {
+		# Choose vice to focus on if there is more than one
+		random_list = {
+			10 = {
+				trigger = {
+					AND = {
+						has_trait = lustful
+						faith = { NOT = { trait_is_virtue = lustful } }
+					}					
+				}
+				add_character_flag = RICE_magadha_vassa_lustful_ruler
+			}
+			10 = {
+				trigger = {
+					AND = {
+						has_trait = greedy
+						faith = { NOT = { trait_is_virtue = greedy } }
+					}					
+				}
+				add_character_flag = RICE_magadha_vassa_greedy_ruler
+			}
+			10 = {
+				trigger = {
+					AND = {
+						has_trait = sadistic
+						faith = { NOT = { trait_is_virtue = sadistic } }
+					}					
+				}
+				add_character_flag = RICE_magadha_vassa_sadistic_ruler
+			}
+			10 = {
+				trigger = {
+					AND = {
+						has_trait = callous
+						faith = { NOT = { trait_is_virtue = callous } }
+					}					
+				}
+				add_character_flag = RICE_magadha_vassa_callous_ruler
+			}
+			10 = {
+				trigger = {
+					AND = {
+						has_trait = wrathful
+						faith = { NOT = { trait_is_virtue = wrathful } }
+					}					
+				}
+				add_character_flag = RICE_magadha_vassa_wrathful_ruler
+			}
+			10 = {
+				trigger = {
+					AND = {
+						has_trait = vengeful
+						faith = { NOT = { trait_is_virtue = vengeful } }
+					}					
+				}
+				add_character_flag = RICE_magadha_vassa_vengeful_ruler
+			}
+			10 = {
+				trigger = {
+					AND = {
+						has_trait = gluttonous
+						faith = { NOT = { trait_is_virtue = gluttonous } }
+					}					
+				}
+				add_character_flag = RICE_magadha_vassa_gluttonous_ruler
+			}
+			10 = {
+				trigger = {
+					AND = {
+						has_trait = arrogant
+						faith = { NOT = { trait_is_virtue = arrogant } }
+					}					
+				}
+				add_character_flag = RICE_magadha_vassa_arrogant_ruler
+			}
+			10 = {
+				trigger = {
+					AND = {
+						has_trait = impatient
+						faith = { NOT = { trait_is_virtue = impatient } }
+					}					
+				}
+				add_character_flag = RICE_magadha_vassa_impatient_ruler
+			}
+		}
+	}
+	
+	option = { # Must not try
+		name = magadha.0073.a
+		add_piety = -50
+		stress_impact = {
+			zealous = medium_stress_impact_gain
+			diligent = miniscule_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+		}
+	}
+	option = { # Must try
+		name = magadha.0073.b
+		random_list = {
+			30 = {
+				modifier = {
+					factor = 5
+					has_trait = lazy
+				}
+				modifier = {
+					add = 5
+					has_trait = cynical
+				}
+				modifier = {
+					add = 5
+					has_trait = impatient
+				}
+				modifier = {
+					add = 5
+					has_trait = wrathful
+				}
+				modifier = {
+					add = 5
+					has_trait = stubborn
+				}
+				modifier = {
+					add = 5
+					has_trait = fickle
+				}
+				desc = magadha.0073.failure
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					left_icon = ROOT
+					title = magadha.0073.failure
+					stress_impact = {
+						base = medium_stress_impact_gain
+					}
+					add_character_modifier = {
+						modifier = RICE_magadha_cannot_resist_vices
+						years = 5
+					}
+				}		
+			}
+			60 = {
+				modifier = {
+					add = 5
+					has_trait = ambitious
+				}
+				modifier = {
+					add = 5
+					has_trait = diligent
+				}
+				desc = magadha.0073.helped
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = magadha.0073.helped
+					stress_impact = {
+						base = minor_stress_impact_gain
+					}
+					if = {
+						limit = {
+							has_character_flag = RICE_magadha_vassa_lustful_ruler
+						}
+						add_character_modifier = {
+							modifier = RICE_magadha_restrained_lustful
+							years = 5
+						}						
+					}
+					if = {
+						limit = {
+							has_character_flag = RICE_magadha_vassa_greedy_ruler
+						}
+						add_character_modifier = {
+							modifier = RICE_magadha_restrained_greedy
+							years = 5
+						}						
+					}
+					if = {
+						limit = {
+							has_character_flag = RICE_magadha_vassa_sadistic_ruler
+						}
+						add_character_modifier = {
+							modifier = RICE_magadha_restrained_sadistic
+							years = 5
+						}						
+					}
+					if = {
+						limit = {
+							has_character_flag = RICE_magadha_vassa_callous_ruler
+						}
+						add_character_modifier = {
+							modifier = RICE_magadha_restrained_callous
+							years = 5
+						}						
+					}
+					if = {
+						limit = {
+							has_character_flag = RICE_magadha_vassa_wrathful_ruler
+						}
+						add_character_modifier = {
+							modifier = RICE_magadha_restrained_wrathful
+							years = 5
+						}						
+					}
+					if = {
+						limit = {
+							has_character_flag = RICE_magadha_vassa_vengeful_ruler
+						}
+						add_character_modifier = {
+							modifier = RICE_magadha_restrained_vengeful
+							years = 5
+						}						
+					}
+					if = {
+						limit = {
+							has_character_flag = RICE_magadha_vassa_gluttonous_ruler
+						}
+						add_character_modifier = {
+							modifier = RICE_magadha_restrained_gluttonous
+							years = 5
+						}						
+					}
+					if = {
+						limit = {
+							has_character_flag = RICE_magadha_vassa_arrogant_ruler
+						}
+						add_character_modifier = {
+							modifier = RICE_magadha_restrained_arrogant
+							years = 5
+						}						
+					}
+					if = {
+						limit = {
+							has_character_flag = RICE_magadha_vassa_impatient_ruler
+						}
+						add_character_modifier = {
+							modifier = RICE_magadha_restrained_impatient
+							years = 5
+						}						
+					}
+				}		
+			}
+			10 = {
+				modifier = {
+					add = 15
+					has_trait = zealous
+				}
+				modifier = {
+					add = 5
+					has_trait = content
+				}
+				modifier = {
+					add = 5
+					has_trait = patient
+				}
+				modifier = {
+					add = 5
+					has_trait = calm
+				}
+				desc = magadha.0073.success
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = magadha.0073.success
+					stress_impact = {
+						base = minor_stress_impact_gain
+					}
+					add_character_modifier = {
+						modifier = RICE_magadha_reformed_vices_vassa
+						years = 5
+					}
+					if = {
+						limit = {
+							has_character_flag = RICE_magadha_vassa_lustful_ruler
+						}
+						remove_trait = lustful
+						add_trait = chaste				
+					}
+					if = {
+						limit = {
+							has_character_flag = RICE_magadha_vassa_greedy_ruler
+						}
+						remove_trait = greedy
+						add_trait = generous					
+					}
+					if = {
+						limit = {
+							has_character_flag = RICE_magadha_vassa_sadistic_ruler
+						}
+						remove_trait = sadistic
+						add_trait = compassionate
+					}
+					if = {
+						limit = {
+							has_character_flag = RICE_magadha_vassa_callous_ruler
+						}
+						remove_trait = callous
+						add_trait = compassionate					
+					}
+					if = {
+						limit = {
+							has_character_flag = RICE_magadha_vassa_wrathful_ruler
+						}
+						remove_trait = wrathful
+						add_trait = calm					
+					}
+					if = {
+						limit = {
+							has_character_flag = RICE_magadha_vassa_vengeful_ruler
+						}
+						remove_trait = vengeful
+						add_trait = forgiving					
+					}
+					if = {
+						limit = {
+							has_character_flag = RICE_magadha_vassa_gluttonous_ruler
+						}
+						remove_trait = gluttonous
+						add_trait = temperate					
+					}
+					if = {
+						limit = {
+							has_character_flag = RICE_magadha_vassa_arrogant_ruler
+						}
+						remove_trait = arrogant
+						add_trait = humble					
+					}
+					if = {
+						limit = {
+							has_character_flag = RICE_magadha_vassa_impatient_ruler
+						}
+						remove_trait = impatient
+						add_trait = patient						
+					}
+				}			
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = { has_character_flag = RICE_magadha_vassa_lustful_ruler }
+			remove_character_flag = RICE_magadha_vassa_lustful_ruler
+		}
+		if = {
+			limit = { has_character_flag = RICE_magadha_vassa_greedy_ruler }
+			remove_character_flag = RICE_magadha_vassa_greedy_ruler
+		}
+		if = {
+			limit = { has_character_flag = RICE_magadha_vassa_sadistic_ruler }
+			remove_character_flag = RICE_magadha_vassa_sadistic_ruler
+		}
+		if = {
+			limit = { has_character_flag = RICE_magadha_vassa_callous_ruler }
+			remove_character_flag = RICE_magadha_vassa_callous_ruler
+		}
+		if = {
+			limit = { has_character_flag = RICE_magadha_vassa_wrathful_ruler }
+			remove_character_flag = RICE_magadha_vassa_wrathful_ruler
+		}
+		if = {
+			limit = { has_character_flag = RICE_magadha_vassa_vengeful_ruler }
+			remove_character_flag = RICE_magadha_vassa_vengeful_ruler
+		}
+		if = {
+			limit = { has_character_flag = RICE_magadha_vassa_gluttonous_ruler }
+			remove_character_flag = RICE_magadha_vassa_gluttonous_ruler
+		}
+		if = {
+			limit = { has_character_flag = RICE_magadha_vassa_arrogant_ruler }
+			remove_character_flag = RICE_magadha_vassa_arrogant_ruler
+		}
+		if = {
+			limit = { has_character_flag = RICE_magadha_vassa_impatient_ruler }
+			remove_character_flag = RICE_magadha_vassa_impatient_ruler
+		}
+	}
+
+}
+
+
+# Intense study of scriptures
+magadha.0074 = {
+	type = character_event
+	title = magadha.0074.t
+	desc = magadha.0074.desc
+	theme = faith
+	override_background = { event_background = study }
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	trigger = {
+		religion = religion:buddhism_religion
+	}
+	
+	option = { # Ok
+		name = magadha.0074.a
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			zealous = miniscule_stress_impact_loss
+			diligent = miniscule_stress_impact_loss
+		}
+	}
+	
+	option = { # Ok
+		name = magadha.0074.b
+		add_prestige = -50
+		add_character_modifier = {
+			modifier = RICE_magadha_vassa_buddhist_scriptures
+			years = 5
+		}
+	}
+
+}
+
+
+# Providing aid to monastics in general
+magadha.0075 = {
+	type = character_event
+	title = magadha.0075.t
+	desc = magadha.0075.desc
+	theme = faith
+	
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+
+	trigger = {
+		religion = religion:buddhism_religion
+	}
+	
+	option = { # Focus on self
+		name = magadha.0075.a
+		add_prestige = 40
+		add_piety = -20
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+		}
+	}
+	option = { # Focus on monastics
+		name = magadha.0075.b
+		add_piety = 40
+		add_prestige = -20
+		stress_impact = {
+			greedy = miniscule_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+		}
+	}
+
+}
+
+
+# Seeing others ignore restraint during Vassa
+magadha.0076 = {
+	type = character_event
+	title = magadha.0076.t
+	desc = magadha.0076.desc
+	theme = faith
+	override_background = { event_background = throne_room }
+	
+	right_portrait = {
+		character = root
+		animation = disapproval
+	}
+	
+	trigger = {
+		religion = religion:buddhism_religion
+	}
+	
+	option = { # Bad bad bad
+		name = magadha.0076.a
+		add_prestige = 20
+		stress_impact = {
+			content = minor_stress_impact_gain
+		}
+	}
+	option = { # Not my problem
+		name = magadha.0076.b
+		add_piety = 20
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+	}
+
+}
+
+
+# Seeing others practice restraint during Vassa
+magadha.0077 = {
+	type = character_event
+	title = magadha.0077.t
+	desc = magadha.0077.desc
+	theme = faith
+	override_background = { event_background = throne_room }
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	trigger = {
+		religion = religion:buddhism_religion
+	}
+	
+	option = { # Cool
+		name = magadha.0077.a
+		stress_impact = {
+			base = minor_stress_impact_loss
+		}
+	}
+
+}
+
+
+# Offering alms to monks
+magadha.0078 = {
+	type = character_event
+	title = magadha.0078.t
+	desc = magadha.0078.desc
+	theme = faith
+	override_background = { event_background = throne_room }
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	trigger = {
+		religion = religion:buddhism_religion
+	}
+	
+	option = { # Fine
+		name = magadha.0078.a
+		remove_short_term_gold = 5
+	}
+	option = { # ok
+		name = magadha.0078.b
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 10
+			}
+		}
+		remove_short_term_gold = 10
+		add_piety = 25
+		stress_impact = {
+			greedy = miniscule_stress_impact_gain
+		}
+	}
+	option = { # ok
+		name = magadha.0078.c
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 20
+			}
+		}
+		remove_short_term_gold = 20
+		add_piety = 50
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+		}
+	}
+
+}
+
+
+# Listen to sermons by monks
+magadha.0079 = {
+	type = character_event
+	title = magadha.0079.t
+	desc = magadha.0079.desc
+	theme = faith
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	trigger = {
+		religion = religion:buddhism_religion
+	}
+	
+	option = { # ok
+		name = magadha.0079.a
+		add_piety = 15
+	}
+
+}
+
+
+# Chant Buddhist discourses
+magadha.0080 = {
+	type = character_event
+	title = magadha.0080.t
+	desc = magadha.0080.desc
+	theme = faith
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	trigger = {
+		religion = religion:buddhism_religion
+	}
+	
+	option = { # ok
+		name = magadha.0080.a
+		add_piety = 25
+		stress_impact = {
+			zealous = miniscule_stress_impact_loss
+		}
+	}
+
+}
+
+
+# Can't find good places to buy alcohol and food
+magadha.0081 = {
+	type = character_event
+	title = magadha.0081.t
+	desc = magadha.0081.desc
+	theme = unfriendly
+	
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	trigger = {
+		religion = religion:buddhism_religion
+	}
+	
+	option = { # ok
+		name = magadha.0081.a
+		add_prestige = -50
+		stress_impact = {
+			arrogant = miniscule_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+		}
+	}
+	
+	option = { # ok
+		name = magadha.0081.b
+		add_piety = -50
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+		}
+	}
+
+}
+
+
+# Monk helps you manage yourself
+magadha.0082 = {
+	type = character_event
+	title = magadha.0082.t
+	desc = magadha.0082.desc
+	theme = faith
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	trigger = {
+		religion = religion:buddhism_religion
+	}
+	
+	option = { # ok
+		name = magadha.0082.a
+		add_piety = 25
+	}
+
+}
+
+
+
+# Converted to a non-Buddhist religion
+magadha.0089 = {
+	type = character_event
+	title = magadha.0089.t
+	desc = magadha.0089.desc
+	theme = faith
+	
+	left_portrait = {
+		character = scope:vassa_person
+		animation = personality_callous
+	}
+
+	immediate = {
+		# Remove character modifiers upon conversion since they don't make sense
+		if = {
+			limit = { has_character_modifier = RICE_magadha_currently_abstaining_vassa }
+			remove_character_modifier = RICE_magadha_currently_abstaining_vassa
+		}
+		if = {
+			limit = { has_character_modifier = RICE_magadha_cannot_resist_vices }
+			remove_character_modifier = RICE_magadha_cannot_resist_vices
+		}
+		if = {
+			limit = { has_character_modifier = RICE_magadha_restrained_lustful }
+			remove_character_modifier = RICE_magadha_restrained_lustful
+		}
+		if = {
+			limit = { has_character_modifier = RICE_magadha_restrained_greedy }
+			remove_character_modifier = RICE_magadha_restrained_greedy
+		}
+		if = {
+			limit = { has_character_modifier = RICE_magadha_restrained_sadistic }
+			remove_character_modifier = RICE_magadha_restrained_sadistic
+		}
+		if = {
+			limit = { has_character_modifier = RICE_magadha_restrained_callous }
+			remove_character_modifier = RICE_magadha_restrained_callous
+		}
+		if = {
+			limit = { has_character_modifier = RICE_magadha_restrained_wrathful }
+			remove_character_modifier = RICE_magadha_restrained_wrathful
+		}
+		if = {
+			limit = { has_character_modifier = RICE_magadha_restrained_vengeful }
+			remove_character_modifier = RICE_magadha_restrained_vengeful
+		}
+		if = {
+			limit = { has_character_modifier = RICE_magadha_restrained_gluttonous }
+			remove_character_modifier = RICE_magadha_restrained_gluttonous
+		}
+		if = {
+			limit = { has_character_modifier = RICE_magadha_restrained_arrogant }
+			remove_character_modifier = RICE_magadha_restrained_arrogant
+		}
+		if = {
+			limit = { has_character_modifier = RICE_magadha_reformed_vices_vassa }
+			remove_character_modifier = RICE_magadha_reformed_vices_vassa
+		}
+		if = {
+			limit = { has_character_modifier = RICE_magadha_vassa_buddhist_scriptures }
+			remove_character_modifier = RICE_magadha_vassa_buddhist_scriptures
+		}
+	}
+	
+	option = {
+		name = magadha.0089.a
+	}
+
+}
+
+
+######################################################################################
+# 
+# NALANDA DONATION DECISION
+# 
+# magadha.0090-magadha.0099			Nalanda Donations
+# 
+######################################################################################
+
+
+
+# What kind of donation to make?
+magadha.0090 = {
+	type = character_event
+	title = magadha.0090.t
+	desc = magadha.0090.desc
+	theme = RICE_theme_nalanda
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = { # Small
+		name = magadha.0090.a
+		remove_short_term_gold = 40
+		add_piety = 40
+		add_prestige = 40
+		add_character_modifier = {
+			modifier = RICE_magadha_nalanda_donation_everyday
+			years = 10
+		}
+		ai_chance = {
+			factor = 100
+		}
+	}
+	
+	option = { # Medium
+		name = magadha.0090.b
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 60
+			}
+		}
+		remove_short_term_gold = 60
+		stress_impact = {
+			greedy = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+		}
+		add_piety = 60
+		add_prestige = 60
+		add_character_modifier = {
+			modifier = RICE_magadha_nalanda_donation_religious
+			years = 10
+		}
+		ai_chance = {
+			factor = 75
+			modifier = {
+				has_trait = zealous
+				add = 25
+			}
+			modifier = {
+				has_trait = ambitious
+				add = 15
+			}
+			modifier = {
+				has_trait = generous
+				add = 15
+			}
+			modifier = {
+				has_trait = greedy
+				add = -30
+			}
+			modifier = {
+				has_trait = cynical
+				add = -30
+			}
+			ai_value_modifier = {
+				ai_zeal = 2
+				ai_greed = -1
+			}
+		}
+	}
+	
+	option = { # Large
+		name = magadha.0090.c
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 80
+			}
+		}
+		remove_short_term_gold = 80
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+		}
+		add_piety = 80
+		add_prestige = 80
+		add_character_modifier = {
+			modifier = RICE_magadha_nalanda_donation_construction
+			years = 10
+		}
+		ai_chance = {
+			factor = 75
+			modifier = {
+				has_trait = zealous
+				add = 25
+			}
+			modifier = {
+				has_trait = ambitious
+				add = 15
+			}
+			modifier = {
+				has_trait = generous
+				add = 15
+			}
+			modifier = {
+				has_trait = greedy
+				add = -30
+			}
+			modifier = {
+				has_trait = cynical
+				add = -30
+			}
+			ai_value_modifier = {
+				ai_zeal = 2
+				ai_greed = -1
+			}
+		}
+	}
+	
+	option = { # Endowment
+		name = magadha.0090.d
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 100
+			}
+			RICE_magadha_nalanda_endowment_region = yes
+		}
+		remove_short_term_gold = 100
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+		}
+		add_piety = 100
+		add_prestige = 100
+		if = {
+			limit = { exists = dynasty }
+			dynasty = {
+				add_dynasty_prestige = 50
+			}
+		}
+		add_character_modifier = {
+			modifier = RICE_magadha_nalanda_donation_endowment
+			years = 10
+		}
+		capital_county = {
+			add_county_modifier = {
+				modifier = RICE_magadha_nalanda_endowment_of_villages
+				years = 15
+			}			
+		}
+
+		ai_chance = {
+			factor = 100
+			modifier = {
+				has_trait = zealous
+				add = 20
+			}
+			modifier = {
+				has_trait = ambitious
+				add = 15
+			}
+			modifier = {
+				has_trait = generous
+				add = 30
+			}
+			modifier = {
+				has_trait = greedy
+				add = -40
+			}
+			modifier = {
+				has_trait = cynical
+				add = -40
+			}
+			ai_value_modifier = {
+				ai_zeal = 2
+				ai_greed = -1
+			}
+		}
+	}
+
+}
+
+
+
+
+
+
+
+######################################################################################
+# 
+# FLAVOR EVENTS
+# 
+# magadha.0100-yazd.0199 reserved
+# 
+######################################################################################
+
+# Legends of Buddha and Mahavira
+magadha.0100 = {
+	type = character_event
+	title = magadha.0100.t
+	desc = magadha.0100.desc
+	theme = RICE_theme_mahabodhi
+	
+	right_portrait = root
+	
+	trigger = {
+		title:c_gaya = {
+			squared_distance = {
+				target = root.capital_province
+				value <= squared_distance_small
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		title:c_magadha = { #For loc.
+			save_scope_as = magadha_duchy
+		}
+	}
+
+	option = { # ok
+		name = magadha.0100.a
+		if = {
+			limit = {
+				OR = {
+					religion = religion:buddhism_religion
+					religion = religion:jainism_religion
+				}
+			}
+			add_character_modifier = {
+				modifier = RICE_magadha_learning_about_magadha_history_buddhist_or_jain
+				years = 5
+			}			
+		}
+		else = {
+			add_character_modifier = {
+				modifier = RICE_magadha_learning_about_magadha_history
+				years = 5
+			}	
+		}
+	}
+}
+
+
+
+# Influx of Buddhist pilgrims to region
+magadha.0101 = {
+	type = character_event
+	title = magadha.0101.t
+	desc = magadha.0101.desc
+	theme = RICE_theme_mahabodhi
+	
+	right_portrait = root
+	
+	trigger = {
+		title:c_gaya = {
+			squared_distance = {
+				target = root.capital_province
+				value <= squared_distance_medium
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		title:c_magadha = { #For loc.
+			save_scope_as = magadha_duchy
+		}
+		title:b_rajagrha = { #For loc.
+			save_scope_as = rajgir_barony
+		}
+	}
+
+	option = { # ok
+		name = magadha.0101.a
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 50			
+			}
+		}
+		remove_short_term_gold = 50
+		capital_county = {
+			add_county_modifier = {
+				modifier = RICE_magadha_buddhist_pilgrims_supported
+				years = 15
+			}			
+		}
+		if = {
+			limit = {
+				religion = religion:buddhism_religion
+			}
+			add_piety = 100
+		}
+		else = {
+			add_piety = -50
+		}
+	}
+
+	option = { # ok
+		name = magadha.0101.b
+	}
+
+	option = { # blasphemers
+		name = magadha.0101.c
+		trigger = {
+			NOT = { religion = religion:buddhism_religion }
+		}
+		add_piety = 50
+		add_prestige = -50
+	}
+}
+
+
+
+
+# Courtier visits hot springs of Rajgir
+magadha.0102 = {
+	type = character_event
+	title = magadha.0102.t
+	desc = magadha.0102.desc
+	theme = RICE_theme_jungle_generic
+	
+	left_portrait = {
+		character = scope:rajgir_visitor
+		animation = personality_content
+	}
+	
+	trigger = {
+		title:c_gaya = {
+			squared_distance = {
+				target = root.capital_province
+				value <= squared_distance_small
+			}
+		}
+		any_courtier = {
+			is_available_ai_adult = yes
+			OR = {
+				religion = religion:buddhism_religion
+				religion = religion:jainism_religion
+				religion = religion:hinduism_religion
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = -0.2
+			has_trait = paranoid
+		}
+	}
+
+	immediate = {
+		title:b_rajagrha = { #For loc.
+			save_scope_as = rajgir_barony
+		}
+		random_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+				OR = {
+					religion = religion:buddhism_religion
+					religion = religion:jainism_religion
+					religion = religion:hinduism_religion
+				}
+			}
+			save_scope_as = rajgir_visitor
+			RICE_magadha_visit_rajgir_effect = yes
+		}
+	}
+
+	option = { # ok
+		name = magadha.0102.a
+	}
+}
+
+
+# Local Buddhist, Jain, and Hindu ascetics are arguing
+magadha.0103 = {
+	type = character_event
+	title = magadha.0103.t
+	desc = magadha.0103.desc
+	theme = RICE_theme_magadha_landscape
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		title:c_gaya = {
+			squared_distance = {
+				target = root.capital_province
+				value <= squared_distance_small
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+	}
+
+	immediate = {
+		title:c_magadha = { #For loc.
+			save_scope_as = magadha_duchy
+		}
+	}
+
+	option = { # ok
+		name = magadha.0103.a
+		trigger = {
+			OR = {
+				religion = religion:buddhism_religion
+				religion = religion:jainism_religion
+				religion = religion:hinduism_religion
+			}			
+		}
+		add_piety = 50
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+
+	option = { # ok
+		name = magadha.0103.b
+		add_prestige = 50
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+	}
+
+	option = { # ok
+		name = magadha.0103.c
+		trigger = {
+			NOR = {
+				religion = religion:buddhism_religion
+				religion = religion:jainism_religion
+				religion = religion:hinduism_religion
+			}			
+		}
+		add_piety = 50
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+}
+
+
+
+
+
+# A Buddhist pilgrim travels by and wants to write about you in their records
+magadha.0104 = {
+	type = character_event
+	title = magadha.0104.t
+	desc = magadha.0104.desc
+	theme = realm
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	left_portrait = root
+	right_portrait = {
+		character = scope:xuanzang
+		animation = chancellor
+	}
+	
+	trigger = {
+		title:c_gaya = {
+			squared_distance = {
+				target = root.capital_province
+				value <= squared_distance_medium
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+	}
+
+	immediate = {
+		random_list = {
+			# Chinese
+			# Tibetan
+			# Saka
+			# Burmese
+			# Sinahala
+			10 = {
+				create_character = {
+					location = root.location
+					template = xuanzang_pilgrim_template
+					save_scope_as = xuanzang
+					culture = culture:han
+					faith = faith:mahayana
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = xuanzang_pilgrim_template
+					save_scope_as = xuanzang
+					culture = culture:bodpa
+					faith = faith:lamaism
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = xuanzang_pilgrim_template
+					save_scope_as = xuanzang
+					culture = culture:saka
+					faith = faith:vajrayana
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = xuanzang_pilgrim_template
+					save_scope_as = xuanzang
+					culture = culture:burmese
+					faith = faith:theravada
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = xuanzang_pilgrim_template
+					save_scope_as = xuanzang
+					culture = culture:sinhala
+					faith = faith:theravada
+				}				
+			}
+		}
+	}
+
+	option = { # ok
+		name = magadha.0104.a
+		add_piety = 100
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+
+	option = { # ok
+		name = magadha.0104.b
+		add_prestige = 100
+		stress_impact = {
+			arbitrary = minor_stress_impact_gain
+		}
+	}
+
+	option = { # ok
+		name = magadha.0104.c
+		add_piety = 50
+		add_prestige = 50
+		stress_impact = {
+			lazy = minor_stress_impact_gain
+		}
+	}
+
+	after = {
+		random = {
+			chance = 40
+			modifier = {
+				add = 7
+				diplomacy >= decent_skill_rating
+			}
+			modifier = {
+				add = 5
+				diplomacy >= very_high_skill_rating
+			}
+			modifier = {
+				add = 7
+				learning >= decent_skill_rating
+			}
+			modifier = {
+				add = 5
+				learning >= very_high_skill_rating
+			}
+			send_interface_toast = {
+				type = event_toast_effect_good
+				left_icon = ROOT
+				title = magadha.0104.toast
+				add_character_modifier = RICE_magadha_mentioned_by_a_buddhist_pilgrim
+			}
+		}
+		hidden_effect = {
+			scope:xuanzang = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+
+}
+
+
+
+

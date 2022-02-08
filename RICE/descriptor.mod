@@ -9,5 +9,5 @@ tags={
 	"Religion"
 }
 name="Regional Immersion and Cultural Enrichment (RICE)"
-supported_version="1.4.*"
+supported_version="1.5.*"
 remote_file_id="2273832430"
