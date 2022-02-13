@@ -57,4 +57,5 @@ NOTE: If you are re-installing a mod manually, delete the old version of the mod
 - Fixed Mahabodhi bonuses given to the owner of Gaya even when they are not the Pithipati or Buddhist
 - Fixed Tuyuhun culture being unable to reform their traditions until 50 years passes from the start of the game
 - Fixed Nasir Khusraw from leaving Asad ibn Ali’s court, and Jataylotu and Garg from Azur Jamshid’s court, at their respective start dates (maybe… this old bug is hard to reproduce)
+- Fixed Sadeh decision not working for Zoroastrian rulers outside of Yazd
 - Miscellaneous bugfixes
