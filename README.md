@@ -1,12 +1,12 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.5.1 "Faxian" (Released 2/12/22, for vanilla patch 1.5.x)
+## Latest Version: Version 1.5.2 "Mount Teide" (Released 2/20/22, for vanilla patch 1.5.x)
 
 **Newest Flavor Pack - Magadha: Diamond Throne of Buddhism**
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com)
 
-_Faxian was a Chinese pilgrim, monk, and translator who started his journey from China to India in 399 CE at the old age of 60. He traveled to many Buddhist centers of learning and pilgrimage in India and Central Asia, returning to China in 412 CE to spend the final years of his life translating Buddhist scriptures he brought back from India. His memoir of his travels, A Record of Buddhist Kingdoms, has proven to be a valuable eyewitness account of Indian and Central Asian communities in Late Antiquity._
+_Mount Teide is a volcano on Tenerife in the Canary Islands, and the highest point above sea level out of any island in the Atlantic Ocean. A sacred site for the Guanches, the indigenous peoples of the Canaries, it was associated with a number of myths and legends._
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. The guiding philosophy of RICE is to keep a tight, focused scope that doesn’t change gameplay significantly, but adds more flavor across the world, especially for lesser-known places, peoples, and histories.
 
@@ -46,16 +46,32 @@ NOTE: If you are re-installing a mod manually, delete the old version of the mod
 
 ## Latest Changelog
 
-### Versioin 1.5.1 "Faxian"
+### Versioin 1.5.2 "Mount Teide"
 
-- Added several new potential hybrid and diverging culture names
-- Tweaked Sinosphere trigger slightly and it now also accounts for descendant cultures
-- Some Middle Eastern and Indian soundtracks will now also play if you are in the Tarim Basin
-- Several decisions and events that had requirements of being a certain culture are now also available to cultures derived or hybridized from such cultures - for example the decision to Unite the Canary Islands is also available to cultures diverged from or hybridized with Guanche
-- Some Siberian content will no longer happen nonsensically in the Tarim Basin
-- Fixed Azur Jamshid not starting as independent after Royal Court
-- Fixed Mahabodhi bonuses given to the owner of Gaya even when they are not the Pithipati or Buddhist
-- Fixed Tuyuhun culture being unable to reform their traditions until 50 years passes from the start of the game
-- Fixed Nasir Khusraw from leaving Asad ibn Ali’s court, and Jataylotu and Garg from Azur Jamshid’s court, at their respective start dates (maybe… this old bug is hard to reproduce)
-- Fixed Sadeh decision not working for Zoroastrian rulers outside of Yazd
+- Added Himyarite culture with Arabic heritage (see Red Sea Flavor Pack for more info)
+- Added silver mines of Al-Radrad in western Yemen
+- Added new tradition, Cichiciquitzo, which unlocks the Cichiciquitzo MAA (courtesy of BlackEmperor’s Africa Plus mod)
+- Added Guanche language for Guanches
+- Guanche culture now has the Cichiciquitzo tradition
+- Sindhi culture now has the Practiced Pirates tradition
+- Swahili now has Parochialism tradition
+- Changed South Arabian traditions to Maritime Mercantilism, Seafarers, Dexterous Fishermen, Quarrelsome, and Ubiquity of Poetry to be more consistent with the Muslim Enhancements mod
+- Changed Ubiquity of Poetry tradition bonuses - diplomacy bonuses removed, replaced with bonuses to different culture/faith opinion and cultural acceptance
+- Neoplatonist Academy and Temple of Sin in Harran will actually be properly destroyed now when their respective events/decisions happen
+- Characters will immersively become naked if visiting certain hot springs
+- Changed icon for Ubiquity of Poetry tradition
+- Sogdian now exists in 1066 in a few counties (based on Encyclopedia Iranica)
+- Saka is now Bureaucratic rather than Bellicose ethos
+- Iranian and Scythian languages renamed to more “accurate” Western Iranian and Eastern Iranian languages respectively
+- Decisions to form the Kingdom of Socotra and Unite the Canaries no longer has a renown requirement to be in line with vanilla kingdom decisions, and now instead gives renown
+- Lowered renown requirements by one level for decisions to exhume Charlemagne and commission his bust
+- Increased prestige level requirement by one level for the decision to Restore the Tuyuhun Kingdom but it now also gives renown
+- Collaborate with Indian Ocean Pirates decision no longer nonsensically costs and gives you prestige at the same time - it now solely costs prestige
+- Gift Qinghaicong Horses interaction now costs a flat 50 gold
+- Ubiquity of Poetry tradition for South Arabian culture is now added via hidden effect for better compatibility with the Muslim Enhancements mod
+- Hidden effects to add new special buildings at game start now checks if there are already pre-existing special buildings, to work better with other mods that add special buildings
+- Changed several modifier icons to use vanilla's new ones
+- Removed Korean localization files from mod at the request of Korean translators (If you want to play in Korean, please use this mod: https://steamcommunity.com/sharedfiles/filedetails/?id=2568582489)
+- Fixed missing English placeholder names for new hybrid/divergent cultures, and culture prefixes
+- Fixed Fomba Gasy wealth god being the Peristani wealth god Mahandeo in the localization, changed it to Ratovantany
 - Miscellaneous bugfixes
