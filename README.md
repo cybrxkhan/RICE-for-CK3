@@ -1,6 +1,6 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.5.2 "Mount Teide" (Released 2/20/22, for vanilla patch 1.5.x)
+## Latest Version: Version 1.5.2.a "Mount Teide" (Released 2/20/22, for vanilla patch 1.5.x)
 
 **Newest Flavor Pack - Magadha: Diamond Throne of Buddhism**
 
@@ -45,6 +45,11 @@ DO NOT manually download the master branch unless you know what you're doing as 
 NOTE: If you are re-installing a mod manually, delete the old version of the mod first before copy and pasting the new one! While it's not always necessary, it's a good habit to do to prevent any potential issues.
 
 ## Latest Changelog
+
+### Version 1.5.2.a Hotfix
+
+- Himyarite culture now starts with Qanat innovation
+- Fixed Sadeh festival decision bugging out for non-Zoroastrian rulers of Yazd
 
 ### Versioin 1.5.2 "Mount Teide"
 
