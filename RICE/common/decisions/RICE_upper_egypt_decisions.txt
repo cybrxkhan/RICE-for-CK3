@@ -1,0 +1,508 @@
+﻿
+# Reopen temples of Aswan visible to everyone in Africa and Middle East? Or of ancient Egyptian religion?
+RICE_upper_egypt_pray_at_a_temple_in_aswan = {
+	picture = "gfx/interface/illustrations/decisions/decision_ancient_egypt_temple.dds"
+	ai_check_interval = 48
+
+	cooldown = { days = 3650 }
+	
+	desc = RICE_upper_egypt_pray_at_a_temple_in_aswan_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		RICE_is_greco_roman_religion_group_trigger = yes
+		any_directly_owned_province = {
+			geographical_region = RICE_southern_egypt_and_northern_nubia
+		}
+	}
+	
+	is_valid = {
+		gold >= 50
+		RICE_is_greco_roman_religion_group_trigger = yes
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+
+		# trigger_if = { # Elephantine
+		# 	limit = { scope:RICE_upper_egypt_temple_elephantine_option = yes }
+		# 	custom_tooltip = {
+		# 		text = RICE_upper_egypt_temple_elephantine_option_closed
+		# 		NOT = { has_global_variable = RICE_upper_egypt_elephantine_closed } 
+		# 	}
+		# }
+		# trigger_if = { # Kalabsha
+		# 	limit = { scope:RICE_upper_egypt_temple_kalabsha_option = yes }
+		# 	custom_tooltip = {
+		# 		text = RICE_upper_egypt_temple_kalabsha_option_closed
+		# 		NOT = { has_global_variable = RICE_upper_egypt_kalabsha_closed }
+		# 	}
+		# }
+		# trigger_if = { # Philae
+		# 	limit = { scope:RICE_upper_egypt_temple_philae_option = yes }
+		# 	custom_tooltip = {
+		# 		text = RICE_upper_egypt_temple_philae_option_closed
+		# 		NOT = { has_global_variable = RICE_upper_egypt_philae_closed }
+		# 	}
+		# }
+
+	}
+
+    widget = {
+    	gui = "decision_view_widget_RICE_upper_egypt_aswan_temple"
+		controller = decision_option_list_controller
+    	
+		decision_has_second_step = yes
+		decision_custom_widget_container = "custom_widgets_container_step_two"
+		decision_to_second_step_button = "RICE_upper_egypt_aswan_temple_decision_choose_where_to_pray" 
+
+
+		# Temple of Elephantine
+		item = {
+			value = RICE_upper_egypt_temple_elephantine_option
+			is_valid = {
+				custom_tooltip = {
+					text = RICE_upper_egypt_temple_elephantine_option_closed
+					NOT = { has_global_variable = RICE_upper_egypt_elephantine_closed } 
+				}
+			}
+			current_description = RICE_upper_egypt_temple_elephantine_option_desc
+			localization = RICE_upper_egypt_temple_elephantine_option
+			icon = "gfx/interface/icons/widgets/RICE_egypt_khnum.dds"
+
+			ai_chance = {
+				value = 1
+			}
+		}
+
+		# Temple of Kalabsha
+		item = {
+			value = RICE_upper_egypt_temple_kalabsha_option
+			is_valid = {
+				custom_tooltip = {
+					text = RICE_upper_egypt_temple_kalabsha_option_closed
+					NOT = { has_global_variable = RICE_upper_egypt_kalabsha_closed }
+				}
+			}
+			current_description = RICE_upper_egypt_temple_kalabsha_option_desc
+			localization = RICE_upper_egypt_temple_kalabsha_option
+			icon = "gfx/interface/icons/widgets/RICE_egypt_mandulis.dds"
+
+			ai_chance = {
+				value = 1
+			}
+		}
+
+		# Temple of Philae
+		item = {
+			value = RICE_upper_egypt_temple_philae_option
+			is_valid = {
+				custom_tooltip = {
+					text = RICE_upper_egypt_temple_philae_option_closed
+					NOT = { has_global_variable = RICE_upper_egypt_philae_closed }
+				}
+			}
+			current_description = RICE_upper_egypt_temple_philae_option_desc
+			localization = RICE_upper_egypt_temple_philae_option
+			icon = "gfx/interface/icons/widgets/RICE_egypt_isis.dds"
+
+			ai_chance = {
+				value = 1
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = RICE_upper_egypt_pray_at_a_temple_in_aswan_effect_tooltip
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_upper_egypt_pray_at_a_temple_in_aswan_context_tooltip
+		}
+		if = { # Philae
+			limit = { scope:RICE_upper_egypt_temple_philae_option = yes }
+			set_variable = {
+				name = RICE_upper_egypt_aswan_temple_type
+				value = flag:philae
+			}
+			trigger_event = {
+				id = upper_egypt.0040
+			}
+		}
+		if = { # Elephantine
+			limit = { scope:RICE_upper_egypt_temple_elephantine_option = yes }
+			set_variable = {
+				name = RICE_upper_egypt_aswan_temple_type
+				value = flag:elephantine
+			}
+			trigger_event = {
+				id = upper_egypt.0041
+			}
+		}
+		if = { # Kalabsha
+			limit = { scope:RICE_upper_egypt_temple_kalabsha_option = yes }
+			set_variable = {
+				name = RICE_upper_egypt_aswan_temple_type
+				value = flag:kalabsha
+			}
+			trigger_event = {
+				id = upper_egypt.0042
+			}
+		}
+		# hidden_effect = {
+		# 	# Spawn the Petition Liege activity
+		# 	liege.capital_province = {
+		# 		spawn_activity = {
+		# 			type = activity_petition_liege
+		# 			owner = root
+		# 		}
+		# 	}
+		# }
+	}
+
+	cost = { 
+		gold = { value = 50 }
+	}	
+
+	ai_potential = {
+		short_term_gold > 50
+	}
+
+	ai_will_do = {
+		base = 50
+		modifier = {
+			add = 20
+			has_trait = zealous
+		}
+	}
+}
+
+
+
+
+RICE_upper_egypt_celebrate_nile_canal_opening = {
+	picture = "gfx/interface/illustrations/decisions/decision_visit_western_oasis_springs.dds"
+
+	ai_check_interval = 24
+
+	cooldown = { days = 1825 }
+
+	desc = RICE_upper_egypt_celebrate_nile_canal_opening_desc
+	
+	is_shown = {
+		is_landed = yes
+		highest_held_title_tier > tier_barony
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_nile_river_valley		
+			}
+		}
+		culture = { has_cultural_tradition = tradition_RICE_children_of_the_nile }
+		OR = {
+			has_global_variable = RICE_nile_normal_flood_this_year
+			has_global_variable = RICE_nile_high_flood_this_year
+			has_global_variable = RICE_nile_very_high_flood_this_year
+		}
+	}
+	
+	is_valid = {
+		custom_description = {
+			text = RICE_decision_nile_flood_month_req
+			current_month >= 8
+			current_month <= 10	
+		}
+		culture = { has_cultural_tradition = tradition_RICE_children_of_the_nile }
+		custom_description = {
+			text = RICE_decision_good_nile_flood_req
+			OR = {
+				has_global_variable = RICE_nile_normal_flood_this_year
+				has_global_variable = RICE_nile_high_flood_this_year
+				has_global_variable = RICE_nile_very_high_flood_this_year
+			}
+		}
+		custom_description = {
+			text = RICE_decision_nile_valley_geographical_req
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_nile_river_valley		
+				}
+			}
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+
+		custom_tooltip = RICE_upper_egypt_celebrate_nile_canal_opening_effect_tooltip
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_upper_egypt_celebrate_nile_canal_opening_context_tooltip
+		}
+		trigger_event = {
+			id = upper_egypt.0888
+		}
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # Will depend
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+
+
+RICE_upper_egypt_pray_for_a_good_nile_flood = {
+	picture = "gfx/interface/illustrations/decisions/decision_visit_western_oasis_springs.dds"
+
+	ai_check_interval = 24
+
+	cooldown = { days = 1825 }
+
+	desc = RICE_upper_egypt_pray_for_a_good_nile_flood_desc
+	
+	is_shown = {
+		is_landed = yes
+		highest_held_title_tier > tier_barony
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_nile_river_valley		
+			}
+		}
+		culture = { has_cultural_tradition = tradition_RICE_children_of_the_nile }
+		OR = {
+			has_global_variable = RICE_nile_low_flood_this_year
+			has_global_variable = RICE_nile_very_low_flood_this_year
+		}
+	}
+	
+	is_valid = {
+		custom_description = {
+			text = RICE_decision_nile_flood_month_req
+			current_month >= 8
+			current_month <= 10	
+		}
+		culture = { has_cultural_tradition = tradition_RICE_children_of_the_nile }
+		custom_description = {
+			text = RICE_decision_low_nile_flood_req
+			OR = {
+				has_global_variable = RICE_nile_low_flood_this_year
+				has_global_variable = RICE_nile_very_low_flood_this_year
+			}
+		}
+		custom_description = {
+			text = RICE_decision_nile_valley_geographical_req
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_nile_river_valley		
+				}
+			}
+		}
+		gold >= 50
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+
+		custom_tooltip = RICE_upper_egypt_pray_for_a_good_nile_flood_effect_tooltip_1
+		custom_tooltip = RICE_upper_egypt_pray_for_a_good_nile_flood_effect_tooltip_2
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_upper_egypt_pray_for_a_good_nile_flood_context_tooltip
+		}
+		trigger_event = {
+			id = upper_egypt.0888
+		}
+	}
+
+	#cost = { 
+	#	gold = { value = medium_gold_value } # Will depend
+	#}	
+
+	ai_potential = {
+		short_term_gold >= 50
+	}
+
+	ai_will_do = {
+		base = 30
+	}
+}
+
+
+
+
+RICE_upper_egypt_renovate_local_nilometers = {
+	picture = "gfx/interface/illustrations/decisions/decision_visit_western_oasis_springs.dds"
+
+	ai_check_interval = 36
+
+	cooldown = { days = 7300 }
+	
+	desc = RICE_upper_egypt_renovate_local_nilometers_desc
+	
+	is_shown = {
+		is_landed = yes
+		highest_held_title_tier > tier_barony
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_nile_river_valley		
+			}
+		}
+		culture = { has_cultural_tradition = tradition_RICE_children_of_the_nile }
+	}
+	
+	is_valid = {
+		culture = { has_cultural_tradition = tradition_RICE_children_of_the_nile }
+		custom_description = {
+			text = RICE_decision_nile_valley_geographical_req
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_nile_river_valley		
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+	
+		custom_tooltip = RICE_upper_egypt_renovate_local_nilometers_effect_tooltip_1
+
+		show_as_tooltip = {
+			RICE_upper_egypt_renovate_nilometers_effect = yes
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_upper_egypt_renovate_local_nilometers_context_tooltip
+		}
+		
+		trigger_event = {
+			id = upper_egypt.0021
+		}
+	}
+
+	cost = { 
+		gold = { value = 50 }
+	}	
+
+	ai_potential = {
+		short_term_gold >= 50
+	}
+
+	ai_will_do = {
+		base = 25
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+		modifier = {
+			add = 10
+			has_trait = just
+		}
+		modifier = {
+			add = -10
+			has_trait = arbitrary
+		}
+	}
+}
+
+
+
+
+
+# RICE_upper_egypt_pray_at_a_temple_in_aswan = {
+# 	picture = "gfx/interface/illustrations/decisions/decision_ancient_egypt_temple.dds"
+
+# 	ai_check_interval = 48
+
+# 	cooldown = { days = 3650 }
+	
+# 	desc = RICE_upper_egypt_pray_at_a_temple_in_aswan_desc
+	
+# 	is_shown = {
+# 		is_ruler = yes
+# 		is_landed = yes
+# 		RICE_is_greco_roman_religion_group_trigger = yes
+# 		any_directly_owned_province = {
+# 			geographical_region = ghw_region_egypt_et_al
+# 		}
+# 	}
+	
+# 	is_valid = {
+# 		gold >= 50
+# 		RICE_is_greco_roman_religion_group_trigger = yes
+# 	}
+	
+# 	is_valid_showing_failures_only = {
+# 		is_available_adult = yes
+# 	}
+
+# 	effect = {
+# 		custom_tooltip = RICE_upper_egypt_pray_at_a_temple_in_aswan_effect_tooltip
+# 		if = {
+# 			limit = {
+# 				has_game_rule = RICE_historical_context_on
+# 			}
+# 			custom_tooltip = RICE_upper_egypt_pray_at_a_temple_in_aswan_context_tooltip
+# 		}
+# 		trigger_event = {
+# 			id = upper_egypt.0888
+# 		}
+# 	}
+
+# 	cost = { 
+# 		gold = { value = 50 }
+# 	}	
+
+# 	ai_potential = {
+# 		short_term_gold > 50
+# 	}
+
+# 	ai_will_do = {
+# 		base = 50
+# 		modifier = {
+# 			add = 20
+# 			has_trait = zealous
+# 		}
+# 	}
+# }
+
+
+
+
+

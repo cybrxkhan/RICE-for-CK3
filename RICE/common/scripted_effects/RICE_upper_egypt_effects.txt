@@ -1,0 +1,115 @@
+﻿RICE_setup_upper_egypt_flavor_pack_effect = {
+
+	# Give Egyptian cultures the Children of the Nile tradition
+	culture:egyptian = {
+		if = {
+			limit = { has_cultural_tradition = tradition_agrarian }
+			remove_culture_tradition = tradition_agrarian
+		}
+		add_culture_tradition = tradition_RICE_children_of_the_nile
+		remove_variable = tradition_cooldown
+	}
+
+	if = {
+		limit = {
+			has_global_variable = RICE_game_started_on_TFE_start_date
+		}
+		culture:aegyptian = {
+			if = {
+				limit = { has_cultural_tradition = tradition_agrarian }
+				remove_culture_tradition = tradition_agrarian
+			}
+			add_culture_tradition = tradition_RICE_children_of_the_nile
+			remove_variable = tradition_cooldown
+		}
+		culture:kemetic = {
+			if = {
+				limit = { has_cultural_tradition = tradition_agrarian }
+				remove_culture_tradition = tradition_agrarian
+			}
+			if = {
+				limit = { has_cultural_tradition = tradition_dryland_dwellers }
+				remove_culture_tradition = tradition_dryland_dwellers
+			}
+			add_culture_tradition = tradition_RICE_children_of_the_nile
+			remove_variable = tradition_cooldown
+		}
+	}
+
+	# Buildings
+	if = {
+		limit = {
+			has_global_variable = RICE_game_started_on_TFE_start_date
+		}
+		if = {
+			limit = {
+				title:c_qus = {
+					title_province = { has_special_building = no }
+				}
+			}
+			title:c_qus.title_province = {
+				add_special_building = RICE_upper_egypt_temple_of_luxor_01
+			}
+		}
+	}
+	else = {
+		if = {
+			limit = {
+				title:c_qus = {
+					title_province = { has_special_building = no }
+				}
+			}
+			title:c_qus.title_province = {
+				add_special_building = RICE_upper_egypt_temple_of_luxor_02
+			}
+		}
+		#set_global_variable = {
+		#	name = RICE_upper_egypt_philae_closed
+		#	value = yes
+		#}
+	}
+	set_global_variable = {
+		name = RICE_upper_egypt_elephantine_closed
+		value = yes
+	}
+
+	# Nile flood at game start
+	set_global_variable = {
+		name = RICE_nile_normal_flood_this_year
+		value = yes
+		days = 365 # Just in case it doesn't clear for whatever reason
+	}
+	every_county_in_region = {
+		region = RICE_nile_river_valley
+		add_county_modifier = {
+			modifier = RICE_nile_normal_flood
+		}
+	}
+	# Fire first Nile flood, as it won't fire on the first year otherwise if the date isn't Jan 1
+	if = {
+		limit = {
+			NOT = { current_month = 1 }
+			NOT = { current_day = 1 }
+			current_month < 8
+		}
+		trigger_event = {
+			id = upper_egypt.0020 # Nile flood
+			trigger_on_next_date = 8.1 # Extremely approximate, varies by year and by part of Egypt, done this way as a simplification
+		}
+	}
+}
+
+RICE_upper_egypt_renovate_nilometers_effect = {
+	add_prestige = 100
+	every_sub_realm_county = {
+		limit = {
+			tier = tier_county
+			title_capital_county.title_province = { geographical_region = RICE_nile_river_valley }
+		}
+		custom = RICE_upper_egypt_give_nilometer_county_modifiers_desc
+		add_county_modifier = {
+			modifier = RICE_nile_renovated_nilometers
+			years = 10
+		}
+	}
+}

@@ -1,0 +1,472 @@
+﻿###############################################################################
+# 
+# UPPER EGYPT
+# 
+# upper_egypt.0000-upper_egypt.0019			Setup, history events, miscellaneous decisions
+# upper_egypt.0020-upper_egypt.0039			Nile related flavor
+# upper_egypt.0040-upper_egypt.0049			Aswan Temples
+# upper_egypt.0050-upper_egypt.0099			Generic Flavor Events
+# 
+# 
+###############################################################################
+
+namespace = upper_egypt
+
+
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# upper_egypt.0000-upper_egypt.0019
+# 
+######################################################################################
+
+
+
+######################################################################################
+# 
+# NILE FLAVOR
+# 
+# upper_egypt.0020-upper_egypt.0029
+# 
+######################################################################################
+
+
+# Nilometer calculator
+upper_egypt.0020 = {
+	type = empty
+	hidden = yes
+	
+	immediate = {
+		# Remove global variables just in case
+		if = {
+			limit = {
+				has_global_variable = RICE_nile_normal_flood_this_year
+			}
+			remove_global_variable = RICE_nile_normal_flood_this_year
+		}
+		if = {
+			limit = {
+				has_global_variable = RICE_nile_high_flood_this_year
+			}
+			remove_global_variable = RICE_nile_high_flood_this_year
+		}
+		if = {
+			limit = {
+				has_global_variable = RICE_nile_very_high_flood_this_year
+			}
+			remove_global_variable = RICE_nile_very_high_flood_this_year
+		}
+		if = {
+			limit = {
+				has_global_variable = RICE_nile_overflooding_flood_this_year
+			}
+			remove_global_variable = RICE_nile_overflooding_flood_this_year
+		}
+		if = {
+			limit = {
+				has_global_variable = RICE_nile_low_flood_this_year
+			}
+			remove_global_variable = RICE_nile_low_flood_this_year
+		}
+		if = {
+			limit = {
+				has_global_variable = RICE_nile_very_low_flood_this_year
+			}
+			remove_global_variable = RICE_nile_very_low_flood_this_year
+		}
+		# Remove current flood modifiers
+		every_county_in_region = {
+			region = RICE_nile_river_valley
+			if = {
+				limit = {
+					has_county_modifier = RICE_nile_normal_flood
+				}
+				remove_county_modifier = RICE_nile_normal_flood
+			}
+			if = {
+				limit = {
+					has_county_modifier = RICE_nile_high_flood
+				}
+				remove_county_modifier = RICE_nile_high_flood
+			}
+			if = {
+				limit = {
+					has_county_modifier = RICE_nile_very_high_flood
+				}
+				remove_county_modifier = RICE_nile_very_high_flood
+			}
+			if = {
+				limit = {
+					has_county_modifier = RICE_nile_overflooding_flood
+				}
+				remove_county_modifier = RICE_nile_overflooding_flood
+			}
+			if = {
+				limit = {
+					has_county_modifier = RICE_nile_low_flood
+				}
+				remove_county_modifier = RICE_nile_low_flood
+			}
+			if = {
+				limit = {
+					has_county_modifier = RICE_nile_very_low_flood
+				}
+				remove_county_modifier = RICE_nile_very_low_flood
+			}
+			if = {
+				limit = {
+					has_county_modifier = RICE_nile_mitigated_bad_flood
+				}
+				remove_county_modifier = RICE_nile_mitigated_bad_flood
+			}
+		}
+		# Flood calculator
+		random_list = {
+			# Normal: 55%
+			# High: 10%
+			# Very High: 5%
+			# Overflooding: 5%
+			# Low: 20%
+			# Very Low: 5%
+			# Normal Flood
+			1 = {
+				set_global_variable = {
+					name = RICE_nile_normal_flood_this_year
+					value = yes
+					days = 365 # Just in case it doesn't clear for whatever reason
+				}
+				every_county_in_region = {
+					region = RICE_nile_river_valley
+					add_county_modifier = {
+						modifier = RICE_nile_normal_flood
+					}
+				}
+			}
+			# High Flood
+			1 = {
+				set_global_variable = {
+					name = RICE_nile_high_flood_this_year
+					value = yes
+					days = 365 # Just in case it doesn't clear for whatever reason
+				}
+				every_county_in_region = {
+					region = RICE_nile_river_valley
+					add_county_modifier = {
+						modifier = RICE_nile_high_flood
+					}
+				}
+			}
+			# Very High Flood
+			1 = {
+				set_global_variable = {
+					name = RICE_nile_very_high_flood_this_year
+					value = yes
+					days = 365 # Just in case it doesn't clear for whatever reason
+				}
+				every_county_in_region = {
+					region = RICE_nile_river_valley
+					add_county_modifier = {
+						modifier = RICE_nile_very_high_flood
+					}
+				}
+			}
+			# Overflooding
+			1 = {
+				set_global_variable = {
+					name = RICE_nile_overflooding_flood_this_year
+					value = yes
+					days = 365 # Just in case it doesn't clear for whatever reason
+				}
+				every_county_in_region = {
+					region = RICE_nile_river_valley
+					add_county_modifier = {
+						modifier = RICE_nile_overflooding_flood
+					}
+					if = {
+						limit = {
+							has_county_modifier = RICE_nile_renovated_nilometers
+						}
+						add_county_modifier = {
+							modifier = RICE_nile_mitigated_bad_flood
+						}
+					}
+				}
+			}
+			# Low Flood
+			1 = {
+				set_global_variable = {
+					name = RICE_nile_low_flood_this_year
+					value = yes
+					days = 365 # Just in case it doesn't clear for whatever reason
+				}
+				every_county_in_region = {
+					region = RICE_nile_river_valley
+					add_county_modifier = {
+						modifier = RICE_nile_low_flood
+					}
+					if = {
+						limit = {
+							has_county_modifier = RICE_nile_renovated_nilometers
+						}
+						add_county_modifier = {
+							modifier = RICE_nile_mitigated_bad_flood
+						}
+					}
+				}
+			}
+			# Very low flood
+			1 = {
+				set_global_variable = {
+					name = RICE_nile_very_low_flood_this_year
+					value = yes
+					days = 365 # Just in case it doesn't clear for whatever reason
+				}
+				every_county_in_region = {
+					region = RICE_nile_river_valley
+					add_county_modifier = {
+						modifier = RICE_nile_very_low_flood
+					}
+					if = {
+						limit = {
+							has_county_modifier = RICE_nile_renovated_nilometers
+						}
+						add_county_modifier = {
+							modifier = RICE_nile_mitigated_bad_flood
+						}
+					}
+				}
+			}
+		}
+		# Notify rulers in Egypt
+		every_county_in_region = {
+			region = RICE_nile_river_valley
+			holder = {
+				add_to_list = nile_valley_rulers
+			}
+		}
+		every_in_list = {
+			list = nile_valley_rulers
+			if = {
+				limit = {
+					has_global_variable = RICE_nile_normal_flood_this_year
+				}
+				send_interface_message = {
+					type = event_generic_neutral
+					title = upper_egypt.0020.notification.flood.normal
+					show_as_tooltip = {
+						every_sub_realm_county = {
+							limit = {
+								tier = tier_county
+								title_capital_county.title_province = { geographical_region = RICE_nile_river_valley }
+							}
+							custom = RICE_upper_egypt_give_nilometer_county_modifiers_desc	
+							add_county_modifier = {
+								modifier = RICE_nile_normal_flood
+							}
+						}							
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_global_variable = RICE_nile_high_flood_this_year
+				}
+				send_interface_message = {
+					type = event_generic_good
+					title = upper_egypt.0020.notification.flood.high
+					show_as_tooltip = {
+						every_sub_realm_county = {
+							limit = {
+								tier = tier_county
+								title_capital_county.title_province = { geographical_region = RICE_nile_river_valley }
+							}
+							custom = RICE_upper_egypt_give_nilometer_county_modifiers_desc	
+							add_county_modifier = {
+								modifier = RICE_nile_high_flood
+							}
+						}							
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_global_variable = RICE_nile_very_high_flood_this_year
+				}
+				send_interface_message = {
+					type = event_generic_good
+					title = upper_egypt.0020.notification.flood.very_high
+					every_sub_realm_county = {
+						limit = {
+							tier = tier_county
+							title_capital_county.title_province = { geographical_region = RICE_nile_river_valley }
+						}
+						custom = RICE_upper_egypt_give_nilometer_county_modifiers_desc	
+						add_county_modifier = {
+							modifier = RICE_nile_very_high_flood
+						}
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_global_variable = RICE_nile_overflooding_flood_this_year
+				}
+				send_interface_message = {
+					type = event_generic_bad
+					title = upper_egypt.0020.notification.flood.overflooding
+					show_as_tooltip = {
+						every_sub_realm_county = {
+							limit = {
+								tier = tier_county
+								title_capital_county.title_province = { geographical_region = RICE_nile_river_valley }
+							}
+							custom = RICE_upper_egypt_give_nilometer_county_modifiers_desc	
+							add_county_modifier = {
+								modifier = RICE_nile_overflooding_flood
+							}
+							if = {
+								limit = {
+									has_county_modifier = RICE_nile_renovated_nilometers
+								}
+								add_county_modifier = {
+									modifier = RICE_nile_mitigated_bad_flood
+								}
+							}
+						}						
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_global_variable = RICE_nile_low_flood_this_year
+				}
+				send_interface_message = {
+					type = event_generic_bad
+					title = upper_egypt.0020.notification.flood.low
+					show_as_tooltip = {
+						every_sub_realm_county = {
+							limit = {
+								tier = tier_county
+								title_capital_county.title_province = { geographical_region = RICE_nile_river_valley }
+							}
+							custom = RICE_upper_egypt_give_nilometer_county_modifiers_desc	
+							add_county_modifier = {
+								modifier = RICE_nile_low_flood
+							}
+							if = {
+								limit = {
+									has_county_modifier = RICE_nile_renovated_nilometers
+								}
+								add_county_modifier = {
+									modifier = RICE_nile_mitigated_bad_flood
+								}
+							}
+						}							
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_global_variable = RICE_nile_very_low_flood_this_year
+				}
+				send_interface_message = {
+					type = event_generic_bad
+					title = upper_egypt.0020.notification.flood.very_low
+					show_as_tooltip = {
+						every_sub_realm_county = {
+							limit = {
+								tier = tier_county
+								title_capital_county.title_province = { geographical_region = RICE_nile_river_valley }
+							}
+							custom = RICE_upper_egypt_give_nilometer_county_modifiers_desc	
+							add_county_modifier = {
+								modifier = RICE_nile_very_low_flood
+							}
+							if = {
+								limit = {
+									has_county_modifier = RICE_nile_renovated_nilometers
+								}
+								add_county_modifier = {
+									modifier = RICE_nile_mitigated_bad_flood
+								}
+							}
+						}						
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
+# Renovate Nilometers
+upper_egypt.0021 = {
+	type = character_event
+	title = upper_egypt.0021.t
+	desc = upper_egypt.0021.desc
+	theme = RICE_theme_nile_valley
+	
+	right_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	option = { # Ok
+		name = upper_egypt.0021.a
+		RICE_upper_egypt_renovate_nilometers_effect = yes
+	}
+}
+
+
+######################################################################################
+# 
+# ASWAN TEMPLES
+# 
+# upper_egypt.0040-upper_egypt.0049
+# 
+######################################################################################
+
+# Renovate Nilometers
+upper_egypt.0040 = {
+	type = character_event
+	title = upper_egypt.0040.t
+	desc = upper_egypt.0040.desc
+	theme = RICE_theme_nile_valley
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = upper_egypt.0040.a
+	}
+}
+
+# Renovate Nilometers
+upper_egypt.0041 = {
+	type = character_event
+	title = upper_egypt.0041.t
+	desc = upper_egypt.0041.desc
+	theme = RICE_theme_nile_valley
+	
+	right_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	option = { # Ok
+		name = upper_egypt.0041.a
+	}
+}
+
+
+
+
+
+

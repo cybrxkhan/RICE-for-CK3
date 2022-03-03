@@ -1,4 +1,106 @@
 ﻿
+RICE_red_sea_organized_the_red_sea_ferries = {
+	picture = "gfx/interface/illustrations/decisions/decision_middle_eastern_port.dds"
+	major = yes
+	ai_check_interval = 12
+
+	desc = RICE_red_sea_organized_the_red_sea_ferries_desc
+	selection_tooltip = RICE_red_sea_organized_the_red_sea_ferries_tooltip
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_title = title:c_mecca
+		has_religion = religion:islam_religion
+		has_global_variable = RICE_game_started_on_TFE_start_date
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_red_sea_ferries_built
+			}
+		}
+	}
+	
+	is_valid = {
+		has_title = title:c_mecca
+		has_religion = religion:islam_religion
+		prestige_level >= 3
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		title:c_aydhab = {
+			save_scope_as = aydhab_county
+		}
+		title:c_suakin = {
+			save_scope_as = suakin_county
+		}
+		title:c_massawa = {
+			save_scope_as = massawa_county
+		}
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_red_sea_ferries_built
+		}
+		remove_global_variable = RICE_red_sea_hajj_ferries_not_established_yet
+		custom_tooltip = RICE_red_sea_organized_the_red_sea_ferries_effect_tooltip
+		add_piety = 250
+		RICE_organize_red_sea_ferries_effect = yes
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_red_sea_organized_the_red_sea_ferries_context_tooltip
+		}
+		every_player = {
+			limit = {
+				is_ai = no
+				OR = {
+					has_religion = religion:islam_religion
+					capital_province = {
+						OR = {
+							geographical_region = world_africa_north_east
+							geographical_region = world_middle_east
+							geographical_region = world_africa_east
+						}
+					}
+				}
+			}
+			trigger_event = red_sea.0003
+		}
+		title:c_massawa.holder = {
+			trigger_event = {
+				id = red_sea.0004
+				days = 1
+			}
+		}
+	}
+
+	cost = {
+		gold = medium_gold_value # Will depend
+		prestige = major_prestige_value
+	}
+	
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+		modifier = {
+			add = -8
+			has_trait = cynical
+		}
+		modifier = {
+			add = 8
+			has_trait = zealous
+		}
+	}
+}
 
 RICE_red_sea_seek_investors_from_aswan = {
 	picture = "gfx/interface/illustrations/decisions/decision_middle_eastern_market.dds"
@@ -98,6 +200,7 @@ RICE_red_sea_increase_taxes_aydhab = {
 	selection_tooltip = RICE_red_sea_increase_taxes_aydhab_tooltip
 
 	is_shown = {
+		NOT = { has_global_variable = RICE_red_sea_hajj_ferries_not_established_yet }
 		is_ruler = yes
 		is_landed = yes
 		has_title = title:c_aydhab
@@ -174,6 +277,7 @@ RICE_red_sea_increase_taxes_suakin = {
 	selection_tooltip = RICE_red_sea_increase_taxes_suakin_tooltip
 
 	is_shown = {
+		NOT = { has_global_variable = RICE_red_sea_hajj_ferries_not_established_yet }
 		is_ruler = yes
 		is_landed = yes
 		has_title = title:c_suakin

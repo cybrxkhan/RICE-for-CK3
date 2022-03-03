@@ -9,6 +9,8 @@ RICE_harran_write_scholarly_treatise = {
 	selection_tooltip = RICE_harran_write_scholarly_treatise_tooltip
 
 	is_shown = {
+		NOT = { has_global_variable = RICE_harran_neoplatonic_academy_in_athens }
+		NOT = { has_global_variable = RICE_harran_neoplatonic_academy_wandering }
 		is_ruler = yes
 		is_landed = yes
 		has_faith = faith:harranian_pagan
@@ -173,29 +175,17 @@ RICE_harran_destroy_the_moon_temple = {
 				target = flag:RICE_harran_moon_temple_destroyed
 			}
 		}
-		NOT = {
-			custom_description = {
-				text = RICE_decision_pagan_requirement
-				faith.religion = { is_in_family = rf_pagan }
-			}		
-		}
+		NOT = { faith.religion = { is_in_family = rf_pagan } }
+		NOT = { faith.religion = { is_in_family = rf_eastern } }
 		top_liege = {
-			NOT = {
-				custom_description = {
-					text = RICE_decision_pagan_requirement
-					faith.religion = { is_in_family = rf_pagan }
-				}		
+			NOR = { 
+				faith.religion = { is_in_family = rf_pagan }		
+				faith.religion = { is_in_family = rf_eastern }		
 			}		
 		}
 	}
 	
 	is_valid = {
-		#NOT = {
-		#	custom_description = {
-		#		text = RICE_decision_pagan_requirement
-		#		faith.religion = { is_in_family = rf_pagan }
-		#	}		
-		#}
 		has_title = title:c_harran
 		#dynasty = { dynasty_prestige_level >= 2 }
 		piety_level >= 4
@@ -294,6 +284,8 @@ RICE_harran_patronize_the_neoplatonic_academy = {
 				target = flag:RICE_harran_neoplatonic_academy_declined
 			}
 		}
+		NOT = { has_global_variable = RICE_harran_neoplatonic_academy_in_athens }
+		NOT = { has_global_variable = RICE_harran_neoplatonic_academy_wandering }
 	}
 	
 	is_valid = {
@@ -415,6 +407,9 @@ RICE_harran_revitalize_the_neoplatonic_academy = {
 			}
 		}
 		RICE_is_greco_roman_religion_group_trigger = yes
+		NOT = { has_global_variable = RICE_harran_neoplatonic_academy_in_athens }
+		NOT = { has_global_variable = RICE_harran_neoplatonic_academy_wandering }
+		current_date > 850.1.1
 	}
 	
 	is_valid = {
@@ -479,6 +474,169 @@ RICE_harran_revitalize_the_neoplatonic_academy = {
 		modifier = {
 			add = 8
 			has_trait = zealous
+		}
+	}
+}
+
+RICE_harran_stop_funding_the_neoplatonic_academy = {
+	picture = "gfx/interface/illustrations/decisions/decision_greek_philosophers.dds"
+	major = yes
+	ai_check_interval = 44
+
+	desc = RICE_harran_stop_funding_the_neoplatonic_academy_desc
+	selection_tooltip = RICE_harran_stop_funding_the_neoplatonic_academy_tooltip
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_title = title:c_attica
+		has_global_variable = RICE_harran_neoplatonic_academy_in_athens
+		NOT = { has_global_variable = RICE_harran_neoplatonic_academy_wandering }
+		RICE_is_greco_roman_religion_group_trigger = no	
+		top_liege = {
+			RICE_is_greco_roman_religion_group_trigger = no	
+		}
+	}
+	
+	is_valid = {
+		has_title = title:c_attica
+		RICE_is_greco_roman_religion_group_trigger = no	
+		top_liege = {
+			RICE_is_greco_roman_religion_group_trigger = no	
+		}
+		highest_held_title_tier >= tier_duchy
+		dynasty = { dynasty_prestige_level >= 3 }
+		prestige_level >= 3
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		#Can only happen once
+		save_scope_as = neoplatonic_academy_hater
+		remove_global_variable = RICE_harran_neoplatonic_academy_in_athens
+		set_global_variable = {
+			name = RICE_harran_neoplatonic_academy_wandering
+			value = yes
+		}
+		custom_tooltip = RICE_harran_stop_funding_the_neoplatonic_academy_effect_tooltip
+		show_as_tooltip = {
+			RICE_harran_stop_funding_neoplatonists_effect = yes		
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_harran_stop_funding_the_neoplatonic_academy_context_tooltip
+		}
+		trigger_event = harran.0026
+	}
+
+	cost = {
+		prestige = major_prestige_value # Will depend
+	}
+	
+	ai_potential = {
+		prestige > major_prestige_value
+	}
+
+	ai_will_do = {
+		base = 50
+		modifier = {
+			add = -8
+			has_trait = cynical
+		}
+		modifier = {
+			add = 8
+			has_trait = zealous
+		}
+		modifier = {
+			add = 25
+			current_date > 500.1.1
+		}
+		modifier = {
+			add = 25
+			current_date > 550.1.1
+		}
+	}
+}
+
+RICE_harran_welcome_neoplatonists_to_harran = {
+	picture = "gfx/interface/illustrations/decisions/decision_harranian.dds"
+	major = yes
+	ai_check_interval = 44
+
+	desc = RICE_harran_welcome_neoplatonists_to_harran_desc
+	selection_tooltip = RICE_harran_welcome_neoplatonists_to_harran_tooltip
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_title = title:c_harran
+		has_global_variable = RICE_harran_neoplatonic_academy_wandering
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_harran_neoplatonists_welcomed
+			}
+		}
+	}
+	
+	is_valid = {
+		has_title = title:c_harran
+		highest_held_title_tier >= tier_duchy
+		dynasty = { dynasty_prestige_level >= 3 }
+		prestige_level >= 3
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		#Can only happen once
+		save_scope_as = neoplatonic_academy_lover
+		remove_global_variable = RICE_harran_neoplatonic_academy_wandering
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_harran_neoplatonists_welcomed
+		}
+		custom_tooltip = RICE_harran_welcome_neoplatonists_to_harran_effect_tooltip_1
+		custom_tooltip = RICE_harran_welcome_neoplatonists_to_harran_effect_tooltip_2
+		custom_tooltip = RICE_harran_welcome_neoplatonists_to_harran_effect_tooltip_3
+		show_as_tooltip = {
+			RICE_harran_welcome_neoplatonists_effect = yes		
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_harran_welcome_neoplatonists_to_harran_context_tooltip
+		}
+		trigger_event = harran.0028
+	}
+
+	cost = {
+		gold = medium_gold_value # Will depend
+		prestige = major_prestige_value
+	}
+	
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+		modifier = {
+			add = -8
+			has_trait = cynical
+		}
+		modifier = {
+			add = 8
+			has_trait = zealous
+			RICE_is_greco_roman_religion_group_trigger = yes
 		}
 	}
 }
