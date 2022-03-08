@@ -318,6 +318,12 @@ upper_egypt.0020 = {
 				}
 				remove_county_modifier = RICE_nile_mitigated_bad_flood
 			}
+			if = {
+				limit = {
+					has_county_modifier = RICE_nile_flood_repentance
+				}
+				remove_county_modifier = RICE_nile_flood_repentance
+			}
 		}
 		# Flood calculator
 		random_list = {
@@ -458,7 +464,7 @@ upper_egypt.0020 = {
 								tier = tier_county
 								title_capital_county.title_province = { geographical_region = RICE_nile_river_valley }
 							}
-							custom = RICE_upper_egypt_give_nilometer_county_modifiers_desc	
+							custom = RICE_upper_egypt_every_nile_county_desc	
 							add_county_modifier = {
 								modifier = RICE_nile_normal_flood
 							}
@@ -479,7 +485,7 @@ upper_egypt.0020 = {
 								tier = tier_county
 								title_capital_county.title_province = { geographical_region = RICE_nile_river_valley }
 							}
-							custom = RICE_upper_egypt_give_nilometer_county_modifiers_desc	
+							custom = RICE_upper_egypt_every_nile_county_desc	
 							add_county_modifier = {
 								modifier = RICE_nile_high_flood
 							}
@@ -499,7 +505,7 @@ upper_egypt.0020 = {
 							tier = tier_county
 							title_capital_county.title_province = { geographical_region = RICE_nile_river_valley }
 						}
-						custom = RICE_upper_egypt_give_nilometer_county_modifiers_desc	
+						custom = RICE_upper_egypt_every_nile_county_desc	
 						add_county_modifier = {
 							modifier = RICE_nile_very_high_flood
 						}
@@ -519,7 +525,7 @@ upper_egypt.0020 = {
 								tier = tier_county
 								title_capital_county.title_province = { geographical_region = RICE_nile_river_valley }
 							}
-							custom = RICE_upper_egypt_give_nilometer_county_modifiers_desc	
+							custom = RICE_upper_egypt_every_nile_county_desc	
 							add_county_modifier = {
 								modifier = RICE_nile_overflooding_flood
 							}
@@ -548,7 +554,7 @@ upper_egypt.0020 = {
 								tier = tier_county
 								title_capital_county.title_province = { geographical_region = RICE_nile_river_valley }
 							}
-							custom = RICE_upper_egypt_give_nilometer_county_modifiers_desc	
+							custom = RICE_upper_egypt_every_nile_county_desc	
 							add_county_modifier = {
 								modifier = RICE_nile_low_flood
 							}
@@ -577,7 +583,7 @@ upper_egypt.0020 = {
 								tier = tier_county
 								title_capital_county.title_province = { geographical_region = RICE_nile_river_valley }
 							}
-							custom = RICE_upper_egypt_give_nilometer_county_modifiers_desc	
+							custom = RICE_upper_egypt_every_nile_county_desc	
 							add_county_modifier = {
 								modifier = RICE_nile_very_low_flood
 							}
@@ -628,18 +634,208 @@ upper_egypt.0022 = {
 	desc = upper_egypt.0022.desc
 	theme = realm
 	
-	right_portrait = root
+	left_portrait = root
+
+	immediate = {
+		# If capital is along the Nile, pick it as the location
+		if = {
+			limit = {
+				capital_province = {
+					geographical_region = RICE_nile_river_valley
+				}
+			}
+			capital_province = { save_scope_as = nile_province }
+		}
+		# If not, pick some random Nile province
+		else_if = {
+			random_sub_realm_barony = {
+				limit = {
+					title_province = {
+						geographical_region = RICE_nile_river_valley
+					}	
+				}
+				title_province = {
+					save_scope_as = nile_province
+				}
+			}
+		}
+		# Failsafe in case no province is picked for some reason
+		else = {
+			capital_province = { save_scope_as = nile_province }
+		}
+	}
 	
 	option = { # Ok
 		name = upper_egypt.0022.a
 		# Choose appropriate location
-		title:b_aswan.title_province = {	
+		scope:nile_province = {	
 			spawn_activity = {
 				owner = root
 				type = activity_upper_egypt_open_nile_canals
 			}	
 		}
 	}
+}
+
+
+
+
+# Open the canals
+upper_egypt.0023 = {
+	type = character_event
+	title = upper_egypt.0023.t
+	desc = upper_egypt.0023.desc
+	theme = RICE_theme_nile_valley
+	
+	right_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_banquet
+	}
+	
+	option = { # Ok
+		name = upper_egypt.0023.a
+		RICE_upper_egypt_open_the_canals_effect = yes
+	}
+
+	after = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}	
+
+}
+
+
+
+# Repent for a bad Nile flood
+upper_egypt.0024 = {
+	type = character_event
+	title = upper_egypt.0024.t
+	desc = upper_egypt.0024.desc
+	theme = faith
+	
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	immediate = {
+		# If capital is along the Nile, pick it as the location
+		if = {
+			limit = {
+				capital_province = {
+					geographical_region = RICE_nile_river_valley
+				}
+			}
+			capital_province = { save_scope_as = nile_province }
+		}
+		# If not, pick some random Nile province
+		else_if = {
+			random_sub_realm_barony = {
+				limit = {
+					title_province = {
+						geographical_region = RICE_nile_river_valley
+					}	
+				}
+				title_province = {
+					save_scope_as = nile_province
+				}
+			}
+		}
+		# Failsafe in case no province is picked for some reason
+		else = {
+			capital_province = { save_scope_as = nile_province }
+		}
+	}
+	
+	option = { # Small
+		name = upper_egypt.0024.a
+		remove_short_term_gold = 50
+		set_variable = {
+			name = RICE_upper_egypt_nile_repent_amount
+			value = flag:small_amount
+		}
+		custom_tooltip = upper_egypt.0024.tooltip
+	}
+	option = { # Medium
+		name = upper_egypt.0024.b
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 100
+			}
+		}
+		remove_short_term_gold = 100
+		set_variable = {
+			name = RICE_upper_egypt_nile_repent_amount
+			value = flag:medium_amount
+		}
+		custom_tooltip = upper_egypt.0024.tooltip
+	}
+	option = { # Large
+		name = upper_egypt.0024.c
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 150
+			}
+		}
+		remove_short_term_gold = 150
+		set_variable = {
+			name = RICE_upper_egypt_nile_repent_amount
+			value = flag:large_amount
+		}
+		custom_tooltip = upper_egypt.0024.tooltip
+	}
+
+	after = {
+		# Choose appropriate location
+		scope:nile_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_upper_egypt_pray_good_nile_flood
+			}	
+		}
+	}
+
+}
+
+
+
+
+# Repent for a bad Nile flood
+upper_egypt.0025 = {
+	type = character_event
+	title = upper_egypt.0025.t
+	desc = upper_egypt.0025.desc
+	theme = RICE_theme_nile_valley
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	immediate = {
+		RICE_upper_egypt_bad_nile_flood_repent_immediate_effect = yes
+		play_music_cue = mx_cue_sacredrite
+	}
+	
+	option = { # Ok
+		name = upper_egypt.0025.a
+		RICE_upper_egypt_bad_nile_flood_repent_county_effect = yes
+	}
+
+	after = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}	
+
 }
 
 
