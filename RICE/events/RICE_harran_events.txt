@@ -996,38 +996,33 @@ harran.0020 = {
 	after = {
 		remove_character_flag = planning_an_activity
 		hidden_effect = {
-			if = {
-				limit = {
-					NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
-				}
-				random = {
-					chance = 20
-					modifier = {
-						add = -10
-						num_sinful_traits >= 1
-					}		
-					modifier = {
-						add = 5
-						num_virtuous_traits >= 1
-					}			
-					modifier = {
-						add = 5
-						learning >= decent_skill_rating
-					}				
-					modifier = {
-						add = -5
-						NOT = { faith.religion = { is_in_family = rf_pagan } }
-					}				
-					modifier = {
-						add = 5
-						RICE_is_greco_roman_religion_group_trigger = yes
-					}				
-					modifier = {
-						add = 5
-						has_trait = scholar
-					}			
-					trigger_event = harran.0021
-				}
+			random = {
+				chance = 20
+				modifier = {
+					add = -10
+					num_sinful_traits >= 1
+				}		
+				modifier = {
+					add = 5
+					num_virtuous_traits >= 1
+				}			
+				modifier = {
+					add = 5
+					learning >= decent_skill_rating
+				}				
+				modifier = {
+					add = -5
+					NOT = { faith.religion = { is_in_family = rf_pagan } }
+				}				
+				modifier = {
+					add = 5
+					RICE_is_greco_roman_religion_group_trigger = yes
+				}				
+				modifier = {
+					add = 5
+					has_trait = scholar
+				}			
+				trigger_event = harran.0021
 			}		
 		}
 	}
@@ -1205,8 +1200,6 @@ harran.0024 = {
 	}
 	
 	trigger = {
-		NOT = { has_global_variable = RICE_harran_neoplatonic_academy_in_athens }
-		NOT = { has_global_variable = RICE_harran_neoplatonic_academy_wandering }
 		# Harranian pagans faded out sometime in the 11th century
 		current_date > 1000.1.1
 		has_title = title:c_harran
@@ -1289,172 +1282,6 @@ harran.0025 = {
 }
 
 
-
-
-# Stopped funding for the Neoplatonist Academy in Athens
-harran.0026 = {
-	type = character_event
-	title = harran.0026.t
-	desc = harran.0026.desc
-	theme = learning
-	override_background = { event_background = throne_room }
-	
-	right_portrait = {
-		character = root
-		animation = personality_callous
-	}
-	
-	immediate = {
-		play_music_cue = "mx_cue_negative"
-		title:b_athens = { # Harran loc
-			save_scope_as = athens_barony
-		}
-		title:c_harran = { # Harran loc
-			save_scope_as = harran_county
-		}
-	}
-
-	option = {
-		name = harran.0026.a
-		every_player = {
-			limit = {
-				is_ai = no
-				OR = {
-					is_within_diplo_range = { CHARACTER = scope:neoplatonic_academy_hater }
-					capital_province = {
-						OR = {
-							geographical_region = world_asia_minor
-							geographical_region = world_europe_south
-							geographical_region = world_africa_north_east
-							geographical_region = world_middle_east
-							geographical_region = world_middle_east_persia
-						}
-					}				
-				}
-			}
-			trigger_event = harran.0027
-		}
-		RICE_harran_stop_funding_neoplatonists_effect = yes
-		custom_tooltip = harran.0026.tooltip
-	}
-}
-
-# Stopped funding for the Neoplatonist Academy in Athens
-harran.0027 = {
-	type = character_event
-	title = harran.0027.t
-	desc = harran.0027.desc
-	theme = learning
-	override_background = { event_background = throne_room }
-	
-	right_portrait = {
-		character = root
-		animation = scope:neoplatonic_academy_hater
-	}
-
-	immediate = {
-		play_music_cue = "mx_cue_negative"
-	}
-
-	option = {
-		name = harran.0027.a
-		trigger = {
-			NOT = { has_title = title:c_harran }
-		}
-		custom_tooltip = harran.0027.tooltip
-	}
-	option = {
-		name = harran.0027.b
-		trigger = {
-			has_title = title:c_harran
-		}
-		custom_tooltip = harran.0027.tooltip
-	}
-}
-
-
-
-# Welcomed the Neoplatonists to Harran
-harran.0028 = {
-	type = character_event
-	title = harran.0028.t
-	desc = harran.0028.desc
-	theme = learning
-	override_background = { event_background = RICE_background_harran_town }
-	
-	right_portrait = {
-		character = root
-		animation = personality_compassionate
-	}
-	
-	immediate = {
-		play_music_cue = "mx_cue_epic_sacral_moment"
-		title:c_harran = { # Harran loc
-			save_scope_as = harran_county
-		}	
-	}
-
-	option = {
-		name = harran.0028.a
-		every_player = {
-			limit = {
-				is_ai = no
-				OR = {
-					is_within_diplo_range = { CHARACTER = scope:neoplatonic_academy_lover }
-					capital_province = {
-						OR = {
-							geographical_region = world_asia_minor
-							geographical_region = world_europe_south
-							geographical_region = world_africa_north_east
-							geographical_region = world_middle_east
-							geographical_region = world_middle_east_persia
-						}
-					}				
-				}
-			}
-			trigger_event = harran.0029
-		}
-		RICE_harran_welcome_neoplatonists_effect = yes
-		custom_tooltip = harran.0028.tooltip
-		trigger_event = {
-			id = harran.0032
-			days = 1
-		}
-	}
-}
-
-# Welcomed the Neoplatonists to Harran
-harran.0029 = {
-	type = character_event
-	title = harran.0029.t
-	desc = harran.0029.desc
-	theme = learning
-	override_background = { event_background = RICE_background_harran_town }
-	
-	right_portrait = {
-		character = root
-		animation = scope:neoplatonic_academy_lover
-	}
-
-	immediate = {
-		play_music_cue = "mx_cue_epic_sacral_moment"
-	}
-
-	option = {
-		name = harran.0029.a
-		custom_tooltip = harran.0029.tooltip
-	}
-}
-
-
-
-
-
-
-
-
-
-
 ######################################################################################
 # 
 # HARRANIAN COURTIERS
@@ -1477,8 +1304,6 @@ harran.0030 = {
 	right_portrait = scope:spawned_harranian_courtier
 	
 	trigger = {
-		NOT = { has_global_variable = RICE_harran_neoplatonic_academy_in_athens }
-		NOT = { has_global_variable = RICE_harran_neoplatonic_academy_wandering }
 		NOT = {
 			is_target_in_global_variable_list = {
 				name = unavailable_unique_decisions
@@ -1515,59 +1340,24 @@ harran.0030 = {
 	}
 	
 	immediate = {
-		if = {
-			limit = {
-				has_global_variable = RICE_game_started_on_TFE_start_date
-			}
-			create_character = {
-				location = root.location
-				template = harranian_courtier_template
-				save_scope_as = spawned_harranian_courtier
-				culture = culture:aramean
-			}
-			scope:spawned_harranian_courtier = {
-				random = {
-					chance = 33
-					learn_language = language_arabic
-				}
-				random = {
-					chance = 33				
-					learn_language = language_greek
-				}
-				random = {
-					chance = 33				
-					learn_language = language_iranian
-				}
-				random = {
-					chance = 33				
-					learn_language = language_latin
-				}
-			}
+		create_character = {
+			location = root.location
+			template = harranian_courtier_template
+			save_scope_as = spawned_harranian_courtier
+			culture = culture:levantine
 		}
-		else = {
-			create_character = {
-				location = root.location
-				template = harranian_courtier_template
-				save_scope_as = spawned_harranian_courtier
-				culture = culture:levantine
+		scope:spawned_harranian_courtier = {
+			random = {
+				chance = 33
+				learn_language = language_aramaic
 			}
-			scope:spawned_harranian_courtier = {
-				random = {
-					chance = 33
-					learn_language = language_aramaic
-				}
-				random = {
-					chance = 33				
-					learn_language = language_greek
-				}
-				random = {
-					chance = 33				
-					learn_language = language_iranian
-				}
-				random = {
-					chance = 33				
-					learn_language = language_latin
-				}
+			random = {
+				chance = 33				
+				learn_language = language_greek
+			}
+			random = {
+				chance = 33				
+				learn_language = language_iranian
 			}
 		}
 		title:c_harran = { # Harran loc
@@ -1841,72 +1631,6 @@ harran.0031 = {
 		name = harran.0031.a
 	}
 }
-
-
-
-
-
-# Harranian guaranteed spawn for character who welcomes them to Harran
-harran.0032 = {
-	type = character_event
-	title = harran.0032.t
-	desc = harran.0032.desc
-	theme = learning
-	override_background = { event_background = throne_room }
-	
-	left_portrait = root
-	right_portrait = scope:spawned_harranian_courtier
-	
-	immediate = {
-		create_character = {
-			location = root.location
-			template = harranian_courtier_template
-			save_scope_as = spawned_harranian_courtier
-			culture = culture:greek
-		}
-		scope:spawned_harranian_courtier = {
-			learn_language = language_aramaic
-			learn_language = language_latin
-			random = {
-				chance = 33
-				learn_language = language_arabic
-			}
-			random = {
-				chance = 33				
-				learn_language = language_iranian
-			}
-		}
-		title:c_harran = { # Harran loc
-			save_scope_as = harran_county
-		}
-	}
-
-	option = { # Hire him!
-		name = harran.0032.a
-		add_courtier = scope:spawned_harranian_courtier
-		custom_tooltip = harran.0030.a.tooltip
-		hidden_effect = {
-			random = {
-				chance = 50
-				RICE_generate_small_family = { CHARACTER = scope:spawned_harranian_courtier }
-			}
-		}
-	}
-
-	option = { # Don't hire him
-		name = harran.0032.b
-		add_prestige = 100
-		hidden_effect = {
-			scope:spawned_harranian_courtier = {
-				death = {
-					death_reason = death_disappearance
-				}
-			}
-		}
-	}
-}
-
-
 
 
 ######################################################################################
@@ -3571,7 +3295,6 @@ harran.0088 = {
 	}
 	
 	trigger = {
-		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
 		has_title = title:c_harran
 		OR = {
 			RICE_harranian_pagans_still_around_trigger = yes

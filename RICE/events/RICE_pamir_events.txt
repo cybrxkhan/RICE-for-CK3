@@ -11,7 +11,6 @@
 # pamir.0150-pamir.0179		Chawmos events
 # pamir.0180-pamir.0199		Thumsiling events
 # pamir.0200-pamir.0249		Generic flavor events
-# pamir.0250-pamir.0279		Hephthalite Decisions and Flavor
 # 
 ###############################################################################
 
@@ -1397,29 +1396,25 @@ pamir.0031 = {
 			limit = { has_character_flag = is_naked }
 			remove_character_flag = is_naked
 		}
-		scope:activity = {
-			complete_activity = yes
+		trigger_event = {
+			id = pamir.0032
+			days = 1
 		}
 	}	
 }
 
 
-# Investigate Bibi Fatima
 pamir.0032 = {
-	type = character_event
-	title = pamir.0032.t
-	desc = pamir.0032.desc
-	theme = RICE_theme_pamir_valley
-
+	hidden = yes	
 	immediate = {
-		play_music_cue = mx_cue_sacredrite
-	}
-	
-	option = { # Ok
-		name = pamir.0032.a
-		custom_tooltip = RICE_pamir_investigate_bibi_fatima_effect_tooltip
+		scope:activity = {
+			complete_activity = yes
+		}
 	}
 }
+
+
+
 
 
 # Wakhan watchposts repair
@@ -8191,8 +8186,7 @@ pamir.0229 = {
 		animation = personality_rational
 	}
 	
-	trigger = {		
-		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+	trigger = {
 		RICE_pamir_full_pamir_and_hindu_kush_region_trigger = yes
 	}
 
@@ -8365,291 +8359,3 @@ pamir.0231 = {
 		}
 	}
 }
-
-
-
-
-######################################################################################
-# 
-# HEPHTHALITE DECISIONS AND FLAVOR
-# 
-# pamir.0250-pamir.0279 reserved
-# 
-######################################################################################
-
-
-# Hephthalite heartland reclaimed
-pamir.0250 = {
-	type = character_event
-	title = pamir.0250.t
-	desc = pamir.0250.desc
-	theme = RICE_theme_pamir_valley
-	
-	left_portrait = {
-		character = scope:hephthalite_homeland_reclaimer
-		animation = war_attacker
-	}
-	
-	immediate = {
-		play_music_cue = "mx_cue_epic_sacral_moment"
-		RICE_pamir_reclaim_hephthalite_homeland_effect = yes
-	}
-
-	option = { # Northern Focus
-		name = pamir.0250.a
-		set_global_variable = {
-			name = RICE_pamir_hephthalite_northern_focus_chosen
-			value = yes
-		}
-		title:k_hephthalite_restored = {
-			set_de_jure_liege_title = title:e_turan
-		}
-		add_character_modifier = {
-			modifier = RICE_pamir_hephthalite_focus_north
-			years = 20
-		}
-		if = {
-			limit = {
-				religion = religion:zunism_religion
-			}
-			custom_tooltip = pamir.0250.a.tooltip.zunist
-		}
-		else = {
-			custom_tooltip = pamir.0250.a.tooltip.zunist
-		}
-		every_player = {
-			limit = {
-				is_ai = no
-				OR = {
-					has_religion = religion:zunism_religion
-					capital_province = {
-						OR = {
-							geographical_region = world_middle_east_persia
-							geographical_region = ghw_region_northern_india
-							geographical_region = world_tibet
-							geographical_region = world_steppe_tarim
-						}
-					}
-				}
-			}
-			trigger_event = pamir.0251
-		}
-	}
-	option = { # Southern Focus
-		name = pamir.0250.b
-		set_global_variable = {
-			name = RICE_pamir_hephthalite_southern_focus_chosen
-			value = yes
-		}
-		title:k_hephthalite_restored = {
-			set_de_jure_liege_title = title:e_persia
-		}
-		add_character_modifier = {
-			modifier = RICE_pamir_hephthalite_focus_south
-			years = 20
-		}
-		if = {
-			limit = {
-				religion = religion:zunism_religion
-			}
-			custom_tooltip = pamir.0250.b.tooltip.zunist
-		}
-		else = {
-			custom_tooltip = pamir.0250.b.tooltip.zunist
-		}
-		every_player = {
-			limit = {
-				is_ai = no
-				OR = {
-					has_religion = religion:zunism_religion
-					capital_province = {
-						OR = {
-							geographical_region = world_middle_east
-							geographical_region = world_middle_east_persia
-							geographical_region = world_india
-							geographical_region = world_tibet
-							geographical_region = world_steppe_tarim
-						}
-					}
-				}
-			}
-			trigger_event = pamir.0251
-		}
-	}
-}
-
-# Notification - Hephthalite heartland reclaimed
-pamir.0251 = {
-	type = character_event
-	title = pamir.0251.t
-	desc = {
-		desc = pamir.0251.desc.intro
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					has_global_variable = RICE_pamir_hephthalite_northern_focus_chosen
-				}
-				desc = pamir.0251.desc.northern
-			}
-			triggered_desc = {
-				trigger = {
-					has_global_variable = RICE_pamir_hephthalite_southern_focus_chosen
-				}
-				desc = pamir.0251.desc.southern
-			}
-		}
-		desc = pamir.0251.desc.conclusion
-	}
-	theme = RICE_theme_pamir_valley
-	
-	left_portrait = {
-		character = scope:hephthalite_homeland_reclaimer
-		animation = war_attacker
-	}
-
-	option = { # OK
-		name = pamir.0251.a
-	}
-}
-
-
-# Hephthalite empire restored
-pamir.0252 = {
-	type = character_event
-	title = pamir.0252.t
-	desc = {
-		desc = pamir.0252.desc.intro
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					has_global_variable = RICE_pamir_hephthalite_northern_focus_chosen
-				}
-				desc = pamir.0252.desc.northern
-			}
-			triggered_desc = {
-				trigger = {
-					has_global_variable = RICE_pamir_hephthalite_southern_focus_chosen
-				}
-				desc = pamir.0252.desc.southern
-			}
-		}
-	}
-	theme = RICE_theme_pamir_valley
-	
-	left_portrait = {
-		character = scope:hephthalite_emperor
-		animation = war_attacker
-	}
-	
-	immediate = {
-		play_music_cue = "mx_cue_epic_sacral_moment"
-		RICE_pamir_restore_hephthalite_effect = yes
-	}
-
-	option = { # Northern Focus
-		name = pamir.0252.a
-		every_player = {
-			limit = {
-				is_ai = no
-				OR = {
-					has_religion = religion:zunism_religion
-					capital_province = {
-						OR = {
-							geographical_region = world_middle_east
-							geographical_region = world_middle_east_persia
-							geographical_region = world_india
-							geographical_region = world_tibet
-							geographical_region = world_steppe_tarim
-						}
-					}
-				}
-			}
-			trigger_event = pamir.0253
-		}
-	}
-}
-
-# Notification - Hephthalite empire restored
-pamir.0253 = {
-	type = character_event
-	title = pamir.0253.t
-	desc = {
-		desc = pamir.0253.desc.intro
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					has_global_variable = RICE_pamir_hephthalite_northern_focus_chosen
-				}
-				desc = pamir.0253.desc.northern
-			}
-			triggered_desc = {
-				trigger = {
-					has_global_variable = RICE_pamir_hephthalite_southern_focus_chosen
-				}
-				desc = pamir.0253.desc.southern
-			}
-		}
-		desc = pamir.0253.desc.conclusion
-	}
-	theme = RICE_theme_pamir_valley
-	
-	left_portrait = {
-		character = scope:hephthalite_emperor
-		animation = war_attacker
-	}
-
-	option = { # OK
-		name = pamir.0253.a
-	}
-}
-
-
-# Change Hephthalite Khan/Emperor trait
-pamir.0254 = {
-	hidden = yes
-	
-	trigger = {
-		scope:title = title:e_hephthalite_restored
-		is_target_in_global_variable_list = {
-			name = unavailable_unique_decisions
-			target = flag:RICE_pamir_restore_hephthalite_empire_done
-		}
-	}
-	
-	immediate = {
-		if = {
-			limit = {
-				has_global_variable = RICE_pamir_hephthalite_northern_focus_chosen
-			}
-			if = {
-				limit = {
-					scope:previous_holder = {
-						is_alive = yes
-						has_trait = RICE_hephthalite_emperor_khan
-					}
-				}
-				scope:previous_holder = { remove_trait = RICE_hephthalite_emperor_khan }
-			}
-			add_trait = RICE_hephthalite_emperor_khan
-		}
-		if = {
-			limit = {
-				has_global_variable = RICE_pamir_hephthalite_southern_focus_chosen
-			}
-			if = {
-				limit = {
-					scope:previous_holder = {
-						is_alive = yes
-						has_trait = RICE_hephthalite_emperor_shah
-					}
-				}
-				scope:previous_holder = { remove_trait = RICE_hephthalite_emperor_shah }
-			}
-			add_trait = RICE_hephthalite_emperor_shah
-		}
-	}
-}
-
-
-
-

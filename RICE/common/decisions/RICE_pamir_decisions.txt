@@ -1,230 +1,5 @@
 ﻿
 
-RICE_pamir_restore_hephthalite_empire = {
-	picture = "gfx/interface/illustrations/decisions/decision_iranian_court.dds"
-	major = yes
-	desc = RICE_pamir_restore_hephthalite_empire_desc
-
-	ai_check_interval = 120
-
-	is_shown = {
-		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
-		highest_held_title_tier >= tier_county
-		culture = { has_cultural_tradition = tradition_RICE_white_huns }
-		NOT = {
-			is_target_in_global_variable_list = {
-				name = unavailable_unique_decisions
-				target = flag:RICE_pamir_restore_hephthalite_empire_done
-			}
-		}
-		is_target_in_global_variable_list = {
-			name = unavailable_unique_decisions
-			target = flag:RICE_pamir_reclaim_hephthalite_homeland_done
-		}
-		OR = {
-			is_ai = no
-			NOT = {
-				is_target_in_global_variable_list = {
-					name = unavailable_unique_decisions
-					target = flag:establish_bactrian_supremacy_decision
-				}
-			}
-		}
-	}
-
-	is_valid = {
-		completely_controls_region = RICE_hephthalite_former_empire_region
-		custom_description = {
-			text = "is_king_or_emperor"
-			highest_held_title_tier >= tier_kingdom
-		}
-		culture = { has_cultural_tradition = tradition_RICE_white_huns }
-		prestige_level >= 4
-	}
-
-	is_valid_showing_failures_only = {
-		is_adult = yes
-		is_available = yes
-		is_independent_ruler = yes
-	}
-
-	cost = {
-		gold = {
-			value = massive_gold_value
-		}
-		prestige = {
-			value = major_prestige_value
-		}
-	}
-
-	effect = {
-		#Can only happen once
-		add_to_global_variable_list = {
-			name = unavailable_unique_decisions
-			target = flag:RICE_pamir_restore_hephthalite_empire_done
-		}
-
-		save_scope_as = hephthalite_emperor
-
-		show_as_tooltip = {
-			RICE_pamir_restore_hephthalite_effect = yes
-		}
-		trigger_event = pamir.0252
-	}
-
-	ai_will_do = {
-		base = 100
-	}
-}
-
-
-RICE_pamir_reclaim_hephthalite_homeland = {
-	picture = "gfx/interface/illustrations/decisions/decision_wakhan_corridor.dds"
-	major = yes
-	desc = RICE_pamir_reclaim_hephthalite_homeland_desc
-
-	ai_check_interval = 120
-
-	is_shown = {
-		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
-		highest_held_title_tier >= tier_county
-		culture = { has_cultural_tradition = tradition_RICE_white_huns }
-		NOT = {
-			is_target_in_global_variable_list = {
-				name = unavailable_unique_decisions
-				target = flag:RICE_pamir_reclaim_hephthalite_homeland_done
-			}
-		}
-	}
-
-	is_valid = {
-		completely_controls_region = RICE_hephthalite_heartland_region
-		highest_held_title_tier >= tier_duchy
-		culture = { has_cultural_tradition = tradition_RICE_white_huns }
-		prestige_level >= 3
-	}
-
-	is_valid_showing_failures_only = {
-		is_adult = yes
-		is_available = yes
-		is_independent_ruler = yes
-	}
-
-	cost = {
-		gold = {
-			value = major_gold_value
-		}
-		prestige = {
-			value = major_prestige_value
-		}
-	}
-
-	effect = {
-		#Can only happen once
-		add_to_global_variable_list = {
-			name = unavailable_unique_decisions
-			target = flag:RICE_pamir_reclaim_hephthalite_homeland_done
-		}
-
-		save_scope_as = hephthalite_homeland_reclaimer
-
-		show_as_tooltip = {
-			RICE_pamir_reclaim_hephthalite_homeland_effect = yes
-		}
-		trigger_event = pamir.0250
-	}
-
-	ai_will_do = {
-		base = 100
-	}
-}
-
-
-RICE_pamir_investigate_bibi_fatima = {
-	picture = "gfx/interface/illustrations/decisions/decision_pamir_river.dds"
-	major = yes
-	ai_check_interval = 48
-	
-	desc = RICE_pamir_investigate_bibi_fatima_desc
-	
-	is_shown = {
-		has_global_variable = RICE_game_started_on_TFE_start_date
-		exists = global_var:islam_spawned
-		is_ruler = yes
-		is_landed = yes
-		has_title = title:c_wakhan
-		NOT = {
-			is_target_in_global_variable_list = {
-				name = unavailable_unique_decisions
-				target = flag:RICE_pamir_bibi_fatima_investigated
-			}
-		}
-	}
-	
-	is_valid = {
-		custom_description = {
-			text = RICE_pamir_investigate_bibi_fatima_islam_req
-			exists = global_var:islam_spawned
-		}
-		has_title = title:c_wakhan
-		prestige_level >= 3
-		custom_description = {
-			text = RICE_pamir_investigate_bibi_fatima_date_req
-			current_date > 650.1.1
-		}
-	}
-	
-	is_valid_showing_failures_only = {
-		is_available_adult = yes
-	}
-
-	effect = {
-		title:c_wakhan = {
-			save_scope_as = wakhan_county
-		}
-		title:d_badakhshan = {
-			save_scope_as = badakhshan_duchy
-		}
-		title:d_pamir = {
-			save_scope_as = pamir_duchy
-		}
-		#Can only happen once
-		add_to_global_variable_list = {
-			name = unavailable_unique_decisions
-			target = flag:RICE_pamir_bibi_fatima_investigated
-		}
-		remove_global_variable = RICE_pamir_bibi_fatima_not_known
-		custom_tooltip = RICE_pamir_investigate_bibi_fatima_effect_tooltip
-		add_piety = 100
-		add_prestige = 100
-		if = {
-			limit = {
-				has_game_rule = RICE_historical_context_on
-			}
-			custom_tooltip = RICE_pamir_investigate_bibi_fatima_context_tooltip
-		}
-		every_player = {
-			limit = {
-				is_ai = no
-				RICE_pamir_duchy_of_pamir_or_badakhshan_region_trigger = yes
-			}
-			trigger_event = pamir.0032
-		}
-	}
-
-	cost = { 
-		gold = { value = medium_gold_value } 
-	}	
-
-	ai_potential = {
-		short_term_gold > medium_gold_value
-	}
-
-	ai_will_do = {
-		base = 25
-	}
-}
-
 
 RICE_pamir_conciliate_kafir_tribes = {
 	picture = "gfx/interface/illustrations/decisions/decision_wakhan_corridor.dds"
@@ -563,7 +338,6 @@ RICE_pamir_restore_the_idol_of_zun = {
 	desc = RICE_pamir_restore_the_idol_of_zun_desc
 	
 	is_shown = {
-		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
 		is_ruler = yes
 		is_landed = yes
 		has_title = title:c_zamindawar
@@ -642,7 +416,6 @@ RICE_pamir_reclaim_mount_aruna = {
 	desc = RICE_pamir_reclaim_mount_aruna_desc
 	
 	is_shown = {
-		#NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
 		is_ruler = yes
 		is_landed = yes
 		has_title = title:c_kabul
@@ -1208,12 +981,26 @@ RICE_pamir_attend_chinir_festival = {
 		is_ruler = yes
 		is_landed = yes
 		culture = { has_cultural_pillar = heritage_iranian }
-		RICE_pamir_duchy_of_pamir_or_badakhshan_region_trigger = yes
+		OR = {
+			has_title = title:c_badakhshan
+			has_title = title:c_munjan
+			has_title = title:c_wakhan
+			has_title = title:c_shughnan
+			has_title = title:c_karran
+			has_title = title:c_gilgit
+		}
 	}
 	
 	is_valid = {
 		culture = { has_cultural_pillar = heritage_iranian }
-		RICE_pamir_duchy_of_pamir_or_badakhshan_region_trigger = yes
+		OR = {
+			has_title = title:c_badakhshan
+			has_title = title:c_munjan
+			has_title = title:c_wakhan
+			has_title = title:c_shughnan
+			has_title = title:c_karran
+			has_title = title:c_gilgit
+		}
 		custom_description = {
 			text = RICE_decision_tuyuhun_nadun_month_requirement
 			current_month >= 7
@@ -1264,7 +1051,6 @@ RICE_pamir_visit_bibi_fatima = {
 	cooldown = { days = 3650 }
 
 	is_shown = {
-		NOT = { has_global_variable = RICE_pamir_bibi_fatima_not_known }
 		is_landed = yes
 		OR = {
 			has_title = title:c_badakhshan
@@ -1273,8 +1059,6 @@ RICE_pamir_visit_bibi_fatima = {
 			has_title = title:c_shughnan
 			has_title = title:c_karran
 			has_title = title:c_gilgit
-			has_title = title:c_yasin
-			has_title = title:c_golaghmuli
 		}
 	}
 
@@ -1286,8 +1070,6 @@ RICE_pamir_visit_bibi_fatima = {
 			has_title = title:c_shughnan
 			has_title = title:c_karran
 			has_title = title:c_gilgit
-			has_title = title:c_yasin
-			has_title = title:c_golaghmuli
 		}
 	}
 

@@ -1,0 +1,301 @@
+﻿##############################################################################################
+# 
+# RICE Setup
+# 
+# These events set up various aspects of the mod at the start of the game.
+# A lot of this is to maintain compatibility with other mods.
+# 
+##############################################################################################
+
+namespace = RICEintro
+
+
+# Hello event
+RICEintro.0002 = {
+	type = character_event
+	title = RICEintro.0000.t
+	desc = RICEintro.0000.desc
+	theme = RICE_theme_guanche_shrine
+	
+	trigger = {
+		NOT = { has_game_rule = RICE_intro_event_off }
+	}
+	
+	option = { # Ok
+		name = RICEintro.0000.a
+	}	
+}
+
+# Event to set things up
+RICEintro.0001 = {
+	type = empty
+	hidden = yes
+	
+	immediate = {
+	
+		############################################################
+		#
+		# HELLO POPUP
+		#
+		############################################################		
+	
+		every_player = {
+			if = {
+				limit = {
+					is_ai = no
+				}
+				trigger_event = RICEintro.0002
+			}
+		}
+		
+		
+		############################################################
+		#
+		# MISC STUFF
+		#
+		############################################################
+		
+		# Church of Saint Nickholas / Santa Claus
+		title:c_lycia = {
+			add_county_modifier = {
+				modifier = RICE_misc_myra_santa_claus
+			}
+		}
+
+		
+		############################################################
+		#
+		# FLAVOR PACK EFFECTS
+		#
+		############################################################
+	
+		RICE_setup_siwa_flavor_pack_effect = yes			# Oases of the Western Desert		10/31/20
+		RICE_setup_chios_flavor_pack_effect = yes			# Isle of Mastic					10/31/20
+		RICE_setup_siberia_flavor_pack_effect = yes			# People of the Reindeer			12/28/20
+		RICE_setup_breton_flavor_pack_effect = yes			# The Western Duchy					03/16/21
+		RICE_setup_socotra_flavor_pack_effect = yes			# Isle of Dragon's Blood			04/11/21
+		RICE_setup_tuyuhun_flavor_pack_effect = yes			# Horsemen of Qinghai				05/01/21
+		RICE_setup_aachen_flavor_pack_effect = yes			# Charlemagne's Capital				05/15/21
+		RICE_setup_harran_flavor_pack_effect = yes			# The Last Hellenic Pagans			05/22/21
+		RICE_setup_red_sea_flavor_pack_effect = yes			# Treasures of the Eastern Desert	07/20/21
+		RICE_setup_pamir_flavor_pack_effect = yes			# Roof of the World					08/23/21
+		RICE_setup_yorkshire_flavor_pack_effect = yes		# To Scarborough Fair				10/24/21
+		RICE_setup_sus_flavor_pack_effect = yes				# Door of the Sahara				12/16/21
+		RICE_setup_guanche_flavor_pack_effect = yes			# The Fortunate Isles				12/16/21
+		RICE_setup_yazd_flavor_pack_effect = yes			# Abode of Worship					01/10/22
+			RICE_setup_magadha_flavor_pack_effect = yes			# Diamond Throne of Buddhism		02/08/22
+		
+	}
+}
+
+
+
+
+# Trigger events for unique starting situations, including asking if player wants to play as X characters added by the mod
+RICEintro.0003 = {
+	type = empty
+	hidden = yes
+	
+	#trigger = {
+	#	NOT = { has_game_rule = RICE_new_characters_off }
+	#}
+	
+	immediate = {
+		if = {
+			limit = {
+				current_date < 900.1.1
+				NOT = { has_game_rule = RICE_new_characters_off }
+			}
+			# Play as Thabit ibn Qurra
+			every_ruler = {
+				limit = {
+					is_ai = no
+					#OR = {
+					#	realm_to_title_distance_squared = {
+					#		title = title:b_harran
+					#		value < squared_distance_small
+					#	}
+						capital_province = {
+							OR = {
+								geographical_region = world_mesopotamia
+								geographical_region = world_jazira
+								geographical_region = ghw_region_caucasus
+							}
+						}			
+					#}
+				}
+				trigger_event = harran.0040
+			}
+			# Play as Pamir chieftains
+			every_ruler = {
+				limit = {
+					is_ai = no
+					OR = {
+						capital_province = {
+							OR = {
+								geographical_region = world_transoxiana
+								geographical_region = world_kabulistan
+							}
+						}
+						RICE_pamir_full_pamir_region_trigger = yes
+					}
+				}
+				trigger_event = pamir.0005
+			}
+			# Play as Saffarids or Kharijites in Khorasan
+			every_ruler = {
+				limit = {
+					is_ai = no
+					OR = {
+						capital_province = {
+							OR = {
+								geographical_region = world_khorasan
+								geographical_region = world_makran
+							}
+						}
+						has_title = title:c_yazd
+						has_title = title:c_mafaza
+						has_title = title:c_shahre-babak
+						has_title = title:c_kirman
+						has_title = title:c_behabad
+						has_title = title:c_bam
+						has_title = title:c_sirjan
+						has_title = title:c_jiruft
+						has_title = title:c_sif-i-umara
+						has_title = title:c_hormuz
+					}
+				}
+				trigger_event = yazd.0002
+			}
+		}
+		if = {
+			limit = {
+				current_date < 1100.1.1
+				current_date > 1000.1.1
+				NOT = { has_game_rule = RICE_new_characters_off }
+			}
+			# Play as Ibn Nabhan
+			every_ruler = {
+				limit = {
+					is_ai = no
+					#OR = {
+					#	realm_to_title_distance_squared = {
+					#		title = title:b_harran
+					#		value < squared_distance_small
+					#	}
+						capital_province = {
+							OR = {
+								geographical_region = world_mesopotamia
+								geographical_region = world_jazira
+								geographical_region = ghw_region_caucasus
+							}
+						}			
+					#}
+				}
+				trigger_event = harran.0060
+			}
+			# Play as Ali ibn Asad (Nasir Khusraw's friend)
+			every_ruler = {
+				limit = {
+					is_ai = no
+					OR = {
+						capital_province = {
+							OR = {
+								geographical_region = world_makran
+								geographical_region = world_transoxiana
+								geographical_region = world_kabulistan
+								geographical_region = world_india_rajastan
+							}
+						}
+						RICE_pamir_full_pamir_region_trigger = yes
+					}
+				}
+				trigger_event = pamir.0008
+			}
+		}
+		# Chose to play existing characters
+		if = {
+			limit = {
+				current_date < 900.1.1
+			}
+			character:bedouin0018 = { # Play al-Umari
+				trigger_event = red_sea.0020
+			}
+			character:188710 = { # Zunbils
+				trigger_event = pamir.0017
+			}
+			
+			# Misc
+			character:RICE_yazd_005 = {
+				save_scope_as = ibrahim_akhdar
+			}
+			character:RICE_yazd_004 = {
+				add_courtier = scope:ibrahim_akhdar
+			}
+		}
+		if = {
+			limit = {
+				current_date < 1100.1.1
+				current_date > 1000.1.1
+			}
+			character:1231053 = { # Kakuyids
+				remove_trait = deceitful 	# Let the player choose between deceitful and content
+				trigger_event = yazd.0005
+			}
+			character:3041 = { # Qawurd/Qavort, senior Seljuk Prince
+				trigger_event = yazd.0008
+			}
+		}
+	}	
+}
+
+###############################################################
+# 
+# MISC GAME START EVENTS
+# 
+###############################################################
+
+
+
+
+# Debug testing event
+RICEintro.8888 = {
+	orphan = yes
+	type = character_event
+	title = RICEintro.8888.t
+	desc = RICEintro.8888.desc
+	theme = RICE_theme_pamir_valley
+
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	artifact = { # To display the artifact in the event-window
+        target = scope:RICE_baklava_test
+        position = lower_center_portrait
+    }
+
+	immediate = {
+		hidden_effect_new_artifact = {
+			create_artifact = {	
+				name = RICE_baklava_test_name
+				description = RICE_baklava_test_desc
+				type = miscellaneous
+				visuals = RICE_baklava
+				modifier = artifact_monthly_piety_8_modifier
+				creator = root
+				save_scope_as = RICE_baklava_test
+				template = adults_only_template
+			}
+			scope:RICE_baklava_test = {
+				add_artifact_modifier = artifact_diplomacy_per_prestige_level_modifier
+				#set_artifact_rarity_famed = yes
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = RICEintro.8888.a
+
+	}	
+}
