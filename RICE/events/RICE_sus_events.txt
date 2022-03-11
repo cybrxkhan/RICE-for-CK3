@@ -282,6 +282,74 @@ sus.0017 = {
 }
 
 
+
+
+# Restore order to Sijilmasa
+sus.0018 = {
+	type = character_event
+	title = sus.0018.t
+	desc = sus.0018.desc
+	theme = RICE_theme_north_africa_ksar
+	
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	immediate = {
+		title:c_sijilmasa = { #For loc.
+			save_scope_as = sijilmasa_county
+		}
+		save_scope_as = sijilmasa_ruler
+		custom_tooltip = RICE_sus_attract_settlers_to_sijilmasa_effect_tooltip_1
+		RICE_sus_attract_foreign_settlers_to_sijilmasa_effect = yes
+		play_music_cue = mx_cue_sacredrite
+	}
+	
+	option = { # ok
+		name = sus.0018.a
+		every_player = {
+			limit = {
+				is_ai = no
+				RICE_is_in_trans_saharan_trade_region = yes
+			}
+			trigger_event = sus.0019
+		}
+	}
+}
+
+
+# Ordered restored to Sijilmasa
+sus.0019 = {
+	type = character_event
+	title = sus.0019.t
+	desc = sus.0019.desc
+	theme = RICE_theme_north_africa_ksar
+	
+	left_portrait = {
+		character = scope:sijilmasa_ruler
+		animation = personality_honorable
+	}
+	
+	immediate = {
+		show_as_tooltip = {
+			scope:sijilmasa_ruler = {
+				custom_tooltip = RICE_sus_attract_settlers_to_sijilmasa_effect_tooltip_1
+				RICE_sus_attract_foreign_settlers_to_sijilmasa_effect = yes
+			}
+		}
+		play_music_cue = mx_cue_sacredrite
+	}
+	
+	option = { # ok
+		name = sus.0019.a
+	}
+}
+
+
+
+
+
 ######################################################################################
 # 
 # MERCHANT COURTIER SPAWN
@@ -371,84 +439,131 @@ sus.0030 = {
 	immediate = {
 		capital_province = { save_scope_as = capital_province } #For loc.
 		add_character_flag = RICE_trans_saharan_already_spawned_merchant
-		random_list = {
-			# Maghreb
-			# Andalusian
-			# Egyptian
-			# Levantine
-			# Bedouin
-			# Yemeni
-			15 = {
-				create_character = {
-					location = root.location
-					template = trans_saharan_merchant_template
-					save_scope_as = RICE_trans_saharan_merchant_spawn
-					culture = culture:maghrebi
-					faith = faith:ashari
-				}				
+		if = {
+			limit = {
+				has_global_variable = RICE_game_started_on_TFE_start_date
 			}
-			5 = {
-				create_character = {
-					location = root.location
-					template = trans_saharan_merchant_template
-					save_scope_as = RICE_trans_saharan_merchant_spawn
-					culture = culture:maghrebi
-					faith = faith:ibadi
-				}				
+			random_list = {
+				# Egyptian
+				# Bedouin
+				10 = {
+					create_character = {
+						location = root.location
+						template = trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:kemitic
+						faith = faith:nicene
+					}				
+				}
+				10 = {
+					create_character = {
+						location = root.location
+						template = trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:aegyptian
+						faith = faith:nicene
+					}				
+				}
+				10 = {
+					create_character = {
+						location = root.location
+						template = trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:bedouin
+						faith = faith:arabic_pagan
+					}				
+				}
+				10 = {
+					create_character = {
+						location = root.location
+						template = trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:aramean
+						faith = faith:nicene
+					}				
+				}
 			}
-			20 = {
-				create_character = {
-					location = root.location
-					template = trans_saharan_merchant_template
-					save_scope_as = RICE_trans_saharan_merchant_spawn
-					culture = culture:andalusian
-					faith = faith:muwalladi
-				}				
-			}
-			5 = {
-				create_character = {
-					location = root.location
-					template = trans_saharan_merchant_template
-					save_scope_as = RICE_trans_saharan_merchant_spawn
-					culture = culture:egyptian
-					faith = faith:coptic
-				}				
-			}
-			15 = {
-				create_character = {
-					location = root.location
-					template = trans_saharan_merchant_template
-					save_scope_as = RICE_trans_saharan_merchant_spawn
-					culture = culture:egyptian
-					faith = faith:ismaili
-				}				
-			}
-			20 = {
-				create_character = {
-					location = root.location
-					template = trans_saharan_merchant_template
-					save_scope_as = RICE_trans_saharan_merchant_spawn
-					culture = culture:levantine
-					faith = faith:ashari
-				}				
-			}
-			20 = {
-				create_character = {
-					location = root.location
-					template = trans_saharan_merchant_template
-					save_scope_as = RICE_trans_saharan_merchant_spawn
-					culture = culture:bedouin
-					faith = faith:ashari
-				}				
-			}
-			20 = {
-				create_character = {
-					location = root.location
-					template = trans_saharan_merchant_template
-					save_scope_as = RICE_trans_saharan_merchant_spawn
-					culture = culture:yemeni
-					faith = faith:ashari
-				}				
+		}
+		else = {
+			random_list = {
+				# Maghreb
+				# Andalusian
+				# Egyptian
+				# Levantine
+				# Bedouin
+				# Yemeni
+				15 = {
+					create_character = {
+						location = root.location
+						template = trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:maghrebi
+						faith = faith:ashari
+					}				
+				}
+				5 = {
+					create_character = {
+						location = root.location
+						template = trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:maghrebi
+						faith = faith:ibadi
+					}				
+				}
+				20 = {
+					create_character = {
+						location = root.location
+						template = trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:andalusian
+						faith = faith:muwalladi
+					}				
+				}
+				5 = {
+					create_character = {
+						location = root.location
+						template = trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:egyptian
+						faith = faith:coptic
+					}				
+				}
+				15 = {
+					create_character = {
+						location = root.location
+						template = trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:egyptian
+						faith = faith:ismaili
+					}				
+				}
+				20 = {
+					create_character = {
+						location = root.location
+						template = trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:levantine
+						faith = faith:ashari
+					}				
+				}
+				20 = {
+					create_character = {
+						location = root.location
+						template = trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:bedouin
+						faith = faith:ashari
+					}				
+				}
+				20 = {
+					create_character = {
+						location = root.location
+						template = trans_saharan_merchant_template
+						save_scope_as = RICE_trans_saharan_merchant_spawn
+						culture = culture:yemeni
+						faith = faith:ashari
+					}				
+				}
 			}
 		}
 		hidden_effect = {
@@ -651,6 +766,9 @@ sus.0031 = {
 				}				
 			}
 			10 = {
+				trigger = {
+					NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+				}
 				create_character = {
 					location = root.location
 					template = trans_saharan_merchant_template
@@ -669,6 +787,9 @@ sus.0031 = {
 				}				
 			}
 			10 = {
+				trigger = {
+					NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+				}
 				create_character = {
 					location = root.location
 					template = trans_saharan_merchant_template
@@ -705,6 +826,9 @@ sus.0031 = {
 				}				
 			}
 			5 = {
+				trigger = {
+					NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+				}
 				create_character = {
 					location = root.location
 					template = trans_saharan_merchant_template
@@ -723,6 +847,9 @@ sus.0031 = {
 				}				
 			}
 			5 = {
+				trigger = {
+					NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+				}
 				create_character = {
 					location = root.location
 					template = trans_saharan_merchant_template
@@ -920,6 +1047,9 @@ sus.0032 = {
 			# Butr
 			# Baranis
 			15 = {
+				trigger = {
+					NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+				}
 				create_character = {
 					location = root.location
 					template = trans_saharan_merchant_template
@@ -929,6 +1059,9 @@ sus.0032 = {
 				}				
 			}
 			5 = {
+				trigger = {
+					NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+				}
 				create_character = {
 					location = root.location
 					template = trans_saharan_merchant_template
@@ -938,6 +1071,9 @@ sus.0032 = {
 				}				
 			}
 			15 = {
+				trigger = {
+					NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+				}
 				create_character = {
 					location = root.location
 					template = trans_saharan_merchant_template
@@ -947,12 +1083,51 @@ sus.0032 = {
 				}				
 			}
 			5 = {
+				trigger = {
+					NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+				}
 				create_character = {
 					location = root.location
 					template = trans_saharan_merchant_template
 					save_scope_as = RICE_trans_saharan_merchant_spawn
 					culture = culture:baranis
 					faith = faith:ibadi
+				}				
+			}
+			10 = {
+				trigger = {
+					has_global_variable = RICE_game_started_on_TFE_start_date
+				}
+				create_character = {
+					location = root.location
+					template = trans_saharan_merchant_template
+					save_scope_as = RICE_trans_saharan_merchant_spawn
+					culture = culture:garamantian
+					faith = faith:amazigh_pagan
+				}				
+			}
+			10 = {
+				trigger = {
+					has_global_variable = RICE_game_started_on_TFE_start_date
+				}
+				create_character = {
+					location = root.location
+					template = trans_saharan_merchant_template
+					save_scope_as = RICE_trans_saharan_merchant_spawn
+					culture = culture:maurian
+					faith = faith:amazigh_pagan
+				}				
+			}
+			10 = {
+				trigger = {
+					has_global_variable = RICE_game_started_on_TFE_start_date
+				}
+				create_character = {
+					location = root.location
+					template = trans_saharan_merchant_template
+					save_scope_as = RICE_trans_saharan_merchant_spawn
+					culture = culture:gaetulian
+					faith = faith:amazigh_pagan
 				}				
 			}
 		}

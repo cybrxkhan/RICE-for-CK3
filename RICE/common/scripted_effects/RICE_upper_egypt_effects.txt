@@ -1,0 +1,602 @@
+﻿RICE_setup_upper_egypt_flavor_pack_effect = {
+
+	# Give Egyptian cultures the Children of the Nile tradition
+	culture:egyptian = {
+		if = {
+			limit = { has_cultural_tradition = tradition_agrarian }
+			remove_culture_tradition = tradition_agrarian
+		}
+		add_culture_tradition = tradition_RICE_children_of_the_nile
+		remove_variable = tradition_cooldown
+	}
+
+	if = {
+		limit = {
+			has_global_variable = RICE_game_started_on_TFE_start_date
+		}
+		culture:aegyptian = {
+			if = {
+				limit = { has_cultural_tradition = tradition_agrarian }
+				remove_culture_tradition = tradition_agrarian
+			}
+			add_culture_tradition = tradition_RICE_children_of_the_nile
+			remove_variable = tradition_cooldown
+		}
+		culture:kemetic = {
+			if = {
+				limit = { has_cultural_tradition = tradition_agrarian }
+				remove_culture_tradition = tradition_agrarian
+			}
+			if = {
+				limit = { has_cultural_tradition = tradition_dryland_dwellers }
+				remove_culture_tradition = tradition_dryland_dwellers
+			}
+			add_culture_tradition = tradition_RICE_children_of_the_nile
+			remove_variable = tradition_cooldown
+		}
+	}
+
+	# Buildings
+	if = {
+		limit = {
+			has_global_variable = RICE_game_started_on_TFE_start_date
+		}
+		if = {
+			limit = {
+				title:c_qus = {
+					title_province = { has_special_building = no }
+				}
+			}
+			title:c_qus.title_province = {
+				add_special_building = RICE_upper_egypt_temple_of_luxor_01
+			}
+		}
+	}
+	else = {
+		if = {
+			limit = {
+				title:c_qus = {
+					title_province = { has_special_building = no }
+				}
+			}
+			title:c_qus.title_province = {
+				add_special_building = RICE_upper_egypt_temple_of_luxor_02
+			}
+		}
+	}
+	if = {
+		limit = {
+			NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+		}
+		set_global_variable = {
+			name = RICE_upper_egypt_philae_closed
+			value = yes
+		}
+		set_global_variable = {
+			name = RICE_upper_egypt_kalabsha_closed
+			value = yes
+		}
+	}
+	set_global_variable = {
+		name = RICE_upper_egypt_elephantine_closed
+		value = yes
+	}
+
+	# Nile flood at game start
+	if = {
+		# Historically bad Nile floods - a bit of a challenge for the Fatimids
+		limit = {
+			current_date > 1060.1.1
+			current_date < 1077.1.1
+		}
+		set_global_variable = {
+			name = RICE_nile_low_flood_this_year
+			value = yes
+			days = 365 # Just in case it doesn't clear for whatever reason
+		}
+		every_county_in_region = {
+			region = RICE_nile_river_valley
+			add_county_modifier = {
+				modifier = RICE_nile_low_flood
+			}
+		}
+	}
+	else = {
+		set_global_variable = {
+			name = RICE_nile_normal_flood_this_year
+			value = yes
+			days = 365 # Just in case it doesn't clear for whatever reason
+		}
+		every_county_in_region = {
+			region = RICE_nile_river_valley
+			add_county_modifier = {
+				modifier = RICE_nile_normal_flood
+			}
+		}
+	}
+	# Fire first Nile flood, as it won't fire on the first year otherwise if the date isn't Jan 1
+	if = {
+		limit = {
+			NOT = { current_month = 1 }
+			NOT = { current_day = 1 }
+			current_month < 8
+		}
+		trigger_event = {
+			id = upper_egypt.0020 # Nile flood
+			trigger_on_next_date = 8.1 # Extremely approximate, varies by year and by part of Egypt, done this way as a simplification
+		}
+	}
+}
+
+RICE_upper_egypt_renovate_nilometers_effect = {
+	add_prestige = 100
+	every_sub_realm_county = {
+		limit = {
+			tier = tier_county
+			title_capital_county.title_province = { geographical_region = RICE_nile_river_valley }
+		}
+		custom = RICE_upper_egypt_every_nile_county_desc
+		add_county_modifier = {
+			modifier = RICE_nile_renovated_nilometers
+			years = 10
+		}
+	}
+}
+
+RICE_upper_egypt_aswan_temple_visit_effect = {
+	random_list = {
+		20 = { add_piety = 20 }
+		30 = { add_piety = 50 }
+		30 = { add_piety = 75 }
+		30 = { add_piety = 100 }
+		20 = { add_piety = 125 }
+		10 = { add_piety = 150 }
+	}
+	random_list = {
+		20 = { add_prestige = 20 }
+		30 = { add_prestige = 50 }
+		30 = { add_prestige = 75 }
+		30 = { add_prestige = 100 }
+		20 = { add_prestige = 125 }
+		10 = { add_prestige = 150 }
+	}
+}
+
+RICE_upper_egypt_open_the_canals_effect = {
+	if = {
+		limit = {
+			has_global_variable = RICE_nile_normal_flood_this_year
+		}
+		add_piety = 50
+		add_prestige = 50
+		add_character_modifier = {
+			modifier = RICE_nile_opened_canal_normal
+			years = 4
+		}
+	}
+	else_if = {
+		limit = {
+			has_global_variable = RICE_nile_high_flood_this_year
+		}
+		add_piety = 100
+		add_prestige = 100
+		add_character_modifier = {
+			modifier = RICE_nile_opened_canal_high
+			years = 4
+		}
+	}
+	else_if = {
+		limit = {
+			has_global_variable = RICE_nile_very_high_flood_this_year
+		}
+		add_piety = 150
+		add_prestige = 150
+		add_character_modifier = {
+			modifier = RICE_nile_opened_canal_very_high
+			years = 4
+		}
+	}
+}
+
+RICE_upper_egypt_bad_nile_flood_repent_immediate_effect = {
+	random_list = {
+		30 = {
+			modifier = {
+				var:RICE_upper_egypt_nile_repent_amount = flag:small_amount
+				add = 10
+			}
+			modifier = {
+				var:RICE_upper_egypt_nile_repent_amount = flag:medium_amount
+				add = -5
+			}
+			modifier = {
+				var:RICE_upper_egypt_nile_repent_amount = flag:large_amount
+				add = -10
+			}
+			modifier = {
+				has_trait = cynical
+				add = 4
+			}
+			modifier = {
+				has_trait = zealous
+				add = -4
+			}
+			modifier = {
+				num_sinful_traits >= 1
+				add = 5
+			}
+			modifier = {
+				num_virtuous_traits >= 1
+				add = -5
+			}
+			modifier = {
+				num_sinful_traits >= 2
+				add = 7
+			}
+			modifier = {
+				num_virtuous_traits >= 2
+				add = -7
+			}
+			modifier = {
+				piety_level >= 2
+				add = -3
+			}
+			modifier = {
+				piety_level >= 3
+				add = -3
+			}
+			modifier = {
+				piety_level >= 4
+				add = -3
+			}
+			modifier = {
+				piety_level >= 5
+				add = -3
+			}
+			add_piety = 40
+		}
+		20 = {
+			modifier = {
+				var:RICE_upper_egypt_nile_repent_amount = flag:small_amount
+				add = -5
+			}
+			modifier = {
+				var:RICE_upper_egypt_nile_repent_amount = flag:medium_amount
+				add = 5
+			}
+			modifier = {
+				var:RICE_upper_egypt_nile_repent_amount = flag:large_amount
+				add = 10
+			}
+			modifier = {
+				has_trait = cynical
+				add = -4
+			}
+			modifier = {
+				has_trait = zealous
+				add = 4
+			}
+			modifier = {
+				num_sinful_traits >= 1
+				add = -5
+			}
+			modifier = {
+				num_virtuous_traits >= 1
+				add = 5
+			}
+			modifier = {
+				num_sinful_traits >= 2
+				add = -7
+			}
+			modifier = {
+				num_virtuous_traits >= 2
+				add = 7
+			}
+			modifier = {
+				piety_level >= 2
+				add = 3
+			}
+			modifier = {
+				piety_level >= 3
+				add = 3
+			}
+			modifier = {
+				piety_level >= 4
+				add = 3
+			}
+			modifier = {
+				piety_level >= 5
+				add = 3
+			}
+			add_piety = 80
+		}
+		10 = {
+			modifier = {
+				var:RICE_upper_egypt_nile_repent_amount = flag:small_amount
+				add = -10
+			}
+			modifier = {
+				var:RICE_upper_egypt_nile_repent_amount = flag:medium_amount
+				add = 10
+			}
+			modifier = {
+				var:RICE_upper_egypt_nile_repent_amount = flag:large_amount
+				add = 15
+			}
+			modifier = {
+				has_trait = cynical
+				add = -4
+			}
+			modifier = {
+				has_trait = zealous
+				add = 4
+			}
+			modifier = {
+				num_sinful_traits >= 1
+				add = -5
+			}
+			modifier = {
+				num_virtuous_traits >= 1
+				add = 5
+			}
+			modifier = {
+				num_sinful_traits >= 2
+				add = -7
+			}
+			modifier = {
+				num_virtuous_traits >= 2
+				add = 7
+			}
+			modifier = {
+				piety_level >= 2
+				add = 3
+			}
+			modifier = {
+				piety_level >= 3
+				add = 3
+			}
+			modifier = {
+				piety_level >= 4
+				add = 3
+			}
+			modifier = {
+				piety_level >= 5
+				add = 3
+			}
+			add_piety = 120
+		}
+	}
+	random_list = {
+		30 = {
+			modifier = {
+				var:RICE_upper_egypt_nile_repent_amount = flag:small_amount
+				add = 10
+			}
+			modifier = {
+				var:RICE_upper_egypt_nile_repent_amount = flag:medium_amount
+				add = -5
+			}
+			modifier = {
+				var:RICE_upper_egypt_nile_repent_amount = flag:large_amount
+				add = -10
+			}
+			modifier = {
+				has_trait = cynical
+				add = 4
+			}
+			modifier = {
+				has_trait = zealous
+				add = -4
+			}
+			modifier = {
+				num_sinful_traits >= 1
+				add = 5
+			}
+			modifier = {
+				num_virtuous_traits >= 1
+				add = -5
+			}
+			modifier = {
+				num_sinful_traits >= 2
+				add = 7
+			}
+			modifier = {
+				num_virtuous_traits >= 2
+				add = -7
+			}
+			modifier = {
+				piety_level >= 2
+				add = -3
+			}
+			modifier = {
+				piety_level >= 3
+				add = -3
+			}
+			modifier = {
+				piety_level >= 4
+				add = -3
+			}
+			modifier = {
+				piety_level >= 5
+				add = -3
+			}
+			add_prestige = 40
+		}
+		20 = {
+			modifier = {
+				var:RICE_upper_egypt_nile_repent_amount = flag:small_amount
+				add = -5
+			}
+			modifier = {
+				var:RICE_upper_egypt_nile_repent_amount = flag:medium_amount
+				add = 5
+			}
+			modifier = {
+				var:RICE_upper_egypt_nile_repent_amount = flag:large_amount
+				add = 10
+			}
+			modifier = {
+				has_trait = cynical
+				add = -4
+			}
+			modifier = {
+				has_trait = zealous
+				add = 4
+			}
+			modifier = {
+				num_sinful_traits >= 1
+				add = -5
+			}
+			modifier = {
+				num_virtuous_traits >= 1
+				add = 5
+			}
+			modifier = {
+				num_sinful_traits >= 2
+				add = -7
+			}
+			modifier = {
+				num_virtuous_traits >= 2
+				add = 7
+			}
+			modifier = {
+				piety_level >= 2
+				add = 3
+			}
+			modifier = {
+				piety_level >= 3
+				add = 3
+			}
+			modifier = {
+				piety_level >= 4
+				add = 3
+			}
+			modifier = {
+				piety_level >= 5
+				add = 3
+			}
+			add_prestige = 80
+		}
+		10 = {
+			modifier = {
+				var:RICE_upper_egypt_nile_repent_amount = flag:small_amount
+				add = -10
+			}
+			modifier = {
+				var:RICE_upper_egypt_nile_repent_amount = flag:medium_amount
+				add = 10
+			}
+			modifier = {
+				var:RICE_upper_egypt_nile_repent_amount = flag:large_amount
+				add = 15
+			}
+			modifier = {
+				has_trait = cynical
+				add = -4
+			}
+			modifier = {
+				has_trait = zealous
+				add = 4
+			}
+			modifier = {
+				num_sinful_traits >= 1
+				add = -5
+			}
+			modifier = {
+				num_virtuous_traits >= 1
+				add = 5
+			}
+			modifier = {
+				num_sinful_traits >= 2
+				add = -7
+			}
+			modifier = {
+				num_virtuous_traits >= 2
+				add = 7
+			}
+			modifier = {
+				piety_level >= 2
+				add = 3
+			}
+			modifier = {
+				piety_level >= 3
+				add = 3
+			}
+			modifier = {
+				piety_level >= 4
+				add = 3
+			}
+			modifier = {
+				piety_level >= 5
+				add = 3
+			}
+			add_prestige = 120
+		}
+	}
+}
+
+
+RICE_upper_egypt_bad_nile_flood_repent_county_effect = {
+	every_sub_realm_county = {
+		limit = {
+			tier = tier_county
+			title_capital_county.title_province = { geographical_region = RICE_nile_river_valley }
+		}
+		custom = RICE_upper_egypt_every_nile_county_desc
+		random = {
+			chance = 25
+			modifier = {
+				holder = { var:RICE_upper_egypt_nile_repent_amount = flag:medium_amount }
+				add = 8
+			}
+			modifier = {
+				holder = { var:RICE_upper_egypt_nile_repent_amount = flag:large_amount }
+				add = 15
+			}
+			modifier = {
+				holder = { has_trait = cynical }
+				add = -3
+			}
+			modifier = {
+				holder = { has_trait = zealous }
+				add = 3
+			}
+			modifier = {
+				holder = { num_sinful_traits >= 1 }
+				add = -5
+			}
+			modifier = {
+				holder = { num_virtuous_traits >= 1 }
+				add = 5
+			}
+			modifier = {
+				holder = { num_sinful_traits >= 2 }
+				add = -8
+			}
+			modifier = {
+				holder = { num_virtuous_traits >= 2 }
+				add = 8
+			}
+			modifier = {
+				holder = { piety_level >= 2 }
+				add = 3
+			}
+			modifier = {
+				holder = { piety_level >= 3 }
+				add = 3
+			}
+			modifier = {
+				holder = { piety_level >= 4 }
+				add = 3
+			}
+			modifier = {
+				holder = { piety_level >= 5 }
+				add = 3
+			}
+			add_county_modifier = {
+				modifier = RICE_nile_flood_repentance
+			}
+		}
+	}
+}
+

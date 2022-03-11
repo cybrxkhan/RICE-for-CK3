@@ -17,6 +17,52 @@
 		
 	############################################################
 	#
+	# TFE STUFF
+	#
+	############################################################
+
+	# In case it gets overridden
+	if = {
+		limit = {
+			has_global_variable = RICE_game_started_on_TFE_start_date
+			NOT = {
+				faith:harranian_pagan = {
+					has_doctrine = special_faith_has_hellenic_syncretism
+				}
+			}
+		}
+		faith:harranian_pagan = {
+			add_doctrine = special_faith_has_hellenic_syncretism
+		}
+	}
+	if = {
+		limit = {
+			has_global_variable = RICE_game_started_on_TFE_start_date
+			NOT = {
+				faith:nabataean_pagan = {
+					has_doctrine = special_faith_has_hellenic_syncretism
+				}
+			}
+		}
+		faith:nabataean_pagan = {
+			add_doctrine = special_faith_has_hellenic_syncretism
+		}
+	}
+	if = {
+		limit = {
+			has_global_variable = RICE_game_started_on_TFE_start_date
+			faith:harranian_pagan = {
+				has_doctrine = tenet_islamic_syncretism
+			}
+		}
+		faith:harranian_pagan = {
+			remove_doctrine = tenet_islamic_syncretism
+			add_doctrine = tenet_gnosticism
+		}
+	}
+
+	############################################################
+	#
 	# RELIGION TERRITORY CHANGES
 	#
 	############################################################
@@ -29,6 +75,8 @@
 		}
 	}
 	
+
+
 	############################################################
 	#
 	# BUILDINGS
@@ -58,9 +106,17 @@
 			add_special_building = RICE_harran_temple_of_the_moon
 		}
 	}
+	else = {
+		# Temple of the Moon is already destroyed
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_harran_moon_temple_destroyed
+		}
+	}
 	if = {
 		limit = {
 			current_date < 1050.1.1
+			current_date > 600.1.1
 			title:b_harran = {
 				title_province = { has_special_building = no }
 			}
@@ -69,16 +125,31 @@
 			add_special_building = RICE_harran_neoplatonic_academy
 		}
 	}
+	else_if = {
+		limit = {
+			has_global_variable = RICE_game_started_on_TFE_start_date
+			title:b_harran = {
+				title_province = { has_special_building = no }
+			}
+		}		
+		set_global_variable = {
+			name = RICE_harran_neoplatonic_academy_in_athens
+			value = yes
+		}
+		title:c_attica = {
+			add_county_modifier = {
+				modifier = RICE_harran_neoplatonic_academy_athens_modifier
+			}
+		}
+		title:b_harran.title_province = {
+			add_special_building_slot = RICE_harran_neoplatonic_academy
+		}	
+	}
 	else = {
 		# Neoplatonic Academy is no more
 		add_to_global_variable_list = {
 			name = unavailable_unique_decisions
 			target = flag:RICE_harran_neoplatonic_academy_declined
-		}
-		# Temple of the Moon is already destroyed
-		add_to_global_variable_list = {
-			name = unavailable_unique_decisions
-			target = flag:RICE_harran_moon_temple_destroyed
 		}
 	}
 	
@@ -90,6 +161,7 @@
 	
 	if = {
 		limit = {
+			NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
 			any_ruler = {
 				is_ai = yes
 				is_landed = yes
@@ -179,6 +251,25 @@ RICE_harran_destroy_temple_of_the_moon_effect = {
 	}
 	title:b_tall_mahra.title_province = {
 		remove_building = RICE_harran_temple_of_the_moon
+	}
+}
+
+
+RICE_harran_stop_funding_neoplatonists_effect = {
+	add_gold = 100
+	add_piety = 250
+	title:c_attica = {
+		remove_county_modifier = RICE_harran_neoplatonic_academy_athens_modifier
+	}
+}
+
+RICE_harran_welcome_neoplatonists_effect = {
+	add_prestige = 250
+	add_character_modifier = {
+		modifier = RICE_harran_welcomed_neoplatonist_exiles
+	}
+	title:b_harran.title_province = {
+		add_special_building = RICE_harran_neoplatonic_academy
 	}
 }
 

@@ -92,7 +92,9 @@ tradition_RICE_swahili_contacts = {
 	ai_will_do = { value = 100 }
 }
 
-
+######################
+# Regional Traditions #
+######################
 
 tradition_RICE_ubiquity_of_poetry = {
 	category = regional
@@ -256,6 +258,156 @@ tradition_RICE_xianbei_scions = {
 		}
 	}
 	ai_will_do = { value = 50 }
+}
+
+
+
+
+tradition_RICE_white_huns = {
+	category = regional
+
+	layers = {
+		0 = steward
+		1 = mena
+		4 = soldiers2.dds
+	}
+	
+	is_shown = {
+		OR = {
+			this = culture:hephthalite
+			any_parent_culture_or_above = {
+				this = culture:hephthalite
+			}
+			scope:character = {
+				# Zunbils were Hephthalite remnants
+				religion = religion:zunism_religion	
+			}
+		}
+	}
+	can_pick = {
+		OR = {
+			any_parent_culture_or_above = {
+				this = culture:hephthalite
+			}
+			scope:character = {
+				# Zunbils were Hephthalite remnants
+				religion = religion:zunism_religion	
+			}
+		}
+	}
+	
+	parameters = {
+		unlock_rice_decision_hephthalite_empire = yes
+		culture_can_raid_at_sea_even_if_feudal = yes
+		republican_vassals_pay_more = yes
+	}
+
+	character_modifier = {
+		tribal_government_vassal_opinion = 5
+		monthly_county_control_change_factor = -0.25
+	}	
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						any_in_list = { list = traits this = flag:ethos_bellicose }
+						any_in_list = { list = traits this = flag:ethos_stoic }
+						any_in_list = { list = traits this = flag:ethos_communal }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_stoic_or_communal_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	ai_will_do = { value = 50 }
+}
+
+
+
+
+tradition_RICE_children_of_the_nile = {
+	category = regional
+
+	layers = {
+		0 = steward
+		1 = mediterranean
+		4 = farmland.dds
+	}
+	
+	is_shown = {
+		any_culture_county = {
+			count >= 4
+			any_county_province = {
+				geographical_region = RICE_nile_river_valley
+			}
+		}
+	}
+	can_pick = {
+		custom_tooltip = {
+			text = RICE_culture_along_the_nile_desc
+			any_culture_county = {
+				count >= 4
+				any_county_province = {
+					geographical_region = RICE_nile_river_valley
+				}
+			}
+		}
+	}
+	
+	parameters = {
+		unlock_rice_decision_nile_flood_results = yes
+		unlock_rice_decision_build_nilometers = yes
+	}
+
+	county_modifier = {
+		floodplains_development_growth_factor = 0.3
+		floodplains_construction_gold_cost = -0.15
+
+		oasis_development_growth_factor = 0.2
+		oasis_construction_gold_cost = -0.1
+
+
+		desert_development_growth_factor = 0.1
+		desert_construction_gold_cost = -0.05
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						any_in_list = { list = traits this = flag:ethos_spiritual }
+						any_in_list = { list = traits this = flag:ethos_bureaucratic }
+						any_in_list = { list = traits this = flag:ethos_communal }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bureaucratic_spiritual_or_communal_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	ai_will_do = { value = 100 }
 }
 
 
