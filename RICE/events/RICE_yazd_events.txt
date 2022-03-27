@@ -60,11 +60,11 @@ yazd.0002 = {
 	
 	left_portrait = {
 		character = scope:tahirid_guy
-		animation = personality_dishonorable
+		animation = personality_vengeful
 	}	
 	right_portrait = {
 		character = scope:yaqub_saffarid
-		animation = personality_honorable
+		animation = war_defender
 	}
 	
 	immediate = {
@@ -72,32 +72,12 @@ yazd.0002 = {
 			save_scope_as = bammer_guy
 		}
 		
-		character:RICE_yazd_003 = { # Sebuk-eri, slave captured in Zabulistan who became a power player in later Saffird history, was governor of Fars later
-			save_scope_as = sebuk_eri_guy
-		}
-		
 		character:163101 = { # Ya'qub ibn al-Layth
 			save_scope_as = yaqub_saffarid
 		}
 		
-		character:163164 = { # Amr ibn al-Layth
-			save_scope_as = amr_saffarid
-		}
-		
-		character:163165 = { # Ali ibn al-Layth
-			save_scope_as = ali_saffarid
-		}
-		
 		character:163100 = { # Muhammad ibn Tahir
 			save_scope_as = tahirid_guy
-		}
-		
-		character:RICE_yazd_004 = { # Abd-al-Rahman, Kharijite rebel in Herat c. 872
-			save_scope_as = abd_al_rahman_kharijite
-		}
-		
-		character:RICE_yazd_007 = { # Uzayr ibn al-Sari, governor of Nishapur under Saffarids
-			save_scope_as = uzayr_al_sari
 		}
 		
 		title:c_bam = {
@@ -114,26 +94,73 @@ yazd.0002 = {
 		name = yazd.0002.a
 		if = {
 			limit = {
-				OR = {
-					has_character_modifier = RICE_yazd_saffarid_yaqub
-					has_character_modifier = RICE_yazd_saffarid_amr
-				}
-				
+				has_game_rule = RICE_historical_context_on
 			}
-			trigger_event = yazd.0003
+			# Amr ibn al-Layth, younger brother of Yaqub
+			if = {
+				limit = {
+					this = character:163164
+				}
+				custom_description_no_bullet = {
+					text = yazd.0003.b.info
+				}
+			}
+			# Ali ibn al-Layth, younger brother of Yaqub
+			else_if = {
+				limit = {
+					this = character:163165
+				}
+				custom_description_no_bullet = {
+					text = yazd.0003.c.info
+				}
+			}
+			# Sebuk-eri
+			else_if = {
+				limit = {
+					this = character:RICE_yazd_003
+				}
+				custom_description_no_bullet = {
+					text = yazd.0003.d.info
+				}
+			}
+			# Uzayr ibn al-Sari
+			else_if = {
+				limit = {
+					this = character:RICE_yazd_007
+				}
+				custom_description_no_bullet = {
+					text = yazd.0003.e.info
+				}
+			}
+			else = {
+				# Default to Yaqub himself
+				custom_description_no_bullet = {
+					text = yazd.0003.a.info
+				}
+			}
 		}
-		custom_tooltip = yazd.0002.tooltip.no
+		# if = {
+		# 	limit = {
+		# 		OR = {
+		# 			has_character_modifier = RICE_yazd_saffarid_yaqub
+		# 			has_character_modifier = RICE_yazd_saffarid_amr
+		# 		}
+				
+		# 	}
+		# 	trigger_event = yazd.0003
+		# }
+		# custom_tooltip = yazd.0002.tooltip.no
 	}	
-	option = {
-		name = yazd.0002.b
-		custom_tooltip = yazd.0002.tooltip.saffarids
-		trigger_event = yazd.0003
-	}	
-	option = {
-		name = yazd.0002.c
-		custom_tooltip = yazd.0002.tooltip.kharijites
-		trigger_event = yazd.0004
-	}
+	# option = {
+	# 	name = yazd.0002.b
+	# 	custom_tooltip = yazd.0002.tooltip.saffarids
+	# 	trigger_event = yazd.0003
+	# }	
+	# option = {
+	# 	name = yazd.0002.c
+	# 	custom_tooltip = yazd.0002.tooltip.kharijites
+	# 	trigger_event = yazd.0004
+	# }
 }
 
 # 867 - Saffarid or Saffarid officials selection
@@ -143,6 +170,7 @@ yazd.0003 = {
 	desc = yazd.0003.desc
 	theme = martial
 	override_background = { event_background = RICE_background_iranian_throne_room }
+	orphan = yes
 	
 	left_portrait = {
 		character = scope:yaqub_saffarid
@@ -244,32 +272,82 @@ yazd.0004 = {
 		character = scope:abd_al_rahman_kharijite
 		animation = personality_callous
 	}
+
+	immediate = {
+		character:RICE_yazd_001 = { # Esmail ibn Musa, last leader of the Kharijite remnants in Bam
+			save_scope_as = bammer_guy
+		}
+		
+		character:163101 = { # Ya'qub ibn al-Layth
+			save_scope_as = yaqub_saffarid
+		}
+		
+		character:163100 = { # Muhammad ibn Tahir
+			save_scope_as = tahirid_guy
+		}
+		
+		character:RICE_yazd_004 = { # Abd-al-Rahman, Kharijite rebel in Herat c. 872
+			save_scope_as = abd_al_rahman_kharijite
+		}
+		
+		title:c_bam = {
+			save_scope_as = bam_county
+		}
+		
+		title:c_badghis = {
+			save_scope_as = badghis_county
+		}
+		
+	}
 	
 	option = {
 		name = yazd.0004.a
-		set_player_character = scope:bammer_guy
 		if = {
 			limit = {
 				has_game_rule = RICE_historical_context_on
 			}
-			custom_description_no_bullet = {
-				text = yazd.0004.a.info
+			# Bam
+			if = {
+				limit = {
+					this = character:RICE_yazd_001
+				}
+				custom_description_no_bullet = {
+					text = yazd.0004.a.info
+				}
+			}
+			# Badghis
+			if = {
+				limit = {
+					this = character:RICE_yazd_004
+				}
+				custom_description_no_bullet = {
+					text = yazd.0004.b.info
+				}
 			}
 		}
+		#set_player_character = scope:bammer_guy
+		# if = {
+		# 	limit = {
+		# 		has_game_rule = RICE_historical_context_on
+		# 	}
+		# 	custom_description_no_bullet = {
+		# 		text = yazd.0004.a.info
+		# 	}
+		# }
 	}
 	
-	option = {
-		name = yazd.0004.b
-		set_player_character = scope:abd_al_rahman_kharijite
-		if = {
-			limit = {
-				has_game_rule = RICE_historical_context_on
-			}
-			custom_description_no_bullet = {
-				text = yazd.0004.b.info
-			}
-		}
-	}
+	# option = {
+	# 	name = yazd.0004.b
+	# 	set_player_character = scope:abd_al_rahman_kharijite
+	# 	if = {
+	# 		limit = {
+	# 			has_game_rule = RICE_historical_context_on
+	# 		}
+	# 		custom_description_no_bullet = {
+	# 			text = yazd.0004.b.info
+	# 		}
+	# 	}
+	# }
 }
 
 # 1066 - Kakuyids introduction
