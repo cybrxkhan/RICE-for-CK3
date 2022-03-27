@@ -1,14 +1,14 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.5.3 "Nile" (Released 3/15/22, for vanilla patch 1.5.x)
+## Latest Version: Version 1.5.4 "Philae" (Released 3/27/22, for vanilla patch 1.5.x)
 
 **Newest Flavor Packs - Rhodes: Shadow of the Colossus & Upper Egypt: Children of the Nile**
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com)
 
-_“Hail flood! Emerging from the earth, arriving to bring Egypt to life, hidden of form, the darkness in the day….”_
+_"Before Mandulis, son of Horus, by the hand of Nesmeterakhem, son of Nesmeter, the Second Priest of Isis, for all time and eternity. Words spoken by Mandulis, lord of the Abaton, great god."_
 
-_- Opening lines of an ancient Egyptian Hymn to the Nile flood_
+_- Nesmeterakhem, Priest of Isis, 394 CE; last recorded hieroglyphic inscription in history_
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. The guiding philosophy of RICE is to keep a tight, focused scope that doesn’t change gameplay significantly, but adds more flavor across the world, especially for lesser-known places, peoples, and histories.
 
@@ -50,36 +50,22 @@ NOTE: If you are re-installing a mod manually, delete the old version of the mod
 
 ## Latest Changelog
 
-### Version 1.5.3 "Nile"
+### Version 1.5.4 "Philae"
 
-- Added two flavor packs:
-    - Rhodes: Shadow of the Colossus
-    - Upper Egypt: Children of the Nile
-- Added 2 Mediterranean themed tracks and 5 Egyptian themed tracks
-- Added flavor for TFE start dates to make up for removed flavor:
-    - Stop Funding the Neoplatonist Academy in Constantinople
-    - Give Neoplatonists a New Home in Harran
-    - Organize Red Sea Ferries for Hajj pilgrims to enable building of the Red Sea Ferries and decisions
-    - Attract Settlers to Sijilmasa
-    - Investigate Bibi Fatima Springs
-- RICE flavor disabled to fit the TFE start dates:
-    - Charlemagne decisions and pilgrimage (Aachen Flavor Pack)
-    - St. John of Beverley decisions and pilgrimage (York Flavor Pack)
-    - Tuyuhun Kingdom decision (Tuyuhun Flavor Pack)
-    - Restore Idol of Zun decision (as modifier exists normally at those dates; Mount Aruna and Dokhtar-i Noshirwan decision are still available) (Pamir and Zunist Flavor Pack)
-- Added Hephthalite culture to 867 and made Zunbils Hephthalite
-- Added new tradition: White Huns (for Hephthalites)
-- Added decisions to Reclaim the Hephthalite Homeland and Restore the Hephthalite Empire, available to Hephthalite or Hephthalite descended cultures, or Zunist faiths
-- Erect a Calvary Sculpture decision now requires the Plenary Assemblies innovation
-- Expand Yazd’s decision Infrastructure now requires being in the early medieval period
-- Visit Bibi Fatima springs and Chinir Festival decisions are now available to everyone in the Duchies of Pamir and Badakhshan
-- Claim Pithipati Title decision now requires the being in the early medieval period and having the Hereditary Rule innovation
-- Revitalize Neoplatonic Academy decision can only be taken after 850 CE (only affects TFE start dates)
-- Renamed Kordofan religion to Kemetic (Kordofan makes little sense, as none of the Kushitic faith cultures in-game speak Kordofan languages)
-- Brahui courtier spawn will now always be your faith
-- Eastern Faiths can no longer destroy the Temple to the Moon
-- Renamed Idol of Zun Restored to Idol of Zun
-- Spawned Harranian courtiers have a chance of knowing Latin as well
-- Updated some Siwa events to use new Egyptian temple event backgrounds
-- Increased the fort level of the Siwa oasis county modifier
+- Behind the scenes effects now happen before a new game starts, meaning you can see it on the map! Thanks to Celticus for letting me know how it works
+- Popup event to choose to play Thabit ibn Qurra or his descendant Ibn Nabhan will now only trigger for the Caliph or whoever has Harran at game start
+- RICE New Playable Characters game rule renamed to RICE Starting Flavor Events
+- Added several playable historical Egyptian characters for 867 CE, including Tulunid officials and various rebels active at the time, and tweaked the starting situation
+- Integrated Honor Codes and Desert Poetry traditions from Henry's Better Bedouin Culture mod - many thanks to Henry for generously offering me the code!
+- Added Himyarite namelist
+- Gave Ibn Tulun a few more children
+- Shukayr and Ibn Muddabir now start off as allies
+- Ibn Tulun starts off with the “Emmity Towards Ruthless Egyptian Officials” opinion modifier towards Shukayr and Ibn Muddabir, which allows him to imprison them and revoke titles
+- Shukayr and Ibn Muddabir start off with more gold, giving them both a chance to resist Ibn Tulun and to reflect their ruthless tax measures
+- Yeniseian culture now also has Forest Folk tradition
+- Peristani and Burusho cultures now have the Frequent Festivities traditions
+- Reduced bonuses for Children of the Nile tradition
+- Changed a few counties and rulers in the Pamir region from Mahayana to Theravada (based on historical Chinese sources): Wakhan, Khuttal, East and West Tokharistan, Kapisi
+- Moved Amazigh holy site of Ahaggar to Djanet due to it potentially causing inheritance issues
 - Miscellaneous bugfixes
+
