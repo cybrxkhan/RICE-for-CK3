@@ -1,5 +1,6 @@
 ﻿RICE_setup_upper_egypt_flavor_pack_effect = {
 
+
 	# Give Egyptian cultures the Children of the Nile tradition
 	culture:egyptian = {
 		add_culture_tradition = tradition_RICE_children_of_the_nile
@@ -80,43 +81,11 @@
 		value = yes
 	}
 
-	# Nile flood at game start
-	if = {
-		# Historically bad Nile floods - a bit of a challenge for the Fatimids
-		limit = {
-			current_date > 1060.1.1
-			current_date < 1077.1.1
-		}
-		set_global_variable = {
-			name = RICE_nile_low_flood_this_year
-			value = yes
-			days = 365 # Just in case it doesn't clear for whatever reason
-		}
-		every_county_in_region = {
-			region = RICE_nile_river_valley
-			add_county_modifier = {
-				modifier = RICE_nile_low_flood
-			}
-		}
-	}
-	else = {
-		set_global_variable = {
-			name = RICE_nile_normal_flood_this_year
-			value = yes
-			days = 365 # Just in case it doesn't clear for whatever reason
-		}
-		every_county_in_region = {
-			region = RICE_nile_river_valley
-			add_county_modifier = {
-				modifier = RICE_nile_normal_flood
-			}
-		}
-	}
 	# Fire first Nile flood, as it won't fire on the first year otherwise if the date isn't Jan 1
 	if = {
 		limit = {
 			NOT = { current_month = 1 }
-			NOT = { current_day = 1 }
+			#NOT = { current_day = 1 }
 			current_month < 8
 		}
 		trigger_event = {
@@ -142,6 +111,7 @@
 		}
 		character:163115 = {
 			save_scope_as = ibn_tulun
+			RICE_remove_education_traits_effect = yes
 			RICE_remove_personality_traits_effect = yes
 			add_trait = education_stewardship_3
 			add_trait = just
@@ -164,9 +134,10 @@
 		# Ibn Tulun's eldest son - put him in Sinai
 		character:RICE_upper_egypt_007 = { 
 			RICE_remove_personality_traits_effect = yes
-			add_trait = callous
+			add_trait = trusting
+			add_trait = fickle
 			add_trait = arbitrary
-			add_trait = ambitious
+			add_trait = callous
 			get_title = title:c_farama
 			get_title = title:c_sinai
 			get_title = title:c_firaun
@@ -289,6 +260,69 @@
 	}
 
 }
+
+# For some reason does not work right in on_game_start so needs to be put in on_game_start_after_lobby
+RICE_setup_nile_flood_effect = {
+
+	# Nile flood at game start
+
+	# set_global_variable = {
+	# 	name = RICE_nile_normal_flood_this_year
+	# 	value = yes
+	# 	days = 365 # Just in case it doesn't clear for whatever reason
+	# }
+	# every_county_in_region = {
+	# 	region = RICE_nile_river_valley
+	# 	add_county_modifier = {
+	# 		modifier = RICE_nile_normal_flood
+	# 	}
+	# }
+
+	if = {
+		# Historically bad Nile floods - a bit of a challenge for the Fatimids
+		limit = {
+			current_date > 1060.1.1
+			current_date < 1077.1.1
+		}
+		set_global_variable = {
+			name = RICE_nile_low_flood_this_year
+			value = yes
+			days = 365 # Just in case it doesn't clear for whatever reason
+		}
+		every_county_in_region = {
+			region = RICE_nile_river_valley
+			add_county_modifier = {
+				modifier = RICE_nile_low_flood
+			}
+		}
+	}
+
+	else = {
+		# limit = {
+		# 	game_start_date < 1060.1.1
+		# }
+		# # Other start dates
+		# limit = {
+		# 	OR = {
+		# 		current_date <= 1060.1.1
+		# 		current_date >= 1077.1.1
+		# 	}
+		# }
+		set_global_variable = {
+			name = RICE_nile_normal_flood_this_year
+			value = yes
+			days = 365 # Just in case it doesn't clear for whatever reason
+		}
+		every_county_in_region = {
+			region = RICE_nile_river_valley
+			add_county_modifier = {
+				modifier = RICE_nile_normal_flood
+			}
+		}
+	}
+
+}
+
 
 RICE_upper_egypt_renovate_nilometers_effect = {
 	add_prestige = 100

@@ -1,0 +1,1045 @@
+﻿###############################################################################
+# 
+# TARIM BASIN
+# 
+# tarim_basin.0000-tarim_basin.0049			Setup events, history events, miscellaneous decisions
+# tarim_basin.0050-tarim_basin.0099			Dunhuang
+#	tarim_basin.0050-tarim_basin.0069			Dunhuang history
+#	tarim_basin.0070-tarim_basin.0099			Mogao Caves
+# tarim_basin.0100-tarim_basin.0149			Tocharians
+# tarim_basin.0150-tarim_basin.0199			Khotanese
+# tarim_basin.0200-tarim_basin.0249			Generic events
+# 
+# 
+###############################################################################
+
+namespace = tarim_basin
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# tarim_basin.0000-tarim_basin.0049
+# 
+######################################################################################
+
+tarim_basin.0010 = {
+	type = character_event
+	title = tarim_basin.0010.t
+	desc = {
+		desc = tarim_basin.0010.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					game_start_date >= 755.1.1
+					game_start_date <= 950.1.1
+					current_date < 1000.1.1
+				}
+				desc = tarim_basin.0010.desc.867
+			}
+		}
+	}
+	theme = family
+	right_portrait = root
+
+	immediate = {
+		show_as_tooltip = {
+			RICE_tarim_basin_sinicize_effect = yes
+		}
+	}
+	
+	#NAMING WIDGET
+	widgets = {
+		widget = {
+			gui = "event_window_widget_RICE_sinicize_name"
+			container = "dynamic_birth_name"
+			controller = name_character
+			setup_scope = {
+				root = { save_scope_as = name_character_target }
+			}
+		}
+	}
+
+	#Go ahead
+	option = {
+		name = tarim_basin.0010.a
+	}
+
+	#On second thought...
+	option = {
+		name = tarim_basin.0010.b
+		is_cancel_option = yes
+	}
+
+}
+
+
+
+######################################################################################
+# 
+# DUNHUANG EVENTS
+# 
+# tarim_basin.0050-tarim_basin.0099
+# 
+######################################################################################
+
+
+# Choose who to play as Dunhuang and who becomes the hostage - Part 2
+tarim_basin.0050 = {
+	type = character_event
+	title = tarim_basin.0050.t
+	desc = tarim_basin.0050.desc
+	theme = RICE_theme_dunhuang_villa
+	
+	left_portrait = {
+		character = scope:yichao
+		animation = stress
+	}
+	right_portrait = {
+		character = scope:yitan
+		animation = personality_zealous
+	}
+	
+	immediate = {
+		character:304187 = {
+			save_scope_as = yitan
+		}
+		character:206811 = {
+			save_scope_as = yichao
+		}
+		character:244004 = {
+			save_scope_as = huaishen
+		}
+		character:304188 = {
+			save_scope_as = huaiding
+		}
+		# Seriously wtf are all these Tangut people doing here
+		hidden_effect = {
+			every_courtier_or_guest = {
+				limit = {
+					has_culture = culture:tangut
+				}
+				move_to_pool = yes
+			}
+		}
+	}
+	
+	option = {
+		name = tarim_basin.0050.a
+		trigger_event = tarim_basin.0051
+	}
+}
+
+# Part 2
+tarim_basin.0051 = {
+	type = character_event
+	title = tarim_basin.0051.t
+	desc = tarim_basin.0051.desc
+	theme = RICE_theme_dunhuang_villa
+	
+	left_portrait = {
+		character = scope:yichao
+		animation = personality_honorable
+	}
+	right_portrait = {
+		character = scope:huaishen
+		animation = worry
+	}
+	lower_center_portrait = scope:yitan
+	
+	# Default
+	option = {
+		name = tarim_basin.0051.a
+		hidden_effect = {
+			scope:yichao = {
+				death = {
+					death_reason = death_RICE_went_to_china
+				}			
+			}
+		}
+		custom_tooltip = tarim_basin.0051.a.tooltip
+		every_vassal = {
+			limit = {
+				culture = { has_cultural_pillar = heritage_chinese }
+				highest_held_title_tier = tier_duchy
+			}
+			add_unpressed_claim = title:k_guiyi
+		}	
+		add_to_global_variable_list = {
+			name = RICE_dunhuang_tang_hostage
+			target = flag:yeeted_yichao
+		}
+	}
+	
+	# Play as Yichao, Huaishen leaves
+	option = {
+		name = tarim_basin.0051.b
+		hidden_effect = {
+			scope:yichao = {
+				get_title = title:c_shazhou
+				get_title = title:d_guiyi
+				get_title = title:k_guiyi
+				get_title = title:c_yumenguan
+			}
+		}
+		set_player_character = scope:yichao	
+		hidden_effect = {			
+			scope:huaishen = {
+				death = {
+					death_reason = death_RICE_went_to_china
+				}			
+			}
+		}
+		custom_tooltip = tarim_basin.0051.b.tooltip
+		add_to_global_variable_list = {
+			name = RICE_dunhuang_tang_hostage
+			target = flag:yeeted_huaishen
+		}
+	}
+	
+	# Play as Yichao, no one leaves
+	option = {
+		name = tarim_basin.0051.c
+		hidden_effect = {
+			scope:yichao = {
+				get_title = title:c_shazhou
+				get_title = title:d_guiyi
+				get_title = title:k_guiyi
+				get_title = title:c_yumenguan
+			}
+		}
+		set_player_character = scope:yichao
+		scope:yichao = {
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_guiyi_tang_distrust
+			}
+		}
+		hidden_effect = {
+			scope:yichao = {
+				add_courtier = scope:huaishen
+			}
+		}
+		custom_tooltip = tarim_basin.0051.c.tooltip
+		add_to_global_variable_list = {
+			name = RICE_dunhuang_tang_hostage
+			target = flag:yeeted_no_one
+		}
+	}
+
+	after = {
+		character:206811 = {
+			trigger_event = tarim_basin.0052
+		}
+		every_ruler = {
+			limit = {
+				is_ai = no
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_dunhuang_region
+					}
+				}
+			}
+			trigger_event = tarim_basin.0052
+		}		
+	}
+}
+
+
+# Dunhuang choice notification	
+tarim_basin.0052 = {
+	type = character_event
+	title = tarim_basin.0052.t
+	desc = {
+		desc = tarim_basin.0052.desc
+		first_valid = {
+			# Yichao leaves (historical)
+			triggered_desc = {
+				trigger = {
+					is_target_in_global_variable_list = {
+						name = RICE_dunhuang_tang_hostage
+						target = flag:yeeted_yichao
+					}
+				}
+				desc = tarim_basin.0052.desc.yeet_yichao
+			}
+			# Yichao doesn't leave, Huaishen leaves
+			triggered_desc = {
+				trigger = {
+					is_target_in_global_variable_list = {
+						name = RICE_dunhuang_tang_hostage
+						target = flag:yeeted_huaishen
+					}
+				}
+				desc = tarim_basin.0052.desc.yeet_huaishen
+			}
+			# No one leaves
+			triggered_desc = {
+				trigger = {
+					is_target_in_global_variable_list = {
+						name = RICE_dunhuang_tang_hostage
+						target = flag:yeeted_no_one
+					}
+				}
+				desc = tarim_basin.0052.desc.yeet_no_one
+			}
+		}
+	}
+	theme = RICE_theme_dunhuang_villa
+	
+	left_portrait = {
+		character = scope:yichao
+		animation = personality_honorable
+	}
+	right_portrait = {
+		character = scope:huaishen
+		animation = worry
+	}
+	lower_center_portrait = scope:yitan
+
+	immediate = {
+		play_music_cue = "mx_li_ling_si_han"
+	}
+	
+	option = { 
+		name = tarim_basin.0052.a
+	}
+}
+
+
+# Death of Zhang Yichao (if he stayed) - ping event
+tarim_basin.0053 = {
+	type = empty
+	hidden = yes
+	
+	trigger = {
+		has_character_modifier = RICE_tarim_basin_is_zhang_yichao
+		exists = title:k_guiyi.holder
+		OR = {
+			is_target_in_global_variable_list = {
+				name = RICE_dunhuang_tang_hostage
+				target = flag:yeeted_huaishen
+			}
+			is_target_in_global_variable_list = {
+				name = RICE_dunhuang_tang_hostage
+				target = flag:yeeted_no_one
+			}
+		}
+	}
+	
+	immediate = {
+		save_scope_as = yichao
+		title:k_guiyi = { #For loc.
+			save_scope_as = guiyi_kingdom
+		}
+		set_global_variable = {
+			name = RICE_zhang_yichao_passed_away
+			value = yes
+		}
+		every_vassal = {
+			limit = {
+				culture = { has_cultural_pillar = heritage_chinese }
+				highest_held_title_tier = tier_duchy
+			}
+			add_pressed_claim = title:k_guiyi
+		}
+		every_player = {
+			limit = {
+				is_ai = no
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_dunhuang_region
+					}
+				}		
+			}
+			trigger_event = tarim_basin.0054
+		}
+	}
+}
+
+# Death of Zhang Yichao (if he stayed) - notification
+tarim_basin.0054 = {
+	type = character_event
+	title = tarim_basin.0054.t
+	desc = tarim_basin.0054.desc
+	theme = RICE_theme_dunhuang_mogao_caves
+	
+	left_portrait = {
+		character = scope:yichao
+		animation = personality_zealous
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			every_vassal = {
+				limit = {
+					culture = { has_cultural_pillar = heritage_chinese }
+					highest_held_title_tier = tier_duchy
+				}
+				add_pressed_claim = title:k_guiyi
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0054.a
+	}
+}
+
+
+
+# Death of Zhang Yichao (if he left)
+tarim_basin.0055 = {
+	type = character_event
+	title = tarim_basin.0055.t
+	desc = tarim_basin.0055.desc
+	theme = RICE_theme_dunhuang_mogao_caves
+	
+	left_portrait = {
+		character = scope:yichao
+		animation = personality_zealous
+	}
+
+	trigger = {
+		exists = title:k_guiyi.holder
+		has_title = title:k_guiyi
+		OR = {
+			is_target_in_global_variable_list = {
+				name = RICE_dunhuang_tang_hostage
+				target = flag:yeeted_huaishen
+			}
+			is_target_in_global_variable_list = {
+				name = RICE_dunhuang_tang_hostage
+				target = flag:yeeted_no_one
+			}
+		}
+	}
+
+	immediate = {
+		character:206811 = {
+			save_scope_as = yichao
+		}
+		set_global_variable = {
+			name = RICE_zhang_yichao_passed_away
+			value = yes
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0055.a
+		every_vassal = {
+			limit = {
+				culture = { has_cultural_pillar = heritage_chinese }
+				highest_held_title_tier = tier_duchy
+			}
+			add_pressed_claim = title:k_guiyi
+		}
+		trigger_event = tarim_basin.0054
+		every_player = {
+			limit = {
+				is_ai = no
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_dunhuang_region
+					}
+				}		
+			}
+			trigger_event = tarim_basin.0054
+		}
+	}
+}
+
+# Random Tang dynasty "gifts" tombola
+tarim_basin.0056 = {
+	hidden = yes
+	
+	trigger = {
+		exists = title:k_guiyi.holder
+		has_title = title:k_guiyi
+		NOT = { has_global_variable = RICE_zhang_yichao_passed_away }
+		current_year < 910 # Failsafe in case it keeps triggering for some reason
+		OR = {
+			is_target_in_global_variable_list = {
+				name = RICE_dunhuang_tang_hostage
+				target = flag:yeeted_yichao
+			}			
+			is_target_in_global_variable_list = {
+				name = RICE_dunhuang_tang_hostage
+				target = flag:yeeted_huaishen
+			}
+		}
+	}
+	
+	immediate = {
+		save_scope_as = guiyi_jiedushi
+		# If Yichao is the hostage, higher chances of getting bonuses
+		if = {
+			limit = {
+				is_target_in_global_variable_list = {
+					name = RICE_dunhuang_tang_hostage
+					target = flag:yeeted_yichao
+				}
+			}
+			random_list = {
+				# Nothing
+				15 = { }
+				# Gold
+				15 = {
+					add_character_flag = RICE_dunhuang_bonus_gold
+				}
+				# Troops
+				15 = {
+					add_character_flag = RICE_dunhuang_bonus_troops
+				}
+				# Prestige
+				15 = {
+					add_character_flag = RICE_dunhuang_bonus_prestige
+				}
+				# Economic Modifiers
+				5 = {
+					add_character_flag = RICE_dunhuang_bonus_economic
+				}
+				# Military Modifiers
+				5 = {
+					add_character_flag = RICE_dunhuang_bonus_military
+				}
+				# Political Modifiers
+				5 = {
+					add_character_flag = RICE_dunhuang_bonus_political
+				}
+			}
+		}
+		# If Huaishen is the hostage, higher chances of getting bonuses
+		if = {
+			limit = {
+				is_target_in_global_variable_list = {
+					name = RICE_dunhuang_tang_hostage
+					target = flag:yeeted_huaishen
+				}
+			}
+			random_list = {
+				# Nothing
+				60 = { }
+				# Gold
+				15 = {
+					add_character_flag = RICE_dunhuang_bonus_gold
+				}
+				# Troops
+				15 = {
+					add_character_flag = RICE_dunhuang_bonus_troops
+				}
+				# Prestige
+				15 = {
+					add_character_flag = RICE_dunhuang_bonus_prestige
+				}
+				# Economic Modifiers
+				5 = {
+					add_character_flag = RICE_dunhuang_bonus_economic
+				}
+				# Military Modifiers
+				5 = {
+					add_character_flag = RICE_dunhuang_bonus_military
+				}
+				# Political Modifiers
+				5 = {
+					add_character_flag = RICE_dunhuang_bonus_political
+				}
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_character_flag = RICE_dunhuang_bonus_gold
+					has_character_flag = RICE_dunhuang_bonus_troops
+					has_character_flag = RICE_dunhuang_bonus_prestige
+					has_character_flag = RICE_dunhuang_bonus_economic
+					has_character_flag = RICE_dunhuang_bonus_military
+					has_character_flag = RICE_dunhuang_bonus_political
+				}
+			}
+			trigger_event = tarim_basin.0057
+		}
+	}
+}
+
+
+
+# Tang Dynasty sends bonuses
+tarim_basin.0057 = {
+	type = character_event
+	title = tarim_basin.0057.t
+	desc = {
+		desc = tarim_basin.0057.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_dunhuang_bonus_gold
+				}
+				desc = tarim_basin.0057.desc.gold
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_dunhuang_bonus_troops
+				}
+				desc = tarim_basin.0057.desc.troops
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_dunhuang_bonus_prestige
+				}
+				desc = tarim_basin.0057.desc.prestige
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_dunhuang_bonus_economic
+				}
+				desc = tarim_basin.0057.desc.economic
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_dunhuang_bonus_military
+				}
+				desc = tarim_basin.0057.desc.military
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_dunhuang_bonus_political
+				}
+				desc = tarim_basin.0057.desc.political
+			}
+		}
+		desc = tarim_basin.0057.desc.conclusion
+	}
+	theme = realm
+	
+	left_portrait = {
+		character = scope:guiyi_jiedushi
+		animation = personality_honorable
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				is_target_in_global_variable_list = {
+					name = RICE_dunhuang_tang_hostage
+					target = flag:yeeted_yichao
+				}
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_dunhuang_bonus_gold
+				}
+				add_gold = 150
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_dunhuang_bonus_troops
+				}
+				RICE_dunhuang_greater_troop_spawn_effect = yes
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_dunhuang_bonus_prestige
+				}
+				add_prestige = 200
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_dunhuang_bonus_economic
+				}
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_dunhuang_economic_bonus_greater
+					years = 5
+				}
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_dunhuang_bonus_military
+				}
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_dunhuang_military_bonus_greater
+					years = 5
+				}
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_dunhuang_bonus_political
+				}
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_dunhuang_political_bonus_greater
+					years = 5
+				}
+			}
+		}
+		if = {
+			limit = {
+				is_target_in_global_variable_list = {
+					name = RICE_dunhuang_tang_hostage
+					target = flag:yeeted_huaishen
+				}
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_dunhuang_bonus_gold
+				}
+				add_gold = 75
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_dunhuang_bonus_troops
+				}
+				RICE_dunhuang_lesser_troop_spawn_effect = yes
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_dunhuang_bonus_prestige
+				}
+				add_prestige = 100
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_dunhuang_bonus_economic
+				}
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_dunhuang_economic_bonus_lesser
+					years = 5
+				}
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_dunhuang_bonus_military
+				}
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_dunhuang_military_bonus_lesser
+					years = 5
+				}
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_dunhuang_bonus_political
+				}
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_dunhuang_political_bonus_lesser
+					years = 5
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0057.a
+		RICE_dunhuang_tang_bonus_remove_character_flags_effect = yes
+	}
+
+}
+
+
+
+
+
+
+
+######################################################################################
+# 
+# MOGAO EVENTS
+# 
+# tarim_basin.0070-tarim_basin.0099
+# 
+######################################################################################
+
+
+# Choose your Mogao Cave
+tarim_basin.0070 = {
+	type = character_event
+	title = tarim_basin.0070.t
+	desc = {
+		desc = tarim_basin.0070.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_tarim_basin_mogao_cave_type = flag:family
+				}
+				desc = tarim_basin.0070.desc.family
+			}		
+			triggered_desc = {
+				trigger = {
+					var:RICE_tarim_basin_mogao_cave_type = flag:jataka
+				}
+				desc = tarim_basin.0070.desc.jataka
+			}		
+			triggered_desc = {
+				trigger = {
+					var:RICE_tarim_basin_mogao_cave_type = flag:deities
+				}
+				desc = tarim_basin.0070.desc.deities
+			}		
+		}
+		desc = tarim_basin.0070.desc.conclusion
+	}
+	theme = RICE_theme_dunhuang_mogao_caves
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	# Pay basic amount
+	option = {
+		name = tarim_basin.0070.a
+		if = {
+			limit = {
+				dynasty = {
+					has_dynasty_perk = RICE_tarim_basin_silk_road_legacy_5
+				}
+			}
+			remove_short_term_gold = 75
+		}
+		else = {
+			remove_short_term_gold = 100
+		}
+		set_variable = {
+			name = RICE_tarim_basin_mogao_cave_size
+			value = flag:small
+		}
+		custom_tooltip = tarim_basin.0070.tooltip
+	}
+	# Pay medium amount
+	option = {
+		name = tarim_basin.0070.b
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 200
+				AND = {
+					short_term_gold >= 150
+					dynasty = {
+						has_dynasty_perk = RICE_tarim_basin_silk_road_legacy_5
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				dynasty = {
+					has_dynasty_perk = RICE_tarim_basin_silk_road_legacy_5
+				}
+			}
+			remove_short_term_gold = 150
+		}
+		else = {
+			remove_short_term_gold = 200
+		}
+		set_variable = {
+			name = RICE_tarim_basin_mogao_cave_size
+			value = flag:medium
+		}
+		custom_tooltip = tarim_basin.0070.tooltip
+	}
+	# Pay large amount
+	option = {
+		name = tarim_basin.0070.c
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 300
+				AND = {
+					short_term_gold >= 225
+					dynasty = {
+						has_dynasty_perk = RICE_tarim_basin_silk_road_legacy_5
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				dynasty = {
+					has_dynasty_perk = RICE_tarim_basin_silk_road_legacy_5
+				}
+			}
+			remove_short_term_gold = 225
+		}
+		else = {
+			remove_short_term_gold = 300
+		}
+		set_variable = {
+			name = RICE_tarim_basin_mogao_cave_size
+			value = flag:large
+		}
+		custom_tooltip = tarim_basin.0070.tooltip
+	}
+
+	after = {
+		add_character_flag = RICE_dunhuang_mogao_cave_wip
+		trigger_event = {
+			id = tarim_basin.0071
+			days = { 330 400 }
+		}
+	}
+
+}
+
+
+
+# Mogao Cave is complete
+tarim_basin.0071 = {
+	type = character_event
+	title = tarim_basin.0071.t
+	desc = tarim_basin.0071.desc
+	theme = RICE_theme_dunhuang_mogao_caves
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	# Ok
+	option = {
+		name = tarim_basin.0071.a
+		if = {
+			limit = {
+				var:RICE_tarim_basin_mogao_cave_size = flag:small
+			}
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_built_mogao_cave_normal
+				years = 15
+			}
+			if = {
+				limit = {
+					var:RICE_tarim_basin_mogao_cave_type = flag:family
+				}
+				add_prestige = 150
+				add_piety = 50
+				dynasty = { add_dynasty_prestige = 100 }
+			}
+			if = {
+				limit = {
+					var:RICE_tarim_basin_mogao_cave_type = flag:jataka
+				}
+				add_prestige = 100
+				add_piety = 100
+				dynasty = { add_dynasty_prestige = 100 }
+			}
+			if = {
+				limit = {
+					var:RICE_tarim_basin_mogao_cave_type = flag:deities
+				}
+				add_prestige = 50
+				add_piety = 150
+				dynasty = { add_dynasty_prestige = 100 }
+			}
+		}
+		if = {
+			limit = {
+				var:RICE_tarim_basin_mogao_cave_size = flag:medium
+			}
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_built_mogao_cave_big
+				years = 15
+			}
+			if = {
+				limit = {
+					var:RICE_tarim_basin_mogao_cave_type = flag:family
+				}
+				add_prestige = 225
+				add_piety = 75
+				dynasty = { add_dynasty_prestige = 200 }
+			}
+			if = {
+				limit = {
+					var:RICE_tarim_basin_mogao_cave_type = flag:jataka
+				}
+				add_prestige = 150
+				add_piety = 150
+				dynasty = { add_dynasty_prestige = 200 }
+			}
+			if = {
+				limit = {
+					var:RICE_tarim_basin_mogao_cave_type = flag:deities
+				}
+				add_prestige = 75
+				add_piety = 225
+				dynasty = { add_dynasty_prestige = 200 }
+			}
+		}
+		if = {
+			limit = {
+				var:RICE_tarim_basin_mogao_cave_size = flag:large
+			}
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_built_mogao_cave_bigger
+				years = 15
+			}
+			if = {
+				limit = {
+					var:RICE_tarim_basin_mogao_cave_type = flag:family
+				}
+				add_prestige = 300
+				add_piety = 100
+				dynasty = { add_dynasty_prestige = 300 }
+			}
+			if = {
+				limit = {
+					var:RICE_tarim_basin_mogao_cave_type = flag:jataka
+				}
+				add_prestige = 200
+				add_piety = 200
+				dynasty = { add_dynasty_prestige = 300 }
+			}
+			if = {
+				limit = {
+					var:RICE_tarim_basin_mogao_cave_type = flag:deities
+				}
+				add_prestige = 100
+				add_piety = 300
+				dynasty = { add_dynasty_prestige = 300 }
+			}
+		}
+		if = {
+			limit = {
+				var:RICE_tarim_basin_mogao_cave_size = flag:huge
+			}
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_built_mogao_cave_biggest
+				years = 15
+			}
+			if = {
+				limit = {
+					var:RICE_tarim_basin_mogao_cave_type = flag:family
+				}
+				add_prestige = 375
+				add_piety = 125
+				dynasty = { add_dynasty_prestige = 400 }
+			}
+			if = {
+				limit = {
+					var:RICE_tarim_basin_mogao_cave_type = flag:jataka
+				}
+				add_prestige = 250
+				add_piety = 250
+				dynasty = { add_dynasty_prestige = 400 }
+			}
+			if = {
+				limit = {
+					var:RICE_tarim_basin_mogao_cave_type = flag:deities
+				}
+				add_prestige = 125
+				add_piety = 375
+				dynasty = { add_dynasty_prestige = 400 }
+			}
+		}
+	}
+
+	after = {
+		remove_character_flag = RICE_dunhuang_mogao_cave_wip
+		# if = {
+		# 	limit = { has_variable = RICE_tarim_basin_mogao_cave_type }
+		# 	remove_variable = RICE_tarim_basin_mogao_cave_type
+		# }
+	}
+
+}
+
+
+

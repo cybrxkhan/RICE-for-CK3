@@ -1,0 +1,115 @@
+# Event window widget to rename a child (intended to be used at birth)
+# Required controller: name_character
+
+vbox = {
+	name = "event_window_widget_RICE_sinicize_name"
+	layoutpolicy_horizontal = expanding
+	minimumsize = { 240 -1 }
+	ignoreinvisible = yes
+	margin = { 5 0 }
+	margin_bottom = 5
+	spacing = 3
+
+	datacontext = "[EventWindowWidgetNameCharacter.GetCharacter]"
+
+	editbox_standard = {
+		size = { 240 30 }
+	
+		blockoverride "editbox_properties" 
+		{
+		    name = "no_name_needed"
+		    text = "[EventWindowWidgetNameCharacter.GetCurrentName]"
+			ontextedited = "[EventWindowWidgetNameCharacter.OnEditCurrentName]"
+			
+			state = {
+				name = "name_refresh"
+				next = "b"
+				using = Animation_Refresh_FadeOut
+			}
+
+			state = {
+				name = "b"
+				using = Animation_Refresh_FadeIn
+			}
+		}
+	}
+
+	# vbox = {
+	# 	layoutpolicy_horizontal = expanding
+	# 	spacing = 3
+	# 	margin = { 5 0 }
+
+	# 	visible = "[GetVariableSystem.Exists( 'family_members_options_open' )]"
+		
+	# 	RICE_sinicize_name_option = {
+	# 		visible = "[And( Not( Character.IsFemale ), Character.GetFather.IsValid )]"
+	# 		text = "event_window_widget_name_child_after_father"
+	# 		onclick = "[EventWindowWidgetNameCharacter.SetCurrentNameCultural( Character.GetFather.GetFirstNameBase )]"
+	# 	}
+	
+	# 	RICE_sinicize_name_option = {
+	# 		visible = "[And( Character.IsFemale, Character.GetMother.IsValid )]"
+	# 		text = "event_window_widget_name_child_after_mother"
+	# 		onclick = "[EventWindowWidgetNameCharacter.SetCurrentNameCultural( Character.GetMother.GetFirstNameBase )]"
+	# 	}
+	
+	# 	RICE_sinicize_name_option = {
+	# 		visible = "[And( Not( Character.IsFemale ), Character.GetFather.GetFather.IsValid )]"
+	# 		text = "event_window_widget_name_child_after_fathers_father"
+	# 		onclick = "[EventWindowWidgetNameCharacter.SetCurrentNameCultural( Character.GetFather.GetFather.GetFirstNameBase )]"
+	# 	}
+	
+	# 	RICE_sinicize_name_option = {
+	# 		visible = "[And( Character.IsFemale, Character.GetFather.GetMother.IsValid )]"
+	# 		text = "event_window_widget_name_child_after_fathers_mother"
+	# 		onclick = "[EventWindowWidgetNameCharacter.SetCurrentNameCultural( Character.GetFather.GetMother.GetFirstNameBase )]"
+	# 	}
+	
+	# 	RICE_sinicize_name_option = {
+	# 		visible = "[And( Not( Character.IsFemale ), Character.GetMother.GetFather.IsValid )]"
+	# 		text = "event_window_widget_name_child_after_mothers_father"
+	# 		onclick = "[EventWindowWidgetNameCharacter.SetCurrentNameCultural( Character.GetMother.GetFather.GetFirstNameBase )]"
+	# 	}
+
+	# 	RICE_sinicize_name_option = {
+	# 		visible = "[And( Character.IsFemale, Character.GetMother.GetMother.IsValid )]"
+	# 		text = "event_window_widget_name_child_after_mothers_mother"
+	# 		onclick = "[EventWindowWidgetNameCharacter.SetCurrentNameCultural( Character.GetMother.GetMother.GetFirstNameBase )]"
+	# 	}
+	# }
+
+	hbox = {
+	
+		event_button_round = {
+			onclick = "[EventWindowWidgetNameCharacter.SetCurrentName( EventWindowWidgetNameCharacter.GetRandomAvailableCultureName )]"
+			onclick = "[PdxGuiTriggerAllAnimations('name_refresh')]"
+			tooltip =  "event_window_widget_name_child_random_cultural_name"
+			using = tooltip_se
+	
+			highlight_icon = {
+				name = "culture"
+				texture = "gfx/interface/icons/icon_culture.dds"
+				size = { 35 35 }
+				parentanchor = center
+			}
+		}
+	
+	}
+}
+
+types RICE_sinicize_name
+{
+	type RICE_sinicize_name_option = button_standard_list {
+		layoutpolicy_horizontal = expanding
+		
+		onclick = "[PdxGuiTriggerAllAnimations('name_refresh')]"
+		
+		background = {
+			using = Background_Area
+		}
+	}
+
+	type event_button_round = button_round {
+		size = { 44 44 }
+	}
+}
