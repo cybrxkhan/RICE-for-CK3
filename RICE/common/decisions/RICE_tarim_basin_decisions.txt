@@ -13,8 +13,21 @@ RICE_tarim_basin_patronize_a_mogao_cave = {
 		NOT = { exists = var:RICE_tarim_basin_mogao_cave_type }
 		is_ruler = yes
 		is_landed = yes
-		any_directly_owned_province = {
-			geographical_region = RICE_dunhuang_region
+		OR = {
+			AND = {
+				dynasty = {
+					has_dynasty_perk = RICE_tarim_basin_silk_road_legacy_5
+				}
+				any_directly_owned_province = {
+					OR = {
+						geographical_region = world_steppe_tarim
+						geographical_region = RICE_dunhuang_region
+					}
+				}
+			}
+			any_directly_owned_province = {
+				geographical_region = RICE_dunhuang_region
+			}
 		}
 		OR = {
 			religion = religion:buddhism_religion
@@ -147,7 +160,101 @@ RICE_tarim_basin_patronize_a_mogao_cave = {
 	}
 }
 
-RICE_reinforce_relations_silk_road_communities_silk_road_communities = {
+
+RICE_tarim_basin_compile_the_turkic_dictionary = {
+	picture = "gfx/interface/illustrations/decisions/decision_muslim_scholar.dds"
+	major = yes
+	ai_check_interval = 12
+
+	desc = RICE_tarim_basin_compile_the_turkic_dictionary_desc
+	selection_tooltip = RICE_tarim_basin_compile_the_turkic_dictionary_tooltip
+
+	is_shown = {
+		OR = {
+			AND = {
+				learning >= decent_skill_rating
+				diplomacy >= medium_skill_rating
+			}
+			has_character_modifier = RICE_tarim_basin_is_al_kashgari
+		}
+		OR = {
+			has_character_modifier = RICE_tarim_basin_is_al_kashgari
+			has_global_variable = RICE_anyone_can_write_turkic_dictionary
+		}
+		culture = { has_cultural_pillar = language_turkic }
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_tarim_basin_compile_turkic_dictionary_done
+			}
+		}
+		NOT = { has_government = tribal_government }
+	}
+	
+	is_valid = {
+		OR = {
+			AND = {
+				learning >= decent_skill_rating
+				diplomacy >= medium_skill_rating
+			}
+			custom_description = {
+				text = RICE_tarim_basin_is_al_Kashgari
+				has_character_modifier = RICE_tarim_basin_is_al_kashgari
+			}
+		}
+		culture = { has_cultural_pillar = language_turkic }
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+
+		add_character_modifier = {
+			modifier = RICE_tarim_basin_working_on_turkic_dictionary
+		}
+
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_tarim_basin_compile_turkic_dictionary_done
+		}
+
+		custom_tooltip = RICE_tarim_basin_compile_the_turkic_dictionary_effect_tooltip_1
+		custom_tooltip = RICE_tarim_basin_compile_the_turkic_dictionary_effect_tooltip_2
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_tarim_basin_compile_the_turkic_dictionary_context_tooltip
+		}
+		trigger_event = harran.0068
+	}
+
+	cost = {
+		gold = minor_gold_value
+	}
+	
+	ai_potential = {
+		gold > minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+		modifier = {
+			add = 20
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 20
+			has_trait = diligent
+		}
+	}
+}
+
+RICE_reinforce_relations_silk_road_communities = {
 	picture = "gfx/interface/illustrations/decisions/decision_silk_road.dds"
 
 	major = yes
@@ -156,18 +263,31 @@ RICE_reinforce_relations_silk_road_communities_silk_road_communities = {
 
 	cooldown = { days = 3650 }
 	
-	desc = RICE_reinforce_relations_silk_road_communities_silk_road_communities_desc
+	desc = RICE_reinforce_relations_silk_road_communities_desc
 	
 	is_shown = {
 		is_ruler = yes
 		is_landed = yes
-		any_directly_owned_province = {
-			geographical_region = RICE_silk_road_region
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_land_silk_road_region		
+			}
 		}
 	}
 	
-	# is_valid = {		
-	# }
+	is_valid = {
+		RICE_tarim_basin_has_silk_road_contacts_trigger = no
+		custom_description = {
+			text = RICE_land_silk_road_geographical_req
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_land_silk_road_region		
+				}
+			}
+		}
+	}
 	
 	is_valid_showing_failures_only = {
 		is_available_adult = yes
@@ -182,24 +302,24 @@ RICE_reinforce_relations_silk_road_communities_silk_road_communities = {
 		decision_to_second_step_button = "RICE_silk_road_pick_a_community_type" 
 
 
-		# Sinic
+		# East Asian
 		item = {
-			value = RICE_community_sinic_option
-			current_description = RICE_community_sinic_option_desc
-			localization = RICE_community_sinic_option
-			icon = "gfx/interface/icons/widgets/RICE_silk_road_community_sinic.dds"
+			value = RICE_community_east_asian_option
+			current_description = RICE_community_east_asian_option_desc
+			localization = RICE_community_east_asian_option
+			icon = "gfx/interface/icons/widgets/RICE_silk_road_community_east_asian.dds"
 
 			ai_chance = {
 				value = 1
 			}
 		}
 
-		# Nomad
+		# Steppe
 		item = {
-			value = RICE_community_nomad_option
-			current_description = RICE_community_nomad_option_desc
-			localization = RICE_community_nomad_option
-			icon = "gfx/interface/icons/widgets/RICE_silk_road_community_nomad.dds"
+			value = RICE_community_steppe_option
+			current_description = RICE_community_steppe_option_desc
+			localization = RICE_community_steppe_option
+			icon = "gfx/interface/icons/widgets/RICE_silk_road_community_steppe.dds"
 
 			ai_chance = {
 				value = 1
@@ -230,12 +350,12 @@ RICE_reinforce_relations_silk_road_communities_silk_road_communities = {
 			}
 		}
 
-		# Indic
+		# Indian
 		item = {
-			value = RICE_community_indic_option
-			current_description = RICE_community_indic_option_desc
-			localization = RICE_community_indic_option
-			icon = "gfx/interface/icons/widgets/RICE_silk_road_community_indic.dds"
+			value = RICE_community_indian_option
+			current_description = RICE_community_indian_option_desc
+			localization = RICE_community_indian_option
+			icon = "gfx/interface/icons/widgets/RICE_silk_road_community_indian.dds"
 
 			ai_chance = {
 				value = 1
@@ -245,34 +365,58 @@ RICE_reinforce_relations_silk_road_communities_silk_road_communities = {
 
 	effect = {
 
-		custom_tooltip = RICE_reinforce_relations_silk_road_communities_silk_road_communities_effect_tooltip_1
-		custom_tooltip = RICE_reinforce_relations_silk_road_communities_silk_road_communities_effect_tooltip_2
+		custom_tooltip = RICE_reinforce_relations_silk_road_communities_effect_tooltip_1
+		custom_tooltip = RICE_reinforce_relations_silk_road_communities_effect_tooltip_2
 		
 		if = {
 			limit = {
 				has_game_rule = RICE_historical_context_on
 			}
-			custom_tooltip = RICE_reinforce_relations_silk_road_communities_silk_road_communities_context_tooltip
+			custom_tooltip = RICE_reinforce_relations_silk_road_communities_context_tooltip
 		}
 
-		if = { # Sinic
-			limit = { scope:RICE_community_sinic_option = yes }
+		if = { # East Asian
+			limit = { scope:RICE_community_east_asian_option = yes }
 			set_variable = {
 				name = RICE_silk_road_community_type
-				value = flag:sinic
+				value = flag:east_asian
 			}
 		}
 
-		if = { # Indic
-			limit = { scope:RICE_community_indic_option = yes }
+		if = { # Steppe
+			limit = { scope:RICE_community_steppe_option = yes }
 			set_variable = {
 				name = RICE_silk_road_community_type
-				value = flag:indic
+				value = flag:steppe
+			}
+		}
+
+		if = { # Middle Eastern
+			limit = { scope:RICE_community_middle_eastern_option = yes }
+			set_variable = {
+				name = RICE_silk_road_community_type
+				value = flag:middle_eastern
+			}
+		}
+
+		if = { # Himalayan
+			limit = { scope:RICE_community_himalayan_option = yes }
+			set_variable = {
+				name = RICE_silk_road_community_type
+				value = flag:himalayan
+			}
+		}
+
+		if = { # Indian
+			limit = { scope:RICE_community_indian_option = yes }
+			set_variable = {
+				name = RICE_silk_road_community_type
+				value = flag:indian
 			}
 		}
 		
 		trigger_event = {
-			id = tarim_basin.8888
+			id = tarim_basin.0020
 		}
 	}
 
@@ -296,6 +440,358 @@ RICE_reinforce_relations_silk_road_communities_silk_road_communities = {
 		}
 	}
 }
+
+
+
+RICE_tarim_basin_become_khan_and_sultan_of_china = {
+	picture = "gfx/interface/illustrations/decisions/decision_iranian_court.dds"
+	major = yes
+	desc = RICE_tarim_basin_become_khan_and_sultan_of_china_desc
+
+	ai_check_interval = 24
+
+	is_shown = {
+		is_landed = yes
+		exists = dynasty
+		religion = religion:islam_religion
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_tarim_basin_fake_china_proclaimed_flag
+			}
+		}
+		any_sub_realm_county = {
+			title_province = {
+				OR = {
+					geographical_region = world_steppe_tarim
+					geographical_region = RICE_sogdia
+					geographical_region = RICE_greater_pamir_region
+				}				
+			}
+		}
+		NOR = {
+			culture = { has_cultural_pillar = heritage_chinese }
+			culture = { has_cultural_pillar = heritage_mongolic }
+			culture = { has_cultural_pillar = heritage_qiangic }
+		}
+	}
+
+	is_valid = {
+		religion = religion:islam_religion
+		highest_held_title_tier >= tier_kingdom
+		piety_level >= 3
+		prestige_level >= 3
+		custom_tooltip = {
+			text = RICE_tarim_basin_fake_china_geographical_req
+			any_sub_realm_county = {
+				count > 5
+				title_province = { geographical_region = world_steppe_tarim }
+			}
+		}
+		NOR = {
+			culture = { has_cultural_pillar = heritage_chinese }
+			culture = { has_cultural_pillar = heritage_mongolic }
+			culture = { has_cultural_pillar = heritage_qiangic }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	cost = { 
+		gold = { value = major_gold_value }
+		prestige = { value = major_prestige_value }
+	}	
+
+	ai_potential = {
+		short_term_gold > major_gold_value
+		prestige >= major_prestige_value
+	}
+
+	effect = {
+
+		save_scope_as = fake_china_claimer
+
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_tarim_basin_fake_china_proclaimed_flag
+		}
+
+
+		show_as_tooltip = {
+			RICE_tarim_basin_claim_fake_china_effect = yes
+		}	
+
+		custom_tooltip = RICE_tarim_basin_become_khan_and_sultan_of_china_effect_tooltip_1	
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_tarim_basin_become_khan_and_sultan_of_china_context_tooltip
+		}
+		
+		trigger_event = tarim_basin.0888
+
+		add_to_list = notification_sent
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+RICE_silk_road_community_east_asian_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_chinese_calligraphy.dds"
+
+	ai_check_interval = 36
+	
+	cooldown = { days = 3650 }
+
+	desc = RICE_silk_road_community_east_asian_decision_desc
+	selection_tooltip = RICE_silk_road_community_east_asian_decision_tooltip
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_character_modifier = RICE_tarim_basin_east_asian_contacts
+	}
+	
+	is_valid = {
+		has_character_modifier = RICE_tarim_basin_east_asian_contacts
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+
+	effect = {
+
+		show_as_tooltip = {
+			RICE_tarim_basin_bring_chinese_specialists_effect = yes
+		}
+		
+		trigger_event = {
+			id = tarim_basin.0888
+		}
+	}
+
+	cost = {
+		gold = { value = minor_gold_value }
+	}
+
+	ai_potential = {
+		short_term_gold > minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+
+
+RICE_silk_road_community_steppe_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_steppe_warriors.dds"
+
+	ai_check_interval = 36
+	
+	cooldown = { days = 3650 }
+
+	desc = RICE_silk_road_community_steppe_decision_desc
+	selection_tooltip = RICE_silk_road_community_steppe_decision_tooltip
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_character_modifier = RICE_tarim_basin_steppe_contacts
+	}
+	
+	is_valid = {
+		has_character_modifier = RICE_tarim_basin_steppe_contacts
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+
+	effect = {
+
+		show_as_tooltip = {
+			RICE_tarim_basin_steppe_troops_spawn_effect = yes
+		}
+		
+		trigger_event = {
+			id = tarim_basin.0888
+		}
+	}
+
+	cost = {
+		gold = { value = minor_gold_value }
+	}
+
+	ai_potential = {
+		short_term_gold > minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+
+
+RICE_silk_road_community_middle_eastern_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_middle_eastern_market.dds"
+
+	ai_check_interval = 36
+	
+	cooldown = { days = 3650 }
+
+	desc = RICE_silk_road_community_middle_eastern_decision_desc
+	selection_tooltip = RICE_silk_road_community_middle_eastern_decision_tooltip
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_character_modifier = RICE_tarim_basin_middle_eastern_contacts
+	}
+	
+	is_valid = {
+		has_character_modifier = RICE_tarim_basin_middle_eastern_contacts
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+
+	effect = {
+
+		show_as_tooltip = {
+			RICE_tarim_basin_bring_merchant_settlers_effect = yes
+		}
+		
+		trigger_event = {
+			id = tarim_basin.0888
+		}
+	}
+
+	cost = {
+		gold = { value = minor_gold_value }
+	}
+
+	ai_potential = {
+		short_term_gold > minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+
+
+RICE_silk_road_community_himalayan_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_steppe_warriors.dds"
+
+	ai_check_interval = 36
+	
+	cooldown = { days = 3650 }
+
+	desc = RICE_silk_road_community_himalayan_decision_desc
+	selection_tooltip = RICE_silk_road_community_himalayan_decision_tooltip
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_character_modifier = RICE_tarim_basin_himalayan_contacts
+	}
+	
+	is_valid = {
+		has_character_modifier = RICE_tarim_basin_himalayan_contacts
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+
+	effect = {
+
+		show_as_tooltip = {
+			RICE_tarim_basin_himalayan_troops_spawn_effect = yes
+		}
+		
+		trigger_event = {
+			id = tarim_basin.0888
+		}
+	}
+
+	cost = {
+		gold = { value = minor_gold_value }
+	}
+
+	ai_potential = {
+		short_term_gold > minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+
+
+RICE_silk_road_community_indian_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_rice_ancient_buddhist_holy_site.dds"
+
+	ai_check_interval = 36
+	
+	cooldown = { days = 3650 }
+
+	desc = RICE_silk_road_community_indian_decision_desc
+	selection_tooltip = RICE_silk_road_community_indian_decision_tooltip
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_character_modifier = RICE_tarim_basin_indian_contacts
+	}
+	
+	is_valid = {
+		has_character_modifier = RICE_tarim_basin_indian_contacts
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+
+	effect = {
+
+		show_as_tooltip = {
+			RICE_tarim_basin_bring_indic_artisans_effect = yes
+		}
+		
+		trigger_event = {
+			id = tarim_basin.0888
+		}
+	}
+
+	cost = {
+		gold = { value = minor_gold_value }
+	}
+
+	ai_potential = {
+		short_term_gold > minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+	}
+}
+
 
 
 RICE_iranian_sinicization = {
@@ -329,33 +825,52 @@ RICE_iranian_sinicization = {
 	}
 	
 	is_shown = {
+		debug_only = yes
 		is_ruler = yes
 		is_landed = yes
-		any_directly_owned_province = {
-			geographical_region = RICE_silk_road_region
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_land_silk_road_region		
+			}
 		}
 		culture = {			
 			NOT = { has_cultural_pillar = heritage_chinese }
 		}
+		culture = { has_cultural_tradition = tradition_RICE_silk_road }
 		OR = {
-			culture = culture:sogdian
-			culture = culture:saka
-			culture = culture:tocharian
-			culture = {
-				any_parent_culture_or_above = {
-					OR = {
-						this = culture:sogdian
-						this = culture:saka
-						this = culture:tocharian
-					}
-				}
+			top_liege = {
+				culture = { has_cultural_pillar = heritage_chinese }
+			}
+			capital_province = {
+				culture = { has_cultural_pillar = heritage_chinese }
 			}
 		}
+		# OR = {
+		# 	culture = culture:sogdian
+		# 	culture = culture:saka
+		# 	culture = culture:tocharian
+		# 	culture = {
+		# 		any_parent_culture_or_above = {
+		# 			OR = {
+		# 				this = culture:sogdian
+		# 				this = culture:saka
+		# 				this = culture:tocharian
+		# 			}
+		# 		}
+		# 	}
+		# }
 	}
 	
 	is_valid = {
-		any_directly_owned_province = {
-			geographical_region = RICE_silk_road_region
+		custom_description = {
+			text = RICE_land_silk_road_geographical_req
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_land_silk_road_region		
+				}
+			}
 		}
 		OR = {
 			top_liege = {
@@ -368,20 +883,22 @@ RICE_iranian_sinicization = {
 		culture = {			
 			NOT = { has_cultural_pillar = heritage_chinese }
 		}
-		OR = {
-			culture = culture:sogdian
-			culture = culture:saka
-			culture = culture:tocharian
-			culture = {
-				any_parent_culture_or_above = {
-					OR = {
-						this = culture:sogdian
-						this = culture:saka
-						this = culture:tocharian
-					}
-				}
-			}
-		}
+		
+		culture = { has_cultural_tradition = tradition_RICE_silk_road }
+		# OR = {
+		# 	culture = culture:sogdian
+		# 	culture = culture:saka
+		# 	culture = culture:tocharian
+		# 	culture = {
+		# 		any_parent_culture_or_above = {
+		# 			OR = {
+		# 				this = culture:sogdian
+		# 				this = culture:saka
+		# 				this = culture:tocharian
+		# 			}
+		# 		}
+		# 	}
+		# }
 		#prestige_level >= 3
 	}
 	
@@ -421,7 +938,7 @@ RICE_iranian_sinicization = {
 	}
 
 	ai_will_do = {
-		base = 20
+		base = 10
 		modifier = {
 			add = -30
 			highest_held_title_tier > tier_duchy # Don't want kings becoming Chinese willy nilly
@@ -437,6 +954,244 @@ RICE_iranian_sinicization = {
 	}
 }
 
+
+RICE_tarim_basin_khotan_procession = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_generic_asian_festival.dds"
+	ai_check_interval = 60
+	
+	cooldown = { days = 3650 }
+
+	desc = RICE_tarim_basin_khotan_procession_desc
+	selection_tooltip = RICE_tarim_basin_khotan_procession_tooltip
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			has_title = title:c_khotan
+			any_vassal_or_below = { has_title = title:c_khotan }
+		}
+		religion = religion:buddhism_religion
+	}
+	
+	is_valid = {
+		religion = religion:buddhism_religion
+		OR = {
+			has_title = title:c_khotan
+			any_vassal_or_below = { has_title = title:c_khotan }
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		save_scope_as = hoster
+		custom_tooltip = RICE_tarim_basin_khotan_procession_effect_tooltip_1
+		custom_tooltip = RICE_tarim_basin_khotan_procession_effect_tooltip_2
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_tarim_basin_khotan_procession_context_tooltip
+		}
+		trigger_event = tarim_basin.8888
+	}
+
+	cost = {
+		gold = standard_activity_cost # Will depend
+	}
+	
+	ai_potential = {
+		short_term_gold > standard_activity_cost
+	}
+
+	ai_will_do = {
+		base = 20
+		modifier = {
+			add = -8
+			has_trait = cynical
+		}
+		modifier = {
+			add = 8
+			has_trait = zealous
+		}
+	}
+}
+
+
+RICE_tarim_basin_attend_ordam_mazar_festival = {
+	picture = "gfx/interface/illustrations/decisions/decision_small_town_arabic.dds"
+	ai_check_interval = 60
+	
+	cooldown = { days = 3650 }
+
+	desc = RICE_tarim_basin_attend_ordam_mazar_festival_desc
+	selection_tooltip = RICE_tarim_basin_attend_ordam_mazar_festival_tooltip
+
+	is_shown = {
+		has_global_variable = RICE_ordam_mazar_festival_triggered
+		is_ruler = yes
+		is_landed = yes
+		religion = religion:islam_religion
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				OR = {
+					geographical_region = world_steppe_tarim
+					geographical_region = RICE_sogdia
+					geographical_region = RICE_greater_pamir_region
+				}				
+			}
+		}
+	}
+	
+	is_valid = {
+		religion = religion:islam_religion
+		custom_description = {
+			text = RICE_decision_tarim_sogdia_pamir_geographical_req
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					OR = {
+						geographical_region = world_steppe_tarim
+						geographical_region = RICE_sogdia
+						geographical_region = RICE_greater_pamir_region
+					}		
+				}
+			}
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		save_scope_as = hoster
+		custom_tooltip = RICE_tarim_basin_attend_ordam_mazar_festival_effect_tooltip_1
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_tarim_basin_attend_ordam_mazar_festival_context_tooltip
+		}
+		trigger_event = tarim_basin.8888
+	}
+
+	cost = {
+		gold = standard_activity_cost # Will depend
+	}
+	
+	ai_potential = {
+		short_term_gold > standard_activity_cost
+	}
+
+	ai_will_do = {
+		base = 20
+		modifier = {
+			add = -8
+			has_trait = cynical
+		}
+		modifier = {
+			add = 8
+			has_trait = zealous
+		}
+	}
+}
+
+RICE_tarim_basin_stage_animal_fight = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_generic_asian_festival.dds"
+	ai_check_interval = 60
+	
+	cooldown = { days = 3650 } #1825
+
+	desc = RICE_tarim_basin_stage_animal_fight_desc
+	selection_tooltip = RICE_tarim_basin_stage_animal_fight_tooltip
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			culture = culture:tocharian
+			culture = {
+				AND = {
+					any_parent_culture_or_above = {
+						this = culture:tocharian
+					}
+					has_cultural_pillar = heritage_tocharian
+				}
+			}
+		}
+	}
+	
+	is_valid = {
+		OR = {
+			culture = culture:tocharian
+			AND = {
+				custom_description = {
+					text = RICE_tocharian_culture_requirement
+					culture = {
+						any_parent_culture_or_above = {
+							this = culture:tocharian
+						}
+					}
+				}
+				culture = {
+					has_cultural_pillar = heritage_tocharian
+				}
+			}
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		save_scope_as = hoster
+		custom_tooltip = RICE_tarim_basin_stage_animal_fight_effect_tooltip_1
+		if = {
+			limit = {
+				NOT = {
+					religion = { is_in_family = rf_pagan }
+				}
+				NOT = {
+					faith = { has_doctrine = tenet_unreformed_syncretism }
+				}
+			}
+			custom_tooltip = RICE_tarim_basin_stage_animal_fight_effect_tooltip_2
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_tarim_basin_stage_animal_fight_context_tooltip
+		}
+		trigger_event = tarim_basin.0100
+	}
+
+	cost = {
+		gold = standard_activity_cost # Will depend
+	}
+	
+	ai_potential = {
+		short_term_gold > standard_activity_cost
+	}
+
+	ai_will_do = {
+		base = 20
+		modifier = {
+			add = -8
+			has_trait = shy
+		}
+		modifier = {
+			add = 8
+			has_trait = gregarious
+		}
+	}
+}
 
 
 

@@ -49,6 +49,23 @@
 			add_special_building = RICE_tarim_basin_kizil_caves
 		}
 	}
+	# Add Khotan Jade Mines and other holdings
+	if = {
+		limit = {
+			title:b_bugaiwilik = {
+				title_province = { has_special_building = no }
+			}
+		}
+		title:b_bugaiwilik.title_province = {
+			add_special_building = RICE_tarim_basin_khotan_jade_deposits_01
+		}
+	}
+	title:b_domoko.title_province = { # Was an ancient monastery
+		set_holding_type = church_holding
+	}
+	title:b_bugaiwilik.title_province = {
+		set_holding_type = castle_holding
+	}
 
 	if = {
 		limit = {
@@ -57,6 +74,54 @@
 		title:c_kucha = {
 			add_county_modifier = {
 				modifier = RICE_tarim_basin_kuchean_music
+			}
+		}
+	}
+
+	if = {
+		limit = {
+			has_global_variable = RICE_game_started_on_TFE_start_date
+		}
+		title:c_charkliq = {
+			add_county_modifier = {
+				modifier = RICE_tarim_basin_lop_nur_dry_period
+			}
+		}
+		title:c_loulan = {
+			add_county_modifier = {
+				modifier = RICE_tarim_basin_lop_nur_dry_period
+			}
+		}
+		title:c_dunhuang = {
+			add_county_modifier = {
+				modifier = RICE_tarim_basin_lop_nur_dry_period
+			}
+		}
+		title:c_kumtag = {
+			add_county_modifier = {
+				modifier = RICE_tarim_basin_lop_nur_dry_period
+			}
+		}
+	}
+	else = {
+		title:c_charkliq = {
+			add_county_modifier = {
+				modifier = RICE_tarim_basin_lop_nur_fluctuations
+			}
+		}
+		title:c_loulan = {
+			add_county_modifier = {
+				modifier = RICE_tarim_basin_lop_nur_fluctuations
+			}
+		}
+		title:c_dunhuang = {
+			add_county_modifier = {
+				modifier = RICE_tarim_basin_lop_nur_fluctuations
+			}
+		}
+		title:c_kumtag = {
+			add_county_modifier = {
+				modifier = RICE_tarim_basin_lop_nur_fluctuations
 			}
 		}
 	}
@@ -147,23 +212,28 @@
 	culture:sogdian = {
 		add_culture_tradition = tradition_RICE_silk_road
 		remove_variable = tradition_cooldown
-	}		
+	}	
+		
 	culture:saka = {
+		set_culture_pillar = ethos_bureaucratic
 		if = {
 			limit = { has_cultural_tradition = tradition_horse_lords }
 			remove_culture_tradition = tradition_horse_lords
 		}
 		add_culture_tradition = tradition_RICE_silk_road
+		add_culture_tradition = tradition_language_scholars # Translators
 		remove_variable = tradition_cooldown
 	}		
+
 	culture:tocharian = {
+		add_culture_tradition = tradition_music_theory # Kuchean music is famous
 		if = {
 			limit = { has_cultural_tradition = tradition_philosopher_culture }
 			remove_culture_tradition = tradition_philosopher_culture
 		}
 		add_culture_tradition = tradition_RICE_silk_road
 		remove_variable = tradition_cooldown
-	}	
+	}
 
 	#########################################################################
 	#
@@ -374,6 +444,25 @@
 			save_scope_as = kang_master
 		}
 
+		# Zhang Wenche - official who led the Guiyi envoy group to the Tang Dynasty alongside Song Runying in 887 CE, and *may* have led the coup against Zhang Huaishen in c. 890
+		character:RICE_dunhuang_misc_006 = { 
+			#set_culture = culture:han
+			get_title = title:c_gaotai
+			get_title = title:c_jinta
+			add_gold = 50
+			add_piety = 50
+			add_prestige = 50
+		}
+
+		# Song Runying - Official who led the Guiyi envoy group to the Tang Dynasty alongside Zhang Wenche in 887 CE
+		character:RICE_dunhuang_misc_007 = { 
+			#set_culture = culture:han
+			get_title = title:c_linze
+			add_gold = 50
+			add_piety = 50
+			add_prestige = 50
+		}
+
 		if = {
 			limit = {
 				current_date > 750.1.1
@@ -435,7 +524,46 @@
 
 	}
 
+	
 
+	# 1066 start date shenanigans
+	if = {
+		limit = {
+			current_date > 1050.1.1
+		}
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_tarim_basin_fake_china_proclaimed_flag
+		}
+		character:3014 = {
+			dynasty = {
+				add_dynasty_modifier = {
+					modifier = RICE_tarim_basin_fake_china_dynasty
+				}
+			}
+		}
+		set_global_variable = {
+			name = RICE_ordam_mazar_festival_triggered
+			value = yes
+		}
+
+		# Al-Kashgari
+		character:RICE_kashgar_001 = {
+			get_title = title:c_terek_pass
+			add_gold = 50
+			add_piety = 50
+			add_prestige = 50
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_is_al_kashgari
+			}
+		}
+	}
+	else = {
+		set_global_variable = {
+			name = RICE_anyone_can_write_turkic_dictionary
+			value = yes
+		}
+	}
 }
 
 
@@ -739,3 +867,112 @@ RICE_dunhuang_tang_bonus_remove_character_flags_effect = {
 		remove_character_flag = RICE_dunhuang_bonus_political
 	}
 }
+
+
+RICE_tarim_basin_steppe_troops_spawn_effect = {
+	spawn_army = {
+		levies = 100
+		men_at_arms = {
+			type = bowmen
+			stacks = 1
+		}
+		men_at_arms = {
+			type = horse_archers
+			stacks = 1
+		}
+		men_at_arms = {
+			type = light_horsemen
+			stacks = 1
+		}
+		location = root.capital_province
+		inheritable = yes
+		name = RICE_tarim_basin_steppe_gift_event_troops
+	}	
+}
+
+RICE_tarim_basin_himalayan_troops_spawn_effect = {
+	spawn_army = {
+		levies = 100
+		men_at_arms = {
+			type = light_footmen
+			stacks = 1
+		}
+		men_at_arms = {
+			type = mountaineer
+			stacks = 1
+		}
+		men_at_arms = {
+			type = light_horsemen
+			stacks = 1
+		}
+		location = root.capital_province
+		inheritable = yes
+		name = RICE_tarim_basin_himalayan_gift_event_troops
+	}	
+}
+
+RICE_tarim_basin_bring_chinese_specialists_effect = {
+	dynasty = { dynasty_prestige = 50 }
+	add_character_modifier = {
+		modifier = RICE_tarim_basin_chinese_specialists
+		years = 10
+	}
+}
+
+RICE_tarim_basin_bring_merchant_settlers_effect = {
+	prestige = 100
+	capital_county = {
+		add_county_modifier = {
+			modifier = RICE_tarim_basin_merchant_settlers
+			years = 10
+		}
+	}
+}
+
+RICE_tarim_basin_bring_indic_artisans_effect = {
+	piety = 100
+	add_character_modifier = {
+		modifier = RICE_tarim_basin_indic_artisans
+		years = 10
+	}
+}
+
+
+RICE_tarim_basin_lop_nur_lake_level_change_effect = {
+	title:c_charkliq = {
+		remove_county_modifier = RICE_tarim_basin_lop_nur_dry_period
+		add_county_modifier = {
+			modifier = RICE_tarim_basin_lop_nur_fluctuations
+		}
+	}
+	title:c_loulan = {
+		remove_county_modifier = RICE_tarim_basin_lop_nur_dry_period
+		add_county_modifier = {
+			modifier = RICE_tarim_basin_lop_nur_fluctuations
+		}
+	}
+	title:c_dunhuang = {
+		remove_county_modifier = RICE_tarim_basin_lop_nur_dry_period
+		add_county_modifier = {
+			modifier = RICE_tarim_basin_lop_nur_fluctuations
+		}
+	}
+	title:c_kumtag = {
+		remove_county_modifier = RICE_tarim_basin_lop_nur_dry_period
+		add_county_modifier = {
+			modifier = RICE_tarim_basin_lop_nur_fluctuations
+		}
+	}
+}
+
+RICE_tarim_basin_claim_fake_china_effect = {
+	dynasty = {
+		add_dynasty_modifier = {
+			modifier = RICE_tarim_basin_fake_china_dynasty
+		}
+		add_dynasty_prestige = 500
+	}
+}
+
+
+
