@@ -178,6 +178,13 @@ RICE_tarim_basin_compile_the_turkic_dictionary = {
 			has_character_modifier = RICE_tarim_basin_is_al_kashgari
 		}
 		OR = {
+			learning >= high_skill_rating
+			culture = {
+				has_cultural_era_or_later = culture_era_early_medieval
+			}
+			has_character_modifier = RICE_tarim_basin_is_al_kashgari
+		}
+		OR = {
 			has_character_modifier = RICE_tarim_basin_is_al_kashgari
 			has_global_variable = RICE_anyone_can_write_turkic_dictionary
 		}
@@ -203,6 +210,25 @@ RICE_tarim_basin_compile_the_turkic_dictionary = {
 			}
 		}
 		culture = { has_cultural_pillar = language_turkic }
+		OR = {
+			learning >= high_skill_rating
+			culture = {
+				has_cultural_era_or_later = culture_era_early_medieval
+			}
+			custom_description = {
+				text = RICE_tarim_basin_is_al_Kashgari
+				has_character_modifier = RICE_tarim_basin_is_al_kashgari
+			}
+		}
+		custom_description = {
+			text = RICE_tarim_basin_someone_working_on
+			NOT = {
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_tarim_basin_compile_turkic_dictionary_done
+				}
+			}
+		}
 	}
 	
 	is_valid_showing_failures_only = {
@@ -214,6 +240,10 @@ RICE_tarim_basin_compile_the_turkic_dictionary = {
 		add_character_modifier = {
 			modifier = RICE_tarim_basin_working_on_turkic_dictionary
 		}
+		stress_impact = {
+			base = minor_stress_impact_gain
+			lazy = minor_stress_impact_gain
+		}
 
 		#Can only happen once
 		add_to_global_variable_list = {
@@ -223,6 +253,7 @@ RICE_tarim_basin_compile_the_turkic_dictionary = {
 
 		custom_tooltip = RICE_tarim_basin_compile_the_turkic_dictionary_effect_tooltip_1
 		custom_tooltip = RICE_tarim_basin_compile_the_turkic_dictionary_effect_tooltip_2
+		custom_tooltip = RICE_tarim_basin_compile_the_turkic_dictionary_effect_tooltip_3
 
 		if = {
 			limit = {
@@ -230,7 +261,7 @@ RICE_tarim_basin_compile_the_turkic_dictionary = {
 			}
 			custom_tooltip = RICE_tarim_basin_compile_the_turkic_dictionary_context_tooltip
 		}
-		trigger_event = harran.0068
+		trigger_event = tarim_basin.0201
 	}
 
 	cost = {
@@ -795,7 +826,7 @@ RICE_silk_road_community_indian_decision = {
 
 
 RICE_iranian_sinicization = {
-	picture = "gfx/interface/illustrations/decisions/decision_silk_road.dds"
+	picture = "gfx/interface/illustrations/decisions/decision_chinese_calligraphy.dds"
 
 	major = yes
 
@@ -825,7 +856,6 @@ RICE_iranian_sinicization = {
 	}
 	
 	is_shown = {
-		debug_only = yes
 		is_ruler = yes
 		is_landed = yes
 		any_held_title = {
@@ -915,7 +945,9 @@ RICE_iranian_sinicization = {
 
 		custom_tooltip = RICE_iranian_sinicization_effect_tooltip_1
 
-		RICE_tarim_basin_sinicize_effect = yes
+		show_as_tooltip = {
+			RICE_tarim_basin_sinicize_effect = yes
+		}
 		
 		if = {
 			limit = {
@@ -968,17 +1000,45 @@ RICE_tarim_basin_khotan_procession = {
 		is_ruler = yes
 		is_landed = yes
 		OR = {
-			has_title = title:c_khotan
-			any_vassal_or_below = { has_title = title:c_khotan }
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_greater_khotan_area				
+				}
+			}
+			any_vassal_or_below = {
+				has_title = title:c_khotan
+			}
 		}
 		religion = religion:buddhism_religion
 	}
 	
 	is_valid = {
 		religion = religion:buddhism_religion
+		custom_description = {
+			text = RICE_decision_khotan_procession_month_req
+			current_month <= 4
+		}
+		title:c_khotan.holder = {
+			religion = religion:buddhism_religion
+		}
 		OR = {
-			has_title = title:c_khotan
-			any_vassal_or_below = { has_title = title:c_khotan }
+			custom_description = {
+				text = RICE_greater_khotan_area_geographical_req
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_greater_khotan_area				
+					}
+				}
+			}
+			any_vassal_or_below = {
+				has_title = title:c_khotan
+			}
+		}
+		# Duh
+		NOT = {
+			is_at_war_with = title:c_khotan.holder
 		}
 	}
 	
@@ -996,7 +1056,7 @@ RICE_tarim_basin_khotan_procession = {
 			}
 			custom_tooltip = RICE_tarim_basin_khotan_procession_context_tooltip
 		}
-		trigger_event = tarim_basin.8888
+		trigger_event = tarim_basin.0150
 	}
 
 	cost = {
@@ -1142,6 +1202,10 @@ RICE_tarim_basin_stage_animal_fight = {
 					has_cultural_pillar = heritage_tocharian
 				}
 			}
+		}
+		custom_description = {
+			text = RICE_decision_stage_animal_fight_month_req
+			current_month <= 3
 		}
 	}
 	

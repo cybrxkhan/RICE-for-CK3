@@ -10,7 +10,10 @@
 # tarim_basin.0100-tarim_basin.0149			Tocharians
 #	tarim_basin.0100-tarim_basin.0109			Stage Animal Fights to Predict the Harvest
 # tarim_basin.0150-tarim_basin.0199			Khotanese
-# tarim_basin.0200-tarim_basin.0249			Generic events
+#	tarim_basin.0150-tarim_basin.0169			Spring Procession
+# tarim_basin.0200-tarim_basin.0249			Kara-Khanids/Islamic Uighurs
+#	tarim_basin.0200-tarim_basin.0209			Al-Kashgari/Compile First Turkic Dictionary
+# tarim_basin.0250-tarim_basin.0299			Generic events
 # 
 # 
 ###############################################################################
@@ -24,6 +27,65 @@ namespace = tarim_basin
 # tarim_basin.0000-tarim_basin.0019
 # 
 ######################################################################################
+
+
+# Change Khotan's Eight Protectors ruler modifier (for title transition)
+tarim_basin.0001 = {
+	hidden = yes
+	
+	trigger = {
+		scope:title = title:c_khotan
+		NOT = { has_global_variable = RICE_tarim_basin_khotan_eight_protectors_abandoned }
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				religion = religion:buddhism_religion
+				scope:previous_holder = { 
+					is_alive = yes
+					has_character_modifier = RICE_tarim_basin_khotan_eight_protectors
+					NOT = {
+						has_title = title:c_khotan
+					}
+				}
+			}
+			scope:previous_holder = { remove_character_modifier = RICE_tarim_basin_khotan_eight_protectors }
+		}
+		add_character_modifier = {
+			modifier = RICE_tarim_basin_khotan_eight_protectors
+		}
+	}
+}
+
+# Change Khotan's Eight Protectors ruler modifier (for religious conversion)
+tarim_basin.0002 = {
+	hidden = yes
+	
+	trigger = {
+		has_title = title:c_khotan
+		NOT = { has_global_variable = RICE_tarim_basin_khotan_eight_protectors_abandoned }
+	}
+	
+	immediate = {
+		# Lose it if you convert away from Buddhism
+		if = {
+			limit = {
+				NOT = { religion = religion:buddhism_religion }
+			}
+			remove_character_modifier = RICE_tarim_basin_khotan_eight_protectors
+		}
+		# Gain it if you convert away to Buddhism
+		if = {
+			limit = {
+				religion = religion:buddhism_religion
+			}
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_khotan_eight_protectors
+			}
+		}
+	}
+}
 
 tarim_basin.0010 = {
 	type = character_event
@@ -45,9 +107,7 @@ tarim_basin.0010 = {
 	right_portrait = root
 
 	immediate = {
-		show_as_tooltip = {
-			RICE_tarim_basin_sinicize_effect = yes
-		}
+		RICE_tarim_basin_sinicize_effect = yes
 	}
 	
 	#NAMING WIDGET
@@ -1738,4 +1798,930 @@ tarim_basin.0100 = {
 	# 	}
 	# }
 
+}
+
+
+
+######################################################################################
+# 
+# KHOTANESE EVENTS
+# 
+# tarim_basin.0150-tarim_basin.0199
+# 
+######################################################################################
+
+
+######################################################################################
+# 
+# SPRING PROCESSION EVENTS
+# 
+# tarim_basin.0150-tarim_basin.0169
+# 
+######################################################################################
+
+
+
+# Prepare to stage an animal fight
+tarim_basin.0150 = {
+	type = character_event
+	title = tarim_basin.0150.t
+	desc = tarim_basin.0150.desc
+	theme = friendly
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	left_portrait = root
+	
+	immediate = {
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+	}
+	
+	option = { # Cattle
+		name = tarim_basin.0150.a
+		# Choose appropriate location
+		title:b_khotan.title_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_tarim_basin_khotan_procession
+			}	
+		}
+	}
+
+	# after = {
+	# 	hidden_effect = {
+	# 		scope:activity = {
+	# 			complete_activity = yes
+	# 		}
+	# 	}
+	# }
+
+}
+
+
+# Procession is almost starting
+tarim_basin.0151 = {
+	type = character_event
+	title = tarim_basin.0151.t
+	desc = {
+		desc = tarim_basin.0151.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_title = title:c_khotan
+				}
+				desc = tarim_basin.0151.desc.khotan_ruler
+			}	
+			triggered_desc = {
+				trigger = {
+					NOT = { has_title = title:c_khotan }
+				}
+				desc = tarim_basin.0151.desc.not_khotan_ruler
+			}
+		}
+	}
+	theme = faith
+	override_background = { event_background = RICE_background_tarim_basin_landscape }
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	immediate = {
+		title:c_khotan.holder = {
+			save_scope_as = khotan_ruler
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0151.a
+		trigger_event = tarim_basin.0152
+	}
+
+}
+
+
+# Procession starts
+tarim_basin.0152 = {
+	type = character_event
+	title = tarim_basin.0152.t
+	desc = {
+		desc = tarim_basin.0152.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_title = title:c_khotan
+				}
+				desc = tarim_basin.0152.desc.khotan_ruler
+			}	
+			triggered_desc = {
+				trigger = {
+					NOT = { has_title = title:c_khotan }
+				}
+				desc = tarim_basin.0152.desc.not_khotan_ruler
+			}
+		}
+	}
+	theme = faith
+	override_background = { event_background = RICE_background_tarim_basin_landscape }
+	
+	right_portrait = {
+		character = root
+		animation = throne_room_bow_1
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0152.a
+		# Reflect on one of the Khotanese Buddhist legends
+		random_list = {
+			80 = {
+				# Nothing
+			}
+			# Eight Protector kings
+			10 = {
+				trigger_event = {
+					id = tarim_basin.0154
+					days = { 3 11 }
+				}
+			}
+			# Deer of Saṃjñāya - founding of Gomati
+			10 = {
+				trigger_event = {
+					id = tarim_basin.0155
+					days = { 3 11 }
+				}
+			}
+			# Princess Vimalaprabha Khotan legends
+			10 = {
+				trigger_event = {
+					id = tarim_basin.0156
+					days = { 3 11 }
+				}
+			}
+			# Buddha drains the lake
+			10 = {
+				trigger_event = {
+					id = tarim_basin.0157
+					days = { 3 11 }
+				}
+			}
+			# Ashoka’s son, adopted by Chinese king
+			10 = {
+				trigger_event = {
+					id = tarim_basin.0158
+					days = { 3 11 }
+				}
+			}
+			# Reciting prayers to protect Khotan
+			10 = {
+				trigger_event = {
+					id = tarim_basin.0159
+					days = { 3 11 }
+				}
+			}
+			# Hill of Gautośan, with the monastery of Kāśyapa relics
+			10 = {
+				trigger_event = {
+					id = tarim_basin.0160
+					days = { 3 11 }
+				}
+			}
+			# Miraculous statue of Pimo
+			10 = {
+				trigger_event = {
+					id = tarim_basin.0161
+					days = { 3 11 }
+				}
+			}
+		}
+		trigger_event = {
+			id = tarim_basin.0153
+			days = 14
+		}
+	}
+
+}
+
+
+# Procession ends
+tarim_basin.0153 = {
+	type = character_event
+	title = tarim_basin.0153.t
+	desc = {
+		desc = tarim_basin.0153.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_title = title:c_khotan
+				}
+				desc = tarim_basin.0153.desc.khotan_ruler
+			}	
+			triggered_desc = {
+				trigger = {
+					NOT = { has_title = title:c_khotan }
+				}
+				desc = tarim_basin.0153.desc.not_khotan_ruler
+			}
+		}
+	}
+	theme = faith
+	override_background = { event_background = RICE_background_tarim_basin_landscape }
+	
+	right_portrait = root
+
+	immediate = {
+
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0153.a
+	}
+
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				complete_activity = yes
+			}
+		}
+	}
+}
+
+
+# Eight Protector Kings
+tarim_basin.0154 = {
+	type = character_event
+	title = tarim_basin.0154.t
+	desc = tarim_basin.0154.desc
+	theme = diplomacy_majesty_focus
+	override_background = { event_background = RICE_background_tibet_inner_altar }
+	
+	right_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0154.a
+		add_prestige = 15
+		add_piety = 15
+	}
+}
+
+# Deer of Saṃjñāya - founding of Gomati
+tarim_basin.0155 = {
+	type = character_event
+	title = tarim_basin.0155.t
+	desc = tarim_basin.0155.desc
+	theme = faith
+	override_background = { event_background = RICE_background_tarim_basin_landscape }
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0155.a
+		add_piety = 30
+	}
+}
+
+
+# Princess Vimalaprabha Khotan legends
+tarim_basin.0156 = {
+	type = character_event
+	title = tarim_basin.0156.t
+	desc = tarim_basin.0156.desc
+	theme = diplomacy_majesty_focus
+	override_background = { event_background = RICE_background_tibet_inner_altar }
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0156.a
+		add_piety = 30
+	}
+}
+
+# Buddha drains the lake
+tarim_basin.0157 = {
+	type = character_event
+	title = tarim_basin.0157.t
+	desc = tarim_basin.0157.desc
+	theme = diplomacy_majesty_focus
+	override_background = { event_background = RICE_background_tarim_basin_landscape }
+	
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0157.a
+		add_piety = 15
+		add_prestige = 15
+	}
+}
+
+# Ashoka’s son, adopted by Chinese king
+tarim_basin.0158 = {
+	type = character_event
+	title = tarim_basin.0158.t
+	desc = tarim_basin.0158.desc
+	theme = diplomacy_majesty_focus
+	override_background = { event_background = RICE_background_tarim_basin_landscape }
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0158.a
+		add_prestige = 30
+	}
+}
+
+# Reciting prayers to protect Khotan
+tarim_basin.0159 = {
+	type = character_event
+	title = tarim_basin.0159.t
+	desc = tarim_basin.0159.desc
+	theme = faith
+	override_background = { event_background = RICE_background_tibet_inner_altar }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0159.a
+		add_piety = 30
+	}
+}
+
+# Hill of Gautośan, with the monastery of Kāśyapa relics
+tarim_basin.0160 = {
+	type = character_event
+	title = tarim_basin.0160.t
+	desc = tarim_basin.0160.desc
+	theme = faith
+	override_background = { event_background = RICE_background_tarim_basin_landscape }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0160.a
+		add_piety = 15
+		add_prestige = 15
+	}
+}
+
+# Miraculous statue of Pimo
+tarim_basin.0161 = {
+	type = character_event
+	title = tarim_basin.0161.t
+	desc = tarim_basin.0161.desc
+	theme = faith
+	override_background = { event_background = RICE_background_tarim_basin_landscape }
+	
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0161.a
+		add_piety = 15
+		add_prestige = 15
+	}
+}
+
+
+
+######################################################################################
+# 
+# KARA-KHANID/ISLAMIC UIGHUR EVENTS
+# 
+# tarim_basin.0200-tarim_basin.0249
+# 
+######################################################################################
+
+
+######################################################################################
+# 
+# AL-KASHGARI / TURKIC DICTIONARY
+# 
+# tarim_basin.0200-tarim_basin.0209
+# 
+######################################################################################
+
+# al-Kashgari introduction
+tarim_basin.0200 = {
+	type = character_event
+	title = tarim_basin.0200.t
+	desc = tarim_basin.0200.desc
+	theme = learning
+	
+	right_portrait = {
+		character = root
+		animation = war_defender
+	}
+
+	immediate = {
+		show_as_tooltip = {			
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_is_al_kashgari
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0200.a
+	}
+}
+
+
+
+# Start to Compile the Turkic Dictionary
+tarim_basin.0201 = {
+	type = character_event
+	title = tarim_basin.0201.t
+	desc = tarim_basin.0201.desc
+	theme = learning
+	
+	right_portrait = {
+		character = root
+		animation = personality_callous
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_working_on_turkic_dictionary
+			}
+			stress_impact = {
+				base = minor_stress_impact_gain
+				lazy = minor_stress_impact_gain
+			}
+		}
+	}
+
+	option = { # OK
+		name = tarim_basin.0201.a
+		trigger_event = {
+			id = tarim_basin.0202
+			days = { 365 1095 }
+		}
+	}
+}
+
+
+
+# Finish writing the Turkic Dictionary
+tarim_basin.0202 = {
+	type = character_event
+	title = tarim_basin.0202.t
+	desc = tarim_basin.0202.desc
+	theme = learning
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:turkic_dictionary
+		position = lower_center_portrait
+	}
+	
+	immediate = {
+		save_scope_as = turkic_dictionary_compiler
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		remove_character_modifier = RICE_tarim_basin_working_on_turkic_dictionary
+
+		add_character_modifier = {
+			modifier = RICE_tarim_basin_wrote_first_turkic_dictionary
+			years = 10	
+		}
+
+		hidden_effect_new_artifact = {
+			#set_artifact_rarity_famed = yes
+			create_artifact = {
+				name = RICE_tarim_basin_first_turkic_dictionary_name
+				description = RICE_tarim_basin_first_turkic_dictionary_desc
+				type = miscellaneous
+				visuals = RICE_book_placeholder					
+				quality = 80
+				wealth = 80
+				modifier = artifact_learn_language_scheme_power_add_2_modifier
+				save_scope_as = turkic_dictionary
+			}
+			scope:turkic_dictionary = {
+				add_artifact_modifier = artifact_diplomacy_1_modifier
+				add_artifact_modifier = artifact_diplomacy_1_modifier
+				add_artifact_modifier = artifact_learning_1_modifier
+				add_artifact_modifier = artifact_learning_1_modifier
+			}
+		}
+
+		if = {
+			limit = {
+				is_independent_ruler = no
+			}
+			liege = {
+				save_scope_as = liege
+			}
+		}
+
+		if = {
+			limit = {
+				is_independent_ruler = no
+				liege = {
+					is_independent_ruler = no
+				}
+			}
+			top_liege = {
+				save_scope_as = top_liege
+			}
+		}
+
+		if = {
+			limit = {
+				faith = { exists = religious_head }
+				any_held_title = { is_head_of_faith = no }
+			}
+			faith.religious_head = {
+				save_scope_as = liege
+			}
+		}
+
+	}
+
+	option = { # Ok
+		name = tarim_basin.0202.a
+		prestige = 400
+		show_as_tooltip = {
+			scope:turkic_dictionary = {
+				set_owner = {
+					target = root
+				}
+			}
+		}
+		if = {
+			limit = {
+				is_independent_ruler = no
+			}
+			custom_tooltip = tarim_basin.0202.copy.liege
+			liege = {
+				trigger_event = tarim_basin.0203	
+			}
+		}
+		if = {
+			limit = {
+				is_independent_ruler = no
+				liege = {
+					is_independent_ruler = no
+				}
+			}
+			custom_tooltip = tarim_basin.0202.copy.top_liege
+			top_liege = {
+				trigger_event = tarim_basin.0203	
+			}
+		}
+		if = {
+			limit = {
+				faith = { exists = religious_head }
+				any_held_title = { is_head_of_faith = no }
+			}
+			custom_tooltip = tarim_basin.0202.copy.religious_head
+			faith.religious_head = {
+				trigger_event = tarim_basin.0203	
+			}
+		}
+	}
+}
+
+
+
+# Important people receive copies
+tarim_basin.0203 = {
+	type = character_event
+	title = tarim_basin.0203.t
+	desc = tarim_basin.0203.desc
+	theme = learning
+	
+	left_portrait = {
+		character = scope:turkic_dictionary_compiler
+		animation = personality_content
+	}
+	right_portrait = {
+		character = root
+		animation = admiration
+	}
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:turkic_dictionary
+		position = lower_center_portrait
+	}
+	
+	immediate = {
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		hidden_effect_new_artifact = {
+			#set_artifact_rarity_famed = yes
+			create_artifact = {
+				name = RICE_tarim_basin_first_turkic_dictionary_name
+				description = RICE_tarim_basin_first_turkic_dictionary_desc
+				type = miscellaneous
+				visuals = RICE_book_placeholder					
+				quality = 80
+				wealth = 80
+				modifier = artifact_learn_language_scheme_power_add_2_modifier
+				save_scope_as = turkic_dictionary
+			}
+			scope:turkic_dictionary = {
+				add_artifact_modifier = artifact_diplomacy_1_modifier
+				add_artifact_modifier = artifact_diplomacy_1_modifier
+				add_artifact_modifier = artifact_learning_1_modifier
+				add_artifact_modifier = artifact_learning_1_modifier
+			}
+		}
+	}
+
+	option = { # Ok
+		name = tarim_basin.0203.a
+		show_as_tooltip = {
+			scope:turkic_dictionary = {
+				set_owner = {
+					target = root
+				}
+			}
+		}
+	}
+
+}
+
+
+# Character dies before completing the Turkic dictionary
+tarim_basin.0204 = {
+	type = empty
+	hidden = yes
+	
+	trigger = {
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_tarim_basin_compile_turkic_dictionary_done
+		}
+		has_character_modifier = RICE_tarim_basin_working_on_turkic_dictionary
+	}
+	
+	immediate = {
+		save_scope_as = turkic_dictionary_compiler
+		if = {
+			limit = {
+				exists = primary_heir
+			}
+			primary_heir = {
+				trigger_event = {
+					id = tarim_basin.0205
+					days = 1
+				}
+			}
+		}
+		# If heir doesn't exist for some reason, quietly re-enable it
+		else = {
+			remove_list_global_variable = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_tarim_basin_compile_turkic_dictionary_done
+			}
+		}
+	}
+}
+
+
+
+
+# Finish writing the Turkic Dictionary
+tarim_basin.0205 = {
+	type = character_event
+	title = tarim_basin.0205.t
+	desc = tarim_basin.0205.desc
+	theme = learning
+	
+	left_portrait = {
+		character = scope:turkic_dictionary_compiler
+		animation = personality_content
+	}
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:turkic_dictionary
+		position = lower_center_portrait
+	}
+	
+	immediate = {
+		save_scope_as = turkic_dictionary_compiler
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		remove_character_modifier = RICE_tarim_basin_working_on_turkic_dictionary
+
+		add_character_modifier = {
+			modifier = RICE_tarim_basin_wrote_first_turkic_dictionary
+			years = 10	
+		}
+
+		hidden_effect_new_artifact = {
+			#set_artifact_rarity_famed = yes
+			create_artifact = {
+				name = RICE_tarim_basin_first_turkic_dictionary_name
+				description = RICE_tarim_basin_first_turkic_dictionary_desc
+				type = miscellaneous
+				visuals = RICE_book_placeholder					
+				quality = 40
+				wealth = 40
+				modifier = artifact_learn_language_scheme_power_add_1_modifier
+				save_scope_as = turkic_dictionary
+			}
+			scope:turkic_dictionary = {
+				add_artifact_modifier = artifact_diplomacy_1_modifier
+				add_artifact_modifier = artifact_learning_1_modifier
+			}
+		}
+
+		if = {
+			limit = {
+				is_independent_ruler = no
+			}
+			liege = {
+				save_scope_as = liege
+			}
+		}
+
+		if = {
+			limit = {
+				is_independent_ruler = no
+				liege = {
+					is_independent_ruler = no
+				}
+			}
+			top_liege = {
+				save_scope_as = top_liege
+			}
+		}
+
+		if = {
+			limit = {
+				faith = { exists = religious_head }
+				any_held_title = { is_head_of_faith = no }
+			}
+			faith.religious_head = {
+				save_scope_as = liege
+			}
+		}
+
+	}
+
+	option = { # Ok
+		name = tarim_basin.0205.a
+		prestige = 100
+		show_as_tooltip = {
+			scope:turkic_dictionary = {
+				set_owner = {
+					target = root
+				}
+			}
+		}
+		if = {
+			limit = {
+				is_independent_ruler = no
+			}
+			custom_tooltip = tarim_basin.0202.copy.liege
+			liege = {
+				trigger_event = tarim_basin.0206	
+			}
+		}
+		if = {
+			limit = {
+				is_independent_ruler = no
+				liege = {
+					is_independent_ruler = no
+				}
+			}
+			custom_tooltip = tarim_basin.0202.copy.top_liege
+			top_liege = {
+				trigger_event = tarim_basin.0206	
+			}
+		}
+		if = {
+			limit = {
+				scope:turkic_dictionary_compiler.faith = { exists = religious_head }
+				any_held_title = { is_head_of_faith = no }
+			}
+			custom_tooltip = tarim_basin.0205.copy.religious_head
+			scope:turkic_dictionary_compiler.faith.religious_head = {
+				trigger_event = tarim_basin.0206	
+			}
+		}
+	}
+}
+
+
+
+
+# Important people receive copies (compiler passed away version)
+tarim_basin.0206 = {
+	type = character_event
+	title = tarim_basin.0206.t
+	desc = tarim_basin.0206.desc
+	theme = learning
+	
+	left_portrait = {
+		character = scope:turkic_dictionary_compiler
+		animation = personality_content
+	}
+	right_portrait = {
+		character = root
+		animation = admiration
+	}
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:turkic_dictionary
+		position = lower_center_portrait
+	}
+	
+	immediate = {
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		hidden_effect_new_artifact = {
+			#set_artifact_rarity_famed = yes
+			create_artifact = {
+				name = RICE_tarim_basin_first_turkic_dictionary_name
+				description = RICE_tarim_basin_first_turkic_dictionary_desc
+				type = miscellaneous
+				visuals = RICE_book_placeholder					
+				quality = 40
+				wealth = 40
+				modifier = artifact_learn_language_scheme_power_add_1_modifier
+				save_scope_as = turkic_dictionary
+			}
+			scope:turkic_dictionary = {
+				add_artifact_modifier = artifact_diplomacy_1_modifier
+				add_artifact_modifier = artifact_learning_1_modifier
+			}
+		}
+	}
+
+	option = { # Ok
+		name = tarim_basin.0206.a
+		show_as_tooltip = {
+			scope:turkic_dictionary = {
+				set_owner = {
+					target = root
+				}
+			}
+		}
+	}
+
+}
+
+
+
+# Al-Kashgari dies
+tarim_basin.0207 = {
+	type = empty
+	hidden = yes
+	
+	trigger = {
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_tarim_basin_compile_turkic_dictionary_done
+			}
+		}
+		has_character_modifier = RICE_tarim_basin_is_al_kashgari
+	}
+	
+	immediate = {
+		# Enable it for anyone now that Al-Kashgari has passed away
+		set_global_variable = {
+			name = RICE_anyone_can_write_turkic_dictionary
+			value = yes
+		}
+	}
 }
