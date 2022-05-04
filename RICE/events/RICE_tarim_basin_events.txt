@@ -11,6 +11,7 @@
 #	tarim_basin.0100-tarim_basin.0109			Stage Animal Fights to Predict the Harvest
 # tarim_basin.0150-tarim_basin.0199			Khotanese
 #	tarim_basin.0150-tarim_basin.0169			Spring Procession
+#	tarim_basin.0170-tarim_basin.0179			8 Protectors/Khotan refugees aftermath
 # tarim_basin.0200-tarim_basin.0249			Kara-Khanids/Islamic Uighurs
 #	tarim_basin.0200-tarim_basin.0209			Al-Kashgari/Compile First Turkic Dictionary
 # tarim_basin.0250-tarim_basin.0299			Generic events
@@ -29,63 +30,6 @@ namespace = tarim_basin
 ######################################################################################
 
 
-# Change Khotan's Eight Protectors ruler modifier (for title transition)
-tarim_basin.0001 = {
-	hidden = yes
-	
-	trigger = {
-		scope:title = title:c_khotan
-		NOT = { has_global_variable = RICE_tarim_basin_khotan_eight_protectors_abandoned }
-	}
-	
-	immediate = {
-		if = {
-			limit = {
-				religion = religion:buddhism_religion
-				scope:previous_holder = { 
-					is_alive = yes
-					has_character_modifier = RICE_tarim_basin_khotan_eight_protectors
-					NOT = {
-						has_title = title:c_khotan
-					}
-				}
-			}
-			scope:previous_holder = { remove_character_modifier = RICE_tarim_basin_khotan_eight_protectors }
-		}
-		add_character_modifier = {
-			modifier = RICE_tarim_basin_khotan_eight_protectors
-		}
-	}
-}
-
-# Change Khotan's Eight Protectors ruler modifier (for religious conversion)
-tarim_basin.0002 = {
-	hidden = yes
-	
-	trigger = {
-		has_title = title:c_khotan
-		NOT = { has_global_variable = RICE_tarim_basin_khotan_eight_protectors_abandoned }
-	}
-	
-	immediate = {
-		# Lose it if you convert away from Buddhism
-		if = {
-			limit = {
-				NOT = { religion = religion:buddhism_religion }
-			}
-			remove_character_modifier = RICE_tarim_basin_khotan_eight_protectors
-		}
-		# Gain it if you convert away to Buddhism
-		if = {
-			limit = {
-				religion = religion:buddhism_religion
-			}
-			add_character_modifier = {
-				modifier = RICE_tarim_basin_khotan_eight_protectors
-			}
-		}
-	}
-}
 
 tarim_basin.0010 = {
 	type = character_event
@@ -401,6 +345,89 @@ tarim_basin.0017 = {
 
 	option = {
 		name = tarim_basin.0017.a
+	}
+}
+
+
+# Lose fake China status
+tarim_basin.0018 = {
+	hidden = yes
+	
+	trigger = {
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_tarim_basin_fake_china_proclaimed_flag
+		}
+		root.dynasty = {
+			has_dynasty_modifier = RICE_tarim_basin_fake_china_dynasty
+		}
+		NOT = {
+			root.dynasty = {
+				any_dynasty_member = {
+					is_landed = yes
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_former_tang_western_region	
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		save_scope_as = RICE_tarim_basin_fake_china_person
+		dynasty = {
+			remove_dynasty_modifier = RICE_tarim_basin_fake_china_dynasty
+		}
+		every_ruler = {
+			limit = {
+				is_ai = no
+				OR = {
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_silk_road_region
+						}
+					}
+					dynasty = root.dynasty
+
+				}
+			}
+			trigger_event = tarim_basin.0019
+		}		
+	}
+}
+
+
+# Fake China status is lost
+tarim_basin.0019 = {
+	type = character_event
+	title = tarim_basin.0019.t
+	desc = tarim_basin.0019.desc
+	theme = RICE_theme_tarim_basin_landscape
+
+	right_portrait = {
+		character = scope:RICE_tarim_basin_fake_china_person
+		animation = worry
+	}
+	
+	immediate = {
+
+		play_music_cue = "mx_cue_negative"
+
+		show_as_tooltip = {
+			scope:RICE_tarim_basin_fake_china_person = {
+				dynasty = {
+					remove_dynasty_modifier = RICE_tarim_basin_fake_china_dynasty
+				}				
+			}
+		}
+	}
+
+	option = {
+		name = tarim_basin.0019.a
 	}
 }
 
@@ -1121,10 +1148,10 @@ tarim_basin.0056 = {
 	hidden = yes
 	
 	trigger = {
-		exists = title:k_guiyi.holder
-		has_title = title:k_guiyi
 		NOT = { has_global_variable = RICE_zhang_yichao_passed_away }
 		current_year < 910 # Failsafe in case it keeps triggering for some reason
+		exists = title:k_guiyi.holder
+		has_title = title:k_guiyi
 		OR = {
 			is_target_in_global_variable_list = {
 				name = RICE_dunhuang_tang_hostage
@@ -1821,7 +1848,7 @@ tarim_basin.0100 = {
 
 
 
-# Prepare to stage an animal fight
+# Spring procession starts
 tarim_basin.0150 = {
 	type = character_event
 	title = tarim_basin.0150.t
@@ -1890,6 +1917,9 @@ tarim_basin.0151 = {
 	immediate = {
 		title:c_khotan.holder = {
 			save_scope_as = khotan_ruler
+		}
+		title:c_khotan = { #For loc.
+			save_scope_as = khotan
 		}
 	}
 	
@@ -2724,4 +2754,176 @@ tarim_basin.0207 = {
 			value = yes
 		}
 	}
+}
+
+
+
+
+
+######################################################################################
+# 
+# EIGHT PROTECTORS
+# 
+# tarim_basin.0170-tarim_basin.0179
+# 
+######################################################################################
+
+
+# Change Khotan's Eight Protectors ruler modifier (for title transition)
+tarim_basin.0170 = {
+	hidden = yes
+	
+	trigger = {
+		scope:title = title:c_khotan
+		NOT = { has_global_variable = RICE_tarim_basin_khotan_eight_protectors_abandoned }
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				religion = religion:buddhism_religion
+				scope:previous_holder = { 
+					is_alive = yes
+					has_character_modifier = RICE_tarim_basin_khotan_eight_protectors
+					NOT = {
+						has_title = title:c_khotan
+					}
+				}
+			}
+			scope:previous_holder = { remove_character_modifier = RICE_tarim_basin_khotan_eight_protectors }
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_khotan_eight_protectors
+			}
+		}
+		else_if = {
+			limit = {
+				RICE_tarim_basin_eight_protectors_remain_trigger = no
+				NOT = {
+					any_liege_or_above = {
+						RICE_tarim_basin_eight_protectors_remain_trigger = yes
+					}
+				}
+			}
+			save_scope_as = khotan_new_ruler
+			RICE_tarim_basin_eight_protectors_abandoned_effect = yes
+			every_player = {
+				limit = {
+					is_ai = no
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_land_silk_road_region
+						}
+					}	
+				}
+				trigger_event = {
+					id = tarim_basin.0172
+					days = 1
+				}
+			}
+		}
+	}
+}
+
+# Change Khotan's Eight Protectors ruler modifier (for religious conversion)
+tarim_basin.0171 = {
+	hidden = yes
+	
+	trigger = {
+		has_title = title:c_khotan
+		NOT = { has_global_variable = RICE_tarim_basin_khotan_eight_protectors_abandoned }
+	}
+	
+	immediate = {
+		# Lose it if you convert away from Buddhism
+		if = {
+			limit = {
+				NOT = { religion = religion:buddhism_religion }
+			}
+			remove_character_modifier = RICE_tarim_basin_khotan_eight_protectors
+			if = {
+				limit = {
+					RICE_tarim_basin_eight_protectors_remain_trigger = no
+					NOT = {
+						any_liege_or_above = {
+							RICE_tarim_basin_eight_protectors_remain_trigger = yes
+						}
+					}
+				}
+				save_scope_as = khotan_new_ruler
+				RICE_tarim_basin_eight_protectors_abandoned_effect = yes
+				every_player = {
+					limit = {
+						is_ai = no
+						any_held_title = {
+							tier = tier_county
+							any_county_province = {
+								geographical_region = RICE_land_silk_road_region
+							}
+						}	
+					}
+					trigger_event = {
+						id = tarim_basin.0172
+						days = 1
+					}
+				}
+			}
+		}
+		# Gain it if you convert away to Buddhism
+		if = {
+			limit = {
+				religion = religion:buddhism_religion
+			}
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_khotan_eight_protectors
+			}
+		}
+	}
+}
+
+
+
+# Khotan is ruled by someone unfriendly to Buddhists, and the monks flee
+tarim_basin.0172 = {
+	type = character_event
+	title = tarim_basin.0172.t
+	desc = tarim_basin.0172.desc
+	theme = faith
+	#override_background = { event_background = burning_building }
+
+	right_portrait = {
+		character = scope:khotan_new_ruler
+		animation = personality_callous
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_sacredrite"
+		title:c_khotan = { #For loc.
+			save_scope_as = khotan
+		}
+		show_as_tooltip = {
+			scope:khotan_new_ruler = {
+				RICE_tarim_basin_eight_protectors_abandoned_effect = yes
+			}
+		}
+	}
+
+	# Ok
+	option = {
+		name = tarim_basin.0172.a
+		trigger = {
+			NOT = { religion = religion:buddhism_religion }
+		}
+		custom_tooltip = tarim_basin.0172.tooltip.1
+		custom_tooltip = tarim_basin.0172.tooltip.2
+	}
+	option = {
+		name = tarim_basin.0172.b
+		trigger = {
+			religion = religion:buddhism_religion
+		}
+		custom_tooltip = tarim_basin.0172.tooltip.1
+		custom_tooltip = tarim_basin.0172.tooltip.2
+	}
+
 }
