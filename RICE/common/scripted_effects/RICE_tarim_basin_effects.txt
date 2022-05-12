@@ -277,12 +277,23 @@
 			}
 		}
 
+		character:RICE_song_002 = {
+			save_scope_as = zhang_yichao_waifu
+		}
+		character:304188 = {
+			set_mother = scope:zhang_yichao_waifu
+		}
+		character:304190 = {
+			set_mother = scope:zhang_yichao_waifu
+		}
+
 		character:RICE_suo_002 = {
 			save_scope_as = zhang_huaishen_mommy
 		}
 
 		# Give Cao Yijin some more land
 		character:1059714 = {
+			set_character_faith_with_conversion = faith:mahayana
 			get_title = title:d_kara_khoja
 			get_title = title:c_chamil
 			dynasty = {
@@ -290,6 +301,7 @@
 					modifier = RICE_tarim_basin_cao_clan
 				}
 			}
+			save_scope_as = cao_yijin
 		}
 
 		character:RICE_zhai_003 = {
@@ -344,6 +356,12 @@
 					modifier = RICE_tarim_basin_li_clan
 				}
 			}
+			RICE_remove_personality_traits_effect = yes
+			RICE_remove_education_traits_effect = yes
+			add_trait = education_diplomacy_3
+			add_trait = brave
+			add_trait = zealous
+			add_trait = diligent
 		}
 
 		# Suo Hanjun - give him suzhou and yumen
@@ -391,11 +409,23 @@
 			}
 			add_courtier = yin_guy_1
 			add_courtier = yin_guy_2
+			change_government = feudal_government
+		}
+
+		character:304190 = {
+			save_scope_as = suo_xun_waifu
+		}
+		character:RICE_suo_008 = {
+			save_scope_as = suo_xun_son
+		}
+		character:RICE_suo_007 = {
+			save_scope_as = suo_xun_daughter
+			create_betrothal = scope:cao_yijin
 		}
 
 
-		# Suo Zhongxin - give him all of the stuff in Liangzhou
-		character:RICE_suo_004 = { 
+		# Suo Xun - give him all of the stuff in Liangzhou
+		character:304191 = { 
 			get_title = title:c_liangzhou
 			get_title = title:d_liangzhou
 			get_title = title:c_dajing
@@ -405,34 +435,36 @@
 			add_gold = 50
 			add_piety = 50
 			add_prestige = 50
-			save_scope_as = suo_xun_fake_daddy
+			save_scope_as = suo_xun
+			RICE_remove_personality_traits_effect = yes
+			RICE_remove_education_traits_effect = yes
+			add_trait = education_intrigue_3
+			add_trait = ambitious
+			add_trait = deceitful
+			add_trait = patient
+			add_courtier = scope:suo_xun_waifu
+			add_courtier = scope:suo_xun_son
+			add_courtier = scope:suo_xun_daughter
 		}
 
 		# Yan Yingda - give him Dajing
 		character:RICE_dunhuang_misc_005 = {
-			get_title = title:c_dajing
+			get_title = title:c_subei
 			add_gold = 50
 			add_piety = 50
 			add_prestige = 50
 		}
 
-		character:RICE_zhang_002 = {
-			save_scope_as = suo_xun_fake_mommy
-		}
+		# character:RICE_zhang_002 = {
+		# 	save_scope_as = suo_xun_fake_mommy
+		# }
 
-		# Suo Xun - set Suo Zhongxin as his father and give him Fanhe
-		character:304191 = {
+		# Suo Zhongxin - give him Fanhe
+		character:RICE_suo_005 = {
 			get_title = title:c_fanhe
 			add_gold = 50
 			add_piety = 50
 			add_prestige = 50
-			set_father = scope:suo_xun_fake_daddy
-			set_mother = scope:suo_xun_fake_mommy
-			#save_scope_as = suo_xun
-			RICE_remove_personality_traits_effect = yes
-			add_trait = ambitious
-			add_trait = deceitful
-			add_trait = arbitrary
 		}
 
 		# An Jingmin - Sogdian vice commissioner of Guiyi army
@@ -461,7 +493,7 @@
 		# Kang Shijun - Sogdian magistrate Prefect of Guazhou at one point
 		character:RICE_kang_003 = { 
 			#set_culture = culture:han
-			get_title = title:c_subei
+			get_title = title:c_dajing
 			add_gold = 50
 			add_piety = 50
 			add_prestige = 50
@@ -491,7 +523,7 @@
 		}
 
 		# Song Runying - Official who led the Guiyi envoy group to the Tang Dynasty alongside Zhang Wenche in 887 CE
-		character:RICE_dunhuang_misc_007 = { 
+		character:RICE_song_001 = { 
 			#set_culture = culture:han
 			get_title = title:c_linze
 			get_title = title:c_heihe
@@ -594,7 +626,11 @@
 
 		character:244004 = {
 			set_mother = scope:zhang_huaishen_mommy
-			RICE_make_chinese_buddhist_effect = yes
+			RICE_make_chinese_buddhist_effect = yes			
+			RICE_remove_personality_traits_effect = yes
+			add_trait = brave
+			add_trait = patient
+			add_trait = diligent
 		}
 
 		title:c_khotan.holder = {
@@ -1258,6 +1294,226 @@ RICE_tarim_basin_dunhuang_zhang_yichao_death_effect = {
 			}
 			add_pressed_claim = title:k_guiyi
 		}
+	}
+}
+
+
+
+RICE_tarim_basin_save_entertainer_location_effect = {
+	# In case it is already here, so it should be reset
+	if = {
+		limit = {
+			has_variable = RICE_entertainer_home_region
+		}
+		remove_variable = RICE_entertainer_home_region
+	}
+	# Kuchean takes precedence over all
+	if = {
+		limit = {
+			has_character_modifier = RICE_tarim_basin_kuchean_entertainers
+		}
+		title:c_kucha = {
+			save_scope_as = kucha_county
+		}
+		# set_variable = {
+		# 	name = RICE_entertainer_home_region
+		# 	value = flag:RICE_entertainer_kuchean
+		# 	years = 10 # Approx when the variable should expire
+		# }		
+	}
+	# # East Asian
+	# else_if = {
+	# 	limit = {
+	# 		scope:actor = {
+	# 			capital_province = {
+	# 				geographical_region = RICE_dunhuang_region
+	# 			}
+	# 		}
+	# 	}
+	# 	set_variable = {
+	# 		name = RICE_entertainer_home_region
+	# 		value = flag:RICE_entertainer_east_asian
+	# 		years = 10 # Approx when the variable should expire
+	# 	}
+	# }
+	# # Steppe
+	# else_if = {
+	# 	limit = {
+	# 		scope:actor = {
+	# 			capital_province = {
+	# 				OR = {
+	# 					geographical_region = world_steppe
+	# 				}
+	# 			}
+	# 		}
+	# 	}
+	# 	set_variable = {
+	# 		name = RICE_entertainer_home_region
+	# 		value = flag:RICE_entertainer_steppe
+	# 		years = 10 # Approx when the variable should expire
+	# 	}
+	# }
+	# # Middle Eastern
+	# else_if = {
+	# 	limit = {
+	# 		scope:actor = {
+	# 			capital_province = {
+	# 				OR = {
+	# 					geographical_region = world_asia_minor
+	# 					geographical_region = world_middle_east_persia
+	# 					geographical_region = world_middle_east
+	# 				}
+	# 			}
+	# 		}
+	# 	}
+	# 	set_variable = {
+	# 		name = RICE_entertainer_home_region
+	# 		value = flag:RICE_entertainer_middle_eastern
+	# 		years = 10 # Approx when the variable should expire
+	# 	}
+	# }
+	# # Himalayan
+	# else_if = {
+	# 	limit = {
+	# 		scope:actor = {
+	# 			capital_province = {
+	# 				OR = {
+	# 					geographical_region = world_tibet
+	# 				}
+	# 			}
+	# 		}
+	# 	}
+	# 	set_variable = {
+	# 		name = RICE_entertainer_home_region
+	# 		value = flag:RICE_entertainer_himalayan
+	# 		years = 10 # Approx when the variable should expire
+	# 	}
+	# }
+	# # Indian
+	# else_if = {
+	# 	limit = {
+	# 		scope:actor = {
+	# 			capital_province = {
+	# 				OR = {
+	# 					geographical_region = world_india
+	# 					geographical_region = world_burma
+	# 				}
+	# 			}
+	# 		}
+	# 	}
+	# 	set_variable = {
+	# 		name = RICE_entertainer_home_region
+	# 		value = flag:RICE_entertainer_indian
+	# 		years = 10 # Approx when the variable should expire
+	# 	}
+	# }
+	# # If in none of these regions for some reason
+	# else = {
+	# 	set_variable = {
+	# 		name = RICE_entertainer_home_region
+	# 		value = flag:RICE_entertainer_generic
+	# 		years = 10 # Approx when the variable should expire
+	# 	}
+	# }
+	# Singing girl catches your eye
+	trigger_event = tarim_basin.0042
+	# random = {
+	# 	chance = 99
+	# 	trigger_event = {
+	# 		id = tarim_basin.0040
+	# 		days = { 365 3600 }
+	# 	}
+	# }
+	# # Courtier falls in love with one of the singing girls
+	# random = {
+	# 	chance = 99
+	# 	trigger_event = {
+	# 		id = tarim_basin.0041
+	# 		days = { 365 3600 }
+	# 	}
+	# }
+}
+
+
+RICE_tarim_basin_marry_entertainer_crush_effect = {
+	# The girl joins the guy's court if he is not landed
+	if = {
+		limit = {
+			scope:lover = {
+				is_landed = yes
+			}
+		}
+		scope:lover = {
+			add_courtier = scope:crush
+			marry = scope:crush
+		}
+		if = {
+			limit = {
+				var:RICE_entertainer_romance_type = flag:mutual
+			}
+			scope:lover = {
+				set_relation_lover = scope:crush
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_entertainer_romance_type = flag:one_sided
+			}
+			scope:crush = {
+				add_opinion = {
+					target = scope:lover
+					modifier = RICE_tarim_basin_unwilling_marriage
+				}
+				add_opinion = {
+					target = scope:recipient
+					modifier = RICE_tarim_basin_forced_to_be_consort
+				}
+			}
+		}
+	}
+	# The girl joins your court if the guy is not landed
+	else = {			
+		add_courtier = scope:crush
+		scope:lover = {
+			add_courtier = scope:crush
+			marry = scope:crush
+		}
+		if = {
+			limit = {
+				var:RICE_entertainer_romance_type = flag:mutual
+			}
+			scope:lover = {
+				set_relation_lover = scope:crush
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_entertainer_romance_type = flag:one_sided
+			}
+			scope:crush = {
+				add_opinion = {
+					target = scope:lover
+					modifier = RICE_tarim_basin_unwilling_marriage
+				}
+				add_opinion = {
+					target = scope:recipient
+					modifier = RICE_tarim_basin_forced_to_be_consort
+				}
+			}
+		}
+
+		# if = {
+		# 	limit = {
+		# 		can_add_hook = {
+		# 			target = scope:crush
+		# 			type = loyalty_hook
+		# 		}
+		# 	}
+		# 	add_hook = {
+		# 		target = scope:crush
+		# 		type = loyalty_hook
+		# 	}
+		# }
 	}
 }
 

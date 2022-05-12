@@ -3,7 +3,8 @@
 # TARIM BASIN
 # 
 # tarim_basin.0000-tarim_basin.0019			Setup events, history events, miscellaneous decisions
-# tarim_basin.0020-tarim_basin.0049			Silk Road Communities
+# tarim_basin.0020-tarim_basin.0039			Silk Road Communities
+# tarim_basin.0040-tarim_basin.0049			Silk Road Entertainers flavor events
 # tarim_basin.0050-tarim_basin.0099			Dunhuang
 #	tarim_basin.0050-tarim_basin.0069			Dunhuang history
 #	tarim_basin.0070-tarim_basin.0099			Mogao Caves
@@ -168,6 +169,11 @@ tarim_basin.0013 = {
 	option = {
 		name = tarim_basin.0013.a
 	}
+
+	after = {
+		RICE_tarim_basin_save_entertainer_location_effect = yes
+	}
+
 }
 
 
@@ -262,6 +268,11 @@ tarim_basin.0015 = {
 	option = {
 		name = tarim_basin.0015.a
 	}
+
+	after = {
+		RICE_tarim_basin_save_entertainer_location_effect = yes
+	}
+
 }
 
 
@@ -391,7 +402,6 @@ tarim_basin.0018 = {
 						}
 					}
 					dynasty = root.dynasty
-
 				}
 			}
 			trigger_event = tarim_basin.0019
@@ -436,7 +446,7 @@ tarim_basin.0019 = {
 # 
 # SILK ROAD COMMUNITY EVENTS
 # 
-# tarim_basin.0020-tarim_basin.0049
+# tarim_basin.0020-tarim_basin.0039
 # 
 ######################################################################################
 
@@ -2356,7 +2366,1001 @@ tarim_basin.0033 = {
 	}
 }
 
+######################################################################################
+# 
+# SILK ROAD ENTERTAINER MISCELLANEOUS EVENTS
+# 
+# tarim_basin.0040-tarim_basin.0049
+# 
+######################################################################################
 
+
+# Singer seems to catch everyone's attention (King version)
+tarim_basin.0040 = {
+	type = court_event
+	title = tarim_basin.0040.t
+	desc = tarim_basin.0040.desc
+
+	theme = court
+	court_scene = {
+		button_position_character = scope:entertainer
+		roles = {
+			scope:praiser = {
+				group = event_group
+				animation = flirtation
+			}
+			scope:recipient = {
+				group = event_group
+				animation = personality_rational
+			}
+			scope:entertainer = {
+				group = event_group
+				animation = throne_room_kneel_1
+			}
+		}
+	}
+
+	trigger = {
+		has_royal_court = yes
+		any_courtier_or_guest = {
+			is_available_ai_adult = yes
+		}
+	}
+
+	immediate = {
+		random_courtier_or_guest = {
+			limit = {
+				is_available_ai_adult = yes
+			}
+			save_scope_as = praiser
+		}
+
+		if = {
+			limit = {
+				has_character_modifier = RICE_tarim_basin_kuchean_entertainers
+			}
+			create_character = {
+				location = root.location
+				template = RICE_silk_road_basic_entertainer_template
+				save_scope_as = entertainer
+				culture = scope:kucha_county.culture
+				faith = scope:kucha_county.faith
+			}
+		}
+		else = {
+			create_character = {
+				location = root.capital_province
+				template = RICE_silk_road_basic_entertainer_template
+				save_scope_as = entertainer
+				random_culture = {
+					culture:han = { weight = { base 10 } }
+					culture:persian = { weight = { base 10 } }
+					culture:bedouin = { weight = { base 10 } }
+					culture:greek = { weight = { base 10 } }
+					culture:punjabi = { weight = { base 10 } }
+					culture:hindustani = { weight = { base 10 } }
+					culture:bodpa = { weight = { base 10 } }
+					culture:armenian = { weight = { base 10 } }
+					culture:georgian = { weight = { base 10 } }
+					culture:sogdian = {
+						trigger = {
+							game_start_date < 1000.1.1
+						}
+						weight = { base 50 }
+					}
+					culture:tocharian = {
+						trigger = {
+							game_start_date < 1000.1.1
+						}
+						weight = { base 50 }
+					}
+					culture:saka = {
+						trigger = {
+							game_start_date < 1000.1.1
+						}
+						weight = { base 20 }
+					}
+					culture:uyghur = {
+						trigger = {
+							OR = {
+								AND = {
+									has_global_variable = RICE_game_started_on_TFE_start_date
+									has_global_variable = tiele_culture_split
+								}
+								NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+							}
+						}
+						weight = { base 20 }
+					}
+					culture:turkish = {
+						trigger = {
+							OR = {
+								AND = {
+									has_global_variable = RICE_game_started_on_TFE_start_date
+									has_global_variable = tiele_culture_split
+								}
+								NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+							}
+						}
+						weight = { base 10 }
+					}
+					culture:tiele = {
+						trigger = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+							NOT = { has_global_variable = tiele_culture_split }
+						}
+						weight = { base 10 }
+					}
+					culture:hephthalite = {
+						trigger = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+						}
+						weight = { base 10 }
+					}
+					culture:xionite = {
+						trigger = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+						}
+						weight = { base 10 }
+					}
+					culture:bactrian = {
+						trigger = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+						}
+						weight = { base 10 }
+					}
+					culture:pactyan = {
+						trigger = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+						}
+						weight = { base 10 }
+					}
+					culture:afghan = {
+						trigger = {
+							NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+						}
+						weight = { base 10 }
+					}
+					culture:himyarite = {
+						trigger = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+						}
+						weight = { base 10 }
+					}
+					culture:levantine = {
+						trigger = {
+							NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+						}
+						weight = { base 10 }
+					}
+					culture:rouran = {
+						trigger = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+						}
+						weight = { base 10 }
+					}
+					culture:mongol = {
+						trigger = {
+							NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+						}
+						weight = { base 10 }
+					}
+					culture:ostrogothic = {
+						trigger = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+						}
+						weight = { base 10 }
+					}
+					culture:lithuanian = {
+						trigger = {
+							NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+						}
+						weight = { base 10 }
+					}
+					culture:norse = {
+						trigger = {
+							NOT = { has_global_variable = norse_culture_split }
+						}
+						weight = { base 10 }
+					}
+					culture:swedish = {
+						trigger = {
+							has_global_variable = norse_culture_split
+						}
+						weight = { base 10 }
+					}
+					culture:antean = {
+						trigger = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+							NOT = { has_global_variable = antean_culture_split }
+						}
+						weight = { base 10 }
+					}
+					culture:volhynian = {
+						trigger = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+							has_global_variable = antean_culture_split
+						}
+						weight = { base 10 }
+					}
+					culture:russian = {
+						trigger = {
+							#OR = {
+							#	AND = {
+							#		has_global_variable = RICE_game_started_on_TFE_start_date
+							#		has_global_variable = venedian_culture_split
+							#	}
+								NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+							#}
+						}
+						weight = { base 10 }
+					}
+				}
+				faith = root.faith
+			}
+		}
+
+	}
+
+	option = { # Ok
+		name = tarim_basin.0040.a
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		add_courtier = scope:entertainer
+		if = {
+			limit = {
+				can_add_hook = {
+					target = scope:entertainer
+					type = loyalty_hook
+				}
+			}
+			add_hook = {
+				target = scope:entertainer
+				type = loyalty_hook
+			}
+		}
+		scope:praiser = {
+			add_opinion = {
+				target = root
+				modifier = RICE_tarim_basin_similar_opinions_entertainers
+			}		
+		}
+		scope:entertainer = {
+			add_opinion = {
+				target = root
+				modifier = RICE_tarim_basin_honored_entertainer
+			}
+			set_relation_friend = scope:praiser		
+		}	
+	}
+
+	option = { # No need
+		name = tarim_basin.0040.b
+		hidden_effect = {
+			scope:entertainer = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}	
+	}
+}
+
+
+
+
+# Courtier has a crush on a beautiful entertainer (King version)
+tarim_basin.0042 = {
+	type = court_event
+	title = tarim_basin.0042.t
+	desc = {
+		desc = tarim_basin.0042.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_entertainer_romance_type = flag:mutual
+				}
+				desc = tarim_basin.0042.desc.mutual
+			}		
+			triggered_desc = {
+				trigger = {
+					var:RICE_entertainer_romance_type = flag:one_sided
+				}
+				desc = tarim_basin.0042.desc.one_sided
+			}		
+			triggered_desc = {
+				trigger = {
+					var:RICE_entertainer_romance_type = flag:neutral
+				}
+				desc = tarim_basin.0042.desc.neutral
+			}		
+		}
+	}
+
+	theme = court
+	court_scene = {
+		button_position_character = scope:entertainer
+		roles = {
+			scope:lover = {
+				group = petitioners_group
+				animation = beg
+			}
+			# scope:recipient = {
+			# 	group = event_group
+			# 	animation = personality_rational
+			# }
+			scope:crush = {
+				group = petitioners_group
+				animation = throne_room_kneel_1
+			}
+		}
+	}
+
+	trigger = {
+		has_royal_court = yes
+		any_courtier = {
+			is_available_ai_adult = yes
+			is_female = no
+			NOT = { dynasty = root.dynasty }
+			is_married = no
+			NOR = {
+				has_sexuality = asexual
+				has_sexuality = homosexual
+				has_trait = celibate
+				has_trait = eunuch
+				has_trait = devoted
+			}
+		}
+	}
+
+	immediate = {
+
+		random_courtier_or_guest = {
+			limit = {
+				is_available_ai_adult = yes
+				is_female = no
+				NOT = { dynasty = root.dynasty }
+				is_married = no
+				NOR = {
+					has_sexuality = asexual
+					has_sexuality = homosexual
+					has_trait = celibate
+					has_trait = eunuch
+					has_trait = devoted
+				}
+			}
+			save_scope_as = lover
+		}
+
+		if = {
+			limit = {
+				has_character_modifier = RICE_tarim_basin_kuchean_entertainers
+			}
+			create_character = {
+				location = root.location
+				template = RICE_silk_road_female_entertainer_template
+				save_scope_as = crush
+				culture = scope:kucha_county.culture
+				faith = scope:kucha_county.faith
+			}
+		}
+		else = {
+			create_character = {
+				location = root.capital_province
+				template = RICE_silk_road_female_entertainer_template
+				save_scope_as = crush
+				random_culture = {
+					culture:han = { weight = { base 10 } }
+					culture:persian = { weight = { base 10 } }
+					culture:bedouin = { weight = { base 10 } }
+					culture:greek = { weight = { base 10 } }
+					culture:punjabi = { weight = { base 10 } }
+					culture:hindustani = { weight = { base 10 } }
+					culture:bodpa = { weight = { base 10 } }
+					culture:armenian = { weight = { base 10 } }
+					culture:georgian = { weight = { base 10 } }
+					culture:sogdian = {
+						trigger = {
+							game_start_date < 1000.1.1
+						}
+						weight = { base 50 }
+					}
+					culture:tocharian = {
+						trigger = {
+							game_start_date < 1000.1.1
+						}
+						weight = { base 50 }
+					}
+					culture:saka = {
+						trigger = {
+							game_start_date < 1000.1.1
+						}
+						weight = { base 20 }
+					}
+					culture:uyghur = {
+						trigger = {
+							OR = {
+								AND = {
+									has_global_variable = RICE_game_started_on_TFE_start_date
+									has_global_variable = tiele_culture_split
+								}
+								NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+							}
+						}
+						weight = { base 20 }
+					}
+					culture:turkish = {
+						trigger = {
+							OR = {
+								AND = {
+									has_global_variable = RICE_game_started_on_TFE_start_date
+									has_global_variable = tiele_culture_split
+								}
+								NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+							}
+						}
+						weight = { base 10 }
+					}
+					culture:tiele = {
+						trigger = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+							NOT = { has_global_variable = tiele_culture_split }
+						}
+						weight = { base 10 }
+					}
+					culture:hephthalite = {
+						trigger = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+						}
+						weight = { base 10 }
+					}
+					culture:xionite = {
+						trigger = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+						}
+						weight = { base 10 }
+					}					
+					culture:bactrian = {
+						trigger = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+						}
+						weight = { base 10 }
+					}
+					culture:pactyan = {
+						trigger = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+						}
+						weight = { base 10 }
+					}
+					culture:afghan = {
+						trigger = {
+							NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+						}
+						weight = { base 10 }
+					}
+					culture:himyarite = {
+						trigger = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+						}
+						weight = { base 10 }
+					}
+					culture:levantine = {
+						trigger = {
+							NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+						}
+						weight = { base 10 }
+					}
+					culture:rouran = {
+						trigger = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+						}
+						weight = { base 10 }
+					}
+					culture:mongol = {
+						trigger = {
+							NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+						}
+						weight = { base 10 }
+					}
+					culture:ostrogothic = {
+						trigger = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+						}
+						weight = { base 10 }
+					}
+					culture:lithuanian = {
+						trigger = {
+							NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+						}
+						weight = { base 10 }
+					}
+					culture:norse = {
+						trigger = {
+							NOT = { has_global_variable = norse_culture_split }
+						}
+						weight = { base 10 }
+					}
+					culture:swedish = {
+						trigger = {
+							has_global_variable = norse_culture_split
+						}
+						weight = { base 10 }
+					}
+					culture:antean = {
+						trigger = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+							NOT = { has_global_variable = antean_culture_split }
+						}
+						weight = { base 10 }
+					}
+					culture:volhynian = {
+						trigger = {
+							has_global_variable = RICE_game_started_on_TFE_start_date
+							has_global_variable = antean_culture_split
+						}
+						weight = { base 10 }
+					}
+					culture:russian = {
+						trigger = {
+							#OR = {
+							#	AND = {
+							#		has_global_variable = RICE_game_started_on_TFE_start_date
+							#		has_global_variable = venedian_culture_split
+							#	}
+								NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+							#}
+						}
+						weight = { base 10 }
+					}
+				}
+				faith = root.faith
+			}
+		}
+
+		# Determine the girl's opinion of him
+		random_list = {
+			# The girl doesn't seem to have an opinion either way
+			50 = {
+				set_variable = {
+					name = RICE_entertainer_romance_type
+					value = flag:neutral					
+				}
+			}
+			# The girl seems to like the guy... or at least the comforts he could give her
+			50 = {
+				# She needs to be interested in him
+				trigger = {
+					scope:crush = { is_attracted_to_gender_of = scope:lover }
+				}
+				# Opinion
+				opinion_modifier = {
+					who = scope:crush
+					opinion_target = scope:lover
+					multiplier = 1.5
+				}
+				# Trait compatibility
+				compatibility_modifier = {
+					who = scope:crush
+					compatibility_target = scope:lover
+					multiplier = 1.1
+				}
+				# He's good looking
+				modifier = {
+					add = 5
+					scope:lover = {
+						has_trait = beauty_good_1
+					}
+				}
+				modifier = {
+					add = 10
+					scope:lover = {
+						has_trait = beauty_good_2
+					}
+				}
+				modifier = {
+					add = 15
+					scope:lover = {
+						has_trait = beauty_good_3
+					}
+				}
+				# The girl is a gold digger or power hungry
+				modifier = {
+					add = 15
+					scope:crush = {
+						OR = {
+							ai_greed >= medium_positive_ai_value
+							has_trait = greedy
+							has_trait = ambitious
+						}
+					}
+					scope:lover = {
+						is_landed = yes
+					}
+				}
+				# The guy has a reputation for being nice
+				modifier = {
+					add = 10
+					scope:lover = {
+						has_trait_benevolent_trigger = yes
+					}
+				}
+				# The guy is good at charming women
+				modifier = {
+					add = 10
+					scope:lover = {
+						OR = {
+							has_trait = gallant
+							has_trait = seducer
+							has_trait = gregarious
+						}
+					}
+				}
+				set_variable = {
+					name = RICE_entertainer_romance_type
+					value = flag:mutual					
+				}
+			}
+			# The girl does not like the guy for various reasons
+			50 = {
+				opinion_modifier = {
+					who = scope:crush
+					compatibility_target = scope:lover
+					multiplier = -0.7
+				}
+				# Trait compatibility
+				compatibility_modifier = {
+					who = scope:crush
+					compatibility_target = scope:lover
+					multiplier = -0.5
+				}
+				# He's ugly
+				modifier = {
+					add = 5
+					scope:lover = {
+						has_trait = beauty_bad_1
+					}
+				}
+				modifier = {
+					add = 10
+					scope:lover = {
+						has_trait = beauty_bad_2
+					}
+				}
+				modifier = {
+					add = 15
+					scope:lover = {
+						has_trait = beauty_bad_3
+					}
+				}
+				# The girl looks down on the guy
+				modifier = {
+					add = 5
+					scope:crush = {
+						has_trait = arrogant
+					}
+				}
+				# The girl is worried
+				modifier = {
+					add = 5
+					scope:crush = {
+						has_trait = paranoid
+					}
+				}
+				# The guy has a reputation for being an asshole
+				modifier = {
+					add = 25
+					scope:lover = {
+						OR = {
+							has_trait = sadistic
+							has_trait = wrathful
+							has_trait = arrogant
+							has_trait = callous
+							has_trait = vengeful
+						}
+					}
+				}
+				set_variable = {
+					name = RICE_entertainer_romance_type
+					value = flag:one_sided					
+				}
+			}
+		}
+
+
+	}
+
+	option = { # Allow them to marry
+		name = tarim_basin.0042.a
+		RICE_tarim_basin_marry_entertainer_crush_effect = yes
+		scope:lover = {
+			add_opinion = {
+				target = scope:recipient
+				modifier = RICE_tarim_basin_allowed_me_marry
+			}
+			random = {
+				chance = 70
+				progress_towards_friend_effect = {
+					CHARACTER = scope:recipient
+					OPINION = no
+				}
+			}
+		}
+		if = {
+			limit = {
+				var:RICE_entertainer_romance_type = flag:mutual
+			}
+			scope:crush = {
+				add_opinion = {
+					target = scope:recipient
+					modifier = RICE_tarim_basin_allowed_me_marry
+				}
+				random = {
+					chance = 20
+					progress_towards_friend_effect = {
+						CHARACTER = scope:recipient
+						OPINION = no
+					}
+				}	
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_trait = compassionate
+					has_trait = generous
+				}
+			}
+			stress_impact = {
+				compassionate = minor_stress_impact_loss
+				generous = miniscule_stress_impact_loss
+			}
+		}
+		else = {
+			stress_impact = {
+				lustful = minor_stress_impact_gain
+				sadistic = minor_stress_impact_gain
+				callous = minor_stress_impact_gain
+			}
+		}
+	}
+
+	option = { # Allow them to marry... but get a hook on the guy
+		name = tarim_basin.0042.b
+		add_hook = {
+			target = scope:lover
+			type = favor_hook
+		}
+		RICE_tarim_basin_marry_entertainer_crush_effect = yes	
+	}
+
+	option = { # I'll take her for myself!
+		name = tarim_basin.0042.c
+		trigger = {
+			scope:crush = {
+				OR = {
+					can_become_concubine_of_character_trigger = { CHARACTER = scope:recipient }
+					can_marry_character_trigger = { CHARACTER = scope:recipient }
+				}
+			}
+		}
+		if = {
+			limit = {
+				scope:crush = {
+					can_become_concubine_of_character_trigger = { CHARACTER = scope:recipient }
+				}
+				OR = {
+					culture = { has_cultural_tradition = tradition_concubines }
+					faith = { has_doctrine = doctrine_concubines }
+				}
+			}
+			scope:recipient = {
+				make_concubine = scope:crush
+			}
+		}
+		else = {
+			marry = scope:crush
+		}
+		if = {
+			limit = {
+				NOT = { var:RICE_entertainer_romance_type = flag:one_sided }
+				OR = {
+					has_trait = compassionate
+					has_trait = just
+					has_trait = chaste
+					has_trait = generous
+				}
+			}
+			stress_impact = {
+				compassionate = medium_stress_impact_gain
+				chaste = medium_stress_impact_gain
+				generous = minor_stress_impact_gain
+				just = minor_stress_impact_gain
+			}
+		}
+		else = {
+			stress_impact = {
+				lustful = medium_stress_impact_loss
+				sadistic = medium_stress_impact_loss
+				callous = minor_stress_impact_loss
+				arbitrary = minor_stress_impact_loss
+			}
+		}
+		# The girl is interested in him and doesn't like that you took her for yourself
+		if = {
+			limit = {
+				var:RICE_entertainer_romance_type = flag:mutual
+			}
+			scope:crush = {
+				add_opinion = {
+					target = scope:recipient
+					modifier = RICE_tarim_basin_took_me_as_a_plaything_likes_guy
+				}
+				random = {
+					chance = 40
+					progress_towards_rival_effect = {
+						CHARACTER = scope:recipient
+						OPINION = no
+					}
+				}
+			}
+		}
+		# The girl is relieved if she doesn't like him and she has a decent opinion of you
+		else_if = {
+			limit = {
+				var:RICE_entertainer_romance_type = flag:one_sided
+				scope:crush = {
+					opinion = {
+						target = scope:recipient
+						value > 25
+					}
+				}
+			}
+			scope:crush = {
+				add_opinion = {
+					target = scope:recipient
+					modifier = RICE_tarim_basin_protected_me_from_creep
+				}
+			}
+		}
+		# The girl doesn't want to be your plaything
+		else_if = {
+			trigger = {
+				NOT = { var:RICE_entertainer_romance_type = flag:neutral } # She doesn't care
+				scope:crush = {
+					opinion = {
+						target = scope:recipient
+						value < 0
+					}
+				}
+				OR = {
+					has_sexuality = asexual
+					has_sexuality = homosexual
+					has_trait = celibate
+				}
+			}
+			scope:crush = {
+				add_opinion = {
+					target = scope:recipient
+					modifier = RICE_tarim_basin_took_me_as_a_plaything_didnt_like_guy
+				}
+			}
+		}
+		# He hates your guts
+		scope:lover = {
+			add_opinion = {
+				target = scope:recipient
+				modifier = RICE_tarim_basin_took_away_my_beloved
+			}
+			if = {
+				limit = {
+					scope:lover = {
+						OR = {
+							has_trait = vengeful
+							has_trait = wrathful
+							has_trait = arbitrary
+							scope:lover = {
+								opinion = {
+									target = scope:recipient
+									value < -40
+								}
+							}
+						}
+					}
+				}
+				set_relation_rival = scope:recipient
+			}
+			else = {
+				progress_towards_rival_effect = {
+					CHARACTER = scope:recipient
+					OPINION = no
+				}
+			}
+		}
+	}
+
+	option = { # No, I do not give permission
+		name = tarim_basin.0042.d
+		trigger = {
+			diplomacy < decent_skill_rating
+		}
+		scope:lover = {
+			add_opinion = {
+				target = scope:recipient
+				modifier = RICE_tarim_basin_prevented_me_from_marrying_beloved
+			}
+			random = {
+				chance = 50				
+				progress_towards_rival_effect = {
+					CHARACTER = scope:recipient
+					OPINION = no
+				}
+			}
+		}
+		hidden_effect = {
+			scope:crush = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+		stress_impact = {
+			compassionate = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Let the girl choose for herself!
+		name = tarim_basin.0042.e
+		hidden_effect = {
+			scope:crush = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+			sadistic = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Be reasonable
+		name = tarim_basin.0042.f
+		trigger = {
+			diplomacy >= decent_skill_rating
+		}
+		skill = diplomacy
+		hidden_effect = {
+			scope:crush = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = { has_variable = RICE_entertainer_romance_type }
+			remove_variable = RICE_entertainer_romance_type
+		}
+	}
+
+}
+
+
+
+
+
+# Entertainer has neutral opinion
+# Entertainer appears to be eyeing the man with hope - does she like him back because he's been kind to her?
+# Entertainer appears to look anxious and you know she finds hiim creepy
 
 
 
@@ -2409,6 +3413,15 @@ tarim_basin.0050 = {
 		}
 		character:RICE_zhang_006 = {
 			save_scope_as = huaiding_son_4
+		}
+		character:RICE_dunhuang_misc_001 = {
+			save_scope_as = zhu_zaiqing
+		}
+		character:RICE_dunhuang_misc_002 = {
+			save_scope_as = wuzhen
+		}
+		character:RICE_dunhuang_misc_004 = {
+			save_scope_as = zhang_qiu
 		}
 		# Seriously wtf are all these Tangut people doing here
 		hidden_effect = {
@@ -2497,6 +3510,9 @@ tarim_basin.0051 = {
 				add_courtier = scope:huaiding_son_2
 				add_courtier = scope:huaiding_son_3
 				add_courtier = scope:huaiding_son_4
+				add_courtier = scope:zhu_zaiqing
+				add_courtier = scope:wuzhen
+				add_courtier = scope:zhang_qiu
 			}
 		}
 		set_player_character = scope:yichao	
@@ -2550,6 +3566,9 @@ tarim_basin.0051 = {
 				add_courtier = scope:huaiding_son_2
 				add_courtier = scope:huaiding_son_3
 				add_courtier = scope:huaiding_son_4
+				add_courtier = scope:zhu_zaiqing
+				add_courtier = scope:wuzhen
+				add_courtier = scope:zhang_qiu
 
 			}
 			character:1059714 = {
@@ -4855,7 +5874,7 @@ tarim_basin.0152 = {
 					days = { 3 11 }
 				}
 			}
-			# Reciting prayers to protect Khotan
+			# Story about the Silk Princess
 			10 = {
 				trigger_event = {
 					id = tarim_basin.0159
@@ -4912,10 +5931,6 @@ tarim_basin.0153 = {
 	
 	right_portrait = root
 
-	immediate = {
-
-	}
-	
 	option = { # Ok
 		name = tarim_basin.0153.a
 	}
@@ -4976,7 +5991,7 @@ tarim_basin.0156 = {
 	title = tarim_basin.0156.t
 	desc = tarim_basin.0156.desc
 	theme = diplomacy_majesty_focus
-	override_background = { event_background = RICE_background_tibet_inner_altar }
+	override_background = { event_background = RICE_background_tarim_basin_town }
 	
 	left_portrait = {
 		character = root
@@ -5028,7 +6043,7 @@ tarim_basin.0158 = {
 	}
 }
 
-# Reciting prayers to protect Khotan
+# Story about the Silk Princess
 tarim_basin.0159 = {
 	type = character_event
 	title = tarim_basin.0159.t
@@ -5043,7 +6058,8 @@ tarim_basin.0159 = {
 	
 	option = { # Ok
 		name = tarim_basin.0159.a
-		add_piety = 30
+		add_piety = 15
+		add_prestige = 15
 	}
 }
 
