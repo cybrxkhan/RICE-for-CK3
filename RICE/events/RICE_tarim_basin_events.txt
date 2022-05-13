@@ -15,6 +15,7 @@
 #	tarim_basin.0170-tarim_basin.0179			8 Protectors/Khotan refugees aftermath
 # tarim_basin.0200-tarim_basin.0249			Kara-Khanids/Islamic Uighurs
 #	tarim_basin.0200-tarim_basin.0209			Al-Kashgari/Compile First Turkic Dictionary
+#	tarim_basin.0210-tarim_basin.0229			Ordam Mazar Festival
 # tarim_basin.0250-tarim_basin.0299			Generic events
 # 
 # 
@@ -6105,6 +6106,181 @@ tarim_basin.0161 = {
 
 
 
+
+
+
+######################################################################################
+# 
+# EIGHT PROTECTORS
+# 
+# tarim_basin.0170-tarim_basin.0179
+# 
+######################################################################################
+
+
+# Change Khotan's Eight Protectors ruler modifier (for title transition)
+tarim_basin.0170 = {
+	hidden = yes
+	
+	trigger = {
+		scope:title = title:c_khotan
+		NOT = { has_global_variable = RICE_tarim_basin_khotan_eight_protectors_abandoned }
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				religion = religion:buddhism_religion
+				scope:previous_holder = { 
+					is_alive = yes
+					has_character_modifier = RICE_tarim_basin_khotan_eight_protectors
+					NOT = {
+						has_title = title:c_khotan
+					}
+				}
+			}
+			scope:previous_holder = { remove_character_modifier = RICE_tarim_basin_khotan_eight_protectors }
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_khotan_eight_protectors
+			}
+		}
+		else_if = {
+			limit = {
+				RICE_tarim_basin_eight_protectors_remain_trigger = no
+				NOT = {
+					any_liege_or_above = {
+						RICE_tarim_basin_eight_protectors_remain_trigger = yes
+					}
+				}
+			}
+			save_scope_as = khotan_new_ruler
+			RICE_tarim_basin_eight_protectors_abandoned_effect = yes
+			every_player = {
+				limit = {
+					is_ai = no
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_land_silk_road_region
+						}
+					}	
+				}
+				trigger_event = {
+					id = tarim_basin.0172
+					days = 1
+				}
+			}
+		}
+	}
+}
+
+# Change Khotan's Eight Protectors ruler modifier (for religious conversion)
+tarim_basin.0171 = {
+	hidden = yes
+	
+	trigger = {
+		has_title = title:c_khotan
+		NOT = { has_global_variable = RICE_tarim_basin_khotan_eight_protectors_abandoned }
+	}
+	
+	immediate = {
+		# Lose it if you convert away from Buddhism
+		if = {
+			limit = {
+				NOT = { religion = religion:buddhism_religion }
+			}
+			remove_character_modifier = RICE_tarim_basin_khotan_eight_protectors
+			if = {
+				limit = {
+					RICE_tarim_basin_eight_protectors_remain_trigger = no
+					NOT = {
+						any_liege_or_above = {
+							RICE_tarim_basin_eight_protectors_remain_trigger = yes
+						}
+					}
+				}
+				save_scope_as = khotan_new_ruler
+				RICE_tarim_basin_eight_protectors_abandoned_effect = yes
+				every_player = {
+					limit = {
+						is_ai = no
+						any_held_title = {
+							tier = tier_county
+							any_county_province = {
+								geographical_region = RICE_land_silk_road_region
+							}
+						}	
+					}
+					trigger_event = {
+						id = tarim_basin.0172
+						days = 1
+					}
+				}
+			}
+		}
+		# Gain it if you convert away to Buddhism
+		if = {
+			limit = {
+				religion = religion:buddhism_religion
+			}
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_khotan_eight_protectors
+			}
+		}
+	}
+}
+
+
+
+# Khotan is ruled by someone unfriendly to Buddhists, and the monks flee
+tarim_basin.0172 = {
+	type = character_event
+	title = tarim_basin.0172.t
+	desc = tarim_basin.0172.desc
+	theme = faith
+	#override_background = { event_background = burning_building }
+
+	right_portrait = {
+		character = scope:khotan_new_ruler
+		animation = personality_callous
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_sacredrite"
+		title:c_khotan = { #For loc.
+			save_scope_as = khotan
+		}
+		show_as_tooltip = {
+			scope:khotan_new_ruler = {
+				RICE_tarim_basin_eight_protectors_abandoned_effect = yes
+			}
+		}
+	}
+
+	# Ok
+	option = {
+		name = tarim_basin.0172.a
+		trigger = {
+			NOT = { religion = religion:buddhism_religion }
+		}
+		custom_tooltip = tarim_basin.0172.tooltip.1
+		custom_tooltip = tarim_basin.0172.tooltip.2
+	}
+	option = {
+		name = tarim_basin.0172.b
+		trigger = {
+			religion = religion:buddhism_religion
+		}
+		custom_tooltip = tarim_basin.0172.tooltip.1
+		custom_tooltip = tarim_basin.0172.tooltip.2
+	}
+
+}
+
+
+
+
+
 ######################################################################################
 # 
 # KARA-KHANID/ISLAMIC UIGHUR EVENTS
@@ -6725,8 +6901,6 @@ tarim_basin.0206 = {
 
 }
 
-
-
 # Al-Kashgari dies
 tarim_basin.0207 = {
 	type = empty
@@ -6753,172 +6927,713 @@ tarim_basin.0207 = {
 
 
 
-
-
 ######################################################################################
 # 
-# EIGHT PROTECTORS
+# ORDAM MAZAR FESTIVAL
 # 
-# tarim_basin.0170-tarim_basin.0179
+# tarim_basin.0210-tarim_basin.0229
 # 
 ######################################################################################
 
-
-# Change Khotan's Eight Protectors ruler modifier (for title transition)
-tarim_basin.0170 = {
-	hidden = yes
-	
-	trigger = {
-		scope:title = title:c_khotan
-		NOT = { has_global_variable = RICE_tarim_basin_khotan_eight_protectors_abandoned }
-	}
-	
-	immediate = {
-		if = {
-			limit = {
-				religion = religion:buddhism_religion
-				scope:previous_holder = { 
-					is_alive = yes
-					has_character_modifier = RICE_tarim_basin_khotan_eight_protectors
-					NOT = {
-						has_title = title:c_khotan
-					}
-				}
-			}
-			scope:previous_holder = { remove_character_modifier = RICE_tarim_basin_khotan_eight_protectors }
-			add_character_modifier = {
-				modifier = RICE_tarim_basin_khotan_eight_protectors
-			}
-		}
-		else_if = {
-			limit = {
-				RICE_tarim_basin_eight_protectors_remain_trigger = no
-				NOT = {
-					any_liege_or_above = {
-						RICE_tarim_basin_eight_protectors_remain_trigger = yes
-					}
-				}
-			}
-			save_scope_as = khotan_new_ruler
-			RICE_tarim_basin_eight_protectors_abandoned_effect = yes
-			every_player = {
-				limit = {
-					is_ai = no
-					any_held_title = {
-						tier = tier_county
-						any_county_province = {
-							geographical_region = RICE_land_silk_road_region
-						}
-					}	
-				}
-				trigger_event = {
-					id = tarim_basin.0172
-					days = 1
-				}
-			}
-		}
-	}
-}
-
-# Change Khotan's Eight Protectors ruler modifier (for religious conversion)
-tarim_basin.0171 = {
-	hidden = yes
-	
-	trigger = {
-		has_title = title:c_khotan
-		NOT = { has_global_variable = RICE_tarim_basin_khotan_eight_protectors_abandoned }
-	}
-	
-	immediate = {
-		# Lose it if you convert away from Buddhism
-		if = {
-			limit = {
-				NOT = { religion = religion:buddhism_religion }
-			}
-			remove_character_modifier = RICE_tarim_basin_khotan_eight_protectors
-			if = {
-				limit = {
-					RICE_tarim_basin_eight_protectors_remain_trigger = no
-					NOT = {
-						any_liege_or_above = {
-							RICE_tarim_basin_eight_protectors_remain_trigger = yes
-						}
-					}
-				}
-				save_scope_as = khotan_new_ruler
-				RICE_tarim_basin_eight_protectors_abandoned_effect = yes
-				every_player = {
-					limit = {
-						is_ai = no
-						any_held_title = {
-							tier = tier_county
-							any_county_province = {
-								geographical_region = RICE_land_silk_road_region
-							}
-						}	
-					}
-					trigger_event = {
-						id = tarim_basin.0172
-						days = 1
-					}
-				}
-			}
-		}
-		# Gain it if you convert away to Buddhism
-		if = {
-			limit = {
-				religion = religion:buddhism_religion
-			}
-			add_character_modifier = {
-				modifier = RICE_tarim_basin_khotan_eight_protectors
-			}
-		}
-	}
-}
-
-
-
-# Khotan is ruled by someone unfriendly to Buddhists, and the monks flee
-tarim_basin.0172 = {
+# Prepare for Ordam Mazar
+tarim_basin.0210 = {
 	type = character_event
-	title = tarim_basin.0172.t
-	desc = tarim_basin.0172.desc
-	theme = faith
-	#override_background = { event_background = burning_building }
-
+	title = tarim_basin.0210.t
+	desc = tarim_basin.0210.desc
+	theme = friendly
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
 	right_portrait = {
-		character = scope:khotan_new_ruler
-		animation = personality_callous
+		character = scope:ali_arslan
+		animation = personality_zealous
+	}
+
+	immediate = {
+		character:3000 = {
+			save_scope_as = ali_arslan
+		}
+		title:c_kashgar = { #For loc.
+			save_scope_as = kashgar
+		}
+		title:c_khotan = { #For loc.
+			save_scope_as = khotan
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0210.a
+		# Choose appropriate location
+		title:b_kashgar.title_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_tarim_basin_ordam_mazar
+			}	
+		}
+	}
+}
+
+# Ordam Mazar begins
+tarim_basin.0211 = {
+	type = character_event
+	title = tarim_basin.0211.t
+	desc = tarim_basin.0211.desc
+	theme = realm
+	override_background = { event_background = RICE_background_tarim_basin_town }
+	
+	left_portrait = root
+	right_portrait = {
+		character = scope:ali_arslan
+		animation = personality_zealous
 	}
 
 	immediate = {
 		play_music_cue = "mx_cue_sacredrite"
+		character:3000 = {
+			save_scope_as = ali_arslan
+		}
+		title:c_kashgar = { #For loc.
+			save_scope_as = kashgar
+		}
 		title:c_khotan = { #For loc.
 			save_scope_as = khotan
 		}
-		show_as_tooltip = {
-			scope:khotan_new_ruler = {
-				RICE_tarim_basin_eight_protectors_abandoned_effect = yes
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0211.a
+		add_piety = 15
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+			gregarious = miniscule_stress_impact_gain
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0211.b
+		add_prestige = 15
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+			shy = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+
+		# Random events
+
+		# Singers and poets
+		random = {
+			chance = 20
+			trigger_event = {
+				id = tarim_basin.0215
+				days = { 3 18 }
+			}			
+		}
+		# Women praying for children
+		random = {
+			chance = 20
+			trigger_event = {
+				id = tarim_basin.0216
+				days = { 3 18 }
+			}			
+		}
+		# Old men dancing
+		random = {
+			chance = 20
+			trigger_event = {
+				id = tarim_basin.0217
+				days = { 3 18 }
+			}			
+		}
+		# Young people gather to mingle and find partners
+		random = {
+			chance = 20
+			trigger_event = {
+				id = tarim_basin.0218
+				days = { 3 18 }
+			}			
+		}
+		# Legends about Ali Arslan
+		random = {
+			chance = 20
+			trigger_event = {
+				id = tarim_basin.0219
+				days = { 3 18 }
+			}			
+		}
+		# Legends about Ali Arslan's mom
+		random = {
+			chance = 20
+			trigger_event = {
+				id = tarim_basin.0220
+				days = { 3 18 }
+			}			
+		}
+		# Food stalls at Ordam
+		random = {
+			chance = 20
+			trigger_event = {
+				id = tarim_basin.0221
+				days = { 3 18 }
+			}			
+		}
+		# Light-hearted atmosphere at Ordam
+		random = {
+			chance = 20
+			trigger_event = {
+				id = tarim_basin.0222
+				days = { 3 18 }
+			}			
+		}
+		# Mourning pilgrims
+		random = {
+			chance = 20
+			trigger_event = {
+				id = tarim_basin.0223
+				days = { 3 18 }
+			}			
+		}
+		# Chatting with a peddler during Ordam
+		random = {
+			chance = 20
+			trigger_event = {
+				id = tarim_basin.0224
+				days = { 3 18 }
+			}			
+		}
+		# Meet people going on a pilgrimage tour
+		random = {
+			chance = 20
+			trigger_event = {
+				id = tarim_basin.0225
+				days = { 3 18 }
+			}			
+		}
+		# Bury yourself in the sands near the tomb
+		random = {
+			chance = 20
+			trigger_event = {
+				id = tarim_basin.0226
+				days = { 3 18 }
+			}			
+		}
+
+
+		# In real life it's just a few days, but we spread it out so there's a chance multiple events can trigger
+		trigger_event = {
+			id = tarim_basin.0212
+			days = { 9 12 }
+		}
+		trigger_event = {
+			id = tarim_basin.0213
+			days = { 20 25 }
+		}
+	}
+}
+
+# Communal meal
+tarim_basin.0212 = {
+	type = character_event
+	title = tarim_basin.0212.t
+	desc = tarim_basin.0212.desc
+	theme = feast_activity
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0212.a
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			gluttonous = miniscule_stress_impact_loss
+		}
+	}
+
+}
+
+# Coming to the tomb
+tarim_basin.0213 = {
+	type = character_event
+	title = tarim_basin.0213.t
+	desc = tarim_basin.0213.desc
+	theme = faith
+	override_background = { event_background = RICE_background_tarim_basin_landscape }
+	
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	right_portrait = {
+		character = scope:ali_arslan
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0213.a
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			zealous = miniscule_stress_impact_loss
+		}
+		trigger_event = {
+			id = tarim_basin.0214
+			days = { 3 5 }		
+		}
+
+	}
+
+}
+
+# Ordam Mazar ends
+tarim_basin.0214 = {
+	type = character_event
+	title = tarim_basin.0214.t
+	desc = tarim_basin.0214.desc
+	theme = faith
+	override_background = { event_background = RICE_background_tarim_basin_town }
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0214.a
+
+		if = {
+			limit = {
+				piety_level = 3
+			}
+			add_piety = 100
+			add_prestige = 50
+		}
+		else_if = {
+			limit = {
+				piety_level = 4
+			}
+			add_piety = 150
+			add_prestige = 75
+		}
+		else_if = {
+			limit = {
+				piety_level >= 5
+			}
+			add_piety = 200
+			add_prestige = 100
+		}
+		# Default
+		else = {
+			add_piety = 50
+			add_prestige = 25
+		}
+
+		add_character_modifier = {
+			modifier = RICE_tarim_basin_attended_ordam_mazar
+			years = 5
+		}
+
+	}
+
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				complete_activity = yes
 			}
 		}
 	}
 
-	# Ok
-	option = {
-		name = tarim_basin.0172.a
-		trigger = {
-			NOT = { religion = religion:buddhism_religion }
-		}
-		custom_tooltip = tarim_basin.0172.tooltip.1
-		custom_tooltip = tarim_basin.0172.tooltip.2
+}
+
+
+
+# Singers and poets
+tarim_basin.0215 = {
+	type = character_event
+	title = tarim_basin.0215.t
+	desc = tarim_basin.0215.desc
+	theme = feast_activity
+	override_background = { event_background = RICE_background_tarim_basin_town }
+	
+	left_portrait = {
+		character = root
+		animation = happiness
 	}
-	option = {
-		name = tarim_basin.0172.b
-		trigger = {
-			religion = religion:buddhism_religion
+	
+	option = { # Ok
+		name = tarim_basin.0215.a
+		if = {
+			limit = {
+				has_trait = shy
+			}
+			stress_impact = {
+				shy = miniscule_stress_impact_gain
+			}
 		}
-		custom_tooltip = tarim_basin.0172.tooltip.1
-		custom_tooltip = tarim_basin.0172.tooltip.2
+		else = {
+			stress_impact = {
+				base = miniscule_stress_impact_loss
+				gregarious = miniscule_stress_impact_loss
+			}
+		}
 	}
 
 }
+
+
+# Women praying for children
+tarim_basin.0216 = {
+	type = character_event
+	title = tarim_basin.0216.t
+	desc = tarim_basin.0216.desc
+	theme = faith
+	override_background = { event_background = RICE_background_tarim_basin_landscape }
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0216.a
+		add_piety = 10
+	}
+
+}
+
+# Old men dancing
+tarim_basin.0217 = {
+	type = character_event
+	title = tarim_basin.0217.t
+	desc = tarim_basin.0217.desc
+	theme = faith
+	override_background = { event_background = RICE_background_tarim_basin_town }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0217.a
+		add_piety = 15
+	}
+
+}
+
+
+# Young people gather to mingle and find partners
+tarim_basin.0218 = {
+	type = character_event
+	title = tarim_basin.0218.t
+	desc = tarim_basin.0218.desc
+	theme = seduction
+	override_background = { event_background = RICE_background_tarim_basin_town }
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0218.a
+		add_piety = 20
+		add_prestige = -20
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+			lustful = miniscule_stress_impact_gain
+			gregarious = miniscule_stress_impact_gain
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0218.b
+		add_prestige = 20
+		add_piety = -20
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+			chaste = miniscule_stress_impact_gain
+			shy = miniscule_stress_impact_gain
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0218.c
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+			zealous = miniscule_stress_impact_gain
+		}
+	}
+
+}
+
+
+# Legends about Ali Arslan
+tarim_basin.0219 = {
+	type = character_event
+	title = tarim_basin.0219.t
+	desc = tarim_basin.0219.desc
+	theme = martial
+	override_background = { event_background = RICE_background_tarim_basin_town }
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	right_portrait = {
+		character = scope:ali_arslan
+		animation = celebrate_sword # aggressive_sword
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0219.a
+		add_character_modifier = {
+			modifier = RICE_tarim_basin_inspired_by_ali_arslan
+			years = 5
+		}
+	}
+
+}
+
+# Legends about Ali Arslan's mom
+tarim_basin.0220 = {
+	type = character_event
+	title = tarim_basin.0220.t
+	desc = tarim_basin.0220.desc
+	theme = family
+	override_background = { event_background = RICE_background_tarim_basin_town }
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	right_portrait = {
+		character = scope:ali_arslan_mother
+		animation = personality_bold
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				scope:ali_arslan = {
+					exists = mother
+				}
+			}
+			scope:ali_arslan.mother = {
+				save_scope_as = ali_arslan_mother
+			}
+		}
+		# In case she doesn't exist
+		else = {
+			scope:ali_arslan = {
+				save_scope_as = ali_arslan_mother
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0220.a
+		add_character_modifier = {
+			modifier = RICE_tarim_basin_inspired_by_ali_arslan_mom
+			years = 5
+		}
+	}
+
+}
+
+# Food stalls at Ordam
+tarim_basin.0221 = {
+	type = character_event
+	title = tarim_basin.0221.t
+	desc = tarim_basin.0221.desc
+	theme = feast_activity
+	override_background = { event_background = RICE_background_tarim_basin_town }
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	
+	option = { # Ok
+		name = tarim_basin.0221.a
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 5
+			}
+		}
+		remove_short_term_gold = 5
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			gluttonous = miniscule_stress_impact_loss
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0221.b
+		stress_impact = {
+			temperate = miniscule_stress_impact_loss
+		}
+	}
+}
+
+
+# Light-hearted atmosphere at Ordam
+tarim_basin.0222 = {
+	type = character_event
+	title = tarim_basin.0222.t
+	desc = tarim_basin.0222.desc
+	theme = friendly
+	override_background = { event_background = RICE_background_tarim_basin_town }
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	
+	option = { # Ok
+		name = tarim_basin.0222.a
+		add_prestige = 15
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+			chaste = miniscule_stress_impact_gain
+			shy = miniscule_stress_impact_gain
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0222.b
+		add_piety = 15
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+			lustful = miniscule_stress_impact_gain
+			gregarious = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+
+# Mourning pilgrims
+tarim_basin.0223 = {
+	type = character_event
+	title = tarim_basin.0223.t
+	desc = tarim_basin.0223.desc
+	theme = faith
+	override_background = { event_background = RICE_background_tarim_basin_town }
+	
+	left_portrait = {
+		character = root
+		animation = personality_forgiving
+	}
+
+	
+	option = { # Ok
+		name = tarim_basin.0223.a
+		add_piety = 15
+	}
+}
+
+
+# Chatting with a peddler during Ordam
+tarim_basin.0224 = {
+	type = character_event
+	title = tarim_basin.0224.t
+	desc = tarim_basin.0224.desc
+	theme = stewardship
+	override_background = { event_background = RICE_background_tarim_basin_town }
+	
+	left_portrait = {
+		character = root
+		animation = personality_forgiving
+	}
+
+	
+	option = { # Ok
+		name = tarim_basin.0224.a
+		add_prestige = 15
+	}
+}
+
+
+# Meet people going on a pilgrimage tour
+tarim_basin.0225 = {
+	type = character_event
+	title = tarim_basin.0225.t
+	desc = tarim_basin.0225.desc
+	theme = faith
+	override_background = { event_background = RICE_background_tarim_basin_landscape }
+	
+	left_portrait = {
+		character = root
+		animation = personality_forgiving
+	}
+
+	
+	option = { # Ok
+		name = tarim_basin.0225.a
+		add_piety = 15
+	}
+}
+
+# Bury yourself in the sands near the tomb
+tarim_basin.0226 = {
+	type = character_event
+	title = tarim_basin.0226.t
+	desc = tarim_basin.0226.desc
+	theme = faith
+	override_background = { event_background = RICE_background_tarim_basin_landscape }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	
+	option = { # Ok
+		name = tarim_basin.0226.a
+		add_prestige = 15
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+			patient = miniscule_stress_impact_gain
+			content = miniscule_stress_impact_gain
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0226.b
+		add_piety = 15
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+			paranoid = miniscule_stress_impact_gain
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0226.c
+		add_prestige = -25
+		add_piety = 25
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+		add_character_modifier = {
+			modifier = RICE_tarim_basin_ordam_sands
+			years = 10
+		}
+	}
+}
+
+
+
+
+
+
