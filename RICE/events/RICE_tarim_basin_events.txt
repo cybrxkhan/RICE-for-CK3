@@ -6,7 +6,7 @@
 # tarim_basin.0020-tarim_basin.0039			Silk Road Communities
 # tarim_basin.0040-tarim_basin.0049			Silk Road Entertainers flavor events
 # tarim_basin.0050-tarim_basin.0099			Dunhuang
-#	tarim_basin.0050-tarim_basin.0069			Dunhuang history
+#	tarim_basin.0050-tarim_basin.0069			Dunhuang history and Crescent Lake Decision
 #	tarim_basin.0070-tarim_basin.0099			Mogao Caves
 # tarim_basin.0100-tarim_basin.0149			Tocharians
 #	tarim_basin.0100-tarim_basin.0109			Stage Animal Fights to Predict the Harvest
@@ -1988,6 +1988,13 @@ tarim_basin.0029 = {
 
 	option = { # Ok
 		name = tarim_basin.0029.b
+		hidden_effect = {
+			scope:local = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}	
 	}
 }
 
@@ -3472,7 +3479,12 @@ tarim_basin.0051 = {
 			scope:yichao = {
 				death = {
 					death_reason = death_RICE_went_to_china
-				}			
+				}
+				every_spouse = {
+					death = {
+						death_reason = death_RICE_went_to_china
+					}
+				}		
 			}
 		}
 		custom_tooltip = tarim_basin.0051.a.tooltip
@@ -3521,7 +3533,12 @@ tarim_basin.0051 = {
 			scope:huaishen = {
 				death = {
 					death_reason = death_RICE_went_to_china
-				}			
+				}	
+				every_spouse = {
+					death = {
+						death_reason = death_RICE_went_to_china
+					}
+				}	
 			}
 			character:1059714 = {
 				get_title = title:c_changma # Weird quirk to ensure Yichao keeps Shazhou and not Huaishen's heir
@@ -3732,6 +3749,7 @@ tarim_basin.0054 = {
 	
 	option = { # Ok
 		name = tarim_basin.0054.a
+		custom_tooltip = tarim_basin.0054.tooltip
 	}
 }
 
@@ -4087,6 +4105,92 @@ tarim_basin.0057 = {
 
 
 
+# Setup activity
+tarim_basin.0058 = {
+	type = character_event
+	title = tarim_basin.0058.t
+	desc = tarim_basin.0058.desc
+	theme = friendly
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	immediate = {
+		#title:c_shazhou = {
+		#	save_scope_as = dunhuang
+		#}
+		# Stop characters from planning multiple activities at once
+		add_character_flag = planning_an_activity
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0058.a
+		# Choose appropriate location
+		title:b_shazhou.title_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_tarim_basin_visit_crescent_lake
+			}	
+		}
+	}	
+}
+
+
+# Day of the Springs visit
+tarim_basin.0059 = {
+	type = character_event
+	title = tarim_basin.0059.t
+	desc = tarim_basin.0059.desc
+	theme = RICE_theme_tarim_basin_landscape
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0059.a
+		add_prestige = 30
+		stress_impact = {
+			base = minor_stress_impact_loss
+			brave = miniscule_stress_impact_loss
+			diligent = miniscule_stress_impact_loss
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0059.b
+		add_piety = 30
+		stress_impact = {
+			base = minor_stress_impact_loss
+			zealous = minor_stress_impact_loss
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0059.c
+		add_prestige = 15
+		add_piety = 15
+		stress_impact = {
+			base = minor_stress_impact_loss
+			gregarious = miniscule_stress_impact_loss
+			lazy = miniscule_stress_impact_loss
+			gluttonous = miniscule_stress_impact_loss
+		}
+	}
+	
+	after = {
+		add_character_modifier = {
+			modifier = RICE_tarim_basin_dunhuang_crescent_lake_visit
+			years = 5
+		}
+		scope:activity = {
+			complete_activity = yes
+		}
+	}	
+}
 
 
 
@@ -6154,6 +6258,12 @@ tarim_basin.0170 = {
 				}
 			}
 			save_scope_as = khotan_new_ruler
+			scope:khotan_new_ruler = {
+				add_to_global_variable_list = {
+					name = RICE_tarim_basin_khotan_non_buddhist_maker_list # Dunno how else to do this
+					target = this
+				}	
+			}
 			RICE_tarim_basin_eight_protectors_abandoned_effect = yes
 			every_player = {
 				limit = {
@@ -6200,6 +6310,12 @@ tarim_basin.0171 = {
 					}
 				}
 				save_scope_as = khotan_new_ruler
+				scope:khotan_new_ruler = {
+					add_to_global_variable_list = {
+						name = RICE_tarim_basin_khotan_non_buddhist_maker_list # Dunno how else to do this
+						target = this
+					}	
+				}
 				RICE_tarim_basin_eight_protectors_abandoned_effect = yes
 				every_player = {
 					limit = {
@@ -6273,6 +6389,132 @@ tarim_basin.0172 = {
 		}
 		custom_tooltip = tarim_basin.0172.tooltip.1
 		custom_tooltip = tarim_basin.0172.tooltip.2
+	}
+
+}
+
+
+# Khotanese refugees arrive at a Buddhist ruler's court
+tarim_basin.0173 = {
+	type = character_event
+	title = tarim_basin.0173.t
+	desc = {
+		desc = tarim_basin.0173.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:khotan_refugee = {
+						has_character_modifier = RICE_tarim_basin_khotan_monastic_refugee
+					}
+				}
+				desc = tarim_basin.0173.desc.monastic
+			}
+			triggered_desc = {
+				trigger = {
+					scope:khotan_refugee = {
+						has_character_modifier = RICE_tarim_basin_khotan_noble_refugee
+					}
+				}
+				desc = tarim_basin.0173.desc.noble
+			}
+		}
+	}
+	theme = realm
+
+	left_portrait = root
+	right_portrait = {
+		character = scope:khotan_refugee
+		animation = beg
+	}
+	lower_center_portrait = scope:khotan_new_ruler
+
+	immediate = {
+		title:c_khotan = { #For loc.
+			save_scope_as = khotan
+		}
+		ordered_in_global_list = {
+			variable = RICE_tarim_basin_khotan_non_buddhist_maker_list
+			save_scope_as = khotan_new_ruler
+		}
+		random_list = {
+			# Get a monastic
+			66 = {
+				create_character = {
+					location = root.location
+					template = RICE_khotan_refugee_monk_template
+					save_scope_as = khotan_refugee
+					culture = scope:khotan.culture
+					faith = root.faith
+				}
+			}
+			# Get a noble
+			33 = {
+				create_character = {
+					location = root.location
+					template = RICE_khotan_refugee_noble_template
+					save_scope_as = khotan_refugee
+					culture = scope:khotan.culture
+					faith = root.faith
+				}				
+			}
+		}
+	}
+
+	# Welcome Them
+	option = {
+		name = tarim_basin.0173.a
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 40
+			}
+		}
+		remove_short_term_gold = 40
+		add_piety = 50
+		add_courtier = scope:khotan_refugee
+		if = {
+			limit = {
+				scope:khotan_refugee = {
+					has_character_modifier = RICE_tarim_basin_khotan_monastic_refugee
+				}
+			}
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_helped_khotan_monastic_refugees
+				years = 10
+			}
+		}
+		else_if = {
+			limit = {
+				scope:khotan_refugee = {
+					has_character_modifier = RICE_tarim_basin_khotan_noble_refugee
+				}
+			}
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_helped_khotan_noble_refugees
+				years = 10
+			}			
+		}
+		stress_impact = {
+			zealous = minor_stress_impact_loss
+			generous = minor_stress_impact_loss
+			compassionate = minor_stress_impact_loss
+		}
+	}
+	# No
+	option = {
+		name = tarim_basin.0173.b
+		hidden_effect = {
+			scope:entertainer = {
+				death = {
+					death_reason = khotan_refugee
+				}
+			}
+		}
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+		}
 	}
 
 }
