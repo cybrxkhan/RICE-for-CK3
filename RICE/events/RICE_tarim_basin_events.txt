@@ -16,6 +16,7 @@
 # tarim_basin.0200-tarim_basin.0249			Kara-Khanids/Islamic Uighurs
 #	tarim_basin.0200-tarim_basin.0209			Al-Kashgari/Compile First Turkic Dictionary
 #	tarim_basin.0210-tarim_basin.0229			Ordam Mazar Festival
+#	tarim_basin.0240-tarim_basin.0249			Miscellaneous Decisions/Events
 # tarim_basin.0250-tarim_basin.0299			Generic events
 # 
 # 
@@ -30,6 +31,87 @@ namespace = tarim_basin
 # tarim_basin.0000-tarim_basin.0019
 # 
 ######################################################################################
+
+
+# East Asian community decision - bring in specialists
+tarim_basin.0001 = {
+	type = character_event
+	title = tarim_basin.0001.t
+	desc = tarim_basin.0001.desc
+	theme = crown
+
+	left_portrait = root
+
+	option = {
+		name = tarim_basin.0001.a
+		RICE_tarim_basin_bring_chinese_specialists_effect = yes
+	}
+}
+
+
+# Steppe community decision - hire warriors
+tarim_basin.0002 = {
+	type = character_event
+	title = tarim_basin.0002.t
+	desc = tarim_basin.0002.desc
+	theme = martial_strategy_focus
+
+	left_portrait = root
+
+	option = {
+		name = tarim_basin.0002.a
+		RICE_tarim_basin_steppe_troops_spawn_effect = yes
+	}
+}
+
+
+# Middle East community decision - bring in settlers
+tarim_basin.0003 = {
+	type = character_event
+	title = tarim_basin.0003.t
+	desc = tarim_basin.0003.desc
+	theme = stewardship_domain_focus
+
+	left_portrait = root
+
+	option = {
+		name = tarim_basin.0003.a
+		RICE_tarim_basin_bring_merchant_settlers_effect = yes
+	}
+}
+
+
+# Himalayan community decision - hire warriors
+tarim_basin.0004 = {
+	type = character_event
+	title = tarim_basin.0004.t
+	desc = tarim_basin.0004.desc
+	theme = martial_strategy_focus
+
+	left_portrait = root
+
+	option = {
+		name = tarim_basin.0004.a
+		RICE_tarim_basin_himalayan_troops_spawn_effect = yes
+	}
+}
+
+
+# Indian community decision - bring in artisans
+tarim_basin.0005 = {
+	type = character_event
+	title = tarim_basin.0005.t
+	desc = tarim_basin.0005.desc
+	theme = crown
+
+	left_portrait = root
+
+	option = {
+		name = tarim_basin.0005.a
+		RICE_tarim_basin_bring_indic_artisans_effect = yes
+	}
+}
+
 
 
 # Sinicization name event
@@ -356,88 +438,6 @@ tarim_basin.0017 = {
 
 	option = {
 		name = tarim_basin.0017.a
-	}
-}
-
-
-# Lose fake China status
-tarim_basin.0018 = {
-	hidden = yes
-	
-	trigger = {
-		is_target_in_global_variable_list = {
-			name = unavailable_unique_decisions
-			target = flag:RICE_tarim_basin_fake_china_proclaimed_flag
-		}
-		root.dynasty = {
-			has_dynasty_modifier = RICE_tarim_basin_fake_china_dynasty
-		}
-		NOT = {
-			root.dynasty = {
-				any_dynasty_member = {
-					is_landed = yes
-					any_held_title = {
-						tier = tier_county
-						any_county_province = {
-							geographical_region = RICE_former_tang_western_region	
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	immediate = {
-		save_scope_as = RICE_tarim_basin_fake_china_person
-		dynasty = {
-			remove_dynasty_modifier = RICE_tarim_basin_fake_china_dynasty
-		}
-		every_ruler = {
-			limit = {
-				is_ai = no
-				OR = {
-					any_held_title = {
-						tier = tier_county
-						any_county_province = {
-							geographical_region = RICE_silk_road_region
-						}
-					}
-					dynasty = root.dynasty
-				}
-			}
-			trigger_event = tarim_basin.0019
-		}		
-	}
-}
-
-
-# Fake China status is lost
-tarim_basin.0019 = {
-	type = character_event
-	title = tarim_basin.0019.t
-	desc = tarim_basin.0019.desc
-	theme = RICE_theme_tarim_basin_landscape
-
-	right_portrait = {
-		character = scope:RICE_tarim_basin_fake_china_person
-		animation = worry
-	}
-	
-	immediate = {
-
-		play_music_cue = "mx_cue_negative"
-
-		show_as_tooltip = {
-			scope:RICE_tarim_basin_fake_china_person = {
-				dynasty = {
-					remove_dynasty_modifier = RICE_tarim_basin_fake_china_dynasty
-				}				
-			}
-		}
-	}
-
-	option = {
-		name = tarim_basin.0019.a
 	}
 }
 
@@ -1717,7 +1717,7 @@ tarim_basin.0029 = {
 						trigger = {
 							game_start_date < 1000.1.1
 						}
-						weight = { base 20 }
+						weight = { base 30 }
 					}
 					culture:tocharian = {
 						trigger = {
@@ -1770,13 +1770,25 @@ tarim_basin.0029 = {
 						}
 						weight = { base 10 }
 					}
+					culture:mizrahi = {
+						weight = { base 20 }
+					}
+					culture:radhanite = {
+						weight = { base 20 }
+					}
 				}
 				random_traits = yes
 				#employer = root
 				after_creation = {
 					# Set religion randomly - Buddhist, Nestorian, Manichean, Zoroastrian, Muslim or ruler's religion (if it's something else)
 					random_list = {
-						10 = { }
+						10 = {
+							trigger = {
+								NOT = {
+									culture = { has_cultural_pillar = heritage_israelite }
+								}
+							}
+						}
 						40 = {
 							trigger = {
 								OR = {
@@ -1846,6 +1858,18 @@ tarim_basin.0029 = {
 								NOT = { has_global_variable = islam_spawned }
 							}
 							set_character_faith = faith:south_arabian_pagan
+						}
+						30 = {
+							trigger = {
+								culture = { has_cultural_pillar = heritage_israelite }
+							}
+							set_character_faith = faith:rabbinism
+						}
+						10 = {
+							trigger = {
+								culture = { has_cultural_pillar = heritage_israelite }
+							}
+							set_character_faith = faith:karaism
 						}
 					}
 				}
@@ -2711,24 +2735,39 @@ tarim_basin.0042 = {
 
 	trigger = {
 		has_royal_court = yes
-		any_courtier = {
-			is_available_ai_adult = yes
-			is_female = no
-			NOT = { dynasty = root.dynasty }
-			is_married = no
-			NOR = {
-				has_sexuality = asexual
-				has_sexuality = homosexual
-				has_trait = celibate
-				has_trait = eunuch
-				has_trait = devoted
+		OR = {
+			any_courtier = {
+				is_available_ai_adult = yes
+				is_female = no
+				NOT = { dynasty = root.dynasty }
+				is_married = no
+				NOR = {
+					has_sexuality = asexual
+					has_sexuality = homosexual
+					has_trait = celibate
+					has_trait = eunuch
+					has_trait = devoted
+				}
+			}
+			any_vassal = {
+				is_available_ai_adult = yes
+				is_female = no
+				NOT = { dynasty = root.dynasty }
+				is_married = no
+				NOR = {
+					has_sexuality = asexual
+					has_sexuality = homosexual
+					has_trait = celibate
+					has_trait = eunuch
+					has_trait = devoted
+				}
 			}
 		}
 	}
 
 	immediate = {
 
-		random_courtier_or_guest = {
+		every_courtier = {
 			limit = {
 				is_available_ai_adult = yes
 				is_female = no
@@ -2742,6 +2781,26 @@ tarim_basin.0042 = {
 					has_trait = devoted
 				}
 			}
+			add_to_list = lover_candidates
+		}
+		every_vassal = {
+			limit = {
+				is_available_ai_adult = yes
+				is_female = no
+				NOT = { dynasty = root.dynasty }
+				is_married = no
+				NOR = {
+					has_sexuality = asexual
+					has_sexuality = homosexual
+					has_trait = celibate
+					has_trait = eunuch
+					has_trait = devoted
+				}
+			}
+			add_to_list = lover_candidates
+		}
+		random_in_list = {
+			list = lover_candidates
 			save_scope_as = lover
 		}
 
@@ -2949,13 +3008,13 @@ tarim_basin.0042 = {
 				opinion_modifier = {
 					who = scope:crush
 					opinion_target = scope:lover
-					multiplier = 1.5
+					#multiplier = 1.5
 				}
 				# Trait compatibility
 				compatibility_modifier = {
 					who = scope:crush
 					compatibility_target = scope:lover
-					multiplier = 1.1
+					#multiplier = 1.1
 				}
 				# He's good looking
 				modifier = {
@@ -3017,14 +3076,14 @@ tarim_basin.0042 = {
 			50 = {
 				opinion_modifier = {
 					who = scope:crush
-					compatibility_target = scope:lover
-					multiplier = -0.7
+					opinion_target = scope:lover
+					#multiplier = -0.7
 				}
 				# Trait compatibility
 				compatibility_modifier = {
 					who = scope:crush
 					compatibility_target = scope:lover
-					multiplier = -0.5
+					#multiplier = -0.5
 				}
 				# He's ugly
 				modifier = {
@@ -3237,7 +3296,7 @@ tarim_basin.0042 = {
 		}
 		# The girl doesn't want to be your plaything
 		else_if = {
-			trigger = {
+			limit = {
 				NOT = { var:RICE_entertainer_romance_type = flag:neutral } # She doesn't care
 				scope:crush = {
 					opinion = {
@@ -3528,7 +3587,12 @@ tarim_basin.0051 = {
 				add_courtier = scope:zhang_qiu
 			}
 		}
-		set_player_character = scope:yichao	
+		if = {
+			limit = {
+				is_ai = no
+			}
+			set_player_character = scope:yichao	
+		}
 		hidden_effect = {			
 			scope:huaishen = {
 				death = {
@@ -3562,7 +3626,12 @@ tarim_basin.0051 = {
 				get_title = title:c_shazhou
 			}
 		}
-		set_player_character = scope:yichao
+		if = {
+			limit = {
+				is_ai = no
+			}
+			set_player_character = scope:yichao	
+		}
 		scope:yichao = {
 			add_character_modifier = {
 				modifier = RICE_tarim_basin_guiyi_tang_distrust
@@ -5836,6 +5905,9 @@ tarim_basin.0150 = {
 	left_portrait = root
 	
 	immediate = {
+		title:c_khotan = { #For loc.
+			save_scope_as = khotan
+		}
 		# Stop characters from planning multiple activities at once.
 		add_character_flag = planning_an_activity
 	}
@@ -5884,7 +5956,7 @@ tarim_basin.0151 = {
 		}
 	}
 	theme = faith
-	override_background = { event_background = RICE_background_tarim_basin_landscape }
+	override_background = { event_background = RICE_background_tarim_basin_town }
 	
 	left_portrait = {
 		character = root
@@ -5902,7 +5974,10 @@ tarim_basin.0151 = {
 	
 	option = { # Ok
 		name = tarim_basin.0151.a
-		trigger_event = tarim_basin.0152
+		trigger_event = {
+			id = tarim_basin.0152
+			days = 1
+		}
 	}
 
 }
@@ -5940,64 +6015,66 @@ tarim_basin.0152 = {
 	option = { # Ok
 		name = tarim_basin.0152.a
 		# Reflect on one of the Khotanese Buddhist legends
-		random_list = {
-			80 = {
-				# Nothing
-			}
-			# Eight Protector kings
-			10 = {
-				trigger_event = {
-					id = tarim_basin.0154
-					days = { 3 11 }
+		hidden_effect = {
+			random_list = {
+				50 = {
+					# Nothing
 				}
-			}
-			# Deer of Saṃjñāya - founding of Gomati
-			10 = {
-				trigger_event = {
-					id = tarim_basin.0155
-					days = { 3 11 }
+				# Eight Protector kings
+				10 = {
+					trigger_event = {
+						id = tarim_basin.0154
+						days = { 3 11 }
+					}
 				}
-			}
-			# Princess Vimalaprabha Khotan legends
-			10 = {
-				trigger_event = {
-					id = tarim_basin.0156
-					days = { 3 11 }
+				# Deer of Saṃjñāya - founding of Gomati
+				10 = {
+					trigger_event = {
+						id = tarim_basin.0155
+						days = { 3 11 }
+					}
 				}
-			}
-			# Buddha drains the lake
-			10 = {
-				trigger_event = {
-					id = tarim_basin.0157
-					days = { 3 11 }
+				# Princess Vimalaprabha Khotan legends
+				10 = {
+					trigger_event = {
+						id = tarim_basin.0156
+						days = { 3 11 }
+					}
 				}
-			}
-			# Ashoka’s son, adopted by Chinese king
-			10 = {
-				trigger_event = {
-					id = tarim_basin.0158
-					days = { 3 11 }
+				# Buddha drains the lake
+				10 = {
+					trigger_event = {
+						id = tarim_basin.0157
+						days = { 3 11 }
+					}
 				}
-			}
-			# Story about the Silk Princess
-			10 = {
-				trigger_event = {
-					id = tarim_basin.0159
-					days = { 3 11 }
+				# Ashoka’s son, adopted by Chinese king
+				10 = {
+					trigger_event = {
+						id = tarim_basin.0158
+						days = { 3 11 }
+					}
 				}
-			}
-			# Hill of Gautośan, with the monastery of Kāśyapa relics
-			10 = {
-				trigger_event = {
-					id = tarim_basin.0160
-					days = { 3 11 }
+				# Story about the Silk Princess
+				10 = {
+					trigger_event = {
+						id = tarim_basin.0159
+						days = { 3 11 }
+					}
 				}
-			}
-			# Miraculous statue of Pimo
-			10 = {
-				trigger_event = {
-					id = tarim_basin.0161
-					days = { 3 11 }
+				# Hill of Gautośan, with the monastery of Kāśyapa relics
+				10 = {
+					trigger_event = {
+						id = tarim_basin.0160
+						days = { 3 11 }
+					}
+				}
+				# Miraculous statue of Pimo
+				10 = {
+					trigger_event = {
+						id = tarim_basin.0161
+						days = { 3 11 }
+					}
 				}
 			}
 		}
@@ -6014,25 +6091,9 @@ tarim_basin.0152 = {
 tarim_basin.0153 = {
 	type = character_event
 	title = tarim_basin.0153.t
-	desc = {
-		desc = tarim_basin.0153.desc.intro
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					has_title = title:c_khotan
-				}
-				desc = tarim_basin.0153.desc.khotan_ruler
-			}	
-			triggered_desc = {
-				trigger = {
-					NOT = { has_title = title:c_khotan }
-				}
-				desc = tarim_basin.0153.desc.not_khotan_ruler
-			}
-		}
-	}
+	desc = tarim_basin.0153.desc
 	theme = faith
-	override_background = { event_background = RICE_background_tarim_basin_landscape }
+	override_background = { event_background = RICE_background_tarim_basin_town }
 	
 	right_portrait = root
 
@@ -6506,7 +6567,7 @@ tarim_basin.0173 = {
 		hidden_effect = {
 			scope:entertainer = {
 				death = {
-					death_reason = khotan_refugee
+					death_reason = death_vanished
 				}
 			}
 		}
@@ -7015,7 +7076,7 @@ tarim_basin.0205 = {
 				scope:compiler.faith = { exists = religious_head }
 				any_held_title = { is_head_of_faith = no }
 			}
-			custom_tooltip = tarim_basin.0205.copy.religious_head
+			custom_tooltip = tarim_basin.0202.copy.religious_head
 			scope:compiler.faith.religious_head = {
 				trigger_event = tarim_basin.0206	
 			}
@@ -7267,102 +7328,106 @@ tarim_basin.0211 = {
 
 		# Random events
 
-		# Singers and poets
-		random = {
-			chance = 20
-			trigger_event = {
-				id = tarim_basin.0215
-				days = { 3 18 }
-			}			
+		hidden_effect = {
+			# Singers and poets
+			random = {
+				chance = 15
+				trigger_event = {
+					id = tarim_basin.0215
+					days = { 3 18 }
+				}			
+			}
+			# Women praying for children
+			random = {
+				chance = 15
+				trigger_event = {
+					id = tarim_basin.0216
+					days = { 3 18 }
+				}			
+			}
+			# Old men dancing
+			random = {
+				chance = 15
+				trigger_event = {
+					id = tarim_basin.0217
+					days = { 3 18 }
+				}			
+			}
+			# Young people gather to mingle and find partners
+			random = {
+				chance = 15
+				trigger_event = {
+					id = tarim_basin.0218
+					days = { 3 18 }
+				}			
+			}
+			# Legends about Ali Arslan
+			random = {
+				chance = 15
+				trigger_event = {
+					id = tarim_basin.0219
+					days = { 3 18 }
+				}			
+			}
+			# Legends about Ali Arslan's mom
+			random = {
+				chance = 15
+				trigger_event = {
+					id = tarim_basin.0220
+					days = { 3 18 }
+				}			
+			}
+			# Food stalls at Ordam
+			random = {
+				chance = 15
+				trigger_event = {
+					id = tarim_basin.0221
+					days = { 3 18 }
+				}			
+			}
+			# Light-hearted atmosphere at Ordam
+			random = {
+				chance = 15
+				trigger_event = {
+					id = tarim_basin.0222
+					days = { 3 18 }
+				}			
+			}
+			# Mourning pilgrims
+			random = {
+				chance = 15
+				trigger_event = {
+					id = tarim_basin.0223
+					days = { 3 18 }
+				}			
+			}
+			# Chatting with a peddler during Ordam
+			random = {
+				chance = 15
+				trigger_event = {
+					id = tarim_basin.0224
+					days = { 3 18 }
+				}			
+			}
+			# Meet people going on a pilgrimage tour
+			random = {
+				chance = 15
+				trigger_event = {
+					id = tarim_basin.0225
+					days = { 3 18 }
+				}			
+			}
+			# Bury yourself in the sands near the tomb
+			random = {
+				chance = 15
+				trigger_event = {
+					id = tarim_basin.0226
+					days = { 3 18 }
+				}			
+			}
 		}
-		# Women praying for children
-		random = {
-			chance = 20
-			trigger_event = {
-				id = tarim_basin.0216
-				days = { 3 18 }
-			}			
-		}
-		# Old men dancing
-		random = {
-			chance = 20
-			trigger_event = {
-				id = tarim_basin.0217
-				days = { 3 18 }
-			}			
-		}
-		# Young people gather to mingle and find partners
-		random = {
-			chance = 20
-			trigger_event = {
-				id = tarim_basin.0218
-				days = { 3 18 }
-			}			
-		}
-		# Legends about Ali Arslan
-		random = {
-			chance = 20
-			trigger_event = {
-				id = tarim_basin.0219
-				days = { 3 18 }
-			}			
-		}
-		# Legends about Ali Arslan's mom
-		random = {
-			chance = 20
-			trigger_event = {
-				id = tarim_basin.0220
-				days = { 3 18 }
-			}			
-		}
-		# Food stalls at Ordam
-		random = {
-			chance = 20
-			trigger_event = {
-				id = tarim_basin.0221
-				days = { 3 18 }
-			}			
-		}
-		# Light-hearted atmosphere at Ordam
-		random = {
-			chance = 20
-			trigger_event = {
-				id = tarim_basin.0222
-				days = { 3 18 }
-			}			
-		}
-		# Mourning pilgrims
-		random = {
-			chance = 20
-			trigger_event = {
-				id = tarim_basin.0223
-				days = { 3 18 }
-			}			
-		}
-		# Chatting with a peddler during Ordam
-		random = {
-			chance = 20
-			trigger_event = {
-				id = tarim_basin.0224
-				days = { 3 18 }
-			}			
-		}
-		# Meet people going on a pilgrimage tour
-		random = {
-			chance = 20
-			trigger_event = {
-				id = tarim_basin.0225
-				days = { 3 18 }
-			}			
-		}
-		# Bury yourself in the sands near the tomb
-		random = {
-			chance = 20
-			trigger_event = {
-				id = tarim_basin.0226
-				days = { 3 18 }
-			}			
-		}
+
+
 
 
 		# In real life it's just a few days, but we spread it out so there's a chance multiple events can trigger
@@ -7876,6 +7941,1738 @@ tarim_basin.0226 = {
 
 
 
+
+######################################################################################
+# 
+# MISCELLANEOUS EVENTS AND DECISIONS
+# 
+# tarim_basin.0240-tarim_basin.0249
+# 
+######################################################################################
+
+# Become fake China
+tarim_basin.0240 = {
+	type = character_event
+	title = tarim_basin.0240.t
+	desc = tarim_basin.0240.desc
+	theme = crown
+	
+	left_portrait = {
+		character = root
+		animation = war_defender
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0240.a
+		RICE_tarim_basin_claim_fake_china_effect = yes
+		every_ruler = {
+			limit = {
+				is_ai = no
+				OR = {
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_silk_road_region
+						}
+					}
+					dynasty = root.dynasty
+				}
+			}
+			trigger_event = tarim_basin.0241
+		}	
+	}
+}
+
+# Become fake China notification
+tarim_basin.0241 = {
+	type = character_event
+	title = tarim_basin.0241.t
+	desc = tarim_basin.0241.desc
+	theme = crown
+	
+	left_portrait = {
+		character = scope:fake_china_claimer
+		animation = war_defender
+	}
+
+	immediate = {
+		scope:fake_china_claimer = {
+			RICE_tarim_basin_claim_fake_china_effect = yes
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0241.a	
+	}
+}
+
+
+
+
+# Lose fake China status
+tarim_basin.0242 = {
+	hidden = yes
+	
+	trigger = {
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_tarim_basin_fake_china_proclaimed_flag
+		}
+		root.dynasty = {
+			has_dynasty_modifier = RICE_tarim_basin_fake_china_dynasty
+		}
+		NOT = {
+			root.dynasty = {
+				any_dynasty_member = {
+					is_landed = yes
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_former_tang_western_region	
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	immediate = {
+		save_scope_as = RICE_tarim_basin_fake_china_person
+		dynasty = {
+			remove_dynasty_modifier = RICE_tarim_basin_fake_china_dynasty
+		}
+		every_ruler = {
+			limit = {
+				is_ai = no
+				OR = {
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_silk_road_region
+						}
+					}
+					dynasty = root.dynasty
+				}
+			}
+			trigger_event = tarim_basin.0243
+		}		
+	}
+}
+
+
+# Fake China status is lost
+tarim_basin.0243 = {
+	type = character_event
+	title = tarim_basin.0243.t
+	desc = tarim_basin.0243.desc
+	theme = crown
+
+	right_portrait = {
+		character = scope:RICE_tarim_basin_fake_china_person
+		animation = worry
+	}
+	
+	immediate = {
+
+		play_music_cue = "mx_cue_negative"
+
+		show_as_tooltip = {
+			scope:RICE_tarim_basin_fake_china_person = {
+				dynasty = {
+					remove_dynasty_modifier = RICE_tarim_basin_fake_china_dynasty
+				}				
+			}
+		}
+	}
+
+	option = {
+		name = tarim_basin.0243.a
+	}
+}
+
+
+
+######################################################################################
+# 
+# FLAVOR EVENTS
+# 
+# tarim_basin.0250-tarim_basin.0299 reserved
+# 
+######################################################################################
+
+
+# Visiting Mogao Caves with noble family depicted
+tarim_basin.0250 = {
+	type = character_event
+	title = tarim_basin.0250.t
+	desc = tarim_basin.0250.desc
+	theme = RICE_theme_dunhuang_mogao_caves
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		RICE_tarim_basin_mogao_religion_trigger = yes
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_dunhuang_region	
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	immediate = {
+		title:c_shazhou = {
+			save_scope_as = dunhuang
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0250.a
+		add_prestige = 20
+	}
+	option = { # ok
+		name = tarim_basin.0250.b
+		add_prestige = 10
+		add_piety = 10
+	}
+	option = { # ok
+		name = tarim_basin.0250.c
+		add_piety = 20
+	}
+}
+
+
+
+
+# Visiting Mogao Caves - see attractive person
+tarim_basin.0251 = {
+	type = character_event
+	title = tarim_basin.0251.t
+	desc = tarim_basin.0251.desc
+	theme = RICE_theme_dunhuang_mogao_caves
+	
+	left_portrait = {
+		character = root
+		animation = love
+	}
+	
+	trigger = {
+		RICE_tarim_basin_mogao_religion_trigger = yes
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_dunhuang_region	
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = lustful
+		}
+		modifier = {
+			add = -0.2
+			has_trait = chaste
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+	}
+
+	immediate = {
+		title:c_shazhou = {
+			save_scope_as = dunhuang
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0251.a
+		add_piety = 15
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+			lustful = miniscule_stress_impact_gain
+			gregarious = miniscule_stress_impact_gain
+		}
+	}
+	option = { # ok
+		name = tarim_basin.0251.b
+		add_prestige = 30
+		add_piety = -15
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+			chaste = miniscule_stress_impact_gain
+			shy = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+
+# Pass by a section of the Great Wall
+tarim_basin.0252 = {
+	type = character_event
+	title = tarim_basin.0252.t
+	desc = tarim_basin.0252.desc
+	theme = RICE_theme_tarim_basin_landscape
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_dunhuang_region	
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0252.a
+		add_piety = 10
+	}
+	option = { # ok
+		name = tarim_basin.0252.b
+		add_prestige = 10
+	}
+}
+
+
+
+# Irrigation/canal experts arrive from China
+tarim_basin.0253 = {
+	type = character_event
+	title = tarim_basin.0253.t
+	desc = tarim_basin.0253.desc
+	theme = RICE_theme_dunhuang_villa
+	
+	right_portrait = root
+	
+	trigger = {
+		capital_province = {
+			geographical_region = RICE_dunhuang_region
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0253.a
+		capital_county = {
+            add_county_modifier = {
+                modifier = RICE_tarim_basin_dunhuang_irrigation_experts
+                years = 10
+            }			
+        }
+	}
+}
+
+
+
+
+# Foreign artists give presents
+tarim_basin.0254 = {
+	type = character_event
+	title = tarim_basin.0254.t
+	desc = tarim_basin.0254.desc
+	theme = realm
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_former_tang_western_region	
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = sadistic
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0254.a
+		add_character_modifier = {
+			modifier = RICE_tarim_basin_gift_serindian_art
+			years = 10
+		}
+	}
+}
+
+
+
+# Buddhist nun acquaintance passes away and leaves you some stuff in her will but her family disputes this
+tarim_basin.0255 = {
+	type = character_event
+	title = tarim_basin.0255.t
+	desc = tarim_basin.0255.desc
+	theme = corruption
+	
+	right_portrait = {
+		character = root
+		animation = stress
+	}
+	
+	trigger = {
+		RICE_tarim_basin_mogao_religion_trigger = yes
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_former_tang_western_region	
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+	}
+
+	option = { # Mine!
+		name = tarim_basin.0255.a
+		add_gold = 25
+		add_piety = -50
+		stress_impact = {
+			forgiving = miniscule_stress_impact_gain
+			generous = miniscule_stress_impact_gain
+			just = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Just give it to them
+		name = tarim_basin.0255.b
+		add_piety = 30
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			vengeful = miniscule_stress_impact_gain
+			arbitrary = miniscule_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Settle it in court
+		name = tarim_basin.0255.c
+		add_gold = 25
+		add_prestige = -50
+		stress_impact = {
+			impatient = minor_stress_impact_gain
+			vengeful = miniscule_stress_impact_gain
+			arbitrary = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Come to an agreement
+		name = tarim_basin.0255.d
+		trigger = {
+			diplomacy >= decent_skill_rating
+		}
+		skill = diplomacy
+		add_gold = 25
+	}
+}
+
+
+
+
+
+# Elderly monk passes away and relatives fight over inheritance
+tarim_basin.0256 = {
+	type = character_event
+	title = tarim_basin.0256.t
+	desc = tarim_basin.0256.desc
+	theme = corruption
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		RICE_tarim_basin_mogao_religion_trigger = yes
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_former_tang_western_region	
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+	}
+
+	option = { # Intervene
+		name = tarim_basin.0256.a
+		add_prestige = 50
+		stress_impact = {
+			base = minor_stress_impact_gain
+			diligent = minor_stress_impact_gain
+			shy = minor_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+			wrathful = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Don't intervene
+		name = tarim_basin.0256.b
+		add_prestige = -50
+		stress_impact = {
+			lazy = minor_stress_impact_loss
+			content = miniscule_stress_impact_loss
+			callous = miniscule_stress_impact_loss
+			shy = miniscule_stress_impact_loss
+		}
+	}
+
+	option = { # Take it for yourself
+		name = tarim_basin.0256.c
+		add_gold = 25
+		add_character_modifier = {
+			modifier = RICE_tarim_basin_took_monk_inheritance
+			years = 10
+		}
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			just = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+			compassionate = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+
+
+# Fake monks and nuns
+tarim_basin.0257 = {
+	type = character_event
+	title = tarim_basin.0257.t
+	desc = tarim_basin.0257.desc
+	theme = corruption
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		RICE_tarim_basin_mogao_religion_trigger = yes
+		any_held_title = {
+			tier = tier_county
+			religion = religion:buddhism_religion
+			any_county_province = {
+				geographical_region = RICE_former_tang_western_region	
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+	}
+
+	option = { # Enforce law
+		name = tarim_basin.0257.a
+		add_prestige = -100
+		every_held_title = {
+			custom = RICE_tarim_basin_every_buddhist_county
+			limit = {
+				tier = tier_county
+				religion = religion:buddhism_religion
+			}
+			add_county_modifier = {
+				modifier = RICE_tarim_basin_enforcing_monastic_regulations
+				years = 10
+			}	
+		}
+		stress_impact = {
+			forgiving = miniscule_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+		}
+	}
+	option = { # Don't enforce law
+		name = tarim_basin.0257.b
+		every_held_title = {
+			custom = RICE_tarim_basin_every_buddhist_county
+			limit = {
+				tier = tier_county
+				religion = religion:buddhism_religion
+			}
+			add_county_modifier = {
+				modifier = RICE_tarim_basin_lax_monastic_regulations
+				years = 10
+			}	
+		}
+		stress_impact = {
+			vengeful = miniscule_stress_impact_gain
+			zealous = miniscule_stress_impact_gain
+			greedy = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+
+
+# Gift of juicy Dunhuang melons
+tarim_basin.0258 = {
+	type = character_event
+	title = tarim_basin.0258.t
+	desc = tarim_basin.0258.desc
+	theme = feast_activity
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_dunhuang_region	
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+	}
+
+	immediate = {
+		title:c_shazhou = {
+			save_scope_as = dunhuang
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0258.a
+		add_character_modifier = {
+			modifier = RICE_tarim_basin_juicy_dunhuang_melons
+			years = 5
+		}
+	}
+}
+
+
+
+# Ancient hidden, sealed Mogao cave discovered
+tarim_basin.0259 = {
+	type = character_event
+	title = tarim_basin.0259.t
+	desc = tarim_basin.0259.desc
+	theme = RICE_theme_dunhuang_mogao_caves
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		RICE_tarim_basin_mogao_religion_trigger = yes
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_dunhuang_region	
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = sadistic
+		}
+	}
+
+	immediate = {
+		title:c_shazhou = {
+			save_scope_as = dunhuang
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0259.a
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 40
+			}
+		}
+		remove_short_term_gold = 40
+		add_prestige = 50
+		add_piety = 50
+	}
+
+	option = { # ok
+		name = tarim_basin.0259.b
+	}
+}
+
+
+
+
+# Important delegation/envoys pass through on the way to China
+tarim_basin.0260 = {
+	type = character_event
+	title = tarim_basin.0260.t
+	desc = tarim_basin.0260.desc
+	theme = realm
+	
+	left_portrait = root
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				OR = {
+					geographical_region = RICE_former_tang_western_region
+					geographical_region = world_tibet
+					geographical_region = world_steppe_east
+				}	
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0260.a
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 20
+			}
+		}
+		remove_short_term_gold = 20
+		add_prestige = 50
+		stress_impact = {
+			greedy = miniscule_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0260.b
+		stress_impact = {
+			generous = miniscule_stress_impact_gain
+			gregarious = miniscule_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+			diligent = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+# Dispute between Khotanese monk and Sogdian merchant
+tarim_basin.0261 = {
+	type = character_event
+	title = tarim_basin.0261.t
+	desc = tarim_basin.0261.desc
+	theme = realm
+	
+	left_portrait = root
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				OR = {
+					geographical_region = world_steppe_tarim
+					geographical_region = RICE_dunhuang_region
+				}	
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0261.a
+		add_prestige = 25
+	}
+
+	option = { # ok
+		name = tarim_basin.0261.b
+		add_piety = 25
+	}
+
+	option = { # ok
+		name = tarim_basin.0261.c
+		if = {
+			limit = {
+				has_trait = diligent
+			}
+			stress_impact = {
+				diligent = minor_stress_impact_gain
+			}
+		}
+		else = {
+			stress_impact = {
+				base = miniscule_stress_impact_loss
+				lazy = miniscule_stress_impact_loss
+			}
+		}		
+	}
+
+	option = { # ok
+		name = tarim_basin.0261.d
+		trigger = {
+			stewardship >= decent_skill_rating
+		}
+		skill = stewardship
+		add_prestige = 25
+		add_piety = 25
+	}
+}
+
+
+
+# Taking Rhubarb for health reasons
+tarim_basin.0262 = {
+	type = character_event
+	title = tarim_basin.0262.t
+	desc = tarim_basin.0262.desc
+	theme = realm
+	override_icon = { reference = "gfx/interface/icons/event_types/type_medicine.dds" }
+	
+	left_portrait = root
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_land_silk_road_region
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+	}
+
+	immediate = {
+		title:c_suzhou = {
+			save_scope_as = suzhou
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0262.a
+		add_character_modifier = {
+			modifier = RICE_tarim_basin_taking_rhubarb
+			years = 3
+		}
+	}
+}
+
+
+
+# Inspecting a new Mogao cave made by community effort
+tarim_basin.0263 = {
+	type = character_event
+	title = tarim_basin.0263.t
+	desc = tarim_basin.0263.desc
+	theme = RICE_theme_dunhuang_mogao_caves
+	
+	left_portrait = {
+		character = root
+		animation = admiration
+	}
+	
+	trigger = {
+		RICE_tarim_basin_mogao_religion_trigger = yes
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_dunhuang_region	
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+	}
+
+	immediate = {
+		title:c_shazhou = {
+			save_scope_as = dunhuang
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0263.a
+		add_prestige = 20
+	}
+}
+
+
+# Come across a big reclining Buddha in a Mogao cave
+tarim_basin.0264 = {
+	type = character_event
+	title = tarim_basin.0264.t
+	desc = tarim_basin.0264.desc
+	theme = RICE_theme_dunhuang_mogao_caves
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		RICE_tarim_basin_mogao_religion_trigger = yes
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_dunhuang_region	
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+	}
+
+	immediate = {
+		title:c_shazhou = {
+			save_scope_as = dunhuang
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0264.a
+		add_prestige = 15
+	}
+
+	option = { # ok
+		name = tarim_basin.0264.b
+		add_piety = 15
+	}
+}
+
+
+# Family pays fine in silk
+tarim_basin.0265 = {
+	type = character_event
+	title = tarim_basin.0265.t
+	desc = tarim_basin.0265.desc
+	theme = corruption
+	
+	right_portrait = {
+		character = root
+		animation = stress
+	}
+	
+	trigger = {
+		capital_province = {
+			geographical_region = RICE_former_tang_western_region
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0265.a
+		add_gold = 25
+		add_prestige = 50
+		stress_impact = {
+			base = minor_stress_impact_gain
+			lazy = minor_stress_impact_gain
+			wrathful = miniscule_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+			diligent = miniscule_stress_impact_gain
+			impatient = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+# Famous trinket merchant passes through the Silk Road
+tarim_basin.0266 = {
+	type = character_event
+	title = tarim_basin.0266.t
+	desc = tarim_basin.0266.desc
+	theme = stewardship_wealth_focus
+	override_background = { event_background = RICE_background_tarim_basin_town }
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		capital_province = {
+			geographical_region = RICE_land_silk_road_region
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+	}
+
+	immediate = {		
+		capital_county = {
+			add_county_modifier = {
+				modifier = RICE_tarim_basin_famous_silk_road_peddler_visits
+				years = 1
+			}			
+		} 
+	}
+
+	option = { # ok
+		name = tarim_basin.0266.a
+	}
+
+	option = { # ok
+		name = tarim_basin.0266.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 15
+			}
+		}
+		remove_short_term_gold = 15
+		add_prestige = 50 
+	}
+}
+
+
+
+# Visiting White Horse Pagoda
+tarim_basin.0267 = {
+	type = character_event
+	title = tarim_basin.0267.t
+	desc = tarim_basin.0267.desc
+	theme = faith
+	override_background = { event_background = RICE_background_dunhuang_villa }
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	trigger = {
+		#RICE_tarim_basin_mogao_religion_trigger = yes
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_dunhuang_region	
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		title:c_shazhou = {
+			save_scope_as = dunhuang
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0267.a
+		trigger = {
+			religion = religion:buddhism_religion
+		}
+		add_prestige = 15
+		stress_impact = {
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0267.b
+		trigger = {
+			religion = religion:buddhism_religion
+		}
+		add_piety = 15
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0267.c
+		trigger = {
+			NOT = { religion = religion:buddhism_religion }
+		}
+		add_prestige = 15
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0267.d
+		trigger = {
+			NOT = { religion = religion:buddhism_religion }
+		}
+		add_piety = 15
+		stress_impact = {
+			humble = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+
+
+# Encounter a caravan of pilgrims praying on their way to Mogao
+tarim_basin.0268 = {
+	type = character_event
+	title = tarim_basin.0268.t
+	desc = tarim_basin.0268.desc
+	theme = faith
+	override_background = { event_background = RICE_background_tarim_basin_landscape }
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_dunhuang_region	
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = -0.2
+			has_trait = paranoid
+		}
+		modifier = {
+			add = 0.2
+			has_trait = honest
+		}
+		modifier = {
+			add = -0.2
+			has_trait = deceitful
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0268.a
+		add_piety = 15
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0268.b
+		add_prestige = 15
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+
+
+# Acrobats from China arrive to entertain your court
+tarim_basin.0269 = {
+	type = character_event
+	title = tarim_basin.0269.t
+	desc = tarim_basin.0269.desc
+	theme = diplomacy_foreign_affairs_focus
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_former_tang_western_region	
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = -0.2
+			has_trait = paranoid
+		}
+		modifier = {
+			add = 0.2
+			has_trait = honest
+		}
+		modifier = {
+			add = -0.2
+			has_trait = deceitful
+		}
+	}
+
+	
+
+	immediate = {
+		play_music_cue = "mx_cue_low_key_positive"
+	}
+
+	option = { # ok
+		name = tarim_basin.0269.a
+		add_prestige = 50
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+		if = {
+			limit = {
+				has_royal_court = yes
+			}
+			change_current_court_grandeur = miniscule_court_grandeur_gain
+		}	
+	}
+}
+
+
+
+# Performers from Tarim Basin performing in the street at night
+tarim_basin.0270 = {
+	type = character_event
+	title = tarim_basin.0270.t
+	desc = tarim_basin.0270.desc
+	theme = RICE_theme_tarim_basin_town
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_former_tang_western_region	
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = lustful
+		}
+		modifier = {
+			add = -0.2
+			has_trait = chaste
+		}
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+	}
+
+	
+
+	immediate = {
+		play_music_cue = "mx_cue_low_key_positive"
+		title:c_kucha = {
+			save_scope_as = kucha
+		}
+	}
+
+	option = { # ok
+		name = tarim_basin.0270.a
+		add_prestige = 15
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+	}
+}
 
 
 
