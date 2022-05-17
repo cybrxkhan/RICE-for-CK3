@@ -367,7 +367,7 @@ tarim_basin.0016 = {
 		has_global_variable = RICE_game_started_on_TFE_start_date
 		has_title = title:c_loulan
 		NOT = { has_global_variable = RICE_lop_nur_lake_levels_chill_out }
-		current_year > 450
+		current_year > 440
 	}
 
 	weight_multiplier = {
@@ -2750,6 +2750,7 @@ tarim_basin.0042 = {
 					has_trait = eunuch
 					has_trait = devoted
 				}
+				NOT = { has_council_position = councillor_court_chaplain }
 			}
 			any_vassal = {
 				is_available_ai_adult = yes
@@ -2763,6 +2764,7 @@ tarim_basin.0042 = {
 					has_trait = eunuch
 					has_trait = devoted
 				}
+				NOT = { has_council_position = councillor_court_chaplain }
 			}
 		}
 	}
@@ -2782,6 +2784,7 @@ tarim_basin.0042 = {
 					has_trait = eunuch
 					has_trait = devoted
 				}
+				NOT = { has_council_position = councillor_court_chaplain }
 			}
 			add_to_list = lover_candidates
 		}
@@ -2798,6 +2801,7 @@ tarim_basin.0042 = {
 					has_trait = eunuch
 					has_trait = devoted
 				}
+				NOT = { has_council_position = councillor_court_chaplain }
 			}
 			add_to_list = lover_candidates
 		}
@@ -3356,9 +3360,6 @@ tarim_basin.0042 = {
 
 	option = { # No, I do not give permission
 		name = tarim_basin.0042.d
-		trigger = {
-			diplomacy < decent_skill_rating
-		}
 		scope:lover = {
 			add_opinion = {
 				target = scope:recipient
@@ -3387,10 +3388,164 @@ tarim_basin.0042 = {
 
 	option = { # Let the girl choose for herself!
 		name = tarim_basin.0042.e
-		hidden_effect = {
-			scope:crush = {
-				death = {
-					death_reason = death_vanished
+		add_character_modifier = {
+			modifier = RICE_tarim_basin_considerate_towards_entertainers
+			years = 10
+		}
+		scope:crush = {
+			add_opinion = {
+				target = scope:recipient
+				modifier = RICE_tarim_basin_considerate_feelings
+			}
+		}
+		add_character_flag = RICE_tarim_basin_respects_entertainer_feelings
+		random_list = {
+			desc = tarim_basin.0042.e.tooltip
+			50 = {
+				show_chance = no
+				desc = tarim_basin.0042.e.tooltip.yes
+				# She has to be at least neutral in opinion towards him
+				trigger = {
+					scope:crush = {
+						opinion = {
+							target = scope:lover
+							value > -20
+						}
+					}
+				}
+				# She's interested, but doesn't necessarily mean she'll agree in the end
+				modifier = {
+					add = 35
+					var:RICE_entertainer_romance_type = flag:mutual
+				}
+				# He's good looking
+				modifier = {
+					add = 5
+					scope:lover = {
+						has_trait = beauty_good_1
+					}
+				}
+				modifier = {
+					add = 10
+					scope:lover = {
+						has_trait = beauty_good_2
+					}
+				}
+				modifier = {
+					add = 15
+					scope:lover = {
+						has_trait = beauty_good_3
+					}
+				}
+				# The girl is a gold digger or power hungry
+				modifier = {
+					add = 15
+					scope:crush = {
+						OR = {
+							ai_greed >= medium_positive_ai_value
+							has_trait = greedy
+							has_trait = ambitious
+						}
+					}
+					scope:lover = {
+						is_landed = yes
+					}
+				}
+				# The guy has a reputation for being nice
+				modifier = {
+					add = 10
+					scope:lover = {
+						has_trait_benevolent_trigger = yes
+					}
+				}
+				# The guy is good at charming women
+				modifier = {
+					add = 10
+					scope:lover = {
+						OR = {
+							has_trait = gallant
+							has_trait = seducer
+							has_trait = gregarious
+						}
+					}
+				}							
+				send_interface_toast = {
+					left_icon = ROOT
+					title = tarim_basin.0042.e.toast.yes
+					RICE_tarim_basin_marry_entertainer_crush_effect = yes					
+				}
+			}
+			# She is not interested
+			50 = {
+				show_chance = no
+				desc = tarim_basin.0042.e.tooltip.no
+				# She's not interested (but she still might concede in the end)
+				modifier = {
+					add = 25
+					var:RICE_entertainer_romance_type = flag:one_sided
+				}
+				# He's ugly
+				modifier = {
+					add = 5
+					scope:lover = {
+						has_trait = beauty_bad_1
+					}
+				}
+				modifier = {
+					add = 10
+					scope:lover = {
+						has_trait = beauty_bad_2
+					}
+				}
+				modifier = {
+					add = 15
+					scope:lover = {
+						has_trait = beauty_bad_3
+					}
+				}
+				# The girl looks down on the guy
+				modifier = {
+					add = 5
+					scope:crush = {
+						has_trait = arrogant
+					}
+				}
+				# The girl is worried
+				modifier = {
+					add = 5
+					scope:crush = {
+						has_trait = paranoid
+					}
+				}
+				# The guy has a reputation for being an asshole
+				modifier = {
+					add = 25
+					scope:lover = {
+						OR = {
+							has_trait = sadistic
+							has_trait = wrathful
+							has_trait = arrogant
+							has_trait = callous
+							has_trait = vengeful
+						}
+					}
+				}
+				send_interface_toast = {
+					left_icon = ROOT
+					title = tarim_basin.0042.e.toast.no	
+					scope:lover = {
+						add_character_modifier = {
+							modifier = RICE_tarim_basin_rejected_by_entertainer
+							years = 10
+						}
+					}			
+				}
+				hidden_effect = {
+					scope:crush = {
+						death = {
+							death_reason = death_vanished
+						}
+					}		
 				}
 			}
 		}
@@ -3420,6 +3575,13 @@ tarim_basin.0042 = {
 		if = {
 			limit = { has_variable = RICE_entertainer_romance_type }
 			remove_variable = RICE_entertainer_romance_type
+		}		
+		# Clear flag
+		if = {
+			limit = {
+				has_character_flag = RICE_tarim_basin_respects_entertainer_feelings
+			}
+			remove_character_flag = RICE_tarim_basin_respects_entertainer_feelings
 		}
 	}
 
@@ -6122,8 +6284,22 @@ tarim_basin.0153 = {
 	
 	right_portrait = root
 
+	immediate = {
+		random_list = {
+			30 = { add_piety = 25 }
+			50 = { add_piety = 50 }
+			30 = { add_piety = 75 }
+			10 = { add_piety = 100 }
+		}
+		RICE_tarim_basin_khotan_procession_eight_guardian_blessings_effect = yes
+	}
+
 	option = { # Ok
 		name = tarim_basin.0153.a
+		add_character_modifier = {
+			modifier = RICE_tarim_basin_participated_in_khotan_procession
+			years = 5
+		}
 	}
 
 	after = {
@@ -6790,6 +6966,7 @@ tarim_basin.0202 = {
 		if = {
 			limit = {
 				is_independent_ruler = no
+				exists = liege
 			}
 			custom_tooltip = tarim_basin.0202.copy.liege
 			liege = {
@@ -6832,17 +7009,32 @@ tarim_basin.0202 = {
 			}
 			add_to_list = turkic_dictionary_notification_list
 		}
-		scope:liege = {
-			add_to_list = turkic_dictionary_notification_list
-			add_character_flag = RICE_tarim_basin_received_turkic_dictionary_copy
+		if = {
+			limit = {
+				exists = scope:liege
+			}
+			scope:liege = {
+				add_to_list = turkic_dictionary_notification_list
+				add_character_flag = RICE_tarim_basin_received_turkic_dictionary_copy
+			}
 		}
-		scope:top_liege = {
-			add_to_list = turkic_dictionary_notification_list
-			add_character_flag = RICE_tarim_basin_received_turkic_dictionary_copy
+		if = {
+			limit = {
+				exists = scope:top_liege
+			}
+			scope:top_liege = {
+				add_to_list = turkic_dictionary_notification_list
+				add_character_flag = RICE_tarim_basin_received_turkic_dictionary_copy
+			}
 		}
-		scope:religious_head = {
-			add_to_list = turkic_dictionary_notification_list
-			add_character_flag = RICE_tarim_basin_received_turkic_dictionary_copy
+		if = {
+			limit = {
+				exists = scope:religious_head
+			}
+			scope:religious_head = {
+				add_to_list = turkic_dictionary_notification_list
+				add_character_flag = RICE_tarim_basin_received_turkic_dictionary_copy
+			}
 		}
 		every_in_list = {
 			list = turkic_dictionary_notification_list
@@ -7035,6 +7227,7 @@ tarim_basin.0205 = {
 		if = {
 			limit = {
 				is_independent_ruler = no
+				exists = liege
 			}
 			liege = {
 				save_scope_as = liege
@@ -7078,6 +7271,7 @@ tarim_basin.0205 = {
 		if = {
 			limit = {
 				is_independent_ruler = no
+				exists = liege
 			}
 			custom_tooltip = tarim_basin.0202.copy.liege
 			liege = {
@@ -7120,17 +7314,32 @@ tarim_basin.0205 = {
 			}
 			add_to_list = turkic_dictionary_notification_list
 		}
-		scope:liege = {
-			add_to_list = turkic_dictionary_notification_list
-			add_character_flag = RICE_tarim_basin_received_turkic_dictionary_copy
+		if = {
+			limit = {
+				exists = scope:liege
+			}
+			scope:liege = {
+				add_to_list = turkic_dictionary_notification_list
+				add_character_flag = RICE_tarim_basin_received_turkic_dictionary_copy
+			}
 		}
-		scope:top_liege = {
-			add_to_list = turkic_dictionary_notification_list
-			add_character_flag = RICE_tarim_basin_received_turkic_dictionary_copy
+		if = {
+			limit = {
+				exists = scope:top_liege
+			}
+			scope:top_liege = {
+				add_to_list = turkic_dictionary_notification_list
+				add_character_flag = RICE_tarim_basin_received_turkic_dictionary_copy
+			}
 		}
-		scope:religious_head = {
-			add_to_list = turkic_dictionary_notification_list
-			add_character_flag = RICE_tarim_basin_received_turkic_dictionary_copy
+		if = {
+			limit = {
+				exists = scope:religious_head
+			}
+			scope:religious_head = {
+				add_to_list = turkic_dictionary_notification_list
+				add_character_flag = RICE_tarim_basin_received_turkic_dictionary_copy
+			}
 		}
 		every_in_list = {
 			list = turkic_dictionary_notification_list
@@ -7993,15 +8202,15 @@ tarim_basin.0240 = {
 		every_ruler = {
 			limit = {
 				is_ai = no
-				OR = {
+				#OR = {
 					any_held_title = {
 						tier = tier_county
 						any_county_province = {
 							geographical_region = RICE_silk_road_region
 						}
 					}
-					dynasty = root.dynasty
-				}
+				#	dynasty = root.dynasty # Shows errors for some reason?
+				#}
 			}
 			trigger_event = tarim_basin.0241
 		}	
@@ -8069,15 +8278,15 @@ tarim_basin.0242 = {
 		every_ruler = {
 			limit = {
 				is_ai = no
-				OR = {
+				#OR = {
 					any_held_title = {
 						tier = tier_county
 						any_county_province = {
 							geographical_region = RICE_silk_road_region
 						}
 					}
-					dynasty = root.dynasty
-				}
+				#	dynasty = root.dynasty # Shows errors for some reason?
+				#}
 			}
 			trigger_event = tarim_basin.0243
 		}		
