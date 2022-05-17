@@ -51,7 +51,7 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ## Latest Changelog
 
-### Version 1.5.5 "Philae"
+### Version 1.5.5 "Silk Road"
 
 - Added Tarim Basin Flavor Pack: Cities of the Silk Road
 - Added 13 Chinese themed soundtracks
