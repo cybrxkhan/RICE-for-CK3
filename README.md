@@ -1,14 +1,14 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.5.4 "Philae" (Released 3/27/22, for vanilla patch 1.5.x)
+## Latest Version: Version 1.5.5 "Silk Road" (Released 5/17/22, for vanilla patch 1.5.x)
 
-**Newest Flavor Packs - Rhodes: Shadow of the Colossus & Upper Egypt: Children of the Nile**
+**Newest Flavor Pack - Tarim Basin: Peoples of the Silk Road**
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com)
 
-_"Before Mandulis, son of Horus, by the hand of Nesmeterakhem, son of Nesmeter, the Second Priest of Isis, for all time and eternity. Words spoken by Mandulis, lord of the Abaton, great god."_
+_“It has not been my fate to see things first hand, traveling with the rapid winds, or enlisting swift horses to view distant vistas. Alas, I have to strain to see the three heavenly bodies [the sun, moon, and stars] but, oh, how my thoughts fly to the eight foreign regions!”_
 
-_- Nesmeterakhem, Priest of Isis, 394 CE; last recorded hieroglyphic inscription in history_
+_- Yu Huan (c. 4th century), from his commentary on the Western Regions in the Weilüe_
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. The guiding philosophy of RICE is to keep a tight, focused scope that doesn’t change gameplay significantly, but adds more flavor across the world, especially for lesser-known places, peoples, and histories.
 
@@ -31,6 +31,7 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 - [Siwa: Oases of the Western Desert](https://docs.google.com/document/d/1OOXqqBEGv94IBAH-rIsjoBog1YFtVAFg_TPsuIQmhtg/pub)
 - [Socotra: Isle of Dragon's Blood](https://docs.google.com/document/d/e/2PACX-1vRs_x_9wjofcveP_yhymlL5TWPB1UdSQyi_C_M1z4dWpFg3lqHgHwGpFD2xfkf0-RdsKIlRekQsLD4s/pub)
 - [Sus: Door of the Sahara](https://docs.google.com/document/d/e/2PACX-1vQo9H7CnvJxD-KEjrwKEZ6GUUAJSqtF8-3oHW8YyoOntDliMBNHEOxRMNJRt8VFdpNs9LOGdgX9jCtZ/pub)
+- [Tarim Basin: Peoples of the Silk Road](https://docs.google.com/document/d/e/2PACX-1vTDLXZZlm5IfgIRvQfu6nIqd7Hflm-9BsgtrHGA8nHKtpxbIVxukXWD2Z6V0NPZ-iFUj6TtOgH3qFdy/pub)
 - [Tuyuhun: Horsemen of Qinghai](https://docs.google.com/document/d/e/2PACX-1vSLTlVseJqHCut1xBqm9tY2AVgfunhUTX0m8oN-OvHpMgexvpbFO8OIXVC2xDkgo9UvMYnv4qnjBUqP/pub)
 - [Upper Egypt: Children of the Nile](https://docs.google.com/document/d/e/2PACX-1vRPqf2Ip9U9cgDBiihQw6J-sGoCMiobFNhXrTsnzvwNIWBcjlRf2Cvn5ifDYADIwLt9w636GB7WCeY2/pub)
 - [Yazd: Abode of Worship](https://docs.google.com/document/d/e/2PACX-1vSPDkkP1PqCoPsi_HM29C5MM5L-as_SyKkmx_jNtOEqoW2mQx2APneBmbHNhi5hNePLHAxqm9QTm8y3/pub)
@@ -46,26 +47,26 @@ DO NOT manually download the master branch unless you know what you're doing as 
 3. Launch CKIII and select RICE in the launcher.
 4. Enjoy and play!
 
-NOTE: If you are re-installing a mod manually, delete the old version of the mod first before copy and pasting the new one! While it's not always necessary, it's a good habit to do to prevent any potential issues.
+NOTE: **If you are re-installing a mod manually, delete the old version of the mod first before copy and pasting the new one! It's a good habit to do to prevent potential issues.**
 
 ## Latest Changelog
 
-### Version 1.5.4 "Philae"
+### Version 1.5.5 "Philae"
 
-- Behind the scenes effects now happen before a new game starts, meaning you can see it on the map! Thanks to Celticus for letting me know how it works
-- Popup event to choose to play Thabit ibn Qurra or his descendant Ibn Nabhan will now only trigger for the Caliph or whoever has Harran at game start
-- RICE New Playable Characters game rule renamed to RICE Starting Flavor Events
-- Added several playable historical Egyptian characters for 867 CE, including Tulunid officials and various rebels active at the time, and tweaked the starting situation
-- Integrated Honor Codes and Desert Poetry traditions from Henry's Better Bedouin Culture mod - many thanks to Henry for generously offering me the code!
-- Added Himyarite namelist
-- Gave Ibn Tulun a few more children
-- Shukayr and Ibn Muddabir now start off as allies
-- Ibn Tulun starts off with the “Emmity Towards Ruthless Egyptian Officials” opinion modifier towards Shukayr and Ibn Muddabir, which allows him to imprison them and revoke titles
-- Shukayr and Ibn Muddabir start off with more gold, giving them both a chance to resist Ibn Tulun and to reflect their ruthless tax measures
-- Yeniseian culture now also has Forest Folk tradition
-- Peristani and Burusho cultures now have the Frequent Festivities traditions
-- Reduced bonuses for Children of the Nile tradition
-- Changed a few counties and rulers in the Pamir region from Mahayana to Theravada (based on historical Chinese sources): Wakhan, Khuttal, East and West Tokharistan, Kapisi
-- Moved Amazigh holy site of Ahaggar to Djanet due to it potentially causing inheritance issues
+- Added Tarim Basin Flavor Pack: Cities of the Silk Road
+- Added 13 Chinese themed soundtracks
+- Added German translations for much of RICE, thanks to Dillo for the hard work!
+- Added Hephthalite namelist
+- Added new COA for Zunbil and Turkishahi/Nandin dynasties
+- Bedouin Honor Code and Bedouin Oral Poetry are now locked to the Arabic heritage
+- Tweaked AI for character interactions
+- Reduced opinion bonus from Kalymnian sponge interaction
+- RICE’s Sinosphere scripted trigger now correctly includes various cultures it didn’t before
+- Nerfed the negate health penalty effect for some modifiers
+- Added Hubal as the high god name for Hubalists (will expand on deity list in the future)
+- Fixed England Charter Fair event from triggering again even after it already happened
+- Fixed Ibn Tulun starting with two education traits
+- Fixed missing localization for “Old” versions of Semitic faiths
+- Fixed messy borders in Egypt if playing with Ibn Battuta's Legacy
 - Miscellaneous bugfixes
 
