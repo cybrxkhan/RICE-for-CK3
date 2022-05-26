@@ -1,14 +1,15 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.5.5 "Silk Road" (Released 5/17/22, for vanilla patch 1.5.x)
+## Latest Version: Version 1.5.6 "Zhai Fengda" (Released 5/25/22, for vanilla patch 1.5.x)
 
 **Newest Flavor Pack - Tarim Basin: Peoples of the Silk Road**
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com)
 
-_“It has not been my fate to see things first hand, traveling with the rapid winds, or enlisting swift horses to view distant vistas. Alas, I have to strain to see the three heavenly bodies [the sun, moon, and stars] but, oh, how my thoughts fly to the eight foreign regions!”_
+_“This [poem] was written in my youth, when I could hardly manage the way. . . . I was but twenty years when I composed it. This year, happening upon the poem again, I am overcome with shame.”_
+_- Zhai Fengda, cringing at his younger self_
 
-_- Yu Huan (c. 4th century), from his commentary on the Western Regions in the Weilüe_
+_Zhai Fengda was a famed 10th century scholar who served as a prominent official under the Cao Dynasty of Dunhuang. The quote comes from one of his poems; when he apparently rediscovered the manuscript as an older man, he jotted the above line as commentary._
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. The guiding philosophy of RICE is to keep a tight, focused scope that doesn’t change gameplay significantly, but adds more flavor across the world, especially for lesser-known places, peoples, and histories.
 
@@ -51,22 +52,24 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ## Latest Changelog
 
-### Version 1.5.5 "Silk Road"
+### Version 1.5.6 "Zhai Fengda"
 
-- Added Tarim Basin Flavor Pack: Cities of the Silk Road
-- Added 13 Chinese themed soundtracks
-- Added German translations for much of RICE, thanks to Dillo for the hard work!
-- Added Hephthalite namelist
-- Added new COA for Zunbil and Turkishahi/Nandin dynasties
-- Bedouin Honor Code and Bedouin Oral Poetry are now locked to the Arabic heritage
-- Tweaked AI for character interactions
-- Reduced opinion bonus from Kalymnian sponge interaction
-- RICE’s Sinosphere scripted trigger now correctly includes various cultures it didn’t before
-- Nerfed the negate health penalty effect for some modifiers
-- Added Hubal as the high god name for Hubalists (will expand on deity list in the future)
-- Fixed England Charter Fair event from triggering again even after it already happened
-- Fixed Ibn Tulun starting with two education traits
-- Fixed missing localization for “Old” versions of Semitic faiths
-- Fixed messy borders in Egypt if playing with Ibn Battuta's Legacy
+- Added Turkshahi/Nandin dynasty tamga as their coat of arms
+- Added additional Evenki names, courtesy of Nix
+- Assyrians now have a small change of appearing from Middle Eastern Silk Road Communities
+- All activities will now automatically expire after some time in case of weird situations where they don’t end
+- Decision to Stage Animal Fights is now available for Tocharian heritage in general or if your capital has a culture of Tocharian heritage (so you don’t need to be descended from Tocharian culture)
+- Mogao Cave Decision can now be taken by anyone whose liege or top liege controls the county of Guazhou (aka Dunhuang)
+- Silk Road Community decision can now be taken in Mesopotamia
+- Steppe and Himalayan community troops now focus on cavalry vs infantry, instead of a mix of both, to provide distinct differences
+- Reduced renown gain across the board for various decisions/interactions/events/etc.
+- Reduced number of troops gained from various SIlk Road community decisions/events
+- Reduced chances of getting large gift of troops from Silk Road community events
+- Reduced chances AI will take the Silk Road Communities decision
+- Reduced chances Silk Road communities will give gifts via event
+- Fixed the Silk Road Communities decision so AI won't always pick East Asians
+- Fixed Diverse Peoples and Cultures dynasty perk reducing instead of increasing the chances of getting gifts from Silk Road Communities
+- Fixed several titular/formable kingdoms/empires missing de jure capitals
+- Fixed duplicate renown gain for Silk Road entertainer interactions
 - Miscellaneous bugfixes
 
