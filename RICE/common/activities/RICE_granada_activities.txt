@@ -1,0 +1,257 @@
+﻿
+
+
+activity_granada_alhambra_comares_baths = {
+	expiration_days = 180
+	solo = yes
+	color = { 0.61 0.83 0.86 1 } # Water Blue
+	on_spawn = {
+		invite_character_to_activity = activity_owner
+		accept_invitation_for_character = activity_owner
+
+	}
+	on_activate = {
+		activity_owner = {
+			trigger_event = {
+				id = granada.0040
+				days = { 3 10 }				
+			}
+		}
+	}
+	on_complete = {
+		activity_owner = {
+			remove_character_flag = planning_an_activity
+		}	
+	}
+	on_expire = { # Should never happen - kept as fallback for weirdness only
+		activity_owner = {
+			remove_character_flag = planning_an_activity
+		}
+	}
+}
+
+
+activity_granada_alhambra_gardens = {
+	expiration_days = 180
+	solo = yes
+	color = { 0.29 0.37 0.21 1 } # Garden Green
+	on_spawn = {
+		invite_character_to_activity = activity_owner
+		accept_invitation_for_character = activity_owner
+
+	}
+	on_activate = {
+		activity_owner = {
+			trigger_event = {
+				id = granada.0041
+				days = { 3 10 }				
+			}
+		}
+	}
+	on_complete = {
+		activity_owner = {
+			remove_character_flag = planning_an_activity
+		}	
+	}
+	on_expire = { # Should never happen - kept as fallback for weirdness only
+		activity_owner = {
+			remove_character_flag = planning_an_activity
+		}
+	}
+}
+
+
+activity_granada_munya_vacation_private = {
+	expiration_days = 180
+	solo = yes
+	color = { 0.56 0.66 0.07 1 } # Plant Green
+	on_spawn = {
+		invite_character_to_activity = activity_owner
+		accept_invitation_for_character = activity_owner
+
+	}
+	on_activate = {
+		activity_owner = {
+			trigger_event = {
+				id = granada.0060
+				days = { 7 15 }
+			}
+		}
+	}
+	on_complete = {
+		activity_owner = {
+			remove_character_flag = planning_an_activity
+		}	
+	}
+	on_expire = { # Should never happen - kept as fallback for weirdness only
+		activity_owner = {
+			remove_character_flag = planning_an_activity
+		}
+	}
+}
+
+
+activity_granada_munya_vacation_group = {
+	expiration_days = 60
+	has_activity_window = yes
+	days_until_auto_start = 10
+	color = { 0.56 0.66 0.07 1 } # Plant Green
+	valid = {
+		activity_owner = {
+			is_alive = yes
+			is_imprisoned = no
+		}
+	}
+	on_spawn = {
+		invite_character_to_activity = activity_owner
+		accept_invitation_for_character = activity_owner
+		activity_owner = {
+			every_spouse = {
+				limit = {
+					is_available_for_activity_trigger = yes
+					is_adult = yes
+				}
+				add_to_temporary_list = potential_guests
+			}
+			every_child = {
+				limit = {
+					is_available_for_activity_trigger = yes
+					OR = {
+						is_adult = yes
+						is_landed = yes
+					}
+				}
+				add_to_temporary_list = potential_guests
+			}
+			every_parent = {
+				limit = {
+					is_available_for_activity_trigger = yes
+				}
+				add_to_temporary_list = potential_guests
+			}
+			every_sibling = {
+				limit = {
+					is_available_for_activity_trigger = yes
+					OR = {
+						is_adult = yes
+						is_landed = yes
+					}
+				}
+				add_to_temporary_list = potential_guests
+			}
+			every_vassal = {
+				limit = {
+					is_available_for_activity_trigger = yes
+				}
+				add_to_temporary_list = potential_guests	
+			}
+			every_courtier = {
+				limit = {
+					is_available_for_activity_trigger = yes
+					is_adult = yes
+				}
+				add_to_temporary_list = potential_guests	
+			}
+			every_in_list = {
+				list = potential_guests
+				scope:activity = {
+					invite_character_to_activity = prev
+				}
+				# Invitations
+				trigger_event = {
+					id = granada.0051
+					days = { 3 8 }
+				}
+			}
+		}
+	}
+	on_activate = {
+		activity_owner = { # The host gets their events
+			# The key event is chosen for the host, and fires other events from there to every participant:
+			trigger_event = granada.0070
+		}
+		every_participant = {
+			limit = { 
+				NOT = { this = scope:activity.activity_owner }
+			}
+			#Remove blocker for invitations to feasts (the feast is now active and will work as a blocker)
+			remove_variable = booked_for_a_party # CHECK THIS CHECK THIS
+			#trigger_event = granada.0071
+		}
+	}
+	on_complete = {
+		every_participant = {
+			target_weight_modifier_effect = {
+				VALUE = feast_weight_modifier_value
+			}
+		}
+		activity_owner = {
+			remove_character_flag = planning_an_activity
+		}	
+	}
+	on_expire = { # Should never happen - kept as fallback for weirdness only
+		activity_owner = {
+			remove_character_flag = planning_an_activity
+		}
+	}
+	
+	on_participant_death = {
+	
+	}
+	on_invalidated = {
+		activity_owner = {
+			if = {
+				limit = {
+					has_character_flag = planning_an_activity
+				}
+				remove_character_flag = planning_an_activity
+			}
+			save_scope_as = host
+		}
+		every_participant = {
+			limit = {
+				NOT = { this = scope:host }
+			}
+			if = {
+				limit = {
+					has_character_flag = planning_an_activity
+				}
+				remove_character_flag = planning_an_activity
+			}
+			add_to_list = munya_vacation_participants
+		}
+		complete_activity = yes
+		if = {
+			limit = {
+				scope:host = {
+					is_alive = no
+				}
+			}
+			#Host died
+			every_in_list = {
+				list = munya_vacation_participants
+				trigger_event = {
+					id = granada.0053
+					days = 2 #So you don't get spammed
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:host = {
+					is_imprisoned = yes
+				}
+			}
+			#Host has been imprisoned
+			every_in_list = {
+				list = munya_vacation_participants
+				trigger_event = granada.0055
+			}
+			scope:host = {
+				trigger_event = granada.0055
+			}
+		}
+	}
+}
+
+
