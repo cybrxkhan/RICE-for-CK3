@@ -1,15 +1,14 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.5.6 "Zhai Fengda" (Released 5/25/22, for vanilla patch 1.5.x)
+## Latest Version: Version 1.6.0 "Alhambra" (Released 6/1/22, for vanilla patch 1.6.x)
 
-**Newest Flavor Pack - Tarim Basin: Peoples of the Silk Road**
+**Newest Flavor Pack - Granada: Memories of the Alhambra**
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com)
 
-_“This [poem] was written in my youth, when I could hardly manage the way. . . . I was but twenty years when I composed it. This year, happening upon the poem again, I am overcome with shame.”_
-_- Zhai Fengda, cringing at his younger self_
+_"Since I cannot offer you a present of any worth on your birthday, accept this humble poetic impression, made on my soul by the grandiose marvel of the Alhambra of Granada we both admire."_
 
-_Zhai Fengda was a famed 10th century scholar who served as a prominent official under the Cao Dynasty of Dunhuang. The quote comes from one of his poems; when he apparently rediscovered the manuscript as an older man, he jotted the above line as commentary._
+_- Francisco Tarrega, on his original manuscript of his famous guitar piece Recuerdos de la Alhambra_
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. The guiding philosophy of RICE is to keep a tight, focused scope that doesn’t change gameplay significantly, but adds more flavor across the world, especially for lesser-known places, peoples, and histories.
 
@@ -22,6 +21,7 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 - [Aachen: Charlemagne's Capital](https://docs.google.com/document/d/e/2PACX-1vQNflzrfD7oYcEYcMWDW07MsWCW-8cwIO8-JxSIm_WTnB1Ij0Dr-b3PRNu8mKmUFRXfHW3QDax2Z0DD/pub)
 - [Brittany: The Western Duchy](https://docs.google.com/document/d/e/2PACX-1vTzGuR_ffwqfpm6rwh27hq71K4Fs35pcLZioPLbHulhHn2ZV25SD2HrGipPofvBYngi5S_O4Yino4Y7/pub)
 - [Chios: Isle of Mastic](https://docs.google.com/document/d/1Lu4cGXN7hSaDtYd_wsXKbjAeIOYMoYVuum6zfYfBc_k/pub)
+- [Granada: Memories of the Alhambra](https://docs.google.com/document/d/e/2PACX-1vSFZFsesbXB3S4L2cgOfu_IYL6WzxbzLjzps4qGizN-8avV7Wvi99A5V8K-oq4IiiILonH_e85kIAgy/pub)
 - [Guanche: The Fortunate Isles](https://docs.google.com/document/d/e/2PACX-1vSs5DoK_1Hux5Uqe8cZp9qKdClxq_8W6PF3Rdejo8hR_C3mn1_qd166bbpw096x0DtwBGTBHC8aQYTO/pub)
 - [Harran: The Last Hellenic Pagans](https://docs.google.com/document/d/e/2PACX-1vQOVaDq59Adp5PsNw7r8KhK9cgHMBBWGPWG085FdTKegkD8G8BFLa_e1lz8usY164B42gAVZD4D_2Rs/pub)
 - [Magadha: Diamond Throne of Buddhism](https://docs.google.com/document/d/e/2PACX-1vQvXP97M8x7lXYDilOlkVz-lCT0dk6Qq2R6cFyoySNv6g5mqAhIxzquf_1TeR9eEllCkA0HhpOfErnT/pub)
@@ -52,7 +52,7 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ## Latest Changelog
 
-### Version 1.5.6 "Zhai Fengda"
+### Version 1.6.0 "Alhambra"
 
 - Added Turkshahi/Nandin dynasty tamga as their coat of arms
 - Added additional Evenki names, courtesy of Nix
