@@ -54,22 +54,12 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ### Version 1.6.0 "Alhambra"
 
-- Added Turkshahi/Nandin dynasty tamga as their coat of arms
-- Added additional Evenki names, courtesy of Nix
-- Assyrians now have a small change of appearing from Middle Eastern Silk Road Communities
-- All activities will now automatically expire after some time in case of weird situations where they don’t end
-- Decision to Stage Animal Fights is now available for Tocharian heritage in general or if your capital has a culture of Tocharian heritage (so you don’t need to be descended from Tocharian culture)
-- Mogao Cave Decision can now be taken by anyone whose liege or top liege controls the county of Guazhou (aka Dunhuang)
-- Silk Road Community decision can now be taken in Mesopotamia
-- Steppe and Himalayan community troops now focus on cavalry vs infantry, instead of a mix of both, to provide distinct differences
-- Reduced renown gain across the board for various decisions/interactions/events/etc.
-- Reduced number of troops gained from various SIlk Road community decisions/events
-- Reduced chances of getting large gift of troops from Silk Road community events
-- Reduced chances AI will take the Silk Road Communities decision
-- Reduced chances Silk Road communities will give gifts via event
-- Fixed the Silk Road Communities decision so AI won't always pick East Asians
-- Fixed Diverse Peoples and Cultures dynasty perk reducing instead of increasing the chances of getting gifts from Silk Road Communities
-- Fixed several titular/formable kingdoms/empires missing de jure capitals
-- Fixed duplicate renown gain for Silk Road entertainer interactions
+- Added Granada Flavor Pack: Memories of the Alhambra
+- Added 3 Spanish guitar and 5 medieval Iberian themed soundtracks
+- Added new “No Vocal” option in the music game rule to disable vocal music (but keep ambient or instrumental music)
+- Removed Mizrahi culture and replaced it with new Jewish cultures based on feedback: Mustarabi, Teimani, Persian Jews (please note this is WILL be subject to change in the future, this is just a baseline to work on)
+- Starting gold, prestige, and piety of many new rulers added in RICE are now slightly more randomized at game start for some variety
+- Cooldown for various feast decisions in RICE will now be shorter if your culture has the Frequent Festivities tradition (this was previously not accounted for)
+- Fixed Spectate the Stamford Bull Run decision not having a cooldown
 - Miscellaneous bugfixes
 
