@@ -17,7 +17,14 @@
 				modifier = RICE_granada_almeria_silk_industry
 			}
 		}
+		# title:c_granada = {
+		# 	reset_title_name = yes
+		# }
+		# title:d_granada = {
+		# 	reset_title_name = yes
+		# }
 	}
+
 	if = {
 		limit = {
 			current_date > 1050.1.1
@@ -29,6 +36,19 @@
 			}
 		}
 	}
+
+	if = {
+		limit = {
+			current_date < 1050.1.1
+		}
+		title:c_granada = {
+			set_title_name = GRANADA_ILBIRA
+		}
+		title:d_granada = {
+			set_title_name = GRANADA_ILBIRA_DUCHY
+		}
+	}
+
 }
 
 
@@ -54,7 +74,7 @@ RICE_granada_munya_group_vacation_finished_effect = {
 						has_trait = zealous
 						has_trait = patient
 						has_trait = humble
-						has_trait = gardener
+						has_trait = lifestyle_gardener
 					}
 				}
 				custom = RICE_every_guest_who_really_enjoyed_munya_vacation
@@ -77,7 +97,7 @@ RICE_granada_munya_group_vacation_finished_effect = {
 						has_trait = zealous
 						has_trait = patient
 						has_trait = humble
-						has_trait = gardener
+						has_trait = lifestyle_gardener
 					}
 				}
 				custom = RICE_every_other_guest
@@ -149,7 +169,7 @@ RICE_granada_munya_group_vacation_finished_effect = {
 	}
 	else_if = {
 		limit = {
-			var:RICE_munya_group_vacation_focus = flag:sightseeing
+			var:RICE_munya_group_vacation_focus = flag:partying
 		}
 		scope:activity = {
 			every_participant = {
@@ -200,6 +220,18 @@ RICE_granada_munya_group_vacation_finished_effect = {
 
 
 RICE_granada_transfer_to_granada_effect = {
+	custom_tooltip = {
+		text = RICE_title_event_granada_name_change_county_tooltip
+		title:c_granada = {
+			reset_title_name = yes
+		}
+	}
+	custom_tooltip = {
+		text = RICE_title_event_granada_name_change_duchy_tooltip
+		title:d_granada = {
+			reset_title_name = yes
+		}
+	}
 	add_prestige = 200
 	dynasty = { add_dynasty_prestige = 200 }
 	title:c_granada = {
@@ -229,10 +261,6 @@ RICE_granada_tensions_resolved_peacefully_effect = {
 			years = 20
 		}
 	}
-	set_global_variable = {
-		name = RICE_granada_tensions_resolved
-		value = yes
-	}
 	every_courtier_or_guest = {
 		limit = {
 			religion = religion:judaism_religion
@@ -243,8 +271,9 @@ RICE_granada_tensions_resolved_peacefully_effect = {
 			modifier = RICE_opinion_saved_me_from_mob
 		}
 	}
-
-
+	add_county_modifier = {
+		modifier = RICE_granada_garnata_al_yahud_jews_accepted
+	}
 }
 
 
@@ -259,15 +288,18 @@ RICE_granada_tensions_resolved_with_force_effect = {
 			modifier = RICE_granada_lingering_tensions_high
 			years = 20
 		}
-	}
-	set_global_variable = {
-		name = RICE_granada_tensions_resolved
-		value = yes
+		add_county_modifier = {
+			modifier = RICE_granada_garnata_al_yahud_jews_accepted
+		}
 	}
 }
 
 
 RICE_granada_tensions_end_in_tragedy_effect = {
+	set_global_variable = {
+		name = RICE_granada_pogrom_happened_like_historically
+		value = yes
+	}
 	title:c_granada = {
 		change_development_progress_with_overflow = -50
 		remove_county_modifier = RICE_granada_garnata_al_yahud_tensions
@@ -275,10 +307,6 @@ RICE_granada_tensions_end_in_tragedy_effect = {
 			modifier = RICE_granada_pogrom_happened
 			years = 20
 		}
-	}
-	set_global_variable = {
-		name = RICE_granada_tensions_resolved
-		value = yes
 	}
 	scope:yusuf = {
 		death = {
@@ -399,6 +427,29 @@ RICE_granada_almeria_silk_industry_effect = {
 			modifier = RICE_granada_almeria_silk_industry
 		}
 	}	
+}
+
+
+
+RICE_granada_alhambra_music_effect = {
+	if = {
+		limit = {
+			NOT = { has_game_rule = RICE_music_off }
+			OR = {
+				has_game_rule = RICE_music_unrestricted
+				culture = {
+					has_cultural_pillar = heritage_iberian
+				}
+				capital_province = {
+					geographical_region = world_europe_west_iberia
+				}
+			}				
+		}
+		random_list = {
+			10 = { play_music_cue = mx_alhambra_1 }
+			10 = { play_music_cue = mx_alhambra_2 }
+		}
+	}
 }
 
 

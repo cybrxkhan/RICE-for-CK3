@@ -1,11 +1,12 @@
 ﻿###############################################################################
 # 
-# TARIM BASIN
+# GRANADA
 # 
 # granada.0000-granada.0019			Setup events, history events, miscellaneous decisions
 # granada.0020-granada.0039			Expand the Alhambra/Structure
 # granada.0040-granada.0049			Alhambra Miscellaneous Decisions
 # granada.0050-granada.0079			Munya Vacation
+# granada.0080-granada.0099			Generic flavor events
 # 
 # 
 ###############################################################################
@@ -31,6 +32,16 @@ granada.0010 = {
 	left_portrait = {
 		character = scope:granada_relocator
 		animation = war_defender
+	}
+
+	immediate = {	
+		play_music_cue = "mx_Struggle_Opening"	
+		title:c_granada = {
+			save_scope_as = granada_county
+		}
+		title:d_granada = {
+			save_scope_as = granada_duchy
+		}
 	}
 
 	option = {
@@ -65,6 +76,7 @@ granada.0011 = {
 	}
 
 	immediate = {
+		play_music_cue = "mx_Struggle_Opening"
 		scope:granada_relocator = {
 			RICE_granada_transfer_to_granada_effect = yes
 		}
@@ -100,23 +112,28 @@ granada.0012 = {
 
 	left_portrait = root
 
-	trigger = {
-		has_title = title:c_granada
-		title:c_granada = {
-			has_county_modifier = RICE_granada_garnata_al_yahud_tensions
-		}
-		OR = {
-			religion = religion:judaism_religion
-			title:c_granada = {
-				faith.religion = religion:judaism_religion
-			}
-		}
-	}
+	# trigger = {
+	# 	has_title = title:c_granada
+	# 	title:c_granada = {
+	# 		has_county_modifier = RICE_granada_garnata_al_yahud_tensions
+	# 	}
+	# 	OR = {
+	# 		religion = religion:judaism_religion
+	# 		title:c_granada = {
+	# 			faith.religion = religion:judaism_religion
+	# 		}
+	# 	}
+	# }
 
 	immediate = {
+		save_scope_as = jewish_ruler
+		play_music_cue = "mx_Struggle_Opening"
 		set_global_variable = {
 			name = RICE_granada_tensions_resolved
 			value = yes
+		}		
+		title:c_granada = {
+			save_scope_as = granada_county
 		}
 	}
 
@@ -129,15 +146,30 @@ granada.0012 = {
 			add_prestige = 100
 			add_piety = 100
 			dynasty = { add_dynasty_prestige = 100 }
+			if = {
+				limit = {
+					title:c_granada = {
+						NOT = { religion = religion:judaism_religion }
+					}					
+				}
+				title:c_granada = {
+					set_county_faith = scope:jewish_ruler.faith
+				}
+			}
 		}
-		remove_county_modifier = RICE_granada_garnata_al_yahud_tensions
+		title:c_granada = {
+			remove_county_modifier = RICE_granada_garnata_al_yahud_tensions
+			add_county_modifier = {
+				modifier = RICE_granada_garnata_al_yahud_jews_dominant
+			}
+		}
 	}
 }
 
 
 
 
-# Trouble starts to brew as there are signs of discontent among the non-Jewish population
+# Trouble starts to brew as there are signs of Anti-Semitic discontent among the non-Jewish population
 granada.0013 = {
 	type = character_event
 	title = granada.0013.t
@@ -164,6 +196,23 @@ granada.0013 = {
 		}
 		NOT = { has_global_variable = RICE_granada_tensions_resolved }
 		NOT = { has_global_variable = RICE_granada_tensions_rising }
+		NOT = { has_global_variable = RICE_granada_1066_pogrom_historical_event_timer }
+	}
+
+	weight_multiplier = {
+		base = 1
+		# Try to make it happen very soon if starting in 1066
+		modifier = {
+			add = 50
+			game_start_date = 1066.10.15
+		}
+		# Especially if Yusuf is still alive
+		modifier = {
+			add = 50
+			character:RICE_granada_002 = {
+				is_alive = yes
+			}
+		}
 	}
 
 	immediate = {
@@ -202,6 +251,7 @@ granada.0014 = {
 
 	trigger = {
 		has_global_variable = RICE_granada_tensions_rising
+		NOT = { has_global_variable = RICE_granada_tensions_resolved }
 		has_title = title:c_granada
 		# If Granada is Jewish or owned by a Jew, the event about Granada turning majority Jewish takes precedence
 		NOR = {
@@ -216,6 +266,10 @@ granada.0014 = {
 	}
 
 	immediate = {
+		set_global_variable = {
+			name = RICE_granada_tensions_resolved
+			value = yes
+		}
 		play_music_cue = "mx_cue_crusade_starts"
 		title:c_granada = {
 			save_scope_as = granada
@@ -311,13 +365,16 @@ granada.0014 = {
 		}
 	}
 
-	# You manage to calm the mob down
+	# You manage to peacefully calm the mob down
 	option = {
 		name = granada.0014.b
 		trigger = {
 			diplomacy >= high_skill_rating			
 		}
 		skill = diplomacy
+		show_as_unavailable = {
+			diplomacy < high_skill_rating
+		}
 		custom_tooltip = granada.0014.b.tooltip
 		RICE_granada_tensions_resolved_peacefully_effect = yes
 		trigger_event = granada.0016
@@ -333,9 +390,12 @@ granada.0014 = {
 	option = {
 		name = granada.0014.c
 		trigger = {
-			martial >= medium_skill_rating		
+			martial >= high_skill_rating		
 		}
 		skill = martial
+		show_as_unavailable = {
+			martial < high_skill_rating
+		}
 		custom_tooltip = granada.0014.c.tooltip
 		RICE_granada_tensions_resolved_with_force_effect = yes
 		trigger_event = granada.0016
@@ -372,6 +432,14 @@ granada.0015 = {
 
 	option = {
 		name = granada.0015.a
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = RICE_granada_1066_jewish_pogrom_context_tooltip
+			}
+		}
 	}
 }
 
@@ -434,6 +502,14 @@ granada.0016 = {
 
 	option = {
 		name = granada.0016.a
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = RICE_granada_1066_jewish_pogrom_context_tooltip
+			}
+		}
 	}
 }
 
@@ -454,6 +530,7 @@ granada.0017 = {
 	}
 
 	immediate = {
+		play_music_cue = "mx_Struggle_Opening"
 		title:c_almeria = {
 			save_scope_as = almeria
 		}
@@ -494,6 +571,7 @@ granada.0018 = {
 	}
 
 	immediate = {
+		play_music_cue = "mx_Struggle_Opening"
 		scope:silk_investor = {
 			show_as_tooltip = {
 				RICE_granada_almeria_silk_industry_effect = yes
@@ -506,6 +584,105 @@ granada.0018 = {
 	}
 }
 
+
+
+# Granadan Jew arrives in your court
+granada.0019 = {
+	type = character_event
+	title = granada.0019.t
+	desc = granada.0019.desc
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	right_portrait = {
+		character = scope:granadan_jew
+		animation = throne_room_bow_1
+	}
+
+	trigger = {
+		has_title = title:c_granada
+		title:c_granada = {
+			OR = {
+				has_county_modifier = RICE_granada_garnata_al_yahud_tensions
+				has_county_modifier = RICE_granada_garnata_al_yahud_jews_dominant
+				has_county_modifier = RICE_granada_garnata_al_yahud_jews_accepted
+			}
+		}
+		NOT = { has_global_variable = RICE_granada_pogrom_happened_like_historically }
+		# Doesn't make sense if you are a Jew
+		NOR = {
+			title:c_granada.holder = {
+				religion = religion:judaism_religion
+			}
+			title:c_granada = {
+				faith.religion = religion:judaism_religion
+			}
+		}
+	}
+
+	immediate = {
+		title:c_granada = {
+			save_scope_as = granada
+		}
+		create_character = {
+			location = root.location
+			template = RICE_granada_jewish_elite_template
+			save_scope_as = granadan_jew
+		}
+	}
+	
+	# Ok
+	option = {
+		name = granada.0019.a
+		trigger = {
+			OR = {
+				gold >= 50
+				is_ai = no
+			}
+		}
+		pay_short_term_gold = {
+			target = scope:granadan_jew
+			gold = 50
+		}
+		add_courtier = scope:granadan_jew
+		add_prestige = 100
+		add_piety = -100
+		every_courtier_or_guest = {
+			limit = {
+				NOT = { religion = religion:judaism_religion }
+				OR = {
+					has_trait = zealous
+					has_trait = paranoid
+					has_trait = arrogant
+					has_trait = ambitious
+				}
+				NOT = { has_trait = compassionate }
+				NOT = { has_trait = humble }
+				NOT = { has_trait = content }
+				NOT = { has_trait = trusting }
+			}
+			custom = every_anti_semitic_courtier_or_guest
+			add_opinion = {
+				target = root
+				modifier = RICE_granada_hired_jew
+			}
+		}
+	}
+	option = {
+		name = granada.0019.b
+		hidden_effect = {
+			scope:granadan_jew = {
+				death = {
+					death_reason = death_disappearance
+				}			
+			}
+		}
+	}
+}
 
 
 ######################################################################################
@@ -595,10 +772,10 @@ granada.0020 = {
 		else = {
 			add_character_flag = RICE_alhambra_decision_already_1
 		}
-		add_to_global_variable_list = {
-			name = RICE_granada_alhambra_original_constructor_list # Dunno how else to do this
-			target = root
-		}
+		# add_to_global_variable_list = {
+		# 	name = RICE_granada_alhambra_original_constructor_list # Dunno how else to do this
+		# 	target = root
+		# }
 		# Bye-bye money
 		if = {
 			limit = {
@@ -647,6 +824,45 @@ granada.0020 = {
 				has_global_variable = RICE_granada_alhambra_building_generic_military
 			}
 			remove_short_term_gold = 100
+		}
+		hidden_effect = {
+			random_list = {
+				10 = {					
+					set_global_variable = {
+						name = RICE_granada_alhambra_construction_timer
+						value = yes
+						days = 365
+					}
+				}
+				10 = {					
+					set_global_variable = {
+						name = RICE_granada_alhambra_construction_timer
+						value = yes
+						days = 730
+					}
+				}
+				10 = {					
+					set_global_variable = {
+						name = RICE_granada_alhambra_construction_timer
+						value = yes
+						days = 1095
+					}
+				}
+				10 = {					
+					set_global_variable = {
+						name = RICE_granada_alhambra_construction_timer
+						value = yes
+						days = 1460
+					}
+				}
+				# 10 = {					
+				# 	set_global_variable = {
+				# 		name = RICE_granada_alhambra_construction_timer
+				# 		value = yes
+				# 		days = 1825
+				# 	}
+				# }
+			}
 		}
 	}
 	
@@ -809,8 +1025,12 @@ granada.0021 = {
 	# 	}
 	# }
 
+	trigger = {
+		has_title = title:c_granada		
+	}
 	
 	immediate = {
+		RICE_granada_alhambra_music_effect = yes
 		random_list = {
 			10 = { play_music_cue = mx_alhambra_1 }
 			10 = { play_music_cue = mx_alhambra_2 }
@@ -854,6 +1074,10 @@ granada.0021 = {
 			}
 			add_prestige = 150
 			add_piety = 150
+			add_character_modifier = {
+				modifier = RICE_granada_built_generalife
+				years = 10
+			}
 			custom_description_no_bullet = {
 				text = granada.0021.tooltip.generalife
 			}
@@ -867,6 +1091,10 @@ granada.0021 = {
 				has_global_variable = RICE_granada_alhambra_building_house_of_worship
 			}
 			add_piety = 300
+			add_character_modifier = {
+				modifier = RICE_granada_built_house_of_worship
+				years = 10
+			}
 			custom_description_no_bullet = {
 				text = granada.0021.tooltip.house_of_worship
 			}
@@ -881,6 +1109,10 @@ granada.0021 = {
 			}
 			add_piety = 200
 			dynasty = { add_dynasty_prestige = 100 }
+			add_character_modifier = {
+				modifier = RICE_granada_built_rawda
+				years = 10
+			}
 			custom_description_no_bullet = {
 				text = granada.0021.tooltip.rawda
 			}
@@ -894,6 +1126,10 @@ granada.0021 = {
 				has_global_variable = RICE_granada_alhambra_building_comares_palace
 			}
 			add_prestige = 300
+			add_character_modifier = {
+				modifier = RICE_granada_built_comares_palace
+				years = 10
+			}
 			custom_description_no_bullet = {
 				text = granada.0021.tooltip.comares_palace
 			}
@@ -908,6 +1144,10 @@ granada.0021 = {
 			}
 			add_prestige = 200
 			dynasty = { add_dynasty_prestige = 100 }
+			add_character_modifier = {
+				modifier = RICE_granada_built_court_of_the_lions
+				years = 10
+			}
 			custom_description_no_bullet = {
 				text = granada.0021.tooltip.court_of_the_lions
 			}
@@ -944,6 +1184,10 @@ granada.0021 = {
 				}
 				dynasty = { add_dynasty_prestige = 50 }
 			}
+			add_character_modifier = {
+				modifier = RICE_granada_built_generic_palatial
+				years = 10
+			}
 		}
 		else_if = {
 			limit = {
@@ -970,6 +1214,10 @@ granada.0021 = {
 				}
 				dynasty = { add_dynasty_prestige = 50 }
 			}
+			add_character_modifier = {
+				modifier = RICE_granada_built_generic_recreational
+				years = 10
+			}
 		}
 		else_if = {
 			limit = {
@@ -995,6 +1243,10 @@ granada.0021 = {
 					has_global_variable = RICE_granada_alhambra_built_rawda
 				}
 				dynasty = { add_dynasty_prestige = 50 }
+			}
+			add_character_modifier = {
+				modifier = RICE_granada_built_generic_military
+				years = 10
 			}
 		}
 	}
@@ -1031,11 +1283,42 @@ granada.0040 = {
 	# Ok
 	option = {
 		name = granada.0040.a
-		add_piety = 25
+		add_piety = 50
 		stress_impact = {
 			base = minor_stress_impact_loss
 			content = miniscule_stress_impact_loss
 			lazy = miniscule_stress_impact_loss
+		}		
+	}
+
+	after = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
+
+
+# Garden time
+granada.0041 = {
+	type = character_event
+	title = granada.0041.t
+	desc = granada.0041.desc
+	theme = RICE_theme_granada_alhambra_courtyard
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	# Ok
+	option = {
+		name = granada.0041.a
+		add_prestige = 50
+		stress_impact = {
+			base = minor_stress_impact_loss
+			humble = miniscule_stress_impact_loss
+			zealous = miniscule_stress_impact_loss
 		}		
 	}
 
@@ -1523,7 +1806,7 @@ granada.0061 = {
 			}
 			add_piety = 50
 			stress_impact = {
-				base = miniscule_stress_impact_loss
+				base = minor_stress_impact_loss
 				shy = miniscule_stress_impact_loss
 				humble = miniscule_stress_impact_loss
 			}
@@ -1534,7 +1817,7 @@ granada.0061 = {
 			}
 			add_prestige = 50
 			stress_impact = {
-				base = miniscule_stress_impact_loss
+				base = minor_stress_impact_loss
 				shy = miniscule_stress_impact_loss
 				humble = miniscule_stress_impact_loss
 			}
@@ -1589,52 +1872,52 @@ granada.0062 = {
 			30 = { add_learning_lifestyle_xp = minor_lifestyle_xp }
 			15 = { add_learning_lifestyle_xp = medium_lifestyle_xp }
 		}
-		send_interface_toast = {
-			left_icon = ROOT
-			title = granada.0062.a.title
-			random = {
-				chance = 20
-				modifier = {
-					stewardship >= mediocre_skill_rating
-					add = 5
-				}
-				modifier = {
-					stewardship >= medium_skill_rating
-					add = 5
-				}
-				modifier = {
-					stewardship >= decent_skill_rating
-					add = 5
-				}
-				modifier = {
-					stewardship >= high_skill_rating
-					add = 5
-				}
-				modifier = {
-					learning >= mediocre_skill_rating
-					add = 3
-				}
-				modifier = {
-					learning >= medium_skill_rating
-					add = 3
-				}
-				modifier = {
-					learning >= decent_skill_rating
-					add = 3
-				}
-				modifier = {
-					learning >= high_skill_rating
-					add = 3
-				}
+		random = {
+			chance = 20
+			modifier = {
+				stewardship >= mediocre_skill_rating
+				add = 5
 			}
-			every_held_title = {
-				limit = {
-					tier = tier_county
+			modifier = {
+				stewardship >= medium_skill_rating
+				add = 5
+			}
+			modifier = {
+				stewardship >= decent_skill_rating
+				add = 5
+			}
+			modifier = {
+				stewardship >= high_skill_rating
+				add = 5
+			}
+			modifier = {
+				learning >= mediocre_skill_rating
+				add = 3
+			}
+			modifier = {
+				learning >= medium_skill_rating
+				add = 3
+			}
+			modifier = {
+				learning >= decent_skill_rating
+				add = 3
+			}
+			modifier = {
+				learning >= high_skill_rating
+				add = 3
+			}
+			send_interface_toast = {
+				left_icon = ROOT
+				title = granada.0062.a.title
+				every_held_title = {
+					limit = {
+						tier = tier_county
+					}
+					add_county_modifier = {
+						modifier = RICE_granada_munya_insights_farmland
+						years = 10
+					}	
 				}
-				add_county_modifier = {
-					modifier = RICE_granada_munya_insights_farmland
-					years = 10
-				}	
 			}
 		}
 	}
@@ -1650,47 +1933,47 @@ granada.0062 = {
 			30 = { add_learning_lifestyle_xp = minor_lifestyle_xp }
 			15 = { add_learning_lifestyle_xp = medium_lifestyle_xp }
 		}
-		send_interface_toast = {
-			left_icon = ROOT
-			title = granada.0062.b.title
-			random = {
-				chance = 20
-				modifier = {
-					stewardship >= mediocre_skill_rating
-					add = 5
-				}
-				modifier = {
-					stewardship >= medium_skill_rating
-					add = 5
-				}
-				modifier = {
-					stewardship >= decent_skill_rating
-					add = 5
-				}
-				modifier = {
-					stewardship >= high_skill_rating
-					add = 5
-				}
-				modifier = {
-					learning >= mediocre_skill_rating
-					add = 3
-				}
-				modifier = {
-					learning >= medium_skill_rating
-					add = 3
-				}
-				modifier = {
-					learning >= decent_skill_rating
-					add = 3
-				}
-				modifier = {
-					learning >= high_skill_rating
-					add = 3
-				}
+		random = {
+			chance = 20
+			modifier = {
+				stewardship >= mediocre_skill_rating
+				add = 5
 			}
-			add_character_modifier = {
-				modifier = RICE_granada_munya_insights_foodstuffs
-				years = 10
+			modifier = {
+				stewardship >= medium_skill_rating
+				add = 5
+			}
+			modifier = {
+				stewardship >= decent_skill_rating
+				add = 5
+			}
+			modifier = {
+				stewardship >= high_skill_rating
+				add = 5
+			}
+			modifier = {
+				learning >= mediocre_skill_rating
+				add = 3
+			}
+			modifier = {
+				learning >= medium_skill_rating
+				add = 3
+			}
+			modifier = {
+				learning >= decent_skill_rating
+				add = 3
+			}
+			modifier = {
+				learning >= high_skill_rating
+				add = 3
+			}
+			send_interface_toast = {
+				left_icon = ROOT
+				title = granada.0062.b.title
+				add_character_modifier = {
+					modifier = RICE_granada_munya_insights_foodstuffs
+					years = 10
+				}
 			}
 		}
 	}
@@ -1722,47 +2005,47 @@ granada.0063 = {
 			30 = { add_stewardship_lifestyle_xp = minor_lifestyle_xp }
 			15 = { add_stewardship_lifestyle_xp = medium_lifestyle_xp }
 		}
-		send_interface_toast = {
-			left_icon = ROOT
-			title = granada.0063.a.title
-			random = {
-				chance = 20
-				modifier = {
-					stewardship >= mediocre_skill_rating
-					add = 3
-				}
-				modifier = {
-					stewardship >= medium_skill_rating
-					add = 3
-				}
-				modifier = {
-					stewardship >= decent_skill_rating
-					add = 3
-				}
-				modifier = {
-					stewardship >= high_skill_rating
-					add = 3
-				}
-				modifier = {
-					learning >= mediocre_skill_rating
-					add = 5
-				}
-				modifier = {
-					learning >= medium_skill_rating
-					add = 5
-				}
-				modifier = {
-					learning >= decent_skill_rating
-					add = 5
-				}
-				modifier = {
-					learning >= high_skill_rating
-					add = 5
-				}
+		random = {
+			chance = 20
+			modifier = {
+				stewardship >= mediocre_skill_rating
+				add = 3
 			}
-			add_character_modifier = {
-				modifier = RICE_granada_munya_insights_ornamental_plants
-				years = 10
+			modifier = {
+				stewardship >= medium_skill_rating
+				add = 3
+			}
+			modifier = {
+				stewardship >= decent_skill_rating
+				add = 3
+			}
+			modifier = {
+				stewardship >= high_skill_rating
+				add = 3
+			}
+			modifier = {
+				learning >= mediocre_skill_rating
+				add = 5
+			}
+			modifier = {
+				learning >= medium_skill_rating
+				add = 5
+			}
+			modifier = {
+				learning >= decent_skill_rating
+				add = 5
+			}
+			modifier = {
+				learning >= high_skill_rating
+				add = 5
+			}
+			send_interface_toast = {
+				left_icon = ROOT
+				title = granada.0063.a.title
+				add_character_modifier = {
+					modifier = RICE_granada_munya_insights_ornamental_plants
+					years = 10
+				}
 			}
 		}
 	}
@@ -1778,47 +2061,47 @@ granada.0063 = {
 			30 = { add_stewardship_lifestyle_xp = minor_lifestyle_xp }
 			15 = { add_stewardship_lifestyle_xp = medium_lifestyle_xp }
 		}
-		send_interface_toast = {
-			left_icon = ROOT
-			title = granada.0063.b.title
-			random = {
-				chance = 20
-				modifier = {
-					stewardship >= mediocre_skill_rating
-					add = 3
-				}
-				modifier = {
-					stewardship >= medium_skill_rating
-					add = 3
-				}
-				modifier = {
-					stewardship >= decent_skill_rating
-					add = 3
-				}
-				modifier = {
-					stewardship >= high_skill_rating
-					add = 3
-				}
-				modifier = {
-					learning >= mediocre_skill_rating
-					add = 5
-				}
-				modifier = {
-					learning >= medium_skill_rating
-					add = 5
-				}
-				modifier = {
-					learning >= decent_skill_rating
-					add = 5
-				}
-				modifier = {
-					learning >= high_skill_rating
-					add = 5
-				}
+		random = {
+			chance = 20
+			modifier = {
+				stewardship >= mediocre_skill_rating
+				add = 3
 			}
-			add_character_modifier = {
-				modifier = RICE_granada_munya_insights_medicine
-				years = 10
+			modifier = {
+				stewardship >= medium_skill_rating
+				add = 3
+			}
+			modifier = {
+				stewardship >= decent_skill_rating
+				add = 3
+			}
+			modifier = {
+				stewardship >= high_skill_rating
+				add = 3
+			}
+			modifier = {
+				learning >= mediocre_skill_rating
+				add = 5
+			}
+			modifier = {
+				learning >= medium_skill_rating
+				add = 5
+			}
+			modifier = {
+				learning >= decent_skill_rating
+				add = 5
+			}
+			modifier = {
+				learning >= high_skill_rating
+				add = 5
+			}
+			send_interface_toast = {
+				left_icon = ROOT
+				title = granada.0063.b.title
+				add_character_modifier = {
+					modifier = RICE_granada_munya_insights_medicine
+					years = 10
+				}
 			}
 		}
 	}
@@ -1842,6 +2125,37 @@ granada.0064 = {
 	# ok
 	option = {
 		name = granada.0064.a
+		random = {
+			chance = 20
+			modifier = {
+				has_trait = shy
+				add = 5
+			}
+			modifier = {
+				has_trait = content
+				add = 5
+			}
+			modifier = {
+				has_trait = lazy
+				add = 5
+			}
+			modifier = {
+				has_trait = patient
+				add = 5
+			}
+			modifier = {
+				has_trait = calm
+				add = 5
+			}
+			send_interface_toast = {
+				left_icon = ROOT
+				title = granada.0064.a.title
+				add_character_modifier = {
+					modifier = RICE_granada_munya_well_rested
+					years = 10
+				}
+			}
+		}
 	}
 }
 
@@ -1959,7 +2273,7 @@ granada.0071 = {
 	# }
 
 	immediate = {
-		play_music_cue = mx_cue_touching_moment
+		play_music_cue = mx_cue_low_key_positive
 	}
 
 	option = {
@@ -2062,14 +2376,42 @@ granada.0074 = {
 	type = character_event
 	title = granada.0074.t
 	desc = granada.0074.desc
-	theme = RICE_theme_andalusian_countryside
+	theme = RICE_theme_granada_alhambra_exterior
 
 	left_portrait = {
 		character = root
 		animation = flirtation_left
 	}
+	right_portrait = {
+		character = scope:RICE_random_vacation_pal
+		animation = happiness
+		trigger = {
+			scope:activity = {
+				any_participant = {
+					RICE_activity_participant_trigger = yes
+				}
+			}
+		}
+	}
 
 	immediate = {
+		if = {
+			limit = {
+				scope:activity = {
+					any_participant = {
+						RICE_activity_participant_trigger = yes
+					}
+				}				
+			}
+			scope:activity = {
+				random_participant = {
+					limit = {
+						RICE_activity_participant_trigger = yes
+					}
+					save_scope_as = RICE_random_vacation_pal
+				}
+			}
+		}
 		random_list = {
 			10 = { add_piety = 25 }
 			20 = { add_piety = 50 }
@@ -2090,48 +2432,48 @@ granada.0074 = {
 			content = miniscule_stress_impact_loss
 			calm = miniscule_stress_impact_loss
 		}
-		send_interface_toast = {
-			type = event_toast_effect_good
-			left_icon = ROOT
-			title = granada.0074.a.title
-			random = {
-				chance = 20
-				modifier = {
-					diplomacy >= mediocre_skill_rating
-					add = 5
-				}
-				modifier = {
-					diplomacy >= medium_skill_rating
-					add = 5
-				}
-				modifier = {
-					diplomacy >= decent_skill_rating
-					add = 5
-				}
-				modifier = {
-					diplomacy >= high_skill_rating
-					add = 5
-				}
-				modifier = {
-					learning >= mediocre_skill_rating
-					add = 3
-				}
-				modifier = {
-					learning >= medium_skill_rating
-					add = 3
-				}
-				modifier = {
-					learning >= decent_skill_rating
-					add = 3
-				}
-				modifier = {
-					learning >= high_skill_rating
-					add = 3
-				}
+		random = {
+			chance = 20
+			modifier = {
+				diplomacy >= mediocre_skill_rating
+				add = 5
 			}
-			add_character_modifier = {
-				modifier = RICE_granada_munya_vacation_famed_gardens
-				years = 10
+			modifier = {
+				diplomacy >= medium_skill_rating
+				add = 5
+			}
+			modifier = {
+				diplomacy >= decent_skill_rating
+				add = 5
+			}
+			modifier = {
+				diplomacy >= high_skill_rating
+				add = 5
+			}
+			modifier = {
+				learning >= mediocre_skill_rating
+				add = 3
+			}
+			modifier = {
+				learning >= medium_skill_rating
+				add = 3
+			}
+			modifier = {
+				learning >= decent_skill_rating
+				add = 3
+			}
+			modifier = {
+				learning >= high_skill_rating
+				add = 3
+			}
+			send_interface_toast = {
+				type = event_toast_effect_good
+				left_icon = ROOT
+				title = granada.0074.a.title
+				add_character_modifier = {
+					modifier = RICE_granada_munya_vacation_famed_gardens
+					years = 10
+				}
 			}
 		}
 
@@ -2151,7 +2493,7 @@ granada.0075 = {
 	type = character_event
 	title = granada.0075.t
 	desc = granada.0075.desc
-	theme = RICE_theme_andalusian_countryside
+	theme = RICE_theme_granada_alhambra_exterior
 
 	left_portrait = {
 		character = scope:host
@@ -2163,8 +2505,34 @@ granada.0075 = {
 	}
 
 
+	# Focus on chatting
 	option = {
 		name = granada.0075.a
+		add_prestige = 10
+		add_piety = 10
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			gregarious = miniscule_stress_impact_loss
+			content = miniscule_stress_impact_loss
+			calm = miniscule_stress_impact_loss
+		}
+		random = {
+			chance = 30
+			send_interface_toast = {
+				type = event_toast_effect_good
+				left_icon = ROOT
+				title = granada.0077.a.title
+				add_character_modifier = {
+					modifier = RICE_granada_munya_vacation_relaxing_conversations
+					years = 10
+				}
+			}
+		}
+	}
+
+	# Focus on relaxing
+	option = {
+		name = granada.0075.b
 		add_prestige = 10
 		add_piety = 10
 		stress_impact = {
@@ -2172,6 +2540,18 @@ granada.0075 = {
 			shy = miniscule_stress_impact_loss
 			content = miniscule_stress_impact_loss
 			calm = miniscule_stress_impact_loss
+		}
+		random = {
+			chance = 30
+			send_interface_toast = {
+				type = event_toast_effect_good
+				left_icon = ROOT
+				title = granada.0077.a.title
+				add_character_modifier = {
+					modifier = RICE_granada_munya_vacation_relaxing_gardens
+					years = 10
+				}
+			}
 		}
 	}
 
@@ -2187,10 +2567,38 @@ granada.0076 = {
 
 	left_portrait = {
 		character = root
-		animation = flirtation_left
+		animation = personality_forgiving
+	}
+	right_portrait = {
+		character = scope:RICE_random_vacation_pal
+		animation = personality_rational
+		trigger = {
+			scope:activity = {
+				any_participant = {
+					RICE_activity_participant_trigger = yes
+				}
+			}
+		}
 	}
 
 	immediate = {
+		if = {
+			limit = {
+				scope:activity = {
+					any_participant = {
+						RICE_activity_participant_trigger = yes
+					}
+				}				
+			}
+			scope:activity = {
+				random_participant = {
+					limit = {
+						RICE_activity_participant_trigger = yes
+					}
+					save_scope_as = RICE_random_vacation_pal
+				}
+			}
+		}
 		random_list = {
 			10 = { add_piety = 25 }
 			20 = { add_piety = 50 }
@@ -2206,48 +2614,48 @@ granada.0076 = {
 			scholar = miniscule_stress_impact_loss
 			poet = miniscule_stress_impact_loss
 		}
-		send_interface_toast = {
-			type = event_toast_effect_good
-			left_icon = ROOT
-			title = granada.0076.a.title
-			random = {
-				chance = 20
-				modifier = {
-					learning >= mediocre_skill_rating
-					add = 5
-				}
-				modifier = {
-					learning >= medium_skill_rating
-					add = 5
-				}
-				modifier = {
-					learning >= decent_skill_rating
-					add = 5
-				}
-				modifier = {
-					learning >= high_skill_rating
-					add = 5
-				}
-				modifier = {
-					diplomacy >= mediocre_skill_rating
-					add = 3
-				}
-				modifier = {
-					diplomacy >= medium_skill_rating
-					add = 3
-				}
-				modifier = {
-					diplomacy >= decent_skill_rating
-					add = 3
-				}
-				modifier = {
-					diplomacy >= high_skill_rating
-					add = 3
-				}
+		random = {
+			chance = 20
+			modifier = {
+				learning >= mediocre_skill_rating
+				add = 5
 			}
-			add_character_modifier = {
-				modifier = RICE_granada_munya_vacation_famed_intellectual
-				years = 10
+			modifier = {
+				learning >= medium_skill_rating
+				add = 5
+			}
+			modifier = {
+				learning >= decent_skill_rating
+				add = 5
+			}
+			modifier = {
+				learning >= high_skill_rating
+				add = 5
+			}
+			modifier = {
+				diplomacy >= mediocre_skill_rating
+				add = 3
+			}
+			modifier = {
+				diplomacy >= medium_skill_rating
+				add = 3
+			}
+			modifier = {
+				diplomacy >= decent_skill_rating
+				add = 3
+			}
+			modifier = {
+				diplomacy >= high_skill_rating
+				add = 3
+			}
+			send_interface_toast = {
+				type = event_toast_effect_good
+				left_icon = ROOT
+				title = granada.0076.a.title
+				add_character_modifier = {
+					modifier = RICE_granada_munya_vacation_famed_intellectual
+					years = 10
+				}
 			}
 		}
 
@@ -2287,6 +2695,142 @@ granada.0077 = {
 			scholar = miniscule_stress_impact_loss
 			poet = miniscule_stress_impact_loss
 		}
+		random = {
+			chance = 25
+			modifier = {
+				learning <= mediocre_skill_rating
+				add = -5
+			}
+			modifier = {
+				learning <= medium_skill_rating
+				add = -5
+			}
+			modifier = {
+				learning >= decent_skill_rating
+				add = 5
+			}
+			modifier = {
+				learning >= high_skill_rating
+				add = 5
+			}
+			modifier = {
+				diplomacy <= mediocre_skill_rating
+				add = -3
+			}
+			modifier = {
+				diplomacy <= medium_skill_rating
+				add = -3
+			}
+			modifier = {
+				diplomacy >= decent_skill_rating
+				add = 3
+			}
+			modifier = {
+				diplomacy >= high_skill_rating
+				add = 3
+			}
+			send_interface_toast = {
+				type = event_toast_effect_good
+				left_icon = ROOT
+				title = granada.0077.a.title
+				add_character_modifier = {
+					modifier = RICE_granada_munya_vacation_won_debates
+					years = 10
+				}
+				add_prestige = 30
+			}
+		}
+	}
+
+	option = {
+		name = granada.0077.b
+		add_piety = 10
+		stress_impact = {
+			diligent = miniscule_stress_impact_loss
+			scholar = miniscule_stress_impact_loss
+			poet = miniscule_stress_impact_loss
+		}
+		random = {
+			chance = 25
+			modifier = {
+				learning <= mediocre_skill_rating
+				add = -5
+			}
+			modifier = {
+				learning <= medium_skill_rating
+				add = -5
+			}
+			modifier = {
+				learning >= decent_skill_rating
+				add = 5
+			}
+			modifier = {
+				learning >= high_skill_rating
+				add = 5
+			}
+			modifier = {
+				diplomacy <= mediocre_skill_rating
+				add = -3
+			}
+			modifier = {
+				diplomacy <= medium_skill_rating
+				add = -3
+			}
+			modifier = {
+				diplomacy >= decent_skill_rating
+				add = 3
+			}
+			modifier = {
+				diplomacy >= high_skill_rating
+				add = 3
+			}
+			send_interface_toast = {
+				type = event_toast_effect_good
+				left_icon = ROOT
+				title = granada.0077.a.title
+				add_character_modifier = {
+					modifier = RICE_granada_munya_vacation_won_poetry_contests
+					years = 10
+				}
+				add_piety = 30
+			}
+		}
+	}
+
+	option = {
+		name = granada.0077.c
+		add_piety = 10
+		stress_impact = {
+			base = minor_stress_impact_loss
+			diligent = miniscule_stress_impact_loss
+			scholar = miniscule_stress_impact_loss
+			poet = miniscule_stress_impact_loss
+		}
+		random_list = {
+			70 = { }
+			15 = {
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = granada.0077.a.title.1
+					add_character_modifier = {
+						modifier = RICE_granada_munya_vacation_good_readings
+						years = 10
+					}
+				}
+			}
+			15 = {
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = granada.0077.a.title.2
+					add_character_modifier = {
+						modifier = RICE_granada_munya_vacation_chess_matches
+						years = 10
+					}
+				}
+			}
+		}
 	}
 
 }
@@ -2305,13 +2849,41 @@ granada.0078 = {
 		character = root
 		animation = happiness
 	}
+	right_portrait = {
+		character = scope:RICE_random_vacation_pal
+		animation = ecstasy
+		trigger = {
+			scope:activity = {
+				any_participant = {
+					RICE_activity_participant_trigger = yes
+				}
+			}
+		}
+	}	
 
 	immediate = {
+		if = {
+			limit = {
+				scope:activity = {
+					any_participant = {
+						RICE_activity_participant_trigger = yes
+					}
+				}				
+			}
+			scope:activity = {
+				random_participant = {
+					limit = {
+						RICE_activity_participant_trigger = yes
+					}
+					save_scope_as = RICE_random_vacation_pal
+				}
+			}
+		}
 		random_list = {
-			10 = { add_piety = 25 }
-			20 = { add_piety = 50 }
-			20 = { add_piety = 75 }
-			10 = { add_piety = 100 }
+			10 = { add_prestige = 25 }
+			20 = { add_prestige = 50 }
+			20 = { add_prestige = 75 }
+			10 = { add_prestige = 100 }
 		}
 	}
 
@@ -2323,48 +2895,48 @@ granada.0078 = {
 			lustful = miniscule_stress_impact_loss
 			gregarious = miniscule_stress_impact_loss
 		}
-		send_interface_toast = {
-			type = event_toast_effect_good
-			left_icon = ROOT
-			title = granada.0078.a.title
-			random = {
-				chance = 20
-				modifier = {
-					learning >= mediocre_skill_rating
-					add = 5
-				}
-				modifier = {
-					learning >= medium_skill_rating
-					add = 5
-				}
-				modifier = {
-					learning >= decent_skill_rating
-					add = 5
-				}
-				modifier = {
-					learning >= high_skill_rating
-					add = 5
-				}
-				modifier = {
-					diplomacy >= mediocre_skill_rating
-					add = 3
-				}
-				modifier = {
-					diplomacy >= medium_skill_rating
-					add = 3
-				}
-				modifier = {
-					diplomacy >= decent_skill_rating
-					add = 3
-				}
-				modifier = {
-					diplomacy >= high_skill_rating
-					add = 3
-				}
+		random = {
+			chance = 20
+			modifier = {
+				learning >= mediocre_skill_rating
+				add = 5
 			}
-			add_character_modifier = {
-				modifier = RICE_granada_munya_vacation_famed_partier
-				years = 10
+			modifier = {
+				learning >= medium_skill_rating
+				add = 5
+			}
+			modifier = {
+				learning >= decent_skill_rating
+				add = 5
+			}
+			modifier = {
+				learning >= high_skill_rating
+				add = 5
+			}
+			modifier = {
+				diplomacy >= mediocre_skill_rating
+				add = 3
+			}
+			modifier = {
+				diplomacy >= medium_skill_rating
+				add = 3
+			}
+			modifier = {
+				diplomacy >= decent_skill_rating
+				add = 3
+			}
+			modifier = {
+				diplomacy >= high_skill_rating
+				add = 3
+			}
+			send_interface_toast = {
+				type = event_toast_effect_good
+				left_icon = ROOT
+				title = granada.0078.a.title
+				add_character_modifier = {
+					modifier = RICE_granada_munya_vacation_famed_partier
+					years = 10
+				}
 			}
 		}
 
@@ -2401,8 +2973,8 @@ granada.0079 = {
 		name = granada.0079.a
 		add_prestige = 10
 		stress_impact = {
-			base = miniscule_stress_impact_loss
-			gluttonous = miniscule_stress_impact_loss
+			base = minor_stress_impact_loss
+			gluttonous = minor_stress_impact_loss
 			lustful = miniscule_stress_impact_loss
 			gregarious = miniscule_stress_impact_loss
 		}
@@ -2414,3 +2986,673 @@ granada.0079 = {
 
 
 
+
+
+######################################################################################
+# 
+# FLAVOR EVENTS
+# 
+# granada.0080-granada.0099 reserved
+# 
+######################################################################################
+
+
+# Granada silk industry doing well
+granada.0080 = {
+	type = character_event
+	title = granada.0080.t
+	desc = granada.0080.desc
+	theme = RICE_theme_andalusian_countryside
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		RICE_granada_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+	}
+
+	immediate = {
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_granada_region		
+				}
+			}	
+			save_scope_as = county
+		}
+		title:c_almeria = {
+			save_scope_as = almeria
+		}
+		title:d_granada = {
+			save_scope_as = granada_duchy
+		}
+	}
+
+	option = { # ok
+		name = granada.0080.a
+		if = {
+			limit = {
+				scope:county = {
+					has_county_modifier = RICE_granada_silk_bad
+				}
+			}
+			scope:county = {
+				remove_county_modifier = RICE_granada_silk_bad
+			}
+		}
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_granada_silk_good
+				years = 10
+			}
+		}
+	}
+}
+
+
+# Granada silk industry not doing well
+granada.0081 = {
+	type = character_event
+	title = granada.0081.t
+	desc = granada.0081.desc
+	theme = RICE_theme_andalusian_countryside
+	
+	left_portrait = {
+		character = root
+		animation = sadness
+	}
+	
+	trigger = {
+		RICE_granada_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = callous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = -0.2
+			has_trait = just
+		}
+	}
+
+	immediate = {
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_granada_region		
+				}
+			}	
+			save_scope_as = county
+		}
+		title:c_almeria = {
+			save_scope_as = almeria
+		}
+		title:d_granada = {
+			save_scope_as = granada_duchy
+		}
+	}
+
+	option = { # ok
+		name = granada.0081.a
+		if = {
+			limit = {
+				scope:county = {
+					has_county_modifier = RICE_granada_silk_good
+				}
+			}
+			scope:county = {
+				remove_county_modifier = RICE_granada_silk_good
+			}
+		}
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_granada_silk_bad
+				years = 10
+			}
+		}
+	}
+}
+
+
+# Traveler praises Granada landscape
+granada.0082 = {
+	type = character_event
+	title = granada.0082.t
+	desc = granada.0082.desc
+	theme = RICE_theme_granada_alhambra_courtyard
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	trigger = {
+		capital_province = {
+			geographical_region = RICE_granada_region
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = -0.2
+			has_trait = paranoid
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	option = { # ok
+		name = granada.0082.a
+		add_prestige = 50
+	}
+}
+
+
+# Eating Berenjenas con Miel
+granada.0083 = {
+	type = character_event
+	title = granada.0083.t
+	desc = granada.0083.desc
+	theme = feast_activity
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		RICE_granada_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+	}
+
+	immediate = {
+		title:d_granada = {
+			save_scope_as = granada_duchy
+		}
+	}
+
+	option = { # ok
+		name = granada.0083.a
+		add_character_modifier = {
+			modifier = RICE_granada_eating_eggplant_sticks
+			years = 5
+		}
+	}
+}
+
+
+# Eating Remojon Granadino
+granada.0084 = {
+	type = character_event
+	title = granada.0084.t
+	desc = granada.0084.desc
+	theme = feast_activity
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		RICE_granada_region_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+	}
+
+	immediate = {
+		title:d_granada = {
+			save_scope_as = granada_duchy
+		}
+	}
+
+	option = { # ok
+		name = granada.0084.a
+		add_character_modifier = {
+			modifier = RICE_granada_eating_orange_olive_oil_salad
+			years = 5
+		}
+	}
+}
+
+
+# A new canal can be built in Granada
+granada.0085 = {
+	type = character_event
+	title = granada.0085.t
+	desc = granada.0085.desc
+	theme = RICE_theme_andalusian_countryside
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		has_title = title:c_granada
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	immediate = {
+		title:c_granada = {
+			save_scope_as = granada_county
+		}
+	}
+
+	option = { # ok
+		name = granada.0085.a
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		add_prestige = 50
+		title:c_granada = {
+			add_county_modifier = {
+				modifier = RICE_granada_canal_agriculture
+				years = 10
+			}
+		}
+	}
+
+	option = { # ok
+		name = granada.0085.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		add_piety = 50
+		title:c_granada = {
+			add_county_modifier = {
+				modifier = RICE_granada_canal_baths
+				years = 10
+			}
+		}
+	}
+
+	option = { # ok
+		name = granada.0085.c
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		add_prestige = 25
+		add_piety = 25
+		title:c_granada = {
+			add_county_modifier = {
+				modifier = RICE_granada_canal_gardens
+				years = 10
+			}
+		}
+	}
+
+	option = { # ok
+		name = granada.0085.d
+	}
+}
+
+
+# A Granadan canal is in need of urgent repairs
+granada.0086 = {
+	type = character_event
+	title = granada.0086.t
+	desc = granada.0086.desc
+	theme = RICE_theme_andalusian_countryside
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		has_title = title:c_granada
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	immediate = {
+		title:c_granada = {
+			save_scope_as = granada_county
+		}
+	}
+
+	option = { # ok
+		name = granada.0086.a
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		title:c_granada = {		
+			add_county_modifier = {
+				modifier = RICE_granada_canal_repairs
+				years = 10
+			}
+		}
+	}
+
+	option = { # ok
+		name = granada.0086.b
+		title:c_granada = {		
+			add_county_modifier = {
+				modifier = RICE_granada_canal_disrepair
+				years = 10
+			}
+		}
+	}
+}
+
+
+# Inspecting Granada's industrial sector
+granada.0087 = {
+	type = character_event
+	title = granada.0087.t
+	desc = granada.0087.desc
+	theme = RICE_theme_andalusian_countryside
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		has_title = title:c_granada
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		title:c_granada = {
+			save_scope_as = granada_county
+		}
+	}
+
+	option = { # ok
+		name = granada.0087.a
+		add_prestige = 50
+		add_character_modifier = {
+			modifier = RICE_granada_recent_industrial_sector_insights
+			years = 5
+		}
+	}
+}
+
+# Granada ruler feels proud of ruling part of Granada
+granada.0088 = {
+	type = character_event
+	title = granada.0088.t
+	desc = granada.0088.desc
+	theme = RICE_theme_andalusian_countryside
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	trigger = {
+		has_title = title:c_granada
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		title:d_granada = {
+			save_scope_as = granada_duchy
+		}
+	}
+
+	option = { # ok
+		name = granada.0088.a
+		add_prestige = 20
+		stress_impact = {
+			arrogant = miniscule_stress_impact_loss
+			content = miniscule_stress_impact_loss
+		}
+	}
+
+	option = { # ok
+		name = granada.0088.b
+		add_piety = 20
+		stress_impact = {
+			humble = miniscule_stress_impact_loss
+			trusting = miniscule_stress_impact_loss
+		}
+	}
+}

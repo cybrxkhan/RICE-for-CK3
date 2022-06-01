@@ -305,6 +305,7 @@ RICE_granada_transfer_seat_of_power = {
 
 	is_valid = {
 		has_title = title:c_granada
+		#has_title = title:d_granada
 		highest_held_title_tier >= tier_duchy
 		OR = {
 			AND = {
@@ -330,9 +331,12 @@ RICE_granada_transfer_seat_of_power = {
 	}
 
 	effect = {
-
+	
 		title:c_granada = {
-			save_scope_as = granada
+			save_scope_as = granada_county
+		}
+		title:d_granada = {
+			save_scope_as = granada_duchy
 		}
 
 		save_scope_as = granada_relocator
@@ -343,6 +347,12 @@ RICE_granada_transfer_seat_of_power = {
 			target = flag:RICE_granada_transfer_seat_of_power_done_flag
 		}
 
+		# Timer for the 1066 pogrom event chain
+		set_global_variable = {
+			name = RICE_granada_1066_pogrom_historical_event_timer
+			value = yes
+			days = 36500
+		}
 
 		show_as_tooltip = {
 			RICE_granada_transfer_to_granada_effect = yes
@@ -521,12 +531,7 @@ RICE_granada_alhambra_munya_estate = {
 		if = {
 			limit = {
 				has_title = title:c_granada
-				NOT = {
-					is_target_in_global_variable_list = {
-						name = RICE_alhambra_structures_built
-						target = flag:RICE_alhambra_structure_generalife
-					}
-				}
+				has_global_variable = RICE_granada_alhambra_built_generalife
 			}
 			custom_tooltip = RICE_granada_alhambra_munya_estate_effect_tooltip_3
 		}
@@ -563,10 +568,20 @@ RICE_granada_alhambra_comares_baths = {
 	is_shown = {
 		is_landed = yes
 		has_title = title:c_granada
+		title:b_granada.title_province = {
+			has_building = alhambra_02
+		}
 	}
 
 	is_valid = {
 		has_title = title:c_granada
+		title:b_granada.title_province = {
+			has_building = alhambra_02
+		}
+		custom_description = {
+			text = RICE_granada_alhambra_comares_palace_built_req
+			has_global_variable = RICE_granada_alhambra_built_comares_palace				
+		}
 	}
 
 	is_valid_showing_failures_only = {
@@ -600,12 +615,7 @@ RICE_granada_alhambra_comares_baths = {
 		if = {
 			limit = {
 				has_title = title:c_granada
-				NOT = {
-					is_target_in_global_variable_list = {
-						name = RICE_alhambra_structures_built
-						target = flag:RICE_alhambra_structure_house_of_worship
-					}
-				}
+				has_global_variable = RICE_granada_alhambra_built_house_of_worship
 			}
 			custom_tooltip = RICE_granada_alhambra_comares_baths_effect_tooltip_2
 		}		
@@ -653,10 +663,16 @@ RICE_granada_admire_alhambra_gardens = {
 	is_shown = {
 		is_landed = yes
 		has_title = title:c_granada
+		title:b_granada.title_province = {
+			has_building = alhambra_02
+		}
 	}
 
 	is_valid = {
 		has_title = title:c_granada
+		title:b_granada.title_province = {
+			has_building = alhambra_02
+		}
 	}
 
 	is_valid_showing_failures_only = {
@@ -690,12 +706,7 @@ RICE_granada_admire_alhambra_gardens = {
 		if = {
 			limit = {
 				has_title = title:c_granada
-				NOT = {
-					is_target_in_global_variable_list = {
-						name = RICE_alhambra_structures_built
-						target = flag:RICE_alhambra_structure_generalife
-					}
-				}
+				has_global_variable = RICE_granada_alhambra_built_generalife
 			}
 			custom_tooltip = RICE_granada_admire_alhambra_gardens_effect_tooltip_2
 		}		
