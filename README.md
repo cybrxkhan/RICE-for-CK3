@@ -1,6 +1,6 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.6.0 "Alhambra" (Released 6/1/22, for vanilla patch 1.6.x)
+## Latest Version: Version 1.6.0.a "Alhambra" (Released 6/2/22, for vanilla patch 1.6.x)
 
 **Newest Flavor Pack - Granada: Memories of the Alhambra**
 
@@ -51,6 +51,22 @@ DO NOT manually download the master branch unless you know what you're doing as 
 NOTE: **If you are re-installing a mod manually, delete the old version of the mod first before copy and pasting the new one! It's a good habit to do to prevent potential issues.**
 
 ## Latest Changelog
+
+### Version 1.6.0.a Hotfix
+
+- Achamanism (Guanche Paganism) and Dezawism now have the Cthonic Redoubts tenet instead of Sanctity of Nature
+- Benesmen Festival and Pray for Blessings of Rain decisions now require following a faith of the Amazigh religion that has the Cthonic Redoubts tenet (this is a workaround for the bug where these decisions are unavailable to reformed Guanche paganism, due to not being able to scope to reformed faiths including Guanche paganism)
+- Samanid vassals in Badakhshan start with the religious rights protected contract
+- If playing as Thabit ibn Qura, the Harranian pagan in 867 CE, you now start with the jizya contract with your liege
+- Renamed Persian Jewish culture to Parsim
+- Fixed Munya decision not being cheaper after building the Generalife structure in the Alhambra
+- Fixed the peaceful resolution to the Granada pogrom event chain not granting Granada the proper county modifier as a reward
+- Fixed Granada pogrom event chain not prioritizing Joseph ibn Naghrela as the potential first victim
+- Fixed no vocal music game rule not working
+- Fixed missing icons for Nile flood activities
+- Fixed missing localization for the end of the Munya solo vacation
+- Fixed some decisions being unavailable in potential edge cases where a Munya group vacation doesn’t expire properly for guests for some reason
+- Miscellaneous bugfixes
 
 ### Version 1.6.0 "Alhambra"
 
