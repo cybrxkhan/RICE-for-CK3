@@ -1,4 +1,124 @@
 ﻿
+RICE_upper_egypt_reintroduce_faith_luxor_temple = {
+	picture = "gfx/interface/illustrations/decisions/decision_ancient_egypt_temple.dds"
+	major = yes
+	ai_check_interval = 48
+
+	desc = RICE_upper_egypt_reintroduce_faith_luxor_temple_desc
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		has_title = title:c_qus
+		NOT = { has_global_variable = RICE_upper_egypt_luxor_changed_timer }
+		OR = {
+			AND = {
+				RICE_is_greco_roman_religion_group_trigger = yes
+				title:c_qus.title_province = {
+					OR = {
+						has_building = RICE_upper_egypt_temple_of_luxor_02
+						has_building = RICE_upper_egypt_temple_of_luxor_03
+					}
+				}
+			}
+			AND = {
+				religion = religion:christianity_religion
+				title:c_qus.title_province = {
+					has_building = RICE_upper_egypt_temple_of_luxor_03
+				}
+			}
+		}
+	}
+	
+	is_valid = {
+		has_title = title:c_qus
+		OR = {
+			AND = {
+				religion = religion:christianity_religion
+				title:c_qus.title_province = {
+					has_building = RICE_upper_egypt_temple_of_luxor_03
+				}
+			}
+			AND = {
+				RICE_is_greco_roman_religion_group_trigger = yes
+				title:c_qus.title_province = {
+					OR = {
+						has_building = RICE_upper_egypt_temple_of_luxor_02
+						has_building = RICE_upper_egypt_temple_of_luxor_03
+					}
+				}
+			}
+		}
+		OR = {
+			highest_held_title_tier >= tier_duchy
+			top_liege = {
+				highest_held_title_tier >= tier_kingdom
+				religion = root.religion
+			}
+			is_independent_ruler = yes
+		}
+		prestige_level >= 3
+		custom_description = {
+			text = RICE_upper_egypt_luxor_qus_faith_req
+			title:c_qus = {
+				faith = root.faith
+			}
+		}
+		custom_description = {
+			text = RICE_upper_egypt_luxor_recently_changed_req
+			NOT = { has_global_variable = RICE_upper_egypt_luxor_changed_timer }	
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		hidden_effect = {
+			title:c_qus = { save_scope_as = qus_county }
+		}
+
+		# Timer so this doesn't happen again too soon
+		set_global_variable = {
+			name = RICE_upper_egypt_luxor_changed_timer
+			value = yes
+			days = 7300
+		}
+
+		
+		custom_tooltip = RICE_upper_egypt_reintroduce_faith_luxor_temple_effect_tooltip
+
+		show_as_tooltip = {
+			RICE_upper_egypt_change_luxor_temple_type_effect = yes
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_upper_egypt_reintroduce_faith_luxor_temple_context_tooltip
+		}
+
+		trigger_event = {
+			id = upper_egypt.0011
+		}
+	}
+
+	cost = { 
+		prestige = major_prestige_value 
+		gold = medium_gold_value
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 25
+	}
+}
+
 RICE_upper_egypt_close_temple_of_philae = {
 	picture = "gfx/interface/illustrations/decisions/decision_ancient_egypt_temple.dds"
 	major = yes
@@ -84,7 +204,7 @@ RICE_upper_egypt_close_temple_of_philae = {
 	}	
 
 	ai_potential = {
-		short_term_gold > major_prestige_value
+		prestige > major_prestige_value
 	}
 
 	ai_will_do = {
@@ -172,7 +292,7 @@ RICE_upper_egypt_reopen_temple_of_philae = {
 	}
 	
 	ai_potential = {
-		short_term_gold > medium_gold_value
+		prestige > medium_gold_value
 	}
 
 	ai_will_do = {
@@ -265,7 +385,7 @@ RICE_upper_egypt_close_temple_of_elephantine = {
 	}	
 
 	ai_potential = {
-		short_term_gold > major_prestige_value
+		prestige > major_prestige_value
 	}
 
 	ai_will_do = {
@@ -353,7 +473,7 @@ RICE_upper_egypt_reopen_temple_of_elephantine = {
 	}
 	
 	ai_potential = {
-		short_term_gold > medium_gold_value
+		prestige > medium_gold_value
 	}
 
 	ai_will_do = {
@@ -448,7 +568,7 @@ RICE_upper_egypt_close_temple_of_kalabsha = {
 	}	
 
 	ai_potential = {
-		short_term_gold > major_prestige_value
+		prestige > major_prestige_value
 	}
 
 	ai_will_do = {
@@ -537,7 +657,7 @@ RICE_upper_egypt_reopen_temple_of_kalabsha = {
 	}
 	
 	ai_potential = {
-		short_term_gold > medium_gold_value
+		prestige > medium_gold_value
 	}
 
 	ai_will_do = {
