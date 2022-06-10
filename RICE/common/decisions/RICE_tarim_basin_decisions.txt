@@ -160,6 +160,161 @@ RICE_tarim_basin_patronize_a_mogao_cave = {
 }
 
 
+RICE_tarim_basin_reinhabit_gomati_monastery = {
+	picture = "gfx/interface/illustrations/decisions/decision_rice_buddhist_temple.dds"
+	major = yes
+	ai_check_interval = 12
+
+	desc = RICE_tarim_basin_reinhabit_gomati_monastery_desc
+	selection_tooltip = RICE_tarim_basin_reinhabit_gomati_monastery_tooltip
+
+	is_shown = {
+		religion = religion:buddhism_religion
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_former_tang_western_region		
+			}
+		}
+		has_global_variable = RICE_tarim_basin_khotan_eight_protectors_abandoned
+	}
+	
+	is_valid = {
+		religion = religion:buddhism_religion
+		has_title = title:c_khotan
+		highest_held_title_tier >= tier_duchy
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+
+		save_scope_as = khotan_buddhism_restorer
+
+		show_as_tooltip = {
+			RICE_tarim_basin_reinhabit_gomati_monastery_effect = yes
+		}
+
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_tarim_basin_reinhabit_gomati_monastery_context_tooltip
+		}
+		trigger_event = tarim_basin.0174
+	}
+
+	cost = {
+		gold = medium_gold_value
+	}
+	
+	ai_potential = {
+		gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+		modifier = {
+			add = 20
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 20
+			has_trait = diligent
+		}
+	}
+}
+
+
+RICE_tarim_basin_construct_ordam_mazar = {
+	picture = "gfx/interface/illustrations/decisions/decision_small_town_arabic.dds"
+	major = yes
+	ai_check_interval = 12
+
+	desc = RICE_tarim_basin_construct_ordam_mazar_desc
+	selection_tooltip = RICE_tarim_basin_construct_ordam_mazar_tooltip
+
+	is_shown = {
+		religion = religion:islam_religion
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_former_tang_western_region		
+			}
+		}
+		has_global_variable = RICE_tarim_basin_ali_arslan_equivalent_died
+		game_start_date < 1000.1.1
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_tarim_basin_construct_ordam_mazar_done
+			}
+		}
+	}
+	
+	is_valid = {
+		religion = religion:islam_religion
+		has_title = title:c_kashgar
+		highest_held_title_tier >= tier_duchy
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+
+		save_scope_as = ordam_builder
+
+		ordered_in_global_list = {
+			variable = RICE_tarim_basin_ali_arslan_equivalent
+			save_scope_as = ali_arslan
+		}
+
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_tarim_basin_construct_ordam_mazar_done
+		}
+
+		show_as_tooltip = {
+			RICE_tarim_basin_construct_ordam_mazar_effect = yes
+		}
+
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_tarim_basin_construct_ordam_mazar_context_tooltip
+		}
+		trigger_event = tarim_basin.0244
+	}
+
+	cost = {
+		gold = medium_gold_value
+	}
+	
+	ai_potential = {
+		gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 50
+		modifier = {
+			add = 20
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 20
+			has_trait = diligent
+		}
+	}
+}
+
+
 RICE_tarim_basin_compile_the_turkic_dictionary = {
 	picture = "gfx/interface/illustrations/decisions/decision_muslim_scholar.dds"
 	major = yes
@@ -1097,6 +1252,7 @@ RICE_tarim_basin_khotan_procession = {
 			}
 		}
 		religion = religion:buddhism_religion
+		NOT = { has_global_variable = RICE_tarim_basin_khotan_eight_protectors_abandoned }
 	}
 	
 	is_valid = {
@@ -1287,7 +1443,7 @@ RICE_tarim_basin_stage_animal_fight = {
 	
 	is_valid = {
 		OR = {
-			culture = culture:tocharian
+			culture = { has_cultural_pillar = heritage_tocharian }
 			custom_description = {
 				text = RICE_tocharian_culture_requirement
 				capital_county = {

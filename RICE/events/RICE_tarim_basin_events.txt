@@ -12,7 +12,7 @@
 #	tarim_basin.0100-tarim_basin.0109			Stage Animal Fights to Predict the Harvest
 # tarim_basin.0150-tarim_basin.0199			Khotanese
 #	tarim_basin.0150-tarim_basin.0169			Spring Procession
-#	tarim_basin.0170-tarim_basin.0179			8 Protectors/Khotan refugees aftermath
+#	tarim_basin.0170-tarim_basin.0199			8 Protectors/Khotan refugees aftermath/Muslim Conquest of Khotan
 # tarim_basin.0200-tarim_basin.0249			Kara-Khanids/Islamic Uighurs
 #	tarim_basin.0200-tarim_basin.0209			Al-Kashgari/Compile First Turkic Dictionary
 #	tarim_basin.0210-tarim_basin.0229			Ordam Mazar Festival
@@ -6562,7 +6562,7 @@ tarim_basin.0161 = {
 # 
 # EIGHT PROTECTORS
 # 
-# tarim_basin.0170-tarim_basin.0179
+# tarim_basin.0170-tarim_basin.0199
 # 
 ######################################################################################
 
@@ -6773,6 +6773,10 @@ tarim_basin.0173 = {
 	}
 	lower_center_portrait = scope:khotan_new_ruler
 
+	trigger = {
+		has_global_variable = RICE_tarim_basin_khotan_eight_protectors_abandoned
+	}
+
 	immediate = {
 		title:c_khotan = { #For loc.
 			save_scope_as = khotan
@@ -6863,6 +6867,286 @@ tarim_basin.0173 = {
 	}
 
 }
+
+
+# Reinhabit Gomati Monastery
+tarim_basin.0174 = {
+	type = character_event
+	title = tarim_basin.0174.t
+	desc = tarim_basin.0174.desc
+	theme = faith
+	override_background = { event_background = RICE_background_tarim_basin_town }
+	
+	left_portrait = {
+		character = scope:khotan_buddhism_restorer
+		animation = personality_zealous
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		title:c_khotan = { #For loc.
+			save_scope_as = khotan
+		}
+		RICE_tarim_basin_reinhabit_gomati_monastery_effect = yes
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0174.a
+		every_ruler = {
+			limit = {
+				is_ai = no
+				#OR = {
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_silk_road_region
+						}
+					}
+				#	dynasty = root.dynasty # Shows errors for some reason?
+				#}
+			}
+			trigger_event = tarim_basin.0175
+		}	
+	}
+}
+
+# Reinhabit Gomati Monastery notification
+tarim_basin.0175 = {
+	type = character_event
+	title = tarim_basin.0175.t
+	desc = tarim_basin.0175.desc
+	theme = faith
+	override_background = { event_background = RICE_background_tarim_basin_town }
+	
+	left_portrait = {
+		character = scope:khotan_buddhism_restorer
+		animation = personality_zealous
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		show_as_tooltip = {
+			scope:khotan_buddhism_restorer = {
+				RICE_tarim_basin_reinhabit_gomati_monastery_effect = yes
+			}			
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0175.a	
+		trigger = {
+			religion = religion:buddhism_religion
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0175.b
+		trigger = {
+			NOT = { religion = religion:buddhism_religion }
+		}	
+	}
+}
+
+
+# First Muslim ruler of Khotan
+tarim_basin.0176 = {
+	hidden = yes
+	
+	trigger = {
+		NOT = { has_global_variable = RICE_tarim_basin_ali_arslan_equivalent_happened }
+		has_title = title:c_khotan
+		religion = religion:islam_religion
+		game_start_date < 1000.1.1
+	}
+	
+	immediate = {
+		set_global_variable = {
+			name = RICE_tarim_basin_ali_arslan_equivalent_happened
+			value = yes 
+		}
+		#RICE_tarim_basin_ali_arslan_equivalent_died
+		save_scope_as = ali_arslan
+		scope:ali_arslan = {
+			add_to_global_variable_list = {
+				name = RICE_tarim_basin_ali_arslan_equivalent # Dunno how else to do this
+				target = this
+			}	
+		}
+		add_piety_level = 1		
+		add_character_modifier = {
+			modifier = RICE_tarim_basin_ali_arslan_equivalent
+		}
+		every_player = {
+			limit = {
+				is_ai = no
+				religion = religion:islam_religion
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_former_tang_western_region
+					}
+				}		
+			}
+			
+			trigger_event = {
+				id = tarim_basin.0177
+				days = 1
+			}
+			
+		}
+	}
+}
+
+
+# First Muslim ruler of Khotan - notification
+tarim_basin.0177 = {
+	type = character_event
+	title = tarim_basin.0177.t
+	desc = tarim_basin.0177.desc
+	theme = faith
+	override_background = { event_background = RICE_background_tarim_basin_town }
+	
+	left_portrait = {
+		character = scope:ali_arslan
+		animation = personality_zealous
+	}
+
+	immediate = {
+		title:c_kashgar = { #For loc.
+			save_scope_as = kashgar
+		}
+		title:c_khotan = { #For loc.
+			save_scope_as = khotan
+		}
+		show_as_tooltip = {
+			scope:ali_arslan = {
+				add_piety_level = 1
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_ali_arslan_equivalent
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0177.a
+		custom_tooltip = tarim_basin.0177.tooltip
+	}
+}
+
+
+# First Muslim ruler of Khotan passes away ping
+tarim_basin.0178 = {
+	type = empty
+	hidden = yes
+	
+	trigger = {
+		has_character_modifier = RICE_tarim_basin_ali_arslan_equivalent
+	}
+	
+	immediate = {
+		religion:islam_religion = { save_scope_as = islam_religion }
+		title:c_kashgar = { #For loc.
+			save_scope_as = kashgar
+		}
+		title:c_khotan = { #For loc.
+			save_scope_as = khotan
+		}
+		#save_scope_as = ali_arslan
+		ordered_in_global_list = {
+			variable = RICE_tarim_basin_ali_arslan_equivalent
+			save_scope_as = ali_arslan
+		}
+		set_global_variable = {
+			name = RICE_tarim_basin_ali_arslan_equivalent_died
+			value = yes 
+		}
+		every_player = {
+			limit = {
+				is_ai = no
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_former_tang_western_region
+					}
+				}		
+			}
+			trigger_event = tarim_basin.0179
+		}
+	}
+}
+
+# First Muslim ruler of Khotan passes away - notification
+tarim_basin.0179 = {
+	type = character_event
+	title = tarim_basin.0179.t
+	desc = tarim_basin.0179.desc
+	theme = faith
+	override_background = { event_background = RICE_background_tarim_basin_town }
+	
+	left_portrait = {
+		character = scope:ali_arslan
+		animation = personality_zealous
+	}
+
+	
+	option = { # Ok
+		name = tarim_basin.0179.a
+		custom_tooltip = tarim_basin.0179.tooltip
+	}
+}
+
+
+
+# First Muslim ruler of Khotan - title version
+tarim_basin.0180 = {
+	hidden = yes
+	
+	trigger = {
+		NOT = { has_global_variable = RICE_tarim_basin_ali_arslan_equivalent_happened }
+		scope:title = title:c_khotan
+		religion = religion:islam_religion
+		game_start_date < 1000.1.1
+	}
+	
+	immediate = {
+		set_global_variable = {
+			name = RICE_tarim_basin_ali_arslan_equivalent_happened
+			value = yes 
+		}
+		#RICE_tarim_basin_ali_arslan_equivalent_died
+		save_scope_as = ali_arslan
+		scope:ali_arslan = {
+			add_to_global_variable_list = {
+				name = RICE_tarim_basin_ali_arslan_equivalent # Dunno how else to do this
+				target = this
+			}	
+		}
+		add_piety_level = 1		
+		add_character_modifier = {
+			modifier = RICE_tarim_basin_ali_arslan_equivalent
+		}
+		every_player = {
+			limit = {
+				is_ai = no
+				religion = religion:islam_religion
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_former_tang_western_region
+					}
+				}		
+			}
+			
+			trigger_event = {
+				id = tarim_basin.0177
+				days = 1
+			}
+			
+		}
+	}
+}
+
 
 
 
@@ -7573,8 +7857,19 @@ tarim_basin.0210 = {
 	}
 
 	immediate = {
-		character:3000 = {
-			save_scope_as = ali_arslan
+		if = {
+			limit = {
+				has_global_variable = RICE_tarim_basin_ali_arslan_equivalent_died
+			}
+			ordered_in_global_list = {
+				variable = RICE_tarim_basin_ali_arslan_equivalent
+				save_scope_as = ali_arslan
+			}
+		}
+		else = {
+			character:3000 = {
+				save_scope_as = ali_arslan
+			}
 		}
 		title:c_kashgar = { #For loc.
 			save_scope_as = kashgar
@@ -7612,8 +7907,19 @@ tarim_basin.0211 = {
 
 	immediate = {
 		play_music_cue = "mx_cue_sacredrite"
-		character:3000 = {
-			save_scope_as = ali_arslan
+		if = {
+			limit = {
+				has_global_variable = RICE_tarim_basin_ali_arslan_equivalent_died
+			}
+			ordered_in_global_list = {
+				variable = RICE_tarim_basin_ali_arslan_equivalent
+				save_scope_as = ali_arslan
+			}
+		}
+		else = {
+			character:3000 = {
+				save_scope_as = ali_arslan
+			}
 		}
 		title:c_kashgar = { #For loc.
 			save_scope_as = kashgar
@@ -8408,6 +8714,88 @@ tarim_basin.0243 = {
 	}
 }
 
+
+
+# Build Ordam Mazar
+tarim_basin.0244 = {
+	type = character_event
+	title = tarim_basin.0244.t
+	desc = tarim_basin.0244.desc
+	theme = faith
+	override_background = { event_background = RICE_background_tarim_basin_town }
+	
+	left_portrait = {
+		character = scope:ordam_builder
+		animation = personality_zealous
+	}
+	right_portrait = {
+		character = scope:ali_arslan
+		animation = personality_bold
+	}
+
+	immediate = {
+		#religion:islam_religion = { save_scope_as = islam_religion }
+		title:c_kashgar = { #For loc.
+			save_scope_as = kashgar
+		}
+		title:c_khotan = { #For loc.
+			save_scope_as = khotan
+		}
+		ordered_in_global_list = {
+			variable = RICE_tarim_basin_ali_arslan_equivalent
+			save_scope_as = ali_arslan
+		}
+		RICE_tarim_basin_construct_ordam_mazar_effect = yes
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0244.a
+		every_ruler = {
+			limit = {
+				is_ai = no
+				religion = religion:islam_religion
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_silk_road_region
+					}
+				}
+			}
+			trigger_event = tarim_basin.0245
+		}	
+	}
+}
+
+# Build Ordam Mazar notification
+tarim_basin.0245 = {
+	type = character_event
+	title = tarim_basin.0245.t
+	desc = tarim_basin.0245.desc
+	theme = faith
+	override_background = { event_background = RICE_background_tarim_basin_town }
+	
+	left_portrait = {
+		character = scope:ordam_builder
+		animation = personality_zealous
+	}
+	right_portrait = {
+		character = scope:ali_arslan
+		animation = personality_bold
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_sacredrite"
+		show_as_tooltip = {
+			scope:ordam_builder = {
+				RICE_tarim_basin_construct_ordam_mazar_effect = yes
+			}			
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0245.a	
+	}
+}
 
 
 ######################################################################################
