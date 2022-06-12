@@ -56,7 +56,7 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 - Added the Idol of Cadiz as a county modifier to Cadiz at the start of the game
 - Added decision to Demolish the Idol of Cadiz
 - Added some more German translations (credits to Dillo)
-- Added decision to Rehabilitate Gomati Monastery for Buddhists in Khotan, which will restore the 8 Protectors Modifier if Khotan had been previously taken over by a non-Buddhist
+- Added decision to Revive Gomati Monastery for Buddhists in Khotan, which will restore the 8 Protectors Modifier if Khotan had been previously taken over by a non-Buddhist
 - Added decision to Construct the Ordam Mazar for Muslims in the Tarim Basin, which will enable the Ordam Mazar decision from start dates before 1066
 - New minor flavor and narrative events for the first Muslim ruler of Khotan related to the above
 - Qanat innovation is now available and given to various Middle Eastern cultures in TFE as appropriate
