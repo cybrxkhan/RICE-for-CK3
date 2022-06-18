@@ -1,0 +1,589 @@
+﻿###############################################################################
+# 
+# galicia
+# 
+# galicia.0000-galicia.0019			Setup events, history events, miscellaneous decisions
+# galicia.0020-galicia.0039			Cantigas
+# galicia.0040-galicia.0049			????? Ourense springs?
+# galicia.0050-galicia.0099			Generic flavor events
+# 
+# 
+###############################################################################
+
+namespace = galicia
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# galicia.0000-galicia.0019
+# 
+######################################################################################
+
+
+# Way of Saint James infrastructure
+galicia.0010 = {
+	type = character_event
+	title = galicia.0010.t
+	desc = galicia.0010.desc
+	theme = RICE_theme_camino_de_santiago_church
+	override_background = {
+		trigger = {
+			has_character_flag = RICE_way_of_saint_james_background_alt
+		}
+		event_background = RICE_background_camino_de_santiago_road
+	}
+
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+
+	immediate = {	
+		hidden_effect = {
+			random = {
+				chance = 50
+				add_character_flag = RICE_way_of_saint_james_background_alt
+			}
+		}
+	}
+
+	option = {
+		name = galicia.0010.a
+		add_piety = RICE_saint_james_help_piety_reward_value
+		add_character_modifier = {
+			modifier = RICE_galicia_way_of_saint_james_supporter
+			years = 10
+		}
+		show_as_tooltip = {
+			random_list = {
+				desc = RICE_galicia_saint_james_routes_decision_tt
+				100 = {
+					show_chance = no
+					desc = RICE_galicia_saint_james_routes_decision_counties.close
+					custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.close.tooltip
+				}
+				100 = {
+					show_chance = no
+					desc = RICE_galicia_saint_james_routes_decision_counties.midrange.high
+					custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.midrange.high.tooltip
+				}
+				100 = {
+					show_chance = no
+					desc = RICE_galicia_saint_james_routes_decision_counties.distant.high
+					custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.distant.high.tooltip
+				}
+				100 = {
+					show_chance = no
+					desc = RICE_galicia_saint_james_routes_decision_counties.midrange.low
+					custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.midrange.low.tooltip
+				}
+				100 = {
+					show_chance = no
+					desc = RICE_galicia_saint_james_routes_decision_counties.distant.low
+					custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.distant.low.tooltip
+				}
+			}
+		}
+		hidden_effect = {
+			RICE_galicia_saint_james_infrastructure_close_effect = yes
+			RICE_galicia_saint_james_infrastructure_midrange_high_effect = yes
+			RICE_galicia_saint_james_infrastructure_distant_high_effect = yes
+			RICE_galicia_saint_james_infrastructure_midrange_low_effect = yes
+			RICE_galicia_saint_james_infrastructure_distant_low_effect = yes
+		}	
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_way_of_saint_james_background_alt
+			}
+			remove_character_flag = RICE_way_of_saint_james_background_alt
+		}
+	}
+
+}
+
+
+# Saint James Intercession decision
+galicia.0011 = {
+	type = character_event
+	title = galicia.0011.t
+	desc = {
+		desc = galicia.0011.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					OR = {
+						AND = {
+							exists = struggle:iberian_struggle
+							struggle:iberian_struggle = { is_struggle_phase = struggle_iberia_phase_hostility }
+						}
+						AND = {
+							NOT = { exists = struggle:iberian_struggle }
+							NOT = { has_global_variable = fp2_struggle_conciliation_ending }
+							NOT = { has_global_variable = fp2_struggle_compromise_ending }
+						}
+					}
+				}
+				desc = galicia.0011.desc.warrior
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {
+						AND = {
+							exists = struggle:iberian_struggle
+							struggle:iberian_struggle = { is_struggle_phase = struggle_iberia_phase_conciliation }
+						}
+						AND = {
+							NOT = { exists = struggle:iberian_struggle }
+							has_global_variable = fp2_struggle_conciliation_ending
+						}
+					}
+				}
+				desc = galicia.0011.desc.preacher
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {
+						AND = {
+							exists = struggle:iberian_struggle
+							OR = {
+								struggle:iberian_struggle = { is_struggle_phase = struggle_iberia_phase_compromise }
+								struggle:iberian_struggle = { is_struggle_phase = struggle_iberia_phase_opportunity }
+							}
+						}
+						AND = {
+							NOT = { exists = struggle:iberian_struggle }
+							has_global_variable = fp2_struggle_compromise_ending
+						}
+					}
+				}
+				desc = galicia.0011.desc.pilgrim
+			}
+		}
+	}
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	option = {
+		name = galicia.0011.a
+		RICE_galicia_saint_james_prayer_warrior_effect = yes
+	}
+
+}
+
+
+
+
+# Altering the Altar
+galicia.0012 = {
+	type = character_event
+	title = galicia.0012.t
+	desc = galicia.0012.desc
+	theme = faith
+
+	left_portrait = {
+		character = scope:diego_gelmirez
+		animation = personality_dishonorable
+	}
+
+	right_portrait = {
+		character = scope:chaplain
+		animation = personality_content
+	}
+
+	immediate = {
+		title:c_santiago = {
+			save_scope_as = santiago
+		}
+		scope:diego_gelmirez = {
+			add_to_global_variable_list = {
+				name = RICE_galicia_altar_alterer_list # Dunno how else to do this
+				target = this
+			}	
+		}
+		cp:councillor_court_chaplain = { save_scope_as = chaplain }
+	}
+
+	option = {
+		name = galicia.0012.a
+		custom_tooltip = galicia.0012.tooltip
+		RICE_galicia_alter_the_altar_effect = yes
+		every_ruler = {
+			limit = {
+				is_ai = no
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						OR = {
+							geographical_region = world_europe_west
+							geographical_region = world_europe_south_italy
+							geographical_region = world_africa_north_west
+						}
+					}
+				}
+			}
+			trigger_event = galicia.0013
+		}	
+	}
+}
+
+
+# Altering the Altar
+galicia.0013 = {
+	type = character_event
+	title = galicia.0013.t
+	desc = galicia.0013.desc
+	theme = faith
+
+	left_portrait = {
+		character = scope:diego_gelmirez
+		animation = personality_dishonorable
+	}
+
+	right_portrait = {
+		character = scope:chaplain
+		animation = personality_content
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		scope:diego_gelmirez = {
+			show_as_tooltip = {
+				RICE_galicia_alter_the_altar_effect = yes
+			}
+		}
+	}
+
+	option = {
+		name = galicia.0013.a
+		trigger = {
+			religion = religion:christianity_religion
+		}
+	}
+
+	option = {
+		name = galicia.0013.b
+		trigger = {
+			NOT = { religion = religion:christianity_religion }
+		}
+	}
+}
+
+
+# 1117 Rebellion
+galicia.0014 = {
+	type = character_event
+	title = galicia.0014.t
+	desc = galicia.0014.desc
+	theme = faith
+	override_background = { event_background = burning_building }
+
+	# left_portrait = {
+	# 	character = scope:diego_gelmirez_ruler
+	# 	animation = shock
+	# }
+
+	right_portrait = {
+		character = scope:diego_gelmirez_priest
+		animation = shock
+	}
+
+	trigger = {
+		title:c_santiago = {
+			faith.religion = religion:christianity_religion
+		}
+		cp:councillor_court_chaplain = {
+			is_available_adult = yes
+		}
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		ordered_in_global_list = {
+			variable = RICE_galicia_altar_alterer_list
+			save_scope_as = diego_gelmirez_ruler
+		}
+		cp:councillor_court_chaplain = { save_scope_as = diego_gelmirez_priest }
+	}
+
+	option = {
+		name = galicia.0014.a
+		random_list = {
+			desc = RICE_galicia_diego_gelmirez_attack_tt
+			# Escapes with minor wounds
+			60 = {
+				show_chance = no
+				desc = RICE_galicia_diego_gelmirez_attack.minor_wounds
+				add_character_flag = RICE_galicia_diego_gelmirez_attack_minor_wounds
+				send_interface_toast = {
+					left_icon = ROOT
+					title = RICE_galicia_diego_gelmirez_attack.minor_wounds
+					cp:councillor_court_chaplain = {
+						increase_wounds_effect = { REASON = wounds }
+					}
+				}
+			}			
+			# Escapes with major wounds
+			25 = {
+				show_chance = no
+				desc = RICE_galicia_diego_gelmirez_attack.major_wounds
+				add_character_flag = RICE_galicia_diego_gelmirez_attack_major_wounds
+				send_interface_toast = {
+					left_icon = ROOT
+					title = RICE_galicia_diego_gelmirez_attack.major_wounds
+					cp:councillor_court_chaplain = {
+						add_trait = maimed
+					}
+				}
+			}			
+			# Dies
+			15 = {
+				show_chance = no
+				desc = RICE_galicia_diego_gelmirez_attack.dies
+				add_character_flag = RICE_galicia_diego_gelmirez_attack_dies
+				send_interface_toast = {
+					left_icon = ROOT
+					title = RICE_galicia_diego_gelmirez_attack.dies
+					cp:councillor_court_chaplain = {
+						death = {
+							death_reason = death_beaten_by_mob
+						}
+					}
+				}
+			}			
+		}
+		RICE_galicia_1117_uprising_effect = yes
+		every_ruler = {
+			limit = {
+				is_ai = no
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						OR = {
+							geographical_region = world_europe_west
+							geographical_region = world_europe_south_italy
+							geographical_region = world_africa_north_west
+						}
+					}
+				}
+			}
+			trigger_event = galicia.0015
+		}
+	}
+}
+
+
+# 1117 Rebellion - notification
+galicia.0015 = {
+	type = character_event
+	title = galicia.0015.t
+	desc = {
+		desc = galicia.0015.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:diego_gelmirez_ruler = {
+						has_character_flag = RICE_galicia_diego_gelmirez_attack_minor_wounds
+					}
+				}
+				desc = galicia.0015.desc.minor_wounds
+			}
+			triggered_desc = {
+				trigger = {
+					scope:diego_gelmirez_ruler = {
+						has_character_flag = RICE_galicia_diego_gelmirez_attack_major_wounds
+					}
+				}
+				desc = galicia.0015.desc.major_wounds
+			}
+			triggered_desc = {
+				trigger = {
+					scope:diego_gelmirez_ruler = {
+						has_character_flag = RICE_galicia_diego_gelmirez_attack_dies
+					}
+				}
+				desc = galicia.0015.desc.dies
+			}
+		}
+		desc = galicia.0015.desc.conclusion
+	}
+	theme = faith
+
+	left_portrait = {
+		character = scope:diego_gelmirez_ruler
+		animation = stress
+	}
+
+	right_portrait = {
+		character = scope:diego_gelmirez_priest
+		animation = fear
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		scope:diego_gelmirez_ruler = {
+			show_as_tooltip = {
+				RICE_galicia_1117_uprising_effect = yes
+			}
+		}
+	}
+
+	option = {
+		name = galicia.0015.a
+		trigger = {
+			religion = religion:christianity_religion
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = galicia.0015.info
+			}
+		}
+	}
+
+	option = {
+		name = galicia.0015.b
+		trigger = {
+			NOT = { religion = religion:christianity_religion }
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = galicia.0015.info
+			}
+		}
+	}
+}
+
+
+
+
+
+# Levying extra tolls on the Way of Saint James
+galicia.0016 = {
+	type = character_event
+	title = galicia.0016.t
+	desc = {
+		desc = galicia.0016.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					cp:councillor_court_chaplain = {
+						exists = yes
+						is_available_adult = yes
+					}
+				}
+				desc = galicia.0016.desc.court_chaplain_exists
+			}
+			# Fallback
+			desc = galicia.0016.desc.no_court_chaplain_exists
+		}
+	}
+	theme = RICE_theme_camino_de_santiago_church
+	override_background = {
+		trigger = {
+			has_character_flag = RICE_way_of_saint_james_background_alt
+		}
+		event_background = RICE_background_camino_de_santiago_road
+	}
+
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+
+	right_portrait = {
+		character = cp:councillor_court_chaplain
+		trigger = {
+			cp:councillor_court_chaplain = {
+				exists = yes
+				is_available_adult = yes
+			}
+		}
+		animation = disapproval
+	}
+
+	immediate = {	
+		hidden_effect = {
+			random = {
+				chance = 50
+				add_character_flag = RICE_way_of_saint_james_background_alt
+			}
+		}
+	}
+
+	option = {
+		name = galicia.0016.a
+
+		add_gold = RICE_saint_james_toll_money_reward_value
+
+		add_character_modifier = {
+			modifier = RICE_galicia_way_of_saint_james_robber_baron
+			years = 10
+		}
+
+		show_as_tooltip = {
+			random_list = {
+				desc = RICE_galicia_saint_james_routes_decision_tt
+				100 = {
+					show_chance = no
+					desc = RICE_galicia_saint_james_routes_decision_counties.close
+					custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.close.tooltip
+				}
+				100 = {
+					show_chance = no
+					desc = RICE_galicia_saint_james_routes_decision_counties.midrange.high
+					custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.midrange.high.tooltip
+				}
+				100 = {
+					show_chance = no
+					desc = RICE_galicia_saint_james_routes_decision_counties.distant.high
+					custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.distant.high.tooltip
+				}
+				100 = {
+					show_chance = no
+					desc = RICE_galicia_saint_james_routes_decision_counties.midrange.low
+					custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.midrange.low.tooltip
+				}
+				100 = {
+					show_chance = no
+					desc = RICE_galicia_saint_james_routes_decision_counties.distant.low
+					custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.distant.low.tooltip
+				}
+			}
+		}
+
+		hidden_effect = {
+			RICE_galicia_saint_james_tolls_close_effect = yes
+			RICE_galicia_saint_james_tolls_midrange_high_effect = yes
+			RICE_galicia_saint_james_tolls_distant_high_effect = yes
+			RICE_galicia_saint_james_tolls_midrange_low_effect = yes
+			RICE_galicia_saint_james_tolls_distant_low_effect = yes
+		}	
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_way_of_saint_james_background_alt
+			}
+			remove_character_flag = RICE_way_of_saint_james_background_alt
+		}
+	}
+
+}
+
+
