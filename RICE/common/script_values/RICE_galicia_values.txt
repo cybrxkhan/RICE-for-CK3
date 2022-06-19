@@ -53,7 +53,7 @@ RICE_saint_james_decision_cost_value = {
 
 }		
 
-RICE_saint_james_toll_money_reward_value = {
+RICE_saint_james_toll_money_reward_max_value = {
 	value = 25
 
 	# Every county in Galicia
@@ -64,7 +64,7 @@ RICE_saint_james_toll_money_reward_value = {
 				geographical_region = RICE_galicia_region	
 			}
 		}
-		add = 50
+		add = 100
 	}
 
 	# Every county near Galicia with good control
@@ -146,6 +146,106 @@ RICE_saint_james_toll_money_reward_value = {
 
 }		
 
+RICE_saint_james_toll_money_reward_nonchristian_max_value = {
+	value = 25
+
+	# Every county in Galicia
+	every_held_title = {
+		limit = {
+			tier = tier_county
+			religion = religion:christianity_religion	
+			any_county_province = {
+				geographical_region = RICE_galicia_region
+			}
+		}
+		add = 50
+	}
+
+	# Every county near Galicia with good control
+	every_held_title = {
+		limit = {
+			tier = tier_county
+			religion = religion:christianity_religion	
+			county_control >= medium_county_control
+			any_county_province = {
+				geographical_region = RICE_close_to_galicia_region
+				NOT = { geographical_region = RICE_galicia_region }
+			}
+		}
+		add = 25
+	}
+
+	# Every county near Galicia with low control
+	every_held_title = {
+		limit = {
+			tier = tier_county
+			religion = religion:christianity_religion	
+			county_control < medium_county_control
+			county_control >= low_county_control
+			any_county_province = {
+				geographical_region = RICE_close_to_galicia_region	
+				NOT = { geographical_region = RICE_galicia_region }
+			}
+		}
+		add = 15
+	}
+
+	# Every county near Galicia with very low control
+	every_held_title = {
+		limit = {
+			tier = tier_county
+			religion = religion:christianity_religion	
+			county_control < low_county_control
+			any_county_province = {
+				geographical_region = RICE_close_to_galicia_region	
+				NOT = { geographical_region = RICE_galicia_region }
+			}
+		}
+		add = 10
+	}
+
+	# Every county far from Galicia with good control
+	every_held_title = {
+		limit = {
+			tier = tier_county
+			religion = religion:christianity_religion	
+			county_control >= medium_county_control
+			any_county_province = {
+				geographical_region = RICE_distant_from_galicia_region	
+			}
+		}
+		add = 20
+	}
+
+	# Every county far from Galicia with low control
+	every_held_title = {
+		limit = {
+			tier = tier_county
+			religion = religion:christianity_religion	
+			county_control < medium_county_control
+			county_control >= low_county_control
+			any_county_province = {
+				geographical_region = RICE_distant_from_galicia_region	
+			}
+		}
+		add = 10
+	}
+
+	# Every county far from Galicia with very low control
+	every_held_title = {
+		limit = {
+			tier = tier_county
+			religion = religion:christianity_religion	
+			county_control < low_county_control
+			any_county_province = {
+				geographical_region = RICE_distant_from_galicia_region	
+			}
+		}
+		add = 5
+	}
+
+}		
+
 RICE_saint_james_toll_piety_cost_value = {
 	value = major_piety_value
 
@@ -181,6 +281,81 @@ RICE_saint_james_toll_piety_cost_value = {
 			}
 		}
 		add = minor_piety_value
+	}
+
+	# If you're non-Christian, this does not apply to you
+	if = {
+		limit = {
+			NOT = { religion = religion:christianity_religion }
+		}
+		multiply = 0
+	}
+
+}		
+
+# Costs for non-Christians
+RICE_saint_james_toll_prestige_cost_value = {
+	value = major_prestige_value
+
+	# Every county in Galicia
+	every_held_title = {
+		limit = {
+			tier = tier_county
+			religion = religion:christianity_religion
+			any_county_province = {
+				geographical_region = RICE_galicia_region	
+			}
+		}
+		add = major_prestige_value
+	}
+
+	# Every county close to Galicia
+	every_held_title = {
+		limit = {
+			tier = tier_county
+			religion = religion:christianity_religion
+			any_county_province = {
+				geographical_region = RICE_close_to_galicia_region
+				NOT = { geographical_region = RICE_galicia_region }	
+			}
+		}
+		add = medium_prestige_value
+	}
+
+	# Every county far from Galicia
+	every_held_title = {
+		limit = {
+			tier = tier_county
+			religion = religion:christianity_religion
+			any_county_province = {
+				geographical_region = RICE_distant_from_galicia_region	
+			}
+		}
+		add = minor_prestige_value
+	}
+
+	if = {
+		limit = {
+			OR = {
+				AND = {
+					exists = struggle:iberian_struggle
+					struggle:iberian_struggle = { is_struggle_phase = struggle_iberia_phase_conciliation }
+				}
+				AND = {
+					NOT = { exists = struggle:iberian_struggle }
+					has_global_variable = fp2_struggle_conciliation_ending
+				}
+			}			
+		}
+		multiply = 1.5
+	}
+
+	# If you're Christian, this does not apply to you
+	if = {
+		limit = {
+			religion = religion:christianity_religion
+		}
+		multiply = 0
 	}
 
 }		
@@ -220,6 +395,64 @@ RICE_saint_james_help_piety_reward_value = {
 			}
 		}
 		add = miniscule_piety_value
+	}
+
+}		
+
+RICE_saint_james_help_prestige_reward_value = {
+	value = minor_prestige_value
+
+	# Every county in Galicia
+	every_held_title = {
+		limit = {
+			tier = tier_county
+			religion = religion:christianity_religion
+			any_county_province = {
+				geographical_region = RICE_galicia_region	
+			}
+		}
+		add = medium_prestige_value
+	}
+
+	# Every county close to Galicia
+	every_held_title = {
+		limit = {
+			tier = tier_county
+			religion = religion:christianity_religion
+			any_county_province = {
+				geographical_region = RICE_close_to_galicia_region
+				NOT = { geographical_region = RICE_galicia_region }	
+			}
+		}
+		add = minor_prestige_value
+	}
+
+	# Every county far from Galicia
+	every_held_title = {
+		limit = {
+			tier = tier_county
+			religion = religion:christianity_religion
+			any_county_province = {
+				geographical_region = RICE_distant_from_galicia_region	
+			}
+		}
+		add = miniscule_prestige_value
+	}
+
+	if = {
+		limit = {
+			OR = {
+				AND = {
+					exists = struggle:iberian_struggle
+					struggle:iberian_struggle = { is_struggle_phase = struggle_iberia_phase_hostility }
+				}
+				AND = {
+					NOT = { exists = struggle:iberian_struggle }
+					has_global_variable = fp2_struggle_hostility_ending
+				}
+			}			
+		}
+		multiply = 0.5
 	}
 
 }		

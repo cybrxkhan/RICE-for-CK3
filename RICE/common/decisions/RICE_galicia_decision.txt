@@ -80,7 +80,7 @@ RICE_galicia_alter_saint_james_tomb = {
 			custom_tooltip = RICE_galicia_alter_saint_james_tomb_context_tooltip
 		}
 		
-		trigger_event = galicia.0012
+		trigger_event = galicia.0020
 	}
 
 	ai_will_do = {
@@ -114,7 +114,24 @@ RICE_galicia_alter_saint_james_tomb = {
 
 RICE_galicia_saint_james_routes_decision = {
 	picture = "gfx/interface/illustrations/decisions/decision_christian_pilgrimage.dds"
-	desc = RICE_galicia_saint_james_routes_decision_desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					religion = religion:christianity_religion
+				}
+				desc = RICE_galicia_saint_james_routes_decision_desc
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {
+						NOT = { religion = religion:christianity_religion }
+					}
+				}
+				desc = RICE_galicia_saint_james_routes_decision_nonchristian_desc
+			}
+		}
+	}
 
 	ai_check_interval = 40
 	
@@ -131,12 +148,25 @@ RICE_galicia_saint_james_routes_decision = {
 				}	
 			}
 		}
-		religion = religion:christianity_religion
+		OR = {
+			religion = religion:christianity_religion
+			any_held_title = {
+				tier = tier_county
+				religion = religion:christianity_religion	
+				any_county_province = {
+					OR = {
+						geographical_region = world_europe_west_iberia
+						geographical_region = custom_occitan
+					}
+				}
+			}
+		}
 	}
 
 	is_valid = {
+
 		custom_description = {
-			text = RICE_saint_james_geographical_capital_req
+			text = RICE_saint_james_geographical_req
 			any_held_title = {
 				tier = tier_county
 				any_county_province = {
@@ -147,11 +177,29 @@ RICE_galicia_saint_james_routes_decision = {
 				}
 			}
 		}
-		religion = religion:christianity_religion
+
+		OR = {
+			religion = religion:christianity_religion
+			custom_description = {
+				text = RICE_saint_james_geographical_christian_county_req
+				any_held_title = {
+					tier = tier_county
+					religion = religion:christianity_religion
+					any_county_province = {
+						OR = {
+							geographical_region = world_europe_west_iberia
+							geographical_region = custom_occitan
+						}	
+					}
+				}
+			}
+		}
+
 		NOR = {
 			has_character_modifier = RICE_galicia_way_of_saint_james_supporter
 			has_character_modifier = RICE_galicia_way_of_saint_james_robber_baron
 		}
+
 	}
 
 	is_valid_showing_failures_only = {
@@ -170,44 +218,103 @@ RICE_galicia_saint_james_routes_decision = {
 	effect = {
 
 		show_as_tooltip = {
-			add_piety = RICE_saint_james_help_piety_reward_value
+			if = {
+				limit = {
+					religion = religion:christianity_religion
+				}
+				add_piety = RICE_saint_james_help_piety_reward_value
+			}
+			else = {
+				add_prestige = RICE_saint_james_help_prestige_reward_value
+			}
 		}
 
-		custom_tooltip = RICE_galicia_saint_james_routes_decision_effect_tooltip_1
-		custom_tooltip = RICE_galicia_saint_james_routes_decision_effect_tooltip_2
+		if = {
+			limit = {
+				religion = religion:christianity_religion
+			}
 
-		add_character_modifier = {
-			modifier = RICE_galicia_way_of_saint_james_supporter
-			years = 10
+			custom_tooltip = RICE_galicia_saint_james_routes_decision_effect_tooltip_1
+
+			add_character_modifier = {
+				modifier = RICE_galicia_way_of_saint_james_supporter
+				years = 10
+			}
+
+		}
+		else = {
+
+			custom_tooltip = RICE_galicia_saint_james_routes_decision_effect_tooltip_2
+
+			add_character_modifier = {
+				modifier = RICE_galicia_way_of_saint_james_supporter_nonchristian
+				years = 10
+			}
+
 		}
 
 		show_as_tooltip = {
-			random_list = {
-				desc = RICE_galicia_saint_james_routes_decision_tt
-				100 = {
-					show_chance = no
-					desc = RICE_galicia_saint_james_routes_decision_counties.close
-					custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.close.tooltip
+			if = {
+				limit = {
+					religion = religion:christianity_religion
 				}
-				100 = {
-					show_chance = no
-					desc = RICE_galicia_saint_james_routes_decision_counties.midrange.high
-					custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.midrange.high.tooltip
+				random_list = {
+					desc = RICE_galicia_saint_james_routes_decision_tt
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_routes_decision_counties.close
+						custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.close.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_routes_decision_counties.midrange.high
+						custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.midrange.high.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_routes_decision_counties.distant.high
+						custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.distant.high.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_routes_decision_counties.midrange.low
+						custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.midrange.low.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_routes_decision_counties.distant.low
+						custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.distant.low.tooltip
+					}
 				}
-				100 = {
-					show_chance = no
-					desc = RICE_galicia_saint_james_routes_decision_counties.distant.high
-					custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.distant.high.tooltip
-				}
-				100 = {
-					show_chance = no
-					desc = RICE_galicia_saint_james_routes_decision_counties.midrange.low
-					custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.midrange.low.tooltip
-				}
-				100 = {
-					show_chance = no
-					desc = RICE_galicia_saint_james_routes_decision_counties.distant.low
-					custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.distant.low.tooltip
+			}
+			else = {
+				random_list = {
+					desc = RICE_galicia_saint_james_routes_decision_non_christian_tt
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_routes_decision_counties.close
+						custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.close.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_routes_decision_counties.midrange.high
+						custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.midrange.high.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_routes_decision_counties.distant.high
+						custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.distant.high.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_routes_decision_counties.midrange.low
+						custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.midrange.low.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_routes_decision_counties.distant.low
+						custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.distant.low.tooltip
+					}
 				}
 			}
 		}
@@ -249,7 +356,23 @@ RICE_galicia_saint_james_routes_decision = {
 
 RICE_galicia_saint_james_levy_extra_tolls = {
 	picture = "gfx/interface/illustrations/decisions/decision_christian_pilgrimage.dds"
-	desc = RICE_galicia_saint_james_levy_extra_tolls_desc
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					religion = religion:christianity_religion
+				}
+				desc = RICE_galicia_saint_james_levy_extra_tolls_desc
+			}
+			triggered_desc = {
+				trigger = {
+					NOT = { religion = religion:christianity_religion }
+				}
+				desc = RICE_galicia_saint_james_levy_extra_tolls_nonchristian_desc
+			}
+		}
+	}
 
 	ai_check_interval = 40
 	
@@ -266,12 +389,25 @@ RICE_galicia_saint_james_levy_extra_tolls = {
 				}	
 			}
 		}
-		religion = religion:christianity_religion
+		OR = {
+			religion = religion:christianity_religion
+			any_held_title = {
+				tier = tier_county
+				religion = religion:christianity_religion	
+				any_county_province = {
+					OR = {
+						geographical_region = world_europe_west_iberia
+						geographical_region = custom_occitan
+					}
+				}
+			}
+		}
 	}
 
 	is_valid = {
+
 		custom_description = {
-			text = RICE_saint_james_geographical_capital_req
+			text = RICE_saint_james_geographical_req
 			any_held_title = {
 				tier = tier_county
 				any_county_province = {
@@ -282,11 +418,29 @@ RICE_galicia_saint_james_levy_extra_tolls = {
 				}
 			}
 		}
-		religion = religion:christianity_religion
+
+		OR = {
+			religion = religion:christianity_religion
+			custom_description = {
+				text = RICE_saint_james_geographical_christian_county_req
+				any_held_title = {
+					tier = tier_county
+					religion = religion:christianity_religion
+					any_county_province = {
+						OR = {
+							geographical_region = world_europe_west_iberia
+							geographical_region = custom_occitan
+						}	
+					}
+				}
+			}
+		}
+
 		NOR = {
 			has_character_modifier = RICE_galicia_way_of_saint_james_supporter
 			has_character_modifier = RICE_galicia_way_of_saint_james_robber_baron
 		}
+
 	}
 
 	is_valid_showing_failures_only = {
@@ -295,57 +449,147 @@ RICE_galicia_saint_james_levy_extra_tolls = {
 	}
 
 	cost = {
+		# Costs for Christians
 		piety = { value = RICE_saint_james_toll_piety_cost_value }
+		# Costs for Non-Christians
+		prestige = { value = RICE_saint_james_toll_prestige_cost_value }
 	}
 	
 	ai_potential = {
 		piety > RICE_saint_james_toll_piety_cost_value
+		prestige > RICE_saint_james_toll_prestige_cost_value
 	}
 
 	effect = {
 
-		show_as_tooltip = {
-			add_gold = RICE_saint_james_toll_money_reward_value
-		}
+		religion:christianity_religion = { save_scope_as = christian }
+
+		# Doesn't work for loc as it is defined after the loc is set, apparently
+		# set_variable = {
+		# 	name = RICE_saint_james_extra_toll_max_value
+		# 	value = RICE_saint_james_toll_money_reward_max_value
+		# }
 
 		custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_effect_tooltip_1
 
+		show_as_tooltip = {
+			if = {
+				limit = {
+					religion = religion:christianity_religion
+				}
+				add_gold = RICE_saint_james_toll_money_reward_max_value
+			}
+			else = {				
+				add_gold = RICE_saint_james_toll_money_reward_nonchristian_max_value
+			}
+		}
+
+		if = {
+			limit = {
+				religion = religion:christianity_religion
+			}
+			custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_effect_tooltip_2
+		}
+		else = {
+			custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_effect_tooltip_3
+		}
+
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						exists = struggle:iberian_struggle
+						struggle:iberian_struggle = { is_struggle_phase = struggle_iberia_phase_conciliation }
+					}
+					AND = {
+						NOT = { exists = struggle:iberian_struggle }
+						has_global_variable = fp2_struggle_conciliation_ending
+					}
+				}
+			}
+			custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_effect_tooltip_4
+		}
+
 
 		show_as_tooltip = {
 
-			add_character_modifier = {
-				modifier = RICE_galicia_way_of_saint_james_robber_baron
-				years = 10
+			if = {
+				limit = {
+					religion = religion:christianity_religion
+				}
+
+				add_character_modifier = {
+					modifier = RICE_galicia_way_of_saint_james_robber_baron
+					years = 10
+				}
+	
+				random_list = {
+					desc = RICE_galicia_saint_james_levy_extra_tolls_tt
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_levy_extra_tolls_counties.close
+						custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.close.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_levy_extra_tolls_counties.midrange.high
+						custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.midrange.high.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_levy_extra_tolls_counties.distant.high
+						custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.distant.high.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_levy_extra_tolls_counties.midrange.low
+						custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.midrange.low.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_levy_extra_tolls_counties.distant.low
+						custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.distant.low.tooltip
+					}
+				}
 			}
 
-			random_list = {
-				desc = RICE_galicia_saint_james_levy_extra_tolls_tt
-				100 = {
-					show_chance = no
-					desc = RICE_galicia_saint_james_levy_extra_tolls_counties.close
-					custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.close.tooltip
+			else = {
+
+				add_character_modifier = {
+					modifier = RICE_galicia_way_of_saint_james_robber_baron_nonchristian
+					years = 10
 				}
-				100 = {
-					show_chance = no
-					desc = RICE_galicia_saint_james_levy_extra_tolls_counties.midrange.high
-					custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.midrange.high.tooltip
-				}
-				100 = {
-					show_chance = no
-					desc = RICE_galicia_saint_james_levy_extra_tolls_counties.distant.high
-					custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.distant.high.tooltip
-				}
-				100 = {
-					show_chance = no
-					desc = RICE_galicia_saint_james_levy_extra_tolls_counties.midrange.low
-					custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.midrange.low.tooltip
-				}
-				100 = {
-					show_chance = no
-					desc = RICE_galicia_saint_james_levy_extra_tolls_counties.distant.low
-					custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.distant.low.tooltip
+
+				random_list = {
+					desc = RICE_galicia_saint_james_levy_extra_tolls_non_christian_tt
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_levy_extra_tolls_counties.close
+						custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.close.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_levy_extra_tolls_counties.midrange.high
+						custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.midrange.high.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_levy_extra_tolls_counties.distant.high
+						custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.distant.high.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_levy_extra_tolls_counties.midrange.low
+						custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.midrange.low.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_levy_extra_tolls_counties.distant.low
+						custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.distant.low.tooltip
+					}
 				}
 			}
+
 		}
 	
 
@@ -357,7 +601,7 @@ RICE_galicia_saint_james_levy_extra_tolls = {
 		}
 		
 		trigger_event = {
-			id = galicia.0010
+			id = galicia.0012
 		}
 
 	}
@@ -567,7 +811,7 @@ RICE_galicia_cantiga_decision = {
 		}
 		
 		trigger_event = {
-			id = galicia.0020
+			id = galicia.8888
 		}
 	}
 
