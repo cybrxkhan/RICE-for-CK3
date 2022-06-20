@@ -1,6 +1,6 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.6.1 "Darro" (Released 6/11/22, for vanilla patch 1.6.x)
+## Latest Version: Version 1.6.1.a "Darro" (Released 6/19/22, for vanilla patch 1.6.x)
 
 **Newest Flavor Pack - Granada: Memories of the Alhambra**
 
@@ -49,6 +49,15 @@ DO NOT manually download the master branch unless you know what you're doing as 
 NOTE: **If you are re-installing a mod manually, delete the old version of the mod first before copy and pasting the new one! It's a good habit to do to prevent potential issues.**
 
 ## Latest Changelog
+
+### Version 1.6.1.a Hotfix
+
+- Removed Chinese localization files from mod at the request of Chinese translators - If you want to play in Chinese, please use this sub-mod: https://steamcommunity.com/sharedfiles/filedetails/?id=2823178539
+- Reinforcing Relations with Silk Road communities now also requires some prestige
+- Amount of gold gifted by Silk Road communities is now much more randomized
+- If the Granada pogrom event chain happens as it did historically, the death reason for Jewish victims will now mention the mob
+- Removed the useless Galicia loc file that was there for some reason
+- Miscellaneous bugfixes
 
 ### Version 1.6.1 "Darro"
 
