@@ -54,7 +54,8 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 - Removed Chinese localization files from mod at the request of Chinese translators - If you want to play in Chinese, please use this sub-mod: https://steamcommunity.com/sharedfiles/filedetails/?id=2823178539
 - Reinforcing Relations with Silk Road communities now also requires some prestige
-- Amount of gold gifted by Silk Road communities is now much more randomized
+- Amount of gold gifted by Silk Road communities via random events is now much more randomized
+- Reduced maximum amount of gold you can get from Silk Road communities via random events
 - If the Granada pogrom event chain happens as it did historically, the death reason for Jewish victims will now mention the mob
 - Removed the useless Galicia loc file that was there for some reason
 - Miscellaneous bugfixes
