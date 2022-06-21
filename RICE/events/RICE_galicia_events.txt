@@ -840,3 +840,417 @@ galicia.0024 = {
 # galicia.0030-galicia.0049
 # 
 ######################################################################################
+
+
+
+# Start work on the Cantiga
+galicia.0030 = {
+	type = character_event
+	title = galicia.0030.t
+	desc = {
+		desc = galicia.0030.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_cantiga_type = flag:courtly_love
+				}
+				desc = galicia.0030.desc.courtly_love
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_cantiga_type = flag:romantic_love
+				}
+				desc = galicia.0030.desc.romantic_love
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_cantiga_type = flag:satire
+				}
+				desc = galicia.0030.desc.satire
+			}
+		}
+		desc = galicia.0030.desc.conclusion
+	}
+	theme = learning
+	override_icon = { reference = "gfx/interface/icons/event_types/type_diplomacy.dds" } 
+
+	right_portrait = {
+		character = root
+		animation = chancellor
+	}
+
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		add_character_flag = planning_an_activity
+		if = {
+			limit = {
+				NOT = { has_variable = RICE_num_of_cantigas_written }
+			}
+			set_variable = {
+				name = RICE_num_of_cantigas_written
+				value = 1
+			}
+		}
+		else = {
+			change_variable = {
+				name = RICE_num_of_cantigas_written
+				add = 1
+			}
+		}
+	}
+
+	# Start work on the cantiga
+	option = {
+		name = galicia.0030.a
+		# Choose appropriate location
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_galicia_compose_cantiga
+			}	
+		}
+		custom_tooltip = galicia.0030.a.tooltip
+	}
+
+}
+
+
+# Choose a topic - Cantiga de amor
+galicia.0031 = {
+	type = character_event
+	title = galicia.0031.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_cantiga_type = flag:courtly_love
+				}
+				desc = galicia.0031.desc.intro.courtly_love
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_cantiga_type = flag:romantic_love
+					is_female = yes
+				}
+				desc = galicia.0031.desc.intro.romantic_love.female
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_cantiga_type = flag:romantic_love
+					is_female = no
+				}
+				desc = galicia.0031.desc.intro.romantic_love.male
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_cantiga_type = flag:satire
+				}
+				desc = galicia.0031.desc.intro.satire
+			}
+		}
+		desc = galicia.0031.desc.conclusion
+	}
+	theme = stewardship_duty_focus
+	override_background = { event_background = study }
+
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	immediate = {
+		RICE_galicia_assign_cantiga_themes_1_effect = yes
+		RICE_galicia_assign_cantiga_themes_2_effect = yes
+		RICE_galicia_assign_cantiga_themes_3_effect = yes
+	}
+
+	# Option 1
+	option = {
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_sea
+			}
+			text = cantiga_theme.sea
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_loneliness
+			}
+			text = cantiga_theme.loneliness
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_pastoral
+			}
+			text = cantiga_theme.pastoral
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_female_dialogue
+			}
+			text = cantiga_theme.female_dialogue
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_rendezvous
+			}
+			text = cantiga_theme.rendezvous
+		}
+
+		if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_sea				
+			}
+			custom_tooltip = cantiga_theme.tooltip.sea
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_loneliness				
+			}
+			custom_tooltip = cantiga_theme.tooltip.loneliness
+			custom_tooltip = cantiga_theme.tooltip.learning
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_pastoral				
+			}
+			custom_tooltip = cantiga_theme.tooltip.pastoral
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_female_dialogue			
+			}
+			custom_tooltip = cantiga_theme.tooltip.female_dialogue
+			custom_tooltip = cantiga_theme.tooltip.diplomacy
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_rendezvous				
+			}
+			custom_tooltip = cantiga_theme.tooltip.rendezvous
+			custom_tooltip = cantiga_theme.tooltip.intrigue
+		}
+	}
+
+	# Option 2
+	option = {
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_sea
+			}
+			text = cantiga_theme.sea
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_loneliness
+			}
+			text = cantiga_theme.loneliness
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_pastoral
+			}
+			text = cantiga_theme.pastoral
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_female_dialogue
+			}
+			text = cantiga_theme.female_dialogue
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_rendezvous
+			}
+			text = cantiga_theme.rendezvous
+		}
+
+		if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_sea				
+			}
+			custom_tooltip = cantiga_theme.tooltip.sea
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_loneliness				
+			}
+			custom_tooltip = cantiga_theme.tooltip.loneliness
+			custom_tooltip = cantiga_theme.tooltip.learning
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_pastoral				
+			}
+			custom_tooltip = cantiga_theme.tooltip.pastoral
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_female_dialogue			
+			}
+			custom_tooltip = cantiga_theme.tooltip.female_dialogue
+			custom_tooltip = cantiga_theme.tooltip.diplomacy
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_rendezvous				
+			}
+			custom_tooltip = cantiga_theme.tooltip.rendezvous
+			custom_tooltip = cantiga_theme.tooltip.intrigue
+		}
+	}
+
+	# Option 3
+	option = {
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_sea
+			}
+			text = cantiga_theme.sea
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_loneliness
+			}
+			text = cantiga_theme.loneliness
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_pastoral
+			}
+			text = cantiga_theme.pastoral
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_female_dialogue
+			}
+			text = cantiga_theme.female_dialogue
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_rendezvous
+			}
+			text = cantiga_theme.rendezvous
+		}
+
+		if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_sea				
+			}
+			custom_tooltip = cantiga_theme.tooltip.sea
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_loneliness				
+			}
+			custom_tooltip = cantiga_theme.tooltip.loneliness
+			custom_tooltip = cantiga_theme.tooltip.learning
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_pastoral				
+			}
+			custom_tooltip = cantiga_theme.tooltip.pastoral
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_female_dialogue			
+			}
+			custom_tooltip = cantiga_theme.tooltip.female_dialogue
+			custom_tooltip = cantiga_theme.tooltip.diplomacy
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_rendezvous				
+			}
+			custom_tooltip = cantiga_theme.tooltip.rendezvous
+			custom_tooltip = cantiga_theme.tooltip.intrigue
+		}
+	}
+
+}
+
+
+
+
+# Choose a topic - Cantiga de amigo
+galicia.0032 = {
+	type = character_event
+	title = galicia.0032.t
+	desc = galicia.0032.desc
+	theme = seduction
+	override_background = { event_background = study }
+
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	immediate = {
+		RICE_galicia_assign_cantiga_romantic_love_topics_effect = yes
+		RICE_galicia_assign_cantiga_romantic_love_topics_effect = yes
+		RICE_galicia_assign_cantiga_romantic_love_topics_effect = yes
+	}
+
+	# Start work on the cantiga
+	option = {
+		name = {
+			trigger = { has_character_flag = RICE_galicia_cantiga_courtly_love_sea }
+			text = galicia.0032.xxx
+		}
+		name = {
+			trigger = { has_character_flag = RICE_galicia_cantiga_courtly_love_sea }
+			text = galicia.0032.xxx
+		}
+	}
+
+}
+
+
+
+# Choose a topic - Cantiga de Escarnio e Maldizer
+galicia.0033 = {
+	type = character_event
+	title = galicia.0033.t
+	desc = galicia.0033.desc
+	theme = friendly
+	override_background = { event_background = study }
+
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	immediate = {
+		RICE_galicia_assign_cantiga_satire_topics_effect = yes
+		RICE_galicia_assign_cantiga_satire_topics_effect = yes
+		RICE_galicia_assign_cantiga_satire_topics_effect = yes
+	}
+
+	# Start work on the cantiga
+	option = {
+		name = {
+			trigger = { has_character_flag = RICE_galicia_cantiga_courtly_love_sea }
+			text = galicia.0033.xxx
+		}
+		name = {
+			trigger = { has_character_flag = RICE_galicia_cantiga_courtly_love_sea }
+			text = galicia.0033.xxx
+		}
+	}
+
+}
+
+
+
+
+
+
+
+
