@@ -1,0 +1,2210 @@
+﻿###############################################################################
+# 
+# galicia
+# 
+# galicia.0000-galicia.0019			Setup events, history events, miscellaneous decisions
+# galicia.0020-galicia.0029			Altering the Altar
+# galicia.0030-galicia.0049			Cantigas
+# galicia.0050-galicia.0099			Generic flavor events
+# 
+# 
+###############################################################################
+
+namespace = galicia
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# galicia.0000-galicia.0019
+# 
+######################################################################################
+
+
+# Way of Saint James infrastructure
+galicia.0010 = {
+	type = character_event
+	title = galicia.0010.t
+	desc = {
+		desc = galicia.0010.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					religion = religion:christianity_religion
+				}
+				desc = galicia.0010.desc.christian
+			}
+			triggered_desc = {
+				trigger = {
+					NOT = { religion = religion:christianity_religion }
+				}
+				desc = galicia.0010.desc.non_christian
+			}
+		}
+		desc = galicia.0010.desc.conclusion
+	}
+	theme = RICE_theme_camino_de_santiago_church
+	override_background = {
+		trigger = {
+			has_character_flag = RICE_way_of_saint_james_background_alt
+		}
+		event_background = RICE_background_camino_de_santiago_road
+	}
+
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+
+	immediate = {	
+		title:c_santiago = {
+			save_scope_as = santiago
+		}
+		religion:christianity_religion = { save_scope_as = christian }
+		hidden_effect = {
+			random = {
+				chance = 50
+				add_character_flag = RICE_way_of_saint_james_background_alt
+			}
+		}
+	}
+
+	option = {
+		name = galicia.0010.a
+		if = {
+			limit = {
+				religion = religion:christianity_religion
+			}
+			add_piety = RICE_saint_james_help_piety_reward_value
+			add_character_modifier = {
+				modifier = RICE_galicia_way_of_saint_james_supporter
+				years = 10
+			}
+		}
+		else = {	
+			add_prestige = RICE_saint_james_help_prestige_reward_value			
+			add_character_modifier = {
+				modifier = RICE_galicia_way_of_saint_james_supporter_nonchristian
+				years = 10
+			}
+		}
+		
+
+		show_as_tooltip = {
+			if = {
+				limit = {
+					religion = religion:christianity_religion
+				}
+
+				random_list = {
+					desc = RICE_galicia_saint_james_routes_decision_tt
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_routes_decision_counties.close
+						custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.close.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_routes_decision_counties.midrange.high
+						custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.midrange.high.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_routes_decision_counties.distant.high
+						custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.distant.high.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_routes_decision_counties.midrange.low
+						custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.midrange.low.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_routes_decision_counties.distant.low
+						custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.distant.low.tooltip
+					}
+				}
+
+			}
+
+			else = {
+
+				random_list = {
+					desc = RICE_galicia_saint_james_routes_decision_non_christian_tt
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_routes_decision_counties.close
+						custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.close.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_routes_decision_counties.midrange.high
+						custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.midrange.high.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_routes_decision_counties.distant.high
+						custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.distant.high.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_routes_decision_counties.midrange.low
+						custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.midrange.low.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_routes_decision_counties.distant.low
+						custom_tooltip = RICE_galicia_saint_james_routes_decision_counties.distant.low.tooltip
+					}
+				}
+
+			}
+
+		}
+		hidden_effect = {
+			RICE_galicia_saint_james_infrastructure_close_effect = yes
+			RICE_galicia_saint_james_infrastructure_midrange_high_effect = yes
+			RICE_galicia_saint_james_infrastructure_distant_high_effect = yes
+			RICE_galicia_saint_james_infrastructure_midrange_low_effect = yes
+			RICE_galicia_saint_james_infrastructure_distant_low_effect = yes
+		}	
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_way_of_saint_james_background_alt
+			}
+			remove_character_flag = RICE_way_of_saint_james_background_alt
+		}
+	}
+
+}
+
+
+# Saint James Intercession decision
+galicia.0011 = {
+	type = character_event
+	title = galicia.0011.t
+	desc = {
+		desc = galicia.0011.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					OR = {
+						AND = {
+							exists = struggle:iberian_struggle
+							struggle:iberian_struggle = { is_struggle_phase = struggle_iberia_phase_hostility }
+						}
+						AND = {
+							NOT = { exists = struggle:iberian_struggle }
+							NOT = { has_global_variable = fp2_struggle_conciliation_ending }
+							NOT = { has_global_variable = fp2_struggle_compromise_ending }
+						}
+					}
+				}
+				desc = galicia.0011.desc.warrior
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {
+						AND = {
+							exists = struggle:iberian_struggle
+							struggle:iberian_struggle = { is_struggle_phase = struggle_iberia_phase_conciliation }
+						}
+						AND = {
+							NOT = { exists = struggle:iberian_struggle }
+							has_global_variable = fp2_struggle_conciliation_ending
+						}
+					}
+				}
+				desc = galicia.0011.desc.preacher
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {
+						AND = {
+							exists = struggle:iberian_struggle
+							OR = {
+								struggle:iberian_struggle = { is_struggle_phase = struggle_iberia_phase_compromise }
+								struggle:iberian_struggle = { is_struggle_phase = struggle_iberia_phase_opportunity }
+							}
+						}
+						AND = {
+							NOT = { exists = struggle:iberian_struggle }
+							has_global_variable = fp2_struggle_compromise_ending
+						}
+					}
+				}
+				desc = galicia.0011.desc.pilgrim
+			}
+		}
+	}
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	option = {
+		name = galicia.0011.a
+		RICE_galicia_saint_james_prayer_warrior_effect = yes
+	}
+
+}
+
+
+
+
+
+# Levying extra tolls on the Way of Saint James
+galicia.0012 = {
+	type = character_event
+	title = galicia.0012.t
+	desc = {
+		desc = galicia.0012.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					religion = religion:christianity_religion
+				}
+				desc = galicia.0012.desc.christian
+			}
+			triggered_desc = {
+				trigger = {
+					NOT = { religion = religion:christianity_religion }
+				}
+				desc = galicia.0012.desc.non_christian
+			}
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					religion = religion:christianity_religion
+					cp:councillor_court_chaplain = {
+						exists = yes
+						is_available_adult = yes
+					}
+				}
+				desc = galicia.0012.desc.court_chaplain_exists
+			}
+			triggered_desc = {
+				trigger = {
+					religion = religion:christianity_religion
+				}
+				# Fallback
+				desc = galicia.0012.desc.no_court_chaplain_exists
+			}
+		}
+	}
+	theme = RICE_theme_camino_de_santiago_church
+	override_background = {
+		trigger = {
+			has_character_flag = RICE_way_of_saint_james_background_alt
+		}
+		event_background = RICE_background_camino_de_santiago_road
+	}
+
+	left_portrait = {
+		character = root
+		animation = war_defender
+	}
+
+	right_portrait = {
+		character = scope:chaplain
+		trigger = {
+			religion = religion:christianity_religion
+			exists = scope:chaplain
+			scope:chaplain = {
+				is_available_adult = yes
+			}
+		}
+		animation = disapproval
+	}
+
+	immediate = {	
+		cp:councillor_court_chaplain = {
+			save_scope_as = chaplain
+		}
+		religion:christianity_religion = { save_scope_as = christian }
+		title:c_santiago = {
+			save_scope_as = santiago
+		}
+		hidden_effect = {
+			random = {
+				chance = 50
+				add_character_flag = RICE_way_of_saint_james_background_alt
+			}
+		}
+	}
+
+	option = {
+		name = galicia.0012.a
+
+		if = {
+			limit = {
+				religion = religion:christianity_religion
+			}
+			add_gold = { 0 RICE_saint_james_toll_money_reward_max_value }
+			add_character_modifier = {
+				modifier = RICE_galicia_way_of_saint_james_robber_baron
+				years = 10
+			}
+		}
+		else = {
+			add_gold = { 0 RICE_saint_james_toll_money_reward_nonchristian_max_value }
+			add_character_modifier = {
+				modifier = RICE_galicia_way_of_saint_james_robber_baron_nonchristian
+				years = 10
+			}
+		}
+
+		show_as_tooltip = {
+			if = {
+				limit = {
+					religion = religion:christianity_religion
+				}
+	
+				random_list = {
+					desc = RICE_galicia_saint_james_levy_extra_tolls_tt
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_levy_extra_tolls_counties.close
+						custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.close.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_levy_extra_tolls_counties.midrange.high
+						custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.midrange.high.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_levy_extra_tolls_counties.distant.high
+						custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.distant.high.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_levy_extra_tolls_counties.midrange.low
+						custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.midrange.low.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_levy_extra_tolls_counties.distant.low
+						custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.distant.low.tooltip
+					}
+				}
+			}
+
+			else = {
+
+				random_list = {
+					desc = RICE_galicia_saint_james_levy_extra_tolls_non_christian_tt
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_levy_extra_tolls_counties.close
+						custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.close.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_levy_extra_tolls_counties.midrange.high
+						custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.midrange.high.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_levy_extra_tolls_counties.distant.high
+						custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.distant.high.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_levy_extra_tolls_counties.midrange.low
+						custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.midrange.low.tooltip
+					}
+					100 = {
+						show_chance = no
+						desc = RICE_galicia_saint_james_levy_extra_tolls_counties.distant.low
+						custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_counties.distant.low.tooltip
+					}
+				}
+			}
+		}
+
+		hidden_effect = {
+			RICE_galicia_saint_james_tolls_close_effect = yes
+			RICE_galicia_saint_james_tolls_midrange_high_effect = yes
+			RICE_galicia_saint_james_tolls_distant_high_effect = yes
+			RICE_galicia_saint_james_tolls_midrange_low_effect = yes
+			RICE_galicia_saint_james_tolls_distant_low_effect = yes
+		}	
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_way_of_saint_james_background_alt
+			}
+			remove_character_flag = RICE_way_of_saint_james_background_alt
+		}
+		# if = {
+		# 	limit = { has_variable = RICE_saint_james_extra_toll_max_value }
+		# 	remove_variable = RICE_saint_james_extra_toll_max_value
+		# }
+	}
+
+}
+
+
+
+######################################################################################
+# 
+# ALTERING THE ALTAR OF SAINT JAMES
+# 
+# galicia.0020-galicia.0029
+# 
+######################################################################################
+
+
+
+# Altering the Altar
+galicia.0020 = {
+	type = character_event
+	title = galicia.0020.t
+	desc = galicia.0020.desc
+	theme = faith
+
+	left_portrait = {
+		character = scope:diego_gelmirez
+		animation = personality_dishonorable
+	}
+
+	right_portrait = {
+		character = scope:chaplain
+		animation = personality_content
+	}
+
+	immediate = {
+		title:c_santiago = {
+			save_scope_as = santiago
+		}
+		scope:diego_gelmirez = {
+			add_to_global_variable_list = {
+				name = RICE_galicia_altar_alterer_list # Dunno how else to do this
+				target = this
+			}	
+		}
+		cp:councillor_court_chaplain = { save_scope_as = chaplain }
+		religion:christianity_religion = { save_scope_as = christian }
+	}
+
+	option = {
+		name = galicia.0020.a
+		custom_tooltip = galicia.0020.tooltip
+		RICE_galicia_alter_the_altar_effect = yes
+		every_ruler = {
+			limit = {
+				is_ai = no
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						OR = {
+							geographical_region = world_europe_west
+							geographical_region = world_europe_south_italy
+							geographical_region = world_africa_north_west
+						}
+					}
+				}
+			}
+			trigger_event = galicia.0021
+		}	
+	}
+}
+
+
+# Altering the Altar
+galicia.0021 = {
+	type = character_event
+	title = galicia.0021.t
+	desc = galicia.0021.desc
+	theme = faith
+
+	left_portrait = {
+		character = scope:diego_gelmirez
+		animation = personality_dishonorable
+	}
+
+	right_portrait = {
+		character = scope:chaplain
+		animation = personality_content
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		scope:diego_gelmirez = {
+			show_as_tooltip = {
+				RICE_galicia_alter_the_altar_effect = yes
+			}
+		}
+	}
+
+	option = {
+		name = galicia.0021.a
+		trigger = {
+			religion = religion:christianity_religion
+		}
+	}
+
+	option = {
+		name = galicia.0021.b
+		trigger = {
+			NOT = { religion = religion:christianity_religion }
+		}
+	}
+}
+
+
+# 1117 rebellion is about to happen
+galicia.0022 = {
+	type = character_event
+	title = galicia.0022.t
+	desc = galicia.0022.desc
+	theme = faith
+
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	trigger = {
+		NOT = { has_global_variable = RICE_galicia_santiago_tensions_rising }
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_santiago_altered
+		}
+		has_title = title:c_santiago
+		religion = religion:christianity_religion
+		title:c_santiago = {
+			faith.religion = religion:christianity_religion
+		}
+		cp:councillor_court_chaplain = {
+			exists = yes
+			is_available_adult = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		# If your court chaplain is nice, decrease the chances
+		modifier = {
+			add = -0.8
+			cp:councillor_court_chaplain = {
+				has_trait_benevolent_trigger = yes
+			}
+		}
+		# If your court chaplain is a dick, increase the chances
+		modifier = {
+			add = 1.2
+			cp:councillor_court_chaplain = {
+				has_trait_malicious_trigger = yes
+			}
+		}
+	}
+
+	immediate = {
+		title:c_santiago = {
+			save_scope_as = santiago
+		}
+		religion:christianity_religion = { save_scope_as = christian }
+		set_global_variable = {
+			name = RICE_galicia_santiago_tensions_rising
+			value = yes
+		}
+		ordered_in_global_list = {
+			variable = RICE_galicia_altar_alterer_list
+			save_scope_as = diego_gelmirez_ruler
+		}
+	}
+
+	option = {
+		name = galicia.0022.a
+		custom_tooltip = galicia.0022.tooltip
+	}
+}
+
+
+# 1117 Rebellion
+galicia.0023 = {
+	type = character_event
+	title = galicia.0023.t
+	desc = galicia.0023.desc
+	theme = faith
+	override_background = { event_background = burning_building }
+
+	# left_portrait = {
+	# 	character = scope:diego_gelmirez_ruler
+	# 	animation = shock
+	# }
+
+	right_portrait = {
+		character = scope:diego_gelmirez_priest
+		animation = fear
+	}
+
+	trigger = {
+		cp:councillor_court_chaplain = {
+			exists = yes
+			is_available_adult = yes
+		}
+		religion = religion:christianity_religion
+		title:c_santiago = {
+			faith.religion = religion:christianity_religion
+		}		
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_crusade_starts"
+		cp:councillor_court_chaplain = { save_scope_as = diego_gelmirez_priest }		
+		title:c_santiago = {
+			save_scope_as = santiago
+		}
+		religion:christianity_religion = { save_scope_as = christian }
+		set_global_variable = {
+			name = RICE_galicia_1117_rebellion_happened
+			value = yes
+		}
+		ordered_in_global_list = {
+			variable = RICE_galicia_altar_alterer_list
+			save_scope_as = diego_gelmirez_ruler
+		}
+	}
+
+	option = {
+		name = galicia.0023.a
+		random_list = {
+			desc = RICE_galicia_diego_gelmirez_attack_tt
+			# Escapes with minor wounds
+			60 = {
+				show_chance = no
+				desc = RICE_galicia_diego_gelmirez_attack.minor_wounds
+				add_character_flag = RICE_galicia_diego_gelmirez_attack_minor_wounds
+				send_interface_toast = {
+					left_icon = ROOT
+					title = RICE_galicia_diego_gelmirez_attack.minor_wounds
+					cp:councillor_court_chaplain = {
+						increase_wounds_effect = { REASON = wounds }
+					}
+				}
+			}			
+			# Escapes with major wounds
+			25 = {
+				show_chance = no
+				desc = RICE_galicia_diego_gelmirez_attack.major_wounds
+				add_character_flag = RICE_galicia_diego_gelmirez_attack_major_wounds
+				send_interface_toast = {
+					left_icon = ROOT
+					title = RICE_galicia_diego_gelmirez_attack.major_wounds
+					cp:councillor_court_chaplain = {
+						add_trait = maimed
+					}
+				}
+			}			
+			# Dies
+			15 = {
+				show_chance = no
+				desc = RICE_galicia_diego_gelmirez_attack.dies
+				add_character_flag = RICE_galicia_diego_gelmirez_attack_dies
+				send_interface_toast = {
+					left_icon = ROOT
+					title = RICE_galicia_diego_gelmirez_attack.dies
+					cp:councillor_court_chaplain = {
+						death = {
+							death_reason = death_beaten_by_mob
+						}
+					}
+				}
+			}			
+		}
+		RICE_galicia_1117_uprising_effect = yes
+		every_ruler = {
+			limit = {
+				is_ai = no
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						OR = {
+							geographical_region = world_europe_west
+							geographical_region = world_europe_south_italy
+							geographical_region = world_africa_north_west
+						}
+					}
+				}
+			}
+			trigger_event = galicia.0024
+		}
+	}
+	
+}
+
+
+# 1117 Rebellion - notification
+galicia.0024 = {
+	type = character_event
+	title = galicia.0024.t
+	desc = {
+		desc = galicia.0024.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:diego_gelmirez_ruler = {
+						has_character_flag = RICE_galicia_diego_gelmirez_attack_minor_wounds
+					}
+				}
+				desc = galicia.0024.desc.minor_wounds
+			}
+			triggered_desc = {
+				trigger = {
+					scope:diego_gelmirez_ruler = {
+						has_character_flag = RICE_galicia_diego_gelmirez_attack_major_wounds
+					}
+				}
+				desc = galicia.0024.desc.major_wounds
+			}
+			triggered_desc = {
+				trigger = {
+					scope:diego_gelmirez_ruler = {
+						has_character_flag = RICE_galicia_diego_gelmirez_attack_dies
+					}
+				}
+				desc = galicia.0024.desc.dies
+			}
+		}
+		desc = galicia.0024.desc.conclusion
+	}
+	theme = faith
+
+	left_portrait = {
+		character = scope:diego_gelmirez_ruler
+		animation = stress
+	}
+
+	right_portrait = {
+		character = scope:diego_gelmirez_priest
+		animation = severelywounded
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		scope:diego_gelmirez_ruler = {
+			show_as_tooltip = {
+				RICE_galicia_1117_uprising_effect = yes
+			}
+		}
+	}
+
+	option = {
+		name = galicia.0024.a
+		trigger = {
+			religion = religion:christianity_religion
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = RICE_galicia_1117_rebellion_context_tooltip
+			}
+		}
+	}
+
+	option = {
+		name = galicia.0024.b
+		trigger = {
+			NOT = { religion = religion:christianity_religion }
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = RICE_galicia_1117_rebellion_context_tooltip
+			}
+		}
+	}
+}
+
+######################################################################################
+# 
+# CANTIGAS
+# 
+# galicia.0030-galicia.0049
+# 
+######################################################################################
+
+
+
+# Start work on the Cantiga
+galicia.0030 = {
+	type = character_event
+	title = galicia.0030.t
+	desc = {
+		desc = galicia.0030.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_cantiga_type = flag:courtly_love
+				}
+				desc = galicia.0030.desc.courtly_love
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_cantiga_type = flag:romantic_love
+				}
+				desc = galicia.0030.desc.romantic_love
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_cantiga_type = flag:satire
+				}
+				desc = galicia.0030.desc.satire
+			}
+		}
+		desc = galicia.0030.desc.conclusion
+	}
+	theme = learning
+	override_icon = { reference = "gfx/interface/icons/event_types/type_diplomacy.dds" } 
+
+	right_portrait = {
+		character = root
+		animation = chancellor
+	}
+
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		add_character_flag = planning_an_activity
+		if = {
+			limit = {
+				NOT = { has_variable = RICE_num_of_cantigas_written }
+			}
+			set_variable = {
+				name = RICE_num_of_cantigas_written
+				value = 1
+			}
+		}
+		else = {
+			change_variable = {
+				name = RICE_num_of_cantigas_written
+				add = 1
+			}
+		}
+	}
+
+	# Start work on the cantiga
+	option = {
+		name = galicia.0030.a
+		# Choose appropriate location
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_galicia_compose_cantiga
+			}	
+		}
+		custom_tooltip = galicia.0030.a.tooltip
+	}
+
+}
+
+
+# Choose a topic
+galicia.0031 = {
+	type = character_event
+	title = galicia.0031.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_cantiga_type = flag:courtly_love
+				}
+				desc = galicia.0031.desc.intro.courtly_love
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_cantiga_type = flag:romantic_love
+					is_female = yes
+				}
+				desc = galicia.0031.desc.intro.romantic_love.female
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_cantiga_type = flag:romantic_love
+					is_female = no
+				}
+				desc = galicia.0031.desc.intro.romantic_love.male
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_cantiga_type = flag:satire
+				}
+				desc = galicia.0031.desc.intro.satire
+			}
+		}
+		desc = galicia.0031.desc.conclusion
+	}
+	theme = stewardship_duty_focus
+	override_background = { event_background = study }
+
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	immediate = {
+		RICE_galicia_assign_cantiga_themes_1_effect = yes
+		RICE_galicia_assign_cantiga_themes_2_effect = yes
+		RICE_galicia_assign_cantiga_themes_3_effect = yes
+	}
+
+	# Option 1
+	option = {
+		# Diplomacy Themes
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_music
+			}
+			text = cantiga_theme.music
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_female_dialogue
+			}
+			text = cantiga_theme.female_dialogue
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_beauty_lady
+			}
+			text = cantiga_theme.beauty_lady
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_joy
+			}
+			text = cantiga_theme.joy
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_sad
+			}
+			text = cantiga_theme.sad
+		}
+		# Martial Themes
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_war
+			}
+			text = cantiga_theme.war
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_anger
+			}
+			text = cantiga_theme.anger
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_feudalism
+			}
+			text = cantiga_theme.feudalism
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_dying_for_love
+			}
+			text = cantiga_theme.dying_for_love
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_holy_land
+			}
+			text = cantiga_theme.holy_land
+		}
+		# Stewardship Themes
+		name = {
+			trigger = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_sea
+			}
+			text = cantiga_theme.sea
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_pastoral
+			}
+			text = cantiga_theme.pastoral
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_trade
+			}
+			text = cantiga_theme.trade
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_springs
+			}
+			text = cantiga_theme.springs
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_urban
+			}
+			text = cantiga_theme.urban
+		}
+		# Intrigue Themes
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_erotic
+			}
+			text = cantiga_theme.erotic
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_cheating
+			}
+			text = cantiga_theme.cheating
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_rendezvous
+			}
+			text = cantiga_theme.rendezvous
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_jealousy
+			}
+			text = cantiga_theme.jealousy
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_court_politics
+			}
+			text = cantiga_theme.court_politics
+		}
+		# Learning Themes
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_pilgrimage
+			}
+			text = cantiga_theme.pilgrimage
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_piety
+			}
+			text = cantiga_theme.piety
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_loneliness
+			}
+			text = cantiga_theme.loneliness
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_travel
+			}
+			text = cantiga_theme.travel
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_1_values
+			}
+			text = cantiga_theme.values
+		}
+
+		# Diplomacy Themes
+		if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_music			
+			}
+			custom_tooltip = cantiga_theme.tooltip.music
+			custom_tooltip = cantiga_theme.tooltip.diplomacy
+			remove_character_flag = RICE_galicia_cantiga_theme_1_music
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_music
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_female_dialogue			
+			}
+			custom_tooltip = cantiga_theme.tooltip.female_dialogue
+			custom_tooltip = cantiga_theme.tooltip.diplomacy
+			remove_character_flag = RICE_galicia_cantiga_theme_1_female_dialogue
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_female_dialogue
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_beauty_lady			
+			}
+			custom_tooltip = cantiga_theme.tooltip.beauty_lady
+			custom_tooltip = cantiga_theme.tooltip.diplomacy
+			remove_character_flag = RICE_galicia_cantiga_theme_1_beauty_lady
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_beauty_lady
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_joy			
+			}
+			custom_tooltip = cantiga_theme.tooltip.joy
+			custom_tooltip = cantiga_theme.tooltip.diplomacy
+			remove_character_flag = RICE_galicia_cantiga_theme_1_joy
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_joy
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_sad			
+			}
+			custom_tooltip = cantiga_theme.tooltip.sad
+			custom_tooltip = cantiga_theme.tooltip.diplomacy
+			remove_character_flag = RICE_galicia_cantiga_theme_1_sad
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_sad
+		}
+		# Martial Themes
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_war				
+			}
+			custom_tooltip = cantiga_theme.tooltip.war
+			custom_tooltip = cantiga_theme.tooltip.martial
+			remove_character_flag = RICE_galicia_cantiga_theme_1_war
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_war
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_anger				
+			}
+			custom_tooltip = cantiga_theme.tooltip.anger
+			custom_tooltip = cantiga_theme.tooltip.martial
+			remove_character_flag = RICE_galicia_cantiga_theme_1_anger
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_anger
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_feudalism				
+			}
+			custom_tooltip = cantiga_theme.tooltip.feudalism
+			custom_tooltip = cantiga_theme.tooltip.martial
+			remove_character_flag = RICE_galicia_cantiga_theme_1_feudalism
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_feudalism
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_dying_for_love				
+			}
+			custom_tooltip = cantiga_theme.tooltip.dying_for_love
+			custom_tooltip = cantiga_theme.tooltip.martial
+			remove_character_flag = RICE_galicia_cantiga_theme_1_dying_for_love
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_dying_for_love
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_holy_land				
+			}
+			custom_tooltip = cantiga_theme.tooltip.holy_land
+			custom_tooltip = cantiga_theme.tooltip.martial
+			remove_character_flag = RICE_galicia_cantiga_theme_1_holy_land
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_holy_land
+		}
+		# Stewardship Themes
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_sea				
+			}
+			custom_tooltip = cantiga_theme.tooltip.sea
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+			remove_character_flag = RICE_galicia_cantiga_theme_1_sea
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_sea
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_pastoral				
+			}
+			custom_tooltip = cantiga_theme.tooltip.pastoral
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+			remove_character_flag = RICE_galicia_cantiga_theme_1_pastoral
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_pastoral
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_trade				
+			}
+			custom_tooltip = cantiga_theme.tooltip.trade
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+			remove_character_flag = RICE_galicia_cantiga_theme_1_trade
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_trade
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_springs				
+			}
+			custom_tooltip = cantiga_theme.tooltip.springs
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+			remove_character_flag = RICE_galicia_cantiga_theme_1_springs
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_springs
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_urban				
+			}
+			custom_tooltip = cantiga_theme.tooltip.urban
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+			remove_character_flag = RICE_galicia_cantiga_theme_1_urban
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_urban
+		}
+		# Intrigue Themes
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_erotic				
+			}
+			custom_tooltip = cantiga_theme.tooltip.erotic
+			custom_tooltip = cantiga_theme.tooltip.intrigue
+			remove_character_flag = RICE_galicia_cantiga_theme_1_erotic
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_erotic
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_cheating				
+			}
+			custom_tooltip = cantiga_theme.tooltip.cheating
+			custom_tooltip = cantiga_theme.tooltip.intrigue
+			remove_character_flag = RICE_galicia_cantiga_theme_1_cheating
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_cheating
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_rendezvous				
+			}
+			custom_tooltip = cantiga_theme.tooltip.rendezvous
+			custom_tooltip = cantiga_theme.tooltip.intrigue
+			remove_character_flag = RICE_galicia_cantiga_theme_1_rendezvous
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_rendezvous
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_jealousy				
+			}
+			custom_tooltip = cantiga_theme.tooltip.jealousy
+			custom_tooltip = cantiga_theme.tooltip.intrigue
+			remove_character_flag = RICE_galicia_cantiga_theme_1_jealousy
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_jealousy
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_court_politics				
+			}
+			custom_tooltip = cantiga_theme.tooltip.court_politics
+			custom_tooltip = cantiga_theme.tooltip.intrigue
+			remove_character_flag = RICE_galicia_cantiga_theme_1_court_politics
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_court_politics
+		}
+		# Learning Themes
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_pilgrimage				
+			}
+			custom_tooltip = cantiga_theme.tooltip.pilgrimage
+			custom_tooltip = cantiga_theme.tooltip.learning
+			remove_character_flag = RICE_galicia_cantiga_theme_1_pilgrimage
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_pilgrimage
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_piety				
+			}
+			custom_tooltip = cantiga_theme.tooltip.piety
+			custom_tooltip = cantiga_theme.tooltip.learning
+			remove_character_flag = RICE_galicia_cantiga_theme_1_piety
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_piety
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_loneliness				
+			}
+			custom_tooltip = cantiga_theme.tooltip.loneliness
+			custom_tooltip = cantiga_theme.tooltip.learning
+			remove_character_flag = RICE_galicia_cantiga_theme_1_loneliness
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_loneliness
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_travel				
+			}
+			custom_tooltip = cantiga_theme.tooltip.travel
+			custom_tooltip = cantiga_theme.tooltip.learning
+			remove_character_flag = RICE_galicia_cantiga_theme_1_travel
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_travel
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_1_values				
+			}
+			custom_tooltip = cantiga_theme.tooltip.values
+			custom_tooltip = cantiga_theme.tooltip.learning
+			remove_character_flag = RICE_galicia_cantiga_theme_1_values
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_values
+		}
+	}
+
+	# Option 2
+	option = {
+		# Diplomacy Themes
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_music
+			}
+			text = cantiga_theme.music
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_female_dialogue
+			}
+			text = cantiga_theme.female_dialogue
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_beauty_lady
+			}
+			text = cantiga_theme.beauty_lady
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_joy
+			}
+			text = cantiga_theme.joy
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_sad
+			}
+			text = cantiga_theme.sad
+		}
+		# Martial Themes
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_war
+			}
+			text = cantiga_theme.war
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_anger
+			}
+			text = cantiga_theme.anger
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_feudalism
+			}
+			text = cantiga_theme.feudalism
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_dying_for_love
+			}
+			text = cantiga_theme.dying_for_love
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_holy_land
+			}
+			text = cantiga_theme.holy_land
+		}
+		# Stewardship Themes
+		name = {
+			trigger = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_sea
+			}
+			text = cantiga_theme.sea
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_pastoral
+			}
+			text = cantiga_theme.pastoral
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_trade
+			}
+			text = cantiga_theme.trade
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_springs
+			}
+			text = cantiga_theme.springs
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_urban
+			}
+			text = cantiga_theme.urban
+		}
+		# Intrigue Themes
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_erotic
+			}
+			text = cantiga_theme.erotic
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_cheating
+			}
+			text = cantiga_theme.cheating
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_rendezvous
+			}
+			text = cantiga_theme.rendezvous
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_jealousy
+			}
+			text = cantiga_theme.jealousy
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_court_politics
+			}
+			text = cantiga_theme.court_politics
+		}
+		# Learning Themes
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_pilgrimage
+			}
+			text = cantiga_theme.pilgrimage
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_piety
+			}
+			text = cantiga_theme.piety
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_loneliness
+			}
+			text = cantiga_theme.loneliness
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_travel
+			}
+			text = cantiga_theme.travel
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_2_values
+			}
+			text = cantiga_theme.values
+		}
+
+		# Diplomacy Themes
+		if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_music			
+			}
+			custom_tooltip = cantiga_theme.tooltip.music
+			custom_tooltip = cantiga_theme.tooltip.diplomacy
+			remove_character_flag = RICE_galicia_cantiga_theme_2_music
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_music
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_female_dialogue			
+			}
+			custom_tooltip = cantiga_theme.tooltip.female_dialogue
+			custom_tooltip = cantiga_theme.tooltip.diplomacy
+			remove_character_flag = RICE_galicia_cantiga_theme_2_female_dialogue
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_female_dialogue
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_beauty_lady			
+			}
+			custom_tooltip = cantiga_theme.tooltip.beauty_lady
+			custom_tooltip = cantiga_theme.tooltip.diplomacy
+			remove_character_flag = RICE_galicia_cantiga_theme_2_beauty_lady
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_beauty_lady
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_joy			
+			}
+			custom_tooltip = cantiga_theme.tooltip.joy
+			custom_tooltip = cantiga_theme.tooltip.diplomacy
+			remove_character_flag = RICE_galicia_cantiga_theme_2_joy
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_joy
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_sad			
+			}
+			custom_tooltip = cantiga_theme.tooltip.sad
+			custom_tooltip = cantiga_theme.tooltip.diplomacy
+			remove_character_flag = RICE_galicia_cantiga_theme_2_sad
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_sad
+		}
+		# Martial Themes
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_war				
+			}
+			custom_tooltip = cantiga_theme.tooltip.war
+			custom_tooltip = cantiga_theme.tooltip.martial
+			remove_character_flag = RICE_galicia_cantiga_theme_2_war
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_war
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_anger				
+			}
+			custom_tooltip = cantiga_theme.tooltip.anger
+			custom_tooltip = cantiga_theme.tooltip.martial
+			remove_character_flag = RICE_galicia_cantiga_theme_2_anger
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_anger
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_feudalism				
+			}
+			custom_tooltip = cantiga_theme.tooltip.feudalism
+			custom_tooltip = cantiga_theme.tooltip.martial
+			remove_character_flag = RICE_galicia_cantiga_theme_2_feudalism
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_feudalism
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_dying_for_love				
+			}
+			custom_tooltip = cantiga_theme.tooltip.dying_for_love
+			custom_tooltip = cantiga_theme.tooltip.martial
+			remove_character_flag = RICE_galicia_cantiga_theme_2_dying_for_love
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_dying_for_love
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_holy_land				
+			}
+			custom_tooltip = cantiga_theme.tooltip.holy_land
+			custom_tooltip = cantiga_theme.tooltip.martial
+			remove_character_flag = RICE_galicia_cantiga_theme_2_holy_land
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_holy_land
+		}
+		# Stewardship Themes
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_sea				
+			}
+			custom_tooltip = cantiga_theme.tooltip.sea
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+			remove_character_flag = RICE_galicia_cantiga_theme_2_sea
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_sea
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_pastoral				
+			}
+			custom_tooltip = cantiga_theme.tooltip.pastoral
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+			remove_character_flag = RICE_galicia_cantiga_theme_2_pastoral
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_pastoral
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_trade				
+			}
+			custom_tooltip = cantiga_theme.tooltip.trade
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+			remove_character_flag = RICE_galicia_cantiga_theme_2_trade
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_trade
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_springs				
+			}
+			custom_tooltip = cantiga_theme.tooltip.springs
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+			remove_character_flag = RICE_galicia_cantiga_theme_2_springs
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_springs
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_urban				
+			}
+			custom_tooltip = cantiga_theme.tooltip.urban
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+			remove_character_flag = RICE_galicia_cantiga_theme_2_urban
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_urban
+		}
+		# Intrigue Themes
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_erotic				
+			}
+			custom_tooltip = cantiga_theme.tooltip.erotic
+			custom_tooltip = cantiga_theme.tooltip.intrigue
+			remove_character_flag = RICE_galicia_cantiga_theme_2_erotic
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_erotic
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_cheating				
+			}
+			custom_tooltip = cantiga_theme.tooltip.cheating
+			custom_tooltip = cantiga_theme.tooltip.intrigue
+			remove_character_flag = RICE_galicia_cantiga_theme_2_cheating
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_cheating
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_rendezvous				
+			}
+			custom_tooltip = cantiga_theme.tooltip.rendezvous
+			custom_tooltip = cantiga_theme.tooltip.intrigue
+			remove_character_flag = RICE_galicia_cantiga_theme_2_rendezvous
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_rendezvous
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_jealousy				
+			}
+			custom_tooltip = cantiga_theme.tooltip.jealousy
+			custom_tooltip = cantiga_theme.tooltip.intrigue
+			remove_character_flag = RICE_galicia_cantiga_theme_2_jealousy
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_jealousy
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_court_politics				
+			}
+			custom_tooltip = cantiga_theme.tooltip.court_politics
+			custom_tooltip = cantiga_theme.tooltip.intrigue
+			remove_character_flag = RICE_galicia_cantiga_theme_2_court_politics
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_court_politics
+		}
+		# Learning Themes
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_pilgrimage				
+			}
+			custom_tooltip = cantiga_theme.tooltip.pilgrimage
+			custom_tooltip = cantiga_theme.tooltip.learning
+			remove_character_flag = RICE_galicia_cantiga_theme_2_pilgrimage
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_pilgrimage
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_piety				
+			}
+			custom_tooltip = cantiga_theme.tooltip.piety
+			custom_tooltip = cantiga_theme.tooltip.learning
+			remove_character_flag = RICE_galicia_cantiga_theme_2_piety
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_piety
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_loneliness				
+			}
+			custom_tooltip = cantiga_theme.tooltip.loneliness
+			custom_tooltip = cantiga_theme.tooltip.learning
+			remove_character_flag = RICE_galicia_cantiga_theme_2_loneliness
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_loneliness
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_travel				
+			}
+			custom_tooltip = cantiga_theme.tooltip.travel
+			custom_tooltip = cantiga_theme.tooltip.learning
+			remove_character_flag = RICE_galicia_cantiga_theme_2_travel
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_travel
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_2_values				
+			}
+			custom_tooltip = cantiga_theme.tooltip.values
+			custom_tooltip = cantiga_theme.tooltip.learning
+			remove_character_flag = RICE_galicia_cantiga_theme_2_values
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_values
+		}
+
+	}
+
+	# Option 3
+	option = {
+		# Diplomacy Themes
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_music
+			}
+			text = cantiga_theme.music
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_female_dialogue
+			}
+			text = cantiga_theme.female_dialogue
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_beauty_lady
+			}
+			text = cantiga_theme.beauty_lady
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_joy
+			}
+			text = cantiga_theme.joy
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_sad
+			}
+			text = cantiga_theme.sad
+		}
+		# Martial Themes
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_war
+			}
+			text = cantiga_theme.war
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_anger
+			}
+			text = cantiga_theme.anger
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_feudalism
+			}
+			text = cantiga_theme.feudalism
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_dying_for_love
+			}
+			text = cantiga_theme.dying_for_love
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_holy_land
+			}
+			text = cantiga_theme.holy_land
+		}
+		# Stewardship Themes
+		name = {
+			trigger = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_sea
+			}
+			text = cantiga_theme.sea
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_pastoral
+			}
+			text = cantiga_theme.pastoral
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_trade
+			}
+			text = cantiga_theme.trade
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_springs
+			}
+			text = cantiga_theme.springs
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_urban
+			}
+			text = cantiga_theme.urban
+		}
+		# Intrigue Themes
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_erotic
+			}
+			text = cantiga_theme.erotic
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_cheating
+			}
+			text = cantiga_theme.cheating
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_rendezvous
+			}
+			text = cantiga_theme.rendezvous
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_jealousy
+			}
+			text = cantiga_theme.jealousy
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_court_politics
+			}
+			text = cantiga_theme.court_politics
+		}
+		# Learning Themes
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_pilgrimage
+			}
+			text = cantiga_theme.pilgrimage
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_piety
+			}
+			text = cantiga_theme.piety
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_loneliness
+			}
+			text = cantiga_theme.loneliness
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_travel
+			}
+			text = cantiga_theme.travel
+		}
+		name = {
+			trigger = { 
+				has_character_flag = RICE_galicia_cantiga_theme_3_values
+			}
+			text = cantiga_theme.values
+		}
+
+		# Diplomacy Themes
+		if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_music			
+			}
+			custom_tooltip = cantiga_theme.tooltip.music
+			custom_tooltip = cantiga_theme.tooltip.diplomacy
+			remove_character_flag = RICE_galicia_cantiga_theme_3_music
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_music
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_female_dialogue			
+			}
+			custom_tooltip = cantiga_theme.tooltip.female_dialogue
+			custom_tooltip = cantiga_theme.tooltip.diplomacy
+			remove_character_flag = RICE_galicia_cantiga_theme_3_female_dialogue
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_female_dialogue
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_beauty_lady			
+			}
+			custom_tooltip = cantiga_theme.tooltip.beauty_lady
+			custom_tooltip = cantiga_theme.tooltip.diplomacy
+			remove_character_flag = RICE_galicia_cantiga_theme_3_beauty_lady
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_beauty_lady
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_joy			
+			}
+			custom_tooltip = cantiga_theme.tooltip.joy
+			custom_tooltip = cantiga_theme.tooltip.diplomacy
+			remove_character_flag = RICE_galicia_cantiga_theme_3_joy
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_joy
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_sad			
+			}
+			custom_tooltip = cantiga_theme.tooltip.sad
+			custom_tooltip = cantiga_theme.tooltip.diplomacy
+			remove_character_flag = RICE_galicia_cantiga_theme_3_sad
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_sad
+		}
+		# Martial Themes
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_war				
+			}
+			custom_tooltip = cantiga_theme.tooltip.war
+			custom_tooltip = cantiga_theme.tooltip.martial
+			remove_character_flag = RICE_galicia_cantiga_theme_3_war
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_war
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_anger				
+			}
+			custom_tooltip = cantiga_theme.tooltip.anger
+			custom_tooltip = cantiga_theme.tooltip.martial
+			remove_character_flag = RICE_galicia_cantiga_theme_3_anger
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_anger
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_feudalism				
+			}
+			custom_tooltip = cantiga_theme.tooltip.feudalism
+			custom_tooltip = cantiga_theme.tooltip.martial
+			remove_character_flag = RICE_galicia_cantiga_theme_3_feudalism
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_feudalism
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_dying_for_love				
+			}
+			custom_tooltip = cantiga_theme.tooltip.dying_for_love
+			custom_tooltip = cantiga_theme.tooltip.martial
+			remove_character_flag = RICE_galicia_cantiga_theme_3_dying_for_love
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_dying_for_love
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_holy_land				
+			}
+			custom_tooltip = cantiga_theme.tooltip.holy_land
+			custom_tooltip = cantiga_theme.tooltip.martial
+			remove_character_flag = RICE_galicia_cantiga_theme_3_holy_land
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_holy_land
+		}
+		# Stewardship Themes
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_sea				
+			}
+			custom_tooltip = cantiga_theme.tooltip.sea
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+			remove_character_flag = RICE_galicia_cantiga_theme_3_sea
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_sea
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_pastoral				
+			}
+			custom_tooltip = cantiga_theme.tooltip.pastoral
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+			remove_character_flag = RICE_galicia_cantiga_theme_3_pastoral
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_pastoral
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_trade				
+			}
+			custom_tooltip = cantiga_theme.tooltip.trade
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+			remove_character_flag = RICE_galicia_cantiga_theme_3_trade
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_trade
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_springs				
+			}
+			custom_tooltip = cantiga_theme.tooltip.springs
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+			remove_character_flag = RICE_galicia_cantiga_theme_3_springs
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_springs
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_urban				
+			}
+			custom_tooltip = cantiga_theme.tooltip.urban
+			custom_tooltip = cantiga_theme.tooltip.stewardship
+			remove_character_flag = RICE_galicia_cantiga_theme_3_urban
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_urban
+		}
+		# Intrigue Themes
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_erotic				
+			}
+			custom_tooltip = cantiga_theme.tooltip.erotic
+			custom_tooltip = cantiga_theme.tooltip.intrigue
+			remove_character_flag = RICE_galicia_cantiga_theme_3_erotic
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_erotic
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_cheating				
+			}
+			custom_tooltip = cantiga_theme.tooltip.cheating
+			custom_tooltip = cantiga_theme.tooltip.intrigue
+			remove_character_flag = RICE_galicia_cantiga_theme_3_cheating
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_cheating
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_rendezvous				
+			}
+			custom_tooltip = cantiga_theme.tooltip.rendezvous
+			custom_tooltip = cantiga_theme.tooltip.intrigue
+			remove_character_flag = RICE_galicia_cantiga_theme_3_rendezvous
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_rendezvous
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_jealousy				
+			}
+			custom_tooltip = cantiga_theme.tooltip.jealousy
+			custom_tooltip = cantiga_theme.tooltip.intrigue
+			remove_character_flag = RICE_galicia_cantiga_theme_3_jealousy
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_jealousy
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_court_politics				
+			}
+			custom_tooltip = cantiga_theme.tooltip.court_politics
+			custom_tooltip = cantiga_theme.tooltip.intrigue
+			remove_character_flag = RICE_galicia_cantiga_theme_3_court_politics
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_court_politics
+		}
+		# Learning Themes
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_pilgrimage				
+			}
+			custom_tooltip = cantiga_theme.tooltip.pilgrimage
+			custom_tooltip = cantiga_theme.tooltip.learning
+			remove_character_flag = RICE_galicia_cantiga_theme_3_pilgrimage
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_pilgrimage
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_piety				
+			}
+			custom_tooltip = cantiga_theme.tooltip.piety
+			custom_tooltip = cantiga_theme.tooltip.learning
+			remove_character_flag = RICE_galicia_cantiga_theme_3_piety
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_piety
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_loneliness				
+			}
+			custom_tooltip = cantiga_theme.tooltip.loneliness
+			custom_tooltip = cantiga_theme.tooltip.learning
+			remove_character_flag = RICE_galicia_cantiga_theme_3_loneliness
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_loneliness
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_travel				
+			}
+			custom_tooltip = cantiga_theme.tooltip.travel
+			custom_tooltip = cantiga_theme.tooltip.learning
+			remove_character_flag = RICE_galicia_cantiga_theme_3_travel
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_travel
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_galicia_cantiga_theme_3_values				
+			}
+			custom_tooltip = cantiga_theme.tooltip.values
+			custom_tooltip = cantiga_theme.tooltip.learning
+			remove_character_flag = RICE_galicia_cantiga_theme_3_values
+			add_character_flag = RICE_galicia_cantiga_chosen_theme_values
+		}
+
+	}
+
+	after = {
+		custom_tooltip = galicia.0031.tooltip.after
+		trigger_event = {
+			id = galicia.0032
+			days = { 7 15 }			
+		}
+	}
+
+}
+
+
+# Cantiga finished composing
+galicia.0031 = {
+	type = character_event
+	title = galicia.0031.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_cantiga_type = flag:courtly_love
+				}
+				desc = galicia.0031.desc.intro.courtly_love
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_cantiga_type = flag:romantic_love
+					is_female = yes
+				}
+				desc = galicia.0031.desc.intro.romantic_love.female
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_cantiga_type = flag:romantic_love
+					is_female = no
+				}
+				desc = galicia.0031.desc.intro.romantic_love.male
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_cantiga_type = flag:satire
+				}
+				desc = galicia.0031.desc.intro.satire
+			}
+		}
+		desc = galicia.0031.desc.conclusion
+	}
+	theme = stewardship_duty_focus
+	override_background = { event_background = study }
+
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	immediate = {
+		RICE_galicia_assign_cantiga_themes_1_effect = yes
+		RICE_galicia_assign_cantiga_themes_2_effect = yes
+		RICE_galicia_assign_cantiga_themes_3_effect = yes
+	}
+
+	# Option 1
+	option = {
+	}
+}
+
+
+
+
+
+
+
+
