@@ -1,4 +1,8 @@
-﻿
+﻿yearly_global_pulse = {
+	on_actions = { RICE_guanche_yearly_global_pulse }
+}
+
+
 yearly_playable_pulse = {
 	on_actions = {
 		delay = { days = 33 }
@@ -14,6 +18,57 @@ three_year_playable_pulse = {
 	}
 }
 
+
+RICE_guanche_yearly_global_pulse = {
+	effect = {
+		# Don't want it to be given randomly way after the decision is taken
+		if = {
+			limit = {
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:declare_canarias_decision
+				}
+				NOT = { has_global_variable = RICE_guanche_kingdom_deadline_set }
+			}
+			set_global_variable = {
+				name = RICE_guanche_kingdom_deadline_set
+				value = yes
+			}
+			set_global_variable = {
+				name = RICE_canarias_kingdom_decision_bonus_event_timer
+				value = yes
+				days = 1095
+			}
+		}
+		if = {
+			limit = {
+				exists = title:k_canarias.holder
+				title:k_canarias.holder = {
+					OR = {
+						religion = religion:north_african_religion
+						culture = {
+							OR = {
+								this = culture:guanches
+								any_parent_culture_or_above = {
+									this = culture:guanches
+								}
+							}
+						}
+					}
+				}
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:declare_canarias_decision
+				}
+				has_global_variable = RICE_canarias_kingdom_decision_bonus_event_timer
+			}
+			remove_global_variable = RICE_canarias_kingdom_decision_bonus_event_timer
+			title:k_canarias.holder = {
+				trigger_event = guanche.0005
+			}
+		}
+	}
+}
 
 # RICE Flavor Events
 RICE_guanche_events_yearly_pulse = {

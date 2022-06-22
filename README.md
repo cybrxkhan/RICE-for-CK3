@@ -1,12 +1,12 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.6.1.a "Darro" (Released 6/19/22, for vanilla patch 1.6.x)
+## Latest Version: Version 1.6.2 "Wakhan" (Released 6/21/22, for vanilla patch 1.6.x)
 
 **Newest Flavor Pack - Granada: Memories of the Alhambra**
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com)
 
-_The Darro, a tributary of the Genil river, is one of the main rivers flowing through Granada. In the medieval period, it was noted for its gold deposits. It also supplied the famed Alhambra with water through a canal system known as the Acequia Real, or the Sultan’s Canal._
+_The Wakhan Corridor is a mountain valley that lies between the Pamir and Hindu Kush mountain ranges. Since ancient times, this remote mountain pass has facilitated the movement of peoples, armies, ideas, and faiths across Eurasia._
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. The guiding philosophy of RICE is to keep a tight, focused scope that doesn’t change gameplay significantly, but adds more flavor across the world, especially for lesser-known places, peoples, and histories.
 
@@ -50,29 +50,25 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ## Latest Changelog
 
-### Version 1.6.1.a Hotfix
+### Version 1.6.2 "Wakhan"
 
-- Removed Chinese localization files from mod at the request of Chinese translators - If you want to play in Chinese, please use this sub-mod: https://steamcommunity.com/sharedfiles/filedetails/?id=2823178539
-- Reinforcing Relations with Silk Road communities now also requires some prestige
-- Amount of gold gifted by Silk Road communities via random events is now much more randomized
-- Reduced maximum amount of gold you can get from Silk Road communities via random events
-- If the Granada pogrom event chain happens as it did historically, the death reason for Jewish victims will now mention the mob
-- Removed the useless Galicia loc file that was there for some reason
-- Miscellaneous bugfixes
+**Note: If you're doing a Guanche playthrough on an old save, it is strongly advised you start a new game or use an older version of RICE (see GitHub to manually download). Otherwise, as PI added their own version of the Guanche, there may be wonkiness as some Guanche content might not work properly.**
 
-### Version 1.6.1 "Darro"
-
-- Added 2 generic flavor events for Granada
-- Added the Idol of Cadiz as a county modifier to Cadiz at the start of the game
-- Added decision to Demolish the Idol of Cadiz
-- Added some more German translations (credits to Dillo)
-- Added decision to Revive Gomati Monastery for Buddhists in Khotan, which will restore the 8 Protectors Modifier if Khotan had been previously taken over by a non-Buddhist
-- Added decision to Construct the Ordam Mazar for Muslims in the Tarim Basin, which will enable the Ordam Mazar decision from start dates before 1066
-- New minor flavor and narrative events for the first Muslim ruler of Khotan related to the above
-- Qanat innovation is now available and given to various Middle Eastern cultures in TFE as appropriate
-- Decision to Relocate from Ilbira to Granada now only requires Illustrious rather than Exalted Among Men level of prestige
-- Changed event noise for some beach backgrounds
-- Fixed Stage Animal Fight decision not being available to cultures that are of Tocharian heritage but not Tocharian culture
-- Fixed some missing Evenk name localization, especially in non-English language versions of the game
+- Added Turco-Hephthalite culture as a hybrid of Hephthalite and Turkish, that appears on the map in 867 instead of the old Hephthalite culture, to clarify confusion arising from my previous usage of Hephthalite
+- Added Pamiri culture to the Iranian culture group
+- Added a new tradition, Beyond the Reach of Eagles, for the Pamiri, Burusho, and Peristani cultures
+- Modified Guanche content to fit vanilla’s implementation of the Guanche
+- Guanche paganism is now in a separate religion, Guanche, than the other Amazigh faiths (mainly to maintain compatibility)
+- Renamed vanilla’s North African religion to Guanche (to distinguish them from the Amazigh)
+- Pray for Blessings of Rain Rain and Benesmen Festival decisions now require the Guanche religion
+- Removed decision to Unite the Canary Islands, since vanilla has something similar; however, you will still get the relevant county modifiers via event
+- Rebalanced costs for most feast/festival type decisions
+- White Hun tradition is now added to the Hephthalites via scripted effect at game start to ensure better compatibility
+- White Hun tradition will no longer be added to the Hephthalites if playing with TFE or early start dates
+- Revamped a few decision art (thanks to PinkPanzer)
+- Activities are separated by flavor pack in different text files in the code
+- Fixed Ali ibn Asad starting off as a Seljuk vassal instead of being independent
+- Fixed Cichiciquitzo tradition requiring the unused Guanche heritage - it now requires being Guanche or descended from Guanche culture
+- Fixed White Huns and Xianbei Scions traditions being unavailable to Hephthalite and Tuyuhun/Qiang cultures respectively
 - Miscellaneous bugfixes
 
