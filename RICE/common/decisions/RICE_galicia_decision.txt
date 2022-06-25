@@ -4,7 +4,7 @@ RICE_galicia_alter_saint_james_tomb = {
 	major = yes
 	desc = RICE_galicia_alter_saint_james_tomb_desc
 
-	ai_check_interval = 120
+	ai_check_interval = 48
 
 	is_shown = {
 		NOT = { has_global_variable = RICE_galicia_saint_james_tomb_not_found_yet }
@@ -81,6 +81,248 @@ RICE_galicia_alter_saint_james_tomb = {
 		}
 		
 		trigger_event = galicia.0020
+	}
+
+	ai_will_do = {
+		base = 100
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -10
+			has_trait = craven
+		}
+		modifier = {
+			add = 20
+			# Happened in 11th century IRL
+			current_date >= 1000.1.1
+		}
+		modifier = {
+			add = 40
+			# Happened in 11th century IRL
+			current_date >= 1100.1.1
+		}
+		modifier = {
+			add = 60
+			# Happened in 11th century IRL
+			current_date >= 1150.1.1
+		}
+	}
+}
+
+RICE_galicia_compile_CSM_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_european_book.dds"
+	major = yes
+	desc = RICE_galicia_compile_CSM_decision_desc
+
+	ai_check_interval = 120
+
+	is_shown = {
+		is_landed = yes
+		religion = religion:christianity_religion
+		# Same requirements as Cantigas
+		culture = {
+			OR = {
+				has_cultural_tradition = tradition_RICE_galician_portuguese_poetry
+				AND = {
+					has_cultural_pillar = heritage_iberian
+					has_cultural_pillar = language_iberian	
+				}
+			}
+		}
+		culture = {
+			OR = {
+				has_cultural_era_or_later = culture_era_high_medieval
+				has_innovation = innovation_chronicle_writing
+			}
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_CSM_compilation_taken
+			}
+		}
+	}
+
+	is_valid = {
+		custom_description = {
+			text = RICE_no_one_working_on_CSM_req
+			NOT = {
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_CSM_compilation_taken
+				}
+			}
+		}
+		religion = religion:christianity_religion
+		piety_level >= 3
+		custom_description = {
+			text = RICE_CSM_3_cantigas_written_req
+			exists = var:RICE_num_of_cantigas_written
+			var:RICE_num_of_cantigas_written >= 3
+		}
+		# custom_description = {
+		# 	text = "is_king_or_emperor"
+		# 	highest_held_title_tier >= tier_kingdom
+		# }
+		# Same requirements as Cantigas
+		culture = {
+			OR = {
+				has_cultural_tradition = tradition_RICE_galician_portuguese_poetry
+				AND = {
+					has_cultural_pillar = heritage_iberian
+					has_cultural_pillar = language_iberian	
+				}
+			}
+		}
+		culture = {
+			OR = {
+				has_cultural_era_or_later = culture_era_high_medieval
+				has_innovation = innovation_chronicle_writing
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_available = yes
+	}
+
+	cost = {
+		gold = {
+			value = 250
+		}
+	}
+
+	ai_potential = {
+		short_term_gold > 250
+	}
+
+	effect = {
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_CSM_compilation_taken
+		}
+		
+		custom_tooltip = RICE_galicia_compile_CSM_decision_effect_tooltip_1
+		custom_tooltip = RICE_galicia_compile_CSM_decision_effect_tooltip_2
+
+		show_as_tooltip = {
+			add_character_modifier = {
+				modifier = RICE_currently_compiling_CSM
+			}
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_galicia_compile_CSM_decision_context_tooltip
+		}
+		
+		trigger_event = galicia.0040
+	}
+
+	ai_will_do = {
+		base = 25
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -10
+			has_trait = craven
+		}
+		modifier = {
+			add = 20
+			# Happened in 13th century IRL
+			current_date >= 1200.1.1
+		}
+		modifier = {
+			add = 20
+			# Happened in 13th century IRL
+			current_date >= 1250.1.1
+		}
+		modifier = {
+			add = 20
+			# Happened in 13th century IRL
+			current_date >= 1300.1.1
+		}
+	}
+}
+
+RICE_galicia_expand_CSM_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_european_book.dds"
+	major = yes
+	desc = RICE_galicia_expand_CSM_decision_desc
+
+	ai_check_interval = 120
+
+	is_shown = {
+		NOT = { has_global_variable = RICE_galicia_no_more_CSM_expansions_allowed }
+		is_landed = yes
+		has_character_flag = RICE_galicia_csm_compiler
+	}
+
+	is_valid = {
+		custom_description = {
+			text = RICE_CSM_compiler_req
+			has_character_flag = RICE_galicia_csm_compiler
+		}
+		religion = religion:christianity_religion
+		NOT = { has_character_modifier = RICE_currently_expanding_CSM }
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_available = yes
+	}
+
+	cost = {
+		gold = {
+			value = 100
+		}
+	}
+
+	ai_potential = {
+		short_term_gold > 100
+	}
+
+	effect = {
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_CSM_compilation_taken
+		}
+		
+		custom_tooltip = RICE_galicia_expand_CSM_decision_effect_tooltip_1
+		custom_tooltip = RICE_galicia_expand_CSM_decision_effect_tooltip_2
+		if = {
+			limit = {
+				NOT = { has_variable = RICE_num_of_CSM_expansions }
+			}
+			custom_tooltip = RICE_galicia_expand_CSM_decision_effect_tooltip_3
+		}
+		else = {
+			custom_tooltip = RICE_galicia_expand_CSM_decision_effect_tooltip_4
+		}
+
+		show_as_tooltip = {
+			add_character_modifier = {
+				modifier = RICE_currently_expanding_CSM
+			}
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_galicia_expand_CSM_decision_context_tooltip
+		}
+		
+		trigger_event = galicia.0045
 	}
 
 	ai_will_do = {
@@ -646,8 +888,126 @@ RICE_galicia_saint_james_levy_extra_tolls = {
 
 
 
+RICE_galicia_promote_cantiga = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_european_book.dds"
+
+	ai_check_interval = 12
+
+	#cooldown = { days = 1825 }
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_recently_wrote_excellent_cantiga_courtly_love
+				}
+				desc = RICE_galicia_promote_cantiga_desc.courtly_love
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_recently_wrote_excellent_cantiga_romantic_love
+				}
+				desc = RICE_galicia_promote_cantiga_desc.romantic_love
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_recently_wrote_excellent_cantiga_satire
+				}
+				desc = RICE_galicia_promote_cantiga_desc.satire
+			}
+		}
+	}
+	
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		OR = {
+			has_character_flag = RICE_recently_wrote_excellent_cantiga_courtly_love
+			has_character_flag = RICE_recently_wrote_excellent_cantiga_romantic_love
+			has_character_flag = RICE_recently_wrote_excellent_cantiga_satire
+		}	
+	}
+	
+	is_valid = {
+		custom_description = {
+			text = RICE_galicia_recently_composed_excellent_cantiga_req
+			OR = {
+				has_character_flag = RICE_recently_wrote_excellent_cantiga_courtly_love
+				has_character_flag = RICE_recently_wrote_excellent_cantiga_romantic_love
+				has_character_flag = RICE_recently_wrote_excellent_cantiga_satire
+			}	
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	# minimum_cost = {
+	# 	gold = 100
+	# }
+
+	effect = {
+
+		custom_tooltip = RICE_galicia_promote_cantiga_effect_tooltip_1
+		custom_tooltip = RICE_galicia_promote_cantiga_effect_tooltip_2
+
+		if = {
+			limit = {
+				culture = { has_cultural_tradition = tradition_RICE_galician_portuguese_poetry }
+			}
+			custom_tooltip = RICE_galicia_promote_cantiga_effect_tooltip_4
+		}
+		else = {
+			custom_tooltip = RICE_galicia_promote_cantiga_effect_tooltip_3
+		}
+
+		show_as_tooltip = {
+			add_character_modifier = {
+				modifier = RICE_galicia_recently_promoted_cantiga
+				years = 5
+			}
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_galicia_promote_cantiga_context_tooltip
+		}
+		
+		trigger_event = {
+			id = galicia.0033
+		}
+	}
+
+	cost = {
+		gold = { value = minor_gold_value } # Will depend
+	}
+
+	ai_potential = {
+		short_term_gold > minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 80
+		modifier = {
+			add = 40
+			has_trait = poet
+		}
+		modifier = {
+			add = 20
+			has_trait = scholar
+		}
+		modifier = {
+			add = -25
+			has_trait = lazy
+		}
+	}
+}
+
 RICE_galicia_cantiga_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_RICE_european_musician.dds"
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_european_book.dds"
 
 	ai_check_interval = 24
 
@@ -672,10 +1032,30 @@ RICE_galicia_cantiga_decision = {
 					has_cultural_pillar = language_iberian	
 				}
 			}
-		}	
+		}
+		culture = {
+			OR = {
+				has_cultural_era_or_later = culture_era_high_medieval
+				has_innovation = innovation_chronicle_writing
+			}
+		}
 	}
 	
 	is_valid = {
+		custom_description = {
+			text = RICE_galicia_not_recently_composed_excellent_cantiga_req
+			NOR = {
+				has_character_flag = RICE_recently_wrote_excellent_cantiga_courtly_love
+				has_character_flag = RICE_recently_wrote_excellent_cantiga_romantic_love
+				has_character_flag = RICE_recently_wrote_excellent_cantiga_satire
+				has_character_flag = RICE_recently_wrote_good_cantiga_courtly_love
+				has_character_flag = RICE_recently_wrote_good_cantiga_romantic_love
+				has_character_flag = RICE_recently_wrote_good_cantiga_satire
+				has_character_flag = RICE_recently_wrote_acceptable_cantiga_courtly_love
+				has_character_flag = RICE_recently_wrote_acceptable_cantiga_romantic_love
+				has_character_flag = RICE_recently_wrote_acceptable_cantiga_satire
+			}	
+		}
 		OR = {
 			diplomacy >= medium_skill_rating
 			learning >= medium_skill_rating
@@ -817,12 +1197,12 @@ RICE_galicia_cantiga_decision = {
 
 	cost = {
 		gold = { value = minor_gold_value } # Will depend
-		prestige = { value = medium_prestige_value } # Will depend
+		#prestige = { value = medium_prestige_value } # Will depend
 	}
 
 	ai_potential = {
 		short_term_gold > minor_gold_value
-		prestige > medium_prestige_value
+		#prestige > medium_prestige_value
 	}
 
 	ai_will_do = {

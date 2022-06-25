@@ -4,7 +4,8 @@
 # 
 # galicia.0000-galicia.0019			Setup events, history events, miscellaneous decisions
 # galicia.0020-galicia.0029			Altering the Altar
-# galicia.0030-galicia.0049			Cantigas
+# galicia.0030-galicia.0039			Cantigas
+# galicia.0040-galicia.0049			Cantigas de Santa Maria
 # galicia.0050-galicia.0099			Generic flavor events
 # 
 # 
@@ -837,7 +838,7 @@ galicia.0024 = {
 # 
 # CANTIGAS
 # 
-# galicia.0030-galicia.0049
+# galicia.0030-galicia.0039
 # 
 ######################################################################################
 
@@ -920,7 +921,24 @@ galicia.0030 = {
 				type = activity_galicia_compose_cantiga
 			}	
 		}
-		custom_tooltip = galicia.0030.a.tooltip
+		if = {
+			limit = {
+				var:RICE_cantiga_type = flag:courtly_love
+			}
+			custom_tooltip = galicia.0030.tooltip.courtly_love
+		}
+		else_if = {
+			limit = {
+				var:RICE_cantiga_type = flag:courtly_love
+			}
+			custom_tooltip = galicia.0030.tooltip.courtly_love
+		}
+		else_if = {
+			limit = {
+				var:RICE_cantiga_type = flag:satire
+			}
+			custom_tooltip = galicia.0030.tooltip.satire				
+		}
 	}
 
 }
@@ -2162,7 +2180,7 @@ galicia.0031 = {
 		custom_tooltip = galicia.0031.tooltip.after
 		trigger_event = {
 			id = galicia.0032
-			days = { 4 8 }			
+			days = { 5 8 }			
 		}
 	}
 
@@ -2236,6 +2254,7 @@ galicia.0032 = {
 	}
 
 	immediate = {
+		play_music_cue = mx_cue_touching_moment
 		# Determine the quality of the cantiga
 		random_list = {
 			# Acceptable quality
@@ -2395,7 +2414,6 @@ galicia.0032 = {
 				}	
 			}
 		}
-
 		if = {
 			limit = {
 				var:RICE_cantiga_quality = flag:excellent
@@ -2406,6 +2424,10 @@ galicia.0032 = {
 				}
 				add_piety = { 100 200 }
 				add_prestige = { 50 100 }
+				add_character_flag = {
+					flag = RICE_recently_wrote_excellent_cantiga_courtly_love
+					years = 5
+				}
 			}
 			else_if = {
 				limit = {
@@ -2413,6 +2435,10 @@ galicia.0032 = {
 				}
 				add_piety = { 50 100 }
 				add_prestige = { 100 200 }
+				add_character_flag = {
+					flag = RICE_recently_wrote_excellent_cantiga_romantic_love
+					years = 5
+				}
 			}
 			else_if = {
 				limit = {
@@ -2422,6 +2448,11 @@ galicia.0032 = {
 				add_prestige = { 50 200 }				
 			}
 			RICE_galicia_cantiga_completed_excellent_effect = yes
+			add_character_flag = {
+				flag = RICE_recently_wrote_excellent_cantiga_satire
+				years = 5
+			}
+			custom_tooltip = galicia.0032.tooltip.excellent
 		}
 		else_if = {
 			limit = {
@@ -2431,24 +2462,36 @@ galicia.0032 = {
 				limit = {
 					var:RICE_cantiga_type = flag:courtly_love
 				}
-				add_piety = { 25 50 }
-				add_prestige = { 10 25 }
+				add_piety = { 50 100 }
+				add_prestige = { 25 50 }
+				add_character_flag = {
+					flag = RICE_recently_wrote_good_cantiga_courtly_love
+					years = 5
+				}
 			}
 			else_if = {
 				limit = {
 					var:RICE_cantiga_type = flag:romantic_love
 				}
-				add_piety = { 10 25 }
-				add_prestige = { 25 50 }
+				add_piety = { 25 50 }
+				add_prestige = { 50 100 }
+				add_character_flag = {
+					flag = RICE_recently_wrote_good_cantiga_romantic_love
+					years = 5
+				}
 			}
 			else_if = {
 				limit = {
 					var:RICE_cantiga_type = flag:satire
 				}
-				add_piety = { 10 50 }
-				add_prestige = { 10 50 }				
+				add_piety = { 25 100 }
+				add_prestige = { 25 100 }				
 			}
 			RICE_galicia_cantiga_completed_good_effect = yes
+			add_character_flag = {
+				flag = RICE_recently_wrote_good_cantiga_satire
+				years = 5
+			}
 		}
 		else = {
 			if = {
@@ -2457,6 +2500,10 @@ galicia.0032 = {
 				}
 				add_piety = { 25 50 }
 				add_prestige = { 10 25 }
+				add_character_flag = {
+					flag = RICE_recently_wrote_acceptable_cantiga_courtly_love
+					years = 5
+				}
 			}
 			else_if = {
 				limit = {
@@ -2464,6 +2511,10 @@ galicia.0032 = {
 				}
 				add_piety = { 10 25 }
 				add_prestige = { 25 50 }
+				add_character_flag = {
+					flag = RICE_recently_wrote_acceptable_cantiga_romantic_love
+					years = 5
+				}
 			}
 			else_if = {
 				limit = {
@@ -2473,12 +2524,23 @@ galicia.0032 = {
 				add_prestige = { 10 50 }				
 			}
 			RICE_galicia_cantiga_completed_acceptable_effect = yes
+			add_character_flag = {
+				flag = RICE_recently_wrote_acceptable_cantiga_satire
+				years = 5
+			}
 		}
+
+
+
 	}
 
 	# Option 1
 	option = {
 		name = galicia.0032.a
+
+		# Not sure why in immediate it won't display the add_character_modifier stuff properly
+		RICE_galicia_cantiga_modifier_display_effect = yes
+
 		if = {
 			limit = {
 				var:RICE_cantiga_quality = flag:excellent
@@ -2508,5 +2570,516 @@ galicia.0032 = {
 
 
 
+# Turning the Cantiga into an artifact
+galicia.0033 = {
+	type = character_event
+	title = galicia.0033.t
+	desc = galicia.0033.desc
+	theme = learning
+
+	right_portrait = {
+		character = root
+		animation = chancellor
+	}
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:RICE_cantiga
+		position = lower_center_portrait
+	}
+
+	immediate = {
+		save_scope_as = cantiga_composer
+		if = {
+			limit = {
+				has_character_flag = RICE_recently_wrote_excellent_cantiga_courtly_love
+			}
+			if = {
+				limit = {
+					culture = { has_cultural_tradition = tradition_RICE_galician_portuguese_poetry }
+				}
+				add_piety = 240
+				add_prestige = 60
+			}
+			else = {
+				add_piety = 200
+				add_prestige = 50
+			}
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_recently_wrote_excellent_cantiga_romantic_love
+			}
+			if = {
+				limit = {
+					culture = { has_cultural_tradition = tradition_RICE_galician_portuguese_poetry }
+				}
+				add_prestige = 240
+				add_piety = 60
+			}
+			else = {
+				add_prestige = 200
+				add_piety = 50
+			}
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_recently_wrote_excellent_cantiga_satire
+			}
+			if = {
+				limit = {
+					culture = { has_cultural_tradition = tradition_RICE_galician_portuguese_poetry }
+				}
+				add_prestige = 150
+				add_piety = 150
+			}
+			else = {
+				add_prestige = 125
+				add_piety = 125
+			}
+		}
+		add_character_modifier = {
+			modifier = RICE_galicia_recently_promoted_cantiga
+			years = 5
+		}
+		hidden_effect = {
+			RICE_galicia_turn_cantiga_into_artifact_effect = yes
+			RICE_galicia_cantiga_add_genre_to_name_effect = yes
+		}
+	}
+
+	option = {
+		name = galicia.0033.a
+		show_as_tooltip = {
+			scope:RICE_cantiga = {
+				set_owner = {
+					target = root
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_recently_wrote_excellent_cantiga_courtly_love
+			}
+			remove_character_flag = RICE_recently_wrote_excellent_cantiga_courtly_love
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_recently_wrote_excellent_cantiga_romantic_love
+			}
+			remove_character_flag = RICE_recently_wrote_excellent_cantiga_romantic_love
+		}
+		else_if = {
+			limit = {
+				has_character_flag = RICE_recently_wrote_excellent_cantiga_satire
+			}
+			remove_character_flag = RICE_recently_wrote_excellent_cantiga_satire
+		}
+	}
+
+}
 
 
+
+######################################################################################
+# 
+# CANTIGAS DE SANTA MARIA
+# 
+# galicia.0040-galicia.0049
+# 
+######################################################################################
+
+
+
+# Start to Compile the Cantigas de Santa Maria
+galicia.0040 = {
+	type = character_event
+	title =  galicia.0040.t
+	desc =  galicia.0040.desc
+	theme = learning
+	
+	right_portrait = {
+		character = root
+		animation = chancellor
+	}
+
+	immediate = {
+		save_scope_as = alfonso_x
+		add_character_modifier = {
+			modifier = RICE_currently_compiling_CSM
+		}
+		set_global_variable = {
+			name = RICE_CSM_compilation_timer
+			value = yes
+			days = 1 # 1825
+		}
+		# scope:alfonso_x = {
+		# 	add_to_global_variable_list = {
+		# 		name = RICE_galicia_alfonso_x_equivalent # Dunno how else to do this
+		# 		target = this
+		# 	}	
+		# }
+	}
+
+	option = { # OK
+		name =  galicia.0040.a
+	}
+}
+
+
+
+# Finish compiling the Cantigas de Santa Maria
+galicia.0041 = {
+	type = character_event
+	title = galicia.0041.t
+	desc = galicia.0041.desc
+	theme = learning
+	
+	left_portrait = {
+		character = scope:alfonso_x
+		animation = happiness
+	}
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:CSM
+		position = lower_center_portrait
+	}
+
+	trigger = {
+		NOT = { has_global_variable = RICE_CSM_compilation_timer }
+		has_character_modifier = RICE_currently_compiling_CSM
+	}
+	
+	immediate = {
+		save_scope_as = alfonso_x
+
+		add_character_flag = RICE_galicia_csm_compiler
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		remove_character_modifier = RICE_currently_compiling_CSM
+
+		hidden_effect_new_artifact = {
+			create_artifact = {
+				name = RICE_galicia_cantigas_de_santa_maria_version_0_name
+				description = RICE_galicia_cantigas_de_santa_maria_version_0_desc
+				type = miscellaneous
+				visuals = RICE_music_manuscript					
+				quality = 100
+				wealth = 100
+				modifier = RICE_galicia_CSM_modifier_basic
+				save_scope_as = CSM
+				decaying = no
+			}
+			scope:CSM = {
+				set_variable = RICE_CSM_0_variable
+			}
+		}
+
+	}
+
+	option = { # Ok
+		name = galicia.0041.a
+		add_prestige = 200
+		if = {
+			limit = {
+				religion = religion:christianity_religion
+			}
+			add_piety = 200
+		}
+		dynasty = { add_dynasty_prestige = 200 }
+		show_as_tooltip = {
+			scope:CSM = {
+				set_owner = {
+					target = root
+				}
+			}
+		}
+		custom_tooltip = galicia.0041.tooltip
+		every_ruler = {
+			limit = {
+				is_ai = no
+				OR = {
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = world_europe_west_iberia
+						}
+					}
+					culture = {
+						OR = {
+							has_cultural_pillar = heritage_iberian
+							has_cultural_pillar = language_iberian
+						}
+					}
+				}
+			}
+			trigger_event = galicia.0042
+		}
+	}
+}
+
+
+
+# Cantigas de Santa Maria notification
+galicia.0042 = {
+	type = character_event
+	title = galicia.0042.t
+	desc = galicia.0042.desc
+	theme = learning
+	
+	left_portrait = {
+		character = scope:alfonso_x
+		animation = personality_content
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			scope:alfonso_x = {
+				add_prestige = 200
+				if = {
+					limit = {
+						scope:alfonso_x = {
+							religion = religion:christianity_religion
+						}
+					}
+					add_piety = 200
+				}
+				dynasty = { add_dynasty_prestige = 250 }
+			}
+			scope:CSM = {
+				set_owner = {
+					target = scope:alfonso_x
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = galicia.0042.a	
+	}
+}
+
+
+
+# Character dies before completing the CSM
+galicia.0043 = {
+	type = empty
+	hidden = yes
+	
+	trigger = {
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_CSM_compilation_taken
+		}
+		has_character_modifier = RICE_currently_compiling_CSM
+	}
+	
+	immediate = {
+		save_scope_as = CSM_original_compiler
+		if = {
+			limit = {
+				exists = primary_heir
+			}
+			primary_heir = {
+				trigger_event = {
+					id = galicia.0044
+					days = 1
+				}
+			}
+		}
+		# If heir doesn't exist for some reason, quietly re-enable it
+		# Unlikely to happen since there should always be an heir, but this is a failsafe just in case
+		else = {
+			remove_list_global_variable = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_CSM_compilation_taken
+			}
+		}
+	}
+}
+
+# Heir continues work on the CSM
+galicia.0044 = {
+	type = character_event
+	title = galicia.0044.t
+	desc = galicia.0044.desc
+	theme = learning
+	
+	left_portrait = {
+		character = scope:CSM_original_compiler
+		animation = personality_honorable
+	}
+
+	right_portrait = {
+		character = root
+		animation = worry
+	}
+
+	immediate = {
+		add_character_modifier = {
+			modifier = RICE_currently_compiling_CSM
+		}
+	}
+	
+	option = { # Ok
+		name = galicia.0044.a
+	}
+}
+
+# Expanding the CSM
+galicia.0045 = {
+	type = character_event
+	title = galicia.0045.t
+	desc = galicia.0045.desc
+	theme = learning
+	
+	left_portrait = {
+		character = scope:CSM_original_compiler
+		animation = personality_honorable
+	}
+
+	right_portrait = {
+		character = root
+		animation = worry
+	}
+
+	immediate = {
+		add_character_modifier = {
+			modifier = RICE_currently_expanding_CSM
+		}
+		set_global_variable = {
+			name = RICE_CSM_expansion_timer
+			value = yes
+			days = 1 # 1095
+		}
+		if = {
+			limit = {
+				NOT = { has_variable = RICE_num_of_CSM_expansions }
+			}
+			set_variable = {
+				name = RICE_num_of_CSM_expansions
+				value = 1
+			}
+		}
+		else = {
+			change_variable = {
+				name = RICE_num_of_CSM_expansions
+				add = 1
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = galicia.0045.a
+		if = {
+			limit = {
+				var:RICE_num_of_CSM_expansions >= 3
+			}
+			set_global_variable = {
+				name = RICE_galicia_no_more_CSM_expansions_allowed
+				value = yes
+			}
+			custom_tooltip = RICE_galicia_no_more_CSM_expansions
+		}
+	}
+}
+
+# Finished expanding the CSM
+galicia.0046 = {
+	type = character_event
+	title = galicia.0046.t
+	desc = galicia.0046.desc
+	theme = learning
+	
+	left_portrait = {
+		character = scope:alfonso_x
+		animation = personality_honorable
+	}
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:CSM_xp
+		position = lower_center_portrait
+	}
+
+	trigger = {
+		NOT = { has_global_variable = RICE_CSM_expansion_timer }
+		has_character_modifier = RICE_currently_expanding_CSM
+	}
+	immediate = {
+		save_scope_as = alfonso_x
+		play_music_cue = mx_cue_touching_moment
+		remove_character_modifier = RICE_currently_expanding_CSM
+		hidden_effect_new_artifact = {
+			create_artifact = {
+				name = RICE_galicia_cantigas_de_santa_maria_version_0_name # Placeholder in case something goes weird
+				description = RICE_galicia_cantigas_de_santa_maria_version_0_desc # Placeholder in case something goes weird
+				type = miscellaneous
+				visuals = RICE_music_manuscript					
+				quality = 100
+				wealth = 100
+				modifier = RICE_galicia_CSM_modifier_basic # Placeholder in case something goes weird
+				save_scope_as = CSM_xp
+				decaying = no
+			}
+		}
+		hidden_effect = {
+			# First expansion
+			if = {
+				limit = {
+					var:RICE_num_of_CSM_expansions = 1
+				}
+				scope:CSM_xp = {
+					add_artifact_modifier = RICE_galicia_CSM_modifier_xp_1
+					set_artifact_name = RICE_galicia_cantigas_de_santa_maria_version_1_name
+					set_artifact_description = RICE_galicia_cantigas_de_santa_maria_version_1_desc
+					remove_artifact_modifier = RICE_galicia_CSM_modifier_basic					
+				}
+			}
+			# Second expansion
+			else_if = {
+				limit = {
+					var:RICE_num_of_CSM_expansions = 2
+				}
+				scope:CSM_xp = {
+					add_artifact_modifier = RICE_galicia_CSM_modifier_xp_2
+					set_artifact_name = RICE_galicia_cantigas_de_santa_maria_version_2_name
+					set_artifact_description = RICE_galicia_cantigas_de_santa_maria_version_2_desc
+					remove_artifact_modifier = RICE_galicia_CSM_modifier_basic					
+				}
+			}
+			# Third expansion
+			else_if = {
+				limit = {
+					var:RICE_num_of_CSM_expansions >= 3
+				}
+				scope:CSM_xp = {
+					add_artifact_modifier = RICE_galicia_CSM_modifier_xp_3
+					set_artifact_name = RICE_galicia_cantigas_de_santa_maria_version_3_name
+					set_artifact_description = RICE_galicia_cantigas_de_santa_maria_version_3_desc
+					remove_artifact_modifier = RICE_galicia_CSM_modifier_basic					
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = galicia.0046.a
+		add_prestige = 150
+		if = {
+			limit = {
+				religion = religion:christianity_religion
+			}
+			add_piety = 150
+		}
+		dynasty = { add_dynasty_prestige = 100 }
+		if = {
+			limit = {
+				var:RICE_num_of_CSM_expansions >= 3
+			}
+			custom_tooltip = RICE_galicia_no_more_CSM_expansions
+		}
+	}
+}
