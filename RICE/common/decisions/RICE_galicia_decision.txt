@@ -1,4 +1,118 @@
 ﻿
+RICE_galicia_unearth_saint_james_tomb = {
+	picture = "gfx/interface/illustrations/decisions/decision_small_town.dds"
+	major = yes
+	desc = RICE_galicia_unearth_saint_james_tomb_desc
+
+	ai_check_interval = 48
+
+	is_shown = {
+		has_global_variable = RICE_game_started_on_TFE_start_date
+		has_global_variable = RICE_galicia_saint_james_tomb_not_found_yet
+		is_landed = yes
+		has_title = title:c_santiago
+		religion = religion:christianity_religion
+	}
+
+	is_valid = {
+		custom_description = {
+			text = RICE_galicia_unearth_saint_james_tomb_date_req
+			current_date > 500.1.1
+		}
+		has_title = title:c_santiago
+		religion = religion:christianity_religion
+		custom_description = {
+			text = RICE_santiago_is_christian_req
+			title:c_santiago = {
+				faith.religion = religion:christianity_religion
+			}
+		}
+		piety_level >= 3
+		custom_description = {
+			text = RICE_has_court_chaplain
+			exists = cp:councillor_court_chaplain
+			cp:councillor_court_chaplain = {
+				is_available_adult = yes
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_available = yes
+	}
+
+	cost = {
+		gold = {
+			value = minor_gold_value
+		}
+		prestige = {
+			value = major_prestige_value
+		}
+	}
+
+	ai_potential = {
+		short_term_gold > minor_gold_value
+		prestige > major_prestige_value
+	}
+
+	effect = {
+		remove_global_variable = RICE_galicia_saint_james_tomb_not_found_yet
+		
+		custom_tooltip = RICE_galicia_unearth_saint_james_tomb_effect_tooltip_1
+		custom_tooltip = RICE_galicia_unearth_saint_james_tomb_effect_tooltip_2
+
+		if = {
+			limit = {
+				exists = cp:councillor_court_chaplain
+				# cp:councillor_court_chaplain = {
+				# 	is_available_adult = yes
+				# }
+			}
+			show_as_tooltip = {
+				cp:councillor_court_chaplain = {
+					add_character_modifier = {
+						modifier = RICE_galicia_discovered_saint_james_tomb
+					}
+				}
+			}
+		}
+
+
+		show_as_tooltip = {
+			RICE_galicia_discover_saint_james_tomb_effect = yes
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_galicia_unearth_saint_james_tomb_context_tooltip
+		}
+		
+		trigger_event = galicia.0013
+	}
+
+	ai_will_do = {
+		base = 25
+		modifier = {
+			add = 25
+			# Happened in 9th century IRL
+			current_date >= 800.1.1
+		}
+		modifier = {
+			add = 50
+			# Happened in 9th century IRL
+			current_date >= 900.1.1
+		}
+		modifier = {
+			add = 75
+			# Happened in 9th century IRL
+			current_date >= 1000.1.1
+		}
+	}
+}
+
 RICE_galicia_alter_saint_james_tomb = {
 	picture = "gfx/interface/illustrations/decisions/decision_RICE_cathedral.dds"
 	major = yes
@@ -380,6 +494,7 @@ RICE_galicia_saint_james_routes_decision = {
 	cooldown = { days = RICE_galicia_way_of_saint_james_decisions_cooldown_time }
 
 	is_shown = {
+		NOT = { has_global_variable = RICE_galicia_saint_james_tomb_not_found_yet }
 		is_landed = yes
 		any_held_title = {
 			tier = tier_county
@@ -621,6 +736,7 @@ RICE_galicia_saint_james_levy_extra_tolls = {
 	cooldown = { days = RICE_galicia_way_of_saint_james_decisions_cooldown_time }
 
 	is_shown = {
+		NOT = { has_global_variable = RICE_galicia_saint_james_tomb_not_found_yet }
 		is_landed = yes
 		any_held_title = {
 			tier = tier_county
@@ -704,6 +820,10 @@ RICE_galicia_saint_james_levy_extra_tolls = {
 
 	effect = {
 
+		title:c_santiago = {
+			save_scope_as = santiago
+		}
+
 		religion:christianity_religion = { save_scope_as = christian }
 
 		# Doesn't work for loc as it is defined after the loc is set, apparently
@@ -712,19 +832,27 @@ RICE_galicia_saint_james_levy_extra_tolls = {
 		# 	value = RICE_saint_james_toll_money_reward_max_value
 		# }
 
-		custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_effect_tooltip_1
-
-		show_as_tooltip = {
-			if = {
-				limit = {
-					religion = religion:christianity_religion
-				}
-				add_gold = RICE_saint_james_toll_money_reward_max_value
+		if = {
+			limit = {
+				religion = religion:christianity_religion
 			}
-			else = {				
-				add_gold = RICE_saint_james_toll_money_reward_nonchristian_max_value
-			}
+			custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_effect_tooltip_1_christian
 		}
+		else = {
+			custom_tooltip = RICE_galicia_saint_james_levy_extra_tolls_effect_tooltip_1_nonchristian
+		}
+
+		# show_as_tooltip = {
+		# 	if = {
+		# 		limit = {
+		# 			religion = religion:christianity_religion
+		# 		}
+		# 		add_gold = RICE_saint_james_toll_money_reward_max_value
+		# 	}
+		# 	else = {				
+		# 		add_gold = RICE_saint_james_toll_money_reward_nonchristian_max_value
+		# 	}
+		# }
 
 		if = {
 			limit = {
@@ -1066,24 +1194,32 @@ RICE_galicia_cantiga_decision = {
 			has_trait = education_learning_3
 			has_trait = education_learning_4
 		}
+		# OR = {
+		# 	culture = { has_cultural_tradition = tradition_RICE_galician_portuguese_poetry }
+		# 	custom_description = {
+		# 		text = RICE_iberia_geographical_capital_req
+		# 		capital_province = {
+		# 			geographical_region = world_europe_west_iberia
+		# 		}
+		# 	}
+		# }
 		OR = {
-			culture = { has_cultural_tradition = tradition_RICE_galician_portuguese_poetry }
-			custom_description = {
-				text = RICE_iberia_geographical_capital_req
-				capital_province = {
-					geographical_region = world_europe_west_iberia
+			culture = {
+				OR = {
+					has_cultural_tradition = tradition_RICE_galician_portuguese_poetry
+					AND = {
+						has_cultural_pillar = heritage_iberian
+						has_cultural_pillar = language_iberian	
+					}
 				}
+			}
+			AND = {
+				culture = {
+					has_cultural_pillar = heritage_iberian
+				}		
+				knows_language = language_arabic		
 			}
 		}
-		culture = {
-			OR = {
-				has_cultural_tradition = tradition_RICE_galician_portuguese_poetry
-				AND = {
-					has_cultural_pillar = heritage_iberian
-					has_cultural_pillar = language_iberian	
-				}
-			}
-		}	
 		culture = {
 			OR = {
 				has_cultural_era_or_later = culture_era_high_medieval
@@ -1235,6 +1371,7 @@ RICE_galicia_pray_to_santiago = {
 	desc = RICE_galicia_pray_to_santiago_desc
 	
 	is_shown = {
+		NOT = { has_global_variable = RICE_galicia_saint_james_tomb_not_found_yet }
 		is_ruler = yes
 		is_landed = yes
 		OR = {

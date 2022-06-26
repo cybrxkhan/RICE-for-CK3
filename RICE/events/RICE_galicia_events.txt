@@ -456,6 +456,196 @@ galicia.0012 = {
 
 
 
+
+# Discovering the tomb of Saint James
+galicia.0013 = {
+	type = character_event
+	title = galicia.0013.t
+	desc = galicia.0013.desc
+	theme = RICE_theme_galicia_woods
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+
+	left_portrait = {
+		character = scope:chaplain
+		animation = happiness
+	}
+
+	right_portrait = {
+		character = scope:pelayo
+		animation = personality_honorable
+	}
+
+	immediate = {
+		title:c_santiago = {
+			save_scope_as = santiago
+		}
+		save_scope_as = alfonso
+		cp:councillor_court_chaplain = { save_scope_as = chaplain }
+		religion:christianity_religion = { save_scope_as = christian }
+		scope:chaplain = {
+			add_character_modifier = {
+				modifier = RICE_galicia_discovered_saint_james_tomb
+			}
+		}
+		create_character = {
+			location = root.capital_province
+			culture = root.culture
+			template = mendicant_mystic_character
+			save_scope_as = pelayo
+		}
+		hidden_effect = {
+			scope:pelayo = {
+				add_character_modifier = {
+					modifier = RICE_galicia_discovered_saint_james_tomb
+				}
+			}
+		}
+	}
+
+	option = {
+		name = galicia.0013.a
+		trigger_event = galicia.0014	
+	}
+}
+
+# Discovering the tomb of Saint James
+galicia.0014 = {
+	type = character_event
+	title = galicia.0014.t
+	desc = galicia.0014.desc
+	theme = RICE_theme_galicia_woods
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+
+	left_portrait = {
+		character = scope:chaplain
+		animation = personality_forgiving
+	}
+
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	lower_center_portrait = scope:pelayo
+
+	immediate = {		
+		RICE_galicia_discover_saint_james_tomb_effect = yes
+		scope:chaplain = {
+			add_opinion = {
+				target = scope:pelayo
+				modifier = RICE_galicia_found_saint_james_tomb
+			}
+			reverse_add_opinion = {
+				target = scope:pelayo
+				modifier = RICE_galicia_found_saint_james_tomb
+			}		
+		}
+		custom_tooltip = RICE_galicia_unlock_santiago_prayer_decision_tooltip
+		custom_tooltip = RICE_galicia_unlock_santiago_routes_decision_tooltip
+	}
+
+	# Invite Pelayo to court
+	option = {
+		name = galicia.0014.a
+		add_prestige = -250	
+		add_courtier = scope:pelayo
+	}
+
+	# Let Pelayo stay in the wilderness
+	option = {
+		name = galicia.0014.b
+		#add_piety = 100
+		hidden_effect = {
+			scope:pelayo = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+	after = {
+		every_ruler = {
+			limit = {
+				is_ai = no
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						OR = {
+							geographical_region = world_europe_west
+							geographical_region = world_europe_south_italy
+							geographical_region = world_africa_north_west
+						}
+					}
+				}
+			}
+			trigger_event = galicia.0015
+		}
+	}
+}
+
+
+# Altering the Altar - notification
+galicia.0015 = {
+	type = character_event
+	title = galicia.0015.t
+	desc = galicia.0015.desc
+	theme = RICE_theme_galicia_woods
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+
+
+	left_portrait = {
+		character = scope:chaplain
+		animation = personality_content
+	}
+	right_portrait = {
+		character = scope:pelayo
+		animation = personality_zealous
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		scope:alfonso = {
+			show_as_tooltip = {
+				RICE_galicia_discover_saint_james_tomb_effect = yes
+			}
+		}
+		custom_tooltip = RICE_galicia_unlock_santiago_prayer_decision_tooltip
+		custom_tooltip = RICE_galicia_unlock_santiago_routes_decision_tooltip
+	}
+
+	option = {
+		name = galicia.0015.a
+		trigger = {
+			religion = religion:christianity_religion
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_galicia_unearth_saint_james_tomb_context_tooltip
+		}
+	}
+
+	option = {
+		name = galicia.0015.b
+		trigger = {
+			NOT = { religion = religion:christianity_religion }
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_galicia_unearth_saint_james_tomb_context_tooltip
+		}
+	}
+}
+
+
+
+
+
+
 ######################################################################################
 # 
 # ALTERING THE ALTAR OF SAINT JAMES
@@ -521,7 +711,7 @@ galicia.0020 = {
 }
 
 
-# Altering the Altar
+# Altering the Altar - notification
 galicia.0021 = {
 	type = character_event
 	title = galicia.0021.t
@@ -663,6 +853,7 @@ galicia.0023 = {
 
 	immediate = {
 		play_music_cue = "mx_cue_crusade_starts"
+		save_scope_as = santiago_ruler
 		cp:councillor_court_chaplain = { save_scope_as = diego_gelmirez_priest }		
 		title:c_santiago = {
 			save_scope_as = santiago
@@ -2258,10 +2449,27 @@ galicia.0032 = {
 		# Determine the quality of the cantiga
 		random_list = {
 			# Acceptable quality
-			50 = {
-				# No Compatible traits
+			40 = {
+				# Being dumb doesn't help
 				modifier = {
 					add = 5
+					probably_unintelligent_trigger = yes
+				}
+				# Increase if inexperienced
+				modifier = {
+					add = 10
+					exists = var:RICE_num_of_cantigas_written
+					var:RICE_num_of_cantigas_written <= 1
+				}
+				# Increase if inexperienced
+				modifier = {
+					add = 5
+					exists = var:RICE_num_of_cantigas_written
+					var:RICE_num_of_cantigas_written <= 2
+				}
+				# No Compatible traits
+				modifier = {
+					add = 10
 					RICE_galicia_compatible_cantiga_trait_trigger = no
 				}
 				set_variable = {
@@ -2271,6 +2479,52 @@ galicia.0032 = {
 			}
 			# Good quality
 			35 = {
+				# Being smart helps
+				modifier = {
+					add = 5
+					probably_intelligent_trigger = yes
+				}
+				# Right culture
+				modifier = {
+					add = 8
+					culture = { has_cultural_tradition = tradition_RICE_galician_portuguese_poetry }
+				}
+				# Increase if experienced
+				modifier = {
+					add = 3
+					exists = var:RICE_num_of_cantigas_written
+					var:RICE_num_of_cantigas_written >= 3
+				}
+				# Increase if experienced
+				modifier = {
+					add = 3
+					exists = var:RICE_num_of_cantigas_written
+					var:RICE_num_of_cantigas_written >= 4
+				}
+				# Increase if experienced
+				modifier = {
+					add = 3
+					exists = var:RICE_num_of_cantigas_written
+					var:RICE_num_of_cantigas_written >= 5
+				}
+				# Increase if experienced
+				modifier = {
+					add = 3
+					exists = var:RICE_num_of_cantigas_written
+					var:RICE_num_of_cantigas_written >= 6
+				}
+				# Increase if experienced
+				modifier = {
+					add = 3
+					exists = var:RICE_num_of_cantigas_written
+					var:RICE_num_of_cantigas_written >= 7
+				}
+				# Increase if experienced
+				modifier = {
+					add = 3
+					exists = var:RICE_num_of_cantigas_written
+					var:RICE_num_of_cantigas_written >= 8
+				}
 				# Compatible traits
 				modifier = {
 					add = 5
@@ -2278,61 +2532,61 @@ galicia.0032 = {
 				}
 				# Diplomacy boost
 				modifier = {
-					add = 3
+					add = 2
 					RICE_galicia_writing_diplomacy_cantiga_trigger = yes
 					diplomacy >= decent_skill_rating
 				}
 				# Martial boost
 				modifier = {
-					add = 3
+					add = 2
 					RICE_galicia_writing_martial_cantiga_trigger = yes
 					martial >= decent_skill_rating
 				}
 				# Stewardship boost
 				modifier = {
-					add = 3
+					add = 2
 					RICE_galicia_writing_stewardship_cantiga_trigger = yes
 					stewardship >= decent_skill_rating
 				}
 				# Intrigue boost
 				modifier = {
-					add = 3
+					add = 2
 					RICE_galicia_writing_intrigue_cantiga_trigger = yes
 					intrigue >= decent_skill_rating
 				}
 				# Learning boost
 				modifier = {
-					add = 3
+					add = 2
 					RICE_galicia_writing_learning_cantiga_trigger = yes
 					learning >= decent_skill_rating
 				}
 				# Diplomacy boost
 				modifier = {
-					add = 3
+					add = 2
 					RICE_galicia_writing_diplomacy_cantiga_trigger = yes
 					diplomacy >= high_skill_rating
 				}
 				# Martial boost
 				modifier = {
-					add = 3
+					add = 2
 					RICE_galicia_writing_martial_cantiga_trigger = yes
 					martial >= high_skill_rating
 				}
 				# Stewardship boost
 				modifier = {
-					add = 3
+					add = 2
 					RICE_galicia_writing_stewardship_cantiga_trigger = yes
 					stewardship >= high_skill_rating
 				}
 				# Intrigue boost
 				modifier = {
-					add = 3
+					add = 2
 					RICE_galicia_writing_intrigue_cantiga_trigger = yes
 					intrigue >= high_skill_rating
 				}
 				# Learning boost
 				modifier = {
-					add = 3
+					add = 2
 					RICE_galicia_writing_learning_cantiga_trigger = yes
 					learning >= high_skill_rating
 				}
@@ -2342,7 +2596,53 @@ galicia.0032 = {
 				}
 			}
 			# Excellent quality
-			15 = {
+			25 = {
+				# Being smart helps
+				modifier = {
+					add = 4
+					probably_intelligent_trigger = yes
+				}
+				# Right culture
+				modifier = {
+					add = 4
+					culture = { has_cultural_tradition = tradition_RICE_galician_portuguese_poetry }
+				}
+				# Increase if experienced
+				modifier = {
+					add = 3
+					exists = var:RICE_num_of_cantigas_written
+					var:RICE_num_of_cantigas_written >= 3
+				}
+				# Increase if experienced
+				modifier = {
+					add = 3
+					exists = var:RICE_num_of_cantigas_written
+					var:RICE_num_of_cantigas_written >= 4
+				}
+				# Increase if experienced
+				modifier = {
+					add = 3
+					exists = var:RICE_num_of_cantigas_written
+					var:RICE_num_of_cantigas_written >= 5
+				}
+				# Increase if experienced
+				modifier = {
+					add = 3
+					exists = var:RICE_num_of_cantigas_written
+					var:RICE_num_of_cantigas_written >= 6
+				}
+				# Increase if experienced
+				modifier = {
+					add = 3
+					exists = var:RICE_num_of_cantigas_written
+					var:RICE_num_of_cantigas_written >= 7
+				}
+				# Increase if experienced
+				modifier = {
+					add = 3
+					exists = var:RICE_num_of_cantigas_written
+					var:RICE_num_of_cantigas_written >= 8
+				}
 				# Compatible traits
 				modifier = {
 					add = 5
@@ -2445,13 +2745,13 @@ galicia.0032 = {
 					var:RICE_cantiga_type = flag:satire
 				}
 				add_piety = { 50 200 }
-				add_prestige = { 50 200 }				
+				add_prestige = { 50 200 }	
+				add_character_flag = {
+					flag = RICE_recently_wrote_excellent_cantiga_satire
+					years = 5
+				}			
 			}
 			RICE_galicia_cantiga_completed_excellent_effect = yes
-			add_character_flag = {
-				flag = RICE_recently_wrote_excellent_cantiga_satire
-				years = 5
-			}
 			custom_tooltip = galicia.0032.tooltip.excellent
 		}
 		else_if = {
