@@ -2388,9 +2388,12 @@ galicia.0031 = {
 
 	after = {
 		custom_tooltip = galicia.0031.tooltip.after
+		hidden_effect = {
+			RICE_galicia_determine_quality_effect = yes
+		}
 		trigger_event = {
 			id = galicia.0032
-			days = { 5 8 }			
+			days = { 7 14 }			
 		}
 	}
 
@@ -2465,274 +2468,110 @@ galicia.0032 = {
 
 	immediate = {
 		play_music_cue = mx_cue_touching_moment
-		# Determine the quality of the cantiga
-		random_list = {
-			# Acceptable quality
-			40 = {
-				# Being dumb doesn't help
-				modifier = {
-					add = 5
-					probably_unintelligent_trigger = yes
+		hidden_effect = {
+			if = {
+				limit = {
+					var:RICE_cantiga_quality = flag:excellent
 				}
-				# Increase if inexperienced
-				modifier = {
-					add = 10
-					exists = var:RICE_num_of_cantigas_written
-					var:RICE_num_of_cantigas_written <= 1
+				if = {
+					limit = {
+						var:RICE_cantiga_type = flag:courtly_love
+					}
+					add_character_flag = {
+						flag = RICE_recently_wrote_excellent_cantiga_courtly_love
+						years = 5
+					}
 				}
-				# Increase if inexperienced
-				modifier = {
-					add = 5
-					exists = var:RICE_num_of_cantigas_written
-					var:RICE_num_of_cantigas_written <= 2
+				else_if = {
+					limit = {
+						var:RICE_cantiga_type = flag:romantic_love
+					}
+					add_character_flag = {
+						flag = RICE_recently_wrote_excellent_cantiga_romantic_love
+						years = 5
+					}
 				}
-				# No Compatible traits
-				modifier = {
-					add = 10
-					RICE_galicia_compatible_cantiga_trait_trigger = no
+				else_if = {
+					limit = {
+						var:RICE_cantiga_type = flag:satire
+					}	
+					add_character_flag = {
+						flag = RICE_recently_wrote_excellent_cantiga_satire
+						years = 5
+					}			
 				}
-				set_variable = {
-					name = RICE_cantiga_quality
-					value = flag:acceptable
-				}				
+				RICE_galicia_cantiga_completed_excellent_effect = yes
 			}
-			# Good quality
-			35 = {
-				# Being smart helps
-				modifier = {
-					add = 5
-					probably_intelligent_trigger = yes
+			else_if = {
+				limit = {
+					var:RICE_cantiga_quality = flag:good
 				}
-				# Right culture
-				modifier = {
-					add = 8
-					culture = { has_cultural_tradition = tradition_RICE_galician_portuguese_poetry }
+				if = {
+					limit = {
+						var:RICE_cantiga_type = flag:courtly_love
+					}
+					add_character_flag = {
+						flag = RICE_recently_wrote_good_cantiga_courtly_love
+						years = 5
+					}
 				}
-				# Increase if experienced
-				modifier = {
-					add = 3
-					exists = var:RICE_num_of_cantigas_written
-					var:RICE_num_of_cantigas_written >= 3
+				else_if = {
+					limit = {
+						var:RICE_cantiga_type = flag:romantic_love
+					}
+					add_character_flag = {
+						flag = RICE_recently_wrote_good_cantiga_romantic_love
+						years = 5
+					}
 				}
-				# Increase if experienced
-				modifier = {
-					add = 3
-					exists = var:RICE_num_of_cantigas_written
-					var:RICE_num_of_cantigas_written >= 4
+				else_if = {
+					limit = {
+						var:RICE_cantiga_type = flag:satire
+					}
+					add_character_flag = {
+						flag = RICE_recently_wrote_good_cantiga_satire
+						years = 5
+					}			
 				}
-				# Increase if experienced
-				modifier = {
-					add = 3
-					exists = var:RICE_num_of_cantigas_written
-					var:RICE_num_of_cantigas_written >= 5
-				}
-				# Increase if experienced
-				modifier = {
-					add = 3
-					exists = var:RICE_num_of_cantigas_written
-					var:RICE_num_of_cantigas_written >= 6
-				}
-				# Increase if experienced
-				modifier = {
-					add = 3
-					exists = var:RICE_num_of_cantigas_written
-					var:RICE_num_of_cantigas_written >= 7
-				}
-				# Increase if experienced
-				modifier = {
-					add = 3
-					exists = var:RICE_num_of_cantigas_written
-					var:RICE_num_of_cantigas_written >= 8
-				}
-				# Compatible traits
-				modifier = {
-					add = 5
-					RICE_galicia_compatible_cantiga_trait_trigger = yes
-				}
-				# Diplomacy boost
-				modifier = {
-					add = 2
-					RICE_galicia_writing_diplomacy_cantiga_trigger = yes
-					diplomacy >= decent_skill_rating
-				}
-				# Martial boost
-				modifier = {
-					add = 2
-					RICE_galicia_writing_martial_cantiga_trigger = yes
-					martial >= decent_skill_rating
-				}
-				# Stewardship boost
-				modifier = {
-					add = 2
-					RICE_galicia_writing_stewardship_cantiga_trigger = yes
-					stewardship >= decent_skill_rating
-				}
-				# Intrigue boost
-				modifier = {
-					add = 2
-					RICE_galicia_writing_intrigue_cantiga_trigger = yes
-					intrigue >= decent_skill_rating
-				}
-				# Learning boost
-				modifier = {
-					add = 2
-					RICE_galicia_writing_learning_cantiga_trigger = yes
-					learning >= decent_skill_rating
-				}
-				# Diplomacy boost
-				modifier = {
-					add = 2
-					RICE_galicia_writing_diplomacy_cantiga_trigger = yes
-					diplomacy >= high_skill_rating
-				}
-				# Martial boost
-				modifier = {
-					add = 2
-					RICE_galicia_writing_martial_cantiga_trigger = yes
-					martial >= high_skill_rating
-				}
-				# Stewardship boost
-				modifier = {
-					add = 2
-					RICE_galicia_writing_stewardship_cantiga_trigger = yes
-					stewardship >= high_skill_rating
-				}
-				# Intrigue boost
-				modifier = {
-					add = 2
-					RICE_galicia_writing_intrigue_cantiga_trigger = yes
-					intrigue >= high_skill_rating
-				}
-				# Learning boost
-				modifier = {
-					add = 2
-					RICE_galicia_writing_learning_cantiga_trigger = yes
-					learning >= high_skill_rating
-				}
-				set_variable = {
-					name = RICE_cantiga_quality
-					value = flag:good
-				}
+				RICE_galicia_cantiga_completed_good_effect = yes
 			}
-			# Excellent quality
-			25 = {
-				# Being smart helps
-				modifier = {
-					add = 4
-					probably_intelligent_trigger = yes
+			else = {
+				if = {
+					limit = {
+						var:RICE_cantiga_type = flag:courtly_love
+					}
+					add_character_flag = {
+						flag = RICE_recently_wrote_acceptable_cantiga_courtly_love
+						years = 5
+					}
 				}
-				# Right culture
-				modifier = {
-					add = 4
-					culture = { has_cultural_tradition = tradition_RICE_galician_portuguese_poetry }
+				else_if = {
+					limit = {
+						var:RICE_cantiga_type = flag:romantic_love
+					}
+					add_character_flag = {
+						flag = RICE_recently_wrote_acceptable_cantiga_romantic_love
+						years = 5
+					}
 				}
-				# Increase if experienced
-				modifier = {
-					add = 3
-					exists = var:RICE_num_of_cantigas_written
-					var:RICE_num_of_cantigas_written >= 3
+				else_if = {
+					limit = {
+						var:RICE_cantiga_type = flag:satire
+					}	
+					add_character_flag = {
+						flag = RICE_recently_wrote_acceptable_cantiga_satire
+						years = 5
+					}			
 				}
-				# Increase if experienced
-				modifier = {
-					add = 3
-					exists = var:RICE_num_of_cantigas_written
-					var:RICE_num_of_cantigas_written >= 4
-				}
-				# Increase if experienced
-				modifier = {
-					add = 3
-					exists = var:RICE_num_of_cantigas_written
-					var:RICE_num_of_cantigas_written >= 5
-				}
-				# Increase if experienced
-				modifier = {
-					add = 3
-					exists = var:RICE_num_of_cantigas_written
-					var:RICE_num_of_cantigas_written >= 6
-				}
-				# Increase if experienced
-				modifier = {
-					add = 3
-					exists = var:RICE_num_of_cantigas_written
-					var:RICE_num_of_cantigas_written >= 7
-				}
-				# Increase if experienced
-				modifier = {
-					add = 3
-					exists = var:RICE_num_of_cantigas_written
-					var:RICE_num_of_cantigas_written >= 8
-				}
-				# Compatible traits
-				modifier = {
-					add = 5
-					RICE_galicia_compatible_cantiga_trait_trigger = yes
-				}
-				# Diplomacy boost
-				modifier = {
-					add = 2
-					RICE_galicia_writing_diplomacy_cantiga_trigger = yes
-					diplomacy >= decent_skill_rating
-				}
-				# Martial boost
-				modifier = {
-					add = 2
-					RICE_galicia_writing_martial_cantiga_trigger = yes
-					martial >= decent_skill_rating
-				}
-				# Stewardship boost
-				modifier = {
-					add = 2
-					RICE_galicia_writing_stewardship_cantiga_trigger = yes
-					stewardship >= decent_skill_rating
-				}
-				# Intrigue boost
-				modifier = {
-					add = 2
-					RICE_galicia_writing_intrigue_cantiga_trigger = yes
-					intrigue >= decent_skill_rating
-				}
-				# Learning boost
-				modifier = {
-					add = 2
-					RICE_galicia_writing_learning_cantiga_trigger = yes
-					learning >= decent_skill_rating
-				}
-				# Diplomacy boost
-				modifier = {
-					add = 2
-					RICE_galicia_writing_diplomacy_cantiga_trigger = yes
-					diplomacy >= high_skill_rating
-				}
-				# Martial boost
-				modifier = {
-					add = 2
-					RICE_galicia_writing_martial_cantiga_trigger = yes
-					martial >= high_skill_rating
-				}
-				# Stewardship boost
-				modifier = {
-					add = 2
-					RICE_galicia_writing_stewardship_cantiga_trigger = yes
-					stewardship >= high_skill_rating
-				}
-				# Intrigue boost
-				modifier = {
-					add = 2
-					RICE_galicia_writing_intrigue_cantiga_trigger = yes
-					intrigue >= high_skill_rating
-				}
-				# Learning boost
-				modifier = {
-					add = 2
-					RICE_galicia_writing_learning_cantiga_trigger = yes
-					learning >= high_skill_rating
-				}
-				set_variable = {
-					name = RICE_cantiga_quality
-					value = flag:excellent
-				}	
+				RICE_galicia_cantiga_completed_acceptable_effect = yes
 			}
 		}
+	}
+
+	# Option 1
+	option = {
+		name = galicia.0032.a
+
 		if = {
 			limit = {
 				var:RICE_cantiga_quality = flag:excellent
@@ -2743,10 +2582,6 @@ galicia.0032 = {
 				}
 				add_piety = { 100 200 }
 				add_prestige = { 50 100 }
-				add_character_flag = {
-					flag = RICE_recently_wrote_excellent_cantiga_courtly_love
-					years = 5
-				}
 			}
 			else_if = {
 				limit = {
@@ -2754,24 +2589,14 @@ galicia.0032 = {
 				}
 				add_piety = { 50 100 }
 				add_prestige = { 100 200 }
-				add_character_flag = {
-					flag = RICE_recently_wrote_excellent_cantiga_romantic_love
-					years = 5
-				}
 			}
 			else_if = {
 				limit = {
 					var:RICE_cantiga_type = flag:satire
 				}
 				add_piety = { 50 200 }
-				add_prestige = { 50 200 }	
-				add_character_flag = {
-					flag = RICE_recently_wrote_excellent_cantiga_satire
-					years = 5
-				}			
+				add_prestige = { 50 200 }		
 			}
-			RICE_galicia_cantiga_completed_excellent_effect = yes
-			custom_tooltip = galicia.0032.tooltip.excellent
 		}
 		else_if = {
 			limit = {
@@ -2783,10 +2608,6 @@ galicia.0032 = {
 				}
 				add_piety = { 50 100 }
 				add_prestige = { 25 50 }
-				add_character_flag = {
-					flag = RICE_recently_wrote_good_cantiga_courtly_love
-					years = 5
-				}
 			}
 			else_if = {
 				limit = {
@@ -2794,10 +2615,6 @@ galicia.0032 = {
 				}
 				add_piety = { 25 50 }
 				add_prestige = { 50 100 }
-				add_character_flag = {
-					flag = RICE_recently_wrote_good_cantiga_romantic_love
-					years = 5
-				}
 			}
 			else_if = {
 				limit = {
@@ -2805,11 +2622,6 @@ galicia.0032 = {
 				}
 				add_piety = { 25 100 }
 				add_prestige = { 25 100 }				
-			}
-			RICE_galicia_cantiga_completed_good_effect = yes
-			add_character_flag = {
-				flag = RICE_recently_wrote_good_cantiga_satire
-				years = 5
 			}
 		}
 		else = {
@@ -2819,10 +2631,6 @@ galicia.0032 = {
 				}
 				add_piety = { 25 50 }
 				add_prestige = { 10 25 }
-				add_character_flag = {
-					flag = RICE_recently_wrote_acceptable_cantiga_courtly_love
-					years = 5
-				}
 			}
 			else_if = {
 				limit = {
@@ -2830,10 +2638,6 @@ galicia.0032 = {
 				}
 				add_piety = { 10 25 }
 				add_prestige = { 25 50 }
-				add_character_flag = {
-					flag = RICE_recently_wrote_acceptable_cantiga_romantic_love
-					years = 5
-				}
 			}
 			else_if = {
 				limit = {
@@ -2842,20 +2646,7 @@ galicia.0032 = {
 				add_piety = { 10 50 }
 				add_prestige = { 10 50 }				
 			}
-			RICE_galicia_cantiga_completed_acceptable_effect = yes
-			add_character_flag = {
-				flag = RICE_recently_wrote_acceptable_cantiga_satire
-				years = 5
-			}
 		}
-
-
-
-	}
-
-	# Option 1
-	option = {
-		name = galicia.0032.a
 
 		# Not sure why in immediate it won't display the add_character_modifier stuff properly
 		RICE_galicia_cantiga_modifier_display_effect = yes
@@ -2908,6 +2699,9 @@ galicia.0033 = {
 
 	immediate = {
 		save_scope_as = cantiga_composer
+		hidden_effect = {
+			RICE_galicia_turn_cantiga_into_artifact_effect = yes
+		}
 		if = {
 			limit = {
 				has_character_flag = RICE_recently_wrote_excellent_cantiga_courtly_love
@@ -2960,8 +2754,7 @@ galicia.0033 = {
 			modifier = RICE_galicia_recently_promoted_cantiga
 			years = 5
 		}
-		hidden_effect = {
-			RICE_galicia_turn_cantiga_into_artifact_effect = yes
+		hidden_effect = {			
 			RICE_galicia_cantiga_add_genre_to_name_effect = yes
 		}
 	}
@@ -3026,6 +2819,7 @@ galicia.0040 = {
 
 	immediate = {
 		save_scope_as = alfonso_x
+		religion:christianity_religion = { save_scope_as = christian }
 		add_character_modifier = {
 			modifier = RICE_currently_compiling_CSM
 		}
@@ -3119,6 +2913,7 @@ galicia.0041 = {
 
 	option = { # Ok
 		name = galicia.0041.a
+		give_nickname = nick_the_wise
 		add_prestige = 200
 		if = {
 			limit = {
@@ -3175,6 +2970,7 @@ galicia.0042 = {
 	immediate = {
 		show_as_tooltip = {
 			scope:alfonso_x = {
+				give_nickname = nick_the_wise
 				add_prestige = 200
 				if = {
 					limit = {
@@ -3406,7 +3202,6 @@ galicia.0046 = {
 	option = { # Ok
 		name = galicia.0046.a
 		add_prestige = 150
-		give_nickname = nick_the_wise
 		if = {
 			limit = {
 				religion = religion:christianity_religion
