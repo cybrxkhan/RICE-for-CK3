@@ -1,16 +1,21 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.6.2 "Wakhan" (Released 6/21/22, for vanilla patch 1.6.x)
+## Latest Version: Version 1.6.3 "Cantiga" (Released 6/30/22, for vanilla patch 1.6.x)
 
-**Newest Flavor Pack - Granada: Memories of the Alhambra**
+**Newest Flavor Pack - Galicia: The Way of Saint James**
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com)
 
-_The Wakhan Corridor is a mountain valley that lies between the Pamir and Hindu Kush mountain ranges. Since ancient times, this remote mountain pass has facilitated the movement of peoples, armies, ideas, and faiths across Eurasia._
+_“Como poden per sas culpas os omes seer contreitos,_
+_assi poden pela Virgen depois seer sãos feitos.”_
+_[“As people may be crippled through their sins, so may they_
+_also be made healthy by the Virgin.”]_
 
-RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. The guiding philosophy of RICE is to keep a tight, focused scope that doesn’t change gameplay significantly, but adds more flavor across the world, especially for lesser-known places, peoples, and histories.
+_Refrain from Cantiga 166 of the Cantigas de Santa Maria_
 
-RICE is designed with compatibility win mind, and technically compatible with most mods; I avoid editing vanilla files to prevent conflicts with other mods. For example, new cultures are added via hidden events at game start instead of directly through province history. If you are a mod author or user and concerned about compatibiliy with RICE, don't hesitate to contact me on the forums or Discord! Also feel free to use my work in your mods - all I ask is that I am credited and (if possible) to give me a heads up.
+RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places and peoples.
+
+RICE is designed with compatibility in mind, and is technically compatible with most mods; I avoid editing vanilla files to prevent conflicts with other mods. For example, new cultures are added via hidden events at game start instead of directly through province history. If you are a mod author or user and concerned about compatibiliy with RICE, don't hesitate to contact me on the forums or Discord! Also feel free to use my work in your mods - all I ask is that I am credited and (if possible) to give me a heads up.
 
 ## Current Flavor Packs
 
@@ -19,6 +24,7 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 - [Aachen: Charlemagne's Capital](https://docs.google.com/document/d/e/2PACX-1vQNflzrfD7oYcEYcMWDW07MsWCW-8cwIO8-JxSIm_WTnB1Ij0Dr-b3PRNu8mKmUFRXfHW3QDax2Z0DD/pub)
 - [Brittany: The Western Duchy](https://docs.google.com/document/d/e/2PACX-1vTzGuR_ffwqfpm6rwh27hq71K4Fs35pcLZioPLbHulhHn2ZV25SD2HrGipPofvBYngi5S_O4Yino4Y7/pub)
 - [Chios: Isle of Mastic](https://docs.google.com/document/d/1Lu4cGXN7hSaDtYd_wsXKbjAeIOYMoYVuum6zfYfBc_k/pub)
+- [Galicia: The Way of Saint James](https://docs.google.com/document/d/e/2PACX-1vRZSjZ2kqKE7-do03KlArEXVylNpYqP2ptS4Eg5EWWFYMRrxN7qAEaX6gG3H0ChMT_YR1AAg7BCbb1c/pub)
 - [Granada: Memories of the Alhambra](https://docs.google.com/document/d/e/2PACX-1vSFZFsesbXB3S4L2cgOfu_IYL6WzxbzLjzps4qGizN-8avV7Wvi99A5V8K-oq4IiiILonH_e85kIAgy/pub)
 - [Guanche: The Fortunate Isles](https://docs.google.com/document/d/e/2PACX-1vSs5DoK_1Hux5Uqe8cZp9qKdClxq_8W6PF3Rdejo8hR_C3mn1_qd166bbpw096x0DtwBGTBHC8aQYTO/pub)
 - [Harran: The Last Hellenic Pagans](https://docs.google.com/document/d/e/2PACX-1vQOVaDq59Adp5PsNw7r8KhK9cgHMBBWGPWG085FdTKegkD8G8BFLa_e1lz8usY164B42gAVZD4D_2Rs/pub)
@@ -50,25 +56,18 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ## Latest Changelog
 
-### Version 1.6.2 "Wakhan"
+### Version 1.6.3 "Cantiga"
 
-**Note: If you're doing a Guanche playthrough on an old save, it is strongly advised you start a new game or use an older version of RICE (see GitHub to manually download). Otherwise, as PI added their own version of the Guanche, there may be wonkiness as some Guanche content might not work properly.**
-
-- Added Turco-Hephthalite culture as a hybrid of Hephthalite and Turkish, that appears on the map in 867 instead of the old Hephthalite culture, to clarify confusion arising from my previous usage of Hephthalite
-- Added Pamiri culture to the Iranian culture group
-- Added a new tradition, Beyond the Reach of Eagles, for the Pamiri, Burusho, and Peristani cultures
-- Modified Guanche content to fit vanilla’s implementation of the Guanche
-- Guanche paganism is now in a separate religion, Guanche, than the other Amazigh faiths (mainly to maintain compatibility)
-- Renamed vanilla’s North African religion to Guanche (to distinguish them from the Amazigh)
-- Pray for Blessings of Rain Rain and Benesmen Festival decisions now require the Guanche religion
-- Removed decision to Unite the Canary Islands, since vanilla has something similar; however, you will still get the relevant county modifiers via event
-- Rebalanced costs for most feast/festival type decisions
-- White Hun tradition is now added to the Hephthalites via scripted effect at game start to ensure better compatibility
-- White Hun tradition will no longer be added to the Hephthalites if playing with TFE or early start dates
-- Revamped a few decision art (thanks to PinkPanzer)
-- Activities are separated by flavor pack in different text files in the code
-- Fixed Ali ibn Asad starting off as a Seljuk vassal instead of being independent
-- Fixed Cichiciquitzo tradition requiring the unused Guanche heritage - it now requires being Guanche or descended from Guanche culture
-- Fixed White Huns and Xianbei Scions traditions being unavailable to Hephthalite and Tuyuhun/Qiang cultures respectively
+- Added Galicia Flavor Pack: The Way of Saint James
+- Added 7 Iberian themed soundtracks
+- Added message about load order if you’re running with TFE (TFE needs to be below RICE in load order now)
+- Reduced chances AI will take the decision to Compile the First Turkic Dictionary
+- Changed decision art for a couple East Asian related decisions
+- Siberian Survivalists and Swahili Contacts traditions are now added via scripted effect at game start to ensure better compatibility
+- White Hun tradition no longer is available when playing TFE start dates
+- Removed RICE’s version of Joseph ibn Naghrela and his family from the history files, since he has a vanilla version now (the Granada pogrom event chain remains and is functionally the same, however)
+- Tweaked starting traits of Joseph ibn Naghrela at game start
+- Fixed Pamiri culture overriding Hephthalite on the map in TFE and early start dates
+- Fixed decision to renovate Kassia’s tomb adding its related county modifier to Kharga instead of Rhodes
 - Miscellaneous bugfixes
 
