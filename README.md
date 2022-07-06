@@ -1,6 +1,6 @@
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.6.3 "Cantiga" (Released 6/30/22, for vanilla patch 1.6.x)
+## Latest Version: Version 1.6.3.a Hotfix for "Cantiga" (Released 7/5/22, for vanilla patch 1.6.x)
 
 **Newest Flavor Pack - Galicia: The Way of Saint James**
 
@@ -56,7 +56,17 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ## Latest Changelog
 
-### Version 1.6.3 "Cantiga"
+### 1.6.3.a Hotfix for "Cantiga"
+
+- Vassa decision now costs some prestige
+- Fixed Vassa decision preventing you from doing other activities if you took it earlier in the year
+- Added debug event as a way to manually resolve issues with endless activities as a last resort failsafe - console command is “event RICEdebug.0002”
+- Fixed Galician-Portuguese Lyric tradition being shown (but not pickable) anywhere on the map, instead of only in Iberia or for Iberian cultures
+- Fixed Coptic culture not getting the Children of the Nile tradition if running RICE with CE
+- Fixed Harran faith not being in Harran if running RICE with CE
+- Miscellaneous bugfixes and tweaks
+
+### 1.6.3 "Cantiga"
 
 - Added Galicia Flavor Pack: The Way of Saint James
 - Added 7 Iberian themed soundtracks
