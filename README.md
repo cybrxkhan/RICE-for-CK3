@@ -81,3 +81,18 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 - Fixed decision to renovate Kassia’s tomb adding its related county modifier to Kharga instead of Rhodes
 - Miscellaneous bugfixes
 
+## Credits
+
+Thanks to all I worked with, took stuff from, and provided me encouragement and feedback over the years. Huge thanks to the kind souls who take the time to translate the mod and put up with my erratic update schedule.
+
+A few other shoutouts in particular:
+
+- B7E7 for the Amazigh religion/faith and Guanche culture code from BlackEmperor's Africa Plus
+- Bonseny for the amazing VIET and RICE logos.
+- Fische for the Dragon Blood art icon and Vertimnus for donating it to me (originally made for Sinews of War)
+- Henry for the Better Bedouin Culture mod
+- Nezaros for reformed religion template
+- Nix for Evenki names
+- PinkPanzer for some decision art
+- The Not So Lonely Arrikirri and Tundragrass for suggestions and sources on the Zunbils
+
