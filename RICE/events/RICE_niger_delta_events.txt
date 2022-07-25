@@ -1,0 +1,559 @@
+﻿###############################################################################
+# 
+# Niger Delta
+# 
+# niger_delta.0000-niger_delta.0019			Setup events, history events, miscellaneous events and decisions
+# niger_delta.0020-niger_delta.0029			Ancestor worship
+# niger_delta.0030-niger_delta.0049			New Yam festival
+# niger_delta.0050-niger_delta.0069			Beaded Crown events
+# niger_delta.0070-niger_delta.0099			Olojo festival
+# niger_delta.0100-niger_delta.0149			Niger Delta artwork/craft guilds
+# niger_delta.0150-niger_delta.0199			Generic flavor events
+# 
+# 
+###############################################################################
+
+namespace = niger_delta
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# niger_delta.0000-niger_delta.0019
+# 
+######################################################################################
+
+
+
+# Change Ooni of Ife trait
+niger_delta.0001 = {
+	hidden = yes
+	
+	trigger = {
+		scope:title = title:d_ooni_of_ife
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				scope:previous_holder = {
+					is_alive = yes
+					has_trait = RICE_ooni_of_ife
+				}
+			}
+			scope:previous_holder = { remove_trait = RICE_ooni_of_ife }
+		}
+		add_trait = RICE_ooni_of_ife
+	}
+}
+
+
+# Change ruler of Ife modifier
+# niger_delta.0001 = {
+# 	hidden = yes
+	
+# 	trigger = {
+# 		scope:title = title:c_ife
+# 	}
+	
+# 	immediate = {
+# 		if = {
+# 			limit = { 
+# 				scope:previous_holder = { 
+# 					is_alive = yes
+# 					has_character_modifier = RICE_niger_delta_ruler_of_ife
+# 					NOT = { has_title = title:c_ife }
+# 				}
+# 			}
+# 			scope:previous_holder = { remove_character_modifier = RICE_niger_delta_ruler_of_ife }
+# 		}
+# 		add_character_modifier = {
+# 			modifier = RICE_niger_delta_ruler_of_ife
+# 		}
+# 	}
+# }
+
+
+######################################################################################
+# 
+# NEW YAM FESTIVAL
+# 
+# niger_delta.0030-niger_delta.0049
+# 
+######################################################################################
+
+
+
+
+
+# Choose a date for the Yam festival
+niger_delta.0030 = {
+	type = character_event
+	title = niger_delta.0030.t
+	desc = niger_delta.0030.desc
+	theme = realm
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+	}
+	
+	option = { # The ruler should choose
+		name = niger_delta.0030.a
+		add_prestige = 15
+		add_piety = 15
+		dynasty = { add_dynasty_prestige = 10 }
+		stress_impact = {
+			humble = minor_stress_impact_gain
+			lazy = minor_stress_impact_gain
+		}
+	}
+	
+	option = { # The priests should choose
+		name = niger_delta.0030.b
+		add_piety = 30
+		cp:councillor_court_chaplain = {
+			add_opinion = {
+				target = root
+				modifier = RICE_niger_delta_choose_new_yam_date
+			}			
+		}
+		every_vassal = {
+			custom = RICE_every_religious_vassal
+			limit = {
+				has_government = theocracy_government
+			}
+			add_opinion = {
+				target = root
+				modifier = RICE_niger_delta_choose_new_yam_date
+			}
+		}
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			ambitious = minor_stress_impact_gain
+		}
+	}
+	
+	option = { # The elders should choose
+		name = niger_delta.0030.c
+		add_prestige = 30
+		every_courtier = {
+			custom = RICE_every_courtier_over_50
+			limit = {
+				age >= 50
+			}
+			add_opinion = {
+				target = root
+				modifier = RICE_niger_delta_choose_new_yam_date
+			}
+		}
+		every_vassal = {
+			custom = RICE_every_non_religious_vassal
+			limit = {
+				NOT = { has_government = theocracy_government }
+			}
+			add_opinion = {
+				target = root
+				modifier = RICE_niger_delta_choose_new_yam_date
+			}
+		}
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			paranoid = minor_stress_impact_gain
+		}
+	}
+
+	after = {
+		trigger_event = niger_delta.0031
+	}
+
+}
+
+
+
+# Now that you're done choosing, the festival will start
+niger_delta.0031 = {
+	type = character_event
+	title = niger_delta.0031.t
+	desc = niger_delta.0031.desc
+	theme = realm
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = { # Ok
+		name = niger_delta.0031.a
+		# Choose appropriate location
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_niger_delta_new_yam_festival
+			}	
+		}
+	}
+}
+
+
+# The festival is starting!
+niger_delta.0032 = {
+	type = character_event
+	title = niger_delta.0032.t
+	desc = niger_delta.0032.desc
+	theme = realm
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Ok
+		name = niger_delta.0032.a
+		trigger_event = { # Approximate
+			id = niger_delta.0033
+			days = { 20 30 }
+		}		
+	}
+}
+
+
+
+# The festival ends
+niger_delta.0033 = {
+	type = character_event
+	title = niger_delta.0033.t
+	desc = niger_delta.0033.desc
+	theme = realm
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Ok
+		name = niger_delta.0033.a
+		every_sub_realm_county = {
+			limit = {
+				tier = tier_county
+			}
+			custom = RICE_niger_delta_every_county
+			random = {
+				chance = 50
+				add_county_modifier = {
+					modifier = RICE_niger_delta_successful_new_yam_festival
+					years = 5
+				}
+			}
+		}	
+	}
+
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				complete_activity = yes
+			}
+		}
+	}
+
+}
+
+
+# Ritual purification through human sacrifice
+niger_delta.0034 = {
+	type = character_event
+	title = niger_delta.0034.t
+	desc = niger_delta.0034.desc
+	theme = prison
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" } 
+	
+	left_portrait = {
+		character = root
+		animation = war_defender
+	}
+	right_portrait = {
+		character = scope:prisoner
+		animation = prisondungeon
+	}
+
+	trigger = {
+		# has_prisoners = yes
+		any_prisoner = {
+			is_adult = yes
+			is_landed = no
+			#root = { has_execute_reason = prev }
+			NOT = {
+				any_close_family_member = {
+					is_landed = yes
+				}
+			}
+		}
+	}
+
+	immediate = {
+		random_prisoner = {			
+			limit = {
+				is_adult = yes
+				is_landed = no
+				#root = { has_execute_reason = prev }
+				NOT = {
+					any_close_family_member = {
+						is_landed = yes
+					}
+				}
+			}
+			save_scope_as = prisoner
+		}
+
+	}
+	
+	option = { # Ok
+		name = niger_delta.0034.a
+		trigger = {
+			OR = {
+				gold >= 25
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 25
+		scope:prisoner = {
+			death = {
+				death_reason = death_execution
+				killer = root
+			}
+		}
+		execute_opinion_effect = { VICTIM = scope:prisoner EXECUTIONER = root }
+		stress_impact = {
+			compassionate = minor_stress_impact_gain
+			forgiving = minor_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+		}
+		ai_chance = {
+			base = 30
+			modifier = {
+				add = 15
+				has_trait = sadistic
+			}
+			modifier = {
+				add = 15
+				has_trait = vengeful
+			}
+			modifier = {
+				add = 30
+				has_trait = zealous
+			}
+		}
+	}
+	
+	option = { # No need
+		name = niger_delta.0034.b
+		add_piety = -50
+		scope:prisoner = {
+			add_opinion = {
+				target = root
+				modifier = RICE_niger_delta_spared_me_from_execution
+			}			
+		}
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			just = miniscule_stress_impact_gain
+			sadistic = miniscule_stress_impact_gain
+			vengeful = miniscule_stress_impact_gain
+		}
+		ai_chance = {
+			base = 70
+		}
+	}
+
+}
+
+
+
+
+######################################################################################
+# 
+# OLOJO FESTIVAL
+# 
+# niger_delta.0070-niger_delta.0099
+# 
+######################################################################################
+
+
+# Olojo festival start
+niger_delta.0070 = {
+	type = character_event
+	title = niger_delta.0070.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_title = title:title:d_ooni_of_ife
+				}
+				desc = niger_delta.0070.desc.intro.ooni
+			}
+			desc = niger_delta.0070.desc.intro.not_ooni
+		}
+	}
+	theme = realm
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	immediate = {		
+		title:c_ife = { #For loc.
+			save_scope_as = ife
+		}
+		title:d_ooni_of_ife = {
+			save_scope_as = ooniship_of_ife
+		}
+	}
+	
+	option = { # Ok
+		name = niger_delta.0031.a
+		# Choose appropriate location
+		title:b_ile-ife.title_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_niger_delta_olojo_festival
+			}	
+		}
+	}
+}
+
+
+
+
+
+######################################################################################
+# 
+# NIGER DELTA ARTWORK/CRAFT GUILDS
+# 
+# niger_delta.0100-niger_delta.0149
+# 
+######################################################################################
+
+
+
+# Get the guild
+niger_delta.0100 = {
+	type = character_event
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {					
+					scope:organizer = {
+						var:RICE_guild_type = flag:bronze_casters
+					}
+				}
+				desc = niger_delta.0100.t.a
+			}			
+			triggered_desc = {
+				trigger = {					
+					scope:organizer = {
+						var:RICE_guild_type = flag:ironsmiths
+					}
+				}
+				desc = niger_delta.0100.t.b
+			}			
+			triggered_desc = {
+				trigger = {					
+					scope:organizer = {
+						var:RICE_guild_type = flag:ivory_and_wood_carvers
+					}
+				}
+				desc = niger_delta.0100.t.c
+			}			
+			triggered_desc = {
+				trigger = {					
+					scope:organizer = {
+						var:RICE_guild_type = flag:beadmakers
+					}
+				}
+				desc = niger_delta.0100.t.d
+			}			
+		}
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					is_dynast = yes
+				}
+				desc = niger_delta.0100.desc.intro.dynasty_head
+			}
+			desc = niger_delta.0100.desc.intro.dynasty_other
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:organizer = {
+						var:RICE_guild_type = flag:bronze_casters
+					}
+				}
+				desc = niger_delta.0100.desc.bronze_casters
+			}
+			triggered_desc = {
+				trigger = {
+					scope:organizer = {
+						var:RICE_guild_type = flag:ironsmiths
+					}
+				}
+				desc = niger_delta.0100.desc.ironsmiths
+			}
+			triggered_desc = {
+				trigger = {
+					scope:organizer = {
+						var:RICE_guild_type = flag:ivory_and_wood_carvers
+					}
+				}
+				desc = niger_delta.0100.desc.ivory_and_wood_carvers
+			}
+			triggered_desc = {
+				trigger = {
+					scope:organizer = {
+						var:RICE_guild_type = flag:beadmakers
+					}
+				}
+				desc = niger_delta.0100.desc.beadmakers
+			}
+		}
+		desc = niger_delta.0100.desc.conclusion
+	}
+	theme = dynasty
+
+	right_portrait = scope:organizer
+
+	immediate = {
+		scope:organizer = {
+			RICE_niger_delta_organize_craft_guild_effect = yes
+		}
+	}
+
+	# Ok
+	option = {
+		name = niger_delta.0100.a
+	}
+
+	after = {
+		if = {
+			limit = { has_variable = RICE_guild_type }
+			remove_variable = RICE_guild_type
+		}
+	}
+
+}
+
+
+
+
+
+
+

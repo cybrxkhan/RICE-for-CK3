@@ -1,0 +1,217 @@
+﻿
+bao_gift_breton_horses = {
+	category = interaction_category_friendly
+	common_interaction = yes
+
+	desc = bao_gift_breton_horses_desc
+
+	auto_accept = yes
+	
+	ai_targets = {
+		ai_recipients = scripted_relations
+	}
+	ai_targets = {
+		ai_recipients = liege
+	}
+	ai_targets = {
+		ai_recipients = neighboring_rulers
+		ai_recipients = peer_vassals
+		max = 10
+	}
+	ai_targets = {
+		ai_recipients = vassals
+		max = 10
+	}
+	ai_target_quick_trigger = {
+		adult = yes
+	}
+	ai_frequency = 48
+	
+	cooldown = { years = 1 }
+	cooldown_against_recipient = { years = 15 }
+	
+	is_shown = {
+		NOT = {
+			scope:recipient = scope:actor
+		}
+		scope:actor = {	
+			is_ruler = yes
+			OR = {
+				culture = {
+					has_cultural_parameter = bao_horse_gift
+				}
+				any_realm_province = {
+					OR = {
+						has_building = bao_free_range_01
+						has_building = bao_free_range_02
+						has_building = bao_free_range_03
+					}
+				}
+			}
+		}
+		scope:recipient = {
+			#is_ai = yes
+			is_adult = yes
+			is_ruler = yes
+		}
+	}
+	
+	is_valid = {
+		scope:actor = {
+			#OR = {
+			#	is_ai = no
+				gold >= 50
+			#}
+		}
+	}
+	
+	on_accept = {
+		scope:actor = {
+			remove_short_term_gold = 50
+			trigger_event = bao.0200
+			show_as_tooltip = {
+				add_prestige = 100		
+			}
+		}
+		scope:recipient = {
+			show_as_tooltip = {
+				add_character_modifier = {
+					modifier = bao_character_breton_horses
+					years = 5
+				}
+				add_opinion = {
+					target = scope:actor
+					modifier = bao_opinion_gifted_breton_horse
+				}				
+			}
+		}
+
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 60
+		modifier = { # Basic Filtering
+			factor = 0
+			scope:recipient = {
+				NOR = {
+					AND = { # Bankrupt vassals, lovers, friends and a bankrupt liege should be considered
+						OR = {
+							is_vassal_of = scope:actor
+							AND = {
+								exists = liege
+								liege = scope:actor
+							}
+							has_secret_relation_lover = scope:actor
+							has_relation_lover = scope:actor
+							has_relation_soulmate = scope:actor
+							has_relation_friend = scope:actor
+							has_relation_best_friend = scope:actor
+						}
+						gold < 0
+					}
+					AND = { # Generous characters will give gifts to their friends/lovers
+						OR = {
+							has_secret_relation_lover = scope:actor
+							has_relation_lover = scope:actor
+							has_relation_soulmate = scope:actor
+							has_relation_friend = scope:actor
+							has_relation_best_friend = scope:actor
+						}
+						scope:actor = {
+							OR = {
+								ai_greed <= high_negative_ai_value
+								AND = {
+									ai_greed < 0
+									culture = {
+										has_cultural_parameter = gives_more_gifts
+									}
+								}
+							}
+						}
+					}
+					AND = { # Characters with the Generous Cultural Tradition will give gifts to more people
+						is_ruler = yes
+						OR = {
+							is_allied_to = scope:actor
+							is_close_or_extended_family_of = scope:actor
+						}
+						scope:actor = {
+							ai_greed < 0
+							culture = {
+								has_cultural_parameter = gives_more_gifts
+							}
+						}
+					}
+					AND = { # Powerful vassals should be considered
+						is_powerful_vassal_of = scope:actor
+						opinion = {
+							target = scope:actor
+							value < 0
+						}
+						NOT ={
+							has_opinion_modifier = {
+								target = scope:actor
+								modifier = gift_opinion
+							}
+						}
+					}
+					AND = { # Factioneering vassals should be considered
+						is_vassal_of = scope:actor
+						is_a_faction_member = yes
+						NOT ={
+							has_opinion_modifier = {
+								target = scope:actor
+								modifier = gift_opinion
+							}
+						}
+					}
+					AND = { # Realm Priests should be considered
+						scope:actor = {
+							faith = { has_doctrine = doctrine_theocracy_temporal }
+							exists = cp:councillor_court_chaplain
+							cp:councillor_court_chaplain = scope:recipient
+						}
+						opinion = {
+							target = scope:actor
+							value <= 25
+						}
+						NOT = {
+							has_opinion_modifier = {
+								target = scope:actor
+								modifier = gift_opinion
+							}
+						}
+					}
+					AND = { # Rulers at war with your rivals deserve gold if they're bankrupt
+						gold < 0
+						is_at_war = yes
+						any_war_enemy = {
+							has_relation_rival = scope:actor
+						}
+					}
+				}
+			}
+		}
+		
+		modifier = {
+			factor = 0.1
+			scope:recipient = {
+				opinion = {
+					target = scope:actor
+					value < 0
+				}
+				NAND = {
+					is_vassal_of = scope:actor
+					scope:actor = {
+						ai_rationality > 50
+					}
+				}
+			}
+		}
+	}
+
+}

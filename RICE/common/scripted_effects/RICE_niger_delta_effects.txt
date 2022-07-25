@@ -1,0 +1,231 @@
+﻿RICE_setup_niger_delta_flavor_pack_effect = {
+
+	#########################################################################
+	#
+	# CULTURE AND RELIGION STUFF
+	#
+	#########################################################################
+
+	culture:yoruba = {
+		add_culture_tradition = tradition_RICE_kinship_based_craft_guilds
+		remove_variable = tradition_cooldown
+		set_culture_pillar = ethos_spiritual
+		if = {
+			limit = {
+				current_date > 1050.1.1
+			}			
+			add_innovation = innovation_lost_wax_casting
+		}
+	}	
+
+	culture:edo = {
+		add_culture_tradition = tradition_RICE_kinship_based_craft_guilds
+		remove_variable = tradition_cooldown
+		set_culture_pillar = ethos_courtly
+		if = {
+			limit = {
+				current_date > 1200.1.1
+			}			
+			add_innovation = innovation_lost_wax_casting
+		}
+	}	
+
+	culture:igbo = {
+		add_culture_tradition = tradition_RICE_kinship_based_craft_guilds
+		remove_variable = tradition_cooldown
+		add_innovation = innovation_lost_wax_casting
+	}
+
+	culture:sao = {
+		add_innovation = innovation_lost_wax_casting
+	}
+
+	#########################################################################
+	#
+	# HISTORY STUFF
+	#
+	#########################################################################
+
+	if = {
+		limit = {
+			# If Africa Plus/BAP is loaded it already does this better
+			NOT = { has_global_variable = bap_is_loaded }		
+		}		
+		title:c_igbo = {
+			set_county_faith = faith:odinala_pagan
+		}
+		title:c_idoma = {
+			set_county_faith = faith:odinala_pagan
+		}
+		title:c_igala = {
+			set_county_faith = faith:odinala_pagan
+		}
+		title:c_ibibo = {
+			set_county_faith = faith:odinala_pagan
+		}
+
+		if = {
+			limit = {
+				title:c_igbo.holder = {
+					NOT = { faith = faith:odinala_pagan }
+					culture = culture:igbo
+				}
+			}
+			title:c_igbo.holder = {
+				set_character_faith_with_conversion = faith:odinala_pagan
+				every_courtier = {
+					set_character_faith_with_conversion = faith:odinala_pagan
+				}
+			}
+		}			
+		if = {
+			limit = {
+				title:c_idoma.holder = {
+					NOT = { faith = faith:odinala_pagan }
+					culture = culture:igbo
+				}
+			}
+			title:c_idoma.holder = {
+				set_character_faith_with_conversion = faith:odinala_pagan
+				every_courtier = {
+					set_character_faith_with_conversion = faith:odinala_pagan
+				}
+			}
+		}			
+		if = {
+			limit = {
+				title:c_igala.holder = {
+					NOT = { faith = faith:odinala_pagan }
+					culture = culture:igbo
+				}
+			}
+			title:c_igala.holder = {
+				set_character_faith_with_conversion = faith:odinala_pagan
+				every_courtier = {
+					set_character_faith_with_conversion = faith:odinala_pagan
+				}
+			}
+		}			
+		if = {
+			limit = {
+				title:c_ibibo.holder = {
+					NOT = { faith = faith:odinala_pagan }
+					culture = culture:igbo
+				}
+			}
+			title:c_ibibo.holder = {
+				set_character_faith_with_conversion = faith:odinala_pagan
+				every_courtier = {
+					set_character_faith_with_conversion = faith:odinala_pagan
+				}
+			}
+		}
+
+	}
+
+	#########################################################################
+	#
+	# MISCELLANEOUS STUFF
+	#
+	#########################################################################
+
+	title:c_ife = {
+		add_county_modifier = {
+			modifier = RICE_niger_delta_city_of_ife
+		}
+	}
+
+	# title:c_ife.holder = {
+	# 	add_character_modifier = {
+	# 		modifier = RICE_niger_delta_ruler_of_ife
+	# 	}
+	# } 
+
+	faith:west_african_orisha_pagan = {
+		remove_doctrine = unreformed_faith_doctrine
+		remove_doctrine = doctrine_no_head
+		add_doctrine = doctrine_temporal_head
+		set_religious_head_title = title:d_ooni_of_ife
+	}
+
+	# if = {
+	# 	limit = {
+	# 		has_global_variable = bap_is_loaded
+	# 	}
+	# 	faith:oloku_pagan = {
+	# 		remove_doctrine = unreformed_faith_doctrine
+	# 		remove_doctrine = doctrine_no_head
+	# 		add_doctrine = doctrine_temporal_head
+	# 		set_religious_head_title = title:d_ooni_of_ife
+	# 	}
+	# }
+
+	title:d_ooni_of_ife = {
+		copy_title_history = title:c_ife
+	}
+
+	title:c_ife.holder = {
+		get_title = title:d_ooni_of_ife
+		add_trait = RICE_ooni_of_ife
+	}
+
+}
+
+
+RICE_niger_delta_organize_craft_guild_effect = {
+	dynasty = {
+		add_dynasty_prestige = 100
+		every_dynasty_member = {
+			custom = all_dynasty_members
+			add_prestige = 50
+		}
+	}
+	if = {
+		limit = {
+			var:RICE_guild_type = flag:bronze_casters
+		}
+		dynasty = {
+			add_dynasty_modifier = {
+				modifier = RICE_niger_delta_bronze_caster_guild_modifier
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			var:RICE_guild_type = flag:ironsmiths
+		}
+		dynasty = {
+			add_dynasty_modifier = {
+				modifier = RICE_niger_delta_ironsmith_guild_modifier
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			var:RICE_guild_type = flag:ivory_and_wood_carvers
+		}
+		dynasty = {
+			add_dynasty_modifier = {
+				modifier = RICE_niger_delta_ivory_and_wood_carver_guild_modifier
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			var:RICE_guild_type = flag:beadmakers
+		}
+		dynasty = {
+			add_dynasty_modifier = {
+				modifier = RICE_niger_delta_bead_maker_guild_modifier
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+

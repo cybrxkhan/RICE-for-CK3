@@ -1,0 +1,101 @@
+﻿
+RICE_niger_delta_bestow_beaded_crown = {
+	category = interaction_category_friendly
+	common_interaction = yes	
+
+	desc = RICE_niger_delta_bestow_beaded_crown_desc
+
+	use_diplomatic_range = no
+
+	auto_accept = yes
+	
+	ai_targets = {
+		ai_recipients = neighboring_rulers
+	}
+	ai_targets = {
+		ai_recipients = peer_vassals
+	}
+	ai_targets = {
+		ai_recipients = vassals
+	}
+	ai_target_quick_trigger = {
+		adult = yes
+	}
+	ai_frequency = 24
+	
+	#cooldown = { years = 3 }
+	cooldown_against_recipient = { years = 10 }
+	
+	is_shown = {
+		NOT = {
+			scope:recipient = scope:actor
+		}
+		scope:actor = {
+			has_title = title:c_ife
+			is_ruler = yes
+			culture_has_african_heritage_pillar_trigger = yes
+		}
+		scope:recipient = {
+			is_adult = yes
+			is_ruler = yes
+			culture_has_african_heritage_pillar_trigger = yes
+			capital_province = {
+				OR = {
+					geographical_region = world_africa_west
+					geographical_region = world_africa_east
+				}
+			}
+			NOT = { has_character_modifier = RICE_niger_delta_received_beaded_crown }
+		}
+	}
+	
+	is_valid = {
+		scope:actor = {
+			gold >= 50
+			NOT = {
+				is_at_war_with = scope:recipient
+			}
+		}
+		scope:recipient = {
+			NOT = { has_character_modifier = RICE_niger_delta_received_beaded_crown }
+		}
+	}
+
+	is_highlighted = {
+		always = yes
+	}
+	
+	on_accept = {
+		scope:actor = {
+			remove_short_term_gold = 50
+			trigger_event = tarim_basin.0012
+			add_prestige = 100
+			dynasty = { add_dynasty_prestige = 10 }	
+		}
+		scope:recipient = {
+			show_as_tooltip = {
+				add_character_modifier = {
+					modifier = RICE_niger_delta_received_beaded_crown
+					years = 10
+				}	
+				add_prestige = 100
+				dynasty = { add_dynasty_prestige = 25 }				
+			}
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 80
+		# Increase chances the player will get it from someone
+		modifier = {
+			factor = 2.2
+			scope:recipient = {
+				is_ai = no
+			}
+		}
+	}
+}
