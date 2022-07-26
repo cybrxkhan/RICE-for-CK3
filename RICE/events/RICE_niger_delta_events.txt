@@ -553,7 +553,305 @@ niger_delta.0100 = {
 
 
 
+# Commissioning some kind of artwork
+niger_delta.0101 = {
+	type = character_event
+	title = niger_delta.0101.t
+	desc = {
+		desc = niger_delta.0101.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_art_type = flag:bronze
+				}
+				desc = niger_delta.0101.desc.bronze
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_art_type = flag:iron
+				}
+				desc = niger_delta.0101.desc.iron
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {
+						var:RICE_art_type = flag:ivory
+						var:RICE_art_type = flag:wood
+					}
+				}
+				desc = niger_delta.0101.desc.ivory_or_wood
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_art_type = flag:glass
+				}
+				desc = niger_delta.0101.desc.glass
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_art_type = flag:coral
+				}
+				desc = niger_delta.0101.desc.coral
+			}
+		}
+		desc = niger_delta.0101.desc.conclusion
+	}
+	theme = realm
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
 
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					var:RICE_art_type = flag:bronze
+					var:RICE_art_type = flag:iron
+				}
+			}
+			remove_short_term_gold = 100
+		}
+		else_if = {
+			limit = {
+				OR = {
+					var:RICE_art_type = flag:glass
+					var:RICE_art_type = flag:coral
+				}
+			}
+			remove_short_term_gold = 150
+		}
+		else = {
+			remove_short_term_gold = 50
+		}
+		# Randomly pick a quality
+		random_list = {
+			40 = {
+				set_variable = {
+					name = RICE_niger_delta_art_quality
+					value = flag:fair
+				}				
+			}
+			30 = {
+				set_variable = {
+					name = RICE_niger_delta_art_quality
+					value = flag:good
+				}				
+			}
+			20 = {
+				set_variable = {
+					name = RICE_niger_delta_art_quality
+					value = flag:excellent
+				}				
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = niger_delta.0101.a
+		hidden_effect = {
+			trigger_event = niger_delta.0102
+			# trigger_event = {
+			# 	id = niger_delta.0102
+			# 	months = { 10 15 }
+			# }			
+		}
+	}
+}
+
+
+# Artwork is done
+niger_delta.0102 = {
+	type = character_event
+	title = niger_delta.0102.t
+	desc = {
+		desc = niger_delta.0102.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_art_type = flag:bronze
+				}
+				desc = niger_delta.0102.desc.bronze
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_art_type = flag:iron
+				}
+				desc = niger_delta.0102.desc.iron
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_art_type = flag:ivory
+				}
+				desc = niger_delta.0102.desc.ivory
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_art_type = flag:wood
+				}
+				desc = niger_delta.0102.desc.wood
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_art_type = flag:glass
+				}
+				desc = niger_delta.0102.desc.glass
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_art_type = flag:coral
+				}
+				desc = niger_delta.0102.desc.coral
+			}
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_niger_delta_art_quality = flag:fair
+				}
+				desc = niger_delta.0102.desc.quality.fair
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_niger_delta_art_quality = flag:good
+				}
+				desc = niger_delta.0102.desc.quality.good
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_niger_delta_art_quality = flag:excellent
+				}
+				desc = niger_delta.0102.desc.quality.excellent
+			}
+		}
+	}
+	theme = realm
+	
+	right_portrait = {
+		character = scope:current_patron
+		animation = happiness
+	}
+
+	immediate = {
+		save_scope_as = current_patron
+		RICE_niger_delta_create_guild_artifact_effect = yes
+	}
+	
+	option = { # Ok
+		name = niger_delta.0102.a
+	}
+
+	after = {
+		if = {
+			limit = { has_variable = RICE_niger_delta_art_quality }
+			remove_variable = RICE_niger_delta_art_quality
+		}		
+		if = {
+			limit = { has_variable = RICE_art_type }
+			remove_variable = RICE_art_type
+		}		
+	}
+
+}
+
+
+
+
+# Character dies before receiving artifact
+niger_delta.0103 = {
+	type = empty
+	hidden = yes
+	
+	trigger = {
+		has_character_flag = RICE_niger_delta_waiting_for_artifact
+	}
+	
+	immediate = {
+		save_scope_as = patron
+		if = {
+			limit = {
+				exists = primary_heir
+			}
+
+			if = {
+				limit = {
+					var:RICE_art_type = flag:bronze
+				}
+				primary_heir = {
+					set_variable = {
+						name = RICE_art_type
+						value = flag:bronze
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					var:RICE_art_type = flag:iron
+				}
+				primary_heir = {
+					set_variable = {
+						name = RICE_art_type
+						value = flag:iron
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					var:RICE_art_type = flag:ivory
+				}
+				primary_heir = {
+					set_variable = {
+						name = RICE_art_type
+						value = flag:ivory
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					var:RICE_art_type = flag:wood
+				}
+				primary_heir = {
+					set_variable = {
+						name = RICE_art_type
+						value = flag:wood
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					var:RICE_art_type = flag:glass
+				}
+				primary_heir = {
+					set_variable = {
+						name = RICE_art_type
+						value = flag:glass
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					var:RICE_art_type = flag:coral
+				}
+				primary_heir = {
+					set_variable = {
+						name = RICE_art_type
+						value = flag:coral
+					}
+				}
+			}
+
+			primary_heir = {
+				# Quality will always be fair due to being heir and not original patron
+				add_character_flag = RICE_niger_delta_artifact_fair_quality
+				trigger_event = {
+					id = niger_delta.0102
+					days = 1
+				}
+			}
+		}
+	}
+}
 
 
 
