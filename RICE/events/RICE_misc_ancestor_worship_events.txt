@@ -1,0 +1,235 @@
+﻿###############################################################################
+# 
+# Ancestor Worship Event
+# 
+# 
+###############################################################################
+
+namespace = ancestor_worship
+
+
+
+# Invitiation to join ancestor worship ceremony
+ancestor_worship.0001 = {
+	type = character_event
+	title = ancestor_worship.0001.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					OR = {
+						culture = { has_cultural_parameter = unlock_rice_ancestor_worship }
+						culture = { has_cultural_pillar = heritage_chinese }
+					}
+				}
+				desc = ancestor_worship.0001.desc.culture
+			}
+			desc = ancestor_worship.0001.desc.religion
+		}
+	}
+	theme = faith
+	
+	left_portrait = {
+		character = scope:host
+		animation = personality_zealous
+	}
+
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	immediate = {
+		scope:activity.activity_owner = {
+			save_scope_as = host
+		}
+	}
+	
+	option = { # Attend
+		name = ancestor_worship.0001.a
+		scope:activity = {
+			accept_invitation_for_character = prev
+		}
+		stress_impact = {
+			shy = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+		}	
+		ai_chance = {
+			base = 85
+			ai_value_modifier = {
+				ai_zeal = 1
+				ai_honor = 1
+				ai_sociability = 1
+			}
+			modifier = {
+				add = 5
+				has_trait = diligent
+			}
+			modifier = {
+				add = 5
+				has_trait = zealous
+			}
+			modifier = {
+				add = 5
+				has_trait = gregarious
+			}
+		}
+	}
+	
+	option = { # Don't attend
+		name = ancestor_worship.0001.b
+		trigger = {
+			# Children will not refuse to go because they must listen to their elders
+			OR = {
+				is_adult = yes
+				is_ai = no	
+			}
+		}
+		remove_character_flag = planning_an_activity
+		scope:activity = {
+			decline_invitation_for_character = prev
+		}
+		stress_impact = {
+			diligent = minor_stress_impact_gain
+			zealous = minor_stress_impact_gain
+			gregarious = minor_stress_impact_gain
+			ambitious = minor_stress_impact_gain
+		}		
+		ai_chance = {
+			base = 15
+			modifier = {
+				add = 5
+				has_trait = paranoid
+			}
+			modifier = {
+				add = 5
+				has_trait = shy
+			}
+			modifier = {
+				add = 10
+				has_trait = cynical
+			}
+			modifier = {
+				add = 10
+				has_trait = lazy
+			}
+			modifier = {
+				add = 10
+				opinion = {
+					target = scope:activity.activity_owner
+					value <= 0
+				}
+			}
+			modifier = {
+				add = 10
+				opinion = {
+					target = scope:activity.activity_owner
+					value <= -33
+				}
+			}
+			modifier = {
+				add = 10
+				opinion = {
+					target = scope:activity.activity_owner
+					value <= -66
+				}
+			}
+		}
+	}
+
+}
+
+
+
+# Ancestor worship ceremony (host's POV)
+ancestor_worship.0002 = {
+	type = character_event
+	title = ancestor_worship.0002.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					OR = {
+						culture = { has_cultural_parameter = unlock_rice_ancestor_worship }
+						culture = { has_cultural_pillar = heritage_chinese }
+					}
+				}
+				desc = ancestor_worship.0002.desc.culture
+			}
+			desc = ancestor_worship.0002.desc.religion
+		}
+	}
+	theme = faith
+	
+	right_portrait = {
+		character = scope:host
+		animation = personality_zealous
+	}
+
+	immediate = {
+		scope:activity.activity_owner = {
+			save_scope_as = host
+		}
+	}
+	
+	option = { # Ok
+		name = ancestor_worship.0002.a
+		add_piety = { 0 RICE_ancestor_max_bonus_value }
+		add_prestige = { 0 RICE_ancestor_max_bonus_value }
+		dynasty = {
+			add_dynasty_prestige = { 0 RICE_ancestor_max_dynasty_prestige_value }
+		}
+		custom_tooltip = ancestor_worship.0002.tooltip
+	}
+
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				complete_activity = yes
+			}		
+		}
+	}	
+
+}
+
+
+# Ancestor worship ceremony (guest's POV)
+ancestor_worship.0003 = {
+	type = character_event
+	title = ancestor_worship.0003.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					OR = {
+						culture = { has_cultural_parameter = unlock_rice_ancestor_worship }
+						culture = { has_cultural_pillar = heritage_chinese }
+					}
+				}
+				desc = ancestor_worship.0003.desc.culture
+			}
+			desc = ancestor_worship.0003.desc.religion
+		}
+	}
+	theme = faith
+	
+	right_portrait = {
+		character = scope:host
+		animation = personality_zealous
+	}
+
+	immediate = {
+		scope:activity.activity_owner = {
+			save_scope_as = host
+		}
+	}
+	
+	option = { # Ok
+		name = ancestor_worship.0003.a
+		add_piety = { 0 RICE_ancestor_max_participant_bonus_value }
+		add_prestige = { 0 RICE_ancestor_max_participant_bonus_value }
+	}
+
+}
+

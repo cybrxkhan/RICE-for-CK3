@@ -393,7 +393,7 @@ niger_delta.0070 = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					has_title = title:title:d_ooni_of_ife
+					has_title = title:d_ooni_of_ife
 				}
 				desc = niger_delta.0070.desc.intro.ooni
 			}
@@ -604,6 +604,8 @@ niger_delta.0101 = {
 	}
 
 	immediate = {
+		add_character_flag = RICE_niger_delta_waiting_for_artifact
+		save_scope_as = patron
 		if = {
 			limit = {
 				OR = {
@@ -627,19 +629,19 @@ niger_delta.0101 = {
 		}
 		# Randomly pick a quality
 		random_list = {
-			40 = {
+			33 = {
 				set_variable = {
 					name = RICE_niger_delta_art_quality
 					value = flag:fair
 				}				
 			}
-			30 = {
+			33 = {
 				set_variable = {
 					name = RICE_niger_delta_art_quality
 					value = flag:good
 				}				
 			}
-			20 = {
+			33 = {
 				set_variable = {
 					name = RICE_niger_delta_art_quality
 					value = flag:excellent
@@ -651,11 +653,12 @@ niger_delta.0101 = {
 	option = { # Ok
 		name = niger_delta.0101.a
 		hidden_effect = {
-			trigger_event = niger_delta.0102
-			# trigger_event = {
-			# 	id = niger_delta.0102
-			# 	months = { 10 15 }
-			# }			
+			#trigger_event = niger_delta.0102
+			trigger_event = {
+				id = niger_delta.0102
+				days = 1
+				#months = { 10 15 }
+			}			
 		}
 	}
 }
@@ -666,7 +669,15 @@ niger_delta.0102 = {
 	type = character_event
 	title = niger_delta.0102.t
 	desc = {
-		desc = niger_delta.0102.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_niger_delta_art_heir
+				}
+				desc = niger_delta.0102.intro.heir
+			}
+			desc = niger_delta.0102.desc.intro
+		}
 		first_valid = {
 			triggered_desc = {
 				trigger = {
@@ -732,10 +743,21 @@ niger_delta.0102 = {
 		character = scope:current_patron
 		animation = happiness
 	}
+	artifact = { # To display the artifact in the event-window
+		target = scope:RICE_niger_delta_art
+		position = lower_center_portrait
+	}
 
 	immediate = {
 		save_scope_as = current_patron
 		RICE_niger_delta_create_guild_artifact_effect = yes
+		show_as_tooltip = {
+			scope:RICE_niger_delta_art = {
+				set_owner = {
+					target = root
+				}
+			}
+		}
 	}
 	
 	option = { # Ok
@@ -750,6 +772,10 @@ niger_delta.0102 = {
 		if = {
 			limit = { has_variable = RICE_art_type }
 			remove_variable = RICE_art_type
+		}		
+		if = {
+			limit = { has_character_flag = RICE_niger_delta_waiting_for_artifact }
+			remove_character_flag = RICE_niger_delta_waiting_for_artifact
 		}		
 	}
 
@@ -842,8 +868,12 @@ niger_delta.0103 = {
 			}
 
 			primary_heir = {
-				# Quality will always be fair due to being heir and not original patron
-				add_character_flag = RICE_niger_delta_artifact_fair_quality
+				add_character_flag = RICE_niger_delta_waiting_for_artifact
+				add_character_flag = RICE_niger_delta_art_heir
+				set_variable = {
+					name = RICE_niger_delta_art_quality
+					value = flag:fair
+				}
 				trigger_event = {
 					id = niger_delta.0102
 					days = 1
