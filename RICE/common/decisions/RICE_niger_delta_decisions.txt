@@ -15,43 +15,73 @@ RICE_niger_delta_request_beaded_crown = {
 		is_landed = yes
 		OR = {
 			religion = religion:west_african_orisha_religion
-			religion = religion:odinala_religion
-			religion = religion:ijaw_religion
+			culture = culture:yoruba
 			culture = {
-				OR = {
-					culture_has_west_african_heritage_pillar_trigger = yes
-					culture_has_central_african_heritage_pillar_trigger = yes
-					has_cultural_tradition = tradition_RICE_kinship_based_craft_guilds
+				any_parent_culture_or_above = {
+					this = culture:yoruba
 				}
 			}
-		}
-		any_held_title = {
-			tier = tier_county
-			any_county_province = {
-				geographical_region = RICE_niger_delta_region	
+			culture = culture:edo
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:edo
+				}
+			}
+			AND = {
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_yorubaland_region	
+					}
+				}
+				culture = {
+					OR = {
+						culture_has_west_african_heritage_pillar_trigger = yes
+						culture_has_central_african_heritage_pillar_trigger = yes
+						has_cultural_tradition = tradition_RICE_kinship_based_craft_guilds
+					}
+				}
 			}
 		}
 	}
 	
 	is_valid = {
-		custom_description = {
-			text = RICE_niger_delta_geographical_req
-			any_held_title = {
-				tier = tier_county
-				any_county_province = {
-					geographical_region = RICE_niger_delta_region	
-				}
-			}
-		}
 		OR = {
 			religion = religion:west_african_orisha_religion
-			religion = religion:odinala_religion
-			religion = religion:ijaw_religion
-			culture = {
-				OR = {
-					culture_has_west_african_heritage_pillar_trigger = yes
-					culture_has_central_african_heritage_pillar_trigger = yes
-					has_cultural_tradition = tradition_RICE_kinship_based_craft_guilds
+			culture = culture:yoruba
+			custom_description = {
+				text = RICE_decision_yoruba_culture_requirement
+				culture = {
+					any_parent_culture_or_above = {
+						this = culture:yoruba
+					}
+				}
+			}
+			culture = culture:edo
+			custom_description = {
+				text = RICE_decision_edo_culture_requirement
+				culture = {
+					any_parent_culture_or_above = {
+						this = culture:edo
+					}
+				}
+			}
+			AND = {
+				custom_description = {
+					text = RICE_yorubaland_geographical_req
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_yorubaland_region	
+						}
+					}
+				}
+				culture = {
+					OR = {
+						culture_has_west_african_heritage_pillar_trigger = yes
+						culture_has_central_african_heritage_pillar_trigger = yes
+						has_cultural_tradition = tradition_RICE_kinship_based_craft_guilds
+					}
 				}
 			}
 		}
@@ -150,30 +180,38 @@ RICE_niger_delta_request_beaded_crown = {
 			}
 		}
 
-		# Cash bribe to the Ooni - gold and prestige loss
-		item = {
-			value = RICE_niger_delta_cash_gift_option
-			is_valid = {
-				OR = {
-					is_ai = no
-					gold >= 100
-				}
-			}
-			current_description = RICE_niger_delta_cash_gift_option_desc
-			localization = RICE_niger_delta_cash_gift_option
-			icon = "gfx/interface/icons/message_feed/county_corruption.dds" #money
+		# Cash bribe to the Ooni - gold and piety loss
+		# item = {
+		# 	value = RICE_niger_delta_cash_gift_option
+		# 	is_valid = {
+		# 		OR = {
+		# 			is_ai = no
+		# 			gold >= 100
+		# 		}
+		# 	}
+		# 	current_description = RICE_niger_delta_cash_gift_option_desc
+		# 	localization = RICE_niger_delta_cash_gift_option
+		# 	icon = "gfx/interface/icons/message_feed/county_corruption.dds" #money
 
-			ai_chance = {
-				value = 3
-			}
-		}
+		# 	ai_chance = {
+		# 		value = 3
+		# 	}
+		# }
 
 		# Land to a relative
 		item = {
 			value = RICE_niger_delta_land_option
 			is_valid = {
 				any_held_title = {
+					tier = tier_county
 					count > 1
+				}
+				title:d_ooni_of_ife.holder = {
+					any_close_family_member = {
+						exists = yes
+						is_landed = no
+						NOT = { is_primary_heir_of = title:d_ooni_of_ife.holder }
+					}					
 				}
 			}
 			current_description = RICE_niger_delta_land_option_desc
@@ -245,7 +283,22 @@ RICE_niger_delta_request_beaded_crown = {
 			icon = "gfx/interface/icons/message_feed/faction.dds"
 
 			ai_chance = {
-				value = 1
+				value = 0 
+				if = {
+					limit = {
+						# Only make this choice if you're crazy or don't like the Ooni for whatever reason
+						OR = {
+							has_trait = lunatic
+							has_relation_rival = title:d_ooni_of_ife.holder
+							has_relation_nemesis = title:d_ooni_of_ife.holder
+							opinion = {
+								target = title:d_ooni_of_ife.holder
+								value <= medium_negative_opinion
+							}
+						}
+					}
+					add = 2
+				}
 			}
 		}		
 
@@ -344,6 +397,52 @@ RICE_niger_delta_form_craft_guilds = {
 	
 	is_valid_showing_failures_only = {
 		is_available_adult = yes
+		trigger_if = {
+			limit = { scope:RICE_niger_delta_form_bronze_casters_option = yes }
+			custom_tooltip = {
+				text = RICE_niger_delta_commission_bronze_casters_req
+				dynasty = {
+					has_dynasty_modifier = RICE_niger_delta_bronze_caster_guild_modifier
+				}
+			}
+		}
+		trigger_if = {
+			limit = { scope:RICE_niger_delta_form_ironsmiths_option = yes }
+			custom_tooltip = {
+				text = RICE_niger_delta_commission_ironsmiths_req
+				dynasty = {
+					has_dynasty_modifier = RICE_niger_delta_ironsmith_guild_modifier
+				}
+			}
+		}
+		trigger_if = {
+			limit = { scope:RICE_niger_delta_form_ivory_and_wood_carvers_option = yes }
+			custom_tooltip = {
+				text = RICE_niger_delta_commission_ivory_and_wood_carvers_req
+				dynasty = {
+					has_dynasty_modifier = RICE_niger_delta_ivory_and_wood_carver_guild_modifier
+				}
+			}
+		}
+		trigger_if = {
+			limit = { scope:RICE_niger_delta_form_beadmakers_option = yes }
+			OR = {
+				has_title = title:c_ife
+				has_title = title:d_ooni_of_ife
+				AND = {
+					custom_description = {
+						text = "is_king_or_emperor"
+						highest_held_title_tier >= tier_kingdom
+					}
+					custom_tooltip = {
+						text = RICE_niger_delta_commission_beadmakers_req
+						dynasty = {
+							has_dynasty_modifier = RICE_niger_delta_bead_maker_guild_modifier
+						}
+					}
+				}
+			}
+		}
 	}
 
     widget = {
@@ -365,6 +464,11 @@ RICE_niger_delta_form_craft_guilds = {
 					}
 				}
 			}
+			is_valid = {
+				culture = {
+					has_innovation = innovation_lost_wax_casting	
+				}				
+			}
 			current_description = RICE_niger_delta_form_bronze_casters_option_desc
 			localization = RICE_niger_delta_form_bronze_casters_option
 			icon = "gfx/interface/icons/widgets/RICE_niger_delta_guild_bronze.dds"
@@ -383,6 +487,9 @@ RICE_niger_delta_form_craft_guilds = {
 						has_dynasty_modifier = RICE_niger_delta_ironsmith_guild_modifier
 					}
 				}
+			}
+			is_valid = {				
+				prestige_level >= 3
 			}
 			current_description = RICE_niger_delta_form_ironsmiths_option_desc
 			localization = RICE_niger_delta_form_ironsmiths_option
@@ -426,10 +533,10 @@ RICE_niger_delta_form_craft_guilds = {
 				OR = {
 					has_title = title:c_ife
 					has_title = title:d_ooni_of_ife
-					custom_description = {
-						text = "is_king_or_emperor"
+					#custom_description = {
+					#	text = "is_king_or_emperor"
 						highest_held_title_tier >= tier_kingdom
-					}
+					#}
 				}
 			}
 			current_description = RICE_niger_delta_form_beadmakers_option_desc
@@ -550,40 +657,7 @@ RICE_niger_delta_commission_art_from_craft_guilds = {
 			culture = {
 				has_cultural_tradition = tradition_RICE_kinship_based_craft_guilds
 			}
-		}
-		# OR = {
-		# 	dynasty = {
-		# 		has_dynasty_modifier = RICE_niger_delta_bronze_caster_guild_modifier
-		# 	}
-		# 	dynasty = {
-		# 		has_dynasty_modifier = RICE_niger_delta_ivory_and_wood_carver_guild_modifier
-		# 	}
-		# 	dynasty = {
-		# 		has_dynasty_modifier = RICE_niger_delta_ironsmith_guild_modifier
-		# 	}
-		# 	AND = {
-		# 		dynasty = {
-		# 			has_dynasty_modifier = RICE_niger_delta_bead_maker_guild_modifier
-		# 		}
-		# 		OR = {
-		# 			has_title = title:c_ife
-		# 			has_title = title:d_ooni_of_ife
-		# 			custom_description = {
-		# 				text = "is_king_or_emperor"
-		# 				highest_held_title_tier >= tier_kingdom
-		# 			}
-		# 		}
-		# 	}
-		# 	# dynasty = {
-		# 	# 	OR = {
-		# 	# 		has_dynasty_modifier = RICE_niger_delta_bronze_caster_guild_modifier
-		# 	# 		has_dynasty_modifier = RICE_niger_delta_ivory_and_wood_carver_guild_modifier
-		# 	# 		has_dynasty_modifier = RICE_niger_delta_bead_maker_guild_modifier
-		# 	# 		has_dynasty_modifier = RICE_niger_delta_ironsmith_guild_modifier
-		# 	# 	}
-		# 	# }
-		# }
-		
+		}		
 	}
 	
 	is_valid = {
@@ -598,14 +672,6 @@ RICE_niger_delta_commission_art_from_craft_guilds = {
 				has_cultural_tradition = tradition_RICE_kinship_based_craft_guilds
 			}
 		}
-		# dynasty = {
-		# 	OR = {
-		# 		has_dynasty_modifier = RICE_niger_delta_bronze_caster_guild_modifier
-		# 		has_dynasty_modifier = RICE_niger_delta_ivory_and_wood_carver_guild_modifier
-		# 		has_dynasty_modifier = RICE_niger_delta_bead_maker_guild_modifier
-		# 		has_dynasty_modifier = RICE_niger_delta_ironsmith_guild_modifier
-		# 	}
-		# }
 		OR = {
 			has_title = title:c_ife
 			has_title = title:d_ooni_of_ife
@@ -632,52 +698,6 @@ RICE_niger_delta_commission_art_from_craft_guilds = {
 	
 	is_valid_showing_failures_only = {
 		is_available_adult = yes
-		trigger_if = {
-			limit = { scope:RICE_niger_delta_bronze_casters_option = yes }
-			custom_tooltip = {
-				text = RICE_niger_delta_commission_bronze_casters_req
-				dynasty = {
-					has_dynasty_modifier = RICE_niger_delta_bronze_caster_guild_modifier
-				}
-			}
-		}
-		trigger_if = {
-			limit = { scope:RICE_niger_delta_ironsmiths_option = yes }
-			custom_tooltip = {
-				text = RICE_niger_delta_commission_ironsmiths_req
-				dynasty = {
-					has_dynasty_modifier = RICE_niger_delta_ironsmith_guild_modifier
-				}
-			}
-		}
-		trigger_if = {
-			limit = { scope:RICE_niger_delta_ivory_and_wood_carvers_option = yes }
-			custom_tooltip = {
-				text = RICE_niger_delta_commission_ivory_and_wood_carvers_req
-				dynasty = {
-					has_dynasty_modifier = RICE_niger_delta_ivory_and_wood_carver_guild_modifier
-				}
-			}
-		}
-		trigger_if = {
-			limit = { scope:RICE_niger_delta_beadmakers_option = yes }
-			OR = {
-				has_title = title:c_ife
-				has_title = title:d_ooni_of_ife
-				AND = {
-					custom_description = {
-						text = "is_king_or_emperor"
-						highest_held_title_tier >= tier_kingdom
-					}
-					custom_tooltip = {
-						text = RICE_niger_delta_commission_beadmakers_req
-						dynasty = {
-							has_dynasty_modifier = RICE_niger_delta_bead_maker_guild_modifier
-						}
-					}
-				}
-			}
-		}
 	}
 
     widget = {
@@ -693,11 +713,8 @@ RICE_niger_delta_commission_art_from_craft_guilds = {
 		item = {
 			value = RICE_niger_delta_bronze_casters_option
 			is_valid = {
-				custom_tooltip = {
-					text = RICE_niger_delta_commission_bronze_casters_req
-					dynasty = {
-						has_dynasty_modifier = RICE_niger_delta_bronze_caster_guild_modifier
-					}
+				dynasty = {
+					has_dynasty_modifier = RICE_niger_delta_bronze_caster_guild_modifier
 				}
 			}
 			current_description = RICE_niger_delta_bronze_casters_option_desc
@@ -713,11 +730,8 @@ RICE_niger_delta_commission_art_from_craft_guilds = {
 		item = {
 			value = RICE_niger_delta_ironsmiths_option
 			is_valid = {
-				custom_tooltip = {
-					text = RICE_niger_delta_commission_ironsmiths_req
-					dynasty = {
-						has_dynasty_modifier = RICE_niger_delta_ironsmith_guild_modifier
-					}
+				dynasty = {
+					has_dynasty_modifier = RICE_niger_delta_ironsmith_guild_modifier
 				}
 			}
 			current_description = RICE_niger_delta_ironsmiths_option_desc
@@ -733,11 +747,8 @@ RICE_niger_delta_commission_art_from_craft_guilds = {
 		item = {
 			value = RICE_niger_delta_ivory_and_wood_carvers_option
 			is_valid = {
-				custom_tooltip = {
-					text = RICE_niger_delta_commission_ivory_and_wood_carvers_req
-					dynasty = {
-						has_dynasty_modifier = RICE_niger_delta_ivory_and_wood_carver_guild_modifier
-					}
+				dynasty = {
+					has_dynasty_modifier = RICE_niger_delta_ivory_and_wood_carver_guild_modifier
 				}
 			}
 			current_description = RICE_niger_delta_ivory_and_wood_carvers_option_desc
@@ -757,15 +768,9 @@ RICE_niger_delta_commission_art_from_craft_guilds = {
 					has_title = title:c_ife
 					has_title = title:d_ooni_of_ife
 					AND = {
-						custom_description = {
-							text = "is_king_or_emperor"
-							highest_held_title_tier >= tier_kingdom
-						}
-						custom_tooltip = {
-							text = RICE_niger_delta_commission_beadmakers_req
-							dynasty = {
-								has_dynasty_modifier = RICE_niger_delta_bead_maker_guild_modifier
-							}
+						highest_held_title_tier >= tier_kingdom
+						dynasty = {
+							has_dynasty_modifier = RICE_niger_delta_bead_maker_guild_modifier
 						}
 					}
 				}
