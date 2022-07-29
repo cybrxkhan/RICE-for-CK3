@@ -3,12 +3,11 @@
 # Niger Delta
 # 
 # niger_delta.0000-niger_delta.0019			Setup events, history events, miscellaneous events and decisions
-# niger_delta.0020-niger_delta.0029			Ancestor worship
+# niger_delta.0920-niger_delta.0029			Niger Delta artwork/craft guilds
 # niger_delta.0030-niger_delta.0049			New Yam festival
 # niger_delta.0050-niger_delta.0069			Beaded Crown events
 # niger_delta.0070-niger_delta.0099			Olojo festival
-# niger_delta.0100-niger_delta.0149			Niger Delta artwork/craft guilds
-# niger_delta.0150-niger_delta.0199			Generic flavor events
+# niger_delta.0100-niger_delta.0149			Generic flavor events
 # 
 # 
 ###############################################################################
@@ -43,35 +42,558 @@ niger_delta.0001 = {
 			}
 			scope:previous_holder = { remove_trait = RICE_ooni_of_ife }
 		}
+		# If previous Ooni is still around and is Orisha, they will (awkwardly) need to request the crown from the Ooni
+		if = {
+			limit = {
+				scope:previous_holder = {
+					is_alive = yes
+					NOT = { has_character_modifier = RICE_niger_delta_uncrowned }
+					religion = religion:west_african_orisha_religion
+				}
+			}
+			add_character_modifier = {
+				modifier = RICE_niger_delta_uncrowned
+			}
+		}
 		add_trait = RICE_ooni_of_ife
 	}
 }
 
 
-# Change ruler of Ife modifier
-# niger_delta.0001 = {
-# 	hidden = yes
+# Uncrowned modifier gain
+niger_delta.0002 = {
+	hidden = yes
 	
-# 	trigger = {
-# 		scope:title = title:c_ife
-# 	}
+	trigger = {
+		exists = title:d_ooni_of_ife.holder
+		is_landed = yes
+		religion = religion:west_african_orisha_religion
+		NOT = { has_character_modifier = RICE_niger_delta_uncrowned }
+		NOT = { has_title = title:d_ooni_of_ife }
+	}
 	
-# 	immediate = {
-# 		if = {
-# 			limit = { 
-# 				scope:previous_holder = { 
-# 					is_alive = yes
-# 					has_character_modifier = RICE_niger_delta_ruler_of_ife
-# 					NOT = { has_title = title:c_ife }
-# 				}
-# 			}
-# 			scope:previous_holder = { remove_character_modifier = RICE_niger_delta_ruler_of_ife }
-# 		}
-# 		add_character_modifier = {
-# 			modifier = RICE_niger_delta_ruler_of_ife
-# 		}
-# 	}
-# }
+	immediate = {
+		add_character_modifier = {
+			modifier = RICE_niger_delta_uncrowned
+		}
+	}
+}
+
+# Uncrowned modifier loss from title loss
+niger_delta.0003 = {
+	hidden = yes
+	
+	trigger = {
+		exists = title:d_ooni_of_ife.holder
+		is_landed = no
+		has_character_modifier = RICE_niger_delta_uncrowned
+	}
+	
+	immediate = {
+		remove_character_modifier = RICE_niger_delta_uncrowned
+	}
+}
+
+# Uncrowned modifier loss from converting to a different faith
+niger_delta.0004 = {
+	hidden = yes
+	
+	trigger = {
+		exists = title:d_ooni_of_ife.holder
+		NOT = { religion = religion:west_african_orisha_religion }
+		has_character_modifier = RICE_niger_delta_uncrowned
+	}
+	
+	immediate = {
+		remove_character_modifier = RICE_niger_delta_uncrowned
+	}
+}
+
+# Ooniship no longer exists for whatever reason, so all modifiers are removed
+niger_delta.0005 = {
+	hidden = yes
+	
+	trigger = {
+		scope:landed_title = title:d_ooni_of_ife
+	}
+	
+	immediate = {
+		every_ruler = {
+			limit = {
+				has_character_modifier = RICE_niger_delta_uncrowned
+			}
+			remove_character_modifier = RICE_niger_delta_uncrowned
+		}		
+	}
+}
+
+
+
+
+
+
+
+
+######################################################################################
+# 
+# NIGER DELTA ARTWORK/CRAFT GUILDS
+# 
+# niger_delta.0020-niger_delta.0029
+# 
+######################################################################################
+
+
+
+# Get the guild
+niger_delta.0020 = {
+	type = character_event
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {					
+					scope:organizer = {
+						var:RICE_guild_type = flag:bronze_casters
+					}
+				}
+				desc = niger_delta.0020.t.a
+			}			
+			triggered_desc = {
+				trigger = {					
+					scope:organizer = {
+						var:RICE_guild_type = flag:ironsmiths
+					}
+				}
+				desc = niger_delta.0020.t.b
+			}			
+			triggered_desc = {
+				trigger = {					
+					scope:organizer = {
+						var:RICE_guild_type = flag:ivory_and_wood_carvers
+					}
+				}
+				desc = niger_delta.0020.t.c
+			}			
+			triggered_desc = {
+				trigger = {					
+					scope:organizer = {
+						var:RICE_guild_type = flag:beadmakers
+					}
+				}
+				desc = niger_delta.0020.t.d
+			}			
+		}
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					is_dynast = yes
+				}
+				desc = niger_delta.0020.desc.intro.dynasty_head
+			}
+			desc = niger_delta.0020.desc.intro.dynasty_other
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:organizer = {
+						var:RICE_guild_type = flag:bronze_casters
+					}
+				}
+				desc = niger_delta.0020.desc.bronze_casters
+			}
+			triggered_desc = {
+				trigger = {
+					scope:organizer = {
+						var:RICE_guild_type = flag:ironsmiths
+					}
+				}
+				desc = niger_delta.0020.desc.ironsmiths
+			}
+			triggered_desc = {
+				trigger = {
+					scope:organizer = {
+						var:RICE_guild_type = flag:ivory_and_wood_carvers
+					}
+				}
+				desc = niger_delta.0020.desc.ivory_and_wood_carvers
+			}
+			triggered_desc = {
+				trigger = {
+					scope:organizer = {
+						var:RICE_guild_type = flag:beadmakers
+					}
+				}
+				desc = niger_delta.0020.desc.beadmakers
+			}
+		}
+		desc = niger_delta.0020.desc.conclusion
+	}
+	theme = dynasty
+
+	right_portrait = scope:organizer
+
+	immediate = {
+		scope:organizer = {
+			RICE_niger_delta_organize_craft_guild_effect = yes
+		}
+	}
+
+	# Ok
+	option = {
+		name = niger_delta.0020.a
+	}
+
+	after = {
+		if = {
+			limit = { has_variable = RICE_guild_type }
+			remove_variable = RICE_guild_type
+		}
+	}
+
+}
+
+
+
+# Commissioning some kind of artwork
+niger_delta.0021 = {
+	type = character_event
+	title = niger_delta.0021.t
+	desc = {
+		desc = niger_delta.0021.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_art_type = flag:bronze
+				}
+				desc = niger_delta.0021.desc.bronze
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_art_type = flag:iron
+				}
+				desc = niger_delta.0021.desc.iron
+			}
+			triggered_desc = {
+				trigger = {
+					OR = {
+						var:RICE_art_type = flag:ivory
+						var:RICE_art_type = flag:wood
+					}
+				}
+				desc = niger_delta.0021.desc.ivory_or_wood
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_art_type = flag:glass
+				}
+				desc = niger_delta.0021.desc.glass
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_art_type = flag:coral
+				}
+				desc = niger_delta.0021.desc.coral
+			}
+		}
+		desc = niger_delta.0021.desc.conclusion
+	}
+	theme = realm
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	immediate = {
+		add_character_flag = RICE_niger_delta_waiting_for_artifact
+		save_scope_as = patron
+		if = {
+			limit = {
+				OR = {
+					var:RICE_art_type = flag:bronze
+					var:RICE_art_type = flag:iron
+				}
+			}
+			remove_short_term_gold = 100
+		}
+		else_if = {
+			limit = {
+				OR = {
+					var:RICE_art_type = flag:glass
+					var:RICE_art_type = flag:coral
+				}
+			}
+			remove_short_term_gold = 150
+		}
+		else = {
+			remove_short_term_gold = 50
+		}
+		# Randomly pick a quality
+		random_list = {
+			33 = {
+				set_variable = {
+					name = RICE_niger_delta_art_quality
+					value = flag:fair
+				}				
+			}
+			33 = {
+				set_variable = {
+					name = RICE_niger_delta_art_quality
+					value = flag:good
+				}				
+			}
+			33 = {
+				set_variable = {
+					name = RICE_niger_delta_art_quality
+					value = flag:excellent
+				}				
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = niger_delta.0021.a
+		hidden_effect = {
+			#trigger_event = niger_delta.0022
+			trigger_event = {
+				id = niger_delta.0022
+				days = 1
+				#months = { 10 15 }
+			}			
+		}
+	}
+}
+
+
+# Artwork is done
+niger_delta.0022 = {
+	type = character_event
+	title = niger_delta.0022.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_niger_delta_art_heir
+				}
+				desc = niger_delta.0022.intro.heir
+			}
+			desc = niger_delta.0022.desc.intro
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_art_type = flag:bronze
+				}
+				desc = niger_delta.0022.desc.bronze
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_art_type = flag:iron
+				}
+				desc = niger_delta.0022.desc.iron
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_art_type = flag:ivory
+				}
+				desc = niger_delta.0022.desc.ivory
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_art_type = flag:wood
+				}
+				desc = niger_delta.0022.desc.wood
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_art_type = flag:glass
+				}
+				desc = niger_delta.0022.desc.glass
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_art_type = flag:coral
+				}
+				desc = niger_delta.0022.desc.coral
+			}
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_niger_delta_art_quality = flag:fair
+				}
+				desc = niger_delta.0022.desc.quality.fair
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_niger_delta_art_quality = flag:good
+				}
+				desc = niger_delta.0022.desc.quality.good
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_niger_delta_art_quality = flag:excellent
+				}
+				desc = niger_delta.0022.desc.quality.excellent
+			}
+		}
+	}
+	theme = realm
+	
+	right_portrait = {
+		character = scope:current_patron
+		animation = happiness
+	}
+	artifact = { # To display the artifact in the event-window
+		target = scope:RICE_niger_delta_art
+		position = lower_center_portrait
+	}
+
+	immediate = {
+		save_scope_as = current_patron
+		RICE_niger_delta_create_guild_artifact_effect = yes
+		show_as_tooltip = {
+			scope:RICE_niger_delta_art = {
+				set_owner = {
+					target = root
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = niger_delta.0022.a
+	}
+
+	after = {
+		if = {
+			limit = { has_variable = RICE_niger_delta_art_quality }
+			remove_variable = RICE_niger_delta_art_quality
+		}		
+		if = {
+			limit = { has_variable = RICE_art_type }
+			remove_variable = RICE_art_type
+		}		
+		if = {
+			limit = { has_character_flag = RICE_niger_delta_waiting_for_artifact }
+			remove_character_flag = RICE_niger_delta_waiting_for_artifact
+		}		
+	}
+
+}
+
+
+
+
+# Character dies before receiving artifact
+niger_delta.0023 = {
+	type = empty
+	hidden = yes
+	
+	trigger = {
+		has_character_flag = RICE_niger_delta_waiting_for_artifact
+	}
+	
+	immediate = {
+		save_scope_as = patron
+		if = {
+			limit = {
+				exists = primary_heir
+			}
+
+			if = {
+				limit = {
+					var:RICE_art_type = flag:bronze
+				}
+				primary_heir = {
+					set_variable = {
+						name = RICE_art_type
+						value = flag:bronze
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					var:RICE_art_type = flag:iron
+				}
+				primary_heir = {
+					set_variable = {
+						name = RICE_art_type
+						value = flag:iron
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					var:RICE_art_type = flag:ivory
+				}
+				primary_heir = {
+					set_variable = {
+						name = RICE_art_type
+						value = flag:ivory
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					var:RICE_art_type = flag:wood
+				}
+				primary_heir = {
+					set_variable = {
+						name = RICE_art_type
+						value = flag:wood
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					var:RICE_art_type = flag:glass
+				}
+				primary_heir = {
+					set_variable = {
+						name = RICE_art_type
+						value = flag:glass
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					var:RICE_art_type = flag:coral
+				}
+				primary_heir = {
+					set_variable = {
+						name = RICE_art_type
+						value = flag:coral
+					}
+				}
+			}
+
+			primary_heir = {
+				add_character_flag = RICE_niger_delta_waiting_for_artifact
+				add_character_flag = RICE_niger_delta_art_heir
+				set_variable = {
+					name = RICE_niger_delta_art_quality
+					value = flag:fair
+				}
+				trigger_event = {
+					id = niger_delta.0022
+					days = 1
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
 
 
 ######################################################################################
@@ -207,7 +729,7 @@ niger_delta.0032 = {
 	type = character_event
 	title = niger_delta.0032.t
 	desc = niger_delta.0032.desc
-	theme = realm
+	theme = RICE_theme_yoruba_shrine
 	
 	right_portrait = {
 		character = root
@@ -230,7 +752,7 @@ niger_delta.0033 = {
 	type = character_event
 	title = niger_delta.0033.t
 	desc = niger_delta.0033.desc
-	theme = realm
+	theme = RICE_theme_yoruba_shrine
 	
 	right_portrait = {
 		character = root
@@ -376,6 +898,134 @@ niger_delta.0034 = {
 
 
 
+
+
+
+######################################################################################
+# 
+# BEADED CROWN
+# 
+# niger_delta.0050-niger_delta.0069
+# 
+######################################################################################
+
+
+
+# Get the guild
+niger_delta.0020 = {
+	type = character_event
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {					
+					scope:organizer = {
+						var:RICE_guild_type = flag:bronze_casters
+					}
+				}
+				desc = niger_delta.0020.t.a
+			}			
+			triggered_desc = {
+				trigger = {					
+					scope:organizer = {
+						var:RICE_guild_type = flag:ironsmiths
+					}
+				}
+				desc = niger_delta.0020.t.b
+			}			
+			triggered_desc = {
+				trigger = {					
+					scope:organizer = {
+						var:RICE_guild_type = flag:ivory_and_wood_carvers
+					}
+				}
+				desc = niger_delta.0020.t.c
+			}			
+			triggered_desc = {
+				trigger = {					
+					scope:organizer = {
+						var:RICE_guild_type = flag:beadmakers
+					}
+				}
+				desc = niger_delta.0020.t.d
+			}			
+		}
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					is_dynast = yes
+				}
+				desc = niger_delta.0020.desc.intro.dynasty_head
+			}
+			desc = niger_delta.0020.desc.intro.dynasty_other
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:organizer = {
+						var:RICE_guild_type = flag:bronze_casters
+					}
+				}
+				desc = niger_delta.0020.desc.bronze_casters
+			}
+			triggered_desc = {
+				trigger = {
+					scope:organizer = {
+						var:RICE_guild_type = flag:ironsmiths
+					}
+				}
+				desc = niger_delta.0020.desc.ironsmiths
+			}
+			triggered_desc = {
+				trigger = {
+					scope:organizer = {
+						var:RICE_guild_type = flag:ivory_and_wood_carvers
+					}
+				}
+				desc = niger_delta.0020.desc.ivory_and_wood_carvers
+			}
+			triggered_desc = {
+				trigger = {
+					scope:organizer = {
+						var:RICE_guild_type = flag:beadmakers
+					}
+				}
+				desc = niger_delta.0020.desc.beadmakers
+			}
+		}
+		desc = niger_delta.0020.desc.conclusion
+	}
+	theme = dynasty
+
+	right_portrait = scope:organizer
+
+	immediate = {
+		scope:organizer = {
+			RICE_niger_delta_organize_craft_guild_effect = yes
+		}
+	}
+
+	# Ok
+	option = {
+		name = niger_delta.0020.a
+	}
+
+	after = {
+		if = {
+			limit = { has_variable = RICE_guild_type }
+			remove_variable = RICE_guild_type
+		}
+	}
+
+}
+
+
+
+
+
+
+
 ######################################################################################
 # 
 # OLOJO FESTIVAL
@@ -427,461 +1077,5 @@ niger_delta.0070 = {
 		}
 	}
 }
-
-
-
-
-
-######################################################################################
-# 
-# NIGER DELTA ARTWORK/CRAFT GUILDS
-# 
-# niger_delta.0100-niger_delta.0149
-# 
-######################################################################################
-
-
-
-# Get the guild
-niger_delta.0100 = {
-	type = character_event
-	title = {
-		first_valid = {
-			triggered_desc = {
-				trigger = {					
-					scope:organizer = {
-						var:RICE_guild_type = flag:bronze_casters
-					}
-				}
-				desc = niger_delta.0100.t.a
-			}			
-			triggered_desc = {
-				trigger = {					
-					scope:organizer = {
-						var:RICE_guild_type = flag:ironsmiths
-					}
-				}
-				desc = niger_delta.0100.t.b
-			}			
-			triggered_desc = {
-				trigger = {					
-					scope:organizer = {
-						var:RICE_guild_type = flag:ivory_and_wood_carvers
-					}
-				}
-				desc = niger_delta.0100.t.c
-			}			
-			triggered_desc = {
-				trigger = {					
-					scope:organizer = {
-						var:RICE_guild_type = flag:beadmakers
-					}
-				}
-				desc = niger_delta.0100.t.d
-			}			
-		}
-	}
-	desc = {
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					is_dynast = yes
-				}
-				desc = niger_delta.0100.desc.intro.dynasty_head
-			}
-			desc = niger_delta.0100.desc.intro.dynasty_other
-		}
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					scope:organizer = {
-						var:RICE_guild_type = flag:bronze_casters
-					}
-				}
-				desc = niger_delta.0100.desc.bronze_casters
-			}
-			triggered_desc = {
-				trigger = {
-					scope:organizer = {
-						var:RICE_guild_type = flag:ironsmiths
-					}
-				}
-				desc = niger_delta.0100.desc.ironsmiths
-			}
-			triggered_desc = {
-				trigger = {
-					scope:organizer = {
-						var:RICE_guild_type = flag:ivory_and_wood_carvers
-					}
-				}
-				desc = niger_delta.0100.desc.ivory_and_wood_carvers
-			}
-			triggered_desc = {
-				trigger = {
-					scope:organizer = {
-						var:RICE_guild_type = flag:beadmakers
-					}
-				}
-				desc = niger_delta.0100.desc.beadmakers
-			}
-		}
-		desc = niger_delta.0100.desc.conclusion
-	}
-	theme = dynasty
-
-	right_portrait = scope:organizer
-
-	immediate = {
-		scope:organizer = {
-			RICE_niger_delta_organize_craft_guild_effect = yes
-		}
-	}
-
-	# Ok
-	option = {
-		name = niger_delta.0100.a
-	}
-
-	after = {
-		if = {
-			limit = { has_variable = RICE_guild_type }
-			remove_variable = RICE_guild_type
-		}
-	}
-
-}
-
-
-
-# Commissioning some kind of artwork
-niger_delta.0101 = {
-	type = character_event
-	title = niger_delta.0101.t
-	desc = {
-		desc = niger_delta.0101.desc.intro
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					var:RICE_art_type = flag:bronze
-				}
-				desc = niger_delta.0101.desc.bronze
-			}
-			triggered_desc = {
-				trigger = {
-					var:RICE_art_type = flag:iron
-				}
-				desc = niger_delta.0101.desc.iron
-			}
-			triggered_desc = {
-				trigger = {
-					OR = {
-						var:RICE_art_type = flag:ivory
-						var:RICE_art_type = flag:wood
-					}
-				}
-				desc = niger_delta.0101.desc.ivory_or_wood
-			}
-			triggered_desc = {
-				trigger = {
-					var:RICE_art_type = flag:glass
-				}
-				desc = niger_delta.0101.desc.glass
-			}
-			triggered_desc = {
-				trigger = {
-					var:RICE_art_type = flag:coral
-				}
-				desc = niger_delta.0101.desc.coral
-			}
-		}
-		desc = niger_delta.0101.desc.conclusion
-	}
-	theme = realm
-	
-	right_portrait = {
-		character = root
-		animation = personality_rational
-	}
-
-	immediate = {
-		add_character_flag = RICE_niger_delta_waiting_for_artifact
-		save_scope_as = patron
-		if = {
-			limit = {
-				OR = {
-					var:RICE_art_type = flag:bronze
-					var:RICE_art_type = flag:iron
-				}
-			}
-			remove_short_term_gold = 100
-		}
-		else_if = {
-			limit = {
-				OR = {
-					var:RICE_art_type = flag:glass
-					var:RICE_art_type = flag:coral
-				}
-			}
-			remove_short_term_gold = 150
-		}
-		else = {
-			remove_short_term_gold = 50
-		}
-		# Randomly pick a quality
-		random_list = {
-			33 = {
-				set_variable = {
-					name = RICE_niger_delta_art_quality
-					value = flag:fair
-				}				
-			}
-			33 = {
-				set_variable = {
-					name = RICE_niger_delta_art_quality
-					value = flag:good
-				}				
-			}
-			33 = {
-				set_variable = {
-					name = RICE_niger_delta_art_quality
-					value = flag:excellent
-				}				
-			}
-		}
-	}
-	
-	option = { # Ok
-		name = niger_delta.0101.a
-		hidden_effect = {
-			#trigger_event = niger_delta.0102
-			trigger_event = {
-				id = niger_delta.0102
-				days = 1
-				#months = { 10 15 }
-			}			
-		}
-	}
-}
-
-
-# Artwork is done
-niger_delta.0102 = {
-	type = character_event
-	title = niger_delta.0102.t
-	desc = {
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					has_character_flag = RICE_niger_delta_art_heir
-				}
-				desc = niger_delta.0102.intro.heir
-			}
-			desc = niger_delta.0102.desc.intro
-		}
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					var:RICE_art_type = flag:bronze
-				}
-				desc = niger_delta.0102.desc.bronze
-			}
-			triggered_desc = {
-				trigger = {
-					var:RICE_art_type = flag:iron
-				}
-				desc = niger_delta.0102.desc.iron
-			}
-			triggered_desc = {
-				trigger = {
-					var:RICE_art_type = flag:ivory
-				}
-				desc = niger_delta.0102.desc.ivory
-			}
-			triggered_desc = {
-				trigger = {
-					var:RICE_art_type = flag:wood
-				}
-				desc = niger_delta.0102.desc.wood
-			}
-			triggered_desc = {
-				trigger = {
-					var:RICE_art_type = flag:glass
-				}
-				desc = niger_delta.0102.desc.glass
-			}
-			triggered_desc = {
-				trigger = {
-					var:RICE_art_type = flag:coral
-				}
-				desc = niger_delta.0102.desc.coral
-			}
-		}
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					var:RICE_niger_delta_art_quality = flag:fair
-				}
-				desc = niger_delta.0102.desc.quality.fair
-			}
-			triggered_desc = {
-				trigger = {
-					var:RICE_niger_delta_art_quality = flag:good
-				}
-				desc = niger_delta.0102.desc.quality.good
-			}
-			triggered_desc = {
-				trigger = {
-					var:RICE_niger_delta_art_quality = flag:excellent
-				}
-				desc = niger_delta.0102.desc.quality.excellent
-			}
-		}
-	}
-	theme = realm
-	
-	right_portrait = {
-		character = scope:current_patron
-		animation = happiness
-	}
-	artifact = { # To display the artifact in the event-window
-		target = scope:RICE_niger_delta_art
-		position = lower_center_portrait
-	}
-
-	immediate = {
-		save_scope_as = current_patron
-		RICE_niger_delta_create_guild_artifact_effect = yes
-		show_as_tooltip = {
-			scope:RICE_niger_delta_art = {
-				set_owner = {
-					target = root
-				}
-			}
-		}
-	}
-	
-	option = { # Ok
-		name = niger_delta.0102.a
-	}
-
-	after = {
-		if = {
-			limit = { has_variable = RICE_niger_delta_art_quality }
-			remove_variable = RICE_niger_delta_art_quality
-		}		
-		if = {
-			limit = { has_variable = RICE_art_type }
-			remove_variable = RICE_art_type
-		}		
-		if = {
-			limit = { has_character_flag = RICE_niger_delta_waiting_for_artifact }
-			remove_character_flag = RICE_niger_delta_waiting_for_artifact
-		}		
-	}
-
-}
-
-
-
-
-# Character dies before receiving artifact
-niger_delta.0103 = {
-	type = empty
-	hidden = yes
-	
-	trigger = {
-		has_character_flag = RICE_niger_delta_waiting_for_artifact
-	}
-	
-	immediate = {
-		save_scope_as = patron
-		if = {
-			limit = {
-				exists = primary_heir
-			}
-
-			if = {
-				limit = {
-					var:RICE_art_type = flag:bronze
-				}
-				primary_heir = {
-					set_variable = {
-						name = RICE_art_type
-						value = flag:bronze
-					}
-				}
-			}
-			else_if = {
-				limit = {
-					var:RICE_art_type = flag:iron
-				}
-				primary_heir = {
-					set_variable = {
-						name = RICE_art_type
-						value = flag:iron
-					}
-				}
-			}
-			else_if = {
-				limit = {
-					var:RICE_art_type = flag:ivory
-				}
-				primary_heir = {
-					set_variable = {
-						name = RICE_art_type
-						value = flag:ivory
-					}
-				}
-			}
-			else_if = {
-				limit = {
-					var:RICE_art_type = flag:wood
-				}
-				primary_heir = {
-					set_variable = {
-						name = RICE_art_type
-						value = flag:wood
-					}
-				}
-			}
-			else_if = {
-				limit = {
-					var:RICE_art_type = flag:glass
-				}
-				primary_heir = {
-					set_variable = {
-						name = RICE_art_type
-						value = flag:glass
-					}
-				}
-			}
-			else_if = {
-				limit = {
-					var:RICE_art_type = flag:coral
-				}
-				primary_heir = {
-					set_variable = {
-						name = RICE_art_type
-						value = flag:coral
-					}
-				}
-			}
-
-			primary_heir = {
-				add_character_flag = RICE_niger_delta_waiting_for_artifact
-				add_character_flag = RICE_niger_delta_art_heir
-				set_variable = {
-					name = RICE_niger_delta_art_quality
-					value = flag:fair
-				}
-				trigger_event = {
-					id = niger_delta.0102
-					days = 1
-				}
-			}
-		}
-	}
-}
-
 
 
