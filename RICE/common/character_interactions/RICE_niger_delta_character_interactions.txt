@@ -1,100 +1,639 @@
 ﻿
-RICE_niger_delta_bestow_beaded_crown = {
-	category = interaction_category_friendly
-	common_interaction = yes	
+# RICE_niger_delta_bestow_beaded_crown = {
+# 	category = interaction_category_friendly
+# 	common_interaction = yes	
 
-	desc = RICE_niger_delta_bestow_beaded_crown_desc
+# 	desc = RICE_niger_delta_bestow_beaded_crown_desc
 
-	use_diplomatic_range = no
+# 	use_diplomatic_range = no
 
-	auto_accept = yes
+# 	auto_accept = yes
 	
-	ai_targets = {
-		ai_recipients = neighboring_rulers
-	}
-	ai_targets = {
-		ai_recipients = peer_vassals
-	}
-	ai_targets = {
-		ai_recipients = vassals
-	}
-	ai_target_quick_trigger = {
-		adult = yes
-	}
-	ai_frequency = 24
+# 	ai_targets = {
+# 		ai_recipients = neighboring_rulers
+# 	}
+# 	ai_targets = {
+# 		ai_recipients = peer_vassals
+# 	}
+# 	ai_targets = {
+# 		ai_recipients = vassals
+# 	}
+# 	ai_target_quick_trigger = {
+# 		adult = yes
+# 	}
+# 	ai_frequency = 24
 	
-	#cooldown = { years = 3 }
+# 	#cooldown = { years = 3 }
+# 	cooldown_against_recipient = { years = 10 }
+	
+# 	is_shown = {
+# 		NOT = {
+# 			scope:recipient = scope:actor
+# 		}
+# 		scope:actor = {
+# 			has_title = title:c_ife
+# 			is_ruler = yes
+# 			culture_has_african_heritage_pillar_trigger = yes
+# 		}
+# 		scope:recipient = {
+# 			is_adult = yes
+# 			is_ruler = yes
+# 			culture_has_african_heritage_pillar_trigger = yes
+# 			capital_province = {
+# 				OR = {
+# 					geographical_region = world_africa_west
+# 					geographical_region = world_africa_east
+# 				}
+# 			}
+# 			NOT = { has_character_modifier = RICE_niger_delta_received_beaded_crown }
+# 		}
+# 	}
+	
+# 	is_valid = {
+# 		scope:actor = {
+# 			gold >= 50
+# 			NOT = {
+# 				is_at_war_with = scope:recipient
+# 			}
+# 		}
+# 		scope:recipient = {
+# 			NOT = { has_character_modifier = RICE_niger_delta_received_beaded_crown }
+# 		}
+# 	}
+
+# 	is_highlighted = {
+# 		always = yes
+# 	}
+	
+# 	on_accept = {
+# 		scope:actor = {
+# 			remove_short_term_gold = 50
+# 			trigger_event = tarim_basin.0012
+# 			add_prestige = 100
+# 			dynasty = { add_dynasty_prestige = 10 }	
+# 		}
+# 		scope:recipient = {
+# 			show_as_tooltip = {
+# 				add_character_modifier = {
+# 					modifier = RICE_niger_delta_received_beaded_crown
+# 					years = 10
+# 				}	
+# 				add_prestige = 100
+# 				dynasty = { add_dynasty_prestige = 25 }				
+# 			}
+# 		}
+# 	}
+
+# 	ai_potential = {
+# 		always = yes
+# 	}
+
+# 	ai_will_do = {
+# 		base = 80
+# 		# Increase chances the player will get it from someone
+# 		modifier = {
+# 			factor = 2.2
+# 			scope:recipient = {
+# 				is_ai = no
+# 			}
+# 		}
+# 	}
+# }
+
+
+##################################################
+# Kola Nuts
+# Based on the Fate of Iberia Purchase Truce
+##################################################
+
+# Kola Nuts have even more religious and cultural significance for the Igbo than other African cultures, and represent the Igwebuike philosophy
+RICE_niger_delta_kola_nut_interaction = {
+	#interface_priority = 30
+	category = interaction_category_diplomacy
+	common_interaction = yes
+	desc = RICE_niger_delta_kola_nut_interaction_desc
+	#icon = icon_retreat
+
+	greeting = positive
+	notification_text = RICE_niger_delta_kola_nut_interaction_notification
+	popup_on_receive = yes
+	ai_maybe = yes
+
+	cooldown = { years = 5 }
 	cooldown_against_recipient = { years = 10 }
-	
+
 	is_shown = {
-		NOT = {
-			scope:recipient = scope:actor
-		}
+		NOT = { scope:actor = scope:recipient }
+		# Scope:actor needs to be a culture with the Igwebuike tradition, or Odinala religion
 		scope:actor = {
-			has_title = title:c_ife
-			is_ruler = yes
-			culture_has_african_heritage_pillar_trigger = yes
-		}
-		scope:recipient = {
-			is_adult = yes
-			is_ruler = yes
-			culture_has_african_heritage_pillar_trigger = yes
-			capital_province = {
-				OR = {
-					geographical_region = world_africa_west
-					geographical_region = world_africa_east
+			OR = {
+				culture = {
+					has_cultural_tradition = tradition_RICE_igwebuike
 				}
+				religion = religion:odinala_religion
 			}
-			NOT = { has_character_modifier = RICE_niger_delta_received_beaded_crown }
-		}
-	}
-	
-	is_valid = {
-		scope:actor = {
-			gold >= 50
-			NOT = {
-				is_at_war_with = scope:recipient
+
+			# if you are not independent you should not be able to purchase truce with other fellow vassals only
+			trigger_if = {
+				limit = { is_independent_ruler = no }
+				top_liege = scope:recipient.top_liege
 			}
 		}
+		# Scope:recipient must be landed, and neither over or under scope:actor.
 		scope:recipient = {
-			NOT = { has_character_modifier = RICE_niger_delta_received_beaded_crown }
+			is_landed = yes
+			NOR = {
+				any_liege_or_above = { this = scope:actor }
+				any_vassal_or_below = { this = scope:actor }
+			}
 		}
 	}
 
-	is_highlighted = {
-		always = yes
+	is_valid_showing_failures_only = {
+		# Scope:actor must be an available (adult or child).
+		scope:actor = { is_available = yes }
+		# Scope:recipient must be at least available.
+		scope:recipient = { is_available = yes }
+		# Make sure that scope:actor is going into this with a clean, no-recent/active/forbidden hostilities mindset.
+		scope:actor = {
+			NOR = {
+				# Involved characters can't be on opposite sides in an active war.
+				is_at_war_with = scope:recipient
+				# Allied characters aren't allowed to do this because it _should_ be redundant. Unless you're planning something. Which you shouldn't announce like that.
+				is_allied_to = scope:recipient
+				# And we should just disallow anyone who already has a truce with you, even though I guess you might technically want to replace it.
+				any_truce_holder = { this = scope:recipient }
+			}
+		}
 	}
 	
 	on_accept = {
+		# Notifications with most effects.
 		scope:actor = {
-			remove_short_term_gold = 50
-			trigger_event = tarim_basin.0012
-			add_prestige = 100
-			dynasty = { add_dynasty_prestige = 10 }	
+			send_interface_toast = {
+				title = RICE_niger_delta_kola_nut_interaction.accept.actor.tt
+				left_icon = scope:recipient
+				show_as_tooltip = {
+					add_truce_both_ways = {
+						character = scope:recipient
+						days = purchase_truce_interaction_truce_days_small_value
+						name = RICE_niger_delta_kola_nut_interaction_truce_purchased
+					}
+				}
+			}
+			show_as_tooltip = {
+				RICE_niger_delta_igbo_kola_nut_truce_resource_loss_effect = yes
+			}
 		}
 		scope:recipient = {
+			send_interface_toast = {
+				title = RICE_niger_delta_kola_nut_interaction.accept.recipient.tt
+				left_icon = scope:actor
+				show_as_tooltip = {
+					add_truce_both_ways = {
+						character = scope:actor
+						days = purchase_truce_interaction_truce_days_small_value
+						name = RICE_niger_delta_kola_nut_interaction_truce_purchased
+					}
+				}
+			}
 			show_as_tooltip = {
-				add_character_modifier = {
-					modifier = RICE_niger_delta_received_beaded_crown
-					years = 10
-				}	
-				add_prestige = 100
-				dynasty = { add_dynasty_prestige = 25 }				
+				RICE_niger_delta_igbo_kola_nut_truce_resource_gain_effect = yes
+			}
+		}
+		# Then we apply the actual truce.
+		hidden_effect = {
+			scope:actor = {
+				add_truce_both_ways = {
+					character = scope:recipient
+					days = purchase_truce_interaction_truce_days_small_value
+					name = RICE_niger_delta_kola_nut_interaction_truce_purchased
+				}
+				RICE_niger_delta_igbo_kola_nut_truce_resource_loss_effect = yes
+			}
+			scope:recipient = {
+				RICE_niger_delta_igbo_kola_nut_truce_resource_gain_effect = yes			
+			}
+		}
+	}
+	
+	on_decline = {
+		# Scope:actor gains some stress over the whole ordeal.
+		scope:actor = {
+			send_interface_toast = {
+				title = RICE_niger_delta_kola_nut_interaction.decline.actor.tt
+				left_icon = scope:recipient
+				add_stress = minor_stress_gain
+			}
+		}
+		# Scope:actor loses opinion of scope:recipient.
+		scope:recipient = {
+			send_interface_toast = {
+				title = RICE_niger_delta_kola_nut_interaction.decline.recipient.tt
+				left_icon = scope:actor
+				reverse_add_opinion = {
+					target = scope:actor
+					modifier = warmonger_opinion
+				}
 			}
 		}
 	}
 
-	ai_potential = {
-		always = yes
-	}
+	# Send Options
+	## Small Sum
+	# send_option = {
+	# 	is_shown = { always = yes }
+	# 	flag = pt_sum_small
+	# 	localization = "PT_SUM_SMALL"
+	# }
+	# ## Medium Sum
+	# send_option = {
+	# 	is_shown = {
+	# 		# We use the most expensive of scope:actor or scope:recipient's income, so we check both.
+	# 		scope:actor = {
+	# 			can_make_expensive_purchase_trigger = { PRICE = scope:actor.purchase_truce_interaction_medium_sum }
+	# 			can_make_expensive_purchase_trigger = { PRICE = scope:recipient.purchase_truce_interaction_medium_sum }
+	# 		}
+	# 	}
+	# 	flag = pt_sum_medium
+	# 	starts_enabled = { always = yes }
+	# 	localization = "PT_SUM_MEDIUM"
+	# }
+	# ## Large Sum
+	# send_option = {
+	# 	is_shown = {
+	# 		# We use the most expensive of scope:actor or scope:recipient's income, so we check both.
+	# 		scope:actor = {
+	# 			can_make_expensive_purchase_trigger = { PRICE = scope:actor.purchase_truce_interaction_major_sum }
+	# 			can_make_expensive_purchase_trigger = { PRICE = scope:recipient.purchase_truce_interaction_major_sum }
+	# 		}
+	# 	}
+	# 	flag = pt_sum_large
+	# 	localization = "PT_SUM_LARGE"
+	# }
 
-	ai_will_do = {
-		base = 80
-		# Increase chances the player will get it from someone
+	# AI
+	## Standard Acceptance stuff
+	ai_accept = {
+		# Try to make it 0 for most interactions.
+		base = 0
+
+
+		# AI take opinion into account, but reduced so they'll at least occasionally accept from folks they dislike.
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 0.5
+			desc = AI_OPINION_REASON
+		}
+
+		# Compassion always plays a factor.
 		modifier = {
-			factor = 2.2
+			add = {
+				value = ai_compassion
+				multiply = 0.5
+			}
+			NOT = { ai_compassion = 0 }
+			desc = AI_VALUE_MODIFIER_COMPASSION
+		}
+
+		# Greed always plays a factor.
+		modifier = {
+			add = {
+				value = ai_greed
+				multiply = -0.5
+			}
+			NOT = { ai_greed = 0 }
+			desc = AI_VALUE_MODIFIER_GREED
+		}
+
+		# Ambitious AI like freedom.
+		modifier = {
+			add = -25
+			has_trait = ambitious
+			desc = PT_AI_LIKES_FREEDOM_TO_WAR_REASON
+		}
+
+		# Believes in Igwebuike
+		modifier = {
+			add = 25
+			OR = {
+				culture = {
+					has_cultural_tradition = tradition_RICE_igwebuike
+				}
+				religion = religion:odinala_religion
+			}
+			OR = {
+				has_trait = zealous
+				has_trait = just
+				has_trait = compassionate
+				has_trait = forgiving
+				has_trait = trusting
+			}
+			NOR = {
+				has_trait = cynical
+				has_trait = arbitrary
+				has_trait = vengeful
+				has_trait = callous
+			}
+			desc = RICE_niger_delta_kola_nut_interaction_AI_believes_in_igwebuike
+		}
+
+		# Skeptical of Igwebuike
+		modifier = {
+			add = -25
+			OR = {
+				culture = {
+					has_cultural_tradition = tradition_RICE_igwebuike
+				}
+				religion = religion:odinala_religion
+			}
+			OR = {
+				has_trait = cynical
+				has_trait = arbitrary
+				has_trait = vengeful
+				has_trait = callous
+			}
+			desc = RICE_niger_delta_kola_nut_interaction_AI_skeptical_of_igwebuike
+		}
+
+		# Doesn't understand Igwebuike
+		modifier = {
+			add = -25
+			NOT = {
+				culture = {
+					has_cultural_tradition = tradition_RICE_igwebuike
+				}
+			}
+			desc = RICE_niger_delta_kola_nut_interaction_lacking_igwebuike
+		}
+		
+		# Non-African culture
+		modifier = {
+			add = -50
+			NOT = {
+				culture_has_african_heritage_pillar_trigger = yes
+			}
+			desc = RICE_niger_delta_kola_nut_interaction_non_african
+		}
+
+		# Pacifist AI are happy to avoid war.
+		modifier = {
+			add = 25
+			NOT = { religion = religion:odinala_religion }
+			faith = { has_doctrine_parameter = pacifist_opinion_active }
+			desc = PT_AI_IS_PACIFIST_FAITH
+		}
+		modifier = {
+			add = 25
+			NOT = {
+				culture = {
+					has_cultural_tradition = tradition_RICE_igwebuike
+				}
+			}
+			culture = { 
+				has_cultural_tradition = tradition_pacifism
+			}
+			desc = PT_AI_IS_PACIFIST_CULTURE
+		}
+		# War likeliness.
+		## This is primarily intended to mitigate conquest, invasion, and religious CBs, so we don't account for them.
+		## Scope:recipient has some claim to scope:actor's lands.
+		modifier = {
+			add = -20
+			any_claim = {
+				count = 1
+				exists = holder
+				holder = scope:actor
+			}
+			desc = PT_AI_PERSONALLY_CLAIMS_YOUR_LAND
+		}
+		## Scope:recipient has decent claim to scope:actor's lands.
+		modifier = {
+			add = -40
+			OR = {
+				any_claim = {
+					count >= 2
+					exists = holder
+					holder = scope:actor
+				}
+				any_claim = {
+					count = 1
+					exists = holder
+					holder = scope:actor
+					save_temporary_scope_as = claim_temp
+					scope:recipient = { has_strong_claim_on = scope:claim_temp }
+				}
+			}
+			desc = PT_AI_PERSONALLY_CLAIMS_YOUR_LAND
+		}
+		## Scope:recipient has strong claim to scope:actor's lands.
+		modifier = {
+			add = -60
+			any_claim = {
+				count >= 2
+				exists = holder
+				holder = scope:actor
+				save_temporary_scope_as = claim_temp
+				scope:recipient = { has_strong_claim_on = scope:claim_temp }
+			}
+			desc = PT_AI_PERSONALLY_CLAIMS_YOUR_LAND
+		}
+		## Scope:recipient can de jure grab your land.
+		### Dukes don't take much.
+		modifier = {
+			add = -30
+			highest_held_title_tier = tier_duchy
+			purchase_truce_interaction_recipient_can_de_jure_war_actor_trigger = yes
+			scope:actor = {
+				any_sub_realm_county = {
+					count >= 3
+					any_this_title_or_de_jure_above = { holder = scope:actor }
+				}
+			}
+			desc = PT_AI_DE_JURE_CLAIMS_YOUR_LAND
+		}
+		### Kings need a lot more.
+		modifier = {
+			add = -30
+			highest_held_title_tier = tier_kingdom
+			purchase_truce_interaction_recipient_can_de_jure_war_actor_trigger = yes
+			scope:actor = {
+				any_sub_realm_county = {
+					count >= 10
+					any_this_title_or_de_jure_above = { holder = scope:actor }
+				}
+			}
+			desc = PT_AI_DE_JURE_CLAIMS_YOUR_LAND
+		}
+		### Emperors take quite a bit to get fussed.
+		modifier = {
+			add = -30
+			highest_held_title_tier = tier_empire
+			purchase_truce_interaction_recipient_can_de_jure_war_actor_trigger = yes
+			scope:actor = {
+				any_sub_realm_county = {
+					count >= 20
+					any_this_title_or_de_jure_above = { holder = scope:actor }
+				}
+			}
+			desc = PT_AI_DE_JURE_CLAIMS_YOUR_LAND
+		}
+		# Relative power.
+		## Scope:actor has far fewer levies than scope:recipient.
+		modifier = {
+			add = -30
+			scope:actor.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_far_weaker_value
+			desc = PT_AI_RECIPIENT_IS_MUCH_STRONGER
+		}
+		## Scope:actor has fewer levies than scope:recipient.
+		modifier = {
+			add = -10
+			scope:actor.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_far_weaker_value
+			scope:actor.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_somewhat_weaker_value
+			desc = PT_AI_RECIPIENT_IS_SOMEWHAT_STRONGER
+		}
+		## Scope:actor has roughly equal levies with scope:recipient.
+		modifier = {
+			add = 10
+			scope:actor.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_somewhat_weaker_value
+			scope:actor.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_somewhat_stronger_value
+			desc = PT_AI_RECIPIENT_IS_ROUGHLY_EQUAL
+		}
+		## Scope:actor has more levies than scope:recipient.
+		modifier = {
+			add = 25
+			scope:actor.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_somewhat_stronger_value
+			scope:actor.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_far_stronger_value
+			desc = PT_AI_RECIPIENT_IS_SOMEWHAT_WEAKER
+		}
+		## Scope:actor has far more levies than scope:recipient.
+		modifier = {
+			add = 50
+			scope:actor.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_far_stronger_value
+			desc = PT_AI_RECIPIENT_IS_MUCH_WEAKER
+		}
+
+	}
+	## Performance-enhancement	
+	ai_potential = {
+		is_landed = yes
+		is_at_war = no
+		is_imprisoned = no
+	}
+	ai_target_quick_trigger = { adult = yes }
+	ai_targets = {
+		ai_recipients = neighboring_rulers
+		ai_recipients = peer_vassals
+		max = 10
+	}
+	## Frequency
+	ai_frequency = 60
+	ai_will_do = {
+		base = 0
+
+		# Some personalities & traits just don't want to fight.
+		## Cravens (who aren't also ambitious).
+		modifier = {
+			add = 25
+			has_trait = craven
+			NOT = { has_trait = ambitious }
+		}
+		## Those with chronically low boldness (who aren't also ambitious).
+		modifier = {
+			add = 25
+			ai_boldness <= very_high_negative_ai_value
+			NOT = { has_trait = ambitious }
+		}
+		## Those with good levels of zeal
+		modifier = {
+			add = 25
+			ai_zeal >= medium_positive_ai_value
+			NOT = { has_trait = cynical }
+		}
+		## Those with good levels of compassion
+		modifier = {
+			add = 25
+			ai_compassion >= medium_positive_ai_value
+			NOT = { has_trait = callous }
+		}
+		## Pacifists.
+		modifier = {
+			add = 25
+			faith = { has_doctrine_parameter = pacifist_opinion_active }
+		}
+		modifier = {
+			add = 25
+			culture = { 
+				OR = {
+					has_cultural_tradition = tradition_RICE_igwebuike
+					has_cultural_tradition = tradition_pacifism
+				}
+			}
+		}
+		## Character traits who don't like to bother
+		modifier = {
+			add = -25
+			has_trait = ambitious
+		}
+		modifier  = {
+			add = -25
+			OR = {
+				has_trait = cynical
+				has_trait = arbitrary
+				has_trait = vengeful
+			}
+		}
+		## Arbitrary characters don't get truces to begin with.
+		modifier = {
+			add = -50
+			has_trait = arbitrary
+		}
+		## Character traits who believe in it
+		modifier = {
+			add = 50
+			OR = {
+				has_trait = zealous
+				has_trait = just
+				has_trait = compassionate
+				has_trait = forgiving
+				has_trait = trusting
+			}
+		}
+		# Force checks.
+		## Try to buy truces from somewhat stronger realms...
+		modifier = {
+			add = 50
+			scope:recipient.max_military_strength >= scope:actor.purchase_truce_interaction_recipient_somewhat_stronger_value
+		}
+		## ... and much stronger realms.
+		modifier = {
+			add = 50
+			scope:recipient.max_military_strength >= scope:actor.purchase_truce_interaction_recipient_far_stronger_value
+		}
+		# Finally, calculate factors.
+		## Only buy truces from weaker/roughly-equal realms if you're craven have been at war forever.
+		modifier = {
+			factor = 0
+			max_military_strength <= scope:actor.purchase_truce_interaction_recipient_somewhat_weaker_value
+			NOR = {
+				has_trait = craven
+				days_of_continuous_war <= 3650
+			}
+		}
+		## Never buy a truce from someone who actually can't declare war on you.
+		modifier = {
+			factor = 0
 			scope:recipient = {
-				is_ai = no
+				NOT = { has_any_cb_on = scope:actor }
+			}
+		}
+		## Don't buy truces from people who are likely going to be dead soon, or if you yourself will die soon, since they'll be wasted.
+		modifier = {
+			factor = 0
+			OR = {
+				health <= poor_health
+				scope:recipient = { health <= poor_health }
 			}
 		}
 	}
