@@ -763,7 +763,7 @@ niger_delta.0030 = {
 		cp:councillor_court_chaplain = {
 			add_opinion = {
 				target = root
-				modifier = RICE_niger_delta_choose_new_yam_date
+				modifier = RICE_niger_delta_opinion_choose_new_yam_date
 			}			
 		}
 		every_vassal = {
@@ -773,7 +773,7 @@ niger_delta.0030 = {
 			}
 			add_opinion = {
 				target = root
-				modifier = RICE_niger_delta_choose_new_yam_date
+				modifier = RICE_niger_delta_opinion_choose_new_yam_date
 			}
 		}
 		stress_impact = {
@@ -887,7 +887,43 @@ niger_delta.0033 = {
 			}
 			custom = RICE_niger_delta_every_county
 			random = {
-				chance = 50
+				chance = 40
+				modifier = {
+					has_character_flag = RICE_niger_delta_yam_festival_sacrificed_prisoner
+					add = 5
+				}
+				modifier = {
+					diplomacy >= decent_skill_rating
+					add = 5
+				}
+				modifier = {
+					diplomacy >= high_skill_rating
+					add = 5
+				}
+				modifier = {
+					diplomacy <= mediocre_skill_rating
+					add = -5
+				}
+				modifier = {
+					diplomacy <= low_skill_rating
+					add = -5
+				}
+				modifier = {
+					stewardship >= decent_skill_rating
+					add = 5
+				}
+				modifier = {
+					stewardship >= high_skill_rating
+					add = 5
+				}
+				modifier = {
+					stewardship <= mediocre_skill_rating
+					add = -5
+				}
+				modifier = {
+					stewardship <= low_skill_rating
+					add = -5
+				}
 				add_county_modifier = {
 					modifier = RICE_niger_delta_successful_new_yam_festival
 					years = 5
@@ -897,6 +933,12 @@ niger_delta.0033 = {
 	}
 
 	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_niger_delta_yam_festival_sacrificed_prisoner
+			}
+			remove_character_flag = RICE_niger_delta_yam_festival_sacrificed_prisoner
+		}
 		hidden_effect = {
 			scope:activity = {
 				complete_activity = yes
@@ -971,6 +1013,8 @@ niger_delta.0034 = {
 			}
 		}
 		execute_opinion_effect = { VICTIM = scope:prisoner EXECUTIONER = root }
+		custom_tooltip = niger_delta.0034.a.tooltip
+		add_character_flag = RICE_niger_delta_yam_festival_sacrificed_prisoner
 		stress_impact = {
 			compassionate = minor_stress_impact_gain
 			forgiving = minor_stress_impact_gain
@@ -999,7 +1043,7 @@ niger_delta.0034 = {
 		scope:prisoner = {
 			add_opinion = {
 				target = root
-				modifier = RICE_niger_delta_spared_me_from_execution
+				modifier = RICE_niger_delta_opinion_spared_me_from_execution
 			}			
 		}
 		stress_impact = {
@@ -1014,6 +1058,556 @@ niger_delta.0034 = {
 	}
 
 }
+
+# Courtier gets caught eating yams - what to do?
+niger_delta.0035 = {
+	type = character_event
+	title = niger_delta.0035.t
+	desc = niger_delta.0035.desc
+	theme = corruption
+	
+	left_portrait = {
+		character = root
+		animation = stress
+	}
+	right_portrait = {
+		character = scope:yam_eater
+		animation = shame
+	}
+
+	trigger = {
+		any_courtier = {
+			is_available_ai_adult = yes
+			OR = {
+				has_trait = greedy
+				has_trait = cynical
+				has_trait = gluttonous
+				has_trait = impatient
+				has_trait = lunatic
+				has_trait = possessed
+			}
+		}
+	}
+
+	immediate = {
+		random_courtier = {			
+			limit = {
+				is_available_ai_adult = yes
+				OR = {
+					has_trait = greedy
+					has_trait = cynical
+					has_trait = gluttonous
+					has_trait = impatient
+					has_trait = lunatic
+					has_trait = possessed
+				}
+			}
+			add_piety = -100
+			add_character_modifier = {
+				modifier = RICE_niger_delta_ate_yams_early
+				years = 10
+			}
+			save_scope_as = yam_eater
+		}
+
+	}
+	
+	option = { # Let them go free
+		name = niger_delta.0035.a
+
+		add_piety = -50
+
+		scope:yam_eater = {
+			add_opinion = {
+				target = root
+				modifier = RICE_niger_delta_opinion_spared_me_from_punishment
+			}			
+		}
+
+		add_opinion = {
+			target = scope:yam_eater
+			modifier = RICE_niger_delta_opinion_broke_yam_taboo_not_criminal
+		}
+
+		hidden_effect = {
+			every_courtier_or_guest = {
+				add_opinion = {
+					target = scope:yam_eater
+					modifier = RICE_niger_delta_opinion_broke_yam_taboo_not_criminal
+				}
+			}
+			every_vassal = {
+				add_opinion = {
+					target = scope:yam_eater
+					modifier = RICE_niger_delta_opinion_broke_yam_taboo_not_criminal
+				}
+			}
+		}
+
+		stress_impact = {
+			just = minor_stress_impact_gain
+			vengeful = minor_stress_impact_gain
+			zealous = minor_stress_impact_gain
+		}
+	}
+	
+	option = { # Make them pay a fine
+		name = niger_delta.0035.b
+
+		add_prestige = -50
+
+		scope:yam_eater = {
+			add_opinion = {
+				target = root
+				modifier = RICE_niger_delta_opinion_fair_punishment_but_still_annoyed
+			}		
+		}
+
+		if = {
+			limit = {
+				scope:yam_eater = {
+					is_landed = no
+				}
+			}
+			scope:yam_eater = {	
+				pay_short_term_gold = {
+					target = root
+					gold = 30
+				}
+			}	
+		}
+		else_if = {
+			limit = {
+				scope:yam_eater = {
+					OR = {
+						highest_held_title_tier = tier_county
+						highest_held_title_tier = tier_duchy
+					}
+				}
+			}			
+			scope:yam_eater = {	
+				pay_short_term_gold = {
+					target = root
+					gold = 50
+				}
+			}			
+		}
+		else_if = {
+			limit = {
+				scope:yam_eater = {
+					highest_held_title_tier >= tier_kingdom
+				}
+			}			
+			scope:yam_eater = {	
+				pay_short_term_gold = {
+					target = root
+					gold = 100
+				}
+			}			
+		}
+
+
+		add_opinion = {
+			target = scope:yam_eater
+			modifier = RICE_niger_delta_opinion_broke_yam_taboo_not_criminal
+		}
+
+		hidden_effect = {
+			every_courtier_or_guest = {
+				add_opinion = {
+					target = scope:yam_eater
+					modifier = RICE_niger_delta_opinion_broke_yam_taboo_not_criminal
+				}
+			}
+			every_vassal = {
+				add_opinion = {
+					target = scope:yam_eater
+					modifier = RICE_niger_delta_opinion_broke_yam_taboo_not_criminal
+				}
+			}
+		}
+	}
+	
+	option = { # Declare them a criminal
+		name = niger_delta.0035.c
+
+		add_piety = 50
+		add_prestige = 50
+
+		scope:yam_eater = {
+			add_opinion = {
+				target = root
+				modifier = RICE_niger_delta_opinion_declared_yam_crime
+			}			
+		}
+
+		add_opinion = {
+			target = scope:yam_eater
+			modifier = RICE_niger_delta_opinion_broke_yam_taboo
+		}
+
+		hidden_effect = {
+			every_courtier_or_guest = {
+				add_opinion = {
+					target = scope:yam_eater
+					modifier = RICE_niger_delta_opinion_broke_yam_taboo
+				}
+			}
+			every_vassal = {
+				add_opinion = {
+					target = scope:yam_eater
+					modifier = RICE_niger_delta_opinion_broke_yam_taboo
+				}
+			}
+		}
+
+		stress_impact = {
+			forgiving = minor_stress_impact_gain
+			cynical = minor_stress_impact_gain
+			trusting = miniscule_stress_impact_gain
+			calm = miniscule_stress_impact_gain
+		}
+	}
+
+
+}
+
+
+
+# Tempted to eat yams - will you do it or not?
+niger_delta.0036 = {
+	type = character_event
+	title = niger_delta.0036.t
+	desc = niger_delta.0036.desc
+	theme = corruption
+	override_background = { event_background = RICE_background_benin_village }
+	
+	left_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+	
+	option = { # Resist temptation
+		name = niger_delta.0036.a
+		add_piety = 25
+		stress_impact = {
+			base = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+			gluttonous = medium_stress_impact_gain
+		}
+	}
+	
+	option = { # Give in to temptation
+		name = niger_delta.0036.b
+		add_piety = -25
+		if = {
+			limit = {
+				has_trait = zealous
+			}
+			stress_impact = {
+				zealous = minor_stress_impact_gain
+			}
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			gluttonous = minor_stress_impact_loss
+		}
+		duel = {
+			skill = intrigue
+			value = 10
+			12 = {
+				#desc = niger_delta.0036.b.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+				}
+				add_character_flag = RICE_niger_delta_yam_taboo_avoided_getting_caught
+				custom_tooltip = niger_delta.0036.b.success
+			}
+			8 = {
+				#desc = niger_delta.0036.b.failure
+				add_character_flag = RICE_niger_delta_yam_taboo_got_caught
+				custom_tooltip = niger_delta.0036.b.failure
+			}
+		}
+		trigger_event = niger_delta.0037
+	}
+
+}
+
+
+
+# Tempted to eat yams - result
+niger_delta.0037 = {
+	type = character_event
+	title = niger_delta.0037.t
+	desc = {
+		desc = niger_delta.0037.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_niger_delta_yam_taboo_avoided_getting_caught
+				}
+				desc = niger_delta.0037.desc.not_caught
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_niger_delta_yam_taboo_got_caught
+				}
+				desc = niger_delta.0037.desc.caught
+			}
+		}
+	}
+	theme = corruption
+	override_background = { event_background = RICE_background_benin_village }
+
+	right_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = { has_character_flag = RICE_niger_delta_yam_taboo_avoided_getting_caught }
+			animation = scheme
+		}
+		triggered_animation = {
+			trigger = { has_character_flag = RICE_niger_delta_yam_taboo_got_caught }
+			animation = shame
+		}
+	}
+
+	immediate = {
+
+		save_scope_as = yam_taboo_breaker
+
+		# if = {
+		# 	limit = {
+		# 		is_independent_ruler = no
+		# 	}
+		# 	liege = {
+		# 		save_scope_as = character_liege
+		# 	}
+		# }
+
+		if = {
+			limit = {
+				has_character_flag = RICE_niger_delta_yam_taboo_got_caught
+			}
+			add_character_modifier = {
+				modifier = RICE_niger_delta_ate_yams_early
+				years = 10
+			}
+		}
+
+
+	}
+	
+	option = { # Didn't get caught
+		name = niger_delta.0037.a
+		trigger = {
+			has_character_flag = RICE_niger_delta_yam_taboo_avoided_getting_caught
+		}
+	}
+	
+	# option = { # Pay a fine to liege to avoid being branded a criminal
+	# 	name = niger_delta.0037.b
+	# 	trigger = {
+	# 		has_character_flag = RICE_niger_delta_yam_taboo_got_caught
+	# 		is_independent_ruler = no
+	# 	}
+	# 	stress_impact = {
+	# 		wrathful = miniscule_stress_impact_gain
+	# 		greedy = minor_stress_impact_gain
+	# 	}
+	# 	if = {
+	# 		limit = {
+	# 			highest_held_title_tier > tier_duchy
+	# 		}
+	# 		pay_short_term_gold = {
+	# 			target = scope:character_liege
+	# 			gold = 100
+	# 		}
+	# 	}
+	# 	else = {
+	# 		pay_short_term_gold = {
+	# 			target = scope:character_liege
+	# 			gold = 50
+	# 		}
+	# 	}
+
+	# 	add_character_flag = RICE_niger_delta_yam_taboo_paid_liege
+
+	# 	scope:character_liege = {
+	# 		trigger_event = niger_delta.0038
+	# 	}
+
+	# }
+	
+	option = { # If independent, pay a fine to the religious authorities
+		name = niger_delta.0037.b
+		trigger = {
+			has_character_flag = RICE_niger_delta_yam_taboo_got_caught
+			#is_independent_ruler = yes
+		}
+
+		add_piety = -50
+
+		stress_impact = {
+			wrathful = miniscule_stress_impact_gain
+			greedy = minor_stress_impact_gain
+		}		
+
+		if = {
+			limit = {
+				highest_held_title_tier > tier_duchy
+			}
+			remove_short_term_gold = 100
+		}
+		else = {
+			remove_short_term_gold = 50
+		}
+
+	}
+	
+	option = { # Don't pay a fine and risk pissing off a lot of people or being branded a criminal
+		name = niger_delta.0037.c
+		trigger = {
+			has_character_flag = RICE_niger_delta_yam_taboo_got_caught
+		}
+		stress_impact = {
+			just = miniscule_stress_impact_gain
+			zealous = medium_stress_impact_gain
+		}
+		add_piety_level = -1
+		# if = {
+		# 	limit = {
+		# 		is_independent_ruler = no
+		# 	}
+		# 	custom_tooltip = niger_delta.0037.d.tooltip
+		# 	add_character_flag = RICE_niger_delta_yam_taboo_did_not_pay_liege
+		# 	scope:character_liege = {
+		# 		add_opinion = {
+		# 			target = root
+		# 			modifier = RICE_niger_delta_opinion_declared_yam_crime
+		# 		}	
+		# 		trigger_event = niger_delta.0038		
+		# 	}			
+		# }
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_niger_delta_yam_taboo_avoided_getting_caught
+			}
+			remove_character_flag = RICE_niger_delta_yam_taboo_avoided_getting_caught
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_niger_delta_yam_taboo_got_caught
+			}
+			remove_character_flag = RICE_niger_delta_yam_taboo_got_caught
+		}
+	}
+
+}
+
+
+# Liege reacts to vassal eating yams
+# niger_delta.0038 = {
+# 	type = character_event
+# 	title = niger_delta.0038.t
+# 	desc = niger_delta.0038.desc
+# 	theme = corruption
+# 	override_background = { event_background = RICE_background_benin_village }
+
+# 	left_portrait = {
+# 		character = scope:yam_taboo_breaker
+# 		animation = shame
+# 	}
+
+# 	right_portrait = {
+# 		character = root
+# 		animation = stress
+# 	}
+
+# 	immediate = {
+# 		if = {
+# 			limit = {
+# 				scope:yam_taboo_breaker = {
+# 					has_character_flag = RICE_niger_delta_yam_taboo_paid_liege
+# 				}
+# 			}
+# 			show_as_tooltip = {
+# 				scope:yam_taboo_breaker = {
+# 					stress_impact = {
+# 						wrathful = miniscule_stress_impact_gain
+# 						greedy = minor_stress_impact_gain
+# 					}
+# 					if = {
+# 						limit = {
+# 							scope:yam_taboo_breaker = { highest_held_title_tier > tier_duchy }
+# 						}
+# 						pay_short_term_gold = {
+# 							target = scope:character_liege
+# 							gold = 100
+# 						}
+# 					}
+# 					else = {
+# 						pay_short_term_gold = {
+# 							target = scope:character_liege
+# 							gold = 50
+# 						}
+# 					}
+# 				}	
+# 			}
+# 		}
+# 		else = {
+# 			show_as_tooltip = {
+# 				scope:yam_taboo_breaker = {
+# 					stress_impact = {
+# 						just = miniscule_stress_impact_gain
+# 						zealous = medium_stress_impact_gain
+# 					}
+# 					add_piety_level = -1					
+# 				}
+# 				scope:character_liege = {
+# 					add_opinion = {
+# 						target = scope:yam_taboo_breaker
+# 						modifier = RICE_niger_delta_opinion_declared_yam_crime
+# 					}		
+# 				}	
+# 			}			
+# 		}		
+# 	}
+	
+# 	option = { # Ok
+# 		name = niger_delta.0038.a
+# 	}
+
+# 	after = {
+# 		if = {
+# 			limit = {
+# 				scope:yam_taboo_breaker = {
+# 					has_character_flag = RICE_niger_delta_yam_taboo_paid_liege
+# 				}
+# 			}
+# 			scope:yam_taboo_breaker = {
+# 				remove_character_flag = RICE_niger_delta_yam_taboo_paid_liege
+# 			}
+# 		}
+# 		if = {
+# 			limit = {
+# 				scope:yam_taboo_breaker = {
+# 					has_character_flag = RICE_niger_delta_yam_taboo_did_not_pay_liege
+# 				}
+# 			}
+# 			scope:yam_taboo_breaker = {
+# 				remove_character_flag = RICE_niger_delta_yam_taboo_did_not_pay_liege
+# 			}
+# 		}
+# 	}
+
+# }
+
+
 
 
 
