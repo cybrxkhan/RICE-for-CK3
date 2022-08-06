@@ -1,5 +1,196 @@
 ﻿
 
+
+RICE_restore_ooni_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_benin_kingdom.dds"
+
+	desc = RICE_restore_ooni_decision_desc
+	selection_tooltip = RICE_restore_ooni_decision_tooltip
+	major = yes
+
+	ai_check_interval = 120
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		faith = faith:west_african_orisha_pagan
+		NOT = { faith = { exists = religious_head } }
+	}
+
+	is_valid = {
+		completely_controls = title:c_ife
+		faith = faith:west_african_orisha_pagan
+		piety_level >= high_piety_level
+		#highest_held_title_tier >= tier_duchy # Must be at least a duke
+		sub_realm_size >= 5
+		#num_sinful_traits < 1
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		is_independent_ruler = yes
+	}
+
+	effect = {
+
+		custom_tooltip = RICE_restore_ooni_decision_effect_tooltip
+
+		religion:west_african_orisha_religion = {
+			save_scope_as = yoruba
+		}
+
+		show_as_tooltip = {
+			RICE_niger_delta_restore_ooni_effect = yes
+		}
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_restore_ooni_decision_context_tooltip
+		}
+
+		trigger_event = {
+			id = niger_delta.0006 # middle_east_decisions.0003
+		}
+
+	}
+	
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = { #Always do it when possible.
+		base = 100
+		ai_value_modifier = {
+			ai_zeal = 1.0
+		}
+		modifier = {
+			factor = 0.1
+			has_trait = cynical
+		}
+	}
+}
+
+
+
+RICE_niger_delta_restore_ooni_to_ife = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_benin_kingdom.dds"
+
+	desc = RICE_niger_delta_restore_ooni_to_ife_desc
+	selection_tooltip = RICE_niger_delta_restore_ooni_to_ife_tooltip
+	major = yes
+
+	ai_check_interval = 12
+
+	is_shown = {
+		is_ruler = yes
+		is_landed = yes
+		faith = faith:west_african_orisha_pagan
+		NOT = {
+			has_title = title:d_ooni_of_ife
+		}
+		NOT = { title:c_ife.holder = { has_title = title:d_ooni_of_ife } }
+		title:d_ooni_of_ife.holder = {
+			NOT = { 	
+				has_opinion_modifier = { #Not accepting it if you conquered it yourself.
+					target = root
+					modifier = declared_war
+				}
+			}
+			NOT = { 	
+				has_opinion_modifier = { #Not accepting it if you conquered it yourself.
+					target = root
+					modifier = revoked_title
+				}
+			}
+		}
+		NOT = { has_character_flag = flag_already_given_ife_once }
+	}
+
+	is_valid = {
+		faith = faith:west_african_orisha_pagan
+		NOT = { has_title = title:d_ooni_of_ife }
+		custom_tooltip = {
+			text = RICE_ife_is_capital
+			NOT = { capital_county = { this = title:c_ife } }
+		}
+		highest_held_title_tier > 2 # Only dukes or above
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+		custom_tooltip = {
+			text = hof_exists_tt
+			faith = { exists = religious_head }
+		}
+		custom_tooltip = {
+			text = RICE_ife_held_by_you_or_vassal_tt
+			OR = {
+				title:c_ife.holder = { 	
+					any_liege_or_above = { this = root }
+				}
+				title:c_ife.holder = { this = root }
+			}
+		}
+	}
+
+	effect = {
+		add_piety = 1000
+		add_character_flag = flag_already_given_ife_once
+		create_title_and_vassal_change = {
+			type = returned
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		title:c_ife = {
+			change_title_holder = {
+				holder = title:d_ooni_of_ife.holder
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+
+		title:d_ooni_of_ife.holder = {
+			set_realm_capital = title:c_ife
+			add_opinion = {
+				target = prev
+				modifier = RICE_restored_ooni_opinion
+			}
+		}
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_restore_ooni_decision_context_tooltip
+		}
+
+	}
+	
+	ai_potential = {
+		faith = faith:west_african_orisha_pagan
+		highest_held_title_tier > 2 # Only dukes or above
+	}
+
+	ai_will_do = { #Do it always, for coherence.
+		base = 100
+		modifier = {
+			factor = 0
+			title:c_ife.holder = {
+				OR = {
+					is_ai = no
+					any_liege_or_above = { is_ai = no }  # AI will never take Ife province away from a player.
+				}
+			}
+		}
+		modifier = {
+			factor = 0.1
+			has_trait = cynical
+		}
+	}
+}
+
 RICE_niger_delta_request_beaded_crown = {
 	picture = "gfx/interface/illustrations/decisions/decision_RICE_benin_kingdom.dds"
 	major = yes
