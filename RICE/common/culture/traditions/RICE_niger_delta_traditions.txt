@@ -32,6 +32,7 @@ tradition_RICE_kinship_based_craft_guilds = {
 				}
 			}
 		}
+		NOT = { has_cultural_tradition = tradition_RICE_ritual_hegemony }
 	}
 	can_pick = {
 		OR = {
@@ -151,6 +152,78 @@ tradition_RICE_igwebuike = {
 		ai_war_cooldown = 5
 		ai_boldness = -10
 		ai_compassion = 10
+	}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						any_in_list = { list = traits this = flag:ethos_egalitarian }
+						any_in_list = { list = traits this = flag:ethos_communal }
+						any_in_list = { list = traits this = flag:ethos_spiritual }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_egalitarian_spiritual_or_communal_desc
+				}
+			}
+			if = {
+				limit = {
+					scope:character = {
+						is_at_war = yes
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = is_at_war_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 100
+	}
+}
+
+tradition_RICE_ritual_hegemony = {
+	category = regional
+
+	layers = {
+		0 = intrigue
+		1 = mena
+		4 = RICE_palm_fronds.dds
+	}
+
+	is_shown = {
+		has_cultural_pillar = heritage_yoruba
+		NOT = { has_cultural_tradition = tradition_RICE_kinship_based_craft_guilds }
+	}
+	can_pick = {
+		has_cultural_pillar = heritage_yoruba
+		NOT = { has_cultural_tradition = tradition_RICE_kinship_based_craft_guilds }
+	}
+	
+	parameters = {
+		unlock_rice_african_royal_guilds = yes
+		unlock_rice_ancestor_worship = yes
+	}
+	character_modifier = {
+		domain_limit = -1 # -2
+		monthly_county_control_change_factor = -0.2
+		monthly_prestige_gain_mult = 0.03
+		monthly_piety_gain_mult = 0.03
+		vassal_opinion = 5
+		domain_tax_same_faith_mult_even_if_baron = 0.1
 	}
 	
 	cost = {
