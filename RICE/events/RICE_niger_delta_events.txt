@@ -2560,7 +2560,24 @@ niger_delta.0050 = {
 				}
 			}
 		}
-		scope:scoped_ruler = {
+		add_opinion = {
+			target = scope:scoped_ruler
+			modifier = RICE_niger_delta_opinion_good_ooni_gift
+		}	
+		# It happens in Ife
+		title:b_ile-ife.title_province = {	
+			spawn_activity = {
+				owner = scope:scoped_ruler
+				type = activity_niger_delta_beaded_crown
+			}	
+		}
+		scope:scoped_ruler = {			
+			if = {
+				limit = {
+					has_character_modifier = RICE_niger_delta_uncrowned
+				}
+				remove_character_modifier = RICE_niger_delta_uncrowned
+			}
 			trigger_event = niger_delta.0051
 		}
 		ai_chance = {
@@ -2590,13 +2607,34 @@ niger_delta.0050 = {
 				}
 			}
 		}
-		scope:scoped_ruler = {
-			trigger_event = niger_delta.0051
+		add_opinion = {
+			target = scope:scoped_ruler
+			modifier = RICE_niger_delta_opinion_bad_ooni_gift
+		}
+		# It happens in Ife
+		title:b_ile-ife.title_province = {	
+			spawn_activity = {
+				owner = scope:scoped_ruler
+				type = activity_niger_delta_beaded_crown
+			}	
 		}
 		stress_impact = {
 			humble = minor_stress_impact_gain
 			greedy = minor_stress_impact_gain
 			trusting = minor_stress_impact_gain
+		}
+		scope:scoped_ruler = {			
+			if = {
+				limit = {
+					has_character_modifier = RICE_niger_delta_uncrowned
+				}
+				remove_character_modifier = RICE_niger_delta_uncrowned
+			}
+			add_character_modifier = {
+				modifier = RICE_niger_delta_ooni_scorn
+				years = 10
+			}
+			trigger_event = niger_delta.0051
 		}
 		ai_chance = {
 			base = 0
@@ -2624,17 +2662,11 @@ niger_delta.0050 = {
 				}
 			}
 			modifier = {
-				add = 50
+				add = 40
 				opinion = {
 					target = scope:scoped_ruler
 					value <= medium_negative_opinion
 				}
-			}
-		}
-		scope:scoped_ruler = {
-			add_character_modifier = {
-				modifier = RICE_niger_delta_ooni_scorn
-				years = 10
 			}
 		}
 	}
@@ -2647,8 +2679,28 @@ niger_delta.0050 = {
 				var:RICE_ooni_gift_type = flag:no_gift
 			}
 		}
-		scope:scoped_ruler = {
-			trigger_event = niger_delta.0051
+		add_opinion = {
+			target = scope:scoped_ruler
+			modifier = RICE_niger_delta_opinion_bad_ooni_gift
+		}
+		scope:scoped_ruler = {			
+			if = {
+				limit = {
+					has_character_modifier = RICE_niger_delta_uncrowned
+				}
+				remove_character_modifier = RICE_niger_delta_uncrowned
+			}
+			add_character_modifier = {
+				modifier = RICE_niger_delta_ooni_scorn
+				years = 10
+			}
+		}
+		# It happens in Ife
+		title:b_ile-ife.title_province = {	
+			spawn_activity = {
+				owner = scope:scoped_ruler
+				type = activity_niger_delta_beaded_crown
+			}	
 		}
 		stress_impact = {
 			base = medium_stress_impact_gain
@@ -2657,6 +2709,9 @@ niger_delta.0050 = {
 			wrathful = minor_stress_impact_gain
 			vengeful = minor_stress_impact_gain
 			ambitious = minor_stress_impact_gain
+		}	
+		scope:scoped_ruler = {	
+			trigger_event = niger_delta.0051
 		}
 		ai_chance = {
 			base = 50
@@ -2701,15 +2756,12 @@ niger_delta.0050 = {
 		}
 	}
 
-	# Reject the no gift option
+	# Reject the gift
 	option = {
 		name = niger_delta.0050.d
 		#trigger = {
 		#	var:RICE_ooni_gift_type = flag:no_gift
 		#}
-		scope:scoped_ruler = {
-			trigger_event = niger_delta.0053
-		}
 		stress_impact = {
 			base = medium_stress_impact_gain
 			humble = minor_stress_impact_gain
@@ -2718,11 +2770,26 @@ niger_delta.0050 = {
 			compassionate = minor_stress_impact_gain
 			generous = minor_stress_impact_gain
 		}
+		add_opinion = {
+			target = scope:scoped_ruler
+			modifier = RICE_niger_delta_opinion_insulting_gift
+		}
 		scope:scoped_ruler = {
-			add_character_modifier = {
-				modifier = RICE_niger_delta_ooni_denounced
-				years = 10
+			if = {
+				limit = {
+					var:RICE_ooni_gift_type = flag:no_gift
+				}
+				add_character_modifier = {
+					modifier = RICE_niger_delta_ooni_denounced_permanent
+				}
 			}
+			else = {
+				add_character_modifier = {
+					modifier = RICE_niger_delta_ooni_denounced
+					years = 10
+				}
+			}
+			trigger_event = niger_delta.0053
 		}
 		ai_chance = {
 			base = 10
@@ -2731,7 +2798,7 @@ niger_delta.0050 = {
 				factor = 0
 				NOT = {
 					scope:scoped_ruler = {
-						var:RICE_guild_type = flag:no_gift
+						var:RICE_ooni_gift_type = flag:no_gift
 					}
 				}
 				OR = {
@@ -2762,14 +2829,14 @@ niger_delta.0050 = {
 				has_relation_nemesis = scope:scoped_ruler
 			}
 			modifier = {
-				add = 25
+				add = 10
 				opinion = {
 					target = scope:scoped_ruler
 					value <= low_negative_opinion
 				}
 			}
 			modifier = {
-				add = 50
+				add = 20
 				opinion = {
 					target = scope:scoped_ruler
 					value <= medium_negative_opinion
@@ -2782,6 +2849,282 @@ niger_delta.0050 = {
 
 
 
+# Ooni accepts the gift
+niger_delta.0051 = {
+	type = character_event
+	title = niger_delta.0051.t
+	desc = {
+		desc = niger_delta.0051.desc
+		triggered_desc = {
+			trigger = {
+				scope:ooni = {
+					has_opinion_modifier = {
+						modifier = RICE_niger_delta_opinion_bad_ooni_gift
+						target = scope:scoped_ruler
+					}
+				}
+			}
+			desc = niger_delta.0051.desc.bad_gift
+		}
+	}
+	theme = realm
+	
+	left_portrait = {
+		character = scope:ooni
+		animation = personality_rational
+	}
+	
+	right_portrait = {
+		character = scope:scoped_ruler
+		animation = throne_room_bow_1
+	}
+
+	immediate = {
+
+
+
+		show_as_tooltip = {
+
+			# It happens in Ife
+			title:b_ile-ife.title_province = {	
+				spawn_activity = {
+					owner = scope:scoped_ruler
+					type = activity_niger_delta_beaded_crown
+				}	
+			}
+
+			if = {
+				limit = {
+					has_character_modifier = RICE_niger_delta_uncrowned
+				}
+				remove_character_modifier = RICE_niger_delta_uncrowned
+			}
+
+			if = {
+				limit = {
+					scope:ooni = {
+						has_opinion_modifier = {
+							modifier = RICE_niger_delta_opinion_bad_ooni_gift
+							target = scope:scoped_ruler
+						}
+					}
+				}
+				scope:ooni = {
+					add_opinion = {
+						target = scope:scoped_ruler
+						modifier = RICE_niger_delta_opinion_bad_ooni_gift
+					}
+				}
+			}
+			else = {
+				scope:ooni = {
+					add_opinion = {
+						target = scope:scoped_ruler
+						modifier = RICE_niger_delta_opinion_good_ooni_gift
+					}
+				}
+			}
+
+			if = {
+				limit = {
+					has_character_modifier = RICE_niger_delta_ooni_scorn
+				}				
+				add_character_modifier = {
+					modifier = RICE_niger_delta_ooni_scorn
+					years = 10
+				}
+			}
+
+
+			if = {
+				limit = {
+					scope:scoped_ruler = {
+						var:RICE_ooni_gift_type = flag:sacrifice
+					}
+				}
+				scope:scoped_ruler = {
+					remove_short_term_gold = 50
+				}
+			}
+			else_if = {
+				limit = {
+					scope:scoped_ruler = {
+						var:RICE_ooni_gift_type = flag:oduduwa_shrine
+					}
+				}
+				scope:scoped_ruler = {
+					remove_short_term_gold = 100
+					add_piety = 150
+				}
+			}
+			else_if = {
+				limit = {
+					scope:scoped_ruler = {
+						var:RICE_ooni_gift_type = flag:sacred_vow
+					}
+				}
+				scope:scoped_ruler = {
+					add_prestige = -100
+					add_hook = {
+						target = scope:ooni
+						type = loyalty_hook
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					scope:scoped_ruler = {
+						var:RICE_ooni_gift_type = flag:art
+					}
+				}
+				scope:scoped_ruler = {
+					remove_short_term_gold = 100
+					add_prestige = 150
+				}
+				
+			}
+			else_if = {
+				limit = {
+					scope:scoped_ruler = {
+						var:RICE_ooni_gift_type = flag:land
+					}
+				}
+				create_title_and_vassal_change = {
+					type = granted
+					save_scope_as = change
+				}
+				scope:county = {
+					change_title_holder = {
+						holder = scope:other_character
+						change = scope:change
+					}
+				}
+				resolve_title_and_vassal_change = scope:change
+			}
+			else_if = {
+				limit = {
+					scope:scoped_ruler = {
+						var:RICE_ooni_gift_type = flag:low_concubine
+					}
+				}
+				scope:ooni = {
+					make_concubine = scope:other_character	
+				}		
+			}
+			else_if = {
+				limit = {
+					scope:scoped_ruler = {
+						var:RICE_ooni_gift_type = flag:no_gift
+					}
+				}
+				scope:scoped_ruler = {
+					add_prestige = -100
+					add_piety = -100
+				}
+			}
+		}
+
+	}
+	
+	option = { # Ok
+		name = niger_delta.0051.a
+		trigger_event = {
+			id = niger_delta.0052
+			days = { 10 20 }
+		} 
+		if = {
+			limit = { has_variable = RICE_ooni_gift_type }
+			remove_variable = RICE_ooni_gift_type
+		}
+	}
+
+}
+
+
+# Returning from Ife
+niger_delta.0052 = {
+	type = character_event
+	title = niger_delta.0052.t
+	desc = niger_delta.0052.desc
+	theme = realm
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Ok
+		name = niger_delta.0052.a
+	}
+
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				complete_activity = yes
+			}
+		}
+	}
+
+}
+
+# Denounced by the Ooni
+niger_delta.0053 = {
+	type = character_event
+	title = niger_delta.0053.t
+	desc = niger_delta.0053.desc
+	theme = realm
+	
+	left_portrait = {
+		character = scope:ooni
+		animation = rage
+	}
+	
+	right_portrait = {
+		character = root
+		animation = shame
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			scope:ooni = {
+				add_opinion = {
+					target = scope:scoped_ruler
+					modifier = RICE_niger_delta_opinion_insulting_gift
+				}
+			}
+			if = {
+				limit = {
+					has_character_modifier = RICE_niger_delta_ooni_denounced_permanent
+				}		
+				add_character_modifier = {
+					modifier = RICE_niger_delta_ooni_denounced_permanent
+				}				
+			}	
+			else = {
+				add_character_modifier = {
+					modifier = RICE_niger_delta_ooni_denounced
+					years = 10
+				}	
+			}		
+		}
+	}
+	
+	option = { # Ok
+		name = niger_delta.0053.a
+		if = {
+			limit = {
+				var:RICE_ooni_gift_type = flag:no_gift
+			}
+			add_prestige = -1000
+			add_piety = -1000
+		}
+		if = {
+			limit = { has_variable = RICE_ooni_gift_type }
+			remove_variable = RICE_ooni_gift_type
+		}
+	}
+
+}
 
 
 
