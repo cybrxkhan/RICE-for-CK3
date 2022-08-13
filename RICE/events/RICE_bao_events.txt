@@ -1,0 +1,1155 @@
+# Adapted from Shatzi's work for the Bretons
+
+namespace = bao
+
+###############################################################################
+# 
+# Breizh Additional Ornaments (BAO) : A complement to Cybrxkhan's RICE's immersion pack for Brittany 
+#
+# Thanks a ridiculously lot to Cybrxkhan and his lovely discord for inspiring me to learn how to mod CK3 and
+# giving me profuse advice on how to do it despite being slightly annoyed by my zoomer manners.
+# 
+# bao.0001 - bao.0049 - Misc
+# bao.0050 - bao.00XX - Ar korriganed!!!
+# bao.0100 - bao.01xx - Vikings
+# bao.0200 - bao.02xx - horses -> misc
+#
+###############################################################################
+
+
+# Misc events
+
+
+# The Sonerien Du
+bao.0001 = { # Two Black Musicians
+	type = character_event
+	title = bao.0001.t
+	desc = bao.0001.desc
+	theme = intrigue
+	override_background = { event_background = throne_room }
+
+	right_portrait = {
+		character = root
+		animation = scheme
+	}
+	lower_left_portrait = {
+		character = scope:vip_one
+	}
+	lower_center_portrait = {
+		character = scope:vip_two
+	}
+
+	trigger = { 
+	#	BAO_has_land_trigger = yes
+  		NOT = { 
+			root = { 
+				has_character_flag = bao_sonerien_du_happened
+			} 
+		}
+		has_trait = lifestyle_reveler
+		culture = {
+			OR = {
+				this = culture:breton
+				any_parent_culture_or_above = {
+					this = culture:breton
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = 0.2
+			has_trait = Wrathful
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = 2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = 3
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = 3
+			has_trait = reveler_1
+		}
+		modifier = {
+			add = 5
+			has_trait = reveler_2
+		}
+		modifier = {
+			add = 10
+			has_trait = reveler_3
+		}
+	}
+
+	immediate = { # Create the sonerien targets
+		random_held_title = {
+			limit = { tier = tier_county }
+			save_scope_as = county
+		}
+		create_character = {
+			employer = root
+			age = { 20 32 }
+			gender = male
+			culture = root.culture
+			faith = root.faith
+			trait = education_diplomacy_3
+			trait = beauty_good_3
+			trait = gluttonous
+			trait = gregarious
+			trait = greedy
+			trait = poet
+			trait = reveler_2
+			dynasty = generate
+			save_scope_as = vip_one
+		}
+		create_character = {
+			employer = root
+			age = { 20 32 }
+			gender = male
+			culture = root.culture
+			faith = root.faith
+			martial = 12
+			trait = education_diplomacy_4
+			trait = physique_good_2
+			trait = gluttonous
+			trait = gregarious
+			trait = patient
+			trait = reveler_2
+			dynasty = generate
+			save_scope_as = vip_two
+		}
+  		add_character_flag = bao_sonerien_du_happened
+	}
+
+	option = { # Punish them!
+		name = bao.0001.a
+		stress_impact = {
+			base = minor_stress_impact_gain
+			just = major_stress_impact_gain
+			calm = medium_stress_impact_gain
+			compassionate = major_stress_impact_gain
+		}
+        add_gold = { 50 150 }
+        scope:county = {
+            add_county_modifier = {
+                modifier = bao_sonerien_du_punished
+                days = 1095
+			}
+		}
+		scope:vip_one = {		
+			death = {
+				death_reason = death_execution
+				killer = root
+			}
+		}
+		scope:vip_two = {		
+			death = {
+				death_reason = death_execution
+				killer = root
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = bao.0001.info
+		}
+	}
+
+	option = { # Save them!
+		name = bao.0001.b
+		add_prestige = -100
+		stress_impact = {
+			callous = medium_stress_impact_gain
+			arbitrary = medium_stress_impact_gain
+			sadistic = medium_stress_impact_gain
+		}
+		scope:county = {
+			add_county_modifier = {
+				modifier = bao_sonerien_du_saved
+				days = 1460
+			}
+		}
+		hidden_effect = {
+			scope:vip_one = {		
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+		hidden_effect = {
+			scope:vip_two = {
+				death = {
+					death_reason = death_disappearance	
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = bao.0001.info
+		}
+	}
+
+	option = { # Befriend Them!
+		name = bao.0001.c
+		add_prestige = -200
+		if = {
+			limit = {
+				OR = {
+					has_trait = shy
+					has_trait = callous
+					has_trait = paranoid
+				}
+			}
+			stress_impact = {
+				shy = minor_stress_impact_gain
+				callous = minor_stress_impact_gain
+				paranoid = minor_stress_impact_gain
+			}
+		}
+		else = {
+			stress_impact = {
+				base = medium_stress_impact_loss
+				compassionate = minor_stress_impact_loss
+				gregarious = minor_stress_impact_loss
+			}
+		}
+		add_character_modifier = {
+			modifier = bao_sonerien_du_befriended
+			years = 10
+		}
+		set_relation_friend = scope:vip_one
+		set_relation_friend = scope:vip_two
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = bao.0001.info
+		}
+	}
+}
+
+# The Saintly Well
+ bao.0002 = { # Toss a Coin for Sant Guenole!
+	type = character_event
+	title = bao.0002.t
+	desc = bao.0002.desc
+	theme = RICE_theme_breton_woods
+	right_portrait = {
+		character = root
+		animation = disbelief
+	}
+
+	trigger = { 
+	#		BAO_has_land_trigger = yes
+		culture = {
+			OR = {
+				this = culture:breton
+				any_parent_culture_or_above = {
+					this = culture:breton
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = cynical
+		}
+	}
+
+	option = { # Toss a coin!
+		name = bao.0002.a
+		remove_short_term_gold = 1
+		add_character_modifier = {
+			modifier = bao_tossed_a_coin
+			years = 3
+		}
+		stress_impact = {
+			zealous = minor_stress_impact_loss
+			cynical = minor_stress_impact_gain
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = bao.0002.info
+		}
+	}
+	option = { # Nuh-uh
+		name = bao.0002.b
+		add_prestige = 25
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			cynical = minor_stress_impact_loss
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = bao.0002.info
+		}
+	}
+
+}
+
+# Korriganed steal gold coins
+bao.0050 = { # Little Buggers
+	type = character_event
+	title = bao.0050.t
+	desc = bao.0050.desc
+	theme = realm
+
+	right_portrait = {
+		character = root
+		animation = anger
+	}
+
+	trigger = { 
+	#	BAO_has_land_trigger = yes
+		culture = {
+			OR = {
+				this = culture:breton
+				any_parent_culture_or_above = {
+					this = culture:breton
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 0
+		modifier = {
+			add = 0.5
+			has_trait = greedy
+		}
+		modifier = {
+			add = 0.5
+			has_trait = callous
+		}
+		modifier = {
+			add = 0.5
+			has_trait = sadistic
+		}
+		modifier = {
+			add = 0.5
+			has_trait = lifestyle_herbalist
+		}
+	}
+
+	option = { # Little fuckers! 
+		name = bao.0050.a
+		remove_short_term_gold = 3
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			paranoid = medium_stress_impact_gain
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = bao.0050.info
+		}
+	}
+ }
+
+ bao.0051 = { # Korrigans witch circle!
+	type = character_event
+	title = bao.0051.t
+	desc = bao.0051.desc
+	theme = medicine
+	override_background = { event_background = RICE_background_breton_woods }
+
+	right_portrait = {
+		character = root
+		animation = admiration
+	}
+
+	trigger = { 
+		culture = {
+			OR = {
+				this = culture:breton
+				any_parent_culture_or_above = {
+					this = culture:breton
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 0
+		modifier = {
+			add = 0.5
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.5
+			has_trait = generous
+		}
+		modifier = {
+			add = 0.5
+			has_trait = compassionate
+		}
+		modifier = {
+			add = 0.5
+			has_trait = lifestyle_herbalist
+		}
+	}
+
+	option = { # Sell the mushrooms to the market
+		name = bao.0051.a
+		add_gold = { 5 25 }
+		stress_impact = {
+			greedy = minor_stress_impact_loss
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = bao.0051.info
+		}
+	}
+	option = { # Eat the mushrooms !
+		name = bao.0051.b
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+			sadistic = miniscule_stress_impact_gain
+		}
+		add_character_modifier = {
+			modifier = bao_healthy_mushrooms
+			years = 10
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = bao.0051.info
+		}
+	}
+ }
+
+ bao.0052 = { # What to do when you meet a korrigan ?
+	type = character_event
+	title = bao.0052.t
+	desc = bao.0052.desc
+	theme = feast_activity
+
+	right_portrait = {
+		character = root
+		animation = personality_forgiving
+	}
+	left_portrait = {
+		character = scope:ward
+		animation = personality_irrational
+	}
+
+	trigger = { 
+	#	BAO_has_land_trigger = yes
+		any_relation = {
+			type = ward
+			is_available = yes
+			OR = {
+				has_trait = greedy
+				has_trait = callous
+				has_trait = sadistic
+				has_trait = diligent
+				has_trait = generous
+				has_trait = compassionate
+				has_trait = lifestyle_herbalist
+				has_trait = charming
+				has_trait = pensive
+				has_trait = curious
+			}
+		}
+		culture = {
+			OR = {
+				this = culture:breton
+				any_parent_culture_or_above = {
+					this = culture:breton
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 0
+		modifier = {
+			add = 0.5
+			has_trait = greedy
+		}
+		modifier = {
+			add = 0.5
+			has_trait = callous
+		}
+		modifier = {
+			add = 0.5
+			has_trait = sadistic
+		}
+		modifier = {
+			add = 0.5
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.5
+			has_trait = generous
+		}
+		modifier = {
+			add = 0.5
+			has_trait = compassionate
+		}
+		modifier = {
+			add = 0.5
+			has_trait = lifestyle_herbalist
+		}
+	}
+
+	immediate = {
+		random_relation = {
+			type = ward
+			limit = {
+				is_available = yes
+				OR = {
+					has_trait = greedy
+					has_trait = callous
+					has_trait = sadistic
+					has_trait = diligent
+					has_trait = generous
+					has_trait = compassionate
+					has_trait = lifestyle_herbalist
+					has_trait = charming
+					has_trait = pensive
+					has_trait = curious
+				}				
+			}
+			save_scope_as = ward
+		}
+	}
+
+	option = { # 1 Run !
+		name = bao.0052.a
+		custom_tooltip = bao.0052.a.info
+		remove_short_term_gold = 1
+		stress_impact = {
+			craven = minor_stress_impact_loss
+			brave = minor_stress_impact_gain
+		}
+		add_character_modifier = {
+			modifier = bao_run
+			years = 10
+		}
+	}
+	option = { # 2 Dance and chant !
+		name = bao.0052.b
+		custom_tooltip = bao.0052.b.info
+		add_prestige = 50
+		stress_impact = {
+			gregarious = minor_stress_impact_loss
+			shy = minor_stress_impact_gain
+		}
+	}
+	option = { # 3 Don't follow them ! 
+		name = bao.0052.c
+		custom_tooltip = bao.0052.c.info
+		add_character_modifier = {
+			modifier = bao_stay
+			years = 10
+		}
+		stress_impact = {
+			paranoid = minor_stress_impact_loss
+			trusting = minor_stress_impact_gain
+		}
+	}
+	option = { # 4 Don't vex them ! 
+		name = bao.0052.d
+		custom_tooltip = bao.0052.d.info
+		add_character_modifier = {
+			modifier = bao_vex
+			years = 10
+		}
+		stress_impact = {
+			compassionate = minor_stress_impact_loss
+			callous = minor_stress_impact_gain
+		}
+	}
+	option = { # 5 Watch the signs !
+		name = bao.0052.e
+		custom_tooltip = bao.0052.e.info
+		add_piety = 50
+		stress_impact = {
+			generous = minor_stress_impact_loss
+			greedy = minor_stress_impact_gain
+		}
+	}
+}
+
+# Vikings Skirmishes 
+#  bao.0100 = { # Raiding
+# 	type = character_event
+# 	title = bao.0100.t
+# 	desc = bao.0100.desc
+# 	theme = war
+# 	override_background = { event_background = burning_building }
+
+#  	right_portrait = {
+# 		character = scope:county_controller 
+# 		animation = disbelief
+# 	}
+
+# 	immediate = {
+# 		random_sub_realm_county = {
+# 			limit = { tier = tier_county }
+# 			save_scope_as = county
+# 			county_controller = {
+# 				save_scope_as = county_controller
+# 			}
+# 		}
+# 		scope:county_controller = {
+# 			save_scope_as = county_controller
+# 		}
+# 		scope:county = {
+# 			add_county_modifier = {
+#                 modifier = bao_reaved
+#                 days = 730
+# 			}
+# 		}
+# 	}
+
+# 	option = { # Nuhuh
+# 		name = bao.0100.a
+# 		add_prestige = miniscule_prestige_loss
+# 		stress_impact = {
+# 			greedy = minor_stress_impact_loss
+# 			compassionate = minor_stress_impact_gain
+# 			generous = minor_stress_impact_gain
+# 			callous = minor_stress_impact_loss
+# 		}
+# 	}
+# 	option = { # Help 'em
+# 		name = bao.0100.b
+# 		custom_tooltip = bao.0100.info
+# 		stress_impact = {
+# 			greedy = minor_stress_impact_gain
+# 			compassionate = minor_stress_impact_loss
+# 			generous = minor_stress_impact_loss
+# 			callous = minor_stress_impact_gain
+# 		}
+# 		remove_short_term_gold = 50
+# 		scope:county = {
+# 			add_county_modifier = {
+#                 modifier = bao_secured
+#                 days = 730
+# 			}
+# 		}
+# 	}
+#  }
+#  bao.0101 = { # Vikingr wishes to join
+#  	type = character_event
+#  	title = bao.0101.t
+#  	desc = bao.0101.desc
+# 	theme = realm
+# 	override_background = { event_background = burning_building }
+
+# 	right_portrait = {
+# 		character = root
+# 		animation = disbelief
+# 	}
+# 	left_portrait = {
+# 		character = scope:viking
+# 		animation = scheme
+# 	}
+
+# 	weight_multiplier = {
+# 		base = 1
+# 		modifier = {
+# 			add = 3
+# 			has_trait = zealous
+# 		}
+# 		modifier = {
+# 			add = 3
+# 			has_trait = cynical
+# 		}
+# 	}
+
+# 	immediate = {
+# 		create_character = {
+# 			employer = root
+# 			age = { 20 32 }
+# 			gender = male
+# 			culture = culture:norse
+# 			faith = faith:norse_pagan
+# 			template = fp1_jomsviking_bigwig 
+# 			save_scope_as = viking
+# 		}
+# 	}
+
+# 	option = { # Kill it with fire!
+# 		name = bao.0101.a
+# 		custom_tooltip = bao.0101.info
+# 		stress_impact = {
+# 			just = major_stress_impact_gain
+# 			callous = minor_stress_impact_loss
+# 			zealous = major_stress_impact_loss
+# 		}
+# 		scope:viking = {
+# 			death = {
+# 				killer = root
+# 				death_reason = death_execution
+# 			}
+# 		}
+# 		add_gold = 10
+# 		add_piety = medium_piety_gain
+# 	}
+# 	option = { # Recruit and convert
+# 		name = bao.0101.b
+# 		stress_impact = {
+# 			just = minor_stress_impact_gain
+# 			callous = medium_stress_impact_gain
+# 			arbitrary = minor_stress_impact_loss
+# 			zealous = minor_stress_impact_loss
+# 		}
+# 		scope:viking = {
+# 			set_character_faith_with_conversion	= faith:catholic
+# 			add_character_flag = bao_viking_recruit
+# 		}
+# 		add_piety = medium_piety_loss
+# 	}
+# 	option = { # Recruit and ask for loot
+# 		name = bao.0101.c
+# 		custom_tooltip = bao.0101.join
+# 		stress_impact = {
+# 			just = minor_stress_impact_gain
+# 			callous = medium_stress_impact_gain
+# 			arbitrary = minor_stress_impact_loss
+# 			zealous = major_stress_impact_gain
+# 		}
+# 		add_gold = 10
+# 		add_piety = major_piety_loss
+# 		scope:viking = {
+# 			add_character_flag = bao_viking_recruit	
+# 		}
+# 	}
+#  }
+#  bao.0102 = { # Oh no ?? A viking betrayal ? Really ? Who could have forseen it coming
+# 	type = character_event
+# 	title = bao.0102.t
+# 	desc = bao.0102.desc
+# 	theme = realm
+
+# 	right_portrait = {
+# 		character = root
+# 		animation = disbelief
+# 	}
+#    left_portrait = {
+# 		character = scope:viking
+# 		animation = scheme
+# 	}
+   
+# 	trigger = {
+# 		any_courtier = {
+# 			has_character_flag = bao_viking_recruit
+# 		}
+# 	}
+	
+# 	weight_multiplier = { # all vikings are not bastards
+# 		base = 0.5
+# 	}
+
+# 	immediate = {
+# 		random_courtier = { 
+# 			limit = {
+# 				OR = {
+# 				has_character_flag = bao_viking_recruit
+# 	#			has_character_flag = bao_viking_savee
+# 				}
+# 			}
+# 			save_scope_as = viking
+# 		}
+# 		root = {
+# 			save_scope_as = host
+# 		}
+# 	}
+
+#    option = { # Bastard ran off!
+# 	   name = bao.0102.a
+# 	   custom_tooltip = bao.0102.info
+# 	   stress_impact = {
+# 			base = 50
+# 			vengeful = major_stress_impact_gain
+# 			forgiving = minor_stress_impact_loss
+# 		}
+# 		scope:host = {
+# 			remove_courtier_or_guest = {
+# 				character = scope:viking
+# 			}
+# 		}
+# 	   remove_short_term_gold = medium_gold_value
+# 	   add_prestige = major_prestige_loss
+# 	}
+# 	option = { # Bastard ran off! and I'll bloody kill them!
+# 		name = bao.0102.b
+# 		stress_impact = {
+# 			base = 50
+# 		vengeful = major_stress_impact_loss
+# 		forgiving = major_stress_impact_gain
+#  		}
+# 		scope:host = {
+# 			remove_courtier_or_guest = {
+# 				character = scope:viking
+# 			}
+# 		}
+# 		remove_short_term_gold = medium_gold_value
+# 		add_prestige = major_prestige_loss
+# 		start_scheme = {
+# 		   target = scope:viking
+# 		   type = murder
+# 	   }
+# 	}
+#  }
+#  bao.0103 = { # Vikingr captives
+# 	type = character_event
+# 	title = bao.0103.t
+# 	desc = bao.0103.desc
+# 	theme = realm
+
+# 	right_portrait = {
+# 		character = root
+# 		animation = disbelief
+# 	}
+# 	left_portrait = {
+# 		character = scope:viking
+# 		animation = beg	
+# 	}
+
+# 	weight_multiplier = {
+# 		base = 2
+# 		modifier = {
+# 			add = 3
+# 			has_trait = zealous
+# 		}
+# 		modifier = {
+# 			add = 3
+# 			has_trait = cynical
+# 		}
+# 	}
+
+# 	immediate = {
+# 		random_list = {
+# 			25 = { 
+# 				create_character = {
+# 					employer = root
+# 					age = { 16 40 }
+# 					culture = culture:norse
+# 					faith = faith:norse_pagan
+# 					template = priest_character_template 
+# 					save_scope_as = viking
+# 				}
+# 			}
+# 			25 = {
+# 				create_character = {
+# 					employer = root
+# 					age = { 16 40 }
+# 					culture = culture:norse
+# 					faith = faith:norse_pagan
+# 					template = servant_character 
+# 					save_scope_as = viking
+# 				}
+# 			}
+# 			25 = { 
+# 				create_character = {
+# 					employer = root
+# 					age = { 16 40 }
+# 					culture = culture:norse
+# 					faith = faith:norse_pagan
+# 					template = fp1_ms_godi_character 
+# 					save_scope_as = viking
+# 				}
+# 			}
+# 			25 = {
+# 				create_character = {
+# 					employer = root
+# 					age = { 16 40 }
+# 					culture = culture:norse
+# 					faith = faith:norse_pagan
+# 					template = stewardship_wealth_focus_friend_template 
+# 					save_scope_as = viking
+# 				}
+# 			}
+# 		}
+# 	}
+
+# 	option = { # Kill it with fire!
+# 		name = bao.0103.a
+# 		custom_tooltip = bao.0103.info
+# 		stress_impact = {
+# 			just = major_stress_impact_gain
+# 			callous = minor_stress_impact_loss
+# 		#	arbitrary = minor_stress_impact_loss
+# 			zealous = major_stress_impact_loss
+# 		}
+# 		scope:viking = {
+# 			death = {
+# 				killer = root
+# 				death_reason = death_execution
+# 			}
+# 		}
+# 		add_piety = medium_piety_gain
+# 	}
+# 	option = { # Recruit and convert
+# 		name = bao.0103.b
+# 		stress_impact = {
+# 			just = minor_stress_impact_gain
+# 			callous = medium_stress_impact_gain
+# 			arbitrary = minor_stress_impact_loss
+# 			zealous = minor_stress_impact_loss
+# 		}
+# 		scope:viking = {
+# 			set_character_faith_with_conversion	= faith:catholic
+# 			add_character_flag = bao_viking_recruit
+# 		}
+# 		add_piety = medium_piety_loss
+# 	}
+# 	option = { # Recruit and ask for loot
+# 		name = bao.0103.c
+# 		stress_impact = {
+# 			just = minor_stress_impact_gain
+# 			callous = medium_stress_impact_gain
+# 			arbitrary = minor_stress_impact_loss
+# 			zealous = major_stress_impact_gain
+# 		}
+# 		add_piety = major_piety_loss
+# 		scope:viking = {
+# 			add_character_flag = bao_viking_recruit
+# 		}
+# 	}
+#  }
+
+# bao.0104 = { # I am become racist to ex-vikings.
+# 	type = character_event
+# 	title = bao.0104.t
+# 	desc = bao.0104.desc
+# 	theme = realm
+# 	override_background = { event_background = burning_building }
+# 	left_portrait = {
+# 		character = scope:viking
+# 		animation = shock
+# 	}
+# 	right_portrait = {
+# 		character = root
+# 		animation = anger
+# 	}
+
+# 	trigger = {
+# 		any_courtier = {
+# 			has_character_flag = bao_viking_recruit
+# 		}
+# 		OR = {
+# 			has_trait = lunatic_genetic
+# 			has_trait = lunatic_1
+# 			has_trait = possessed_1
+# 			has_trait = possessed_genetic
+# 		}
+# 	}
+# 	weight_multiplier = {
+# 		base = 10
+# 		modifier = { 
+# 			add = 3
+# 			has_trait = zealous
+# 		}
+# 		modifier = { 
+# 			add = 3
+# 			has_trait = callous
+# 		}
+# 		modifier = { 
+# 			add = 3
+# 			has_trait = sadistic
+# 		}
+# 		modifier = { 
+# 			add = 3
+# 			has_trait = vengeful
+# 		}
+# 		modifier = { 
+# 			add = 15
+# 			has_trait = paranoid
+# 		}
+# 	}
+# 	immediate = {
+# 		random_courtier = { 
+# 			limit = {
+# 	#			OR = {
+# 				has_character_flag = bao_viking_recruit
+# 	#			has_character_flag = bao_viking_savee
+# 	#			}
+# 			}
+# 			save_scope_as = viking
+# 		}
+# 		root = {
+# 			save_scope_as = host
+# 		}
+# 	}
+# 	option = { # To the stake !
+# 		name = bao.0104.a
+# 	#	custom_tooltip = bao.0104.info
+# 		stress_impact = {
+# 			base = -50
+# 			vengeful = major_stress_impact_loss
+# 			forgiving = minor_stress_impact_gain
+# 		}
+# 		scope:viking = {
+# 			death = {
+# 				killer = root
+# 				death_reason = death_execution
+# 			}
+# 		}
+# 		add_prestige = medium_prestige_loss
+# 		add_piety = major_piety_loss
+# 	}
+# 	option = { # To the (extra) stakes!
+# 		name = bao.0104.b
+# 		stress_impact = {
+# 			base = -50
+# 			vengeful = major_stress_impact_loss
+# 			forgiving = major_stress_impact_gain
+# 		}
+# 		every_courtier = {
+# 			limit = {
+# 				has_character_flag = bao_viking_recruit
+# 			}
+# 			death = {
+# 				killer = root
+# 				death_reason = death_execution
+# 			}
+# 		}
+# 		add_prestige = major_prestige_loss
+# 		add_piety = major_piety_loss
+# 	}
+# 	option = { # Ward save
+# 		name = bao.0104.c
+# 		stress_impact = {
+# 			base = 150
+# 			vengeful = major_stress_impact_gain
+# 			forgiving = major_stress_impact_loss
+# 		}
+# 		scope:host = {
+# 			remove_courtier_or_guest = {
+# 				character = scope:viking
+# 			}
+# 		}
+# 		add_prestige = major_prestige_loss
+# 		add_piety = major_piety_loss
+# 	}
+# 	option = { # Ward save 2
+# 		name = bao.0104.d
+# 		stress_impact = {
+# 			base = 300
+# 			vengeful = major_stress_impact_gain
+# 			forgiving = major_stress_impact_loss
+# 		}
+# 		every_courtier = {
+# 			limit = {
+# 				has_character_flag = bao_viking_recruit
+# 			}
+# 				remove_courtier_or_guest = yes
+# 		}
+# 		add_prestige = major_prestige_loss
+# 		add_piety = major_piety_loss
+# 	}
+# }
+
+
+
+
+# bao.0108 viking assassin
+# bao.0105 viking captive
+# bao.0106 viking concubine
+# bao.0107 viking captive saved
+
+# Horses !
+
+
+
+
+bao.0200 = { # Horses gift sent!
+	type = character_event
+	title = bao.0200.t
+	desc = bao.0200.desc
+	theme = RICE_theme_breton_castle
+
+	left_portrait = scope:actor
+	right_portrait = scope:recipient
+
+	immediate = {
+		title:d_brittany = { #For loc.
+			save_scope_as = brittany_duchy
+		}
+	}
+
+	option = { # OK
+		name = bao.0200.a
+		scope:recipient = {
+			show_as_tooltip = {
+				add_character_modifier = {
+					modifier = bao_character_breton_horses
+					years = 25
+				}
+				add_opinion = {
+					target = scope:actor
+					modifier = bao_opinion_gifted_breton_horse
+				}
+			}
+			trigger_event = bao.0201
+		}
+	}
+}
+
+bao.0201 = { # Gift target receives Kalymnian Sponges haha jk its horse gotchu good
+	type = letter_event
+	opening = {
+		desc = bao.0201.opening
+	}
+	desc = bao.0201.desc
+
+	sender = scope:actor
+
+	immediate = {
+		title:d_brittany = { #For loc.
+			save_scope_as = brittany_duchy
+		}
+		add_character_modifier = {
+			modifier = bao_character_breton_horses
+			years = 25
+		}
+		add_opinion = {
+			target = scope:actor
+			modifier = bao_opinion_gifted_breton_horse
+		}	
+	}
+
+	option = {
+		name = bao.0201.a
+	}
+}
