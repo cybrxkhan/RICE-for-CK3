@@ -3734,12 +3734,13 @@ niger_delta.0078 = {
 ######################################################################################
 
 
-# Learning about Barallete, a special language of the knife-makers
+# Elephant was recently killed by hunters - share the elephant meat or not?
+# Based on a legend from Benin
 niger_delta.0100 = {
 	type = character_event
 	title = niger_delta.0100.t
 	desc = niger_delta.0100.desc
-	theme = diplomacy_foreign_affairs_focus
+	theme = RICE_theme_dahomey_hills
 	
 	left_portrait = {
 		character = root
@@ -3747,7 +3748,15 @@ niger_delta.0100 = {
 	}
 	
 	trigger = {
-		RICE_galicia_region_trigger = yes
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				OR = {
+					geographical_region = world_africa_west	
+					geographical_region = world_africa_east
+				}
+			}
+		}
 	}
 
 	weight_multiplier = {
@@ -3762,11 +3771,105 @@ niger_delta.0100 = {
 		}
 		modifier = {
 			add = 0.2
-			has_trait = paranoid
+			has_trait = humble
 		}
 		modifier = {
 			add = -0.2
-			has_trait = trusting
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+	}
+
+	immediate = {
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				any_county_province = {
+					OR = {
+						geographical_region = world_africa_west	
+						geographical_region = world_africa_east
+					}		
+				}
+			}	
+			save_scope_as = county
+		}
+	}
+
+	option = { # give it to everyone
+		name = niger_delta.0100.a
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_niger_delta_shared_elephant_meat
+				years = 10
+			}
+		}
+		stress_impact = {
+			arrogant = miniscule_stress_impact_gain
+			greedy = miniscule_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+			gluttonous = minor_stress_impact_gain
+		}
+	}
+
+	option = { # keep it for myself
+		name = niger_delta.0100.b
+		add_prestige = 50
+		if = {
+			limit = {
+				has_trait = generous
+			}
+			stress_impact = {
+				generous = minor_stress_impact_gain
+			}
+		}
+		else = {
+			stress_impact = {
+				base = minor_stress_impact_loss
+				gluttonous = minor_stress_impact_loss
+			}
+		}
+	}
+}
+
+
+# Eating pounded yams
+niger_delta.0101 = {
+	type = character_event
+	title = niger_delta.0101.t
+	desc = niger_delta.0101.desc
+	theme = feast_activity
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	
+	trigger = {
+		culture = {
+			OR = {
+				has_cultural_pillar = heritage_akan
+				has_cultural_pillar = heritage_yoruba
+			}
+		}		
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
 		}
 		modifier = {
 			add = 0.2
@@ -3776,27 +3879,829 @@ niger_delta.0100 = {
 			add = -0.2
 			has_trait = arrogant
 		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
 	}
 
-	option = { # ok
-		name = niger_delta.0100.a
-		add_character_modifier = {
-			modifier = RICE_galicia_learning_about_barallete
-			years = 10
+	option = { # give it to everyone
+		name = niger_delta.0101.a
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			gluttonous = miniscule_stress_impact_loss
+		}
+	}
+}
+
+
+# Ọmọge omi / Daughter of the water
+niger_delta.0102 = {
+	type = character_event
+	title = niger_delta.0102.t
+	desc = niger_delta.0102.desc
+	theme = realm
+	
+	left_portrait = root
+	
+	right_portrait = {
+		character = scope:courtier
+		animation = flirtation_left
+	}
+	
+	
+	trigger = {
+		any_courtier = {
+			is_available_ai_adult = yes
+			is_female = no
+			NOR = {
+				has_trait = chaste
+				has_trait = diligent
+			}
+			NOT = { has_sexuality = homosexual }
+			NOT = { has_sexuality = asexual }
+		}		
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = sadistic
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+	}
+
+	immediate = {
+		random_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+				is_female = no
+				NOR = {
+					has_trait = chaste
+					has_trait = diligent
+				}
+				NOT = { has_sexuality = homosexual }
+				NOT = { has_sexuality = asexual }
+			}
+			save_scope_as = courtier
+		}
+	}
+
+	option = { # Booo
+		name = niger_delta.0102.a
+		scope:courtier = {
+			add_opinion = {
+				target = root
+				modifier = RICE_niger_delta_opinion_chastised_me
+			}
+			reverse_add_opinion = {
+				target = root
+				modifier = RICE_niger_delta_opinion_didnt_do_job
+			}		
 		}
 		stress_impact = {
-			arrogant = miniscule_stress_impact_gain
-			paranoid = miniscule_stress_impact_gain
+			lustful = miniscule_stress_impact_gain
+			forgiving = miniscule_stress_impact_gain
+			content = miniscule_stress_impact_gain
 			lazy = miniscule_stress_impact_gain
 		}
 	}
 
-	option = { # ok
-		name = niger_delta.0100.b
-		add_prestige = 50
+	option = { # Who cares
+		name = niger_delta.0102.b
+		add_prestige = -25
+		scope:courtier = {
+			add_opinion = {
+				target = root
+				modifier = RICE_niger_delta_opinion_fun_chat
+			}
+			reverse_add_opinion = {
+				target = root
+				modifier = RICE_niger_delta_opinion_fun_chat
+			}		
+		}
 		stress_impact = {
-			humble = miniscule_stress_impact_gain
-			patient = miniscule_stress_impact_gain
+			chaste = miniscule_stress_impact_gain
+			diligent = minor_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
 		}
 	}
 }
+
+
+# Prominent blacksmith claims to have met a water spirit
+niger_delta.0103 = {
+	type = character_event
+	title = niger_delta.0103.t
+	desc = niger_delta.0103.desc
+	theme = RICE_theme_benin_village
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	
+	trigger = {
+		OR = {
+			religion = religion:odinala_religion
+			religion = religion:west_african_orisha_religion
+		}	
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+	}
+
+	option = { # He's a fool
+		name = niger_delta.0103.a
+		add_piety = 20
+		stress_impact = {
+			humble = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # He's probably making it up
+		name = niger_delta.0103.b
+		add_prestige = 20
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+# Woman collecting water for water pots at Yoruba shrine
+niger_delta.0104 = {
+	type = character_event
+	title = niger_delta.0104.t
+	desc = niger_delta.0104.desc
+	theme = RICE_theme_benin_village
+	
+	right_portrait = root
+	
+	
+	trigger = {
+		OR = {
+			religion = religion:odinala_religion
+			religion = religion:west_african_orisha_religion
+		}	
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+	}
+
+	option = { # Ok
+		name = niger_delta.0104.a
+		add_piety = 20
+	}
+}
+
+
+# Wooden decor, Yoruba style?
+niger_delta.0105 = {
+	type = character_event
+	title = niger_delta.0105.t
+	desc = niger_delta.0105.desc
+	theme = stewardship_domain_focus
+	override_background = { event_background = RICE_background_yoruba_shrine }
+	
+	right_portrait = {
+		character = root
+		animation = personality_coward
+	}
+	
+	
+	trigger = {
+		culture = {
+			has_cultural_pillar = heritage_yoruba
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = -0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+	}
+
+	option = { # Buy the head
+		name = niger_delta.0105.a
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		add_prestige = 100
+		stress_impact = {
+			humble = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Buy the head
+		name = niger_delta.0105.b
+		stress_impact = {
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+
+# Ancient bronze head is discovered - what to do with it?
+niger_delta.0106 = {
+	type = character_event
+	title = niger_delta.0106.t
+	desc = niger_delta.0106.desc
+	theme = RICE_theme_nigeria_mountains
+	
+	right_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+	
+	
+	trigger = {
+		capital_province = {
+			geographical_region = RICE_niger_delta_region
+		}	
+		culture = {
+			OR = {
+				has_cultural_tradition = tradition_RICE_kinship_based_craft_guilds
+				has_cultural_tradition = tradition_RICE_ritual_hegemony
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+	}
+
+	option = { # Bury the head
+		name = niger_delta.0106.a
+		add_piety = 50
+		stress_impact = {
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Bring it to ancestral shrine
+		name = niger_delta.0106.b
+		dynasty = { add_dynasty_prestige = 15 }
+		stress_impact = {
+			lazy = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+
+# Glassmakers doing well
+niger_delta.0107 = {
+	type = character_event
+	title = niger_delta.0107.t
+	desc = niger_delta.0107.desc
+	theme = RICE_theme_yoruba_shrine
+	override_icon = { reference = "gfx/interface/icons/event_types/type_stewardship.dds" }
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	
+	trigger = {
+		has_title = title:c_ife
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	option = { # OK
+		name = niger_delta.0107.a
+		title:c_ife = {
+			add_county_modifier = {
+				modifier = RICE_niger_delta_glassmaking_industry_good
+				years = 10
+			}
+		}
+	}
+}
+
+
+# Envoys return from trip to Ife
+niger_delta.0108 = {
+	type = character_event
+	title = niger_delta.0108.t
+	desc = niger_delta.0108.desc
+	theme = diplomacy_foreign_affairs_focus
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	
+	trigger = {
+		NOT = { has_title = title:c_ife }
+		religion = religion:west_african_orisha_religion
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	option = { # OK
+		name = niger_delta.0108.a
+		add_piety = 50
+		add_prestige = 50
+	}
+}
+
+
+# Chew more kola nuts or not?
+niger_delta.0109 = {
+	type = character_event
+	title = niger_delta.0109.t
+	desc = niger_delta.0109.desc
+	theme = stewardship_duty_focus
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	
+	trigger = {
+		culture = {
+			OR = {
+				culture_has_west_african_heritage_pillar_trigger = yes
+				culture_has_central_african_heritage_pillar_trigger = yes
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+	}
+
+	option = { # OK
+		name = niger_delta.0109.a
+		trigger = {
+			OR = {
+				gold >= 40
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 40
+		add_character_modifier = {
+			modifier = RICE_niger_delta_regularly_chews_kola_nuts
+			years = 10
+		}
+		stress_impact = {
+			lazy = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # OK
+		name = niger_delta.0109.b
+		stress_impact = {
+			diligent = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+
+
+
+# Breaking in the kola nut every morning
+niger_delta.0110 = {
+	type = character_event
+	title = niger_delta.0110.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					culture = {
+						has_cultural_tradition = tradition_RICE_igwebuike
+					}
+				}
+				desc = niger_delta.0110.desc.culture
+			}
+			triggered_desc = {
+				trigger = {
+					religion = religion:odinala_religion
+				}
+				desc = niger_delta.0110.desc.faith
+			}
+		}
+	}
+	theme = diplomacy_family_focus
+	
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	
+	trigger = {
+		OR = {
+			culture = {
+				has_cultural_tradition = tradition_RICE_igwebuike
+			}
+			religion = religion:odinala_religion
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	option = { # OK
+		name = niger_delta.0110.a
+		add_piety = 20
+		stress_impact = {
+			lazy = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # OK
+		name = niger_delta.0110.b
+		trigger = {
+			has_trait = lazy
+		}
+		trait = lazy
+		add_piety = -40
+		stress_impact = {
+			lazy = minor_stress_impact_loss
+		}
+	}
+}
+
+
+
+# Welcome a prominent visitor with a kola nut
+niger_delta.0111 = {
+	type = character_event
+	title = niger_delta.0111.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					culture = {
+						has_cultural_tradition = tradition_RICE_igwebuike
+					}
+				}
+				desc = niger_delta.0111.desc.culture
+			}
+			triggered_desc = {
+				trigger = {
+					religion = religion:odinala_religion
+				}
+				desc = niger_delta.0111.desc.faith
+			}
+		}
+		desc = niger_delta.0111.desc.conclusion
+	}
+	theme = diplomacy_foreign_affairs_focus
+	
+	right_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	
+	trigger = {
+		OR = {
+			culture = {
+				has_cultural_tradition = tradition_RICE_igwebuike
+			}
+			religion = religion:odinala_religion
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+	}
+
+	option = { # OK
+		name = niger_delta.0111.a
+		add_prestige = 25
+		add_piety = 25
+	}
+}
+
+
+
+
+
+# Judgment using a kola nut
+niger_delta.0112 = {
+	type = character_event
+	title = niger_delta.0112.t
+	desc = niger_delta.0112.desc
+	theme = realm
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	
+	trigger = {
+		religion = religion:odinala_religion
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+	}
+
+	option = { # OK
+		name = niger_delta.0112.a
+		add_piety = 20
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # OK
+		name = niger_delta.0112.b
+		add_prestige = 20
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+
+
+
+
+
