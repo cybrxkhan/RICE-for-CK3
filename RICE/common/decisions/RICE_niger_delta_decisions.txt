@@ -1,5 +1,124 @@
 ﻿
 
+##################################################
+# Convert Realm to Feudalism (West African Pagan)
+# Adapted from vanilla for RICE faiths
+##################################################
+
+# A decision for West African pagans added by RICE to feudalise without reforming.
+RICE_convert_whole_realm_to_feudalism_west_african_pagan_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_realm.dds"
+	major = yes
+	desc = convert_whole_realm_to_feudalism_west_african_pagan_decision_desc
+
+	ai_check_interval = 36
+
+	is_shown = {
+		# Only tribals need formalise.
+		has_government = tribal_government
+		# Unreformed West African Pagans are our targets.
+		faith = {
+			# Unreformed West African Pagans are our targets.
+			OR = {
+				religion = religion:odinala_religion
+			}
+			custom_tooltip = {
+				text = faith_qualifies_for_west_african_pagan_feudalisation_trigger.tt
+				has_doctrine_parameter = unreformed
+			}
+		}
+	}
+
+	is_valid = {
+		# Repeat the faith requirements, so that the player knows what's up.
+		faith = {
+			# Unreformed West African Pagans are our targets.
+			OR = {
+				religion = religion:odinala_religion
+			}
+			custom_tooltip = {
+				text = faith_qualifies_for_west_african_pagan_feudalisation_trigger.tt
+				has_doctrine_parameter = unreformed
+			}
+		}
+		# Must have suitable authority.
+		has_realm_law = tribal_authority_3
+		# Independents only.
+		is_independent_ruler = yes
+		# West Africans feudalise from large empires.
+		calc_true_if = {
+			amount >= 4
+			realm_size >= minor_realm_size
+			highest_held_title_tier >= tier_kingdom
+			custom_tooltip = {
+				text = convert_whole_realm_to_feudalism_west_african_pagan_decision.tt.vassal_count
+				any_vassal = { count >= convert_whole_realm_to_feudalism_west_african_pagan_decision_vassal_count_value }
+			}
+			prestige_level >= high_prestige_level
+			piety_level >= high_piety_level
+			custom_tooltip = {
+				text = convert_whole_realm_to_feudalism_west_african_pagan_decision.tt.wa_capital_development
+				capital_county = {
+					development_level >= convert_whole_realm_to_feudalism_west_african_pagan_decision_wa_capital_development_value
+					title_province = { geographical_region = world_africa_west }
+				}
+			}
+		}
+		# You need to have 70% of all (non-regional/unique) tribal innovations!
+		custom_description = {
+			text = has_all_tribal_innovations
+			subject = root.culture
+			culture = {
+				calc_true_if = {
+					amount >= 9
+					has_innovation = innovation_motte
+					has_innovation = innovation_catapult
+					has_innovation = innovation_barracks
+					has_innovation = innovation_mustering_grounds
+					has_innovation = innovation_bannus
+					has_innovation = innovation_quilted_armor
+					has_innovation = innovation_gavelkind
+					has_innovation = innovation_crop_rotation
+					has_innovation = innovation_city_planning
+					has_innovation = innovation_casus_belli
+					has_innovation = innovation_plenary_assemblies
+					has_innovation = innovation_ledger
+					has_innovation = innovation_development_01
+					has_innovation = innovation_currency_01
+				}
+			}
+		}
+	}
+
+	cost = { prestige = 500 }
+
+	effect = {
+		trigger_event = major_decisions.0001
+		save_scope_as = actor
+		convert_whole_realm_to_feudalism_effect = yes
+		hidden_effect = {
+			every_vassal = {
+				trigger_event = {
+					id = major_decisions.0002
+					days = 3
+				}
+			}
+		}
+	}
+
+	ai_potential = {
+		# Cut down on checks for other tribals.
+		exists = capital_county.title_province
+		capital_county.title_province = { geographical_region = world_africa_west }
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+
+
 
 RICE_restore_ooni_decision = {
 	picture = "gfx/interface/illustrations/decisions/decision_RICE_benin_kingdom.dds"
@@ -86,7 +205,7 @@ RICE_niger_delta_restore_ooni_to_ife = {
 	is_shown = {
 		is_ruler = yes
 		is_landed = yes
-		faith = faith:west_african_orisha_pagan
+		religion = religion:west_african_orisha_religion
 		NOT = {
 			has_title = title:d_ooni_of_ife
 		}
@@ -105,11 +224,14 @@ RICE_niger_delta_restore_ooni_to_ife = {
 				}
 			}
 		}
+		faith.religious_head = {
+			has_title = title:d_ooni_of_ife
+		}
 		NOT = { has_character_flag = flag_already_given_ife_once }
 	}
 
 	is_valid = {
-		faith = faith:west_african_orisha_pagan
+		religion = religion:west_african_orisha_religion
 		NOT = { has_title = title:d_ooni_of_ife }
 		custom_tooltip = {
 			text = RICE_ife_is_capital
@@ -609,13 +731,13 @@ RICE_niger_delta_request_beaded_crown = {
 			}
 		}
 
-		else_if = { # High Status Concubine
-			limit = { scope:RICE_niger_delta_high_concubine_option = yes }
-			set_variable = {
-				name = RICE_ooni_gift_type
-				value = flag:high_concubine
-			}
-		}
+		# else_if = { # High Status Concubine
+		# 	limit = { scope:RICE_niger_delta_high_concubine_option = yes }
+		# 	set_variable = {
+		# 		name = RICE_ooni_gift_type
+		# 		value = flag:high_concubine
+		# 	}
+		# }
 
 		else_if = { # No Gift
 			limit = { scope:RICE_niger_delta_no_gift_option = yes }
@@ -627,10 +749,11 @@ RICE_niger_delta_request_beaded_crown = {
 
 		title:d_ooni_of_ife.holder = {
 			save_scope_as = ooni
-			trigger_event = {
-				id = niger_delta.0050
-				days = 1
-			}
+			trigger_event = niger_delta.0050
+			#trigger_event = {
+			#	id = niger_delta.0050
+			#	days = 1
+			#}
 		}
 	}
 
@@ -676,6 +799,7 @@ RICE_niger_delta_form_craft_guilds = {
 	desc = RICE_niger_delta_form_craft_guilds_desc
 	
 	is_shown = {
+		exists = dynasty
 		highest_held_title_tier > tier_barony
 		is_landed = yes
 		OR = {
@@ -710,14 +834,14 @@ RICE_niger_delta_form_craft_guilds = {
 				}
 			}
 		}
-		dynasty = {
-			NAND = {
-				has_dynasty_modifier = RICE_niger_delta_bronze_caster_guild_modifier
-				has_dynasty_modifier = RICE_niger_delta_ivory_and_wood_carver_guild_modifier
-				has_dynasty_modifier = RICE_niger_delta_bead_maker_guild_modifier
-				has_dynasty_modifier = RICE_niger_delta_ironsmith_guild_modifier
-			}
-		}
+		# dynasty = {
+		# 	NAND = {
+		# 		has_dynasty_modifier = RICE_niger_delta_bronze_caster_guild_modifier
+		# 		has_dynasty_modifier = RICE_niger_delta_ivory_and_wood_carver_guild_modifier
+		# 		has_dynasty_modifier = RICE_niger_delta_bead_maker_guild_modifier
+		# 		has_dynasty_modifier = RICE_niger_delta_ironsmith_guild_modifier
+		# 	}
+		# }
 	}
 	
 	is_valid_showing_failures_only = {
@@ -890,6 +1014,9 @@ RICE_niger_delta_form_craft_guilds = {
 			dynasty = {
 				add_dynasty_prestige = 100
 				every_dynasty_member = {
+					limit = {
+						NOT = { this = root }
+					}
 					custom = RICE_all_dynasty_members
 					add_prestige = 50
 				}
