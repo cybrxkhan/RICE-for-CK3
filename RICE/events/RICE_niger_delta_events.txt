@@ -530,26 +530,26 @@ niger_delta.0021 = {
 					var:RICE_art_type = flag:coral
 				}
 			}
-			remove_short_term_gold = 150
+			remove_short_term_gold = 125
 		}
 		else = {
 			remove_short_term_gold = 50
 		}
 		# Randomly pick a quality
 		random_list = {
-			33 = {
+			40 = {
 				set_variable = {
 					name = RICE_niger_delta_art_quality
 					value = flag:fair
 				}				
 			}
-			33 = {
+			30 = {
 				set_variable = {
 					name = RICE_niger_delta_art_quality
 					value = flag:good
 				}				
 			}
-			33 = {
+			20 = {
 				set_variable = {
 					name = RICE_niger_delta_art_quality
 					value = flag:excellent
@@ -663,6 +663,41 @@ niger_delta.0022 = {
 	
 	option = { # Ok
 		name = niger_delta.0022.a
+		if = {
+			limit = {
+				var:RICE_art_type = flag:bronze
+			}
+			add_piety = 100
+			add_prestige = 50
+		}
+		else_if = {
+			limit = {
+				var:RICE_art_type = flag:iron
+			}
+			add_prestige = 100
+			add_piety = 50
+		}
+		else_if = {
+			limit = {
+				OR = {
+					var:RICE_art_type = flag:wood
+					var:RICE_art_type = flag:ivory
+				}
+			}
+			add_prestige = 50
+			add_piety = 50
+		}
+		else_if = {
+			limit = {
+				OR = {
+					var:RICE_art_type = flag:glass
+					var:RICE_art_type = flag:coral
+				}
+			}
+			add_prestige = 50
+			add_piety = 50
+			dynasty = { add_dynasty_prestige = 20 }
+		}
 		show_as_tooltip = {
 			scope:RICE_niger_delta_art = {
 				set_owner = {
@@ -2434,12 +2469,6 @@ niger_delta.0050 = {
 			scope:scoped_ruler = {
 				add_prestige = -100
 			}
-			scope:ooni = {					
-				add_hook = {
-					target = scope:scoped_ruler
-					type = loyalty_hook
-				}
-			}
 		}
 		else_if = {
 			limit = {
@@ -2478,17 +2507,6 @@ niger_delta.0050 = {
 					save_scope_as = county
 				}
 			}
-			# create_title_and_vassal_change = {
-			# 	type = granted
-			# 	save_scope_as = change
-			# }
-			# scope:county = {
-			# 	change_title_holder = {
-			# 		holder = scope:other_character
-			# 		change = scope:change
-			# 	}
-			# }
-			# resolve_title_and_vassal_change = scope:change
 		}
 		else_if = {
 			limit = {
@@ -2496,65 +2514,17 @@ niger_delta.0050 = {
 					var:RICE_ooni_gift_type = flag:low_concubine
 				}
 			}
+			scope:scoped_ruler = {
+				remove_short_term_gold = 100
+				add_prestige = 100
+				add_piety = 100
+			}
 			create_character = {
 				employer = scope:ooni
 				template = RICE_niger_delta_ooni_concubine_template
 				save_scope_as = other_character
-			}
-			# scope:ooni = {
-			# 	make_concubine = scope:other_character	
-			# }		
+			}	
 		}
-		# else_if = {
-		# 	limit = {
-		# 		var:RICE_ooni_gift_type = flag:low_concubine
-		# 	}
-		# 	scope:scoped_ruler = {
-		# 		random_courtier = {
-		# 			limit = {
-		# 				age <= 40
-		# 				is_adult = yes
-		# 				is_landed = no
-		# 				is_ruler = no
-		# 				NOT = { is_close_or_extended_family_of = scope:scoped_ruler }
-		# 				NOT = { is_heir_of = scope:scoped_ruler }
-		# 				OR = {
-		# 					can_be_offered_as_concubine_to_character_trigger = {
-		# 						GIVER = scoped_ruler
-		# 						CHARACTER = scope:ooni
-		# 					}
-		# 					can_marry_character_trigger = { CHARACTER = scope:ooni }
-		# 				}
-		# 			}
-		# 			save_scope_as = concubine
-		# 		}
-		# 	}
-		# }
-		# else_if = {
-		# 	limit = {
-		# 		var:RICE_ooni_gift_type = flag:high_concubine
-		# 	}
-		# 	scope:scoped_ruler = {
-		# 		random_courtier = {
-		# 			limit = {
-		# 				age <= 40
-		# 				is_adult = yes
-		# 				is_landed = no
-		# 				is_ruler = no
-		# 				is_close_or_extended_family_of = scope:scoped_ruler
-		# 				NOT = { is_heir_of = scope:scoped_ruler }
-		# 				OR = {
-		# 					can_be_offered_as_concubine_to_character_trigger = {
-		# 						GIVER = scoped_ruler
-		# 						CHARACTER = scope:ooni
-		# 					}
-		# 					can_marry_character_trigger = { CHARACTER = scope:ooni }
-		# 				}
-		# 			}
-		# 			save_scope_as = concubine
-		# 		}
-		# 	}
-		# }
 		else_if = {
 			limit = {
 				scope:scoped_ruler = {
@@ -2585,6 +2555,19 @@ niger_delta.0050 = {
 		if = {
 			limit = {
 				scope:scoped_ruler = {
+					var:RICE_ooni_gift_type = flag:sacred_vow
+				}
+			}
+			scope:ooni = {					
+				add_hook = {
+					target = scope:scoped_ruler
+					type = loyalty_hook
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:scoped_ruler = {
 					var:RICE_ooni_gift_type = flag:land
 				}
 			}
@@ -2608,7 +2591,7 @@ niger_delta.0050 = {
 			}
 			scope:ooni = {
 				make_concubine = scope:other_character	
-			}		
+			}
 		}
 		# It happens in Ife
 		title:b_ile-ife.title_province = {	
@@ -2624,7 +2607,7 @@ niger_delta.0050 = {
 				}
 				remove_character_modifier = RICE_niger_delta_uncrowned
 			}
-			#trigger_event = niger_delta.0051
+			trigger_event = niger_delta.0051
 		}
 		ai_chance = {
 			base = 80
@@ -2680,7 +2663,48 @@ niger_delta.0050 = {
 				modifier = RICE_niger_delta_ooni_scorn
 				years = 10
 			}
-			#trigger_event = niger_delta.0051
+			trigger_event = niger_delta.0051
+		}
+		if = {
+			limit = {
+				scope:scoped_ruler = {
+					var:RICE_ooni_gift_type = flag:sacred_vow
+				}
+			}
+			scope:ooni = {					
+				add_hook = {
+					target = scope:scoped_ruler
+					type = loyalty_hook
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:scoped_ruler = {
+					var:RICE_ooni_gift_type = flag:land
+				}
+			}
+			create_title_and_vassal_change = {
+				type = granted
+				save_scope_as = change
+			}
+			scope:county = {
+				change_title_holder = {
+					holder = scope:other_character
+					change = scope:change
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+		}
+		else_if = {
+			limit = {
+				scope:scoped_ruler = {
+					var:RICE_ooni_gift_type = flag:low_concubine
+				}
+			}
+			scope:ooni = {
+				make_concubine = scope:other_character	
+			}
 		}
 		ai_chance = {
 			base = 0
@@ -2756,9 +2780,9 @@ niger_delta.0050 = {
 			vengeful = minor_stress_impact_gain
 			ambitious = minor_stress_impact_gain
 		}	
-		# scope:scoped_ruler = {	
-		# 	trigger_event = niger_delta.0051
-		# }
+		scope:scoped_ruler = {	
+		 	trigger_event = niger_delta.0051
+		}
 		ai_chance = {
 			base = 50
 			modifier = {
@@ -2836,6 +2860,18 @@ niger_delta.0050 = {
 				}
 			}
 			trigger_event = niger_delta.0053
+		}
+		if = {
+			limit = {
+				scope:scoped_ruler = {
+					var:RICE_ooni_gift_type = flag:low_concubine
+				}
+			}
+			scope:other_character = {
+				death = {
+					death_reason = death_vanished
+				}
+			}	
 		}
 		ai_chance = {
 			base = 10
@@ -2925,6 +2961,11 @@ niger_delta.0051 = {
 		animation = throne_room_bow_1
 	}
 
+	lower_center_portrait = {
+		character = scope:other_character
+		trigger = { exists = scope:other_character }
+	}
+
 	immediate = {
 
 		add_character_flag = RICE_niger_delta_received_beaded_crown
@@ -2939,12 +2980,7 @@ niger_delta.0051 = {
 				}	
 			}
 
-			if = {
-				limit = {
-					has_character_modifier = RICE_niger_delta_uncrowned
-				}
-				remove_character_modifier = RICE_niger_delta_uncrowned
-			}
+			remove_character_modifier = RICE_niger_delta_uncrowned
 
 			if = {
 				limit = {
@@ -3082,10 +3118,10 @@ niger_delta.0051 = {
 	
 	option = { # Ok
 		name = niger_delta.0051.a
-		trigger_event = {
-			id = niger_delta.0052
-			days = { 10 20 }
-		} 
+		# trigger_event = {
+		# 	id = niger_delta.0052
+		# 	days = { 10 20 }
+		# } 
 		if = {
 			limit = { has_variable = RICE_ooni_gift_type }
 			remove_variable = RICE_ooni_gift_type
@@ -3113,11 +3149,9 @@ niger_delta.0052 = {
 		#add_piety = 50
 	}
 
-	after = {
-		hidden_effect = {
-			scope:activity = {
-				complete_activity = yes
-			}
+	after = {		
+		scope:activity = {
+			complete_activity = yes
 		}
 	}
 
@@ -3927,6 +3961,7 @@ niger_delta.0102 = {
 	
 	
 	trigger = {
+		religion = religion:west_african_orisha_religion
 		any_courtier = {
 			is_available_ai_adult = yes
 			is_female = no
@@ -3936,6 +3971,7 @@ niger_delta.0102 = {
 			}
 			NOT = { has_sexuality = homosexual }
 			NOT = { has_sexuality = asexual }
+			religion = religion:west_african_orisha_religion
 		}		
 	}
 
@@ -3978,6 +4014,7 @@ niger_delta.0102 = {
 				}
 				NOT = { has_sexuality = homosexual }
 				NOT = { has_sexuality = asexual }
+				religion = religion:west_african_orisha_religion
 			}
 			save_scope_as = courtier
 		}
@@ -4042,6 +4079,7 @@ niger_delta.0103 = {
 		OR = {
 			religion = religion:odinala_religion
 			religion = religion:west_african_orisha_religion
+			religion = religion:ijaw_religion
 		}	
 	}
 
@@ -4102,10 +4140,7 @@ niger_delta.0104 = {
 	
 	
 	trigger = {
-		OR = {
-			religion = religion:odinala_religion
-			religion = religion:west_african_orisha_religion
-		}	
+		religion = religion:west_african_orisha_religion	
 	}
 
 	weight_multiplier = {
@@ -4414,11 +4449,9 @@ niger_delta.0109 = {
 	
 	
 	trigger = {
-		culture = {
-			OR = {
-				culture_has_west_african_heritage_pillar_trigger = yes
-				culture_has_central_african_heritage_pillar_trigger = yes
-			}
+		OR = {
+			culture_has_west_african_heritage_pillar_trigger = yes
+			culture_has_central_african_heritage_pillar_trigger = yes
 		}
 	}
 
@@ -4454,11 +4487,11 @@ niger_delta.0109 = {
 		name = niger_delta.0109.a
 		trigger = {
 			OR = {
-				gold >= 40
+				gold >= 30
 				is_ai = no
 			}
 		}
-		remove_short_term_gold = 40
+		remove_short_term_gold = 39
 		add_character_modifier = {
 			modifier = RICE_niger_delta_regularly_chews_kola_nuts
 			years = 10
@@ -4654,7 +4687,7 @@ niger_delta.0112 = {
 	type = character_event
 	title = niger_delta.0112.t
 	desc = niger_delta.0112.desc
-	theme = realm
+	theme = corruption
 	
 	right_portrait = {
 		character = root
