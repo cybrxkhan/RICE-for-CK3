@@ -55,17 +55,26 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ### 1.6.4 "Ile-Ife"
 
-- Added Galicia Flavor Pack: The Way of Saint James
-- Added 7 Iberian themed soundtracks
-- Added message about load order if you’re running with TFE (TFE needs to be below RICE in load order now)
-- Reduced chances AI will take the decision to Compile the First Turkic Dictionary
-- Changed decision art for a couple East Asian related decisions
-- Siberian Survivalists and Swahili Contacts traditions are now added via scripted effect at game start to ensure better compatibility
-- White Hun tradition no longer is available when playing TFE start dates
-- Removed RICE’s version of Joseph ibn Naghrela and his family from the history files, since he has a vanilla version now (the Granada pogrom event chain remains and is functionally the same, however)
-- Tweaked starting traits of Joseph ibn Naghrela at game start
-- Fixed Pamiri culture overriding Hephthalite on the map in TFE and early start dates
-- Fixed decision to renovate Kassia’s tomb adding its related county modifier to Kharga instead of Rhodes
+- Added Niger Delta Flavor Pack: Heirs of Oduduwa
+- Added 7 African themed soundtracks
+- Added Easter egg characters from the VIET Events contest winners
+- Integrated some of BAO by Shatzi for Breton Flavor Pack:
+    - Traditions: Matter of Britain, Kevaez, and Peurajoù Libr
+    - Duchy Building: Free Range
+    - Ability to gift Breton horses
+    - 5 new flavor events
+- Trans-Saharan merchant spawn can now available anywhere in Africa (however, dynasty legacies are still limited to original regions)
+- More variety for culture and faith of Trans-Saharan merchant spawn
+- Upon Zhang Yichao’s death, dukes in the Guiyi Circuit will also get claims on the Kingdom of Xia if it exists
+- Ari Buddhism now starts with the Pali Canon doctrine instead of the Esoteric Canon
+- Several special buildings’ affects now apply to the owner of the county they’re in, rather than the barony (so that baron-tier vassals won’t get bonuses meant for their liege)
+- Cantiga and Cantiga de Santa Maria decisions are now available to anyone of Iberian heritage who knows an Iberian romance language
+- Reduced the costs of the decision to Compose a Cantiga
+- Disabled a few more decisions for barony tier rulers
+- Fixed RICE court events potentially bugging from lacking court-related flags in the code
+- Fixed Chan Buddhism from TIP mod not getting the East Asian canon doctrine
+- Fixed Dezawist paganism missing a tenet if running with BAP
+- Fixed Pithipati notification event triggering in regions that don’t make sense
 - Miscellaneous bugfixes
 
 ## Credits
