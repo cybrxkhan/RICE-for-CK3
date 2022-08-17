@@ -1,7 +1,5 @@
 <img src="https://i.imgur.com/ZXcMfcp.jpg">
 
-# Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
-
 ## Latest Version: Version 1.6.4 "Ile-Ife" (Released 8/17/22, for vanilla patch 1.6.x)
 
 **Niger Delta: Heirs of Oduduwa**
