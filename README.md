@@ -2,7 +2,7 @@
 
 ## Latest Version: Version 1.6.4 "Ile-Ife" (Released 8/17/22, for vanilla patch 1.6.x)
 
-**Niger Delta: Heirs of Oduduwa**
+**Newest Flavor Pack - Niger Delta: Heirs of Oduduwa**
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
