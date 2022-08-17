@@ -84,7 +84,7 @@ Thanks to all I worked with, took stuff from, and provided me encouragement and 
 Special thanks in particular to:
 
 - B7E7 for the Amazigh religion/faith and Guanche culture code from BlackEmperor's Africa Plus
-- Bonseny for the amazing VIET and RICE logos.
+- Bonseny for the amazing VIET and RICE logos and the beautiful 3D art assets
 
 Thanks also to:
 
