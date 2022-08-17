@@ -1,17 +1,15 @@
+<img src="https://i.imgur.com/ZXcMfcp.jpg">
+
 # Regional Immersion and Cultural Enrichment (a CK3 Flavor Mod)
 
-## Latest Version: Version 1.6.3.a Hotfix for "Cantiga" (Released 7/5/22, for vanilla patch 1.6.x)
+## Latest Version: Version 1.6.4 "Ile-Ife" (Released 8/17/22, for vanilla patch 1.6.x)
 
-**Newest Flavor Pack - Galicia: The Way of Saint James**
+**Niger Delta: Heirs of Oduduwa**
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com)
 
-_“Como poden per sas culpas os omes seer contreitos,_
-_assi poden pela Virgen depois seer sãos feitos.”_
-_[“As people may be crippled through their sins, so may they_
-_also be made healthy by the Virgin.”]_
-
-_Refrain from Cantiga 166 of the Cantigas de Santa Maria_
+_“You have been crowned a king, and yet you make good-luck charms; would you be crowned God?”_
+_- Yoruba proverb_
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places and peoples.
 
@@ -29,6 +27,7 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 - [Guanche: The Fortunate Isles](https://docs.google.com/document/d/e/2PACX-1vSs5DoK_1Hux5Uqe8cZp9qKdClxq_8W6PF3Rdejo8hR_C3mn1_qd166bbpw096x0DtwBGTBHC8aQYTO/pub)
 - [Harran: The Last Hellenic Pagans](https://docs.google.com/document/d/e/2PACX-1vQOVaDq59Adp5PsNw7r8KhK9cgHMBBWGPWG085FdTKegkD8G8BFLa_e1lz8usY164B42gAVZD4D_2Rs/pub)
 - [Magadha: Diamond Throne of Buddhism](https://docs.google.com/document/d/e/2PACX-1vQvXP97M8x7lXYDilOlkVz-lCT0dk6Qq2R6cFyoySNv6g5mqAhIxzquf_1TeR9eEllCkA0HhpOfErnT/pub)
+- [Niger Delta: Heirs of Oduduwa](https://docs.google.com/document/d/e/2PACX-1vTgW9FFORhgNKseRIGdOXnsCLe5Nee8f8dK9yQxkvWshD3ZJf5vzXhMHQKmoy3qnMEjm2kLImgExhvt/pub)
 - [Pamir and Zunist: Roof of the World](https://docs.google.com/document/d/e/2PACX-1vQmHEFpko8WE1fnHLHyG-4t01Xyka4eTe88WuLJWRL6jk0S3ju3fA1CFyX_dDArSduFlzqUl58pjRRO/pub)
 - [Red Sea: Treasures of the Eastern Desert](https://docs.google.com/document/d/e/2PACX-1vQzLb-MR90fMQvjqZsxceuydKihTehAlpxexdhdim5pfxi_aGVBeLl1rJMmuR-89nVB7PVLfboZKBuy/pub)
 - [Rhodes: Shadow of the Colossus](https://docs.google.com/document/d/e/2PACX-1vRXCGUoynvQtA3RuaJUE9FYagIHOX4wJkyeDHRsV-cjvyyBTONIEy0oOYr3yvcUt1eG_fEHtzUgv_wA/pub)
@@ -56,17 +55,7 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ## Latest Changelog
 
-### 1.6.3.a Hotfix for "Cantiga"
-
-- Vassa decision now costs some prestige
-- Fixed Vassa decision preventing you from doing other activities if you took it earlier in the year
-- Added debug event as a way to manually resolve issues with endless activities as a last resort failsafe - console command is “event RICEdebug.0002”
-- Fixed Galician-Portuguese Lyric tradition being shown (but not pickable) anywhere on the map, instead of only in Iberia or for Iberian cultures
-- Fixed Coptic culture not getting the Children of the Nile tradition if running RICE with CE
-- Fixed Harran faith not being in Harran if running RICE with CE
-- Miscellaneous bugfixes and tweaks
-
-### 1.6.3 "Cantiga"
+### 1.6.4 "Ile-Ife"
 
 - Added Galicia Flavor Pack: The Way of Saint James
 - Added 7 Iberian themed soundtracks
@@ -85,10 +74,13 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 Thanks to all I worked with, took stuff from, and provided me encouragement and feedback over the years. Huge thanks to the kind souls who take the time to translate the mod and put up with my erratic update schedule.
 
-A few other shoutouts in particular:
+Special thanks in particular to:
 
 - B7E7 for the Amazigh religion/faith and Guanche culture code from BlackEmperor's Africa Plus
 - Bonseny for the amazing VIET and RICE logos.
+
+Thanks also to:
+
 - Fische for the Dragon Blood art icon and Vertimnus for donating it to me (originally made for Sinews of War)
 - Henry for the Better Bedouin Culture mod
 - Nezaros for reformed religion template
