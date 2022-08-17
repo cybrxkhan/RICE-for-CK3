@@ -4,7 +4,7 @@
 
 **Niger Delta: Heirs of Oduduwa**
 
-[**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com)
+[**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
 _“You have been crowned a king, and yet you make good-luck charms; would you be crowned God?”_
 _- Yoruba proverb_
