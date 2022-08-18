@@ -61,6 +61,7 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 - Fixed issue with several situations where you'll regain the Not Crowned by Ooni modifier even after you did the coronation with the Ooni
 - Fixed issue where rulers would gain or wouldn't lose the Not Crowned by Ooni modifier when they became the Ooni
 - Cleaned up code in a few places
+- Fixed potential compatibility issues with Orisha and Oloku faiths from BAP
 
 ### 1.6.4 "Ile-Ife"
 
