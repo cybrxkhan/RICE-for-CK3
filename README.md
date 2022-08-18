@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/ZXcMfcp.jpg">
 
-## Latest Version: Version 1.6.4 "Ile-Ife" (Released 8/17/22, for vanilla patch 1.6.x)
+## Latest Version: Version 1.6.4.a "Ile-Ife" (Released 8/17/22, for vanilla patch 1.6.x)
 
 **Newest Flavor Pack - Niger Delta: Heirs of Oduduwa**
 
@@ -52,6 +52,15 @@ DO NOT manually download the master branch unless you know what you're doing as 
 NOTE: **If you are re-installing a mod manually, delete the old version of the mod first before copy and pasting the new one! It's a good habit to do to prevent potential issues.**
 
 ## Latest Changelog
+
+### 1.6.4.a Hotfix for "Ile-Ife"
+
+- Tweaked various doctrines of the Orisha faith (aka Yoruba pagans) to be more in line with BAP
+- Rebalanced the chances of which gift the AI will select to give to the Ooni when requesting a coronation
+- Added hidden last resort failsafe to remove the Not Crowned by Ooni modifier after about a year in cases it won't go away or reappears even if you already did the coronation or are the Ooni
+- Fixed issue with several situations where you'll regain the Not Crowned by Ooni modifier even after you did the coronation with the Ooni
+- Fixed issue where rulers would gain or wouldn't lose the Not Crowned by Ooni modifier when they became the Ooni
+- Cleaned up code in a few places
 
 ### 1.6.4 "Ile-Ife"
 

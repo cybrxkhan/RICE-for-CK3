@@ -35,6 +35,7 @@ niger_delta.0001 = {
 	immediate = {
 		if = {
 			limit = {
+				exists = scope:previous_holder
 				scope:previous_holder = {
 					is_alive = yes
 					has_trait = RICE_ooni_of_ife
@@ -45,15 +46,26 @@ niger_delta.0001 = {
 		# If previous Ooni is still around and is Orisha, they will (awkwardly) need to request the crown from the Ooni
 		if = {
 			limit = {
+				exists = scope:previous_holder
 				scope:previous_holder = {
 					is_alive = yes
 					NOT = { has_character_modifier = RICE_niger_delta_uncrowned }
+					NOT = { has_character_flag = RICE_niger_delta_received_beaded_crown }
 					religion = religion:west_african_orisha_religion
 				}
 			}
-			add_character_modifier = {
-				modifier = RICE_niger_delta_uncrowned
+			scope:previous_holder = {
+				add_character_modifier = {
+					modifier = RICE_niger_delta_uncrowned
+				}
 			}
+		}
+		# You no longer need to do the beaded crown thing since you are the Ooni
+		if = {
+			limit = {
+				has_character_modifier = RICE_niger_delta_uncrowned
+			}
+			remove_character_modifier = RICE_niger_delta_uncrowned
 		}
 		add_trait = RICE_ooni_of_ife
 	}
@@ -70,6 +82,7 @@ niger_delta.0002 = {
 		religion = religion:west_african_orisha_religion
 		NOT = { has_character_modifier = RICE_niger_delta_uncrowned }
 		NOT = { has_title = title:d_ooni_of_ife }
+		NOT = { has_character_flag = RICE_niger_delta_received_beaded_crown }
 	}
 	
 	immediate = {
@@ -91,6 +104,13 @@ niger_delta.0003 = {
 	
 	immediate = {
 		remove_character_modifier = RICE_niger_delta_uncrowned
+		# Shouldn't happen but just in case
+		if = {
+			limit = {
+				has_character_flag = RICE_niger_delta_received_beaded_crown
+			}
+			remove_character_flag = RICE_niger_delta_received_beaded_crown
+		}
 	}
 }
 
@@ -106,6 +126,13 @@ niger_delta.0004 = {
 	
 	immediate = {
 		remove_character_modifier = RICE_niger_delta_uncrowned
+		# Shouldn't happen but just in case
+		if = {
+			limit = {
+				has_character_flag = RICE_niger_delta_received_beaded_crown
+			}
+			remove_character_flag = RICE_niger_delta_received_beaded_crown
+		}
 	}
 }
 
@@ -209,6 +236,7 @@ niger_delta.0008 = {
 			limit = {
 				religion = religion:west_african_orisha_religion
 				NOT = { has_title = title:d_ooni_of_ife }
+				NOT = { has_character_flag = RICE_niger_delta_received_beaded_crown }
 			}
 			add_character_modifier = {
 				modifier = RICE_niger_delta_uncrowned

@@ -24,6 +24,14 @@ five_year_playable_pulse = {
 	}
 }
 
+# Called from code once a year for all characters, at a random point that year (individually for each character)
+# Root is the character
+random_yearly_everyone_pulse = {
+	on_actions = {
+		RICE_BAP_shared_maintenance_pulse
+	}
+}
+
 RICE_BAP_shared_yearly_global_pulse = {
 	effect = {
 		# Don't want it to be given randomly way after the decision is taken
@@ -167,5 +175,27 @@ RICE_BAP_shared_events_historical_pulse = {
 		100 = guanche.0052		# Sugarcane industry on Madeira crashes due to deforestation
 		100 = guanche.0054		# Sugarcane industry spreads to the Canary Islands
 		
+	}
+}
+
+# Misc cleanup and failsafe effects
+RICE_BAP_shared_maintenance_pulse = {
+	effect = {
+		root = {
+			# Failsafe in case character has Uncrowned modifier when they shouldn't
+			if = {
+				limit = {
+					has_character_modifier = RICE_niger_delta_uncrowned
+					OR = {
+						has_character_flag = RICE_niger_delta_received_beaded_crown
+						any_held_title = { is_head_of_faith = yes }
+						NOT = { religion = religion:west_african_orisha_religion }
+						is_landed = no
+						has_title = title:d_ooni_of_ife
+					}
+				}
+				remove_character_modifier = RICE_niger_delta_uncrowned
+			}
+		}
 	}
 }
