@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/ZXcMfcp.jpg">
 
-## Latest Version: Version 1.6.4.a "Ile-Ife" (Released 8/17/22, for vanilla patch 1.6.x)
+## Latest Version: Version 1.6.4.b Hotfix for "Ile-Ife" (Released 8/22/22, for vanilla patch 1.6.x)
 
 **Newest Flavor Pack - Niger Delta: Heirs of Oduduwa**
 
@@ -52,6 +52,29 @@ DO NOT manually download the master branch unless you know what you're doing as 
 NOTE: **If you are re-installing a mod manually, delete the old version of the mod first before copy and pasting the new one! It's a good habit to do to prevent potential issues.**
 
 ## Latest Changelog
+
+### 1.6.4.b Hotfix for "Ile-Ife"
+
+- Increased the chances of Jewish courtier spawn in Granada
+- Fixed Ooni title becoming theocratic government if you feudalize by changing Orisha and potentially causing a game over
+
+If you’re playing on an existing save, and have issues feudalizing as the Ooni or with the Ooni as your vassal, copy and paste the following into console command to fix it:
+
+```
+effect faith:west_african_orisha_pagan = {
+    remove_doctrine = doctrine_theocracy_temporal
+    add_doctrine = doctrine_theocracy_lay_clergy
+}
+```
+
+If you are also playing with Africa Plus, also run this console command as well:
+
+```
+effect faith:oloku_pagan = {
+    remove_doctrine = doctrine_theocracy_temporal
+    add_doctrine = doctrine_theocracy_lay_clergy
+}
+```
 
 ### 1.6.4.a Hotfix for "Ile-Ife"
 
