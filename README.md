@@ -1,6 +1,6 @@
-<img src="https://i.imgur.com/ZXcMfcp.jpg">
+<img src="https://i.imgur.com/w5S4swA.jpg">
 
-## Latest Version: Version 1.6.4.b Hotfix for "Ile-Ife" (Released 8/22/22, for vanilla patch 1.6.x)
+## Latest Version: Version 1.7.0 "Igbo-Ukwu" (Released 9/8/22, for vanilla patch 1.7.x)
 
 **Newest Flavor Pack - Niger Delta: Heirs of Oduduwa**
 
@@ -53,61 +53,13 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ## Latest Changelog
 
-### 1.6.4.b Hotfix for "Ile-Ife"
+### 1.7.0 "Igbo-Ukwu"
 
-- Increased the chances of Jewish courtier spawn in Granada
-- Fixed Ooni title becoming theocratic government if you feudalize by changing Orisha and potentially causing a game over
-
-If you’re playing on an existing save, and have issues feudalizing as the Ooni or with the Ooni as your vassal, copy and paste the following into console command to fix it:
-
-```
-effect faith:west_african_orisha_pagan = {
-    remove_doctrine = doctrine_theocracy_temporal
-    add_doctrine = doctrine_theocracy_lay_clergy
-}
-```
-
-If you are also playing with Africa Plus, also run this console command as well:
-
-```
-effect faith:oloku_pagan = {
-    remove_doctrine = doctrine_theocracy_temporal
-    add_doctrine = doctrine_theocracy_lay_clergy
-}
-```
-
-### 1.6.4.a Hotfix for "Ile-Ife"
-
-- Tweaked various doctrines of the Orisha faith (aka Yoruba pagans) to be more in line with BAP
-- Rebalanced the chances of which gift the AI will select to give to the Ooni when requesting a coronation
-- Added hidden last resort failsafe to remove the Not Crowned by Ooni modifier after about a year in cases it won't go away or reappears even if you already did the coronation or are the Ooni
-- Fixed issue with several situations where you'll regain the Not Crowned by Ooni modifier even after you did the coronation with the Ooni
-- Fixed issue where rulers would gain or wouldn't lose the Not Crowned by Ooni modifier when they became the Ooni
-- Cleaned up code in a few places
-- Fixed potential compatibility issues with Orisha and Oloku faiths from BAP
-
-### 1.6.4 "Ile-Ife"
-
-- Added Niger Delta Flavor Pack: Heirs of Oduduwa
-- Added 7 African themed soundtracks
-- Added Easter egg characters from the VIET Events contest winners
-- Integrated some of BAO by Shatzi for Breton Flavor Pack:
-    - Traditions: Matter of Britain, Kevaez, and Peurajoù Libr
-    - Duchy Building: Free Range
-    - Ability to gift Breton horses
-    - 5 new flavor events
-- Trans-Saharan merchant spawn can now available anywhere in Africa (however, dynasty legacies are still limited to original regions)
-- More variety for culture and faith of Trans-Saharan merchant spawn
-- Upon Zhang Yichao’s death, dukes in the Guiyi Circuit will also get claims on the Kingdom of Xia if it exists
-- Ari Buddhism now starts with the Pali Canon doctrine instead of the Esoteric Canon
-- Several special buildings’ affects now apply to the owner of the county they’re in, rather than the barony (so that baron-tier vassals won’t get bonuses meant for their liege)
-- Cantiga and Cantiga de Santa Maria decisions are now available to anyone of Iberian heritage who knows an Iberian romance language
-- Reduced the costs of the decision to Compose a Cantiga
-- Disabled a few more decisions for barony tier rulers
-- Fixed RICE court events potentially bugging from lacking court-related flags in the code
-- Fixed Chan Buddhism from TIP mod not getting the East Asian canon doctrine
-- Fixed Dezawist paganism missing a tenet if running with BAP
-- Fixed Pithipati notification event triggering in regions that don’t make sense
+- Updated to vanilla patch 1.7.0 "Bastion"
+- Added placeholder friendship/rival reasons (more will be added in the future)
+- Mogao Caves bonus now applies to the county holder
+- Rebalanced Marc’Hegion MAA to scale damage and toughness with era
+- Tweaked the logic for the Tarim Basin court events to prevent any potential weirdness from courtiers involved in those events
 - Miscellaneous bugfixes
 
 ## Credits
