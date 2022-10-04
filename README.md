@@ -1,13 +1,12 @@
-<img src="https://i.imgur.com/w5S4swA.jpg">
+<img src="https://i.imgur.com/1fyV8vo.jpg">
 
-## Latest Version: Version 1.7.0 "Igbo-Ukwu" (Released 9/8/22, for vanilla patch 1.7.x)
+## Latest Version: Version 1.7.1 "Hunza" (Released 10/3/22, for vanilla patch 1.7.x)
 
 **Newest Flavor Pack - Niger Delta: Heirs of Oduduwa**
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_“You have been crowned a king, and yet you make good-luck charms; would you be crowned God?”_
-_- Yoruba proverb_
+_Hunza is the name of one of many mountain valleys in the Pamir mountain region in north Pakistan. It is home to the Burusho people (who speak a language isolate), as well as various Indo-Iranian peoples, and it historically was part of various trade routes criss-crossing Asia. The Burusho are also sometimes referred to as the Hunza people._
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places and peoples.
 
@@ -53,13 +52,15 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ## Latest Changelog
 
-### 1.7.0 "Igbo-Ukwu"
+### 1.7.1 "Hunza"
 
-- Updated to vanilla patch 1.7.0 "Bastion"
-- Added placeholder friendship/rival reasons (more will be added in the future)
-- Mogao Caves bonus now applies to the county holder
-- Rebalanced Marc’Hegion MAA to scale damage and toughness with era
-- Tweaked the logic for the Tarim Basin court events to prevent any potential weirdness from courtiers involved in those events
+- Added Pamir Tribesmen MAA, which is unlockable with either the White Huns or Beyond the Reach of Eagles cultural traditions
+- Added preset traits to the Timothee Umlaut easter egg character
+- Children of the Nile decision will now be applied to the Kemetic culture from the recently updated Polytheism Reborn mod
+- Decision to Become the Khan and Sultan of China is no longer blocked to cultures of Chinese, Mongolic, or Qiangic heritage
+- Silk Road Dynasty Legacy is now only available in the land-based Silk Road region for consistency with the Silk Road Communities decision (unless your culture has the Silk Road tradition)
+- Trans-Saharan merchant spawn is now rarer in the coastal regions of West Africa
+- Fixed Zhang Yichao not getting Huaishen’s artifacts if he is kept as ruler of Guiyi
 - Miscellaneous bugfixes
 
 ## Credits
