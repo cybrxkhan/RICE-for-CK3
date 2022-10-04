@@ -1,4 +1,4 @@
-<img src="https://i.imgur.com/1fyV8vo.jpg">
+<img src="https://i.imgur.com/GB3Rza3.jpg">
 
 ## Latest Version: Version 1.7.1 "Hunza" (Released 10/3/22, for vanilla patch 1.7.x)
 
