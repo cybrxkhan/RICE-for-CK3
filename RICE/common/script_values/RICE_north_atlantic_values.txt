@@ -1,0 +1,205 @@
+﻿
+RICE_very_major_struggle_catalyst_gain = 15
+RICE_historically_significant_struggle_catalyst_gain = 100
+
+
+# Since the vanilla activity costs are unimmersively inflated at higher levels
+RICE_north_atlantic_establish_estate_cost = {
+	value = 50
+	multiply = {
+		value = root.primary_title.tier
+		subtract = 1
+		min = 1
+	}
+	if = {
+		limit = {
+			root.primary_title.tier > tier_duchy
+		}
+		add = 50
+	}
+	if = {
+		limit = {
+			root.primary_title.tier > tier_kingdom
+		}
+		add = 50
+	}
+	# House heads have an easier time doing it
+	if = {
+		limit = {
+			is_house_head = yes
+		}
+		multiply = 0.75
+	}
+	min = 50
+	max = 200
+}
+
+
+# Paramameter for percentage of Iberia that you cannot control
+RICE_greenland_struggle_integration_owned_percent_value = 50
+
+# Uses above to plug in to script as a decimal
+RICE_greenland_struggle_integration_owned_percent_decimal_value = { 
+	value = RICE_greenland_struggle_integration_owned_percent_value
+	divide = 100
+	max = 1
+}
+
+RICE_medium_gold_with_estate_value = {
+	value = medium_gold_value
+	# Having an estate in Greenland makes it cheaper
+	if = {
+		limit = {
+			exists = house
+			house = { has_house_modifier = RICE_north_atlantic_greenland_family_estate }
+		}
+		multiply = 0.8
+	}
+
+}
+
+
+RICE_north_atlantic_vinland_outpost_success_value = {
+	value = 0
+	# if = {
+	# 	limit = {
+	# 		exists = scope:overseer
+	# 	}
+	# 	if = {
+	# 		limit = {
+	# 			scope:overseer.stewardship < mediocre_skill_rating 
+	# 		}
+	# 		add = 3
+	# 	}
+	# 	else_if = {
+	# 		limit = {
+	# 			scope:overseer.stewardship >= mediocre_skill_rating 
+	# 		}
+	# 		add = 6
+	# 	}
+	# 	else_if = {
+	# 		limit = {
+	# 			scope:overseer.stewardship >= decent_skill_rating 
+	# 		}
+	# 		add = 9
+	# 	}
+	# 	else_if = {
+	# 		limit = {
+	# 			scope:overseer.stewardship >= high_skill_rating 
+	# 		}
+	# 		add = 12
+	# 	}
+	# 	else_if = {
+	# 		limit = {
+	# 			scope:overseer.stewardship >= very_high_skill_rating 
+	# 		}
+	# 		add = 15
+	# 	}
+	# }
+	if = {
+		limit = { exists = global_var:RICE_greenland_vinland_viability }
+		add = global_var:RICE_greenland_vinland_viability
+	}
+	if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_settlement
+			}				
+		}
+		multiply = 1.25
+	}
+	else_if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+			}
+		}
+		multiply = 0.75
+	}
+	else_if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+			}
+		}
+		multiply = 0.5
+	}
+	min = 1
+	max = 90
+}
+
+
+RICE_vinland_settlement_payment_value = {
+	value = 50
+	if = {
+		limit = { exists = global_var:RICE_greenland_socio_economic_pressures }
+		add = {
+			value = global_var:RICE_greenland_socio_economic_pressures
+			multiply = 0.1
+		}
+	}
+	if = {
+		limit = { exists = global_var:RICE_greenland_environmental_pressures }
+		add = {
+			value = global_var:RICE_greenland_environmental_pressures
+			multiply = 0.1
+		}
+	}
+	if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+			}
+		}
+		multiply = 1.25
+	}
+	else_if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+			}
+		}
+		multiply = 1.5
+	}
+	if = {
+		limit = { exists = global_var:RICE_greenland_vinland_viability }
+		subtract = global_var:RICE_greenland_vinland_viability
+	}
+	min = 50
+}
+
+RICE_greenland_support_cooldown_time = {
+	value = 3650
+	if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+			}
+		}
+		add = 1825
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_global_variable = RICE_greenland_ending_integration
+				has_global_variable = RICE_greenland_ending_indigenous
+				AND = {						
+					exists = struggle:RICE_greenland_struggle
+					struggle:RICE_greenland_struggle = {
+						is_struggle_phase = struggle_RICE_greenland_phase_integration
+					}
+				}
+			}
+		}
+		subtract = 1825
+	}
+	#else = {
+	#	add = 1825
+	#}
+}

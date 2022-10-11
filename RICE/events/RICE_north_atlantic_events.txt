@@ -1,0 +1,6726 @@
+﻿###############################################################################
+# 
+# Niger Delta
+# 
+# north_atlantic.0000-north_atlantic.0019			Setup events, history events, miscellaneous events and decisions
+# north_atlantic.0020-north_atlantic.0029			Misc decisions
+# north_atlantic.0030-north_atlantic.0099			Minor Expeditions
+# north_atlantic.0100-north_atlantic.0109			Support Greenland
+# north_atlantic.0110-north_atlantic.0119			Support Vinland
+# north_atlantic.0120-north_atlantic.0139			Nordsetur Hunt
+# north_atlantic.0140-north_atlantic.0159			Vinland Outposts and Settlements
+# north_atlantic.0160-north_atlantic.0169			Discovering Greenland
+# north_atlantic.0170-north_atlantic.0179			Greenland Struggle Ending Decisions
+# 
+# 
+###############################################################################
+
+namespace = north_atlantic
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# north_atlantic.0000-north_atlantic.0029
+# 
+######################################################################################
+
+
+# GREENLAND INTRO 
+north_atlantic.0001 = { # Fullscreen Intro Event
+	type = fullscreen_event
+	title = north_atlantic.0001.t
+	desc = {
+		desc = north_atlantic.0001.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					any_character_struggle = {
+						involvement = involved
+						is_struggle_type = RICE_greenland_struggle
+					}
+				}
+				desc = north_atlantic.0001.desc.involved
+			}
+			triggered_desc = {
+				trigger = {
+					any_character_struggle = {
+						involvement = interloper
+						is_struggle_type = RICE_greenland_struggle
+					}
+				}
+				desc = north_atlantic.0001.desc.interloper
+			}
+		}
+	}
+	theme = diplomacy_foreign_affairs_focus
+	trigger = { # we need to prevent this from firing for all players when a new player joins in MP
+		is_ai = no
+		NOT = { has_character_flag = RICE_greenland_struggle_intro_event_flag }
+		OR = {
+			any_character_struggle = {
+				involvement = involved
+				is_struggle_type = RICE_greenland_struggle
+			}
+			any_character_struggle = {
+				involvement = interloper
+				is_struggle_type = RICE_greenland_struggle
+			}
+		}
+ 	}
+	override_background = { event_background = RICE_greenland_struggle_start }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	widgets = {
+		widget = {
+ 			gui = "event_window_widget_struggle_info"
+ 			container = "dynamic_content_widget"
+ 			controller = struggle_info
+ 			setup_scope = { struggle:RICE_greenland_struggle = { save_scope_as = struggle } }
+		}
+		# widget = {
+		# 	gui = "event_window_widget_RICE_north_atlantic_struggle_resources_info"
+		# 	container = "dynamic_content_widget"
+		# }
+	}
+	immediate = {
+		play_music_cue = "mx_Struggle_Opening"
+		add_character_flag = RICE_greenland_struggle_intro_event_flag
+		save_scope_value_as = {
+			name = start
+			value = yes
+		}
+		ordered_in_global_list = {
+			variable = RICE_north_atlantic_erik_the_red
+			save_scope_as = erik
+		}
+	}
+
+	option = {
+		name = north_atlantic.0001.a
+		trigger = {
+			any_character_struggle = {
+				involvement = involved
+				is_struggle_type = RICE_greenland_struggle
+			}
+		}
+		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
+	}
+
+	option = {
+		name = north_atlantic.0001.b
+		trigger = {
+			any_character_struggle = {
+				involvement = interloper
+				is_struggle_type = RICE_greenland_struggle
+			}			
+		}
+		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
+	}
+
+	option = {
+		name = north_atlantic.0001.c
+		custom_tooltip = north_atlantic.0001.c.tooltip
+		trigger_event = north_atlantic.0003
+		#clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
+	}
+
+}
+
+
+
+
+
+north_atlantic.0002 = {
+	hidden = yes
+	type = empty
+	scope = struggle
+
+	trigger = { # Should not need this, but, redundancy check! -h
+		exists = struggle:RICE_greenland_struggle
+	}
+
+	immediate = {
+
+		# Go through the characters to notify them
+		struggle:RICE_greenland_struggle = {
+			every_involved_ruler = {
+				limit = {
+					is_alive = yes
+					is_ai = no
+				}
+				trigger_event = north_atlantic.0001
+			}
+			every_interloper_ruler = {
+				limit = {
+					is_alive = yes
+					is_ai = no
+				}
+				trigger_event = north_atlantic.0001
+			}
+		}
+	}
+}
+
+
+
+
+# Greenland concepts tutorial
+north_atlantic.0003 = {
+	type = character_event
+	title = north_atlantic.0003.t
+	desc = north_atlantic.0003.desc
+	theme = RICE_theme_north_atlantic_port
+
+	left_portrait = root
+	right_portrait = scope:guide
+
+	immediate = {
+		# Generate the guide
+		create_character = {
+			location = root.capital_province
+			template = random_barrel_character
+			save_scope_as = guide
+		}
+	}
+
+	widgets = {
+		widget = {
+			gui = "event_window_widget_RICE_north_atlantic_struggle_concepts_info"
+			container = "custom_widgets_container" #container = "dynamic_content_widget"
+		}
+	}
+
+	option = {
+		name = north_atlantic.0003.a
+		hidden_effect = {
+			scope:guide = {
+				death = {
+					death_reason = death_RICE_north_atlantic_greenland
+				}
+			}			
+		}
+	}
+
+	option = {
+		name = north_atlantic.0003.b
+		trigger_event = north_atlantic.0004
+	}
+
+}
+
+
+
+# Greenland resources/pressures tutorial
+north_atlantic.0004 = {
+	type = character_event
+	title = north_atlantic.0004.t
+	desc = north_atlantic.0004.desc
+	theme = RICE_theme_north_atlantic_port
+
+	left_portrait = root
+	right_portrait = scope:guide
+
+	widgets = {
+		widget = {
+			gui = "event_window_widget_RICE_north_atlantic_struggle_resources_info"
+			container = "custom_widgets_container" #container = "dynamic_content_widget"
+		}
+	}
+
+	option = {
+		name = north_atlantic.0004.a
+		hidden_effect = {
+			scope:guide = {
+				death = {
+					death_reason = death_RICE_north_atlantic_greenland
+				}
+			}			
+		}
+	}
+
+}
+
+# The Arrival of the Inuit
+north_atlantic.0005 = {
+	type = character_event
+	title = north_atlantic.0005.t
+	desc = north_atlantic.0005.desc
+	theme = RICE_theme_north_atlantic_greenland
+
+	trigger = {
+		NOT = { has_global_variable = RICE_greenland_inuit_are_here }
+	}
+
+	immediate = {
+		# Just in case it doesn't work for some reason
+		if = {
+			limit = {
+				struggle:RICE_greenland_struggle = { is_culture_involved_in_struggle = scope:inuit }
+			}
+			show_as_tooltip = {
+				struggle:RICE_greenland_struggle = { set_culture_as_involved = culture:inuit }				
+			}
+		}
+		else = {
+			struggle:RICE_greenland_struggle = { set_culture_as_involved = culture:inuit }
+		}
+		# Save scopes
+		culture:inuit = {
+			save_scope_as = inuit
+		}
+		culture:dorset = {
+			save_scope_as = dorset
+		}
+		title:d_iceland = {
+			save_scope_as = iceland
+		}
+		set_global_variable = {
+			name = RICE_greenland_inuit_are_here
+			value = yes
+		}
+	}
+
+	option = {
+		name = north_atlantic.0005.a
+		custom_tooltip = north_atlantic.0005.a.tooltip
+		struggle:RICE_greenland_struggle = {
+			activate_struggle_catalyst = catalyst_RICE_inuit_arrival
+		}
+	}
+
+}
+
+
+# Environmental Climate Changes Pre-Warning
+north_atlantic.0006 = {
+	type = character_event
+	title = north_atlantic.0006.t
+	desc = north_atlantic.0006.desc
+	theme = RICE_theme_north_atlantic_greenland
+
+	immediate = {
+		set_global_variable = {
+			name = RICE_greenland_environmental_change_warning
+			value = yes
+		}
+	}
+
+	option = {
+		name = north_atlantic.0006.a
+		custom_tooltip = north_atlantic.0006.a.tooltip
+		trigger_event = north_atlantic.0007
+	}
+
+}
+
+
+
+# Environmental Climate Changes notification
+north_atlantic.0007 = { # Fullscreen Intro Event
+	type = fullscreen_event
+	title = north_atlantic.0007.t
+	desc = north_atlantic.0007.desc
+	theme = death
+	trigger = {
+		is_ai = no
+		has_global_variable = RICE_greenland_environmental_change_warning
+ 	}
+	override_background = { event_background = RICE_greenland_icebergs }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	# widgets = {
+	# 	widget = {
+ 	# 		gui = "event_window_widget_RICE_north_atlantic_environmental_info"
+ 	# 		container = "dynamic_content_widget"
+	# 	}
+	# }
+	immediate = {
+		play_music_cue = "mx_Struggle_Opening"
+	}
+	option = {
+		name = north_atlantic.0007.a
+		struggle:RICE_greenland_struggle = {
+			activate_struggle_catalyst = catalyst_RICE_environmental_changes
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.0007.tooltip
+		}
+		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
+	}
+}
+
+
+# Global Economic Changes Pre-Warning
+north_atlantic.0008 = {
+	type = character_event
+	title = north_atlantic.0008.t
+	desc = north_atlantic.0008.desc
+	theme = RICE_theme_north_atlantic_greenland
+
+	immediate = {
+		set_global_variable = {
+			name = RICE_greenland_socio_economic_change_warning
+			value = yes
+		}
+	}
+
+	option = {
+		name = north_atlantic.0008.a
+		custom_tooltip = north_atlantic.0008.a.tooltip
+		trigger_event = north_atlantic.0009
+	}
+
+}
+
+
+# Global Economic Changes notification
+north_atlantic.0009 = { # Fullscreen Intro Event
+	type = fullscreen_event
+	title = north_atlantic.0009.t
+	desc = north_atlantic.0009.desc
+	theme = death
+	trigger = {
+		is_ai = no
+		has_global_variable = RICE_greenland_socio_economic_change_warning
+ 	}
+	override_background = { event_background = RICE_greenland_icebergs }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	immediate = {
+		play_music_cue = "mx_Struggle_Opening"
+	}
+	option = {
+		name = north_atlantic.0009.a
+		struggle:RICE_greenland_struggle = {
+			activate_struggle_catalyst = catalyst_RICE_socio_economic_changes
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.0009.tooltip
+		}
+		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
+	}
+}
+
+
+# Vinland discovery notification
+north_atlantic.0010 = { # Fullscreen Intro Event
+	type = fullscreen_event
+	title = north_atlantic.0010.t
+	desc = north_atlantic.0010.desc
+	theme = realm
+	trigger = {
+		is_ai = no
+		has_global_variable = RICE_greenland_socio_economic_change_warning
+ 	}
+	override_background = { event_background = RICE_greenland_struggle_vinland }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	immediate = {
+		play_music_cue = "mx_Struggle_ending_conciliation"
+		create_character = {
+			location = root.capital_province
+			template = random_barrel_character
+			save_scope_as = leif
+		}
+	}
+	option = {
+		name = north_atlantic.0010.a
+
+		custom_tooltip = north_atlantic.0010.tooltip.1
+
+		if = {
+			limit = {
+				struggle:RICE_greenland_struggle = { is_struggle_phase = struggle_RICE_greenland_phase_settlement }
+			}
+			custom_tooltip = north_atlantic.0010.tooltip.2
+		}
+		else_if = {
+			limit = {
+				struggle:RICE_greenland_struggle = { is_struggle_phase = struggle_RICE_greenland_phase_integration }
+			}
+			custom_tooltip = north_atlantic.0010.tooltip.2
+		}
+		else_if = {
+			limit = {
+				struggle:RICE_greenland_struggle = { is_struggle_phase = struggle_RICE_greenland_phase_subsistence }
+			}
+			custom_tooltip = north_atlantic.0010.tooltip.3
+		}
+
+		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
+	}
+}
+
+
+
+
+# Iceland is here to stay
+north_atlantic.0011 = {
+	type = character_event
+	title = north_atlantic.0011.t
+	desc = {
+		desc = north_atlantic.0011.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					root = scope:althing_convener
+				}
+				desc = north_atlantic.0011.desc.convener
+			}
+			desc = north_atlantic.0011.desc.not_convener
+		}
+		desc = north_atlantic.0011.desc.ending
+	}
+	theme = RICE_theme_north_atlantic_iceland
+
+	left_portrait = {
+		character = scope:althing_convener
+		animation = personality_honorable
+	}
+	right_portrait = {
+		character = root
+		trigger = { NOT = { root = scope:althing_convener } }
+	}
+
+	immediate = {
+		custom_tooltip = RICE_north_atlantic_form_iceland_effect_tooltip_1
+		custom_tooltip = north_atlantic.0011.vassal.tooltip
+		if = {
+			limit = {
+				root = scope:althing_convener
+			}
+			culture:icelandic = {
+				reset_culture_creation_date = yes
+			}
+			RICE_iceland_decision_effect = yes
+		}
+		else = {
+			show_as_tooltip = {
+				scope:althing_convener = {
+					RICE_iceland_decision_effect = yes
+				}
+			}
+		}
+		add_character_flag = RICE_icelandic_notification
+	}
+
+	option = {
+		name = north_atlantic.0011.a
+		
+		every_ruler = {
+			limit = {
+				is_ai = no
+				NOT = { root = scope:althing_convener }
+				NOT = { has_character_flag = RICE_icelandic_notification }
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = custom_iceland
+					}
+				}
+			}
+			trigger_event = north_atlantic.0011
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_icelandic_notification
+			}
+			remove_character_flag = RICE_icelandic_notification
+		}
+	}
+
+}
+
+
+
+# European/Gaelic servant/slave is noticed for abilities
+north_atlantic.0012 = {
+	type = character_event
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_north_atlantic_thrall_event
+				}
+				desc = north_atlantic.0012.t.thrall
+			}
+			desc = north_atlantic.0012.t.free
+		}
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_north_atlantic_thrall_event
+				}
+				desc = north_atlantic.0012.desc.thrall
+			}
+			desc = north_atlantic.0012.desc.free
+		}
+	}
+	theme = stewardship_duty_focus
+	override_background = { event_background = throne_room }
+
+	left_portrait = root
+	right_portrait = {
+		character = scope:thrall
+		triggered_animation = {
+			trigger = { has_character_flag = RICE_north_atlantic_thrall_event }
+			animation = throne_room_bow_2
+		}
+		triggered_animation = {
+			trigger = { NOT = { has_character_flag = RICE_north_atlantic_thrall_event } }
+			animation = personality_content
+		}
+		triggered_outfit = {
+			trigger = { has_character_flag = RICE_north_atlantic_thrall_event }
+			outfit_tags = { beggar_rags }
+		}
+	}
+
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_norse_frontier_region		
+			}
+		}
+		OR = {
+			culture = {
+				has_cultural_pillar = heritage_north_germanic
+			}
+			faith.religion = religion:germanic_religion
+		}
+	}
+
+	immediate = {
+		random = {
+			chance = 70
+			add_character_flag = RICE_north_atlantic_thrall_event
+		}
+
+		random_list = {
+			# Small chance they're from somewhere from non-Mediterranean Europe in general
+			5 = {
+				limit = {
+					any_county_in_region = {
+						region = graphical_western
+						NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
+						NOT = { faith.religion = religion:germanic_religion }
+					}
+				}
+				every_county_in_region = {
+					region = graphical_western
+					limit = {
+						NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
+						NOT = { faith.religion = religion:germanic_religion }
+					}
+					add_to_list = thrall_counties
+				}
+				random_in_list = {
+					list = thrall_counties
+					save_scope_as = county
+				}
+				create_character = {
+					location = root.location
+					template = RICE_gaelic_thrall_template
+					save_scope_as = thrall
+					culture = scope:county.culture
+					faith = scope:county.faith
+				}
+			}
+			# They're Gaelics from the British Isles
+			70 = {
+				trigger = {
+					any_county_in_region = {
+						region = world_europe_west_britannia
+						culture = {
+							has_cultural_pillar = heritage_goidelic
+						}
+						NOT = { faith.religion = religion:germanic_religion }
+					}
+				}
+				every_county_in_region = {
+					region = world_europe_west_britannia
+					limit = {
+						culture = {
+							has_cultural_pillar = heritage_goidelic
+						}
+						NOT = { faith.religion = religion:germanic_religion }
+					}
+					add_to_list = thrall_counties
+				}
+				random_in_list = {
+					list = thrall_counties
+					save_scope_as = county
+				}
+				create_character = {
+					location = root.location
+					template = RICE_gaelic_thrall_template
+					save_scope_as = thrall
+					culture = scope:county.culture
+					faith = scope:county.faith
+				}
+			}
+			# They're from British Isles otherwise
+			25 = {
+				# Find an appropriate county in the British Isles
+				if = {
+					limit = {
+						any_county_in_region = {
+							region = world_europe_west_britannia
+							culture = {
+								OR = {
+									has_cultural_pillar = heritage_brythonic
+									has_cultural_pillar = heritage_goidelic
+									has_cultural_pillar = heritage_west_germanic
+								}
+							}
+							NOT = { faith.religion = religion:germanic_religion }
+						}
+					}
+					every_county_in_region = {
+						region = world_europe_west_britannia
+						limit = {
+							culture = {
+								OR = {
+									has_cultural_pillar = heritage_brythonic
+									has_cultural_pillar = heritage_goidelic
+									has_cultural_pillar = heritage_west_germanic
+								}
+							}
+							NOT = { faith.religion = religion:germanic_religion }
+						}
+						add_to_list = thrall_counties
+					}
+					random_in_list = {
+						list = thrall_counties
+						save_scope_as = county
+					}
+					create_character = {
+						location = root.location
+						template = RICE_gaelic_thrall_template
+						save_scope_as = thrall
+						culture = scope:county.culture
+						faith = scope:county.faith
+					}
+				}
+				# Backup in case no such county can be found
+				else = {
+					random_list = {
+						# Irish
+						# Gaelic
+						# Welsh
+						# Anglo-Saxon
+						# English
+						40 = {
+							create_character = {
+								location = root.location
+								template = RICE_gaelic_thrall_template
+								save_scope_as = thrall
+								culture = culture:irish
+								faith = faith:insular_celtic
+							}				
+						}
+						30 = {
+							create_character = {
+								location = root.location
+								template = RICE_gaelic_thrall_template
+								save_scope_as = thrall
+								culture = culture:gaelic
+								faith = faith:catholic
+							}				
+						}
+						10 = {
+							create_character = {
+								location = root.location
+								template = RICE_gaelic_thrall_template
+								save_scope_as = thrall
+								culture = culture:welsh
+								faith = faith:catholic
+							}				
+						}
+						10 = {
+							trigger = {
+								NOT = {
+									is_target_in_global_variable_list = {
+										name = unavailable_unique_decisions
+										target = flag:embrace_english_culture_decision
+									}
+								}
+							}
+							create_character = {
+								location = root.location
+								template = RICE_gaelic_thrall_template
+								save_scope_as = thrall
+								culture = culture:anglo_saxon
+								faith = faith:catholic
+							}				
+						}
+						10 = {
+							trigger = {
+								is_target_in_global_variable_list = {
+									name = unavailable_unique_decisions
+									target = flag:embrace_english_culture_decision
+								}
+							}
+							create_character = {
+								location = root.location
+								template = RICE_gaelic_thrall_template
+								save_scope_as = thrall
+								culture = culture:english
+								faith = faith:catholic
+							}				
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+	# Welcome them to your court
+	option = {
+		name = north_atlantic.0012.a
+		add_prestige = -100
+		add_courtier = scope:thrall
+		if = {
+			limit = {
+				can_add_hook = {
+					target = scope:scope_VIET_otumeel_prankster
+					type = loyalty_hook
+				}
+			}
+			add_hook = {
+				target = scope:scope_VIET_otumeel_prankster
+				type = loyalty_hook
+			}
+		}
+	}
+
+	# No
+	option = {
+		name = north_atlantic.0012.b
+		hidden_effect = {
+			scope:thrall = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_north_atlantic_thrall_event
+			}
+			remove_character_flag = RICE_north_atlantic_thrall_event
+		}
+	}
+
+}
+
+
+# Courtier marries or takes as a concubine a European/Gaelic servant/slave
+north_atlantic.0013 = {
+	type = character_event
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_north_atlantic_thrall_event
+				}
+				desc = north_atlantic.0013.t.thrall
+			}
+			desc = north_atlantic.0013.t.free
+		}
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_north_atlantic_thrall_event
+				}
+				desc = north_atlantic.0013.desc.thrall
+			}
+			desc = north_atlantic.0013.desc.free
+		}
+		desc = north_atlantic.0013.desc.marriage
+		# first_valid = {
+		# 	triggered_desc = {
+		# 		trigger = {
+		# 			scope:thrall = { is_spouse_of = scope:courtier }
+		# 		}
+		# 		desc = north_atlantic.0013.desc.marriage
+		# 	}
+		# 	desc = north_atlantic.0013.desc.concubinage
+		# }
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_north_atlantic_thrall_event
+				}
+				desc = north_atlantic.0013.desc.conclusion.thrall
+			}
+			desc = north_atlantic.0013.desc.conclusion.free
+		}
+	}
+	theme = marriage
+	override_background = { event_background = relaxing_room }
+
+	left_portrait = {
+		character = scope:courtier
+		animation = personality_content
+	}
+	right_portrait = {
+		character = scope:thrall
+		triggered_animation = {
+			trigger = { has_character_flag = RICE_north_atlantic_thrall_event }
+			animation = throne_room_bow_2
+		}
+		triggered_animation = {
+			trigger = { NOT = { has_character_flag = RICE_north_atlantic_thrall_event } }
+			animation = personality_content
+		}
+		triggered_outfit = {
+			trigger = { has_character_flag = RICE_north_atlantic_thrall_event }
+			outfit_tags = { beggar_rags }
+		}
+	}
+
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_norse_frontier_region		
+			}
+		}
+		OR = {
+			culture = {
+				has_cultural_pillar = heritage_north_germanic
+			}
+			faith.religion = religion:germanic_religion
+		}
+		OR = {
+			any_courtier = {
+				is_available_ai_adult = yes
+				is_married = no
+				is_female = no
+				NOR = {
+					has_sexuality = asexual
+					has_sexuality = homosexual
+					has_trait = celibate
+					has_trait = eunuch
+					has_trait = devoted
+				}
+				NOT = { has_council_position = councillor_court_chaplain }
+			}
+			any_vassal = {
+				is_available_ai_adult = yes
+				is_married = no
+				is_female = no
+				NOR = {
+					has_sexuality = asexual
+					has_sexuality = homosexual
+					has_trait = celibate
+					has_trait = eunuch
+					has_trait = devoted
+				}
+				NOT = { has_council_position = councillor_court_chaplain }
+			}
+		}
+	}
+
+	immediate = {
+		random = {
+			chance = 70
+			add_character_flag = RICE_north_atlantic_thrall_event
+		}
+
+		random_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+				is_married = no
+				is_female = no
+				NOR = {
+					has_sexuality = asexual
+					has_sexuality = homosexual
+					has_trait = celibate
+					has_trait = eunuch
+					has_trait = devoted
+				}
+				NOT = { has_council_position = councillor_court_chaplain }
+			}
+			weight = {
+				base = 10
+				# Try to pick someone young
+				modifier = {
+					age <= 45
+					add = 15
+				}
+				# Try to pick someone horny
+				modifier = {
+					has_trait = lustful
+					add = 5
+				}
+				modifier = {
+					has_trait = chaste
+					add = -5
+				}
+				# Try to avoid someone in your dynasty
+				modifier = {
+					dynasty = root.dynasty
+					add = -8
+				}
+			}
+			add_to_list = marriage_candidate	
+		}
+		random_vassal = {
+			limit = {
+				is_available_ai_adult = yes
+				is_married = no
+				is_female = no
+				NOR = {
+					has_sexuality = asexual
+					has_sexuality = homosexual
+					has_trait = celibate
+					has_trait = eunuch
+					has_trait = devoted
+				}
+				NOT = { has_council_position = councillor_court_chaplain }
+			}
+			weight = {
+				base = 10
+				# Try to pick someone young
+				modifier = {
+					age <= 45
+					add = 15
+				}
+				# Try to pick someone horny
+				modifier = {
+					has_trait = lustful
+					add = 5
+				}
+				modifier = {
+					has_trait = chaste
+					add = -5
+				}
+				# Try to avoid someone in your dynasty
+				modifier = {
+					dynasty = root.dynasty
+					add = -8
+				}
+			}
+			add_to_list = marriage_candidate	
+		}
+
+		random_in_list = {
+			list = marriage_candidate
+			save_scope_as = courtier
+		}
+
+		random_list = {
+			# Small chance they're from somewhere from non-Mediterranean Europe in general
+			5 = {
+				limit = {
+					any_county_in_region = {
+						region = graphical_western
+						NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
+						NOT = { faith.religion = religion:germanic_religion }
+					}
+				}
+				every_county_in_region = {
+					region = graphical_western
+					limit = {
+						NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
+						NOT = { faith.religion = religion:germanic_religion }
+					}
+					add_to_list = thrall_counties
+				}
+				random_in_list = {
+					list = thrall_counties
+					save_scope_as = county
+				}
+				create_character = {
+					location = root.location
+					template = RICE_gaelic_thrall_template
+					gender_female_chance = 100
+					save_scope_as = thrall
+					culture = scope:county.culture
+					faith = scope:county.faith
+				}
+			}
+			# They're Gaelics from the British Isles
+			70 = {
+				trigger = {
+					any_county_in_region = {
+						region = world_europe_west_britannia
+						culture = {
+							has_cultural_pillar = heritage_goidelic
+						}
+						NOT = { faith.religion = religion:germanic_religion }
+					}
+				}
+				every_county_in_region = {
+					region = world_europe_west_britannia
+					limit = {
+						culture = {
+							has_cultural_pillar = heritage_goidelic
+						}
+						NOT = { faith.religion = religion:germanic_religion }
+					}
+					add_to_list = thrall_counties
+				}
+				random_in_list = {
+					list = thrall_counties
+					save_scope_as = county
+				}
+				create_character = {
+					location = root.location
+					template = RICE_gaelic_thrall_template
+					gender_female_chance = 100
+					save_scope_as = thrall
+					culture = scope:county.culture
+					faith = scope:county.faith
+				}
+			}
+			# They're from British Isles otherwise
+			25 = {
+				# Find an appropriate county in the British Isles
+				if = {
+					limit = {
+						any_county_in_region = {
+							region = world_europe_west_britannia
+							culture = {
+								OR = {
+									has_cultural_pillar = heritage_brythonic
+									has_cultural_pillar = heritage_goidelic
+									has_cultural_pillar = heritage_west_germanic
+								}
+							}
+							NOT = { faith.religion = religion:germanic_religion }
+						}
+					}
+					every_county_in_region = {
+						region = world_europe_west_britannia
+						limit = {
+							culture = {
+								OR = {
+									has_cultural_pillar = heritage_brythonic
+									has_cultural_pillar = heritage_goidelic
+									has_cultural_pillar = heritage_west_germanic
+								}
+							}
+							NOT = { faith.religion = religion:germanic_religion }
+						}
+						add_to_list = thrall_counties
+					}
+					random_in_list = {
+						list = thrall_counties
+						save_scope_as = county
+					}
+					create_character = {
+						location = root.location
+						template = RICE_gaelic_thrall_template
+						gender_female_chance = 100
+						save_scope_as = thrall
+						culture = scope:county.culture
+						faith = scope:county.faith
+					}
+				}
+				# Backup in case no such county can be found
+				else = {
+					random_list = {
+						# Irish
+						# Gaelic
+						# Welsh
+						# Anglo-Saxon
+						# English
+						40 = {
+							create_character = {
+								location = root.location
+								template = RICE_gaelic_thrall_template
+								gender_female_chance = 100
+								save_scope_as = thrall
+								culture = culture:irish
+								faith = faith:insular_celtic
+							}				
+						}
+						30 = {
+							create_character = {
+								location = root.location
+								template = RICE_gaelic_thrall_template
+								gender_female_chance = 100
+								save_scope_as = thrall
+								culture = culture:gaelic
+								faith = faith:catholic
+							}				
+						}
+						10 = {
+							create_character = {
+								location = root.location
+								template = RICE_gaelic_thrall_template
+								gender_female_chance = 100
+								save_scope_as = thrall
+								culture = culture:welsh
+								faith = faith:catholic
+							}				
+						}
+						10 = {
+							trigger = {
+								NOT = {
+									is_target_in_global_variable_list = {
+										name = unavailable_unique_decisions
+										target = flag:embrace_english_culture_decision
+									}
+								}
+							}
+							create_character = {
+								location = root.location
+								template = RICE_gaelic_thrall_template
+								gender_female_chance = 100
+								save_scope_as = thrall
+								culture = culture:anglo_saxon
+								faith = faith:catholic
+							}				
+						}
+						10 = {
+							trigger = {
+								is_target_in_global_variable_list = {
+									name = unavailable_unique_decisions
+									target = flag:embrace_english_culture_decision
+								}
+							}
+							create_character = {
+								location = root.location
+								template = RICE_gaelic_thrall_template
+								gender_female_chance = 100
+								save_scope_as = thrall
+								culture = culture:english
+								faith = faith:catholic
+							}				
+						}
+					}
+				}
+			}
+		}
+
+		hidden_effect = {
+			scope:thrall = {
+				random_list = {
+					40 = { }
+					30 = {
+						add_trait = beauty_good_1
+					}
+					20 = {
+						add_trait = beauty_good_2
+					}
+					10 = {
+						add_trait = beauty_good_3
+					}
+				}
+			}
+		}
+
+		# If concubinage is allowed
+		# if = {
+		# 	limit = {
+		# 		scope:thrall = {
+		# 			can_become_concubine_of_character_trigger = { CHARACTER = scope:courtier }
+		# 		}
+		# 		OR = {
+		# 			scope:courtier.culture = { has_cultural_tradition = tradition_concubines }
+		# 			scope:courtier.faith = { has_doctrine = doctrine_concubines }
+		# 		}
+		# 	}
+		# 	random_list = {
+		# 		20 = {
+		# 			scope:thrall = {
+		# 				make_concubine = scope:courtier
+		# 			}
+		# 		}
+		# 		10 = {
+		# 			scope:courtier = {
+		# 				marry = scope:thrall
+		# 			}
+		# 		}
+		# 	}
+		# }
+		# else = {
+		# 	scope:courtier = {
+		# 		marry = scope:thrall
+		# 	}
+		# }
+
+		# Because concubinage is not shown for courtiers
+		scope:courtier = {
+			marry = scope:thrall
+		}
+
+		# Small chance
+		hidden_effect = {
+			random = {
+				chance = 10
+				modifier = {
+					add = -15
+					scope:thrall = {
+						opinion = {
+							target = scope:courtier
+							value < 0
+						}
+					}
+				}
+				modifier = {
+					add = 10
+					scope:thrall = {
+						opinion = {
+							target = scope:courtier
+							value > 25
+						}
+					}
+				}
+				modifier = {
+					add = 10
+					scope:thrall = {
+						opinion = {
+							target = scope:courtier
+							value > 50
+						}
+					}
+				}
+				modifier = {
+					add = 10
+					scope:thrall = {
+						opinion = {
+							target = scope:courtier
+							value > 75
+						}
+					}
+				}
+				modifier = {
+					scope:courtier = { has_trait = sadistic }
+					add = -5
+				}
+				modifier = {
+					scope:courtier = { has_trait = compassionate }
+					add = 5
+				}
+				modifier = {
+					scope:courtier = { has_trait = callous }
+					add = -5
+				}
+				modifier = {
+					scope:courtier = { has_trait = gregarious }
+					add = 5
+				}
+				modifier = {
+					scope:courtier = {
+						OR = {
+							has_trait = beauty_good_1
+							has_trait = beauty_good_2
+							has_trait = beauty_good_3
+						}
+					}
+					add = 5
+				}
+				scope:courtier = {
+					set_random_lover_reason = { TARGET = scope:thrall }
+				}
+			}
+		}
+
+		if = {
+			limit = {
+				scope:courtier = {
+					is_landed = yes
+				}
+			}
+			scope:courtier = {				
+				add_courtier = scope:thrall
+			}
+		}
+		else = {		
+			add_courtier = scope:thrall
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = north_atlantic.0013.a
+		trigger = {
+			has_character_flag = RICE_north_atlantic_thrall_event
+		}
+		stress_impact = {
+			callous = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+	# Ok
+	option = {
+		name = north_atlantic.0013.b
+		trigger = {
+			NOT = { has_character_flag = RICE_north_atlantic_thrall_event }
+		}
+		stress_impact = {
+			callous = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+	# Ok
+	option = {
+		name = north_atlantic.0013.c
+	}
+
+	# # Let the girl choose
+	# option = {
+	# 	name = north_atlantic.0012.b
+	# 	random_list = {
+	# 		desc = north_atlantic.0012.b.tooltip
+	# 		50 = {
+	# 			show_chance = no
+	# 			desc = north_atlantic.0012.b.tooltip.yes
+	# 			# She has to be at least neutral in opinion towards him
+	# 			trigger = {
+	# 				scope:thrall = {
+	# 					opinion = {
+	# 						target = scope:courtier
+	# 						value > -20
+	# 					}
+	# 				}
+	# 			}
+	# 			# He's good looking
+	# 			modifier = {
+	# 				add = 5
+	# 				scope:courtier = {
+	# 					has_trait = beauty_good_1
+	# 				}
+	# 			}
+	# 			modifier = {
+	# 				add = 10
+	# 				scope:courtier = {
+	# 					has_trait = beauty_good_2
+	# 				}
+	# 			}
+	# 			modifier = {
+	# 				add = 15
+	# 				scope:courtier = {
+	# 					has_trait = beauty_good_3
+	# 				}
+	# 			}
+	# 			# The girl is a gold digger or power hungry
+	# 			modifier = {
+	# 				add = 15
+	# 				scope:thrall = {
+	# 					OR = {
+	# 						ai_greed >= medium_positive_ai_value
+	# 						has_trait = greedy
+	# 						has_trait = ambitious
+	# 					}
+	# 				}
+	# 				scope:courtier = {
+	# 					is_landed = yes
+	# 				}
+	# 			}
+	# 			# The guy has a reputation for being nice
+	# 			modifier = {
+	# 				add = 10
+	# 				scope:courtier = {
+	# 					has_trait_benevolent_trigger = yes
+	# 				}
+	# 			}
+	# 			# The guy is good at charming women
+	# 			modifier = {
+	# 				add = 10
+	# 				scope:courtier = {
+	# 					OR = {
+	# 						has_trait = gallant
+	# 						has_trait = seducer
+	# 						has_trait = gregarious
+	# 					}
+	# 				}
+	# 			}							
+	# 			send_interface_toast = {
+	# 				left_icon = ROOT
+	# 				title = north_atlantic.0012.b.toast.yes
+	# 				# If concubinage is allowed
+	# 				if = {
+	# 					limit = {
+	# 						scope:thrall = {
+	# 							can_become_concubine_of_character_trigger = { CHARACTER = scope:courtier }
+	# 						}
+	# 						OR = {
+	# 							scope:courtier.culture = { has_cultural_tradition = tradition_concubines }
+	# 							scope:courtier.faith = { has_doctrine = doctrine_concubines }
+	# 						}
+	# 					}
+	# 					random_list = {
+	# 						20 = {
+	# 							scope:thrall = {
+	# 								make_concubine = scope:courtier
+	# 							}
+	# 						}
+	# 						10 = {
+	# 							scope:courtier = {
+	# 								marry = scope:thrall
+	# 							}
+	# 						}
+	# 					}
+	# 				}
+	# 				else = {
+	# 					scope:courtier = {
+	# 						marry = scope:thrall
+	# 					}
+	# 				}					
+	# 			}
+	# 		}
+	# 		# She is not interested
+	# 		50 = {
+	# 			show_chance = no
+	# 			desc = north_atlantic.0012.b.tooltip.no
+	# 			# He's ugly
+	# 			modifier = {
+	# 				add = 5
+	# 				scope:courtier = {
+	# 					has_trait = beauty_bad_1
+	# 				}
+	# 			}
+	# 			modifier = {
+	# 				add = 10
+	# 				scope:courtier = {
+	# 					has_trait = beauty_bad_2
+	# 				}
+	# 			}
+	# 			modifier = {
+	# 				add = 15
+	# 				scope:courtier = {
+	# 					has_trait = beauty_bad_3
+	# 				}
+	# 			}
+	# 			# The girl looks down on the guy
+	# 			modifier = {
+	# 				add = 5
+	# 				scope:thrall = {
+	# 					has_trait = arrogant
+	# 				}
+	# 			}
+	# 			# The girl is worried
+	# 			modifier = {
+	# 				add = 5
+	# 				scope:thrall = {
+	# 					has_trait = paranoid
+	# 				}
+	# 			}
+	# 			# The guy has a reputation for being an asshole
+	# 			modifier = {
+	# 				add = 25
+	# 				scope:courtier = {
+	# 					OR = {
+	# 						has_trait = sadistic
+	# 						has_trait = wrathful
+	# 						has_trait = arrogant
+	# 						has_trait = callous
+	# 						has_trait = vengeful
+	# 					}
+	# 				}
+	# 			}
+	# 			send_interface_toast = {
+	# 				left_icon = ROOT
+	# 				title = north_atlantic.0012.b.toast.no	
+	# 				scope:courtier = {
+	# 					add_prestige = -100
+	# 				}			
+	# 			}
+	# 			hidden_effect = {
+	# 				scope:thrall = {
+	# 					death = {
+	# 						death_reason = death_vanished
+	# 					}
+	# 				}		
+	# 			}
+	# 		}
+	# 	}
+	# }
+
+	# # Do not give permission
+	# option = {
+	# 	name = north_atlantic.0012.c
+	# 	hidden_effect = {
+	# 		scope:thrall = {
+	# 			death = {
+	# 				death_reason = death_vanished
+	# 			}
+	# 		}
+	# 	}
+	# }
+
+	
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_north_atlantic_thrall_event
+			}
+			remove_character_flag = RICE_north_atlantic_thrall_event
+		}
+	}
+
+}
+
+
+# Test
+north_atlantic.9996 = {
+	type = character_event
+	title = north_atlantic.9996.t
+	desc = north_atlantic.9996.desc
+	theme = RICE_theme_north_atlantic_port
+
+	left_portrait = root
+	right_portrait = root
+
+	option = {
+		name = north_atlantic.9996.a
+	}
+
+}
+
+# Test
+north_atlantic.9997 = {
+	type = character_event
+	title = north_atlantic.9997.t
+	desc = north_atlantic.9997.desc
+	theme = RICE_theme_north_atlantic_greenland_farm
+
+	left_portrait = root
+	right_portrait = root
+
+	option = {
+		name = north_atlantic.9997.a
+	}
+
+}
+
+# Test
+north_atlantic.9998 = {
+	type = character_event
+	title = north_atlantic.9998.t
+	desc = north_atlantic.9998.desc
+	theme = RICE_theme_north_atlantic_greenland
+
+	left_portrait = root
+	right_portrait = root
+
+	option = {
+		name = north_atlantic.9998.a
+	}
+
+}
+
+
+# Test
+north_atlantic.9999 = {
+	type = character_event
+	title = north_atlantic.9999.t
+	desc = north_atlantic.9999.desc
+	theme = RICE_theme_north_atlantic_disko_bay
+
+	left_portrait = root
+	right_portrait = scope:doomed
+
+	trigger = {
+		any_courtier_or_guest = {
+			is_available_ai_adult = yes
+		}
+	}
+
+	immediate = {
+		random_courtier_or_guest = {
+			limit = {
+				is_available_ai_adult = yes
+			}
+			save_scope_as = doomed
+		}
+	}
+
+	option = {
+		name = north_atlantic.9999.a
+		scope:doomed = {
+			death = {
+				death_reason = death_RICE_north_atlantic_greenland
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.9999.b
+		scope:doomed = {
+			death = {
+				death_reason = death_RICE_north_atlantic_vinland
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.9999.c
+		scope:doomed = {
+			death = {
+				death_reason = death_RICE_north_atlantic_greenland_death
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.9999.d
+		scope:doomed = {
+			death = {
+				death_reason = death_RICE_north_atlantic_helluland_death
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.9999.e
+		scope:doomed = {
+			death = {
+				death_reason = death_RICE_north_atlantic_markland_death
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.9999.f
+		scope:doomed = {
+			death = {
+				death_reason = death_RICE_north_atlantic_vinland_death
+			}
+		}
+	}
+
+}
+
+
+
+
+
+
+
+
+
+######################################################################################
+# 
+# MISC DECISIONS
+# 
+# north_atlantic.0020-north_atlantic.0029
+# 
+######################################################################################
+
+
+# Establishing an Estate
+north_atlantic.0020 = {
+	type = character_event
+	title = north_atlantic.0020.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					root = scope:establisher
+				}
+				desc = north_atlantic.0020.desc.establisher
+			}
+			desc = north_atlantic.0020.desc.relative
+		}
+	}
+	theme = RICE_theme_north_atlantic_greenland_farm
+
+	left_portrait = {
+		character = scope:establisher
+		animation = personality_bold
+	}
+	right_portrait = {
+		character = root
+		trigger = { NOT = { root = scope:establisher } }
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			house = {
+				add_house_modifier = {
+					modifier = RICE_north_atlantic_greenland_family_estate
+				}
+			}
+			dynasty = {
+				add_dynasty_prestige = 100
+			}
+			scope:establisher = {
+				add_prestige = 200
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.0020.a
+		#custom_description_no_bullet = {
+		#	text = RICE_socotra_indian_ocean_legacy_2_effect_1
+		#}
+	}
+
+}
+
+
+# Attracting Greenland immigrants
+north_atlantic.0021 = {
+	type = character_event
+	title = north_atlantic.0021.t
+	desc = {
+		desc = north_atlantic.0021.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:immigrant
+				}
+				desc = north_atlantic.0021.desc.immigrant
+			}
+		}
+	}
+	theme = RICE_theme_north_atlantic_port
+
+	left_portrait = {
+		character = root
+		animation = personality_forgiving
+	}
+	right_portrait = {
+		character = scope:immigrant
+		animation = throne_room_bow_1		
+		trigger = { exists = scope:immigrant }
+	}
+
+	immediate = {
+		RICE_north_atlantic_attract_greenland_immigrants_effect = yes
+		random = {
+			chance = 70
+			random_held_title = {
+				limit = { tier = tier_county }
+				save_scope_as = county
+			}
+			create_character = {
+				location = root.capital_province
+				template = RICE_greenland_immigrant_template
+				save_scope_as = immigrant
+			}	
+		}
+	}
+
+	option = {
+		name = north_atlantic.0021.a
+		trigger = {
+			NOT = { exists = scope:immigrant }
+		}
+	}
+
+	option = {
+		name = north_atlantic.0021.b
+		trigger = {
+			exists = scope:immigrant
+		}
+		add_courtier = scope:immigrant
+		add_prestige = 50
+		pay_short_term_gold = {
+			target = scope:immigrant
+			gold = 50
+		}
+	}
+
+	option = {
+		name = north_atlantic.0021.c
+		trigger = {
+			exists = scope:immigrant
+		}
+		hidden_effect = {
+			scope:immigrant = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+}
+
+
+
+
+######################################################################################
+# 
+# MINOR EXPEDITIONS
+# 
+# north_atlantic.0030-north_atlantic.0099
+# 
+######################################################################################
+
+
+# Choose someone to lead the expedition
+north_atlantic.0030 = {
+	type = character_event
+	title = north_atlantic.0030.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_expedition_destination_pick = flag:helluland
+				}
+				desc = north_atlantic.0030.desc.helluland
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_expedition_destination_pick = flag:markland
+				}
+				desc = north_atlantic.0030.desc.markland
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_expedition_destination_pick = flag:vinland
+				}
+				desc = north_atlantic.0030.desc.vinland
+			}
+		}
+		desc = north_atlantic.0030.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					OR = {
+						exists = scope:candidate_1
+						exists = scope:candidate_2
+						exists = scope:candidate_3
+					}
+				}
+				desc = north_atlantic.0030.desc.some_courtiers
+			}
+			desc = north_atlantic.0030.desc.no_courtiers
+		}
+	}
+	theme = diplomacy_foreign_affairs_focus
+	override_background = { event_background = RICE_background_north_atlantic_port }
+
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	lower_left_portrait = {
+		character = scope:candidate_1
+		trigger = { exists = scope:candidate_1 }
+	}
+	lower_center_portrait = {
+		character = scope:candidate_2
+		trigger = { exists = scope:candidate_2 }
+	}
+	lower_right_portrait = {
+		character = scope:candidate_3
+		trigger = { exists = scope:candidate_3 }
+	}
+
+	immediate = {
+		# See scripted_trigger valid_scandinavian_adventurer just in case
+		every_courtier_or_guest = {
+			limit = {
+				is_available_healthy_ai_adult = yes
+				age <= 55 # Don't want someone too old who could die on the journey
+				is_alive = yes
+				is_ruler = no
+				NOT = { is_councillor_of = root }
+				# Will not inherit anything anytime soon
+				OR = {					
+					any_heir_title = { count = 0 }
+					AND = {
+						save_temporary_scope_as = potential
+						any_heir_title = {
+							place_in_line_of_succession = {
+								target = scope:potential
+								value >= 3
+							}
+						}
+					}
+				}
+			}
+			add_to_list = expedition_leader_candidates
+		}
+
+		if = {
+			limit = {
+				any_in_list = {
+					list = expedition_leader_candidates
+					count >= 1
+					opinion = {
+						target = root
+						value > -25
+					}
+				}
+			}
+			random_in_list = {
+				list = expedition_leader_candidates
+				weight = {
+					base = 10
+					modifier = {
+						has_trait = RICE_explorer
+						add = 20
+					}
+					modifier = {
+						has_trait = ambitious
+						add = 5
+					}
+					modifier = {
+						has_trait = content
+						add = -5
+					}
+					modifier = {
+						has_trait = brave
+						add = 5
+					}
+					modifier = {
+						has_trait = craven
+						add = -5
+					}
+					modifier = {
+						has_trait = diligent
+						add = 5
+					}
+					modifier = {
+						has_trait = lazy
+						add = -5
+					}
+					modifier = {
+						is_female = yes
+						culture = { has_cultural_parameter = martial_custom_male_only_combatant }
+						NOT = { culture = { has_cultural_parameter = has_access_to_shieldmaidens } }
+						add = -30
+					}
+					modifier = {
+						is_female = yes
+						culture = { has_cultural_parameter = martial_custom_male_only_combatant }
+						culture = { has_cultural_parameter = has_access_to_shieldmaidens }
+						add = -15
+					}
+					modifier = {
+						is_female = no
+						culture = { has_cultural_parameter = martial_custom_female_only_combatant }
+						NOT = { culture = { has_cultural_parameter = has_access_to_shieldmaidens } }
+						add = -30
+					}
+					modifier = {
+						is_female = no
+						culture = { has_cultural_parameter = martial_custom_female_only_combatant }
+						culture = { has_cultural_parameter = has_access_to_shieldmaidens }
+						add = -15
+					}
+				}
+				save_scope_as = candidate_1
+				add_character_flag = {
+					flag = RICE_recent_expedition_candidate
+					days = 120
+				}
+			}
+		}
+
+		if = {
+			limit = {
+				any_in_list = {
+					list = expedition_leader_candidates
+					count >= 2
+				}
+			}
+			random_in_list = {
+				list = expedition_leader_candidates
+				limit = {
+					NOT = { this = scope:candidate_1 }
+				}
+				weight = {
+					base = 10
+					modifier = {
+						has_trait = RICE_explorer
+						add = 20
+					}
+					modifier = {
+						has_trait = ambitious
+						add = 5
+					}
+					modifier = {
+						has_trait = content
+						add = -5
+					}
+					modifier = {
+						has_trait = brave
+						add = 5
+					}
+					modifier = {
+						has_trait = craven
+						add = -5
+					}
+					modifier = {
+						has_trait = diligent
+						add = 5
+					}
+					modifier = {
+						has_trait = lazy
+						add = -5
+					}
+					modifier = {
+						is_female = yes
+						culture = { has_cultural_parameter = martial_custom_male_only_combatant }
+						NOT = { culture = { has_cultural_parameter = has_access_to_shieldmaidens } }
+						add = -30
+					}
+					modifier = {
+						is_female = yes
+						culture = { has_cultural_parameter = martial_custom_male_only_combatant }
+						culture = { has_cultural_parameter = has_access_to_shieldmaidens }
+						add = -15
+					}
+					modifier = {
+						is_female = no
+						culture = { has_cultural_parameter = martial_custom_female_only_combatant }
+						NOT = { culture = { has_cultural_parameter = has_access_to_shieldmaidens } }
+						add = -30
+					}
+					modifier = {
+						is_female = no
+						culture = { has_cultural_parameter = martial_custom_female_only_combatant }
+						culture = { has_cultural_parameter = has_access_to_shieldmaidens }
+						add = -15
+					}
+				}
+				save_scope_as = candidate_2
+				add_character_flag = {
+					flag = RICE_recent_expedition_candidate
+					days = 120
+				}
+			}
+		}
+
+		if = {
+			limit = {
+				any_in_list = {
+					list = expedition_leader_candidates
+					count >= 3
+				}
+			}
+			random_in_list = {
+				list = expedition_leader_candidates
+				limit = {
+					NOT = { this = scope:candidate_1 }
+					NOT = { this = scope:candidate_2 }
+				}
+				weight = {
+					base = 10
+					modifier = {
+						has_trait = RICE_explorer
+						add = 20
+					}
+					modifier = {
+						has_trait = ambitious
+						add = 5
+					}
+					modifier = {
+						has_trait = content
+						add = -5
+					}
+					modifier = {
+						has_trait = brave
+						add = 5
+					}
+					modifier = {
+						has_trait = craven
+						add = -5
+					}
+					modifier = {
+						has_trait = diligent
+						add = 5
+					}
+					modifier = {
+						has_trait = lazy
+						add = -5
+					}
+					modifier = {
+						is_female = yes
+						culture = { has_cultural_parameter = martial_custom_male_only_combatant }
+						NOT = { culture = { has_cultural_parameter = has_access_to_shieldmaidens } }
+						add = -30
+					}
+					modifier = {
+						is_female = yes
+						culture = { has_cultural_parameter = martial_custom_male_only_combatant }
+						culture = { has_cultural_parameter = has_access_to_shieldmaidens }
+						add = -15
+					}
+					modifier = {
+						is_female = no
+						culture = { has_cultural_parameter = martial_custom_female_only_combatant }
+						NOT = { culture = { has_cultural_parameter = has_access_to_shieldmaidens } }
+						add = -30
+					}
+					modifier = {
+						is_female = no
+						culture = { has_cultural_parameter = martial_custom_female_only_combatant }
+						culture = { has_cultural_parameter = has_access_to_shieldmaidens }
+						add = -15
+					}
+				}
+				save_scope_as = candidate_3
+				add_character_flag = {
+					flag = RICE_recent_expedition_candidate
+					days = 120
+				}
+			}
+		}
+
+	}
+
+	option = {
+		name = north_atlantic.0030.a
+		trigger = {
+			exists = scope:candidate_1
+		}
+		scope:candidate_1 = {
+			#save_scope_as = RICE_expedition_leader_choice
+			add_prestige = 100
+			add_character_flag = {
+				flag = planning_an_activity
+				days = 180
+			}
+			add_character_flag = {
+				flag = blocked_from_leaving
+				years = 4 # Little extra buffer just in case
+			}
+		}
+		set_variable = { # For use in the Story
+			name = RICE_expedition_leader_choice
+			value = scope:candidate_1
+		}
+	}
+
+	option = {
+		name = north_atlantic.0030.b
+		trigger = {
+			exists = scope:candidate_2
+		}
+		scope:candidate_2 = {
+			#save_scope_as = RICE_expedition_leader_choice
+			add_prestige = 100
+			add_character_flag = {
+				flag = planning_an_activity
+				days = 180
+			}
+			add_character_flag = {
+				flag = blocked_from_leaving
+				years = 4 # Little extra buffer just in case
+			}
+		}
+		set_variable = { # For use in the Story
+			name = RICE_expedition_leader_choice
+			value = scope:candidate_2
+		}
+	}
+
+	option = {
+		name = north_atlantic.0030.c
+		trigger = {
+			exists = scope:candidate_3
+		}
+		scope:candidate_3 = {
+			#save_scope_as = RICE_expedition_leader_choice
+			add_prestige = 100
+			add_character_flag = {
+				flag = planning_an_activity
+				days = 180
+			}
+			add_character_flag = {
+				flag = blocked_from_leaving
+				years = 4 # Little extra buffer just in case
+			}
+		}
+		set_variable = { # For use in the Story
+			name = RICE_expedition_leader_choice
+			value = scope:candidate_3
+		}
+	}
+
+	option = {
+		name = north_atlantic.0030.d
+		trigger = {
+			is_ai = no
+		}
+		custom_tooltip = north_atlantic.0030.d.tooltip
+	}
+
+	after = {		
+		create_story = RICE_story_cycle_north_atlantic_expedition
+	}
+
+}
+
+
+# Accept the offer
+north_atlantic.0031 = {
+	type = letter_event
+	opening = {
+		desc = north_atlantic.0031.opening
+	}
+	desc = north_atlantic.0031.desc
+	sender = scope:recipient
+	
+	immediate = {
+		scope:recipient = {
+			add_prestige = 100
+		}
+	}
+
+	option = { # Great
+		name = north_atlantic.0031.a
+		custom_tooltip = north_atlantic.0031.tooltip
+	}
+}
+
+
+# Refuse the offer
+north_atlantic.0032 = {
+	type = letter_event
+	opening = {
+		desc = north_atlantic.0032.opening
+	}
+	desc = north_atlantic.0032.desc
+	sender = scope:recipient
+	
+	immediate = {
+		add_prestige = -50
+		scope:recipient = {
+			reverse_add_opinion = {
+				target = scope:actor
+				modifier = rejected_opinion
+			}
+		}
+	}
+
+	option = { # Oh no
+		name = north_atlantic.0032.a
+		custom_tooltip = north_atlantic.0032.tooltip
+	}
+}
+
+
+
+
+# Expedition begins
+north_atlantic.0033 = {
+	type = character_event
+	title = north_atlantic.0033.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:helluland
+				}
+				desc = north_atlantic.0033.desc.helluland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:markland
+				}
+				desc = north_atlantic.0033.desc.markland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:vinland
+				}
+				desc = north_atlantic.0033.desc.vinland
+			}
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_expedition_leader_generated
+				}
+				desc = north_atlantic.0033.desc.custom_leader
+			}
+			desc = north_atlantic.0033.desc.picked_leader
+		}
+		desc = north_atlantic.0033.desc		
+	}
+	theme = RICE_theme_north_atlantic_port
+
+	left_portrait = root
+	right_portrait = {
+		character = scope:leader
+		animation = personality_honorable
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				scope:story = {
+					NOT = { exists = var:RICE_expedition_leader }
+				}
+			}
+			# Generate the expedition leader if none exists
+			create_character = {
+				location = root.capital_province
+				template = random_barrel_character
+				save_scope_as = leader
+			}
+			add_character_flag = RICE_expedition_leader_generated
+			scope:story = {
+				set_variable = {
+					name = RICE_expedition_leader
+					value = scope:leader
+				}
+			}
+		}
+		# Prioritize capital if it is coastal
+		if = {
+			limit = {
+				capital_county = {
+					is_coastal_county = yes
+				}
+			}
+			capital_province = { save_scope_as = province }
+		}
+		# If capital isn't coastal, find a county/province that does
+		else_if = {
+			limit = {
+				random_realm_province = {
+					is_coastal = yes
+				}
+			}
+			any_realm_province = {
+				limit = {
+					is_coastal = yes
+				}
+				save_scope_as = province
+			}
+		}
+		# Failsafe in case nothing is found that is coastal
+		else = {
+			capital_province = { save_scope_as = province }
+		}
+	}
+
+	option = {
+		name = north_atlantic.0033.a
+		show_as_tooltip = {
+			scope:leader = {
+				add_trait = RICE_exploring_western_seas
+			}
+		}
+		scope:province = {	
+			spawn_activity = {
+				owner = scope:leader
+				type = activity_north_atlantic_greenland_expedition
+			}	
+		}
+	}
+
+	after = {		
+		if = {
+			limit = {
+				has_character_flag = RICE_expedition_leader_generated
+			}
+			remove_character_flag = RICE_expedition_leader_generated
+		}
+	}
+
+}
+
+
+# Expedition ends
+north_atlantic.0034 = {
+	type = character_event
+	title = north_atlantic.0034.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:helluland
+				}
+				desc = north_atlantic.0034.desc.helluland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:markland
+				}
+				desc = north_atlantic.0034.desc.markland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:vinland
+				}
+				desc = north_atlantic.0034.desc.vinland
+			}
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:leader = {
+						is_alive = no
+					}
+				}
+				desc = north_atlantic.0033.desc.leader_dead
+			}
+			desc = north_atlantic.0033.desc.leader_not_dead
+		}	
+	}
+	theme = RICE_theme_north_atlantic_port
+
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:leader
+		animation = personality_honorable
+	}
+
+	immediate = {
+		add_prestige = 100
+		if = {
+			limit = {
+				scope:leader = {
+					is_alive = yes
+				}
+			}
+			if = {
+				limit = {
+					scope:leader = {
+						has_trait = RICE_exploring_western_seas
+					}
+				}
+				scope:leader = {
+					remove_trait = RICE_exploring_western_seas					
+				}
+			}
+			scope:leader = {
+				add_trait = RICE_explorer
+				add_prestige = 100
+				# Maybe trigger event after?
+			}
+			scope:leader.activity = {
+				complete_activity = yes
+			}
+			if = {
+				limit = {
+					scope:leader = {
+						has_character_flag = blocked_from_leaving
+					}
+				}
+				scope:leader = {
+					remove_character_flag = blocked_from_leaving
+				}
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.0034.a
+		if = {
+			limit = {
+				scope:story.var:RICE_expedition_destination = flag:helluland
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_successful_expedition_to_helluland
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_expedition_destination = flag:markland
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_successful_expedition_to_markland
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_expedition_destination = flag:vinland
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_successful_expedition_to_vinland
+					character = root
+				}
+			}
+		}
+	}
+
+	after = {
+		random_owned_story = {
+			limit = {
+				story_type = RICE_story_cycle_north_atlantic_expedition
+			}
+			end_story = yes
+		}
+	}
+
+}
+
+
+
+
+
+# Encounter a peaceful Native tribe
+north_atlantic.0040 = {
+	type = character_event
+	title = north_atlantic.0040.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:helluland
+				}
+				desc = north_atlantic.expedition.intro.helluland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:markland
+				}
+				desc = north_atlantic.expedition.intro.markland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:vinland
+				}
+				desc = north_atlantic.expedition.intro.vinland
+			}
+		}
+		desc = north_atlantic.0040.desc
+	}
+	theme = diplomacy_foreign_affairs_focus
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+		event_background = RICE_background_north_atlantic_baffin_island
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+		event_background = RICE_background_north_atlantic_markland
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+		event_background = RICE_background_north_atlantic_vinland
+	}
+
+	left_portrait = scope:leader
+	right_portrait = scope:native_leader
+
+	immediate = {
+		create_character = {
+			template = RICE_native_chief_template
+			save_scope_as = native_leader
+			faith = root.faith
+			random_culture = {
+				culture:inuit = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:helluland
+						has_global_variable = RICE_greenland_inuit_are_here
+					}
+					weight = { base = 10 }
+				}
+				culture:dorset = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:helluland
+						NOT = { has_global_variable = RICE_greenland_inuit_are_here }
+					}
+					weight = { base = 10 }
+				}
+				culture:dorset = {
+					trigger = {
+						OR = {
+							scope:story.var:RICE_expedition_destination = flag:markland
+							scope:story.var:RICE_expedition_destination = flag:vinland
+						}
+					}
+					weight = { base = 20 }
+				}
+				culture:innu = {
+					trigger = {
+						OR = {
+							scope:story.var:RICE_expedition_destination = flag:markland
+							scope:story.var:RICE_expedition_destination = flag:vinland
+						}
+					}
+					weight = { base = 30 }
+				}
+				culture:east_cree = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:markland
+					}
+					weight = { base = 10 }
+				}
+				culture:mikmaq = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					weight = { base = 20 }
+				}
+				culture:maliseet = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					weight = { base = 5 }
+				}
+				culture:passamaquoddy = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					weight = { base = 5 }
+				}
+				culture:penobscot = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					weight = { base = 5 }
+				}
+				culture:abenaki = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					weight = { base = 5 }
+				}
+				culture:beothuk = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					weight = { base = 40 }
+				}
+				culture:laurentian = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					weight = { base = 10 }
+				}
+			}
+			after_creation = {
+				# Set religion
+				if = {
+					limit = {
+						OR = {
+							culture = { has_cultural_pillar = heritage_inuit }
+							culture = { has_cultural_pillar = heritage_paleo_inuit }
+						}
+					}
+					set_character_faith = faith:inuit_pagan
+				}
+				else_if = {
+					limit = {
+						culture = { has_cultural_pillar = heritage_iroquoian }
+					}
+					set_character_faith = faith:iroquoian_pagan
+				}
+				else_if = {
+					limit = {
+						culture = { has_cultural_pillar = heritage_algonquian }
+					}
+					set_character_faith = faith:algonquian_pagan
+				}
+			}
+		}
+	}
+
+	option = { # Attempt to trade
+		name = north_atlantic.0040.a
+		scope:leader = {
+			duel = {
+				skill = diplomacy
+				value = 10
+				10 = { # Failure
+					#show_chance = no
+					custom_tooltip = north_atlantic.0040.a.failure
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -0.5
+					}
+				}
+				10 = { # Success
+					#show_chance = no
+					custom_tooltip = north_atlantic.0040.a.success
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 0.5
+					}
+					root = {
+						add_character_flag = RICE_expedition_event_success_flag
+					}
+				}
+			}
+		}
+		trigger_event = north_atlantic.0041
+		custom_tooltip = north_atlantic.expedition.skill.diplomacy
+	}
+	option = {
+		name = north_atlantic.0040.b
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.neutral
+		}
+		hidden_effect = {
+			scope:native_leader = {
+				death = {
+					death_reason = death_vanished
+				}
+			}			
+		}
+	}
+	option = { # Try to steal and kidnap
+		name = north_atlantic.0040.c
+		scope:leader = {
+			duel = {
+				skill = intrigue
+				target = scope:native_leader
+				#desc = north_atlantic.0040.c.failure
+				3 = { # Failure
+					#show_chance = no
+					custom_tooltip = north_atlantic.0040.c.failure.battle
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -0.5
+					}
+					root = {
+						add_character_flag = RICE_expedition_event_failure_flag_battle
+					}
+				}
+				7 = { # Failure
+					#show_chance = no
+					custom_tooltip = north_atlantic.0040.c.failure.get_away
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -0.5
+					}
+					root = {
+						add_character_flag = RICE_expedition_event_failure_flag_get_away
+					}
+				}
+				9 = { # Success
+					#show_chance = no
+					custom_tooltip = north_atlantic.0040.c.success.steal
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 0.5
+					}
+					root = {
+						add_character_flag = RICE_expedition_event_success_flag_steal
+					}
+				}
+				1 = { # Success
+					#show_chance = no
+					custom_tooltip = north_atlantic.0040.c.success.kidnap
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 0.5
+					}
+					root = {
+						add_character_flag = RICE_expedition_event_success_flag_kidnap
+					}
+				}
+				# 1 = { # Success
+				# 	#show_chance = no
+				# 	custom_tooltip = north_atlantic.0040.c.success.kidnap_big
+				# 	compare_modifier = {
+				# 		value = scope:duel_value
+				# 		multiplier = 1.1
+				# 	}
+				# 	add_character_flag = RICE_expedition_event_success_flag_kidnap_big
+				# }
+			}
+		}
+		trigger_event = north_atlantic.0042
+		custom_tooltip = north_atlantic.expedition.skill.intrigue
+	}
+}
+
+
+# Trade with the native tribe
+north_atlantic.0041 = {
+	type = character_event
+	title = north_atlantic.0041.t
+	desc = {
+		desc = north_atlantic.expedition.intro.continue
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_expedition_event_success_flag
+				}
+				desc = north_atlantic.0041.desc.success
+			}
+			desc = north_atlantic.0041.desc.failure
+		}
+	}
+	theme = diplomacy_foreign_affairs_focus
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+		event_background = RICE_background_north_atlantic_baffin_island
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+		event_background = RICE_background_north_atlantic_markland
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+		event_background = RICE_background_north_atlantic_vinland
+	}
+
+	left_portrait = {
+		character = scope:leader
+		triggered_animation = {
+			trigger = { root = { has_character_flag = RICE_expedition_event_success_flag } }
+			animation = personality_greedy
+		}
+		triggered_animation = {
+			trigger = { NOT = { root = { has_character_flag = RICE_expedition_event_success_flag } } }
+			animation = anger
+		}
+	}
+	right_portrait = {
+		character = scope:native_leader
+		triggered_animation = {
+			trigger = { root = { has_character_flag = RICE_expedition_event_success_flag } }
+			animation = personality_compassionate
+		}
+		triggered_animation = {
+			trigger = { NOT = { root = { has_character_flag = RICE_expedition_event_success_flag } } }
+			animation = disapproval
+		}
+	}
+
+	option = {
+		name = north_atlantic.0041.a
+		trigger = {
+			has_character_flag = RICE_expedition_event_success_flag
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.good
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.artifact
+		custom_tooltip = north_atlantic.expedition.result.modifiers
+		custom_tooltip = north_atlantic.expedition.result.gold
+		custom_tooltip = north_atlantic.expedition.result.prestige
+		custom_tooltip = north_atlantic.expedition.result.networks.increase
+	}
+	option = {
+		name = north_atlantic.0041.b
+		trigger = {
+			NOT = { has_character_flag = RICE_expedition_event_success_flag }
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.bad
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.prestige.loss
+	}
+
+	after = {
+		hidden_effect = {
+			scope:native_leader = {
+				death = {
+					death_reason = death_vanished
+				}
+			}			
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_expedition_event_success_flag
+			}
+			remove_character_flag = RICE_expedition_event_success_flag
+		}
+	}
+
+}
+
+# Steal/kidnap from the native tribe
+north_atlantic.0042 = {
+	type = duel_event
+	title = north_atlantic.0042.t
+	desc = {
+		desc = north_atlantic.expedition.intro.continue
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_expedition_event_failure_flag_battle
+				}
+				desc = north_atlantic.0042.desc.battle
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_expedition_event_failure_flag_get_away
+				}
+				desc = north_atlantic.0042.desc.get_away
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_expedition_event_success_flag_steal
+				}
+				desc = north_atlantic.0042.desc.steal
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_expedition_event_success_flag_kidnap
+				}
+				desc = north_atlantic.0042.desc.kidnap
+			}
+		}
+	}
+	theme = battle
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+		event_background = RICE_background_north_atlantic_baffin_island
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+		event_background = RICE_background_north_atlantic_markland
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+		event_background = RICE_background_north_atlantic_vinland
+	}
+
+	left_portrait = {
+		character = scope:leader
+		animation = aggressive_spear
+	}
+	right_portrait = {
+		character = scope:native_leader
+		triggered_animation = {
+			trigger = {
+				root = {
+					NOT = {
+						has_character_flag = RICE_expedition_event_failure_flag_battle
+					}
+				}
+			}
+			animation = shock
+		}
+		triggered_animation = {
+			trigger = { root = { has_character_flag = RICE_expedition_event_failure_flag_battle } }
+			animation = aggressive_spear
+		}
+	}
+
+	# GENERATE CAPTIVE AT END OF JOURNEY
+	# immediate = {
+	# 	if = {
+	# 		limit = {
+	# 			has_character_flag = RICE_expedition_event_success_flag_kidnap
+	# 		}
+	# 		create_character = {
+	# 			save_scope_as = native_captive
+	# 			culture = scope:native_leader.culture
+	# 			faith = scope:native_leader.faith
+	# 			gender_female_chance = 50
+	# 			random_traits = yes
+	# 		}
+	# 		hidden_effect = {
+	# 			# To prevent them from doing weird stuff before the trip is over
+	# 			scope:native_captive = {
+	# 				add_trait = RICE_exploring_western_seas
+	# 			}			
+	# 		}
+	# 	}
+	# }
+
+	option = {
+		name = north_atlantic.0042.a
+		trigger = {
+			NOR = {
+				has_trait = compassionate
+				has_trait = just
+				has_trait = generous
+			}
+			OR = {
+				has_character_flag = RICE_expedition_event_success_flag_steal
+				has_character_flag = RICE_expedition_event_success_flag_kidnap
+			}
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.good
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.artifact
+		custom_tooltip = north_atlantic.expedition.result.modifiers
+		custom_tooltip = north_atlantic.expedition.result.gold
+		custom_tooltip = north_atlantic.expedition.result.prestige
+		custom_tooltip = north_atlantic.expedition.result.networks.increase
+		if = {
+			limit = {
+				has_character_flag = RICE_expedition_event_success_flag_kidnap
+			}
+			custom_tooltip = north_atlantic.expedition.result.courtier
+		}
+	}
+	option = {
+		name = north_atlantic.0042.b
+		trigger = {
+			OR = {
+				has_trait = compassionate
+				has_trait = just
+				has_trait = generous
+			}
+			OR = {
+				has_character_flag = RICE_expedition_event_success_flag_steal
+				has_character_flag = RICE_expedition_event_success_flag_kidnap
+			}
+		}
+		trait = compassionate
+		trait = just
+		trait = generous
+		stress_impact = {
+			compassionate = minor_stress_impact_gain
+			just = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.good
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.artifact
+		custom_tooltip = north_atlantic.expedition.result.modifiers
+		custom_tooltip = north_atlantic.expedition.result.gold
+		custom_tooltip = north_atlantic.expedition.result.prestige
+		custom_tooltip = north_atlantic.expedition.result.networks.increase
+		if = {
+			limit = {
+				has_character_flag = RICE_expedition_event_success_flag_kidnap
+			}
+			custom_tooltip = north_atlantic.expedition.result.courtier
+		}
+	}
+	option = {
+		name = north_atlantic.0042.c
+		trigger = {
+			OR = {
+				has_character_flag = RICE_expedition_event_failure_flag_battle
+				has_character_flag = RICE_expedition_event_failure_flag_get_away
+			}
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.bad
+		}
+		custom_tooltip = north_atlantic.expedition.result.gold.loss
+		custom_tooltip = north_atlantic.expedition.result.prestige.loss
+	}
+
+	after = {
+		hidden_effect = {
+			scope:native_leader = {
+				death = {
+					death_reason = death_vanished
+				}
+			}			
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_expedition_event_success_flag
+			}
+			remove_character_flag = RICE_expedition_event_success_flag
+		}
+	}
+
+}
+
+
+
+
+# Encounter a lost Native who is alone
+north_atlantic.0043 = {
+	type = character_event
+	title = north_atlantic.0043.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:helluland
+				}
+				desc = north_atlantic.expedition.intro.helluland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:markland
+				}
+				desc = north_atlantic.expedition.intro.markland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:vinland
+				}
+				desc = north_atlantic.expedition.intro.vinland
+			}
+		}
+		desc = north_atlantic.0043.desc
+	}
+	theme = stewardship_duty_focus
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+		event_background = RICE_background_north_atlantic_baffin_island
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+		event_background = RICE_background_north_atlantic_markland
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+		event_background = RICE_background_north_atlantic_vinland
+	}
+
+	left_portrait = scope:leader
+	right_portrait = {
+		character = scope:native
+		animation = sick
+	}
+
+	immediate = {
+		create_character = {
+			template = RICE_native_generic_template
+			save_scope_as = native
+			faith = root.faith
+			random_culture = {
+				culture:inuit = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:helluland
+						has_global_variable = RICE_greenland_inuit_are_here
+					}
+					weight = { base = 10 }
+				}
+				culture:dorset = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:helluland
+						NOT = { has_global_variable = RICE_greenland_inuit_are_here }
+					}
+					weight = { base = 10 }
+				}
+				culture:dorset = {
+					trigger = {
+						OR = {
+							scope:story.var:RICE_expedition_destination = flag:markland
+							scope:story.var:RICE_expedition_destination = flag:vinland
+						}
+					}
+					weight = { base = 20 }
+				}
+				culture:innu = {
+					trigger = {
+						OR = {
+							scope:story.var:RICE_expedition_destination = flag:markland
+							scope:story.var:RICE_expedition_destination = flag:vinland
+						}
+					}
+					weight = { base = 30 }
+				}
+				culture:east_cree = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:markland
+					}
+					weight = { base = 10 }
+				}
+				culture:mikmaq = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					weight = { base = 20 }
+				}
+				culture:maliseet = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					weight = { base = 5 }
+				}
+				culture:passamaquoddy = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					weight = { base = 5 }
+				}
+				culture:penobscot = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					weight = { base = 5 }
+				}
+				culture:abenaki = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					weight = { base = 5 }
+				}
+				culture:beothuk = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					weight = { base = 40 }
+				}
+				culture:laurentian = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					weight = { base = 10 }
+				}
+			}
+			after_creation = {
+				# Set religion
+				if = {
+					limit = {
+						OR = {
+							culture = { has_cultural_pillar = heritage_inuit }
+							culture = { has_cultural_pillar = heritage_paleo_inuit }
+						}
+					}
+					set_character_faith = faith:inuit_pagan
+				}
+				else_if = {
+					limit = {
+						culture = { has_cultural_pillar = heritage_iroquoian }
+					}
+					set_character_faith = faith:iroquoian_pagan
+				}
+				else_if = {
+					limit = {
+						culture = { has_cultural_pillar = heritage_algonquian }
+					}
+					set_character_faith = faith:algonquian_pagan
+				}
+			}
+		}
+	}
+
+	option = { # Attempt to help them
+		name = north_atlantic.0043.a
+		scope:leader = {
+			duel = {
+				skill = diplomacy
+				target = scope:native
+				70 = { # Failure - they refuse help
+					#show_chance = no
+					custom_tooltip = north_atlantic.0043.a.failure.refuse
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -0.3
+					}
+					root = {
+						set_variable = {
+							name = RICE_north_atlantic_episode_result
+							value = flag:failure_refuse
+						}
+					}
+				}
+				30 = { # Failure - they're not alone
+					#show_chance = no
+					custom_tooltip = north_atlantic.0043.a.failure.not_alone
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -0.3
+					}
+					root = {
+						set_variable = {
+							name = RICE_north_atlantic_episode_result
+							value = flag:failure_not_alone
+						}
+					}
+				}
+				77 = { # Success - they accept help
+					#show_chance = no
+					custom_tooltip = north_atlantic.0043.a.success.accept
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 0.3
+					}
+					root = {
+						set_variable = {
+							name = RICE_north_atlantic_episode_result
+							value = flag:success_accept
+						}
+					}
+				}
+				21 = { # Success - they're not alone
+					#show_chance = no
+					custom_tooltip = north_atlantic.0043.a.success.not_alone
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 0.3
+					}
+					root = {
+						set_variable = {
+							name = RICE_north_atlantic_episode_result
+							value = flag:success_not_alone
+						}
+					}
+				}
+				2 = { # Success - they join you
+					#show_chance = no
+					custom_tooltip = north_atlantic.0043.a.success.join
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 0.3
+					}
+					root = {
+						set_variable = {
+							name = RICE_north_atlantic_episode_result
+							value = flag:success_join
+						}
+					}
+				}
+			}
+		}
+		trigger_event = north_atlantic.0044
+		custom_tooltip = north_atlantic.expedition.skill.diplomacy
+	}
+
+	option = { # Attempt to kidnap them
+		name = north_atlantic.0043.b
+		scope:leader = {
+			duel = {
+				skill = intrigue
+				target = scope:native
+				85 = { # Failure - they escape
+					#show_chance = no
+					custom_tooltip = north_atlantic.0043.b.failure.escape
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -0.3
+					}
+					root = {
+						set_variable = {
+							name = RICE_north_atlantic_episode_result
+							value = flag:failure_escape
+						}
+					}
+				}
+				40 = { # Failure - they're not alone
+					#show_chance = no
+					custom_tooltip = north_atlantic.0043.b.failure.not_alone
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -0.3
+					}
+					root = {
+						set_variable = {
+							name = RICE_north_atlantic_episode_result
+							value = flag:failure_not_alone
+						}
+					}
+				}
+				70 = { # Success - local flees, but you loot their belongings
+					#show_chance = no
+					custom_tooltip = north_atlantic.0043.b.success.loot
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 0.3
+					}
+					root = {
+						set_variable = {
+							name = RICE_north_atlantic_episode_result
+							value = flag:success_loot
+						}
+					}
+				}
+				5 = { # Success - you capture them
+					#show_chance = no
+					custom_tooltip = north_atlantic.0043.b.success.capture
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 0.3
+					}
+					root = {
+						set_variable = {
+							name = RICE_north_atlantic_episode_result
+							value = flag:success_capture
+						}
+					}
+				}
+			}
+		}
+		trigger_event = north_atlantic.0045
+		custom_tooltip = north_atlantic.expedition.skill.diplomacy
+	}
+	option = {
+		name = north_atlantic.0043.c
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.neutral
+		}
+		hidden_effect = {
+			scope:native = {
+				death = {
+					death_reason = death_vanished
+				}
+			}			
+		}
+	}
+}
+
+
+
+# Help the native
+north_atlantic.0044 = {
+	type = character_event
+	title = north_atlantic.0044.t
+	desc = {
+		desc = north_atlantic.expedition.intro.continue
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_north_atlantic_episode_result = flag:failure_refuse
+				}
+				desc = north_atlantic.0044.desc.refuse
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_north_atlantic_episode_result = flag:failure_not_alone
+				}
+				desc = north_atlantic.0044.desc.not_alone_bad
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_north_atlantic_episode_result = flag:success_accept
+				}
+				desc = north_atlantic.0044.desc.accept
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_north_atlantic_episode_result = flag:success_not_alone
+				}
+				desc = north_atlantic.0044.desc.not_alone_good
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_north_atlantic_episode_result = flag:success_join
+				}
+				desc = north_atlantic.0044.desc.join
+			}
+		}
+	}
+	theme = friendly
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+		event_background = RICE_background_north_atlantic_baffin_island
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+		event_background = RICE_background_north_atlantic_markland
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+		event_background = RICE_background_north_atlantic_vinland
+	}
+
+	left_portrait = {
+		character = scope:leader
+		triggered_animation = {
+			trigger = {
+				root = {
+					var:RICE_north_atlantic_episode_result = flag:failure_refuse
+				}
+			}
+			animation = sadness
+		}
+		triggered_animation = {
+			trigger = {
+				root = {
+					var:RICE_north_atlantic_episode_result = flag:failure_not_alone
+				}
+			}
+			animation = shock
+		}
+		triggered_animation = {
+			trigger = {
+				root = {
+					OR = {
+						var:RICE_north_atlantic_episode_result = flag:success_accept
+						var:RICE_north_atlantic_episode_result = flag:success_not_alone
+						var:RICE_north_atlantic_episode_result = flag:success_join
+					}
+				}
+			}
+			animation = personality_forgiving
+		}
+	}
+	right_portrait = {
+		character = scope:native
+		triggered_animation = {
+			trigger = {
+				root = {
+					var:RICE_north_atlantic_episode_result = flag:failure_refuse
+				}
+			}
+			animation = disapproval
+		}
+		triggered_animation = {
+			trigger = {
+				root = {
+					var:RICE_north_atlantic_episode_result = flag:failure_not_alone
+				}
+			}
+			animation = paranoid
+		}
+		triggered_animation = {
+			trigger = {
+				root = {
+					OR = {
+						var:RICE_north_atlantic_episode_result = flag:success_accept
+						var:RICE_north_atlantic_episode_result = flag:success_not_alone
+						var:RICE_north_atlantic_episode_result = flag:success_join
+					}
+				}
+			}
+			animation = personality_compassionate
+		}
+	}
+
+	# GENERATE CAPTIVE AT END OF JOURNEY
+	# immediate = {
+	# 	if = {
+	# 		limit = {
+	# 			has_character_flag = RICE_expedition_event_success_flag_kidnap
+	# 		}
+	# 		create_character = {
+	# 			save_scope_as = native_captive
+	# 			culture = scope:native_leader.culture
+	# 			faith = scope:native_leader.faith
+	# 			gender_female_chance = 50
+	# 			random_traits = yes
+	# 		}
+	# 		hidden_effect = {
+	# 			# To prevent them from doing weird stuff before the trip is over
+	# 			scope:native_captive = {
+	# 				add_trait = RICE_exploring_western_seas
+	# 			}			
+	# 		}
+	# 	}
+	# }
+
+	option = {
+		name = north_atlantic.0044.a
+		trigger = {
+			OR = {
+				var:RICE_north_atlantic_episode_result = flag:failure_refuse
+				var:RICE_north_atlantic_episode_result = flag:failure_not_alone
+			}
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.bad
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.gold.loss
+		custom_tooltip = north_atlantic.expedition.result.prestige.loss
+		if = {
+			limit = {
+				var:RICE_north_atlantic_episode_result = flag:failure_not_alone
+			}
+			custom_tooltip = north_atlantic.expedition.result.resilience.decrease
+		}
+	}
+
+	option = {
+		name = north_atlantic.0044.b
+		trigger = {
+			OR = {
+				var:RICE_north_atlantic_episode_result = flag:success_accept
+				var:RICE_north_atlantic_episode_result = flag:success_not_alone
+			}
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.good
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.modifiers
+		custom_tooltip = north_atlantic.expedition.result.prestige
+		custom_tooltip = north_atlantic.expedition.result.piety
+		custom_tooltip = north_atlantic.expedition.result.networks.increase
+	}
+	option = {
+		name = north_atlantic.0044.c
+		trigger = {
+			NOR = {
+				has_trait = paranoid
+				has_trait = callous
+				has_trait = arrogant
+			}
+			var:RICE_north_atlantic_episode_result = flag:success_join
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.good
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.prestige
+		add_courtier = scope:native
+	}
+	option = {
+		name = north_atlantic.0044.d
+		trigger = {
+			OR = {
+				has_trait = paranoid
+				has_trait = callous
+				has_trait = arrogant
+			}
+			var:RICE_north_atlantic_episode_result = flag:success_join
+		}
+		trait = paranoid
+		trait = callous
+		trait = arrogant
+		stress_impact = {
+			paranoid = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+			arrogant = minor_stress_impact_gain
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.good
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.prestige
+		add_courtier = scope:native
+	}
+
+	after = {
+		if = {
+			limit = {
+				NOT = { var:RICE_north_atlantic_episode_result = flag:success_join }
+			}
+			hidden_effect = {
+				scope:native_leader = {
+					death = {
+						death_reason = death_vanished
+					}
+				}			
+			}
+		}
+		if = {
+			limit = { has_variable = RICE_north_atlantic_episode_result }
+			remove_variable = RICE_north_atlantic_episode_result
+		}
+	}
+
+}
+
+
+# Help the native
+north_atlantic.0045 = {
+	type = character_event
+	title = north_atlantic.0045.t
+	desc = {
+		desc = north_atlantic.expedition.intro.continue
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_north_atlantic_episode_result = flag:failure_escape
+				}
+				desc = north_atlantic.0045.desc.escape
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_north_atlantic_episode_result = flag:failure_not_alone
+				}
+				desc = north_atlantic.0045.desc.not_alone_bad
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_north_atlantic_episode_result = flag:success_loot
+				}
+				desc = north_atlantic.0045.desc.loot
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_north_atlantic_episode_result = flag:success_capture
+				}
+				desc = north_atlantic.0045.desc.capture
+			}
+		}
+	}
+	theme = abduct_scheme
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+		event_background = RICE_background_north_atlantic_baffin_island
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+		event_background = RICE_background_north_atlantic_markland
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+		event_background = RICE_background_north_atlantic_vinland
+	}
+
+	left_portrait = {
+		character = scope:leader
+		triggered_animation = {
+			trigger = {
+				root = {
+					var:RICE_north_atlantic_episode_result = flag:failure_escape
+				}
+			}
+			animation = personality_vengeful
+		}
+		triggered_animation = {
+			trigger = {
+				root = {
+					var:RICE_north_atlantic_episode_result = flag:failure_not_alone
+				}
+			}
+			animation = shock
+		}
+		triggered_animation = {
+			trigger = {
+				root = {
+					OR = {
+						var:RICE_north_atlantic_episode_result = flag:success_loot
+						var:RICE_north_atlantic_episode_result = flag:success_capture
+					}
+				}
+			}
+			animation = personality_callous
+		}
+	}
+	right_portrait = {
+		character = scope:native
+		triggered_animation = {
+			trigger = {
+				root = {
+					NOT = { var:RICE_north_atlantic_episode_result = flag:success_capture }
+				}
+			}
+			animation = anger
+		}
+		triggered_animation = {
+			trigger = {
+				root = {
+					var:RICE_north_atlantic_episode_result = flag:success_capture
+				}
+			}
+			animation = grief
+		}
+	}
+
+	# GENERATE CAPTIVE AT END OF JOURNEY
+	# immediate = {
+	# 	if = {
+	# 		limit = {
+	# 			has_character_flag = RICE_expedition_event_success_flag_kidnap
+	# 		}
+	# 		create_character = {
+	# 			save_scope_as = native_captive
+	# 			culture = scope:native_leader.culture
+	# 			faith = scope:native_leader.faith
+	# 			gender_female_chance = 50
+	# 			random_traits = yes
+	# 		}
+	# 		hidden_effect = {
+	# 			# To prevent them from doing weird stuff before the trip is over
+	# 			scope:native_captive = {
+	# 				add_trait = RICE_exploring_western_seas
+	# 			}			
+	# 		}
+	# 	}
+	# }
+
+	option = {
+		name = north_atlantic.0045.a
+		trigger = {
+			OR = {
+				var:RICE_north_atlantic_episode_result = flag:failure_escape
+				var:RICE_north_atlantic_episode_result = flag:failure_not_alone
+			}
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.bad
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.prestige.loss
+		custom_tooltip = north_atlantic.expedition.result.piety.loss
+		if = {
+			limit = {
+				var:RICE_north_atlantic_episode_result = flag:failure_not_alone
+			}
+			custom_tooltip = north_atlantic.expedition.result.resilience.decrease
+		}
+	}
+
+	option = {
+		name = north_atlantic.0045.b
+		trigger = {
+			NOR = {
+				has_trait = compassionate
+				has_trait = just
+				has_trait = generous
+			}
+			OR = {
+				var:RICE_north_atlantic_episode_result = flag:success_loot
+				var:RICE_north_atlantic_episode_result = flag:success_capture
+			}
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.good
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		if = {
+			limit = {
+				var:RICE_north_atlantic_episode_result = flag:success_loot
+			}
+			custom_tooltip = north_atlantic.expedition.result.artifact
+			custom_tooltip = north_atlantic.expedition.result.modifiers
+		}
+		else = {
+			add_courtier = scope:native
+		}
+		custom_tooltip = north_atlantic.expedition.result.prestige
+	}
+
+	option = {
+		name = north_atlantic.0045.c
+		trigger = {
+			OR = {
+				has_trait = compassionate
+				has_trait = just
+				has_trait = generous
+			}
+			OR = {
+				var:RICE_north_atlantic_episode_result = flag:success_loot
+				var:RICE_north_atlantic_episode_result = flag:success_capture
+			}
+		}
+		trait = compassionate
+		trait = just
+		trait = generous
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.good
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		if = {
+			limit = {
+				var:RICE_north_atlantic_episode_result = flag:success_loot
+			}
+			custom_tooltip = north_atlantic.expedition.result.artifact
+			custom_tooltip = north_atlantic.expedition.result.modifiers
+		}
+		else = {
+			add_courtier = scope:native
+		}
+		custom_tooltip = north_atlantic.expedition.result.prestige
+	}
+
+	after = {
+		if = {
+			limit = {
+				NOT = { var:RICE_north_atlantic_episode_result = flag:success_capture }
+			}
+			hidden_effect = {
+				scope:native_leader = {
+					death = {
+						death_reason = death_vanished
+					}
+				}			
+			}
+		}
+		if = {
+			limit = { has_variable = RICE_north_atlantic_episode_result }
+			remove_variable = RICE_north_atlantic_episode_result
+		}
+	}
+
+}
+
+
+
+
+
+
+# Encounter a hostile Native tribe
+# north_atlantic.0042 = {
+# 	type = duel_event
+# 	title = north_atlantic.0042.t
+# 	desc = {
+# 		first_valid = {
+# 			triggered_desc = {
+# 				trigger = {
+# 					scope:story.var:RICE_expedition_destination = flag:helluland
+# 				}
+# 				desc = north_atlantic.expedition.intro.helluland
+# 			}
+# 			triggered_desc = {
+# 				trigger = {
+# 					scope:story.var:RICE_expedition_destination = flag:markland
+# 				}
+# 				desc = north_atlantic.expedition.intro.markland
+# 			}
+# 			triggered_desc = {
+# 				trigger = {
+# 					scope:story.var:RICE_expedition_destination = flag:vinland
+# 				}
+# 				desc = north_atlantic.expedition.intro.vinland
+# 			}
+# 		}
+# 		desc = north_atlantic.0042.desc
+# 	}
+# 	theme = battle
+# 	override_background = {
+# 		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+# 		event_background = RICE_background_north_atlantic_baffin_island
+# 	}
+# 	override_background = {
+# 		trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+# 		event_background = RICE_background_north_atlantic_markland
+# 	}
+# 	override_background = {
+# 		trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+# 		event_background = RICE_background_north_atlantic_vinland
+# 	}
+
+# 	left_portrait = {
+# 		character = scope:leader
+# 		animation = aggressive_spear
+# 	}
+# 	right_portrait = {
+# 		character = scope:native_leader
+# 		animation = aggressive_spear
+# 	}
+
+# 	immediate = {
+# 		create_character = {
+# 			template = RICE_native_chief_template
+# 			save_scope_as = native_leader
+# 			culture = culture:dorset
+# 			faith = faith:inuit_pagan
+# 		}
+# 	}
+
+# 	option = {
+# 		name = north_atlantic.0042.a
+# 		custom_tooltip = north_atlantic.expedition.skill.diplomacy
+# 	}
+# 	option = {
+# 		name = north_atlantic.0042.b
+# 	}
+# 	option = {
+# 		name = north_atlantic.0042.c
+# 		custom_tooltip = north_atlantic.expedition.skill.martial
+# 	}
+# 	option = {
+# 		name = north_atlantic.0042.d
+# 		custom_tooltip = north_atlantic.expedition.skill.intrigue
+# 	}
+# }
+
+
+
+
+
+# # Abandoned village
+# north_atlantic.0044 = {
+# 	type = character_event
+# 	title = north_atlantic.0044.t
+# 	desc = {
+# 		first_valid = {
+# 			triggered_desc = {
+# 				trigger = {
+# 					scope:story.var:RICE_expedition_destination = flag:helluland
+# 				}
+# 				desc = north_atlantic.expedition.intro.helluland
+# 			}
+# 			triggered_desc = {
+# 				trigger = {
+# 					scope:story.var:RICE_expedition_destination = flag:markland
+# 				}
+# 				desc = north_atlantic.expedition.intro.markland
+# 			}
+# 			triggered_desc = {
+# 				trigger = {
+# 					scope:story.var:RICE_expedition_destination = flag:vinland
+# 				}
+# 				desc = north_atlantic.expedition.intro.vinland
+# 			}
+# 		}
+# 		desc = north_atlantic.0044.desc
+# 	}
+# 	theme = hunt_activity
+# 	override_background = {
+# 		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+# 		event_background = RICE_background_north_atlantic_baffin_island
+# 	}
+# 	override_background = {
+# 		trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+# 		event_background = RICE_background_north_atlantic_markland
+# 	}
+# 	override_background = {
+# 		trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+# 		event_background = RICE_background_north_atlantic_vinland_village
+# 	}
+
+# 	right_portrait = {
+# 		character = scope:leader
+# 		animation = personality_rational
+# 	}
+
+# 	option = {
+# 		name = north_atlantic.0044.a
+# 	}
+# 	option = {
+# 		name = north_atlantic.0044.b
+# 		custom_tooltip = north_atlantic.expedition.skill.intrigue
+# 		# hidden_effect = {
+# 		# 	duel = {
+# 		# 		skill = intrigue
+# 		# 		value = 10
+# 		# 		12 = {
+# 		# 			#desc = niger_delta.0036.b.success
+# 		# 			compare_modifier = {
+# 		# 				value = scope:duel_value
+# 		# 				multiplier = 0.5
+# 		# 			}
+# 		# 			add_character_flag = RICE_niger_delta_yam_taboo_avoided_getting_caught
+# 		# 			custom_tooltip = niger_delta.0036.b.success
+# 		# 		}
+# 		# 		8 = {
+# 		# 			#desc = niger_delta.0036.b.failure
+# 		# 			add_character_flag = RICE_niger_delta_yam_taboo_got_caught
+# 		# 			custom_tooltip = niger_delta.0036.b.failure
+# 		# 		}
+# 		# 	}
+# 		# }
+# 	}
+# }
+
+
+# # Shipwrecked sailors
+# north_atlantic.0045 = {
+# 	type = character_event
+# 	title = north_atlantic.0045.t
+# 	desc = {
+# 		first_valid = {
+# 			triggered_desc = {
+# 				trigger = {
+# 					scope:story.var:RICE_expedition_destination = flag:helluland
+# 				}
+# 				desc = north_atlantic.expedition.intro.helluland
+# 			}
+# 			triggered_desc = {
+# 				trigger = {
+# 					scope:story.var:RICE_expedition_destination = flag:markland
+# 				}
+# 				desc = north_atlantic.expedition.intro.markland
+# 			}
+# 			triggered_desc = {
+# 				trigger = {
+# 					scope:story.var:RICE_expedition_destination = flag:vinland
+# 				}
+# 				desc = north_atlantic.expedition.intro.vinland
+# 			}
+# 		}
+# 		desc = north_atlantic.0045.desc
+# 	}
+# 	theme = stewardship_wealth_focus
+# 	override_background = {
+# 		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+# 		event_background = RICE_background_north_atlantic_baffin_island
+# 	}
+# 	override_background = {
+# 		trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+# 		event_background = RICE_background_north_atlantic_markland
+# 	}
+# 	override_background = {
+# 		trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+# 		event_background = RICE_background_north_atlantic_vinland
+# 	}
+
+# 	left_portrait = {
+# 		character = scope:leader
+# 		animation = personality_compassionate
+# 	}
+# 	right_portrait = {
+# 		character = scope:sailor
+# 		animation = beg
+# 	}
+
+# 	immediate = {
+# 		create_character = {
+# 			template = random_barrel_character
+# 			save_scope_as = sailor
+# 		}
+# 	}
+
+# 	option = {
+# 		name = north_atlantic.0045.a
+# 		custom_tooltip = north_atlantic.expedition.skill.stewardship
+# 	}
+
+# 	after = {
+# 		hidden_effect = {
+# 			scope:sailor = {
+# 				death = {
+# 					death_reason = death_disappearance
+# 				}
+# 			}
+# 		}
+# 	}
+
+# }
+
+
+
+
+
+
+
+######################################################################################
+# 
+# GREAT EXPEDITIONS
+# 
+# north_atlantic.0080-north_atlantic.0059
+# 
+######################################################################################
+
+
+# Choose someone to lead the expedition
+# north_atlantic.0080 = {
+# 	type = character_event
+# 	title = north_atlantic.0080.t
+# 	desc = north_atlantic.0080.desc
+# 	theme = diplomacy_foreign_affairs_focus
+# 	override_background = { event_background = RICE_background_north_atlantic_port }
+
+# 	right_portrait = {
+# 		character = root
+# 		animation = personality_rational
+# 	}
+# 	lower_left_portrait = {
+# 		character = scope:candidate_1
+# 		trigger = { exists = scope:candidate_1 }
+# 	}
+# 	lower_center_portrait = {
+# 		character = scope:candidate_3
+# 		trigger = { exists = scope:candidate_3 }
+# 	}
+# 	lower_right_portrait = {
+# 		character = scope:candidate_2
+# 		trigger = { exists = scope:candidate_2 }
+# 	}
+
+# 	immediate = {
+# 		# See scripted_trigger valid_scandinavian_adventurer just in case
+# 		every_courtier_or_guest = {
+# 			limit = {
+# 				is_available_healthy_ai_adult = yes
+# 				age <= 55 # Don't want someone too old who could die on the journey
+# 				is_alive = yes
+# 				is_ruler = no
+# 				# Will not inherit anything anytime soon
+# 				OR = {
+# 					any_heir_title = { count = 0 }
+# 					AND = {
+# 						save_temporary_scope_as = potential
+# 						any_heir_title = {
+# 							place_in_line_of_succession = {
+# 								target = scope:potential
+# 								value >= 3
+# 							}
+# 						}
+# 					}
+# 				}
+# 			}
+# 			add_to_list = expedition_leader_candidates
+# 		}
+
+# 		if = {
+# 			limit = {
+# 				any_in_list = {
+# 					list = expedition_leader_candidates
+# 					count >= 1
+# 				}
+# 			}
+# 			random_in_list = {
+# 				list = expedition_leader_candidates
+# 				save_scope_as = candidate_1
+# 			}
+# 		}
+
+# 		if = {
+# 			limit = {
+# 				any_in_list = {
+# 					list = expedition_leader_candidates
+# 					count >= 2
+# 				}
+# 			}
+# 			random_in_list = {
+# 				list = expedition_leader_candidates
+# 				limit = {
+# 					NOT = { this = scope:candidate_1 }
+# 				}
+# 				save_scope_as = candidate_2
+# 			}
+# 		}
+
+# 		if = {
+# 			limit = {
+# 				any_in_list = {
+# 					list = expedition_leader_candidates
+# 					count >= 3
+# 				}
+# 			}
+# 			random_in_list = {
+# 				list = expedition_leader_candidates
+# 				limit = {
+# 					NOT = { this = scope:candidate_1 }
+# 					NOT = { this = scope:candidate_2 }
+# 				}
+# 				save_scope_as = candidate_3
+# 			}
+# 		}
+
+# 	}
+
+# 	option = {
+# 		name = north_atlantic.0080.a
+# 		trigger = {
+# 			exists = scope:candidate_1
+# 		}
+# 		scope:candidate_1 = {
+# 			RICE_become_erik_the_red_effect = yes
+# 			add_to_global_variable_list = {
+# 				name = RICE_north_atlantic_erik_the_red
+# 				target = this
+# 			}	
+# 		}
+# 	}
+
+# 	option = {
+# 		name = north_atlantic.0080.b
+# 		trigger = {
+# 			exists = scope:candidate_2
+# 		}
+# 		scope:candidate_2 = {
+# 			RICE_become_erik_the_red_effect = yes
+# 			add_to_global_variable_list = {
+# 				name = RICE_north_atlantic_erik_the_red
+# 				target = this
+# 			}	
+# 		}
+# 	}
+
+# 	option = {
+# 		name = north_atlantic.0080.c
+# 		trigger = {
+# 			exists = scope:candidate_3
+# 		}
+# 		scope:candidate_3 = {
+# 			RICE_become_erik_the_red_effect = yes
+# 			add_to_global_variable_list = {
+# 				name = RICE_north_atlantic_erik_the_red
+# 				target = this
+# 			}	
+# 		}
+# 	}
+
+# 	# option = {
+# 	# 	name = north_atlantic.0080.d
+# 	# }
+
+# 	after = {
+# 		RICE_enable_greenland_struggle_effect = yes
+# 	}
+
+# }
+
+
+
+
+# Choose someone to lead the expedition
+north_atlantic.0080 = {
+	type = character_event
+	title = north_atlantic.0080.t
+	desc = north_atlantic.0080.desc
+	theme = diplomacy_foreign_affairs_focus
+	override_background = { event_background = RICE_background_north_atlantic_port }
+
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	lower_left_portrait = {
+		character = scope:candidate_1
+		trigger = { exists = scope:candidate_1 }
+	}
+	lower_center_portrait = {
+		character = scope:candidate_3
+		trigger = { exists = scope:candidate_3 }
+	}
+	lower_right_portrait = {
+		character = scope:candidate_2
+		trigger = { exists = scope:candidate_2 }
+	}
+
+	immediate = {
+		# See scripted_trigger valid_scandinavian_adventurer just in case
+		every_courtier_or_guest = {
+			limit = {
+				is_available_healthy_ai_adult = yes
+				age <= 55 # Don't want someone too old who could die on the journey
+				is_alive = yes
+				is_ruler = no
+				NOT = { is_councillor_of = root }
+				# Will not inherit anything anytime soon
+				OR = {
+					any_heir_title = { count = 0 }
+					AND = {
+						save_temporary_scope_as = potential
+						any_heir_title = {
+							place_in_line_of_succession = {
+								target = scope:potential
+								value >= 3
+							}
+						}
+					}
+				}
+			}
+			add_to_list = expedition_leader_candidates
+		}
+
+		if = {
+			limit = {
+				any_in_list = {
+					list = expedition_leader_candidates
+					count >= 1
+				}
+			}
+			random_in_list = {
+				list = expedition_leader_candidates
+				save_scope_as = candidate_1
+			}
+		}
+
+		if = {
+			limit = {
+				any_in_list = {
+					list = expedition_leader_candidates
+					count >= 2
+				}
+			}
+			random_in_list = {
+				list = expedition_leader_candidates
+				limit = {
+					NOT = { this = scope:candidate_1 }
+				}
+				save_scope_as = candidate_2
+			}
+		}
+
+		if = {
+			limit = {
+				any_in_list = {
+					list = expedition_leader_candidates
+					count >= 3
+				}
+			}
+			random_in_list = {
+				list = expedition_leader_candidates
+				limit = {
+					NOT = { this = scope:candidate_1 }
+					NOT = { this = scope:candidate_2 }
+				}
+				save_scope_as = candidate_3
+			}
+		}
+
+	}
+
+	option = {
+		name = north_atlantic.0080.a
+		trigger = {
+			exists = scope:candidate_1
+		}
+		scope:candidate_1 = {
+			save_scope_as = RICE_expedition_leader_choice
+		}
+		create_story = RICE_story_cycle_north_atlantic_expedition
+	}
+
+	option = {
+		name = north_atlantic.0080.b
+		trigger = {
+			exists = scope:candidate_2
+		}
+		scope:candidate_2 = {
+			save_scope_as = RICE_expedition_leader_choice
+		}
+	}
+
+	option = {
+		name = north_atlantic.0080.c
+		trigger = {
+			exists = scope:candidate_3
+		}
+		scope:candidate_3 = {
+			save_scope_as = RICE_expedition_leader_choice
+		}
+	}
+
+	option = {
+		name = north_atlantic.0080.d
+	}
+
+	after = {
+		RICE_enable_greenland_struggle_effect = yes
+	}
+
+}
+
+
+
+######################################################################################
+# 
+# SUPPORT GREENLAND
+# 
+# north_atlantic.0100-north_atlantic.0109
+# 
+######################################################################################
+
+
+# Aid sails off
+north_atlantic.0100 = {
+	type = character_event
+	title = north_atlantic.0100.t
+	desc = {
+		desc = north_atlantic.0100.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_greenland_aid = flag:basic_supplies
+				}
+				desc = north_atlantic.0100.desc.basic_supplies
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_greenland_aid = flag:settlers
+				}
+				desc = north_atlantic.0100.desc.settlers
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_greenland_aid = flag:food
+				}
+				desc = north_atlantic.0100.desc.food
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_greenland_aid = flag:materials
+				}
+				desc = north_atlantic.0100.desc.materials
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_greenland_aid = flag:clergy
+				}
+				desc = north_atlantic.0100.desc.clergy
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_greenland_aid = flag:hunting_stations
+				}
+				desc = north_atlantic.0100.desc.hunting_stations
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_greenland_aid = flag:shielings
+				}
+				desc = north_atlantic.0100.desc.shielings
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_greenland_aid = flag:temples
+				}
+				desc = north_atlantic.0100.desc.temples
+			}
+		}
+	}
+	theme = stewardship_domain_focus
+	override_background = { event_background = RICE_background_north_atlantic_port }
+
+	right_portrait = {
+		character = root
+		animation = war_defender
+	}
+
+	option = {
+		name = north_atlantic.0100.a
+		custom_tooltip = north_atlantic.0100.a.tooltip
+	}
+
+	after = {		
+		create_story = RICE_story_cycle_north_atlantic_support_greenland
+	}
+
+}
+
+
+
+
+# Aid arrives in Greenland safely
+north_atlantic.0101 = {
+	type = character_event
+	title = north_atlantic.0101.t
+	desc = {
+		desc = north_atlantic.0101.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_greenland_aid_type = flag:basic_supplies
+				}
+				desc = north_atlantic.0101.desc.basic_supplies
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_greenland_aid_type = flag:settlers
+				}
+				desc = north_atlantic.0101.desc.settlers
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_greenland_aid_type = flag:food
+				}
+				desc = north_atlantic.0101.desc.food
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_greenland_aid_type = flag:materials
+				}
+				desc = north_atlantic.0101.desc.materials
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_greenland_aid_type = flag:clergy
+				}
+				desc = north_atlantic.0101.desc.clergy
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_greenland_aid_type = flag:hunting_stations
+				}
+				desc = north_atlantic.0101.desc.hunting_stations
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_greenland_aid_type = flag:shielings
+				}
+				desc = north_atlantic.0101.desc.shielings
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_greenland_aid_type = flag:temples
+				}
+				desc = north_atlantic.0101.desc.temples
+			}
+		}
+	}
+	theme = RICE_theme_north_atlantic_greenland_farm
+
+	right_portrait = root
+
+	immediate = {
+		random_owned_story = {
+			limit = { story_type = RICE_story_cycle_north_atlantic_support_greenland }
+			save_scope_as = story
+		}
+		if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:basic_supplies
+			}
+			change_global_variable = {
+				name = RICE_greenland_resilience
+				add = scope:story.var:RICE_support_primary_resource_increase
+			}
+			change_global_variable = {
+				name = RICE_greenland_networks
+				add = scope:story.var:RICE_support_secondary_resource_increase
+			}
+			set_variable = {
+				name = RICE_primary_resource_value_temp
+				value = scope:story.var:RICE_support_primary_resource_increase
+			}
+			set_variable = {
+				name = RICE_secondary_resource_value_temp
+				value = scope:story.var:RICE_support_secondary_resource_increase
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:settlers
+			}
+			change_global_variable = {
+				name = RICE_greenland_networks
+				add = scope:story.var:RICE_support_primary_resource_increase
+			}
+			set_variable = {
+				name = RICE_primary_resource_value_temp
+				value = scope:story.var:RICE_support_primary_resource_increase
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:food
+			}
+			change_global_variable = {
+				name = RICE_greenland_resilience
+				add = scope:story.var:RICE_support_primary_resource_increase
+			}
+			set_variable = {
+				name = RICE_primary_resource_value_temp
+				value = scope:story.var:RICE_support_primary_resource_increase
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:materials
+			}
+			change_global_variable = {
+				name = RICE_greenland_resilience
+				add = scope:story.var:RICE_support_primary_resource_increase
+			}
+			set_variable = {
+				name = RICE_primary_resource_value_temp
+				value = scope:story.var:RICE_support_primary_resource_increase
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:clergy
+			}
+			change_global_variable = {
+				name = RICE_greenland_networks
+				add = scope:story.var:RICE_support_primary_resource_increase
+			}
+			set_variable = {
+				name = RICE_primary_resource_value_temp
+				value = scope:story.var:RICE_support_primary_resource_increase
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:hunting_stations
+			}
+			change_global_variable = {
+				name = RICE_greenland_resilience
+				add = scope:story.var:RICE_support_primary_resource_increase
+			}
+			change_global_variable = {
+				name = RICE_greenland_networks
+				add = scope:story.var:RICE_support_secondary_resource_increase
+			}
+			set_variable = {
+				name = RICE_primary_resource_value_temp
+				value = scope:story.var:RICE_support_primary_resource_increase
+			}
+			set_variable = {
+				name = RICE_secondary_resource_value_temp
+				value = scope:story.var:RICE_support_secondary_resource_increase
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:shielings
+			}
+			change_global_variable = {
+				name = RICE_greenland_networks
+				add = scope:story.var:RICE_support_primary_resource_increase
+			}
+			change_global_variable = {
+				name = RICE_greenland_resilience
+				add = scope:story.var:RICE_support_secondary_resource_increase
+			}
+			set_variable = {
+				name = RICE_primary_resource_value_temp
+				value = scope:story.var:RICE_support_primary_resource_increase
+			}
+			set_variable = {
+				name = RICE_secondary_resource_value_temp
+				value = scope:story.var:RICE_support_secondary_resource_increase
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:temples
+			}
+			change_global_variable = {
+				name = RICE_greenland_networks
+				add = scope:story.var:RICE_support_primary_resource_increase
+			}
+			change_global_variable = {
+				name = RICE_greenland_resilience
+				add = scope:story.var:RICE_support_secondary_resource_increase
+			}
+			set_variable = {
+				name = RICE_primary_resource_value_temp
+				value = scope:story.var:RICE_support_primary_resource_increase
+			}
+			set_variable = {
+				name = RICE_secondary_resource_value_temp
+				value = scope:story.var:RICE_support_secondary_resource_increase
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.0101.a
+		if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:basic_supplies
+			}
+			add_piety = 50
+			add_prestige = 50
+			custom_tooltip = north_atlantic.0101.tooltip.basic_supplies			
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_greenland_basic_supplies
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:settlers
+			}
+			add_piety = 100
+			custom_tooltip = north_atlantic.0101.tooltip.settlers		
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_greenland_settlers
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:food
+			}
+			add_prestige = 100
+			custom_tooltip = north_atlantic.0101.tooltip.food
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_greenland_food
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:materials
+			}
+			add_prestige = 100
+			custom_tooltip = north_atlantic.0101.tooltip.materials
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_greenland_materials
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:clergy
+			}
+			add_piety = 100
+			custom_tooltip = north_atlantic.0101.tooltip.clergy
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_greenland_clergy
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:hunting_stations
+			}
+			add_prestige = 150
+			add_character_modifier = {
+				modifier = RICE_north_atlantic_built_hunting_stations
+				years = 10
+			}
+			custom_tooltip = north_atlantic.0101.tooltip.hunting_stations
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_greenland_hunting_stations
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:shielings
+			}
+			add_piety = 75
+			add_prestige = 75
+			add_character_modifier = {
+				modifier = RICE_north_atlantic_built_shielings
+				years = 10
+			}
+			custom_tooltip = north_atlantic.0101.tooltip.shielings
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_greenland_shielings
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:temples
+			}
+			add_piety = 150
+			add_character_modifier = {
+				modifier = RICE_north_atlantic_built_temples
+				years = 10
+			}
+			custom_tooltip = north_atlantic.0101.tooltip.temples
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_greenland_temples
+					character = root
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = { has_variable = RICE_support_primary_resource_increase }
+			remove_variable = RICE_support_primary_resource_increase
+		}
+		if = {
+			limit = { has_variable = RICE_support_secondary_resource_increase }
+			remove_variable = RICE_support_secondary_resource_increase
+		}
+		random_owned_story = {
+			limit = {
+				story_type = RICE_story_cycle_north_atlantic_expedition
+			}
+			end_story = yes
+		}
+	}
+
+}
+
+
+
+# Aid fails to arrive in Greenland safely
+north_atlantic.0102 = {
+	type = character_event
+	title = north_atlantic.0102.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_greenland_aid_type = flag:basic_supplies
+				}
+				desc = north_atlantic.0102.desc.basic_supplies
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_greenland_aid_type = flag:settlers
+				}
+				desc = north_atlantic.0102.desc.settlers
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_greenland_aid_type = flag:food
+				}
+				desc = north_atlantic.0102.desc.food
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_greenland_aid_type = flag:materials
+				}
+				desc = north_atlantic.0102.desc.materials
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_greenland_aid_type = flag:clergy
+				}
+				desc = north_atlantic.0102.desc.clergy
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_greenland_aid_type = flag:hunting_stations
+				}
+				desc = north_atlantic.0102.desc.hunting_stations
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_greenland_aid_type = flag:shielings
+				}
+				desc = north_atlantic.0102.desc.shielings
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_greenland_aid_type = flag:temples
+				}
+				desc = north_atlantic.0102.desc.temples
+			}
+		}
+		desc = north_atlantic.0102.desc
+	}
+	theme = RICE_theme_north_atlantic_port
+
+	right_portrait = {
+		character = root
+		animation = stress
+	}
+
+	immediate = {
+
+		play_music_cue = mx_cue_stress  
+
+		random_owned_story = {
+			limit = { story_type = RICE_story_cycle_north_atlantic_support_greenland }
+			save_scope_as = story
+		}
+
+		if = {
+			limit = {
+				scope:story.var:RICE_support_resilience_decrease > 0
+			}
+			change_global_variable = {
+				name = RICE_greenland_resilience
+				subtract = scope:story.var:RICE_support_resilience_decrease
+			}
+			set_variable = {
+				name = RICE_resilience_value_temp
+				value = scope:story.var:RICE_support_resilience_decrease
+			}
+		}
+		if = {
+			limit = {
+				scope:story.var:RICE_support_networks_decrease > 0
+			}
+			change_global_variable = {
+				name = RICE_greenland_networks
+				subtract = scope:story.var:RICE_support_networks_decrease
+			}
+			set_variable = {
+				name = RICE_networks_value_temp
+				value = scope:story.var:RICE_support_networks_decrease
+			}
+		}
+
+	}
+
+	option = {
+		name = north_atlantic.0102.a
+		if = {
+			limit = {
+				scope:story.var:RICE_support_resilience_decrease > 0
+			}
+			custom_tooltip = north_atlantic.0102.tooltip.decrease_resilience
+		}
+		if = {
+			limit = {
+				scope:story.var:RICE_support_networks_decrease > 0
+			}
+			custom_tooltip = north_atlantic.0102.tooltip.decrease_networks
+		}
+		if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:basic_supplies
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_fail_greenland_basic_supplies
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:settlers
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_fail_greenland_settlers
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:food
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_fail_greenland_food
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:materials
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_fail_greenland_materials
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:clergy
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_fail_greenland_clergy
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:hunting_stations
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_fail_greenland_hunting_stations
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:shielings
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_fail_greenland_shielings
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_greenland_aid_type = flag:temples
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_fail_greenland_temples
+					character = root
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = { has_variable = RICE_resilience_value_temp }
+			remove_variable = RICE_resilience_value_temp
+		}
+		if = {
+			limit = { has_variable = RICE_networks_value_temp }
+			remove_variable = RICE_networks_value_temp
+		}
+		random_owned_story = {
+			limit = {
+				story_type = RICE_story_cycle_north_atlantic_support_greenland
+			}
+			end_story = yes
+		}
+	}
+
+}
+
+
+
+
+
+######################################################################################
+# 
+# NORDSETUR HUNT
+# 
+# north_atlantic.0120-north_atlantic.0139
+# 
+######################################################################################
+
+
+# Preparing for the hunt
+north_atlantic.0120 = {
+	type = character_event
+	title = north_atlantic.0120.t
+	desc = north_atlantic.0120.desc
+	theme = hunt_activity
+	override_background = { event_background = RICE_background_north_atlantic_port }
+
+	right_portrait = {
+		character = root
+		animation = war_attacker
+	}
+
+	immediate = {
+		random_owned_story = {
+			limit = { story_type = RICE_story_cycle_north_atlantic_nordsetur_hunt }
+			save_scope_as = story
+		}
+		scope:story = {
+			set_variable = {
+				name = RICE_walrus_hunt_started
+				value = yes
+			}
+			set_variable = {
+				name = RICE_walrus_hunt_timer
+				days = 75
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.0120.a
+		custom_tooltip = north_atlantic.0120.a.tooltip
+	}
+
+}
+
+
+# Hunting party does not make it back
+north_atlantic.0121 = {
+	type = character_event
+	title = north_atlantic.0121.t
+	desc = {
+		desc = north_atlantic.0121.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_random_hunt_fail_variety = flag:attack
+				}
+				desc = north_atlantic.0121.desc.attack
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_random_hunt_fail_variety = flag:heavy_storm
+				}
+				desc = north_atlantic.0121.desc.heavy_storm
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_random_hunt_fail_variety = flag:mild_storm
+				}
+				desc = north_atlantic.0121.desc.mild_storm
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_random_hunt_fail_variety = flag:rescue_storm
+				}
+				desc = north_atlantic.0121.desc.rescue_storm
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_random_hunt_fail_variety = flag:kaboom
+				}
+				desc = north_atlantic.0121.desc.kaboom
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_random_hunt_fail_variety = flag:supplies
+				}
+				desc = north_atlantic.0121.desc.supplies
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_random_hunt_fail_variety = flag:deaths
+				}
+				desc = north_atlantic.0121.desc.deaths
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_random_hunt_fail_variety = flag:fled
+				}
+				desc = north_atlantic.0121.desc.fled
+			}
+		}
+	}
+	theme = death
+	override_background = { event_background = RICE_background_north_atlantic_disko_bay }
+	override_icon = { reference = "gfx/interface/icons/event_types/type_hunt.dds" }
+
+	left_portrait = {
+		character = scope:native_leader		
+		trigger = {
+			exists = scope:native_leader
+		}
+		animation = throne_room_two_handed_passive_1
+		# triggered_animation = {
+		# 	trigger = { var:RICE_random_hunt_fail_variety = flag:attack }
+		# 	animation = throne_room_two_handed_passive_1
+		# }
+		# triggered_animation = {
+		# 	trigger = { var:RICE_random_hunt_fail_variety = flag:rescue_storm }
+		# 	animation = personality_compassionate
+		# }
+	}
+	right_portrait = {
+		character = root
+		animation = stress		
+		trigger = { NOT = { exists = scope:native_leader } }
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				scope:story.var:RICE_walrus_hunt_resilience_decrease > 0
+			}
+			change_global_variable = {
+				name = RICE_greenland_resilience
+				subtract = scope:story.var:RICE_walrus_hunt_resilience_decrease
+			}
+			set_variable = {
+				name = RICE_resilience_value_temp
+				value = scope:story.var:RICE_walrus_hunt_resilience_decrease
+			}
+		}
+		# Random variety
+		random_list = {
+			# Attacked by natives
+			10 = {
+				modifier = {
+					add = 5
+					has_global_variable = RICE_greenland_inuit_are_here
+				}
+				set_variable = {
+					name = RICE_random_hunt_fail_variety
+					value = flag:attack
+				}
+				if = {
+					limit = {
+						has_global_variable = RICE_greenland_inuit_are_here
+					}					
+					create_character = {
+						template = RICE_native_chief_template
+						save_scope_as = native_leader
+						culture = culture:inuit
+						faith = faith:inuit_pagan
+					}
+				}
+				else = {				
+					create_character = {
+						template = RICE_native_chief_template
+						save_scope_as = native_leader
+						culture = culture:dorset
+						faith = faith:inuit_pagan
+					}
+				}
+			}
+			# Caught in a storm - no survivors
+			10 = {
+				modifier = {
+					add = 5
+					has_global_variable = RICE_greenland_environmental_change_warning
+				}
+				set_variable = {
+					name = RICE_random_hunt_fail_variety
+					value = flag:heavy_storm
+				}
+			}
+			# Caught in a storm - a few survivors
+			10 = {
+				modifier = {
+					add = 5
+					has_global_variable = RICE_greenland_environmental_change_warning
+				}
+				set_variable = {
+					name = RICE_random_hunt_fail_variety
+					value = flag:mild_storm
+				}
+			}
+			# Caught in a storm but saved by locals
+			1000 = {
+				modifier = {
+					add = 5
+					has_global_variable = RICE_greenland_environmental_change_warning
+				}
+				if = {
+					limit = {
+						has_global_variable = RICE_greenland_inuit_are_here
+					}					
+					create_character = {
+						template = RICE_native_chief_template
+						save_scope_as = native_leader
+						culture = culture:inuit
+						faith = faith:inuit_pagan
+					}
+				}
+				else = {				
+					create_character = {
+						template = RICE_native_chief_template
+						save_scope_as = native_leader
+						culture = culture:dorset
+						faith = faith:inuit_pagan
+					}
+				}
+				set_variable = {
+					name = RICE_random_hunt_fail_variety
+					value = flag:rescue_storm
+				}
+			}
+			# Ship went kaboom
+			10 = {
+				set_variable = {
+					name = RICE_random_hunt_fail_variety
+					value = flag:kaboom
+				}
+			}
+			# Mismanaged supplies
+			10 = {
+				set_variable = {
+					name = RICE_random_hunt_fail_variety
+					value = flag:supplies
+				}
+			}
+			# Too many died during the hunt
+			10 = {
+				set_variable = {
+					name = RICE_random_hunt_fail_variety
+					value = flag:deaths
+				}
+			}
+			# Fled elsewhere
+			10 = {
+				set_variable = {
+					name = RICE_random_hunt_fail_variety
+					value = flag:fled
+				}
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.0121.a
+		custom_tooltip = north_atlantic.0121.tooltip.hunt_ends
+		if = {
+			limit = {
+				scope:story.var:RICE_walrus_hunt_resilience_decrease > 0
+			}
+			custom_tooltip = north_atlantic.0121.tooltip.decrease_resilience
+		}
+		if = {
+			limit = {
+				scope:story.var:RICE_nordsetur_hunt_type = flag:minor
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_walrus_hunt_minor_fail
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_nordsetur_hunt_type = flag:major
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_walrus_hunt_major_fail
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_nordsetur_hunt_type = flag:great
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_walrus_hunt_great_fail
+					character = root
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				OR = {
+					var:RICE_random_hunt_fail_variety = flag:attack
+					var:RICE_random_hunt_fail_variety = flag:rescue_storm
+				}
+			}
+			hidden_effect = {
+				scope:native_leader = {
+					death = {
+						death_reason = death_disappearance
+					}
+				}
+			}			
+		}
+		if = {
+			limit = { has_variable = RICE_random_hunt_fail_variety }
+			remove_variable = RICE_random_hunt_fail_variety
+		}
+		if = {
+			limit = { has_variable = RICE_resilience_value_temp }
+			remove_variable = RICE_resilience_value_temp
+		}
+		random_owned_story = {
+			limit = {
+				story_type = RICE_story_cycle_north_atlantic_nordsetur_hunt
+			}
+			end_story = yes
+		}
+	}
+
+}
+
+
+
+
+# Hunting party returns
+north_atlantic.0122 = {
+	type = character_event
+	title = north_atlantic.0122.t
+	desc = {
+		desc = north_atlantic.0122.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_hunt_result = flag:poor
+				}
+				desc = north_atlantic.0122.desc.poor
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_hunt_result = flag:fair
+				}
+				desc = north_atlantic.0122.desc.fair
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_hunt_result = flag:good
+				}
+				desc = north_atlantic.0122.desc.good
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_hunt_result = flag:excellent
+				}
+				desc = north_atlantic.0122.desc.excellent
+			}
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_hunt_random_event = flag:poor
+				}
+				desc = north_atlantic.0122.desc.poor
+			}
+		}
+	}
+	theme = death
+	override_background = { event_background = RICE_background_north_atlantic_disko_bay }
+	override_icon = { reference = "gfx/interface/icons/event_types/type_hunt.dds" }
+
+	left_portrait = {
+		character = scope:native_leader		
+		trigger = {
+			exists = scope:native_leader
+		}
+		animation = throne_room_two_handed_passive_1
+		# triggered_animation = {
+		# 	trigger = { var:RICE_random_hunt_fail_variety = flag:attack }
+		# 	animation = throne_room_two_handed_passive_1
+		# }
+		# triggered_animation = {
+		# 	trigger = { var:RICE_random_hunt_fail_variety = flag:rescue_storm }
+		# 	animation = personality_compassionate
+		# }
+	}
+	right_portrait = {
+		character = root
+		#animation = stress		
+		trigger = { NOT = { exists = scope:native_leader } }
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				scope:story.var:RICE_walrus_hunt_resilience_decrease > 0
+			}
+			change_global_variable = {
+				name = RICE_greenland_resilience
+				subtract = scope:story.var:RICE_walrus_hunt_resilience_decrease
+			}
+			set_variable = {
+				name = RICE_resilience_value_temp
+				value = scope:story.var:RICE_walrus_hunt_resilience_decrease
+			}
+		}
+		# Potential outcomes
+		random_list = {
+			# Poor
+			10 = {
+				set_variable = {
+					name = RICE_hunt_result
+					value = flag:poor
+				}
+			}
+			# Fair
+			10 = {
+				set_variable = {
+					name = RICE_hunt_result
+					value = flag:fair
+				}
+			}
+			# Good
+			10 = {
+				set_variable = {
+					name = RICE_hunt_result
+					value = flag:Good
+				}
+			}
+			# Excellent
+			10 = {
+				set_variable = {
+					name = RICE_hunt_result
+					value = flag:excellent
+				}
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.0121.a
+		custom_tooltip = north_atlantic.0121.tooltip.hunt_ends
+		if = {
+			limit = {
+				scope:story.var:RICE_walrus_hunt_resilience_decrease > 0
+			}
+			custom_tooltip = north_atlantic.0121.tooltip.decrease_resilience
+		}
+		if = {
+			limit = {
+				scope:story.var:RICE_nordsetur_hunt_type = flag:minor
+			}
+			add_gold = { 0 100 }
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_walrus_hunt_minor_success
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_nordsetur_hunt_type = flag:major
+			}
+			add_gold = { 0 100 }
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_walrus_hunt_major_success
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_nordsetur_hunt_type = flag:great
+			}
+			add_gold = { 0 100 }
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_walrus_hunt_great_success
+					character = root
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = { has_variable = RICE_hunt_result }
+			remove_variable = RICE_hunt_result
+		}
+		if = {
+			limit = { has_variable = RICE_resilience_value_temp }
+			remove_variable = RICE_resilience_value_temp
+		}
+
+		# Potential random extras
+		random_list = {
+			130 = {
+				random_owned_story = {
+					limit = {
+						story_type = RICE_story_cycle_north_atlantic_nordsetur_hunt
+					}
+					end_story = yes
+				}				
+			}
+			# Native encounter - peaceful
+			10 = {
+				trigger_event = north_atlantic.0124
+			}
+			# Native encounter - hostile
+			10 = {
+				trigger_event = north_atlantic.0125
+			}
+			# Native encounter - witch?
+			10 = {
+				trigger_event = north_atlantic.0126
+			}
+			# Found remnants of another hunting party
+			10 = {
+				trigger_event = north_atlantic.0127
+			}
+			# Narwhal
+			10 = {
+				trigger_event = north_atlantic.0128
+			}
+			# Rescued another hunting party
+			10 = {
+				trigger_event = north_atlantic.0129
+			}
+			# Polar Bear hunted
+			10 = {
+				trigger_event = north_atlantic.0130
+			}
+		}
+
+	}
+
+}
+
+
+
+
+# Preparing for the hunt
+north_atlantic.0123 = {
+	type = character_event
+	title = north_atlantic.0123.t
+	desc = north_atlantic.0123.desc
+	theme = hunt_activity
+	override_background = { event_background = RICE_background_north_atlantic_port }
+
+	right_portrait = root
+
+	option = {
+		name = north_atlantic.0123.a
+		custom_tooltip = north_atlantic.0123.a.tooltip
+	}
+
+	after = {		
+		create_story = RICE_story_cycle_north_atlantic_nordsetur_hunt
+	}
+
+}
+
+
+
+
+
+######################################################################################
+# 
+# VINLAND OUTPOSTS AND SETTLEMENTS
+# 
+# north_atlantic.0140-north_atlantic.0159
+# 
+######################################################################################
+
+
+
+
+# Set sail for Vinland - overseer or no?
+north_atlantic.0140 = {
+	type = character_event
+	title = north_atlantic.0140.t
+	desc = north_atlantic.0140.desc
+	theme = hunt_activity
+	override_background = { event_background = RICE_background_north_atlantic_port }
+
+	right_portrait = {
+		character = root
+		animation = war_defender
+	}
+
+	option = {
+		name = north_atlantic.0140.a
+		custom_tooltip = north_atlantic.0140.a.tooltip
+		create_story = RICE_story_cycle_north_atlantic_vinland_outpost
+	}
+	option = {
+		name = north_atlantic.0140.b
+		custom_tooltip = north_atlantic.0140.b.tooltip
+		trigger_event = north_atlantic.0141
+	}
+
+}
+
+# Set sail for Vinland - pick an overseer
+north_atlantic.0141 = {
+	type = character_event
+	title = north_atlantic.0141.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					OR = {
+						exists = scope:candidate_1
+						exists = scope:candidate_2
+					}
+				}
+				desc = north_atlantic.0141.desc.courtiers
+			}
+			desc = north_atlantic.0141.desc.no_courtiers
+		}	
+		desc = north_atlantic.0141.desc.local	
+	}
+	theme = hunt_activity
+	override_background = { event_background = RICE_background_north_atlantic_port }
+
+	right_portrait = {
+		character = root
+		animation = war_defender
+	}
+	lower_left_portrait = {
+		character = scope:candidate_1
+		trigger = { exists = scope:candidate_1 }
+	}
+	lower_center_portrait = {
+		character = scope:local
+		trigger = { exists = scope:local }
+	}
+	lower_right_portrait = {
+		character = scope:candidate_2
+		trigger = { exists = scope:candidate_2 }
+	}
+
+	
+	immediate = {		
+		create_character = {
+			location = root.capital_province
+			template = random_barrel_character
+			save_scope_as = local
+		}
+		# See scripted_trigger valid_scandinavian_adventurer just in case
+		every_courtier = {
+			limit = {
+				is_available_healthy_ai_adult = yes
+				age <= 55 # Don't want someone too old who could die on the journey
+				is_alive = yes
+				is_ruler = no
+				NOT = { is_councillor_of = root }
+				# Will not inherit anything anytime soon
+				OR = {					
+					any_heir_title = { count = 0 }
+					AND = {
+						save_temporary_scope_as = potential
+						any_heir_title = {
+							place_in_line_of_succession = {
+								target = scope:potential
+								value >= 3
+							}
+						}
+					}
+				}
+			}
+			add_to_list = expedition_leader_candidates
+		}
+
+		if = {
+			limit = {
+				any_in_list = {
+					list = expedition_leader_candidates
+					count >= 2
+					opinion = {
+						target = root
+						value > -25
+					}
+				}
+			}
+			random_in_list = {
+				list = expedition_leader_candidates
+				weight = {
+					base = 10
+					modifier = {
+						has_trait = RICE_explorer
+						add = 20
+					}
+					modifier = {
+						has_trait = ambitious
+						add = 5
+					}
+					modifier = {
+						has_trait = content
+						add = -5
+					}
+					modifier = {
+						has_trait = brave
+						add = 5
+					}
+					modifier = {
+						has_trait = craven
+						add = -5
+					}
+					modifier = {
+						has_trait = diligent
+						add = 5
+					}
+					modifier = {
+						has_trait = lazy
+						add = -5
+					}
+				}
+				save_scope_as = candidate_1
+			}
+		}
+
+		if = {
+			limit = {
+				any_in_list = {
+					list = expedition_leader_candidates
+					count >= 1
+				}
+			}
+			random_in_list = {
+				list = expedition_leader_candidates
+				limit = {
+					NOT = { this = scope:candidate_1 }
+				}
+				weight = {
+					base = 10
+					modifier = {
+						has_trait = RICE_explorer
+						add = 20
+					}
+					modifier = {
+						has_trait = ambitious
+						add = 5
+					}
+					modifier = {
+						has_trait = content
+						add = -5
+					}
+					modifier = {
+						has_trait = brave
+						add = 5
+					}
+					modifier = {
+						has_trait = craven
+						add = -5
+					}
+					modifier = {
+						has_trait = diligent
+						add = 5
+					}
+					modifier = {
+						has_trait = lazy
+						add = -5
+					}
+				}
+				save_scope_as = candidate_2
+			}
+		}
+
+	}
+
+	option = {
+		name = north_atlantic.0141.a
+		trigger = {
+			exists = scope:candidate_1
+		}
+		scope:candidate_1 = {
+			#save_scope_as = RICE_expedition_leader_choice
+			add_prestige = 50
+			add_trait = RICE_exploring_western_seas
+			add_character_flag = {
+				flag = blocked_from_leaving
+				years = 4 # Little extra buffer just in case
+			}
+		}
+		set_variable = { # For use in the Story
+			name = RICE_vinland_outpost_overseer_choice
+			value = scope:candidate_1
+		}
+		custom_tooltip = north_atlantic.0141.a.tooltip
+	}
+
+	option = {
+		name = north_atlantic.0141.b
+		trigger = {
+			exists = scope:candidate_2
+		}
+		scope:candidate_2 = {
+			#save_scope_as = RICE_expedition_leader_choice
+			add_prestige = 50
+			add_trait = RICE_exploring_western_seas
+			add_character_flag = {
+				flag = blocked_from_leaving
+				years = 2 # Little extra buffer just in case
+			}
+		}
+		set_variable = { # For use in the Story
+			name = RICE_vinland_outpost_overseer_choice
+			value = scope:candidate_2
+		}
+		custom_tooltip = north_atlantic.0141.b.tooltip
+	}
+	option = {
+		name = north_atlantic.0141.c
+		trigger = {
+			exists = scope:local
+		}
+		hidden_effect = {
+			add_courtier = scope:local
+		}
+		pay_short_term_gold = {
+			target = scope:local
+			gold = RICE_vinland_settlement_payment_value
+		}
+		scope:local = {
+			#save_scope_as = RICE_expedition_leader_choice
+			add_prestige = 50
+			add_trait = RICE_exploring_western_seas
+			add_character_flag = {
+				flag = blocked_from_leaving
+				years = 2 # Little extra buffer just in case
+			}
+		}
+		set_variable = { # For use in the Story
+			name = RICE_vinland_outpost_overseer_choice
+			value = scope:local
+		}
+		custom_tooltip = north_atlantic.0141.c.tooltip
+	}
+
+	option = {
+		name = north_atlantic.0141.d
+		custom_tooltip = north_atlantic.0141.d.tooltip
+	}
+
+	after = {		
+		if = {
+			limit = {
+				scope:local = {
+					NOT = { has_trait = RICE_exploring_western_seas }
+				}
+			}
+			hidden_effect = {
+				scope:local = {
+					death = {
+						death_reason = death_disappearance
+					}
+				}
+			}
+		}
+		create_story = RICE_story_cycle_north_atlantic_vinland_outpost
+	}
+
+}
+
+
+
+
+
+# Vinland outpost adventure ends
+north_atlantic.0142 = {
+	type = character_event
+	title = north_atlantic.0142.t
+	desc = {
+		desc = north_atlantic.0142.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_vinland_success
+				}
+				desc = north_atlantic.0142.desc.success
+			}
+			desc = north_atlantic.0142.desc.fail
+		}		
+	}
+	theme = RICE_theme_north_atlantic_vinland
+
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:overseer
+		animation = personality_honorable
+		trigger = {
+			exists = scope:overseer
+			scope:overseer = {
+				is_alive = yes
+			}
+		}
+	}
+
+	immediate = {
+		random = {
+			chance = RICE_north_atlantic_vinland_viability_value
+			modifier = {
+				scope:overseer.stewardship < mediocre_skill_rating
+				add = 2
+			}
+			modifier = {
+				scope:overseer.stewardship >= mediocre_skill_rating 
+				add = 4
+			}
+			modifier = {
+				scope:overseer.stewardship >= decent_skill_rating 
+				add = 6
+			}
+			modifier = {
+				scope:overseer.stewardship >= high_skill_rating 
+				add = 8
+			}
+			modifier = {
+				scope:overseer.stewardship >= very_high_skill_rating 
+				add = 10
+			}
+			add_character_flag = RICE_vinland_success # Somehow
+			dynasty = {
+				add_dynasty_modifier = {
+					modifier = RICE_north_atlantic_vinland_outpost
+				}
+			}		
+			hidden_effect = {
+				change_global_variable = {
+					name = RICE_north_atlantic_vinland_outposts
+					add = 1
+				}
+			}
+		}			
+		if = {
+			limit = {
+				scope:overseer = {
+					is_alive = yes
+				}
+			}
+			if = {
+				limit = {
+					scope:overseer = {
+						has_trait = RICE_exploring_western_seas
+					}
+				}
+				scope:overseer = {
+					remove_trait = RICE_exploring_western_seas					
+				}
+			}
+			if = {
+				limit = {
+					has_character_flag = RICE_vinland_success
+				}
+				scope:overseer = {
+					add_prestige = 100
+				}
+			}
+			scope:overseer.activity = {
+				complete_activity = yes
+			}
+			if = {
+				limit = {
+					scope:overseer = {
+						has_character_flag = blocked_from_leaving
+					}
+				}
+				scope:overseer = {
+					remove_character_flag = blocked_from_leaving
+				}
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.0142.a
+		if = {
+			limit = {
+				has_character_flag = RICE_vinland_success
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_successful_outpost_vinland
+					character = root
+				}
+			}
+		}
+		else = {
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_failed_outpost_vinland
+					character = root
+				}
+			}
+		}
+		every_dynasty_member = {
+			limit = {
+				is_ruler = yes
+				is_ai = no
+			}
+			trigger_event = north_atlantic.0143
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_vinland_success
+			}
+			remove_character_flag = RICE_vinland_success
+		}
+		random_owned_story = {
+			limit = {
+				story_type = RICE_story_cycle_north_atlantic_expedition
+			}
+			end_story = yes
+		}
+	}
+
+}
+
+
+
+
+######################################################################################
+# 
+# DISCOVERING GREENLAND
+# 
+# north_atlantic.0160-north_atlantic.0169
+# 
+######################################################################################
+
+# Create the new Greenlandic culture
+north_atlantic.0160 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		random_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+			}
+			save_scope_as = erik
+		}
+		scope:erik = {
+			make_unprunable = yes
+			add_to_global_variable_list = {
+				name = RICE_north_atlantic_erik_the_red
+				target = this
+			}
+			add_prestige_level = 1
+			add_prestige = 1000
+			add_trait = RICE_explorer
+		}
+		set_global_variable = {
+			name = RICE_north_atlantic_greenland_struggle_started
+			value = yes
+		}
+		RICE_enable_greenland_struggle_effect = yes
+		create_character = {
+			template = random_barrel_character
+			culture = root.culture
+			save_scope_as = greenlandic_creator_deity
+		}		
+		scope:greenlandic_creator_deity = {
+			create_divergent_culture = yes
+			add_to_global_variable_list = {
+				name = RICE_greenlandic_creator_deity
+				target = this
+			}			
+		}
+		scope:new_culture = {
+			random_list = {
+				50 = {
+					modifier = {
+						factor = 1.5
+						root.culture = {
+							has_cultural_pillar = ethos_stoic
+						}
+					}
+					set_culture_pillar = ethos_stoic
+				}
+				35 = {	
+					modifier = {
+						factor = 1.5
+						root.culture = {
+							has_cultural_pillar = ethos_communal
+						}
+					}				
+					set_culture_pillar = ethos_communal
+				}
+				15 = {
+					modifier = {
+						factor = 1.5
+						root.culture = {
+							has_cultural_pillar = ethos_spiritual
+						}
+					}					
+					set_culture_pillar = ethos_spiritual
+				}
+			}
+			set_culture_name = {
+				noun = Greenlandic
+				collective_noun = Greenlanders
+				prefix = Greenlandic
+			}
+			# For random variation and flavor
+			add_random_valid_tradition_replace_if_necessary = scope:greenlandic_creator_deity
+			random = {
+				chance = 50
+				add_random_valid_tradition_replace_if_necessary = scope:greenlandic_creator_deity
+			}
+		}
+		trigger_event = north_atlantic.0161
+	}
+
+}
+
+
+# Greenland adventure ends
+north_atlantic.0161 = {
+	type = character_event
+	title = north_atlantic.0161.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:leader = {
+						is_alive = no
+					}
+				}
+				desc = north_atlantic.0161.desc.leader_dead
+			}
+			desc = north_atlantic.0161.desc.leader_not_dead
+		}	
+	}
+	theme = RICE_theme_north_atlantic_port
+
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:erik
+		animation = personality_honorable
+	}
+
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = {
+					scope:new_culture = {
+						NOT = {
+							has_cultural_tradition = tradition_hunters
+						}
+					}
+				}
+				scope:new_culture = {
+					remove_random_culture_tradition = yes
+					add_culture_tradition = tradition_hunters
+					remove_variable = tradition_cooldown
+				}
+			}
+			if = {
+				limit = {
+					scope:new_culture = {
+						NOR = {
+							has_cultural_tradition = tradition_RICE_whalers
+							has_cultural_tradition = tradition_RICE_master_whalers
+						}
+					}
+				}
+				scope:new_culture = {
+					remove_random_culture_tradition = yes
+					add_culture_tradition = tradition_RICE_whalers
+					remove_variable = tradition_cooldown
+				}
+			}
+
+			# Remove traditions that don't make sense for Greenlandic
+			# It is placed here on the off chance the Wahlers or Hunters replaces them, then they aren't needed anymore
+			RICE_greenlandic_remove_nonsensical_traditions_effect = yes
+
+		}
+		if = {
+			limit = {
+				NOT = { struggle:RICE_greenland_struggle = { is_culture_involved_in_struggle = root.culture } }
+			}
+			struggle:RICE_greenland_struggle = { set_culture_as_involved = root.culture }
+		}
+		if = {
+			limit = {
+				NOT = { struggle:RICE_greenland_struggle = { is_faith_involved_in_struggle = root.faith } }
+			}
+			struggle:RICE_greenland_struggle = { set_faith_as_involved = root.faith }
+		}
+		struggle:RICE_greenland_struggle = { set_culture_as_involved = scope:new_culture }
+		custom_tooltip = RICE_greenland_struggle_starts_tooltip
+		root.culture = {
+			save_scope_as = root_culture
+		}
+		# culture:greenlandic = {
+		# 	save_scope_as = greenlandic
+		# }
+		# create_divergent_culture = yes
+		# scope:new_culture = {
+		# 	set_culture_name = {
+		# 		noun = Greenlandic
+		# 		collective_noun = Greenlanders
+		# 		prefix = Greenlandic
+		# 	}
+		# }
+		# create_character = {
+		# 	template = random_barrel_character
+		# 	culture = scope:new_culture
+		# 	save_scope_as = greenlandic_deity
+		# }
+		# # Create dummy character of that culture in the history files, so it can still be referenced to in the future
+		# scope:greenlandic_deity = {
+		# 	add_to_global_variable_list = {
+		# 		name = RICE_greenlandic_creator_deity
+		# 		target = this
+		# 	}
+		# }
+		#hidden_effect = {
+			scope:greenlandic_creator_deity = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}			
+		#}
+		#set_culture = culture:root_culture
+	}
+
+	option = {
+		name = north_atlantic.0161.a
+		add_prestige = 500
+		if = {
+			limit = {
+				exists = house
+			}
+			house = {
+				add_house_modifier = {
+					modifier = RICE_north_atlantic_greenland_family_estate
+				}
+			}
+		}
+		scope:new_culture = {
+			#reset_culture_creation_date = yes
+			set_language_from = root.culture
+			#set_name_list = root.culture
+			custom_tooltip = RICE_set_heritage_greenlandic_tooltip
+			#custom_description = {
+			#	text = RICE_set_heritage_greenlandic
+				hidden_effect = {
+					get_all_innovations_from = root.culture
+					set_heritage_from = root.culture
+				}
+			#}
+		}
+	}
+
+	after = {
+
+		
+		scope:greenlandic_deity = {
+			make_unprunable = yes
+			death = {
+				death_reason = death_disappearance
+			}
+		}
+
+	# 	random_owned_story = {
+	# 		limit = {
+	# 			story_type = RICE_story_cycle_north_atlantic_expedition
+	# 		}
+	# 		end_story = yes
+	# 	}
+
+	}
+
+}
+
+# Greenland adventure ends
+# north_atlantic.0160 = {
+# 	type = character_event
+# 	title = north_atlantic.0160.t
+# 	desc = {
+# 		first_valid = {
+# 			triggered_desc = {
+# 				trigger = {
+# 					scope:leader = {
+# 						is_alive = no
+# 					}
+# 				}
+# 				desc = north_atlantic.0160.desc.leader_dead
+# 			}
+# 			desc = north_atlantic.0160.desc.leader_not_dead
+# 		}	
+# 	}
+# 	theme = RICE_theme_north_atlantic_port
+
+# 	left_portrait = {
+# 		character = root
+# 		animation = happiness
+# 	}
+# 	right_portrait = {
+# 		character = scope:erik
+# 		animation = personality_honorable
+# 	}
+
+# 	immediate = {
+# 		custom_tooltip = RICE_greenland_struggle_starts_tooltip
+# 		set_global_variable = {
+# 			name = RICE_north_atlantic_greenland_struggle_started
+# 			value = yes
+# 		}
+# 		random_courtier = {
+# 			limit = {
+# 				is_available_ai_adult = yes
+# 			}
+# 			save_scope_as = erik
+# 		}
+# 		scope:erik = {
+# 			make_unprunable = yes
+# 			add_to_global_variable_list = {
+# 				name = RICE_north_atlantic_erik_the_red
+# 				target = this
+# 			}
+# 			add_prestige_level = 1
+# 			add_prestige = 1000
+# 			add_trait = RICE_explorer
+# 		}
+# 		root.culture = {
+# 			save_scope_as = root_culture
+# 		}
+# 		culture:greenlandic = {
+# 			save_scope_as = greenlandic
+# 		}
+# 		RICE_enable_greenland_struggle_effect = yes
+# 	}
+
+# 	option = {
+# 		name = north_atlantic.0160.a
+# 		add_prestige = 500
+# 		if = {
+# 			limit = {
+# 				NOT = { struggle:RICE_greenland_struggle = { is_culture_involved_in_struggle = root.culture } }
+# 			}
+# 			struggle:RICE_greenland_struggle = { set_culture_as_involved = root.culture }
+# 		}
+# 		if = {
+# 			limit = {
+# 				NOT = { struggle:RICE_greenland_struggle = { is_faith_involved_in_struggle = root.faith } }
+# 			}
+# 			struggle:RICE_greenland_struggle = { set_faith_as_involved = root.faith }
+# 		}
+# 		if = {
+# 			limit = {
+# 				exists = house
+# 			}
+# 			house = {
+# 				add_house_modifier = {
+# 					modifier = RICE_north_atlantic_greenland_family_estate
+# 				}
+# 			}
+# 		}
+# 		culture:greenlandic = {
+# 			reset_culture_creation_date = yes
+# 			set_language_from = root.culture
+# 			#set_name_list = root.culture
+# 			custom_tooltip = RICE_set_heritage_greenlandic_tooltip
+# 			#custom_description = {
+# 			#	text = RICE_set_heritage_greenlandic
+# 				hidden_effect = {
+# 					get_all_innovations_from = root.culture
+# 					set_heritage_from = root.culture
+# 				}
+# 			#}
+# 		}
+# 	}
+
+# 	#after = {
+
+# 		# Create dummy character of that culture in the history files, so it can still be referenced to in the future
+
+# 	# 	random_owned_story = {
+# 	# 		limit = {
+# 	# 			story_type = RICE_story_cycle_north_atlantic_expedition
+# 	# 		}
+# 	# 		end_story = yes
+# 	# 	}
+
+# 	#}
+
+# }
+
+
+
+
+
+######################################################################################
+# 
+# GREENLAND STRUGGLE ENDINGS
+# 
+# north_atlantic.0170-north_atlantic.0179
+# 
+######################################################################################
+
+# Integration Ending
+north_atlantic.0170 = { 
+	type = fullscreen_event
+	title = north_atlantic.0170.t
+	desc = north_atlantic.0170.desc
+	theme = court
+	override_background = { event_background = RICE_greenland_struggle_start }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_end_animate" }
+
+	immediate = {
+		# Add all involved rulers to a list, for ping event
+		play_music_cue = "mx_Struggle_ending_conciliation"
+		RICE_greenland_struggle_integration_ender_effect = yes
+		RICE_greenland_struggle_integration_ending_tooltip_effect = yes
+		save_scope_as = struggle_ender
+	}
+
+	# Cultural victory
+	option = {
+		name = north_atlantic.0170.a
+		RICE_greenland_struggle_integration_cultural_ending_effect = yes
+		stress_impact = {
+			paranoid = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+		}
+		set_global_variable = {
+			name = RICE_greenland_integration_cultural_victory
+			value = yes
+			days = 15 # Clear out eventually, just in case
+		}
+	}
+
+	# Economic victory
+	option = {
+		name = north_atlantic.0170.b
+		RICE_greenland_struggle_integration_economic_ending_effect = yes
+		stress_impact = {
+			lazy = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+		}
+		set_global_variable = {
+			name = RICE_greenland_integration_economic_victory
+			value = yes
+			days = 15 # Clear out eventually, just in case
+		}
+	}
+
+	# Community victory
+	option = {
+		name = north_atlantic.0170.c
+		RICE_greenland_struggle_integration_community_ending_effect = yes
+		stress_impact = {
+			fickle = minor_stress_impact_gain
+			content = minor_stress_impact_gain
+		}
+		set_global_variable = {
+			name = RICE_greenland_integration_community_victory
+			value = yes
+			days = 15 # Clear out eventually, just in case
+		}
+	}
+
+	after = {
+		# End Struggle
+		struggle:RICE_greenland_struggle = {
+			end_struggle = RICE_greenland_struggle_ending_integration_decision
+		}
+		# Notify
+		every_player = {
+			#limit = {
+			#	NOT = { scope:struggle_ender = root }
+			#}
+			trigger_event = north_atlantic.0171
+		}
+	}
+}
+
+
+
+
+# Integration Ending notification
+north_atlantic.0171 = { # Fullscreen Intro Event
+	type = fullscreen_event
+	title = north_atlantic.0171.t
+	desc = {
+		desc = north_atlantic.0171.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_global_variable = RICE_greenland_integration_cultural_victory
+				}
+				desc = north_atlantic.0171.desc.closing.cultural
+			}
+			triggered_desc = {
+				trigger = {
+					has_global_variable = RICE_greenland_integration_economic_victory
+				}
+				desc = north_atlantic.0171.desc.closing.economic
+			}
+			triggered_desc = {
+				trigger = {
+					has_global_variable = RICE_greenland_integration_community_victory
+				}
+				desc = north_atlantic.0171.desc.closing.community
+			}
+		}
+		desc = north_atlantic.0171.desc.closing
+	}
+	theme = court
+	override_background = { event_background = RICE_greenland_struggle_start }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	immediate = {
+		play_music_cue = "mx_Struggle_ending_conciliation"
+	}
+	option = {
+		name = north_atlantic.0171.a
+		RICE_greenland_struggle_integration_ending_tooltip_effect = yes
+		show_as_tooltip = {
+			if = {
+				limit = {
+					has_global_variable = RICE_greenland_integration_cultural_victory
+				}
+				RICE_greenland_struggle_integration_cultural_ending_effect = yes
+			}
+			else_if = {
+				limit = {
+					has_global_variable = RICE_greenland_integration_economic_victory
+				}
+				RICE_greenland_struggle_integration_economic_ending_effect = yes
+			}
+			else_if = {
+				limit = {
+					has_global_variable = RICE_greenland_integration_community_victory
+				}
+				RICE_greenland_struggle_integration_community_ending_effect = yes
+			}
+		}
+	}
+}

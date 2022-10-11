@@ -1,0 +1,268 @@
+﻿RICE_story_cycle_north_atlantic_nordsetur_hunt = {
+
+	on_setup = {
+
+		# Location
+		set_variable = {
+			name = RICE_nordsetur_hunt_type
+			value = story_owner.var:RICE_nordsetur_hunt
+		}
+		story_owner = {
+			remove_variable = RICE_nordsetur_hunt
+			trigger_event = { # Approximate
+				id = north_atlantic.0120
+				trigger_on_next_date = 6.1
+			}
+		}
+
+	}
+
+	on_end = {
+
+	}
+
+	on_owner_death = {
+		if = {
+			limit = { exists = story_owner.player_heir }
+			make_story_owner = story_owner.player_heir
+		}
+		else = {
+			scope:story = { end_story = yes }
+		}
+	}
+
+	# Hunting trip fails
+	effect_group = {
+		days = { 20 35 }
+		chance = 100
+	
+		triggered_effect = {
+			trigger = {
+				exists = var:RICE_walrus_hunt_started
+				exists = var:RICE_walrus_hunt_timer
+				NOT = { exists = var:RICE_walrus_hunt_success }
+				NOT = { exists = var:RICE_walrus_hunt_fail }
+			}
+			effect = {
+
+				#random = {
+				#	chance = 20
+					set_variable = {
+						name = RICE_walrus_hunt_fail
+						value = yes
+					}
+	
+					set_variable = {
+						name = RICE_walrus_hunt_resilience_decrease
+						value = {
+							value = 0
+							if = {
+								limit = {
+									var:RICE_nordsetur_hunt_type = flag:minor
+								}
+								add = {
+									integer_range = {
+										min = 0
+										max = 3
+									}
+								}
+							}
+							else_if = {
+								limit = {
+									var:RICE_nordsetur_hunt_type = flag:major
+								}
+								add = {
+									integer_range = {
+										min = 1
+										max = 5
+									}
+								}
+							}
+							else_if = {
+								limit = {
+									var:RICE_nordsetur_hunt_type = flag:great
+								}
+								add = {
+									integer_range = {
+										min = 1
+										max = 10
+									}
+								}
+							}
+						}
+					}
+	
+					story_owner = {
+						trigger_event = north_atlantic.0121 # The hunting trip fails
+					}
+				#}
+
+			}
+		}
+	}
+
+	# The hunters successfully return
+	effect_group = {
+		days = { 1 10 }
+		chance = 1
+	
+		triggered_effect = {
+			trigger = {
+				exists = var:RICE_walrus_hunt_started
+				NOT = { exists = var:RICE_walrus_hunt_timer }
+				NOT = { exists = var:RICE_walrus_hunt_success }
+			}
+			effect = {
+
+				set_variable = {
+					name = RICE_walrus_hunt_success
+					value = yes
+				}
+
+				set_variable = {
+					name = RICE_walrus_hunt_resilience_decrease
+					value = {
+						value = 0
+						if = {
+							limit = {
+								OR = {
+									struggle:RICE_greenland_struggle = { is_struggle_phase = struggle_RICE_greenland_phase_settlement }
+									struggle:RICE_greenland_struggle = { is_struggle_phase = struggle_RICE_greenland_phase_integration }
+								}
+							}							
+							if = {
+								limit = {
+									var:RICE_nordsetur_hunt_type = flag:minor
+								}
+								add = {
+									integer_range = {
+										min = 0
+										max = 3
+									}
+								}
+							}
+							else_if = {
+								limit = {
+									var:RICE_nordsetur_hunt_type = flag:major
+								}
+								add = {
+									integer_range = {
+										min = 0
+										max = 5
+									}
+								}
+							}
+							else_if = {
+								limit = {
+									var:RICE_nordsetur_hunt_type = flag:great
+								}
+								add = {
+									integer_range = {
+										min = 0
+										max = 10
+									}
+								}
+							}
+						}
+						else_if = {
+							limit = {
+								struggle:RICE_greenland_struggle = { is_struggle_phase = struggle_RICE_greenland_phase_subsistence }
+							}							
+							if = {
+								limit = {
+									var:RICE_nordsetur_hunt_type = flag:minor
+								}
+								add = {
+									integer_range = {
+										min = 0
+										max = 5
+									}
+								}
+							}
+							else_if = {
+								limit = {
+									var:RICE_nordsetur_hunt_type = flag:major
+								}
+								add = {
+									integer_range = {
+										min = 0
+										max = 10
+									}
+								}
+							}
+							else_if = {
+								limit = {
+									var:RICE_nordsetur_hunt_type = flag:great
+								}
+								add = {
+									integer_range = {
+										min = 0
+										max = 20
+									}
+								}
+							}
+						}
+						else_if = {
+							limit = {
+								struggle:RICE_greenland_struggle = { is_struggle_phase = struggle_RICE_greenland_phase_marginalization }
+							}							
+							if = {
+								limit = {
+									var:RICE_nordsetur_hunt_type = flag:minor
+								}
+								add = {
+									integer_range = {
+										min = 0
+										max = 10
+									}
+								}
+							}
+							else_if = {
+								limit = {
+									var:RICE_nordsetur_hunt_type = flag:major
+								}
+								add = {
+									integer_range = {
+										min = 0
+										max = 20
+									}
+								}
+							}
+							else_if = {
+								limit = {
+									var:RICE_nordsetur_hunt_type = flag:great
+								}
+								add = {
+									integer_range = {
+										min = 0
+										max = 40
+									}
+								}
+							}
+						}
+					}
+				}
+
+				story_owner = {
+					trigger_event = north_atlantic.0122
+				}
+
+			}
+		}
+	}
+
+	# Self destruct after almost a year if it still continues for some reason
+	effect_group = {
+		days = 330
+		chance = 330
+
+		triggered_effect = {
+			trigger = { always = yes }
+			effect = {
+				end_story = yes
+			}
+		}
+	}	
+
+	
+}

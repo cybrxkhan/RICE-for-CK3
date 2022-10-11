@@ -1,0 +1,207 @@
+﻿RICE_story_cycle_north_atlantic_expedition = {
+
+	on_setup = {
+		# Location
+		set_variable = {
+			name = RICE_expedition_destination
+			value = story_owner.var:RICE_expedition_destination_pick
+		}
+		story_owner = {
+			remove_variable = RICE_expedition_destination_pick
+		}
+		# If you selected one
+		if = {
+			limit = {
+				exists = story_owner.var:RICE_expedition_leader_choice
+			}
+			set_variable = {
+				name = RICE_expedition_leader
+				value = story_owner.var:RICE_expedition_leader_choice
+			}
+			story_owner = {
+				remove_variable = RICE_expedition_leader_choice
+			}
+		}
+		story_owner = {
+			add_character_flag = RICE_north_atlantic_ongoing_expedition
+		}
+	}
+
+	on_end = {
+		# Remove the trait if they still have it for some reason
+		if = {
+			limit = {
+				exists = scope:story.var:RICE_expedition_leader
+				scope:story.var:RICE_expedition_leader = {
+					has_trait = trait_RICE_exploring_western_seas
+				}
+			}
+			scope:story.var:RICE_expedition_leader = {
+				remove_trait = trait_RICE_exploring_western_seas
+			}
+		}
+		story_owner = {	
+			remove_character_flag = RICE_north_atlantic_ongoing_expedition
+		}
+	}
+
+	on_owner_death = {
+		if = {
+			limit = { exists = story_owner.player_heir }
+			# Should not happen, but if it does, heir returns and the expedition is prematurely canceled
+			if = {
+				limit = {
+					story_owner.player_heir = {
+						this = scope:story.var:RICE_expedition_leader
+					}
+				}
+				scope:story = { end_story = yes }
+				story_owner.player_heir = {
+					trigger_event = north_atlantic.8888
+				}
+				# ADD CODE WHERE HEIR STILL GETS EXPLORER TRAIT IF THEY EXPLORED ENOUGH
+			}
+			# Should not happen, but if it does, heir returns and the expedition is prematurely canceled
+			else = {
+				make_story_owner = story_owner.player_heir
+			}
+		}
+		else = {
+			scope:story = { end_story = yes }
+			# GET THE EXPEDITION LEADER BACK HOME
+			scope:story.var:RICE_expedition_leader.activity = {
+				complete_activity = yes
+			}
+		}
+	}
+
+
+	# The expedition sets sail
+	effect_group = {
+		days = 90 # { 365 1095 } # 1-3 years
+		chance = 100
+	
+		triggered_effect = {
+			trigger = {
+				NOT = { exists = var:RICE_expedition_set_sail }
+			}
+			effect = {
+				set_variable = {
+					name = RICE_expedition_set_sail
+					value = yes
+				}
+				story_owner = {
+					if = {
+						limit = {
+							exists = scope:story.var:RICE_expedition_leader
+						}
+						scope:story.var:RICE_expedition_leader = {
+							save_scope_as = leader
+						}
+					}
+					trigger_event = north_atlantic.0033 # The expedition begins
+				}
+			}
+		}
+	}
+
+	# The expedition sinks/all dies/etc
+	# effect_group = {
+	# 	days = { 7 9 } # { 365 1095 } # 1-3 years
+	# 	chance = 100
+	
+	# 	triggered_effect = {
+	# 		trigger = {
+	# 			NOT = { exists = var:RICE_expedition_returns }
+	# 			NOT = { exists = var:RICE_expedition_sinks }
+	# 		}
+	# 		effect = {
+	# 			set_variable = {
+	# 				name = RICE_expedition_sinks
+	# 				value = yes
+	# 			}
+	# 			story_owner = {
+	# 				trigger_event = north_atlantic.0034 # The expedition ends
+	# 			}
+	# 		}
+	# 	}
+	# }
+
+	# The expedition successfully returns
+	effect_group = {
+		days = { 365 400 } # { 365 1095 } # 1-3 years
+		chance = 100
+	
+		triggered_effect = {
+			trigger = {
+				exists = var:RICE_expedition_at_least_one_event
+				exists = var:RICE_expedition_set_sail
+				NOT = { exists = var:RICE_expedition_returns }
+			}
+			effect = {
+				set_variable = {
+					name = RICE_expedition_returns
+					value = yes
+				}
+				if = {
+					limit = {
+						exists = scope:story.var:RICE_expedition_leader
+					}
+					scope:story.var:RICE_expedition_leader = {
+						save_scope_as = leader
+					}
+				}
+				story_owner = {
+					trigger_event = north_atlantic.0034 # The expedition ends
+				}
+			}
+		}
+	}
+
+	# Something happens - random events
+	effect_group = {
+		days = { 30 40 }
+		#chance = 50
+
+
+		trigger = {
+			exists = var:RICE_expedition_set_sail
+			exists = scope:story.var:RICE_expedition_leader
+			NOT = { exists = var:RICE_expedition_at_least_one_event }
+		}
+
+		first_valid = {
+			triggered_effect = {
+				effect = {
+					set_variable = {
+						name = RICE_expedition_at_least_one_event
+						value = yes
+					}
+					scope:story.var:RICE_expedition_leader = {
+						save_scope_as = leader
+					}
+					story_owner = {
+						trigger_event = {
+							on_action = RICE_ongoing_north_atlantic_expedition_events
+						}
+					}
+				}
+			}
+		}
+	}
+
+	
+	# 4 years self destruct in case it drags on for some reason
+	effect_group = {
+		days = 1453
+		chance = 100
+
+		triggered_effect = {
+			trigger = { always = yes }
+			effect = {
+				end_story = yes
+			}
+		}
+	}	
+	
+}
