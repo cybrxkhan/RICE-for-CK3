@@ -134,7 +134,7 @@
 	
 		triggered_effect = {
 			trigger = {
-				exists = var:RICE_expedition_at_least_one_event
+				exists = var:RICE_expedition_episode_one
 				exists = var:RICE_expedition_set_sail
 				NOT = { exists = var:RICE_expedition_returns }
 			}
@@ -158,7 +158,7 @@
 		}
 	}
 
-	# Something happens - random events
+	# First "episode"
 	effect_group = {
 		days = { 30 40 }
 		#chance = 50
@@ -167,14 +167,80 @@
 		trigger = {
 			exists = var:RICE_expedition_set_sail
 			exists = scope:story.var:RICE_expedition_leader
-			NOT = { exists = var:RICE_expedition_at_least_one_event }
+			NOT = { exists = var:RICE_expedition_episode_one }
 		}
 
 		first_valid = {
 			triggered_effect = {
 				effect = {
 					set_variable = {
-						name = RICE_expedition_at_least_one_event
+						name = RICE_expedition_episode_one
+						value = yes
+					}
+					scope:story.var:RICE_expedition_leader = {
+						save_scope_as = leader
+					}
+					story_owner = {
+						trigger_event = {
+							on_action = RICE_ongoing_north_atlantic_expedition_events
+						}
+					}
+				}
+			}
+		}
+	}
+
+	# Second "episode"
+	effect_group = {
+		days = { 50 60 }
+		#chance = 50
+
+
+		trigger = {
+			exists = var:RICE_expedition_set_sail
+			exists = scope:story.var:RICE_expedition_leader
+			exists = var:RICE_expedition_episode_one
+			NOT = { exists = var:RICE_expedition_episode_two }
+		}
+
+		first_valid = {
+			triggered_effect = {
+				effect = {
+					set_variable = {
+						name = RICE_expedition_episode_two
+						value = yes
+					}
+					scope:story.var:RICE_expedition_leader = {
+						save_scope_as = leader
+					}
+					story_owner = {
+						trigger_event = {
+							on_action = RICE_ongoing_north_atlantic_expedition_events
+						}
+					}
+				}
+			}
+		}
+	}
+
+	# Third "episode"
+	effect_group = {
+		days = { 60 70 }
+		#chance = 50
+
+
+		trigger = {
+			exists = var:RICE_expedition_set_sail
+			exists = scope:story.var:RICE_expedition_leader
+			exists = var:RICE_expedition_episode_two
+			NOT = { exists = var:RICE_expedition_episode_three }
+		}
+
+		first_valid = {
+			triggered_effect = {
+				effect = {
+					set_variable = {
+						name = RICE_expedition_episode_three
 						value = yes
 					}
 					scope:story.var:RICE_expedition_leader = {

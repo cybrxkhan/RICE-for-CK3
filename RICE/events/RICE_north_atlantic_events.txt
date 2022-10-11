@@ -3114,6 +3114,9 @@ north_atlantic.0042 = {
 		custom_description_no_bullet = {
 			text = north_atlantic.expedition.result.bad
 		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
 		custom_tooltip = north_atlantic.expedition.result.gold.loss
 		custom_tooltip = north_atlantic.expedition.result.prestige.loss
 	}
@@ -3626,6 +3629,12 @@ north_atlantic.0044 = {
 			}
 			custom_tooltip = north_atlantic.expedition.result.resilience.decrease
 		}
+		if = {
+			limit = {
+				scope:story.var:RICE_expedition_destination = flag:vinland
+			}
+			custom_tooltip = north_atlantic.expedition.result.viability.decrease
+		}
 	}
 
 	option = {
@@ -3646,6 +3655,12 @@ north_atlantic.0044 = {
 		custom_tooltip = north_atlantic.expedition.result.prestige
 		custom_tooltip = north_atlantic.expedition.result.piety
 		custom_tooltip = north_atlantic.expedition.result.networks.increase
+		if = {
+			limit = {
+				scope:story.var:RICE_expedition_destination = flag:vinland
+			}
+			custom_tooltip = north_atlantic.expedition.result.viability.increase
+		}
 	}
 	option = {
 		name = north_atlantic.0044.c
@@ -3664,7 +3679,13 @@ north_atlantic.0044 = {
 			text = north_atlantic.expedition.result.intro
 		}
 		custom_tooltip = north_atlantic.expedition.result.prestige
-		add_courtier = scope:native
+		add_courtier = scope:native		
+		if = {
+			limit = {
+				scope:story.var:RICE_expedition_destination = flag:vinland
+			}
+			custom_tooltip = north_atlantic.expedition.result.viability.increase
+		}
 	}
 	option = {
 		name = north_atlantic.0044.d
@@ -3692,6 +3713,12 @@ north_atlantic.0044 = {
 		}
 		custom_tooltip = north_atlantic.expedition.result.prestige
 		add_courtier = scope:native
+		if = {
+			limit = {
+				scope:story.var:RICE_expedition_destination = flag:vinland
+			}
+			custom_tooltip = north_atlantic.expedition.result.viability.increase
+		}
 	}
 
 	after = {
@@ -3716,7 +3743,7 @@ north_atlantic.0044 = {
 }
 
 
-# Help the native
+# Steal from or kidnap the native
 north_atlantic.0045 = {
 	type = character_event
 	title = north_atlantic.0045.t
@@ -3857,6 +3884,12 @@ north_atlantic.0045 = {
 			}
 			custom_tooltip = north_atlantic.expedition.result.resilience.decrease
 		}
+		if = {
+			limit = {
+				scope:story.var:RICE_expedition_destination = flag:vinland
+			}
+			custom_tooltip = north_atlantic.expedition.result.viability.decrease
+		}
 	}
 
 	option = {
@@ -3889,6 +3922,12 @@ north_atlantic.0045 = {
 			add_courtier = scope:native
 		}
 		custom_tooltip = north_atlantic.expedition.result.prestige
+		if = {
+			limit = {
+				scope:story.var:RICE_expedition_destination = flag:vinland
+			}
+			custom_tooltip = north_atlantic.expedition.result.viability.increase
+		}
 	}
 
 	option = {
@@ -3924,6 +3963,12 @@ north_atlantic.0045 = {
 			add_courtier = scope:native
 		}
 		custom_tooltip = north_atlantic.expedition.result.prestige
+		if = {
+			limit = {
+				scope:story.var:RICE_expedition_destination = flag:vinland
+			}
+			custom_tooltip = north_atlantic.expedition.result.viability.increase
+		}
 	}
 
 	after = {
@@ -3948,6 +3993,163 @@ north_atlantic.0045 = {
 }
 
 
+# Shipwrecked sailors
+north_atlantic.0046 = {
+	type = character_event
+	title = north_atlantic.0046.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:helluland
+				}
+				desc = north_atlantic.expedition.intro.helluland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:markland
+				}
+				desc = north_atlantic.expedition.intro.markland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:vinland
+				}
+				desc = north_atlantic.expedition.intro.vinland
+			}
+		}
+		desc = north_atlantic.0046.desc
+	}
+	theme = stewardship_wealth_focus
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+		event_background = RICE_background_north_atlantic_baffin_island
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+		event_background = RICE_background_north_atlantic_markland
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+		event_background = RICE_background_north_atlantic_vinland
+	}
+
+	left_portrait = {
+		character = scope:leader
+		animation = personality_compassionate
+	}
+	right_portrait = {
+		character = scope:sailor
+		animation = beg
+	}
+
+	immediate = {
+		create_character = {
+			template = random_barrel_character
+			save_scope_as = sailor
+		}
+	}
+
+	option = {
+		name = north_atlantic.0046.a
+		#custom_tooltip = north_atlantic.expedition.skill.stewardship
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.good
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.modifiers
+		custom_tooltip = north_atlantic.expedition.result.prestige
+		custom_tooltip = north_atlantic.expedition.result.piety
+		custom_tooltip = north_atlantic.expedition.result.resilience.increase
+	}
+
+	after = {
+		hidden_effect = {
+			scope:sailor = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+
+}
+
+# Caught in a storm
+north_atlantic.0047 = {
+	type = character_event
+	title = north_atlantic.0047.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:helluland
+				}
+				desc = north_atlantic.expedition.intro.helluland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:markland
+				}
+				desc = north_atlantic.expedition.intro.markland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:vinland
+				}
+				desc = north_atlantic.expedition.intro.vinland
+			}
+		}
+		desc = north_atlantic.0047.desc
+	}
+	theme = death
+	override_background = {
+		event_background = fp1_ocean
+	}
+	# override_background = {
+	# 	trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+	# 	event_background = RICE_background_north_atlantic_baffin_island
+	# }
+	# override_background = {
+	# 	trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+	# 	event_background = RICE_background_north_atlantic_markland
+	# }
+	# override_background = {
+	# 	trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+	# 	event_background = RICE_background_north_atlantic_vinland
+	# }
+
+	left_portrait = {
+		character = scope:leader
+		animation = stress
+	}
+
+	option = {
+		name = north_atlantic.0047.a
+		#custom_tooltip = north_atlantic.expedition.skill.stewardship
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.bad
+		}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.gold.loss
+		custom_tooltip = north_atlantic.expedition.result.resilience.decrease
+	}
+
+	after = {
+		hidden_effect = {
+			scope:sailor = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+
+}
 
 
 
@@ -4108,79 +4310,6 @@ north_atlantic.0045 = {
 # }
 
 
-# # Shipwrecked sailors
-# north_atlantic.0045 = {
-# 	type = character_event
-# 	title = north_atlantic.0045.t
-# 	desc = {
-# 		first_valid = {
-# 			triggered_desc = {
-# 				trigger = {
-# 					scope:story.var:RICE_expedition_destination = flag:helluland
-# 				}
-# 				desc = north_atlantic.expedition.intro.helluland
-# 			}
-# 			triggered_desc = {
-# 				trigger = {
-# 					scope:story.var:RICE_expedition_destination = flag:markland
-# 				}
-# 				desc = north_atlantic.expedition.intro.markland
-# 			}
-# 			triggered_desc = {
-# 				trigger = {
-# 					scope:story.var:RICE_expedition_destination = flag:vinland
-# 				}
-# 				desc = north_atlantic.expedition.intro.vinland
-# 			}
-# 		}
-# 		desc = north_atlantic.0045.desc
-# 	}
-# 	theme = stewardship_wealth_focus
-# 	override_background = {
-# 		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
-# 		event_background = RICE_background_north_atlantic_baffin_island
-# 	}
-# 	override_background = {
-# 		trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
-# 		event_background = RICE_background_north_atlantic_markland
-# 	}
-# 	override_background = {
-# 		trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
-# 		event_background = RICE_background_north_atlantic_vinland
-# 	}
-
-# 	left_portrait = {
-# 		character = scope:leader
-# 		animation = personality_compassionate
-# 	}
-# 	right_portrait = {
-# 		character = scope:sailor
-# 		animation = beg
-# 	}
-
-# 	immediate = {
-# 		create_character = {
-# 			template = random_barrel_character
-# 			save_scope_as = sailor
-# 		}
-# 	}
-
-# 	option = {
-# 		name = north_atlantic.0045.a
-# 		custom_tooltip = north_atlantic.expedition.skill.stewardship
-# 	}
-
-# 	after = {
-# 		hidden_effect = {
-# 			scope:sailor = {
-# 				death = {
-# 					death_reason = death_disappearance
-# 				}
-# 			}
-# 		}
-# 	}
-
-# }
 
 
 
