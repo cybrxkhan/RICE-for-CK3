@@ -5669,26 +5669,8 @@ north_atlantic.0122 = {
 	override_background = { event_background = RICE_background_north_atlantic_disko_bay }
 	override_icon = { reference = "gfx/interface/icons/event_types/type_hunt.dds" }
 
-	left_portrait = {
-		character = scope:native_leader		
-		trigger = {
-			exists = scope:native_leader
-		}
-		animation = throne_room_two_handed_passive_1
-		# triggered_animation = {
-		# 	trigger = { var:RICE_random_hunt_fail_variety = flag:attack }
-		# 	animation = throne_room_two_handed_passive_1
-		# }
-		# triggered_animation = {
-		# 	trigger = { var:RICE_random_hunt_fail_variety = flag:rescue_storm }
-		# 	animation = personality_compassionate
-		# }
-	}
-	right_portrait = {
-		character = root
-		#animation = stress		
-		trigger = { NOT = { exists = scope:native_leader } }
-	}
+
+	right_portrait = root
 
 	immediate = {
 		if = {
@@ -5812,26 +5794,26 @@ north_atlantic.0122 = {
 			10 = {
 				trigger_event = north_atlantic.0125
 			}
-			# Native encounter - witch?
+			# Found remnants of another hunting party
 			10 = {
 				trigger_event = north_atlantic.0126
 			}
-			# Found remnants of another hunting party
+			# Narwhal
 			10 = {
 				trigger_event = north_atlantic.0127
 			}
-			# Narwhal
+			# Rescued another hunting party
 			10 = {
 				trigger_event = north_atlantic.0128
 			}
-			# Rescued another hunting party
+			# Polar Bear hunted
 			10 = {
 				trigger_event = north_atlantic.0129
 			}
-			# Polar Bear hunted
-			10 = {
-				trigger_event = north_atlantic.0130
-			}
+			# Native encounter - witch?
+			#10 = {
+			#	trigger_event = north_atlantic.0126
+			#}
 		}
 
 	}
@@ -5858,6 +5840,286 @@ north_atlantic.0123 = {
 
 	after = {		
 		create_story = RICE_story_cycle_north_atlantic_nordsetur_hunt
+	}
+
+}
+
+
+
+
+# Native encounter - peaceful
+north_atlantic.0124 = {
+	type = character_event
+	title = north_atlantic.0124.t
+	desc = north_atlantic.0124.desc
+	theme = hunt_activity
+	override_background = { event_background = RICE_background_north_atlantic_disko_bay }
+
+	right_portrait = {
+		character = scope:native_leader
+		animation = personality_forgiving		
+	}
+	artifact = { # To display the artifact in the event-window
+		target = scope:native_american_artifact
+		position = lower_center_portrait
+		trigger = { exists = scope:native_american_artifact }
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				has_global_variable = RICE_greenland_inuit_are_here
+			}					
+			create_character = {
+				template = RICE_native_chief_template
+				save_scope_as = native_leader
+				culture = culture:inuit
+				faith = faith:inuit_pagan
+			}
+		}
+		else = {				
+			create_character = {
+				template = RICE_native_chief_template
+				save_scope_as = native_leader
+				culture = culture:dorset
+				faith = faith:inuit_pagan
+			}
+		}
+		change_global_variable = {
+			name = RICE_greenland_networks
+			add = 1
+		}
+		random_list = {
+			10 = {
+				add_prestige = 25
+			}
+			10 = {
+				add_prestige = 50
+			}
+			10 = {
+				add_gold = { 0 50 }
+			}
+			10 = {
+				add_character_modifier = {
+					modifier = RICE_north_atlantic_nordsetur_trade_connections
+					years = 10
+				}
+			}
+			10 = {
+				RICE_create_arctic_artifact_effect = yes
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.0124.a
+		custom_tooltip = north_atlantic.0124.a.tooltip
+	}
+
+	after = {	
+		hidden_effect = {
+			scope:native_leader = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}	
+		random_owned_story = {
+			limit = {
+				story_type = RICE_story_cycle_north_atlantic_nordsetur_hunt
+			}
+			end_story = yes
+		}
+	}
+
+}
+
+
+# Native encounter - hostile
+north_atlantic.0125 = {
+	type = character_event
+	title = north_atlantic.0125.t
+	desc = north_atlantic.0125.desc
+	theme = hunt_activity
+	override_background = { event_background = RICE_background_north_atlantic_disko_bay }
+
+	right_portrait = {
+		character = scope:native_leader
+		animation = aggressive_spear		
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				has_global_variable = RICE_greenland_inuit_are_here
+			}					
+			create_character = {
+				template = RICE_native_chief_template
+				save_scope_as = native_leader
+				culture = culture:inuit
+				faith = faith:inuit_pagan
+			}
+		}
+		else = {				
+			create_character = {
+				template = RICE_native_chief_template
+				save_scope_as = native_leader
+				culture = culture:dorset
+				faith = faith:inuit_pagan
+			}
+		}
+		change_global_variable = {
+			name = RICE_greenland_networks
+			subtract = 1
+		}
+		random_list = {
+			10 = {
+				remove_short_term_gold = { 0 50 }
+			}
+			10 = {
+				add_prestige = -25
+			}
+			10 = {
+				add_prestige = -50
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.0125.a
+		custom_tooltip = north_atlantic.0125.a.tooltip
+	}
+
+	after = {	
+		hidden_effect = {
+			scope:native_leader = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}	
+		random_owned_story = {
+			limit = {
+				story_type = RICE_story_cycle_north_atlantic_nordsetur_hunt
+			}
+			end_story = yes
+		}
+	}
+
+}
+
+# Found remnants of another hunting party
+north_atlantic.0126 = {
+	type = character_event
+	title = north_atlantic.0126.t
+	desc = north_atlantic.0126.desc
+	theme = death
+	override_background = { event_background = RICE_background_north_atlantic_disko_bay }
+
+	immediate = {
+		change_global_variable = {
+			name = RICE_greenland_resilience
+			subtract = 1
+		}
+		random_list = {
+			10 = {
+				add_gold = { 0 25 }
+			}
+			10 = {
+				add_prestige = 25
+			}
+		}
+		character:RICE_greenlandic_deity_001 = {
+			culture = {
+				save_scope_as = greenlandic
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.0126.a
+		custom_tooltip = north_atlantic.0126.a.tooltip
+	}
+
+	after = {	
+		hidden_effect = {
+			scope:native_leader = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}	
+		random_owned_story = {
+			limit = {
+				story_type = RICE_story_cycle_north_atlantic_nordsetur_hunt
+			}
+			end_story = yes
+		}
+	}
+
+}
+
+# Found remnants of another hunting party
+north_atlantic.0127 = {
+	type = character_event
+	title = north_atlantic.0127.t
+	desc = north_atlantic.0127.desc
+	theme = death
+	override_background = { event_background = RICE_background_north_atlantic_disko_bay }
+
+	immediate = {
+		if = {
+			limit = {
+				has_global_variable = RICE_greenland_inuit_are_here
+			}					
+			create_character = {
+				template = RICE_native_chief_template
+				save_scope_as = native_leader
+				culture = culture:inuit
+				faith = faith:inuit_pagan
+			}
+		}
+		else = {				
+			create_character = {
+				template = RICE_native_chief_template
+				save_scope_as = native_leader
+				culture = culture:dorset
+				faith = faith:inuit_pagan
+			}
+		}
+		change_global_variable = {
+			name = RICE_greenland_resilience
+			subtract = 1
+		}
+		random_list = {
+			10 = {
+				add_gold = { 0 25 }
+			}
+			10 = {
+				add_prestige = 25
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.0127.a
+		custom_tooltip = north_atlantic.0127.a.tooltip
+	}
+
+	after = {	
+		hidden_effect = {
+			scope:native_leader = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}	
+		random_owned_story = {
+			limit = {
+				story_type = RICE_story_cycle_north_atlantic_nordsetur_hunt
+			}
+			end_story = yes
+		}
 	}
 
 }
@@ -6369,11 +6631,7 @@ north_atlantic.0160 = {
 			save_scope_as = greenlandic_creator_deity
 		}		
 		scope:greenlandic_creator_deity = {
-			create_divergent_culture = yes
-			add_to_global_variable_list = {
-				name = RICE_greenlandic_creator_deity
-				target = this
-			}			
+			create_divergent_culture = yes		
 		}
 		scope:new_culture = {
 			random_list = {
@@ -6415,6 +6673,10 @@ north_atlantic.0160 = {
 			random = {
 				chance = 50
 				add_random_valid_tradition_replace_if_necessary = scope:greenlandic_creator_deity
+			}
+			# For future reference
+			character:RICE_greenlandic_deity_001 = {
+				set_culture = scope:new_culture
 			}
 		}
 		trigger_event = north_atlantic.0161
