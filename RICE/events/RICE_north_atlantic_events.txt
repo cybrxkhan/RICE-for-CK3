@@ -5112,7 +5112,7 @@ north_atlantic.0101 = {
 		}
 		random_owned_story = {
 			limit = {
-				story_type = RICE_story_cycle_north_atlantic_expedition
+				story_type = RICE_story_cycle_north_atlantic_support_greenland
 			}
 			end_story = yes
 		}
@@ -5340,6 +5340,360 @@ north_atlantic.0102 = {
 		random_owned_story = {
 			limit = {
 				story_type = RICE_story_cycle_north_atlantic_support_greenland
+			}
+			end_story = yes
+		}
+	}
+
+}
+
+
+
+
+
+######################################################################################
+# 
+# SUPPORT VINLAND
+# 
+# north_atlantic.0110-north_atlantic.0119
+# 
+######################################################################################
+
+
+# Aid sails off
+north_atlantic.0110 = {
+	type = character_event
+	title = north_atlantic.0110.t
+	desc = {
+		desc = north_atlantic.0110.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_vinland_aid = flag:supplies
+				}
+				desc = north_atlantic.0110.desc.supplies
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_vinland_aid = flag:settlers
+				}
+				desc = north_atlantic.0110.desc.settlers
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_vinland_aid = flag:temples
+				}
+				desc = north_atlantic.0110.desc.temples
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_vinland_aid = flag:base_camps
+				}
+				desc = north_atlantic.0110.desc.base_camps
+			}
+		}
+	}
+	theme = stewardship_domain_focus
+	override_background = { event_background = RICE_background_north_atlantic_port }
+
+	right_portrait = {
+		character = root
+		animation = war_defender
+	}
+
+	option = {
+		name = north_atlantic.0110.a
+		custom_tooltip = north_atlantic.0110.a.tooltip
+	}
+
+	after = {		
+		create_story = RICE_story_cycle_north_atlantic_support_vinland
+	}
+
+}
+
+
+
+
+# Aid arrives in Greenland safely
+north_atlantic.0111 = {
+	type = character_event
+	title = north_atlantic.0111.t
+	desc = {
+		desc = north_atlantic.0111.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_vinland_aid_type = flag:supplies
+				}
+				desc = north_atlantic.0111.desc.supplies
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_vinland_aid_type = flag:settlers
+				}
+				desc = north_atlantic.0111.desc.settlers
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_vinland_aid_type = flag:temples
+				}
+				desc = north_atlantic.0111.desc.temples
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_vinland_aid_type = flag:base_camps
+				}
+				desc = north_atlantic.0111.desc.base_camps
+			}
+		}
+	}
+	theme = RICE_theme_north_atlantic_vinland_outpost
+
+	right_portrait = root
+
+	immediate = {
+		random_owned_story = {
+			limit = { story_type = RICE_story_cycle_north_atlantic_support_vinland }
+			save_scope_as = story
+		}
+		change_global_variable = {
+			name = RICE_greenland_resilience
+			subtract = scope:story.var:RICE_support_resilience_decrease
+		}
+		change_global_variable = {
+			name = RICE_greenland_networks
+			subtract = scope:story.var:RICE_support_networks_decrease
+		}
+		change_global_variable = {
+			name = RICE_vinland_viability
+			add = scope:story.var:RICE_support_viability_increase
+		}
+		set_variable = {
+			name = RICE_resilience_resource_value_temp
+			value = scope:story.var:RICE_support_resilience_decrease
+		}
+		set_variable = {
+			name = RICE_networks_resource_value_temp
+			value = scope:story.var:RICE_support_networks_decrease
+		}
+		set_variable = {
+			name = RICE_viability_resource_value_temp
+			value = scope:story.var:RICE_support_viability_increase
+		}
+	}
+
+	option = {
+		name = north_atlantic.0111.a
+		custom_tooltip = north_atlantic.0111.tooltip.increase_viability
+		custom_tooltip = north_atlantic.0111.tooltip.decrease_resilience
+		custom_tooltip = north_atlantic.0111.tooltip.decrease_networks
+		if = {
+			limit = {
+				scope:story.var:RICE_vinland_aid_type = flag:supplies
+			}
+			add_piety = 50	
+			#exists = struggle	
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_vinland_supplies
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_vinland_aid_type = flag:settlers
+			}
+			add_prestige = 50	
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_vinland_settlers
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_vinland_aid_type = flag:base_camps
+			}
+			add_prestige = 100
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_vinland_base_camps
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_vinland_aid_type = flag:temples
+			}
+			add_piety = 100
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_vinland_temples
+					character = root
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = { has_variable = RICE_resilience_resource_value_temp }
+			remove_variable = RICE_resilience_resource_value_temp
+		}
+		if = {
+			limit = { has_variable = RICE_networks_resource_value_temp }
+			remove_variable = RICE_networks_resource_value_temp
+		}
+		if = {
+			limit = { has_variable = RICE_viability_resource_value_temp }
+			remove_variable = RICE_viability_resource_value_temp
+		}
+		random_owned_story = {
+			limit = {
+				story_type = RICE_story_cycle_north_atlantic_support_vinland
+			}
+			end_story = yes
+		}
+	}
+
+}
+
+
+
+# Aid fails to arrive in Greenland safely
+north_atlantic.0112 = {
+	type = character_event
+	title = north_atlantic.0112.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_vinland_aid_type = flag:supplies
+				}
+				desc = north_atlantic.0112.desc.supplies
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_vinland_aid_type = flag:settlers
+				}
+				desc = north_atlantic.0112.desc.settlers
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_vinland_aid_type = flag:temples
+				}
+				desc = north_atlantic.0112.desc.temples
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_vinland_aid_type = flag:base_camps
+				}
+				desc = north_atlantic.0112.desc.base_camps
+			}
+		}
+		desc = north_atlantic.0112.desc
+	}
+	theme = RICE_theme_north_atlantic_port
+
+	right_portrait = {
+		character = root
+		animation = stress
+	}
+
+	immediate = {
+
+		play_music_cue = mx_cue_stress  
+
+		random_owned_story = {
+			limit = { story_type = RICE_story_cycle_north_atlantic_support_vinland }
+			save_scope_as = story
+		}
+
+		change_global_variable = {
+			name = RICE_greenland_resilience
+			subtract = scope:story.var:RICE_support_resilience_decrease
+		}
+		change_global_variable = {
+			name = RICE_greenland_networks
+			subtract = scope:story.var:RICE_support_networks_decrease
+		}
+		set_variable = {
+			name = RICE_resilience_resource_value_temp
+			value = scope:story.var:RICE_support_resilience_decrease
+		}
+		set_variable = {
+			name = RICE_networks_resource_value_temp
+			value = scope:story.var:RICE_support_resilience_decrease
+		}
+
+	}
+
+	option = {
+		name = north_atlantic.0112.a
+		custom_tooltip = north_atlantic.0112.tooltip.decrease_resilience
+		custom_tooltip = north_atlantic.0112.tooltip.decrease_networks
+		if = {
+			limit = {
+				scope:story.var:RICE_vinland_aid_type = flag:supplies
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_fail_vinland_supplies
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_vinland_aid_type = flag:settlers
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_fail_vinland_settlers
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_vinland_aid_type = flag:base_camps
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_fail_vinland_base_camps
+					character = root
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:story.var:RICE_vinland_aid_type = flag:temples
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_support_fail_vinland_temples
+					character = root
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = { has_variable = RICE_resilience_resource_value_temp }
+			remove_variable = RICE_resilience_resource_value_temp
+		}
+		if = {
+			limit = { has_variable = RICE_networks_resource_value_temp }
+			remove_variable = RICE_networks_resource_value_temp
+		}
+		random_owned_story = {
+			limit = {
+				story_type = RICE_story_cycle_north_atlantic_support_vinland
 			}
 			end_story = yes
 		}

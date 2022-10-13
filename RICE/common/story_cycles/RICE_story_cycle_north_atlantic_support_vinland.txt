@@ -1,0 +1,307 @@
+﻿RICE_story_cycle_north_atlantic_support_vinland = {
+
+	on_setup = {
+
+		# Location
+		set_variable = {
+			name = RICE_vinland_aid_type
+			value = story_owner.var:RICE_vinland_aid
+		}
+		story_owner = {
+			remove_variable = RICE_vinland_aid
+		}
+
+	}
+
+	on_end = {
+
+	}
+
+	on_owner_death = {
+		if = {
+			limit = { exists = story_owner.player_heir }
+			make_story_owner = story_owner.player_heir
+		}
+		else = {
+			scope:story = { end_story = yes }
+		}
+	}
+
+
+	# The support fails to arrive
+	effect_group = {
+		days = { 20 40 } # { 365 1095 } # 1-3 years
+		chance = 100
+	
+		triggered_effect = {
+			trigger = {
+				NOT = { exists = var:RICE_support_success }
+				NOT = { exists = var:RICE_support_fail }
+			}
+			effect = {
+
+				random = {
+					chance = 20
+					set_variable = {
+						name = RICE_support_fail
+						value = yes
+					}
+	
+					# set_variable = {
+					# 	name = RICE_support_viability_increase
+					# 	value = {
+					# 		value = 1
+					# 		if = {
+					# 			limit = {
+					# 				OR = {
+					# 					var:RICE_vinland_aid_type = flag:settlers
+					# 					var:RICE_vinland_aid_type = flag:supplies
+					# 				}
+					# 			}
+					# 			add = {
+					# 				integer_range = {
+					# 					min = 0
+					# 					max = 1
+					# 				}
+					# 			}
+					# 		}
+					# 		else_if = {
+					# 			limit = {
+					# 				OR = {
+					# 					var:RICE_vinland_aid_type = flag:base_camps
+					# 					var:RICE_vinland_aid_type = flag:temples
+					# 				}
+					# 			}
+					# 			add = {
+					# 				integer_range = {
+					# 					min = 0
+					# 					max = 3
+					# 				}
+					# 			}
+					# 		}
+					# 	}
+					# }
+	
+					set_variable = {
+						name = RICE_support_resilience_decrease
+						value = {
+							value = 1
+							if = {
+								limit = {
+									OR = {
+										var:RICE_vinland_aid_type = flag:settlers
+										var:RICE_vinland_aid_type = flag:supplies
+									}
+								}
+								add = {
+									integer_range = {
+										min = 0
+										max = 9
+									}
+								}
+							}
+							else_if = {
+								limit = {
+									OR = {
+										var:RICE_vinland_aid_type = flag:base_camps
+										var:RICE_vinland_aid_type = flag:temples
+									}
+								}
+								add = {
+									integer_range = {
+										min = 0
+										max = 19
+									}
+								}
+							}
+						}
+					}
+	
+					set_variable = {
+						name = RICE_support_networks_decrease
+						value = {
+							value = 1
+							if = {
+								limit = {
+									OR = {
+										var:RICE_vinland_aid_type = flag:settlers
+										var:RICE_vinland_aid_type = flag:supplies
+									}
+								}
+								add = {
+									integer_range = {
+										min = 0
+										max = 9
+									}
+								}
+							}
+							else_if = {
+								limit = {
+									OR = {
+										var:RICE_vinland_aid_type = flag:base_camps
+										var:RICE_vinland_aid_type = flag:temples
+									}
+								}
+								add = {
+									integer_range = {
+										min = 0
+										max = 19
+									}
+								}
+							}
+						}
+					}
+	
+					story_owner = {
+						trigger_event = north_atlantic.0112 # The expedition fails
+					}
+				}
+
+			}
+		}
+	}
+
+	# The aid successfully arrives
+	effect_group = {
+		days = { 20 40 } # { 45 60 } # 1-3 years
+		chance = 100
+	
+		triggered_effect = {
+			trigger = {
+				NOT = { exists = var:RICE_support_success }
+			}
+			effect = {
+
+				set_variable = {
+					name = RICE_support_success
+					value = yes
+				}
+
+				set_variable = {
+					name = RICE_support_viability_increase
+					value = {
+						value = 1
+						if = {
+							limit = {
+								OR = {
+									var:RICE_vinland_aid_type = flag:settlers
+									var:RICE_vinland_aid_type = flag:supplies
+								}
+							}
+							add = {
+								integer_range = {
+									min = 0
+									max = 1
+								}
+							}
+						}
+						else_if = {
+							limit = {
+								OR = {
+									var:RICE_vinland_aid_type = flag:base_camps
+									var:RICE_vinland_aid_type = flag:temples
+								}
+							}
+							add = {
+								integer_range = {
+									min = 0
+									max = 3
+								}
+							}
+						}
+					}
+				}
+
+				set_variable = {
+					name = RICE_support_resilience_decrease
+					value = {
+						value = 1
+						if = {
+							limit = {
+								OR = {
+									var:RICE_vinland_aid_type = flag:settlers
+									var:RICE_vinland_aid_type = flag:supplies
+								}
+							}
+							add = {
+								integer_range = {
+									min = 0
+									max = 9
+								}
+							}
+						}
+						else_if = {
+							limit = {
+								OR = {
+									var:RICE_vinland_aid_type = flag:base_camps
+									var:RICE_vinland_aid_type = flag:temples
+								}
+							}
+							add = {
+								integer_range = {
+									min = 0
+									max = 19
+								}
+							}
+						}
+					}
+				}
+
+				set_variable = {
+					name = RICE_support_networks_decrease
+					value = {
+						value = 1
+						if = {
+							limit = {
+								OR = {
+									var:RICE_vinland_aid_type = flag:settlers
+									var:RICE_vinland_aid_type = flag:supplies
+								}
+							}
+							add = {
+								integer_range = {
+									min = 0
+									max = 9
+								}
+							}
+						}
+						else_if = {
+							limit = {
+								OR = {
+									var:RICE_vinland_aid_type = flag:base_camps
+									var:RICE_vinland_aid_type = flag:temples
+								}
+							}
+							add = {
+								integer_range = {
+									min = 0
+									max = 19
+								}
+							}
+						}
+					}
+				}
+
+				story_owner = {
+					trigger_event = north_atlantic.0111 # Supplies arrive safe and sound
+				}
+
+			}
+		}
+	}
+
+	# 100 days self destruct in case it drags on for some reason
+	effect_group = {
+		days = 100
+		chance = 100
+
+		triggered_effect = {
+			trigger = { always = yes }
+			effect = {
+				end_story = yes
+			}
+		}
+	}	
+
+	
+}
