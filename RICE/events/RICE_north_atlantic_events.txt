@@ -241,56 +241,49 @@ north_atlantic.0004 = {
 
 }
 
-# The Arrival of the Inuit
+# Year change catalyst
 north_atlantic.0005 = {
-	type = character_event
-	title = north_atlantic.0005.t
-	desc = north_atlantic.0005.desc
-	theme = RICE_theme_north_atlantic_greenland
-
-	trigger = {
-		NOT = { has_global_variable = RICE_greenland_inuit_are_here }
-	}
+	hidden = yes
+	type = empty
+	scope = struggle
 
 	immediate = {
-		# Just in case it doesn't work for some reason
+		# Activate the catalyst
+		# If *both* Socio-Economic and Environmental Pressures are ongoing
 		if = {
 			limit = {
-				struggle:RICE_greenland_struggle = { is_culture_involved_in_struggle = scope:inuit }
+				has_global_variable = RICE_greenland_environmental_change_warning
+				has_global_variable = RICE_greenland_socio_economic_change_warning
 			}
-			show_as_tooltip = {
-				struggle:RICE_greenland_struggle = { set_culture_as_involved = culture:inuit }				
-			}
+			activate_struggle_catalyst = catalyst_RICE_greenland_passing_of_time_4
 		}
+		# Environmental pressures but not socio-economic pressures
+		else_if = {
+			limit = {
+				has_global_variable = RICE_greenland_environmental_change_warning
+				NOT = { has_global_variable = RICE_greenland_socio_economic_change_warning }
+			}
+			activate_struggle_catalyst = catalyst_RICE_greenland_passing_of_time_3
+		}
+		# Socio-economic pressures are active but not environmental pressures
+		else_if = {
+			limit = {
+				has_global_variable = RICE_greenland_socio_economic_change_warning
+				NOT = { has_global_variable = RICE_greenland_environmental_change_warning }
+			}
+			activate_struggle_catalyst = catalyst_RICE_greenland_passing_of_time_2
+		}
+		# Normal year before the pressures start
 		else = {
-			struggle:RICE_greenland_struggle = { set_culture_as_involved = culture:inuit }
+			activate_struggle_catalyst = catalyst_RICE_greenland_passing_of_time_1
 		}
-		# Save scopes
-		culture:inuit = {
-			save_scope_as = inuit
-		}
-		culture:dorset = {
-			save_scope_as = dorset
-		}
-		title:d_iceland = {
-			save_scope_as = iceland
-		}
-		set_global_variable = {
-			name = RICE_greenland_inuit_are_here
-			value = yes
+		# Then queue the event up against for a year hence.
+		trigger_event = {
+			id = north_atlantic.0005
+			years = 1
 		}
 	}
-
-	option = {
-		name = north_atlantic.0005.a
-		custom_tooltip = north_atlantic.0005.a.tooltip
-		struggle:RICE_greenland_struggle = {
-			activate_struggle_catalyst = catalyst_RICE_inuit_arrival
-		}
-	}
-
 }
-
 
 # Environmental Climate Changes Pre-Warning
 north_atlantic.0006 = {
@@ -303,6 +296,17 @@ north_atlantic.0006 = {
 		set_global_variable = {
 			name = RICE_greenland_environmental_change_warning
 			value = yes
+		}
+		if = {
+			limit = {
+				NOT = { has_global_variable = RICE_greenland_socio_economic_change_warning }
+			}
+			# Timer so they don't both happen too close to one another
+			set_global_variable = {
+				name = RICE_greenland_socio_economic_pressures_timer
+				value = yes
+				days = 5475 # 15 Years
+			}
 		}
 	}
 
@@ -362,6 +366,17 @@ north_atlantic.0008 = {
 		set_global_variable = {
 			name = RICE_greenland_socio_economic_change_warning
 			value = yes
+		}
+		if = {
+			limit = {
+				NOT = { has_global_variable = RICE_greenland_environmental_change_warning }
+			}
+			# Timer so they don't both happen too close to one another
+			set_global_variable = {
+				name = RICE_greenland_environmental_pressures_timer
+				value = yes
+				days = 5475 # 15 Years
+			}
 		}
 	}
 
@@ -1571,6 +1586,57 @@ north_atlantic.0013 = {
 
 }
 
+
+
+# The Arrival of the Inuit
+north_atlantic.0014 = {
+	type = character_event
+	title = north_atlantic.0014.t
+	desc = north_atlantic.0014.desc
+	theme = RICE_theme_north_atlantic_greenland
+
+	trigger = {
+		NOT = { has_global_variable = RICE_greenland_inuit_are_here }
+	}
+
+	immediate = {
+		# Just in case it doesn't work for some reason
+		if = {
+			limit = {
+				struggle:RICE_greenland_struggle = { is_culture_involved_in_struggle = scope:inuit }
+			}
+			show_as_tooltip = {
+				struggle:RICE_greenland_struggle = { set_culture_as_involved = culture:inuit }				
+			}
+		}
+		else = {
+			struggle:RICE_greenland_struggle = { set_culture_as_involved = culture:inuit }
+		}
+		# Save scopes
+		culture:inuit = {
+			save_scope_as = inuit
+		}
+		culture:dorset = {
+			save_scope_as = dorset
+		}
+		title:d_iceland = {
+			save_scope_as = iceland
+		}
+		set_global_variable = {
+			name = RICE_greenland_inuit_are_here
+			value = yes
+		}
+	}
+
+	option = {
+		name = north_atlantic.0014.a
+		custom_tooltip = north_atlantic.0014.a.tooltip
+		struggle:RICE_greenland_struggle = {
+			activate_struggle_catalyst = catalyst_RICE_inuit_arrival
+		}
+	}
+
+}
 
 # Test
 north_atlantic.9996 = {
@@ -5483,7 +5549,7 @@ north_atlantic.0121 = {
 				}
 			}
 			# Caught in a storm but saved by locals
-			1000 = {
+			10 = {
 				modifier = {
 					add = 5
 					has_global_variable = RICE_greenland_environmental_change_warning
@@ -5659,13 +5725,14 @@ north_atlantic.0122 = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					var:RICE_hunt_random_event = flag:poor
+					NOT = { has_character_flag = RICE_north_atlantic_nordsetur_hunt_no_extras }
 				}
-				desc = north_atlantic.0122.desc.poor
+				desc = north_atlantic.0122.desc.extras
 			}
+			desc = north_atlantic.0122.desc.no_extras
 		}
 	}
-	theme = death
+	theme = hunt_activity
 	override_background = { event_background = RICE_background_north_atlantic_disko_bay }
 	override_icon = { reference = "gfx/interface/icons/event_types/type_hunt.dds" }
 
@@ -5706,22 +5773,35 @@ north_atlantic.0122 = {
 			10 = {
 				set_variable = {
 					name = RICE_hunt_result
-					value = flag:Good
+					value = flag:good
 				}
 			}
 			# Excellent
 			10 = {
+				# Phase modifiers
 				set_variable = {
 					name = RICE_hunt_result
 					value = flag:excellent
 				}
 			}
 		}
+		# Potential extras
+		random = {
+			chance = 1
+			add_character_flag = RICE_north_atlantic_nordsetur_hunt_no_extras
+		}
 	}
 
 	option = {
-		name = north_atlantic.0121.a
-		custom_tooltip = north_atlantic.0121.tooltip.hunt_ends
+		name = {
+			trigger = { has_character_flag = RICE_north_atlantic_nordsetur_hunt_no_extras }
+			text = north_atlantic.0122.a
+		}
+		name = {
+			trigger = { NOT = { has_character_flag = RICE_north_atlantic_nordsetur_hunt_no_extras } }
+			text = north_atlantic.0122.a.extra
+		}
+		custom_tooltip = north_atlantic.0122.tooltip.hunt_ends
 		if = {
 			limit = {
 				scope:story.var:RICE_walrus_hunt_resilience_decrease > 0
@@ -5775,46 +5855,51 @@ north_atlantic.0122 = {
 			limit = { has_variable = RICE_resilience_value_temp }
 			remove_variable = RICE_resilience_value_temp
 		}
-
-		# Potential random extras
-		random_list = {
-			130 = {
-				random_owned_story = {
-					limit = {
-						story_type = RICE_story_cycle_north_atlantic_nordsetur_hunt
-					}
-					end_story = yes
-				}				
+		if = {
+			limit = {
+				has_character_flag = RICE_north_atlantic_nordsetur_hunt_no_extras
 			}
-			# Native encounter - peaceful
-			10 = {
-				trigger_event = north_atlantic.0124
+			random_owned_story = {
+				limit = {
+					story_type = RICE_story_cycle_north_atlantic_nordsetur_hunt
+				}
+				end_story = yes
 			}
-			# Native encounter - hostile
-			10 = {
-				trigger_event = north_atlantic.0125
-			}
-			# Found remnants of another hunting party
-			10 = {
-				trigger_event = north_atlantic.0126
-			}
-			# Narwhal
-			10 = {
-				trigger_event = north_atlantic.0127
-			}
-			# Rescued another hunting party
-			10 = {
-				trigger_event = north_atlantic.0128
-			}
-			# Polar Bear hunted
-			10 = {
-				trigger_event = north_atlantic.0129
-			}
-			# Native encounter - witch?
-			#10 = {
-			#	trigger_event = north_atlantic.0126
-			#}
 		}
+		else = {
+			# Potential random extras
+			random_list = {
+				# Native encounter - peaceful
+				10 = {
+					trigger_event = north_atlantic.0124
+				}
+				# Native encounter - hostile
+				10 = {
+					trigger_event = north_atlantic.0125
+				}
+				# Found remnants of another hunting party
+				10 = {
+					trigger_event = north_atlantic.0126
+				}
+				# Rescued another hunting party
+				10 = {
+					trigger_event = north_atlantic.0127
+				}
+				# Narwhal tusk
+				1000 = {
+					trigger_event = north_atlantic.0128
+				}
+				# Polar Bear hunted
+				10 = {
+					trigger_event = north_atlantic.0129
+				}
+				# Native encounter - witch?
+				#10 = {
+				#	trigger_event = north_atlantic.0126
+				#}
+			}
+		}
+
 
 	}
 
@@ -5899,13 +5984,13 @@ north_atlantic.0124 = {
 			10 = {
 				add_gold = { 0 50 }
 			}
-			10 = {
+			100 = { #10
 				add_character_modifier = {
 					modifier = RICE_north_atlantic_nordsetur_trade_connections
 					years = 10
 				}
 			}
-			10 = {
+			100 = { #10
 				RICE_create_arctic_artifact_effect = yes
 			}
 		}
@@ -6042,13 +6127,6 @@ north_atlantic.0126 = {
 	}
 
 	after = {	
-		hidden_effect = {
-			scope:native_leader = {
-				death = {
-					death_reason = death_disappearance
-				}
-			}
-		}	
 		random_owned_story = {
 			limit = {
 				story_type = RICE_story_cycle_north_atlantic_nordsetur_hunt
@@ -6059,61 +6137,267 @@ north_atlantic.0126 = {
 
 }
 
-# Found remnants of another hunting party
+# Rescued another hunting party
 north_atlantic.0127 = {
 	type = character_event
 	title = north_atlantic.0127.t
 	desc = north_atlantic.0127.desc
-	theme = death
+	theme = friendly
 	override_background = { event_background = RICE_background_north_atlantic_disko_bay }
 
+	right_portrait = scope:hunter
+
 	immediate = {
-		if = {
-			limit = {
-				has_global_variable = RICE_greenland_inuit_are_here
-			}					
-			create_character = {
-				template = RICE_native_chief_template
-				save_scope_as = native_leader
-				culture = culture:inuit
-				faith = faith:inuit_pagan
+		character:RICE_greenlandic_deity_001 = {
+			culture = {
+				save_scope_as = greenlandic
 			}
 		}
-		else = {				
-			create_character = {
-				template = RICE_native_chief_template
-				save_scope_as = native_leader
-				culture = culture:dorset
-				faith = faith:inuit_pagan
-			}
-		}
-		change_global_variable = {
-			name = RICE_greenland_resilience
-			subtract = 1
+		create_character = {
+			template = RICE_greenland_hunter_template
+			save_scope_as = hunter
 		}
 		random_list = {
 			10 = {
-				add_gold = { 0 25 }
+				add_prestige = 25
 			}
 			10 = {
-				add_prestige = 25
+				add_prestige = 50
+			}
+			10 = {
+				add_piety = 25
+			}
+			10 = {
+				add_piety = 50
 			}
 		}
 	}
 
+	# Try to convince them to join your court
 	option = {
 		name = north_atlantic.0127.a
-		custom_tooltip = north_atlantic.0127.a.tooltip
+		add_prestige = -100
+		duel = {
+			skill = diplomacy
+			target = scope:hunter
+			30 = {
+				desc = north_atlantic.0127.a.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+				}
+				modifier = {
+					scope:hunter = {
+						opinion = {
+							target = root
+							value >= 40
+						}
+					}
+					factor = 2
+				}
+				modifier = {
+					scope:hunter = {
+						opinion = {
+							target = root
+							value >= 80
+						}
+					}
+					factor = 2
+				}
+				send_interface_toast = {
+					title = north_atlantic.0127.a.success
+					left_icon = scope:hunter
+					add_courtier = scope:hunter
+				}
+			}
+			70 = {
+				desc = north_atlantic.0127.a.failure
+				send_interface_toast = {
+					title = north_atlantic.0127.a.failure
+					left_icon = scope:hunter
+					custom_tooltip = north_atlantic.0127.a.failure.tooltip
+					hidden_effect = {
+						scope:hunter = {
+							death = {
+								death_reason = death_disappearance
+							}
+						}
+					}
+				}
+			}
+		}
 	}
-
-	after = {	
+	# Ok
+	option = {
+		name = north_atlantic.0127.b
 		hidden_effect = {
-			scope:native_leader = {
+			scope:hunter = {
 				death = {
 					death_reason = death_disappearance
 				}
 			}
 		}	
+	}
+
+	after = {	
+		random_owned_story = {
+			limit = {
+				story_type = RICE_story_cycle_north_atlantic_nordsetur_hunt
+			}
+			end_story = yes
+		}
+	}
+
+}
+
+# Narwhal tusk
+north_atlantic.0128 = {
+	type = character_event
+	title = north_atlantic.0128.t
+	desc = north_atlantic.0128.desc
+	theme = hunt_activity
+	override_background = { event_background = RICE_background_north_atlantic_disko_bay }
+
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	artifact = { # To display the artifact in the event-window
+		target = scope:nordsetur_artifact
+		position = lower_center_portrait
+	}
+
+	immediate = {
+		RICE_create_nordsetur_narwhal_artifact_effect = yes
+	}
+
+	# Keep it
+	option = {
+		name = north_atlantic.0128.a
+		show_as_tooltip = {
+			scope:nordsetur_artifact = {
+				set_owner = {
+					target = root
+				}
+			}
+		}
+	}
+
+	# Sell it
+	option = {
+		name = north_atlantic.0128.b
+		if = {
+			limit = {
+				struggle:RICE_greenland_struggle = {
+					OR = {
+						is_struggle_phase = struggle_RICE_greenland_phase_settlement
+						is_struggle_phase = struggle_RICE_greenland_phase_integration
+					}
+				}				
+			}
+			add_gold = { 25 100 }
+		}
+		else_if = {
+			limit = {
+				struggle:RICE_greenland_struggle = {
+					is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+				}				
+			}	
+			add_gold = { 25 60 }		
+		}
+		else_if = {
+			limit = {
+				struggle:RICE_greenland_struggle = {
+					is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+				}				
+			}	
+			add_gold = { 10 40 }		
+		}
+		hidden_effect = {
+			destroy_artifact = scope:VIET_clutter_artifact
+		}
+	}
+
+	after = {	
+		random_owned_story = {
+			limit = {
+				story_type = RICE_story_cycle_north_atlantic_nordsetur_hunt
+			}
+			end_story = yes
+		}
+	}
+
+}
+
+# Polar bear hunted
+north_atlantic.0129 = {
+	type = character_event
+	title = north_atlantic.0129.t
+	desc = north_atlantic.0129.desc
+	theme = hunt_activity
+	override_background = { event_background = RICE_background_north_atlantic_disko_bay }
+
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	artifact = { # To display the artifact in the event-window
+		target = scope:nordsetur_artifact
+		position = lower_center_portrait
+	}
+
+	immediate = {
+		RICE_create_nordsetur_polar_bear_artifact_effect = yes
+	}
+
+	# Keep it
+	option = {
+		name = north_atlantic.0129.a
+		show_as_tooltip = {
+			scope:nordsetur_artifact = {
+				set_owner = {
+					target = root
+				}
+			}
+		}
+	}
+
+	# Sell it
+	option = {
+		name = north_atlantic.0129.b
+		if = {
+			limit = {
+				struggle:RICE_greenland_struggle = {
+					OR = {
+						is_struggle_phase = struggle_RICE_greenland_phase_settlement
+						is_struggle_phase = struggle_RICE_greenland_phase_integration
+					}
+				}				
+			}
+			add_gold = { 25 100 }
+		}
+		else_if = {
+			limit = {
+				struggle:RICE_greenland_struggle = {
+					is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+				}				
+			}	
+			add_gold = { 25 60 }		
+		}
+		else_if = {
+			limit = {
+				struggle:RICE_greenland_struggle = {
+					is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+				}				
+			}	
+			add_gold = { 10 40 }		
+		}
+		hidden_effect = {
+			destroy_artifact = scope:VIET_clutter_artifact
+		}
+	}
+
+	after = {	
 		random_owned_story = {
 			limit = {
 				story_type = RICE_story_cycle_north_atlantic_nordsetur_hunt
