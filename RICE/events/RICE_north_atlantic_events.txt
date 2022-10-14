@@ -1638,6 +1638,68 @@ north_atlantic.0014 = {
 
 }
 
+# Early Vinland colony fails
+north_atlantic.0015 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		# Reset the number of outposts in Vinland
+		set_global_variable = {
+			name = RICE_north_atlantic_vinland_outposts
+			value = 0
+		}
+		every_ruler = {
+			limit = {
+				exists = dynasty
+				is_dynast = yes
+				dynasty = {
+					has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+					#has_dynasty_modifier = RICE_north_atlantic_vinland_settlement	
+				}
+			}
+			dynasty = {
+				remove_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+			}
+			every_dynasty_member = {
+				limit = {
+					is_ai = no
+				}
+				trigger_event = north_atlantic.0016
+			}
+		}		
+	}
+}
+
+
+# Vinland fails
+north_atlantic.0016 = {
+	type = character_event
+	title = north_atlantic.0016.t
+	desc = north_atlantic.0016.desc
+	theme = RICE_theme_north_atlantic_vinland_outpost
+
+	right_portrait = {
+		character = root
+		animation = sadness
+	}
+
+	immediate = {
+		custom_tooltip = north_atlantic.0016.tooltip
+		show_as_tooltip = {
+			dynasty = {
+				remove_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.0016.a
+	}
+
+}
+
+
 # Test
 north_atlantic.9996 = {
 	type = character_event
@@ -5365,7 +5427,7 @@ north_atlantic.0110 = {
 	type = character_event
 	title = north_atlantic.0110.t
 	desc = {
-		desc = north_atlantic.0110.desc
+		desc = north_atlantic.0110.desc.intro
 		first_valid = {
 			triggered_desc = {
 				trigger = {
@@ -5392,6 +5454,7 @@ north_atlantic.0110 = {
 				desc = north_atlantic.0110.desc.base_camps
 			}
 		}
+		desc = north_atlantic.0110.desc
 	}
 	theme = stewardship_domain_focus
 	override_background = { event_background = RICE_background_north_atlantic_port }
@@ -5415,12 +5478,12 @@ north_atlantic.0110 = {
 
 
 
-# Aid arrives in Greenland safely
+# Aid arrives in Vinland safely
 north_atlantic.0111 = {
 	type = character_event
 	title = north_atlantic.0111.t
 	desc = {
-		desc = north_atlantic.0111.desc
+		desc = north_atlantic.0111.desc.intro
 		first_valid = {
 			triggered_desc = {
 				trigger = {
@@ -5447,6 +5510,7 @@ north_atlantic.0111 = {
 				desc = north_atlantic.0111.desc.base_camps
 			}
 		}
+		desc = north_atlantic.0112.desc
 	}
 	theme = RICE_theme_north_atlantic_vinland_outpost
 
@@ -5564,7 +5628,7 @@ north_atlantic.0111 = {
 
 
 
-# Aid fails to arrive in Greenland safely
+# Aid fails to arrive in Vinland safely
 north_atlantic.0112 = {
 	type = character_event
 	title = north_atlantic.0112.t
