@@ -1,6 +1,4 @@
 ﻿
-RICE_very_major_struggle_catalyst_gain = 15
-RICE_historically_significant_struggle_catalyst_gain = 100
 
 
 # Since the vanilla activity costs are unimmersively inflated at higher levels
@@ -231,6 +229,51 @@ RICE_vinland_auto_fail_chance_value = {
 	}
 	min = 10
 	max = 80
+}
+
+RICE_greenland_resilience_fail_value = {
+	value = 100
+	if = {
+		limit = { exists = global_var:RICE_greenland_resilience }
+		subtract = global_var:RICE_greenland_resilience
+	}
+}
+
+RICE_greenland_networks_fail_value = {
+	value = 100
+	if = {
+		limit = { exists = global_var:RICE_greenland_networks }
+		subtract = global_var:RICE_greenland_networks
+	}
+}
+
+
+RICE_greenland_auto_fail_chance_value = {
+	value = 1
+	if = {
+		limit = { exists = global_var:RICE_greenland_resilience }
+		add = {
+			value = RICE_greenland_resilience_fail_value
+			multiply = 0.1
+		}
+	}
+	if = {
+		limit = { exists = global_var:RICE_greenland_networks }
+		add = {
+			value = RICE_greenland_networks_fail_value
+			multiply = 0.1
+		}
+	}
+	if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+			}				
+		}
+		add = 10
+	}
+	max = 40
 }
 
 
