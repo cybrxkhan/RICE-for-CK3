@@ -1638,9 +1638,9 @@ north_atlantic.0014 = {
 
 }
 
-# Early Vinland colony fails
+# Vinland outposts fail
 north_atlantic.0015 = {
-	type = character_event
+	type = empty
 	hidden = yes
 
 	immediate = {
@@ -1648,6 +1648,64 @@ north_atlantic.0015 = {
 		set_global_variable = {
 			name = RICE_north_atlantic_vinland_outposts
 			value = 0
+		}
+		# Reduce Viability
+		random_list = {
+			10 = {
+				change_global_variable = {
+					name = RICE_vinland_viability
+					subtract = 8
+				}
+				set_global_variable = {
+					name = RICE_viability_vinland_fail_value_temp
+					value = 8
+					days = 1
+				}
+			}
+			10 = {
+				change_global_variable = {
+					name = RICE_vinland_viability
+					subtract = 10
+				}
+				set_global_variable = {
+					name = RICE_viability_vinland_fail_value_temp
+					value = 10
+					days = 1
+				}
+			}
+			10 = {
+				change_global_variable = {
+					name = RICE_vinland_viability
+					subtract = 12
+				}
+				set_global_variable = {
+					name = RICE_viability_vinland_fail_value_temp
+					value = 12
+					days = 1
+				}
+			}
+			10 = {
+				change_global_variable = {
+					name = RICE_vinland_viability
+					subtract = 16
+				}
+				set_global_variable = {
+					name = RICE_viability_vinland_fail_value_temp
+					value = 16
+					days = 1
+				}
+			}
+			10 = {
+				change_global_variable = {
+					name = RICE_vinland_viability
+					subtract = 20
+				}
+				set_global_variable = {
+					name = RICE_viability_vinland_fail_value_temp
+					value = 20
+					days = 1
+				}
+			}
 		}
 		every_ruler = {
 			limit = {
@@ -1661,12 +1719,43 @@ north_atlantic.0015 = {
 			dynasty = {
 				remove_dynasty_modifier = RICE_north_atlantic_vinland_outpost
 			}
-			every_dynasty_member = {
+			if = {
 				limit = {
 					is_ai = no
 				}
 				trigger_event = north_atlantic.0016
 			}
+			# This is removed normally per above
+			else_if = {
+				limit = {
+					any_owned_story = { story_type = RICE_story_cycle_north_atlantic_support_vinland }
+				}
+				random_owned_story = {
+					limit = {
+						story_type = RICE_story_cycle_north_atlantic_support_vinland
+					}
+					end_story = yes
+				}
+			}
+			# every_dynasty_member = {
+			# 	limit = {
+			# 		is_ai = no
+			# 	}
+			# 	trigger_event = north_atlantic.0016
+			# }
+			# # For AI dynasty members currently supporting Vinland - if they are not AI, the event triggered for non-AI players takes care of it
+			# every_dynasty_member = {
+			# 	limit = {
+			# 		is_ai = yes
+			# 		any_owned_story = { story_type = RICE_story_cycle_north_atlantic_support_vinland }
+			# 	}
+			# 	random_owned_story = {
+			# 		limit = {
+			# 			story_type = RICE_story_cycle_north_atlantic_support_vinland
+			# 		}
+			# 		end_story = yes
+			# 	}
+			# }
 		}		
 	}
 }
@@ -1676,7 +1765,18 @@ north_atlantic.0015 = {
 north_atlantic.0016 = {
 	type = character_event
 	title = north_atlantic.0016.t
-	desc = north_atlantic.0016.desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					any_owned_story = { story_type = RICE_story_cycle_north_atlantic_support_vinland }
+				}
+				desc = north_atlantic.0016.desc.intro.support
+			}
+			desc = north_atlantic.0016.desc.intro
+		}
+		desc = north_atlantic.0016.desc
+	}
 	theme = RICE_theme_north_atlantic_vinland_outpost
 
 	right_portrait = {
@@ -1690,11 +1790,33 @@ north_atlantic.0016 = {
 			dynasty = {
 				remove_dynasty_modifier = RICE_north_atlantic_vinland_outpost
 			}
+		}		
+		if = {
+			limit = {
+				# If you're in the middle of sending support to Vinland, the ships return home
+				any_owned_story = { story_type = RICE_story_cycle_north_atlantic_support_vinland }
+			}
+			custom_tooltip = north_atlantic.0016.support.tooltip
 		}
 	}
 
 	option = {
 		name = north_atlantic.0016.a
+	}
+
+	after = {		
+		if = {
+			limit = {
+				# If you're in the middle of sending support to Vinland, the ships return home
+				any_owned_story = { story_type = RICE_story_cycle_north_atlantic_support_vinland }
+			}
+			random_owned_story = {
+				limit = {
+					story_type = RICE_story_cycle_north_atlantic_support_vinland
+				}
+				end_story = yes
+			}
+		}
 	}
 
 }
