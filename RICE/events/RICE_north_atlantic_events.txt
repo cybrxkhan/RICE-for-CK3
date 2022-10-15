@@ -7465,22 +7465,6 @@ north_atlantic.0160 = {
 	hidden = yes
 
 	immediate = {
-		# random_courtier = {
-		# 	limit = {
-		# 		is_available_ai_adult = yes
-		# 	}
-		# 	save_scope_as = erik
-		# }
-		# scope:erik = {
-		# 	make_unprunable = yes
-		# 	add_to_global_variable_list = {
-		# 		name = RICE_north_atlantic_erik_the_red
-		# 		target = this
-		# 	}
-		# 	add_prestige_level = 1
-		# 	add_prestige = 1000
-		# 	add_trait = RICE_explorer
-		# }
 		set_global_variable = {
 			name = RICE_north_atlantic_greenland_struggle_started
 			value = yes
@@ -7699,7 +7683,7 @@ north_atlantic.0161 = {
 		}
 		scope:new_culture = {
 			#reset_culture_creation_date = yes
-			set_language_from = root.culturenorth_atlantic.0160
+			set_language_from = root.culture
 			#set_name_list = root.culture
 			custom_tooltip = RICE_set_heritage_greenlandic_tooltip
 			#custom_description = {
@@ -7722,12 +7706,12 @@ north_atlantic.0161 = {
 			}
 		}
 
-	# 	random_owned_story = {
-	# 		limit = {
-	# 			story_type = RICE_story_cycle_north_atlantic_expedition
-	# 		}
-	# 		end_story = yes
-	# 	}
+		random_owned_story = {
+			limit = {
+				story_type = RICE_story_cycle_north_atlantic_grand_expedition
+			}
+			end_story = yes
+		}
 
 	}
 
@@ -8073,6 +8057,10 @@ north_atlantic.0162 = {
 				years = 4 # Little extra buffer just in case
 			}
 			save_scope_as = leif_temp
+			pay_short_term_gold = {
+				target = scope:local
+				gold = 50
+			}
 		}
 		set_variable = { # For use in the Story
 			name = RICE_expedition_leader_choice
@@ -8081,70 +8069,12 @@ north_atlantic.0162 = {
 	}
 
 	after = {
-		# every_ruler = {
-		# 	limit = {
-		# 		is_ai = no
-		# 		any_held_title = {
-		# 			tier = tier_county
-		# 			any_county_province = {
-		# 				geographical_region = world_europe
-		# 			}
-		# 		}
-		# 	}
-		# 	trigger_event = north_atlantic.0167
-		# }
 		create_story = RICE_story_cycle_north_atlantic_grand_expedition
 	}
 
 }
 
 
-# Accept the offer
-# north_atlantic.0163 = {
-# 	type = letter_event
-# 	opening = {
-# 		desc = north_atlantic.0163.opening
-# 	}
-# 	desc = north_atlantic.0163.desc
-# 	sender = scope:recipient
-	
-# 	immediate = {
-# 		scope:recipient = {
-# 			add_prestige = 100
-# 		}
-# 	}
-
-# 	option = { # Great
-# 		name = north_atlantic.0163.a
-# 		custom_tooltip = north_atlantic.0163.tooltip
-# 	}
-# }
-
-
-# # Refuse the offer
-# north_atlantic.0164 = {
-# 	type = letter_event
-# 	opening = {
-# 		desc = north_atlantic.0164.opening
-# 	}
-# 	desc = north_atlantic.0164.desc
-# 	sender = scope:recipient
-	
-# 	immediate = {
-# 		add_prestige = -50
-# 		scope:recipient = {
-# 			reverse_add_opinion = {
-# 				target = scope:actor
-# 				modifier = rejected_opinion
-# 			}
-# 		}
-# 	}
-
-# 	option = { # Oh no
-# 		name = north_atlantic.0164.a
-# 		custom_tooltip = north_atlantic.0164.tooltip
-# 	}
-# }
 
 
 
@@ -8242,6 +8172,7 @@ north_atlantic.0165 = {
 		show_as_tooltip = {
 			scope:leader = {
 				add_trait = RICE_exploring_western_seas
+				custom_tooltip = north_atlantic.0165.tooltip
 			}
 		}
 		scope:province = {	
@@ -8269,7 +8200,7 @@ north_atlantic.0166 = {
 	type = character_event
 	title = north_atlantic.0166.t
 	desc = {
-		desc = north_atlantic.0166.desc,intro
+		desc = north_atlantic.0166.desc.intro
 		first_valid = {
 			triggered_desc = {
 				trigger = {
@@ -8295,6 +8226,10 @@ north_atlantic.0166 = {
 	}
 
 	immediate = {
+		set_global_variable = {
+			name = RICE_north_atlantic_vinland_discovered
+			value = yes
+		}
 		add_prestige = 300
 		add_to_global_variable_list = {
 			name = RICE_north_atlantic_leif_erikson_equivalent
@@ -8341,6 +8276,43 @@ north_atlantic.0166 = {
 				}
 			}
 		}
+		if = {
+			limit = {
+				OR = {
+					any_character_struggle = {
+						is_struggle_type = RICE_greenland_struggle
+						OR = {
+							is_struggle_phase = struggle_RICE_greenland_phase_settlement
+							is_struggle_phase = struggle_RICE_greenland_phase_integration
+						}
+					}					
+					has_global_variable = RICE_greenland_ending_integration
+					has_global_variable = RICE_greenland_ending_indigenous
+				}
+			}
+			set_global_variable = {
+				name = RICE_vinland_viability
+				value = 20
+			}
+		}
+		else_if = {
+			limit = {
+				any_character_struggle = {
+					is_struggle_type = RICE_greenland_struggle
+					is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+				}	
+			}
+			set_global_variable = {
+				name = RICE_vinland_viability
+				value = 10
+			}
+		}
+		else = {			
+			set_global_variable = {
+				name = RICE_vinland_viability
+				value = 0
+			}
+		}
 	}
 
 	option = {
@@ -8355,6 +8327,25 @@ north_atlantic.0166 = {
 	}
 
 	after = {
+		every_ruler = {
+			limit = {
+				is_ai = no
+				OR = {
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							OR = {
+								geographical_region = world_europe_west_britannia
+								geographical_region = world_europe_west_germania
+								geographical_region = world_europe_west_francia
+								geographical_region = world_europe_north
+							}
+						}
+					}
+				}
+			}
+			trigger_event = north_atlantic.0010
+		}
 		random_owned_story = {
 			limit = {
 				story_type = RICE_story_cycle_north_atlantic_expedition

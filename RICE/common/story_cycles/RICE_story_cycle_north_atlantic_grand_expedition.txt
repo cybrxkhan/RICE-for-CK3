@@ -3,11 +3,11 @@
 	on_setup = {
 		# Location
 		set_variable = {
-			name = RICE_expedition_destination
-			value = story_owner.var:RICE_expedition_destination_pick
+			name = RICE_grand_expedition_destination
+			value = story_owner.var:RICE_grand_expedition_destination_pick
 		}
 		story_owner = {
-			remove_variable = RICE_expedition_destination_pick
+			remove_variable = RICE_grand_expedition_destination_pick
 		}
 		# If you selected one
 		if = {
@@ -55,13 +55,14 @@
 						this = scope:story.var:RICE_expedition_leader
 					}
 				}
-				scope:story = { end_story = yes }
+				save_scope_as = leader
+				# Trigger the return of the expedition prematurely
 				story_owner.player_heir = {
-					trigger_event = north_atlantic.8888
+					trigger_event = north_atlantic.0160
 				}
-				# ADD CODE WHERE HEIR STILL GETS EXPLORER TRAIT IF THEY EXPLORED ENOUGH
+				#scope:story = { end_story = yes }
 			}
-			# Should not happen, but if it does, heir returns and the expedition is prematurely canceled
+			# Resume as normal
 			else = {
 				make_story_owner = story_owner.player_heir
 			}
@@ -129,17 +130,19 @@
 						save_scope_as = leader
 					}
 				}
-				story_owner = {
-					if = {
-						limit = {
-							var:RICE_grand_expedition_destination = flag:greenland
-						}
+				if = {
+					limit = {
+						var:RICE_grand_expedition_destination = flag:greenland
+					}
+					story_owner = {
 						trigger_event = north_atlantic.0160
 					}
-					else_if = {
-						limit = {
-							var:RICE_grand_expedition_destination = flag:americas
-						}
+				}
+				else_if = {
+					limit = {
+						var:RICE_grand_expedition_destination = flag:americas
+					}
+					story_owner = {
 						trigger_event = north_atlantic.0166
 					}
 				}
@@ -148,14 +151,31 @@
 	}
 
 	
-	# 4 years self destruct in case it drags on for some reason
+	# 1.5 years self destruct in case it drags on for some reason
 	effect_group = {
-		days = 1453
+		days = 600
 		chance = 100
 
 		triggered_effect = {
 			trigger = { always = yes }
 			effect = {
+				# Quietly re-enable the decisions to prevent weirdness
+				if = {
+					limit = {
+						var:RICE_grand_expedition_destination = flag:greenland
+						has_global_variable = RICE_north_atlantic_greenland_discovery_in_progress
+						NOT = { has_global_variable = RICE_north_atlantic_greenland_struggle_started }
+					}
+					remove_global_variable = RICE_north_atlantic_greenland_discovery_in_progress
+				}
+				else_if = {
+					limit = {
+						var:RICE_grand_expedition_destination = flag:americas
+						has_global_variable = RICE_north_atlantic_vinland_discovery_in_progress
+						NOT = { has_global_variable = RICE_north_atlantic_vinland_discovered }
+					}
+					remove_global_variable = RICE_north_atlantic_vinland_discovery_in_progress
+				}
 				end_story = yes
 			}
 		}
