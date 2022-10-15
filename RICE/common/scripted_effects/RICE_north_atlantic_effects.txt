@@ -1246,6 +1246,7 @@ RICE_greenland_struggle_indigenous_ender_effect = {
 	dynasty = { add_dynasty_prestige = 2000 }
 }
 
+
 RICE_greenland_struggle_indigenous_ending_tooltip_effect = {
 	# Negative effects of Socio-Economic and Environmental pressures are greatly reduced
 	custom_tooltip = RICE_greenland_struggle_ending_low_resource_mitigation_tt
@@ -1266,6 +1267,45 @@ RICE_greenland_struggle_indigenous_county_modifier_effect = {
 	custom_description_no_bullet = { text = RICE_greenland_struggle_indigenous_ending_county_bonus_tt }
 }
 
+
+
+RICE_greenland_struggle_indigenous_social_ending_effect = {
+	every_county_in_region = {
+		region = RICE_greenland_struggle_region
+		custom = every_county_RICE_greenland_struggle_region
+		add_county_modifier = {
+			modifier = RICE_greenland_indigenous_social
+			years = 50
+		}
+	}
+}
+
+RICE_greenland_struggle_indigenous_political_ending_effect = {
+	every_county_in_region = {
+		region = RICE_greenland_struggle_region
+		custom = every_county_RICE_greenland_struggle_region
+		add_county_modifier = {
+			modifier = RICE_greenland_indigenous_political
+			years = 50
+		}
+	}
+}
+
+RICE_greenland_struggle_indigenous_military_ending_effect = {
+	every_county_in_region = {
+		region = RICE_greenland_struggle_region
+		custom = every_county_RICE_greenland_struggle_region
+		add_county_modifier = {
+			modifier = RICE_greenland_indigenous_military
+			years = 50
+		}
+	}
+}
+
+RICE_greenland_struggle_abandonment_ender_effect = {
+	give_nickname = nick_the_pragmatic
+}
+
 RICE_greenland_struggle_abandonment_ending_tooltip_effect = {
 	# Various decisions, such as expeditions to the west and supporting Greenland, will no longer be available
 	custom_tooltip = RICE_greenland_struggle_ending_no_more_mechanics_tt
@@ -1278,6 +1318,76 @@ RICE_greenland_struggle_abandonment_ending_tooltip_effect = {
 RICE_greenland_struggle_abandonment_county_modifier_effect = {
 	# Counties in the North Atlantic region will receive the Resettled Greenlanders county modifier
 	custom_description_no_bullet = { text = RICE_greenland_struggle_abandonment_ending_county_bonus_tt }
+}
+
+
+RICE_greenland_struggle_abandonment_ending_effect = {
+	every_county_in_region = {
+		region = RICE_greenland_struggle_region
+		custom = every_county_RICE_greenland_struggle_region
+		add_county_modifier = {
+			modifier = RICE_north_atlantic_resettled_greenlanders
+			years = 50
+		}
+	}
+}
+
+RICE_greenland_struggle_abandonment_ending_compensation_effect = {
+	# Mark rulers who should be compensated
+	every_ruler = {
+		limit = {
+			exists = house
+			house = {
+				has_house_modifier = RICE_north_atlantic_greenland_family_estate
+			}
+		}
+	}
+	# Remove Vinland dynasty modifiers
+	every_ruler = {
+		limit = {
+			exists = dynasty
+			is_dynast = yes
+			dynasty = {
+				OR = {
+					has_dynasty_modifier = RICE_north_atlantic_vinland_settlement
+					has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+				}
+			}
+		}
+		if = {
+			limit = {
+				dynasty = {
+					has_dynasty_modifier = RICE_north_atlantic_vinland_settlement
+				}
+			}
+			dynasty = {
+				remove_dynasty_modifier = RICE_north_atlantic_vinland_settlement
+			}
+		}
+		if = {
+			limit = {
+				dynasty = {
+					has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+				}
+			}
+			dynasty = {
+				remove_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+			}
+		}
+	}
+	# Remove Greenland estate modifiers
+	every_ruler = {
+		limit = {
+			exists = house
+			is_house_head = yes
+			house = {
+				has_house_modifier = RICE_north_atlantic_greenland_family_estate
+			}
+		}
+		house = {
+			remove_house_modifier = RICE_north_atlantic_greenland_family_estate
+		}
+	}
 }
 
 RICE_north_atlantic_establish_walrus_workshop_inside_effect = {
@@ -2026,4 +2136,71 @@ RICE_create_nordsetur_walrus_ivory_artifact_effect = {
 		}
 	}
 }
+
+
+# Add all Involved cultures with counties to a list
+RICE_greenland_struggle_ending_culture_list_effect = {
+	every_culture_global = {		
+		limit = {
+			#TODO_CD_FP2 (JP) check if this can be more performant, every_struggle_culture would be better
+			save_temporary_scope_as = this_culture
+			struggle:RICE_greenland_struggle = { is_culture_involved_in_struggle = scope:this_culture }
+			culture_number_of_counties > 0
+		}
+		save_scope_as = culture_scope
+		add_to_global_variable_list = {
+			name = RICE_greenland_struggle_ending_culture_list
+			target = scope:culture_scope
+		}
+	}
+}
+
+
+
+# Add cultural acceptance between Involved cultures
+RICE_greenland_struggle_integration_cultural_acceptance_effect = {
+	hidden_effect = {
+		while = {
+			limit = {
+				any_in_global_list = {
+					variable = RICE_greenland_struggle_integration_flag
+					NOT = { has_variable = RICE_greenland_struggle_integration_flag }
+				}
+			}
+			ordered_in_global_list = {
+				variable = RICE_greenland_struggle_integration_flag
+				limit = {
+					NOT = { has_variable = RICE_greenland_struggle_integration_flag }
+				}
+				order_by = culture_number_of_counties
+				save_scope_as = culture_scope
+				set_variable = RICE_greenland_struggle_integration_flag # variable ensures acceptance is only gained once per couple
+			}
+			every_in_global_list = {
+				variable = RICE_greenland_struggle_integration_flag
+				limit = {
+					NOR = {
+						has_variable = RICE_greenland_struggle_integration_flag
+						this = scope:culture_scope
+					}
+				}
+				change_cultural_acceptance = {
+					target = scope:culture_scope
+					value = fp2_struggle_conciliation_culture_acceptance_value #TODO_CD_FP2 (JP) check if this is enough
+					desc = RICE_greenland_struggle_integration_acceptance_tt
+				}
+			}
+		}
+		every_in_global_list = {
+			variable = RICE_greenland_struggle_integration_flag
+			remove_variable = RICE_greenland_struggle_integration_flag
+		}
+	}
+}
+
+
+
+
+
+
 

@@ -8436,14 +8436,26 @@ north_atlantic.0170 = {
 	title = north_atlantic.0170.t
 	desc = north_atlantic.0170.desc
 	theme = court
-	override_background = { event_background = RICE_greenland_struggle_start }
+	override_background = { event_background = RICE_greenland_struggle_vinland }
 	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_end_animate" }
 
 	immediate = {
-		# Add all involved rulers to a list, for ping event
+		set_global_variable = {
+			name = RICE_greenland_ending_integration
+			value = yes
+		}
+
+		# Add all involved cultures with counties to a list, for marriage and holy war checks
+		RICE_greenland_struggle_ending_culture_list_effect = yes
+
+		# Change cultural acceptance
+		RICE_greenland_struggle_integration_cultural_acceptance_effect = yes
+
 		play_music_cue = "mx_Struggle_ending_conciliation"
+
 		RICE_greenland_struggle_integration_ender_effect = yes
 		RICE_greenland_struggle_integration_ending_tooltip_effect = yes
+
 		save_scope_as = struggle_ender
 	}
 
@@ -8498,10 +8510,11 @@ north_atlantic.0170 = {
 			end_struggle = RICE_greenland_struggle_ending_integration_decision
 		}
 		# Notify
-		every_player = {
-			#limit = {
-			#	NOT = { scope:struggle_ender = root }
-			#}
+		every_ruler = {
+			limit = {
+				is_ai = no
+				# NOT = { scope:struggle_ender = root }
+			}
 			trigger_event = north_atlantic.0171
 		}
 	}
@@ -8539,7 +8552,7 @@ north_atlantic.0171 = { # Fullscreen Intro Event
 		desc = north_atlantic.0171.desc.closing
 	}
 	theme = court
-	override_background = { event_background = RICE_greenland_struggle_start }
+	override_background = { event_background = RICE_greenland_struggle_vinland }
 	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
 
 	immediate = {
@@ -8567,6 +8580,237 @@ north_atlantic.0171 = { # Fullscreen Intro Event
 				}
 				RICE_greenland_struggle_integration_community_ending_effect = yes
 			}
+		}
+	}
+}
+
+
+
+# Indigenous Ending
+north_atlantic.0172 = { 
+	type = fullscreen_event
+	title = north_atlantic.0172.t
+	desc = north_atlantic.0172.desc
+	theme = court
+	override_background = { event_background = RICE_sunset_invasion }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_end_animate" }
+
+	immediate = {
+		set_global_variable = {
+			name = RICE_greenland_ending_indigenous
+			value = yes
+		}
+		# Add all involved rulers to a list, for ping event
+		play_music_cue = "mx_Struggle_ending_hostility"
+		RICE_greenland_struggle_indigenous_ender_effect = yes
+		RICE_greenland_struggle_indigenous_ending_tooltip_effect = yes
+		save_scope_as = struggle_ender
+	}
+
+	# Social victory
+	option = {
+		name = north_atlantic.0172.a
+		RICE_greenland_struggle_indigenous_social_ending_effect = yes
+		stress_impact = {
+			wrathful = minor_stress_impact_gain
+			sadistic = minor_stress_impact_gain
+		}
+		set_global_variable = {
+			name = RICE_greenland_indigenous_social_victory
+			value = yes
+			days = 15 # Clear out eventually, just in case
+		}
+	}
+
+	# Political victory
+	option = {
+		name = north_atlantic.0172.b
+		RICE_greenland_struggle_indigenous_political_ending_effect = yes
+		stress_impact = {
+			impatient = minor_stress_impact_gain
+			stubborn = minor_stress_impact_gain
+		}
+		set_global_variable = {
+			name = RICE_greenland_indigenous_political_victory
+			value = yes
+			days = 15 # Clear out eventually, just in case
+		}
+	}
+
+	# Military victory
+	option = {
+		name = north_atlantic.0172.c
+		RICE_greenland_struggle_indigenous_military_ending_effect = yes
+		stress_impact = {
+			forgiving = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+		}
+		set_global_variable = {
+			name = RICE_greenland_indigenous_military_victory
+			value = yes
+			days = 15 # Clear out eventually, just in case
+		}
+	}
+
+	after = {
+		# End Struggle
+		struggle:RICE_greenland_struggle = {
+			end_struggle = RICE_greenland_struggle_ending_integration_decision
+		}
+		# Notify
+		every_ruler = {
+			limit = {
+				is_ai = no
+				# NOT = { scope:struggle_ender = root }
+			}
+			trigger_event = north_atlantic.0173
+		}
+	}
+}
+
+
+
+
+# Indigenous Ending notification
+north_atlantic.0173 = { # Fullscreen Intro Event
+	type = fullscreen_event
+	title = north_atlantic.0173.t
+	desc = {
+		desc = north_atlantic.0173.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_global_variable = RICE_greenland_indigenous_social_victory
+				}
+				desc = north_atlantic.0173.desc.closing.social
+			}
+			triggered_desc = {
+				trigger = {
+					has_global_variable = RICE_greenland_indigenous_political_victory
+				}
+				desc = north_atlantic.0173.desc.closing.political
+			}
+			triggered_desc = {
+				trigger = {
+					has_global_variable = RICE_greenland_indigenous_military_victory
+				}
+				desc = north_atlantic.0173.desc.closing.military
+			}
+		}
+	}
+	theme = court
+	override_background = { event_background = RICE_sunset_invasion }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	immediate = {
+		set_global_variable = {
+			name = RICE_greenland_ending_abandonment
+			value = yes
+		}
+		play_music_cue = "mx_Struggle_ending_hostility"
+	}
+	option = {
+		name = north_atlantic.0173.a
+		RICE_greenland_struggle_indigenous_ending_tooltip_effect = yes
+		show_as_tooltip = {
+			if = {
+				limit = {
+					has_global_variable = RICE_greenland_indigenous_social_victory
+				}
+				RICE_greenland_struggle_indigenous_social_ending_effect = yes
+			}
+			else_if = {
+				limit = {
+					has_global_variable = RICE_greenland_indigenous_political_victory
+				}
+				RICE_greenland_struggle_indigenous_political_ending_effect = yes
+			}
+			else_if = {
+				limit = {
+					has_global_variable = RICE_greenland_indigenous_military_victory
+				}
+				RICE_greenland_struggle_indigenous_military_ending_effect = yes
+			}
+		}
+	}
+}
+
+
+# Abandonment Ending
+north_atlantic.0174 = { 
+	type = fullscreen_event
+	title = north_atlantic.0174.t
+	desc = north_atlantic.0174.desc
+	theme = death
+	override_background = { event_background = RICE_greenland_icebergs }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_end_animate" }
+
+	immediate = {
+		# Add all involved rulers to a list, for ping event
+		play_music_cue = "mx_Struggle_ending_compromise"
+		RICE_greenland_struggle_abandonment_ender_effect = yes
+		RICE_greenland_struggle_abandonment_ending_tooltip_effect = yes
+		save_scope_as = struggle_ender
+	}
+
+	# Ok
+	option = {
+		name = north_atlantic.0174.a
+		add_gold = RICE_greenland_abandonment_compensation_initiater_value
+		RICE_greenland_struggle_abandonment_ending_effect = yes
+	}
+
+	after = {
+		# End Struggle
+		struggle:RICE_greenland_struggle = {
+			end_struggle = RICE_greenland_struggle_ending_integration_decision
+		}
+		# Do the secret thing for non-ai players
+		hidden_effect = {
+			every_ruler = {
+				limit = {
+					is_ai = yes
+				}
+				add_gold = RICE_greenland_abandonment_compensation_value
+			}
+		}
+		# Notify
+		every_ruler = {
+			limit = {
+				is_ai = no
+				# NOT = { scope:struggle_ender = root }
+			}
+			trigger_event = north_atlantic.0175
+		}
+	}
+}
+
+
+
+
+# Abandonment Ending notification
+north_atlantic.0175 = { # Fullscreen Intro Event
+	type = fullscreen_event
+	title = north_atlantic.0175.t
+	desc = north_atlantic.0175.desc
+	theme = death
+	override_background = { event_background = RICE_greenland_icebergs }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	immediate = {
+		play_music_cue = "mx_Struggle_ending_compromise"
+	}
+	option = {
+		name = north_atlantic.0175.a
+		RICE_greenland_struggle_abandonment_ending_tooltip_effect = yes
+		show_as_tooltip = {
+			RICE_greenland_struggle_abandonment_ending_effect = yes
+		}
+		if = {
+			limit = {
+				NOT = { scope:struggle_ender = root }
+			}
+			add_gold = RICE_greenland_abandonment_compensation_value
 		}
 	}
 }
