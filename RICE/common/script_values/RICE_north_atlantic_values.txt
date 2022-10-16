@@ -33,7 +33,26 @@ RICE_north_atlantic_establish_estate_cost = {
 }
 
 
-# Paramameter for percentage of Iberia that you cannot control
+# Counts every county in region, to check against
+RICE_struggle_greenland_ending_decision_region_total_value = {
+	value = 0
+	every_county_in_region = {
+		region = RICE_greenland_struggle_region
+		add = 1
+	}
+}
+
+# Counter for controlled counties in North Atlantic
+RICE_struggle_greenland_ending_decision_region_owned_value = {
+	value = 0
+	every_county_in_region = {
+		region = RICE_greenland_struggle_region
+		limit = { holder.top_liege = root }
+		add = 1
+	}
+}
+
+# Paramameter for percentage of North Atlantic that you cannot control
 RICE_greenland_struggle_integration_owned_percent_value = 50
 
 # Uses above to plug in to script as a decimal
@@ -41,6 +60,24 @@ RICE_greenland_struggle_integration_owned_percent_decimal_value = {
 	value = RICE_greenland_struggle_integration_owned_percent_value
 	divide = 100
 	max = 1
+}
+
+# Paramameter for percentage of North Atlantic that you cannot control
+RICE_greenland_struggle_indigenous_owned_percent_value = 75
+
+# Uses above to plug in to script as a decimal
+RICE_greenland_struggle_indigenous_owned_percent_decimal_value = { 
+	value = RICE_greenland_struggle_indigenous_owned_percent_value
+	divide = 100
+	max = 1
+}
+
+
+# Percentage of North Atlantic counties owned
+RICE_greenland_struggle_region_owned_percent_value = {
+	value = RICE_struggle_greenland_ending_decision_region_owned_value
+	divide = RICE_struggle_greenland_ending_decision_region_total_value
+	multiply = 100
 }
 
 RICE_medium_gold_with_estate_value = {
@@ -295,6 +332,224 @@ RICE_greenland_abandonment_compensation_initiater_value = {
 	value = RICE_greenland_abandonment_compensation_value
 	multiply = 1.25
 }
+
+RICE_greenland_annual_gold_max_value = {
+	value = 0
+	add = {
+		value = global_var:RICE_greenland_resilience
+		multiply = 0.05
+	}
+	add = {
+		value = global_var:RICE_greenland_networks
+		multiply = 0.05
+	}
+	if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_settlement
+			}				
+		}
+		multiply = 1.1
+	}
+	else_if = {
+		limit = {
+			OR = {
+				AND = {
+					exists = struggle:RICE_greenland_struggle
+					struggle:RICE_greenland_struggle = {
+						is_struggle_phase = struggle_RICE_greenland_phase_integration
+					}
+				}
+				has_global_variable = RICE_greenland_ending_integration
+				has_global_variable = RICE_greenland_ending_indigenous
+			}			
+		}
+		multiply = 1.25
+	}
+	# else_if = {
+	# 	limit = {
+	# 		exists = struggle:RICE_greenland_struggle
+	# 		struggle:RICE_greenland_struggle = {
+	# 			is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+	# 		}				
+	# 	}
+	# 	add = 50
+	# }
+	else_if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+			}				
+		}
+		multiply = 0.5
+	}
+}
+
+RICE_greenland_annual_prestige_max_value = {
+	value = 0
+	add = {
+		value = global_var:RICE_greenland_networks
+		multiply = 0.1
+	}
+	if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_settlement
+			}				
+		}
+		multiply = 1.1
+	}
+	else_if = {
+		limit = {
+			OR = {
+				AND = {
+					exists = struggle:RICE_greenland_struggle
+					struggle:RICE_greenland_struggle = {
+						is_struggle_phase = struggle_RICE_greenland_phase_integration
+					}
+				}
+				has_global_variable = RICE_greenland_ending_integration
+				has_global_variable = RICE_greenland_ending_indigenous
+			}			
+		}
+		multiply = 1.25
+	}
+	# else_if = {
+	# 	limit = {
+	# 		exists = struggle:RICE_greenland_struggle
+	# 		struggle:RICE_greenland_struggle = {
+	# 			is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+	# 		}				
+	# 	}
+	# 	add = 50
+	# }
+	else_if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+			}				
+		}
+		multiply = 0.5
+	}
+}
+
+RICE_greenland_annual_piety_max_value = {
+	value = 0
+	add = {
+		value = global_var:RICE_greenland_resilience
+		multiply = 0.1
+	}
+	if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_settlement
+			}				
+		}
+		multiply = 1.1
+	}
+	else_if = {
+		limit = {
+			OR = {
+				AND = {
+					exists = struggle:RICE_greenland_struggle
+					struggle:RICE_greenland_struggle = {
+						is_struggle_phase = struggle_RICE_greenland_phase_integration
+					}
+				}
+				has_global_variable = RICE_greenland_ending_integration
+				has_global_variable = RICE_greenland_ending_indigenous
+			}			
+		}
+		multiply = 1.25
+	}
+	# else_if = {
+	# 	limit = {
+	# 		exists = struggle:RICE_greenland_struggle
+	# 		struggle:RICE_greenland_struggle = {
+	# 			is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+	# 		}				
+	# 	}
+	# 	add = 50
+	# }
+	else_if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+			}				
+		}
+		multiply = 0.5
+	}
+}
+
+
+# RICE_greenland_resilience_min_calc_value = {
+# 	value = 0
+# 	add = {
+# 		value = global_var:RICE_greenland_resilience
+# 		multiply = 0.05
+# 	}
+# }
+
+
+# RICE_greenland_annual_gold_min_value = {
+# 	value = 0
+# 	add = {
+# 		value = global_var:RICE_greenland_resilience
+# 		multiply = 0.05
+# 	}
+# 	add = {
+# 		value = global_var:RICE_greenland_networks
+# 		multiply = 0.05
+# 	}
+# 	if = {
+# 		limit = {
+# 			exists = struggle:RICE_greenland_struggle
+# 			struggle:RICE_greenland_struggle = {
+# 				is_struggle_phase = struggle_RICE_greenland_phase_settlement
+# 			}				
+# 		}
+# 		multiply = 1.1
+# 	}
+# 	else_if = {
+# 		limit = {
+# 			OR = {
+# 				AND = {
+# 					exists = struggle:RICE_greenland_struggle
+# 					struggle:RICE_greenland_struggle = {
+# 						is_struggle_phase = struggle_RICE_greenland_phase_integration
+# 					}
+# 				}
+# 				has_global_variable = RICE_greenland_ending_integration
+# 				has_global_variable = RICE_greenland_ending_indigenous
+# 			}			
+# 		}
+# 		multiply = 1.25
+# 	}
+# 	# else_if = {
+# 	# 	limit = {
+# 	# 		exists = struggle:RICE_greenland_struggle
+# 	# 		struggle:RICE_greenland_struggle = {
+# 	# 			is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+# 	# 		}				
+# 	# 	}
+# 	# 	add = 50
+# 	# }
+# 	else_if = {
+# 		limit = {
+# 			exists = struggle:RICE_greenland_struggle
+# 			struggle:RICE_greenland_struggle = {
+# 				is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+# 			}				
+# 		}
+# 		multiply = 0.5
+# 	}
+# }
 
 
 

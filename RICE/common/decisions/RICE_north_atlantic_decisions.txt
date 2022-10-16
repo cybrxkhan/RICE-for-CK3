@@ -43,7 +43,31 @@ RICE_greenland_struggle_ending_integration_decision = {
 		# Control at least 50% of the struggle region
 		custom_tooltip = {
 			text = RICE_greenland_struggle_ending_integration_decision_region_tt
-			RICE_greenland_struggle_ending_percent_region_trigger = yes
+			RICE_greenland_struggle_integration_ending_percent_region_trigger = yes
+		}
+
+		# Resilience is at least 900
+		custom_tooltip = {
+			text = RICE_greenland_struggle_ending_integration_decision_resilience_tt_1
+			global_var:RICE_greenland_resilience >= 900
+		}
+
+		# Networks is at least 900
+		custom_tooltip = {
+			text = RICE_greenland_struggle_ending_integration_decision_networks_tt_1
+			global_var:RICE_greenland_networks >= 900
+		}
+
+		# Resilience is not below 500
+		custom_tooltip = {
+			text = RICE_greenland_struggle_ending_integration_decision_resilience_tt_2
+			NOT = { global_var:RICE_greenland_resilience < 500 }
+		}
+
+		# Networks is not below 500
+		custom_tooltip = {
+			text = RICE_greenland_struggle_ending_integration_decision_networks_tt_2
+			NOT = { global_var:RICE_greenland_networks < 500 }
 		}
 
 		# random_character_struggle = {
@@ -52,6 +76,21 @@ RICE_greenland_struggle_ending_integration_decision = {
 		# }
 
 		prestige_level >= very_high_prestige_level # Exalted among Men or higher
+
+		# Need to be moderately wealthy
+		gold > 500
+
+		# Completely control at least 2 of the important North Atlantic duchies
+		calc_true_if = {
+			amount >= 2
+			completely_controls = title:d_iceland
+			completely_controls = title:d_western_isles
+			completely_controls = title:d_trandalog
+			completely_controls = title:d_ulster
+			completely_controls = title:d_northern_isles
+			completely_controls = title:d_albany
+			completely_controls = title:d_viken
+		}
 
 	}
 
@@ -103,14 +142,15 @@ RICE_greenland_struggle_ending_indigenous_decision = {
 
 	is_valid = {
 		is_independent_ruler = yes
+		RICE_is_native_american_culture_trigger = yes
 
-		custom_tooltip = {
-			text = RICE_greenland_struggle_integration_decision_correct_phase_tt
-			any_character_struggle = {
-				is_struggle_type = RICE_greenland_struggle
-				is_struggle_phase = struggle_RICE_greenland_phase_integration
-			}
-		}
+		# custom_tooltip = {
+		# 	text = RICE_greenland_struggle_integration_decision_correct_phase_tt
+		# 	any_character_struggle = {
+		# 		is_struggle_type = RICE_greenland_struggle
+		# 		is_struggle_phase = struggle_RICE_greenland_phase_integration
+		# 	}
+		# }
 
 		custom_tooltip = {
 			text = struggle_ending_decision_correct_involvement_tt
@@ -120,7 +160,26 @@ RICE_greenland_struggle_ending_indigenous_decision = {
 			}
 		}
 
-		prestige_level >= very_high_prestige_level # Exalted among Men or higher
+		# Control at least 75% of the struggle region
+		custom_tooltip = {
+			text = RICE_greenland_struggle_ending_indigenous_decision_region_tt
+			RICE_greenland_struggle_integration_ending_percent_region_trigger = yes
+		}
+		
+
+		prestige_level >= high_prestige_level
+
+		# Completely control at least 3 of the important North Atlantic duchies
+		calc_true_if = {
+			amount >= 4
+			completely_controls = title:d_iceland
+			completely_controls = title:d_western_isles
+			completely_controls = title:d_trandalog
+			completely_controls = title:d_ulster
+			completely_controls = title:d_northern_isles
+			completely_controls = title:d_albany
+			completely_controls = title:d_viken
+		}
 
 	}
 
@@ -278,6 +337,7 @@ RICE_north_atlantic_explore_greenland = {
 		custom_tooltip = RICE_north_atlantic_explore_greenland_effect_tooltip_1
 		custom_tooltip = RICE_north_atlantic_explore_greenland_effect_tooltip_2
 		custom_tooltip = RICE_north_atlantic_explore_greenland_effect_tooltip_3
+		custom_tooltip = RICE_north_atlantic_explore_greenland_effect_tooltip_4
 
 		if = {
 			limit = {
@@ -389,6 +449,7 @@ RICE_north_atlantic_explore_vinland = {
 			}
 		}
 		#debug_only = yes
+		RICE_is_not_native_american_culture_trigger = yes
 	}
 	
 	is_valid = {
@@ -442,6 +503,7 @@ RICE_north_atlantic_explore_vinland = {
 		custom_tooltip = RICE_north_atlantic_explore_vinland_effect_tooltip_1
 		custom_tooltip = RICE_north_atlantic_explore_vinland_effect_tooltip_2
 		custom_tooltip = RICE_north_atlantic_explore_vinland_effect_tooltip_3
+		custom_tooltip = RICE_north_atlantic_explore_vinland_effect_tooltip_4
 
 
 		if = {
@@ -526,7 +588,7 @@ RICE_north_atlantic_settle_vinland = {
 		highest_held_title_tier > tier_barony
 		is_landed = yes
 		OR = {
-			exists = struggle:RICE_greenland_struggle
+			#exists = struggle:RICE_greenland_struggle
 			has_global_variable = RICE_greenland_ending_integration
 			has_global_variable = RICE_greenland_ending_indigenous
 		}
@@ -545,6 +607,7 @@ RICE_north_atlantic_settle_vinland = {
 		}
 		global_var:RICE_north_atlantic_vinland_outposts > 0
 		#debug_only = yes
+		RICE_is_not_native_american_culture_trigger = yes
 	}
 	
 	is_valid = {
@@ -557,13 +620,13 @@ RICE_north_atlantic_settle_vinland = {
 				}
 			}
 		}	
-		OR = {
+		#OR = {
 			#custom_tooltip = {
 			#	text = struggle_ending_decision_correct_involvement_tt
-				any_character_struggle = {
-					involvement = involved
-					is_struggle_type = RICE_greenland_struggle
-				}
+			#	any_character_struggle = {
+			#		involvement = involved
+			#		is_struggle_type = RICE_greenland_struggle
+			#	}
 			#}			
 			custom_description = {
 				text = RICE_greenland_struggle_good_ending_req
@@ -572,7 +635,7 @@ RICE_north_atlantic_settle_vinland = {
 					has_global_variable = RICE_greenland_ending_indigenous
 				}
 			}
-		}
+		#}
 		OR = {
 			prestige_level >= 3
 			custom_description = {
@@ -1482,6 +1545,7 @@ RICE_north_atlantic_build_outpost_vinland = {
 			}
 		}
 		NOT = { dynasty = { has_dynasty_modifier = RICE_north_atlantic_vinland_outpost } }
+		RICE_is_not_native_american_culture_trigger = yes
 	}
 	
 	is_valid = {
@@ -2372,6 +2436,7 @@ RICE_north_atlantic_support_vinland = {
 				}
 			}
 		}
+		RICE_is_not_native_american_culture_trigger = yes
 	}
 	
 	is_valid = {
@@ -2703,6 +2768,14 @@ RICE_north_atlantic_explore_americas = {
 			value = RICE_north_atlantic_vinland_option
 			is_valid = {
 				exists = dynasty
+				# culture = {
+				# 	NOR = {
+				# 		has_cultural_pillar = heritage_algonquian
+				# 		has_cultural_pillar = heritage_iroquoian
+				# 		has_cultural_pillar = heritage_inuit
+				# 		has_cultural_pillar = heritage_paleo_inuit
+				# 	}
+				# }
 			}
 			current_description = RICE_north_atlantic_vinland_option_desc
 			localization = RICE_north_atlantic_vinland_option
@@ -2925,24 +2998,14 @@ RICE_north_atlantic_recruit_native_american_warriors = {
 		is_landed = yes
 		#custom_description = {
 			#	text = RICE_native_american_culture_req
-			OR = {
-				culture = { has_cultural_pillar = heritage_algonquian }				
-				culture = { has_cultural_pillar = heritage_iroquoian }		
-				culture = { has_cultural_pillar = heritage_paleo_inuit }		
-				culture = { has_cultural_pillar = heritage_inuit }		
-			}
+			RICE_is_native_american_culture_trigger = yes
 		#}
 	}
 	
 	is_valid = {
 		#custom_description = {
 		#	text = RICE_native_american_culture_req
-			OR = {
-				culture = { has_cultural_pillar = heritage_algonquian }				
-				culture = { has_cultural_pillar = heritage_iroquoian }		
-				culture = { has_cultural_pillar = heritage_paleo_inuit }		
-				culture = { has_cultural_pillar = heritage_inuit }		
-			}
+			RICE_is_native_american_culture_trigger = yes
 		#}			
 
 	}
