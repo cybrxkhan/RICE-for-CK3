@@ -966,7 +966,7 @@ RICE_greenland_values_restart_calculator_effect = {
 			}
 			set_global_variable = {
 				name = RICE_greenland_resilience
-				value = 250
+				value = 300
 			}
 		}
 		else = {
@@ -991,7 +991,7 @@ RICE_greenland_values_restart_calculator_effect = {
 			}
 			set_global_variable = {
 				name = RICE_greenland_networks
-				value = 250
+				value = 300
 			}
 		}
 		else = {
@@ -1020,22 +1020,6 @@ RICE_notify_greenland_values_effect = {
 			title = RICE_greenland_values_notification.title
 			if = {
 				limit = {
-					NOT = { has_global_variable = RICE_north_atlantic_vinland_discovered }
-				}
-				custom_description_no_bullet = {
-					text = RICE_greenland_values_notification.no_vinland.tooltip
-				}
-			}
-			else = {
-				custom_description_no_bullet = {
-					text = RICE_greenland_values_notification.tooltip
-				}
-				
-			}
-			if = {
-				limit = {
-					#exists = house
-					#house = { has_house_modifier = RICE_north_atlantic_greenland_family_estate }
 					OR = {
 						any_character_struggle = {
 							involvement = involved
@@ -1059,12 +1043,80 @@ RICE_notify_greenland_values_effect = {
 						}
 					}
 				}
-				custom_description_no_bullet = {
-					text = RICE_greenland_values_notification.estate.tooltip
+				if = {
+					limit = {
+						NOT = { has_global_variable = RICE_north_atlantic_vinland_discovered }
+					}
+					custom_description_no_bullet = {
+						text = RICE_greenland_values_notification.no_vinland.tooltip
+					}
 				}
-				add_gold = { 0 RICE_greenland_annual_gold_max_value }
-				add_prestige = { 0 RICE_greenland_annual_prestige_max_value }
-				add_piety = { 0 RICE_greenland_annual_piety_max_value }
+				else = {
+					custom_description_no_bullet = {
+						text = RICE_greenland_values_notification.tooltip
+					}				
+				}
+				if = {
+					limit = {						
+						exists = house
+						house = { has_house_modifier = RICE_north_atlantic_greenland_family_estate }
+					}
+					custom_description_no_bullet = {
+						text = RICE_greenland_values_notification.estate.tooltip
+					}
+					# Chance of gold loss depending on phase and Greenland's Networks
+					# Resilience affects how much is actually lost
+					random_list = {
+						10 = {
+							modifier = {
+								add = {
+									value = RICE_greenland_resilience_min_calc_value
+									multiply = -0.1
+								}
+							}
+							modifier = {
+								exists = struggle:RICE_greenland_struggle
+								struggle:RICE_greenland_struggle = {
+									is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+								}	
+								add = 50							
+							}
+							modifier = {
+								exists = struggle:RICE_greenland_struggle
+								struggle:RICE_greenland_struggle = {
+									is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+								}	
+								add = 100							
+							}
+							remove_short_term_gold = { 0 RICE_greenland_annual_gold_min_value }
+						}
+						90 = {
+							modifier = {
+								OR = {
+									AND = {
+										exists = struggle:RICE_greenland_struggle
+										struggle:RICE_greenland_struggle = {
+											is_struggle_phase = struggle_RICE_greenland_phase_integration
+										}
+									}
+									has_global_variable = RICE_greenland_ending_integration
+									has_global_variable = RICE_greenland_ending_indigenous
+								}
+								add = 250							
+							}
+							modifier = {
+								exists = struggle:RICE_greenland_struggle
+								struggle:RICE_greenland_struggle = {
+									is_struggle_phase = struggle_RICE_greenland_phase_settlement
+								}	
+								add = 150							
+							}
+							add_gold = { 0 RICE_greenland_annual_gold_max_value }
+						}
+					}
+					add_prestige = { RICE_greenland_annual_piety_min_value RICE_greenland_annual_prestige_max_value }
+					add_piety = { RICE_greenland_annual_prestige_min_value RICE_greenland_annual_piety_max_value }
+				}
 			}
 		}
 	}
