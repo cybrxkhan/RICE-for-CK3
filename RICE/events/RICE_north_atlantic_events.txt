@@ -2731,6 +2731,31 @@ north_atlantic.0034 = {
 	}
 
 	immediate = {
+		# Expedition is considered a failure
+		if = {
+			limit = {
+				OR = {
+					# At least 2 failures out of 3
+					scope:story.var:RICE_expedition_failure >= 2
+					# One failure and no success
+					AND = {						
+						scope:story.var:RICE_expedition_failure = 1						
+						scope:story.var:RICE_expedition_success = 0
+					}
+				}
+			}
+			set_variable = {
+				name = RICE_expedition_result
+				value = flag:failure
+			}			
+		}
+		# Expedition is considered a success
+		else = {
+			set_variable = {
+				name = RICE_expedition_result
+				value = flag:success
+			}	
+		}
 		add_prestige = 100
 		if = {
 			limit = {
@@ -2773,40 +2798,87 @@ north_atlantic.0034 = {
 		name = north_atlantic.0034.a
 		if = {
 			limit = {
-				scope:story.var:RICE_expedition_destination = flag:helluland
+				var:RICE_expedition_result = flag:success
 			}
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_successful_expedition_to_helluland
-					character = root
+			if = {
+				limit = {
+					scope:story.var:RICE_expedition_destination = flag:helluland
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_successful_expedition_to_helluland
+						character = root
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					scope:story.var:RICE_expedition_destination = flag:markland
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_successful_expedition_to_markland
+						character = root
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					scope:story.var:RICE_expedition_destination = flag:vinland
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_successful_expedition_to_vinland
+						character = root
+					}
 				}
 			}
 		}
 		else_if = {
 			limit = {
-				scope:story.var:RICE_expedition_destination = flag:markland
+				var:RICE_expedition_result = flag:failure
 			}
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_successful_expedition_to_markland
-					character = root
+			if = {
+				limit = {
+					scope:story.var:RICE_expedition_destination = flag:helluland
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_failed_expedition_to_helluland
+						character = root
+					}
 				}
 			}
-		}
-		else_if = {
-			limit = {
-				scope:story.var:RICE_expedition_destination = flag:vinland
+			else_if = {
+				limit = {
+					scope:story.var:RICE_expedition_destination = flag:markland
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_failed_expedition_to_markland
+						character = root
+					}
+				}
 			}
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_successful_expedition_to_vinland
-					character = root
+			else_if = {
+				limit = {
+					scope:story.var:RICE_expedition_destination = flag:vinland
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_failed_expedition_to_vinland
+						character = root
+					}
 				}
 			}
 		}
 	}
 
 	after = {
+		if = {
+			limit = { has_variable = RICE_expedition_result }
+			remove_variable = RICE_expedition_result
+		}
 		random_owned_story = {
 			limit = {
 				story_type = RICE_story_cycle_north_atlantic_expedition
@@ -3144,6 +3216,31 @@ north_atlantic.0041 = {
 		}
 	}
 
+	immediate = {
+		if = {
+			limit = {
+				root = { has_character_flag = RICE_expedition_event_success_flag }
+			}
+			scope:story = {
+				change_variable = {
+					name = RICE_expedition_success
+					add = 1
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				NOT = { root = { has_character_flag = RICE_expedition_event_success_flag } }
+			}
+			scope:story = {
+				change_variable = {
+					name = RICE_expedition_failure
+					add = 1
+				}
+			}
+		}
+	}
+
 	option = {
 		name = north_atlantic.0041.a
 		trigger = {
@@ -3160,11 +3257,8 @@ north_atlantic.0041 = {
 		custom_tooltip = north_atlantic.expedition.result.gold
 		custom_tooltip = north_atlantic.expedition.result.prestige
 		custom_tooltip = north_atlantic.expedition.result.networks.increase
-		scope:story = {
-			change_variable = {
-				name = RICE_expedition_success
-				add = 1
-			}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.success_failure_counter
 		}
 	}
 	option = {
@@ -3179,11 +3273,8 @@ north_atlantic.0041 = {
 			text = north_atlantic.expedition.result.intro
 		}
 		custom_tooltip = north_atlantic.expedition.result.prestige.loss
-		scope:story = {
-			change_variable = {
-				name = RICE_expedition_failure
-				add = 1
-			}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.success_failure_counter
 		}
 	}
 
@@ -3275,7 +3366,36 @@ north_atlantic.0042 = {
 	}
 
 	# GENERATE CAPTIVE AT END OF JOURNEY
-	# immediate = {
+	immediate = {
+		if = {
+			limit = {
+				OR = {
+					has_character_flag = RICE_expedition_event_success_flag_steal
+					has_character_flag = RICE_expedition_event_success_flag_kidnap
+				}
+			}
+			scope:story = {
+				change_variable = {
+					name = RICE_expedition_success
+					add = 1
+				}
+			}
+		}
+		else_if = {
+			limit = {			
+				OR = {
+					has_character_flag = RICE_expedition_event_failure_flag_battle
+					has_character_flag = RICE_expedition_event_failure_flag_get_away
+				}
+			}
+			scope:story = {
+				change_variable = {
+					name = RICE_expedition_failure
+					add = 1
+				}
+			}
+		}
+
 	# 	if = {
 	# 		limit = {
 	# 			has_character_flag = RICE_expedition_event_success_flag_kidnap
@@ -3295,7 +3415,8 @@ north_atlantic.0042 = {
 	# 			}			
 	# 		}
 	# 	}
-	# }
+
+	}
 
 	option = {
 		name = north_atlantic.0042.a
@@ -3327,11 +3448,8 @@ north_atlantic.0042 = {
 			}
 			custom_tooltip = north_atlantic.expedition.result.courtier
 		}
-		scope:story = {
-			change_variable = {
-				name = RICE_expedition_success
-				add = 1
-			}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.success_failure_counter
 		}
 	}
 	option = {
@@ -3372,11 +3490,8 @@ north_atlantic.0042 = {
 			}
 			custom_tooltip = north_atlantic.expedition.result.courtier
 		}
-		scope:story = {
-			change_variable = {
-				name = RICE_expedition_success
-				add = 1
-			}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.success_failure_counter
 		}
 	}
 	option = {
@@ -3395,11 +3510,8 @@ north_atlantic.0042 = {
 		}
 		custom_tooltip = north_atlantic.expedition.result.gold.loss
 		custom_tooltip = north_atlantic.expedition.result.prestige.loss
-		scope:story = {
-			change_variable = {
-				name = RICE_expedition_failure
-				add = 1
-			}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.success_failure_counter
 		}
 	}
 
@@ -3413,9 +3525,27 @@ north_atlantic.0042 = {
 		}
 		if = {
 			limit = {
-				has_character_flag = RICE_expedition_event_success_flag
+				has_character_flag = RICE_expedition_event_success_flag_steal
 			}
-			remove_character_flag = RICE_expedition_event_success_flag
+			remove_character_flag = RICE_expedition_event_success_flag_steal
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_expedition_event_success_flag_kidnap
+			}
+			remove_character_flag = RICE_expedition_event_success_flag_kidnap
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_expedition_event_failure_flag_battle
+			}
+			remove_character_flag = RICE_expedition_event_failure_flag_battle
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_expedition_event_failure_flag_get_away
+			}
+			remove_character_flag = RICE_expedition_event_failure_flag_get_away
 		}
 	}
 
@@ -3869,7 +3999,38 @@ north_atlantic.0044 = {
 	}
 
 	# GENERATE CAPTIVE AT END OF JOURNEY
-	# immediate = {
+	immediate = {
+
+		if = {
+			limit = {
+				OR = {
+					var:RICE_north_atlantic_episode_result = flag:RICE_expedition_event_success_flag_steal
+					var:RICE_north_atlantic_episode_result = flag:RICE_expedition_event_success_flag_kidnap
+				}
+			}
+			scope:story = {
+				change_variable = {
+					name = RICE_expedition_success
+					add = 1
+				}
+			}
+		}
+		else_if = {
+			limit = {	
+				OR = {
+					var:RICE_north_atlantic_episode_result = flag:success_accept
+					var:RICE_north_atlantic_episode_result = flag:success_not_alone
+					var:RICE_north_atlantic_episode_result = flag:success_join
+				}
+			}
+			scope:story = {
+				change_variable = {
+					name = RICE_expedition_failure
+					add = 1
+				}
+			}
+		}
+
 	# 	if = {
 	# 		limit = {
 	# 			has_character_flag = RICE_expedition_event_success_flag_kidnap
@@ -3889,7 +4050,8 @@ north_atlantic.0044 = {
 	# 			}			
 	# 		}
 	# 	}
-	# }
+
+	}
 
 	option = {
 		name = north_atlantic.0044.a
@@ -3919,11 +4081,8 @@ north_atlantic.0044 = {
 			}
 			custom_tooltip = north_atlantic.expedition.result.viability.decrease
 		}
-		scope:story = {
-			change_variable = {
-				name = RICE_expedition_failure
-				add = 1
-			}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.success_failure_counter
 		}
 	}
 
@@ -3951,11 +4110,8 @@ north_atlantic.0044 = {
 			}
 			custom_tooltip = north_atlantic.expedition.result.viability.increase
 		}
-		scope:story = {
-			change_variable = {
-				name = RICE_expedition_success
-				add = 1
-			}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.success_failure_counter
 		}
 	}
 	option = {
@@ -3982,11 +4138,8 @@ north_atlantic.0044 = {
 			}
 			custom_tooltip = north_atlantic.expedition.result.viability.increase
 		}
-		scope:story = {
-			change_variable = {
-				name = RICE_expedition_success
-				add = 1
-			}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.success_failure_counter
 		}
 	}
 	option = {
@@ -4021,11 +4174,8 @@ north_atlantic.0044 = {
 			}
 			custom_tooltip = north_atlantic.expedition.result.viability.increase
 		}
-		scope:story = {
-			change_variable = {
-				name = RICE_expedition_success
-				add = 1
-			}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.success_failure_counter
 		}
 	}
 
@@ -4149,7 +4299,37 @@ north_atlantic.0045 = {
 	}
 
 	# GENERATE CAPTIVE AT END OF JOURNEY
-	# immediate = {
+	immediate = {
+
+		if = {
+			limit = {
+				OR = {
+					var:RICE_north_atlantic_episode_result = flag:success_loot
+					var:RICE_north_atlantic_episode_result = flag:success_capture
+				}
+			}
+			scope:story = {
+				change_variable = {
+					name = RICE_expedition_success
+					add = 1
+				}
+			}
+		}
+		else_if = {
+			limit = {	
+				OR = {
+					var:RICE_north_atlantic_episode_result = flag:failure_escape
+					var:RICE_north_atlantic_episode_result = flag:failure_not_alone
+				}
+			}
+			scope:story = {
+				change_variable = {
+					name = RICE_expedition_failure
+					add = 1
+				}
+			}
+		}
+
 	# 	if = {
 	# 		limit = {
 	# 			has_character_flag = RICE_expedition_event_success_flag_kidnap
@@ -4169,7 +4349,8 @@ north_atlantic.0045 = {
 	# 			}			
 	# 		}
 	# 	}
-	# }
+
+	}
 
 	option = {
 		name = north_atlantic.0045.a
@@ -4199,11 +4380,8 @@ north_atlantic.0045 = {
 			}
 			custom_tooltip = north_atlantic.expedition.result.viability.decrease
 		}
-		scope:story = {
-			change_variable = {
-				name = RICE_expedition_failure
-				add = 1
-			}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.success_failure_counter
 		}
 	}
 
@@ -4243,11 +4421,8 @@ north_atlantic.0045 = {
 			}
 			custom_tooltip = north_atlantic.expedition.result.viability.increase
 		}
-		scope:story = {
-			change_variable = {
-				name = RICE_expedition_success
-				add = 1
-			}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.success_failure_counter
 		}
 	}
 
@@ -4290,11 +4465,8 @@ north_atlantic.0045 = {
 			}
 			custom_tooltip = north_atlantic.expedition.result.viability.increase
 		}
-		scope:story = {
-			change_variable = {
-				name = RICE_expedition_success
-				add = 1
-			}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.success_failure_counter
 		}
 	}
 
@@ -4371,6 +4543,12 @@ north_atlantic.0046 = {
 	}
 
 	immediate = {
+		scope:story = {
+			change_variable = {
+				name = RICE_expedition_success
+				add = 1
+			}
+		}
 		create_character = {
 			location = root.location # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
 			template = random_barrel_character
@@ -4391,11 +4569,8 @@ north_atlantic.0046 = {
 		custom_tooltip = north_atlantic.expedition.result.prestige
 		custom_tooltip = north_atlantic.expedition.result.piety
 		custom_tooltip = north_atlantic.expedition.result.resilience.increase
-		scope:story = {
-			change_variable = {
-				name = RICE_expedition_success
-				add = 1
-			}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.success_failure_counter
 		}
 	}
 
@@ -4460,6 +4635,15 @@ north_atlantic.0047 = {
 		animation = stress
 	}
 
+	immediate = {
+		scope:story = {
+			change_variable = {
+				name = RICE_expedition_failure
+				add = 1
+			}
+		}
+	}
+
 	option = {
 		name = north_atlantic.0047.a
 		#custom_tooltip = north_atlantic.expedition.skill.stewardship
@@ -4471,11 +4655,8 @@ north_atlantic.0047 = {
 		}
 		custom_tooltip = north_atlantic.expedition.result.gold.loss
 		custom_tooltip = north_atlantic.expedition.result.resilience.decrease
-		scope:story = {
-			change_variable = {
-				name = RICE_expedition_failure
-				add = 1
-			}
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.success_failure_counter
 		}
 	}
 
