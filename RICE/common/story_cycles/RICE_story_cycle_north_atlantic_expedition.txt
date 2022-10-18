@@ -33,6 +33,65 @@
 		story_owner = {
 			add_character_flag = RICE_north_atlantic_ongoing_expedition
 		}
+
+		# Potential rewards/losses for the Expedition
+		set_variable = {
+			name = RICE_expedition_artifact_count
+			value = 0
+		}
+		set_variable = {
+			name = RICE_expedition_modifiers_count
+			value = 0
+		}
+		set_variable = {
+			name = RICE_expedition_gold_count
+			value = 0
+		}
+		set_variable = {
+			name = RICE_expedition_prestige_count
+			value = 0
+		}
+		set_variable = {
+			name = RICE_expedition_piety_count
+			value = 0
+		}
+		set_variable = {
+			name = RICE_expedition_gold_loss_count
+			value = 0
+		}
+		set_variable = {
+			name = RICE_expedition_prestige_loss_count
+			value = 0
+		}
+		set_variable = {
+			name = RICE_expedition_piety_loss_count
+			value = 0
+		}
+		set_variable = {
+			name = RICE_expedition_resilience_increase_count
+			value = 0
+		}
+		set_variable = {
+			name = RICE_expedition_resilience_decrease_count
+			value = 0
+		}
+		set_variable = {
+			name = RICE_expedition_networks_increase_count
+			value = 0
+		}
+		set_variable = {
+			name = RICE_expedition_networks_decrease_count
+			value = 0
+		}
+		set_variable = {
+			name = RICE_expedition_viability_increase_count
+			value = 0
+		}
+		set_variable = {
+			name = RICE_expedition_viability_decrease_count
+			value = 0
+		}
+
 		# scope:story = {
 		# 	var:favor_1 = {
 		# 		compare_value < scope:story.var:favor_2
@@ -67,6 +126,14 @@
 			if = {
 				limit = { has_variable = RICE_expedition_failure }
 				remove_variable = RICE_expedition_failure
+			}
+			if = {
+				limit = { has_variable = RICE_resilience_value_temp }
+				remove_variable = RICE_resilience_value_temp
+			}
+			if = {
+				limit = { has_variable = RICE_networks_value_temp }
+				remove_variable = RICE_networks_value_temp
 			}
 			remove_character_flag = RICE_north_atlantic_ongoing_expedition
 		}
@@ -156,12 +223,12 @@
 
 	# The expedition successfully returns
 	effect_group = {
-		days = { 365 400 } # { 365 1095 } # 1-3 years
+		days = { 365 444 } # { 365 1095 } # 1-3 years
 		chance = 100
 	
 		triggered_effect = {
 			trigger = {
-				exists = var:RICE_expedition_episode_one
+				exists = var:RICE_expedition_episode_three
 				exists = var:RICE_expedition_set_sail
 				NOT = { exists = var:RICE_expedition_returns }
 			}
@@ -170,11 +237,379 @@
 					name = RICE_expedition_returns
 					value = yes
 				}
+
 				if = {
 					limit = {
-						exists = scope:story.var:RICE_expedition_leader
+						var:RICE_expedition_resilience_increase_count >= 1
+						var:RICE_expedition_resilience_increase_count > var:RICE_expedition_resilience_decrease_count
 					}
-					scope:story.var:RICE_expedition_leader = {
+					set_variable = {
+						name = RICE_resilience_increases
+						value = yes
+					}
+					if = {
+						limit = {
+							var:RICE_expedition_resilience_increase_count >= 3
+						}
+						set_variable = {
+							name = RICE_expedition_random_resilience_number
+							value = {
+								value = 0
+								add = {
+									integer_range = {
+										min = 1
+										max = 30
+									}
+								}
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							var:RICE_expedition_resilience_increase_count >= 2
+						}
+						set_variable = {
+							name = RICE_expedition_random_resilience_number
+							value = {
+								value = 0
+								add = {
+									integer_range = {
+										min = 1
+										max = 20
+									}
+								}
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							var:RICE_expedition_resilience_increase_count >= 1
+						}
+						set_variable = {
+							name = RICE_expedition_random_resilience_number
+							value = {
+								value = 0
+								add = {
+									integer_range = {
+										min = 1
+										max = 10
+									}
+								}
+							}
+						}
+					}
+				}
+				if = {
+					limit = {
+						var:RICE_expedition_resilience_decrease_count >= 1
+						var:RICE_expedition_resilience_increase_count <= var:RICE_expedition_resilience_decrease_count
+					}
+					set_variable = {
+						name = RICE_resilience_decreases
+						value = yes
+					}
+					if = {
+						limit = {
+							var:RICE_expedition_resilience_decrease_count >= 3
+						}
+						set_variable = {
+							name = RICE_expedition_random_resilience_number
+							value = {
+								value = 0
+								add = {
+									integer_range = {
+										min = 1
+										max = 30
+									}
+								}
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							var:RICE_expedition_resilience_decrease_count >= 2
+						}
+						set_variable = {
+							name = RICE_expedition_random_resilience_number
+							value = {
+								value = 0
+								add = {
+									integer_range = {
+										min = 1
+										max = 20
+									}
+								}
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							var:RICE_expedition_resilience_decrease_count >= 1
+						}
+						set_variable = {
+							name = RICE_expedition_random_resilience_number
+							value = {
+								value = 0
+								add = {
+									integer_range = {
+										min = 1
+										max = 10
+									}
+								}
+							}
+						}
+					}
+				}
+				if = {
+					limit = {
+						var:RICE_expedition_networks_increase_count >= 1
+						var:RICE_expedition_networks_increase_count > var:RICE_expedition_networks_decrease_count
+					}
+					set_variable = {
+						name = RICE_networks_increases
+						value = yes
+					}
+					if = {
+						limit = {
+							var:RICE_expedition_networks_increase_count >= 3
+						}
+						set_variable = {
+							name = RICE_expedition_random_networks_number
+							value = {
+								value = 0
+								add = {
+									integer_range = {
+										min = 1
+										max = 30
+									}
+								}
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							var:RICE_expedition_networks_increase_count >= 2
+						}
+						set_variable = {
+							name = RICE_expedition_random_networks_number
+							value = {
+								value = 0
+								add = {
+									integer_range = {
+										min = 1
+										max = 20
+									}
+								}
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							var:RICE_expedition_networks_increase_count >= 1
+						}
+						set_variable = {
+							name = RICE_expedition_random_networks_number
+							value = {
+								value = 0
+								add = {
+									integer_range = {
+										min = 1
+										max = 10
+									}
+								}
+							}
+						}
+					}
+				}
+				if = {
+					limit = {
+						var:RICE_expedition_networks_decrease_count >= 1
+						var:RICE_expedition_networks_increase_count <= var:RICE_expedition_networks_decrease_count
+					}
+					set_variable = {
+						name = RICE_networks_decreases
+						value = yes
+					}
+					if = {
+						limit = {
+							var:RICE_expedition_networks_decrease_count >= 3
+						}
+						set_variable = {
+							name = RICE_expedition_random_networks_number
+							value = {
+								value = 0
+								add = {
+									integer_range = {
+										min = 1
+										max = 30
+									}
+								}
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							var:RICE_expedition_networks_decrease_count >= 2
+						}
+						set_variable = {
+							name = RICE_expedition_random_networks_number
+							value = {
+								value = 0
+								add = {
+									integer_range = {
+										min = 1
+										max = 20
+									}
+								}
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							var:RICE_expedition_networks_decrease_count >= 1
+						}
+						set_variable = {
+							name = RICE_expedition_random_networks_number
+							value = {
+								value = 0
+								add = {
+									integer_range = {
+										min = 1
+										max = 10
+									}
+								}
+							}
+						}
+					}
+				}
+				if = {
+					limit = {
+						var:RICE_expedition_viability_increase_count >= 1
+						var:RICE_expedition_viability_increase_count > var:RICE_expedition_viability_decrease_count
+					}
+					set_variable = {
+						name = RICE_viability_increases
+						value = yes
+					}
+					if = {
+						limit = {
+							var:RICE_expedition_viability_increase_count >= 3
+						}
+						set_variable = {
+							name = RICE_expedition_random_viability_number
+							value = {
+								value = 0
+								add = {
+									integer_range = {
+										min = 1
+										max = 6
+									}
+								}
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							var:RICE_expedition_viability_increase_count >= 2
+						}
+						set_variable = {
+							name = RICE_expedition_random_viability_number
+							value = {
+								value = 0
+								add = {
+									integer_range = {
+										min = 1
+										max = 4
+									}
+								}
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							var:RICE_expedition_viability_increase_count >= 1
+						}
+						set_variable = {
+							name = RICE_expedition_random_viability_number
+							value = {
+								value = 0
+								add = {
+									integer_range = {
+										min = 1
+										max = 2
+									}
+								}
+							}
+						}
+					}
+				}
+				if = {
+					limit = {
+						var:RICE_expedition_viability_decrease_count >= 1
+						var:RICE_expedition_viability_increase_count <= var:RICE_expedition_viability_decrease_count
+					}
+					set_variable = {
+						name = RICE_viability_decreases
+						value = yes
+					}
+					if = {
+						limit = {
+							var:RICE_expedition_viability_decrease_count >= 3
+						}
+						set_variable = {
+							name = RICE_expedition_random_viability_number
+							value = {
+								value = 0
+								add = {
+									integer_range = {
+										min = 1
+										max = 6
+									}
+								}
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							var:RICE_expedition_viability_decrease_count >= 2
+						}
+						set_variable = {
+							name = RICE_expedition_random_viability_number
+							value = {
+								value = 0
+								add = {
+									integer_range = {
+										min = 1
+										max = 4
+									}
+								}
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							var:RICE_expedition_viability_decrease_count >= 1
+						}
+						set_variable = {
+							name = RICE_expedition_random_viability_number
+							value = {
+								value = 0
+								add = {
+									integer_range = {
+										min = 1
+										max = 2
+									}
+								}
+							}
+						}
+					}
+				}
+
+				if = {
+					limit = {
+						exists = var:RICE_expedition_leader
+					}
+					var:RICE_expedition_leader = {
 						save_scope_as = leader
 					}
 				}
@@ -193,7 +628,7 @@
 
 		trigger = {
 			exists = var:RICE_expedition_set_sail
-			exists = scope:story.var:RICE_expedition_leader
+			exists = var:RICE_expedition_leader
 			NOT = { exists = var:RICE_expedition_episode_one }
 		}
 
@@ -204,7 +639,7 @@
 						name = RICE_expedition_episode_one
 						value = yes
 					}
-					scope:story.var:RICE_expedition_leader = {
+					var:RICE_expedition_leader = {
 						save_scope_as = leader
 					}
 					story_owner = {
@@ -225,7 +660,7 @@
 
 		trigger = {
 			exists = var:RICE_expedition_set_sail
-			exists = scope:story.var:RICE_expedition_leader
+			exists = var:RICE_expedition_leader
 			exists = var:RICE_expedition_episode_one
 			NOT = { exists = var:RICE_expedition_episode_two }
 		}
@@ -237,7 +672,7 @@
 						name = RICE_expedition_episode_two
 						value = yes
 					}
-					scope:story.var:RICE_expedition_leader = {
+					var:RICE_expedition_leader = {
 						save_scope_as = leader
 					}
 					story_owner = {
@@ -258,7 +693,7 @@
 
 		trigger = {
 			exists = var:RICE_expedition_set_sail
-			exists = scope:story.var:RICE_expedition_leader
+			exists = var:RICE_expedition_leader
 			exists = var:RICE_expedition_episode_two
 			NOT = { exists = var:RICE_expedition_episode_three }
 		}
@@ -270,7 +705,7 @@
 						name = RICE_expedition_episode_three
 						value = yes
 					}
-					scope:story.var:RICE_expedition_leader = {
+					var:RICE_expedition_leader = {
 						save_scope_as = leader
 					}
 					story_owner = {
