@@ -2731,17 +2731,12 @@ north_atlantic.0034 = {
 	}
 
 	immediate = {
+		RICE_display_america_expedition_success_view_count_effect = yes
 		# Expedition is considered a failure
 		if = {
 			limit = {
-				OR = {
-					# At least 2 failures out of 3
-					scope:story.var:RICE_expedition_failure >= 2
-					# One failure and no success
-					AND = {						
-						scope:story.var:RICE_expedition_failure = 1						
-						scope:story.var:RICE_expedition_success = 0
-					}
+				scope:story = {
+					var:RICE_expedition_failure >= var:RICE_expedition_success
 				}
 			}
 			set_variable = {
@@ -2800,6 +2795,7 @@ north_atlantic.0034 = {
 			limit = {
 				var:RICE_expedition_result = flag:success
 			}
+			custom_tooltip = north_atlantic.0034.tooltip.success
 			if = {
 				limit = {
 					scope:story.var:RICE_expedition_destination = flag:helluland
@@ -2838,6 +2834,7 @@ north_atlantic.0034 = {
 			limit = {
 				var:RICE_expedition_result = flag:failure
 			}
+			custom_tooltip = north_atlantic.0034.tooltip.failure
 			if = {
 				limit = {
 					scope:story.var:RICE_expedition_destination = flag:helluland
@@ -2875,17 +2872,10 @@ north_atlantic.0034 = {
 	}
 
 	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
 		if = {
 			limit = { has_variable = RICE_expedition_result }
 			remove_variable = RICE_expedition_result
-		}
-		if = {
-			limit = { has_variable = RICE_expedition_success_value_temp }
-			remove_variable = RICE_expedition_success_value_temp
-		}	
-		if = {
-			limit = { has_variable = RICE_expedition_failure_value_temp }
-			remove_variable = RICE_expedition_failure_value_temp
 		}
 		random_owned_story = {
 			limit = {
@@ -3058,6 +3048,7 @@ north_atlantic.0040 = {
 				}
 			}
 		}
+		RICE_display_america_expedition_success_view_count_effect = yes
 	}
 
 	option = { # Attempt to trade
@@ -3087,14 +3078,14 @@ north_atlantic.0040 = {
 				}
 			}
 		}
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
 		trigger_event = north_atlantic.0041
 		custom_tooltip = north_atlantic.expedition.skill.diplomacy
 	}
 	option = {
 		name = north_atlantic.0040.b
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.result.neutral
-		}
+		custom_tooltip = north_atlantic.expedition.result.neutral
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
 		hidden_effect = {
 			scope:native_leader = {
 				death = {
@@ -3165,6 +3156,7 @@ north_atlantic.0040 = {
 				# }
 			}
 		}
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
 		trigger_event = north_atlantic.0042
 		custom_tooltip = north_atlantic.expedition.skill.intrigue
 	}
@@ -3229,20 +3221,25 @@ north_atlantic.0041 = {
 			limit = {
 				root = { has_character_flag = RICE_expedition_event_success_flag }
 			}
-			change_variable = {
-				name = RICE_expedition_success
-				add = 1
+			scope:story = {
+				change_variable = {
+					name = RICE_expedition_success
+					add = 1
+				}
 			}
 		}
 		else_if = {
 			limit = {
 				NOT = { root = { has_character_flag = RICE_expedition_event_success_flag } }
 			}
-			change_variable = {
-				name = RICE_expedition_failure
-				add = 1
+			scope:story = {
+				change_variable = {
+					name = RICE_expedition_failure
+					add = 1
+				}
 			}
 		}
+		RICE_display_america_expedition_success_view_count_effect = yes
 	}
 
 	option = {
@@ -3250,9 +3247,7 @@ north_atlantic.0041 = {
 		trigger = {
 			has_character_flag = RICE_expedition_event_success_flag
 		}
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.result.good
-		}
+		custom_tooltip = north_atlantic.expedition.result.good
 		custom_description_no_bullet = {
 			text = north_atlantic.expedition.result.intro
 		}
@@ -3261,28 +3256,23 @@ north_atlantic.0041 = {
 		custom_tooltip = north_atlantic.expedition.result.gold
 		custom_tooltip = north_atlantic.expedition.result.prestige
 		custom_tooltip = north_atlantic.expedition.result.networks.increase
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.success_failure_counter
-		}
+		# custom_tooltip = north_atlantic.expedition.success_failure_counter
 	}
 	option = {
 		name = north_atlantic.0041.b
 		trigger = {
 			NOT = { has_character_flag = RICE_expedition_event_success_flag }
 		}
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.result.bad
-		}
+		custom_tooltip = north_atlantic.expedition.result.bad
 		custom_description_no_bullet = {
 			text = north_atlantic.expedition.result.intro
 		}
 		custom_tooltip = north_atlantic.expedition.result.prestige.loss
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.success_failure_counter
-		}
+		# custom_tooltip = north_atlantic.expedition.success_failure_counter
 	}
 
 	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
 		hidden_effect = {
 			scope:native_leader = {
 				death = {
@@ -3378,9 +3368,11 @@ north_atlantic.0042 = {
 					has_character_flag = RICE_expedition_event_success_flag_kidnap
 				}
 			}
-			change_variable = {
-				name = RICE_expedition_success
-				add = 1
+			scope:story = {
+				change_variable = {
+					name = RICE_expedition_success
+					add = 1
+				}
 			}
 		}
 		else_if = {
@@ -3390,11 +3382,14 @@ north_atlantic.0042 = {
 					has_character_flag = RICE_expedition_event_failure_flag_get_away
 				}
 			}
-			change_variable = {
-				name = RICE_expedition_failure
-				add = 1
+			scope:story = {
+				change_variable = {
+					name = RICE_expedition_failure
+					add = 1
+				}
 			}
 		}	
+		RICE_display_america_expedition_success_view_count_effect = yes
 
 	# 	if = {
 	# 		limit = {
@@ -3431,9 +3426,7 @@ north_atlantic.0042 = {
 				has_character_flag = RICE_expedition_event_success_flag_kidnap
 			}
 		}
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.result.good
-		}
+		custom_tooltip = north_atlantic.expedition.result.good
 		custom_description_no_bullet = {
 			text = north_atlantic.expedition.result.intro
 		}
@@ -3448,9 +3441,7 @@ north_atlantic.0042 = {
 			}
 			custom_tooltip = north_atlantic.expedition.result.courtier
 		}
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.success_failure_counter
-		}
+		# custom_tooltip = north_atlantic.expedition.success_failure_counter
 	}
 	option = {
 		name = north_atlantic.0042.b
@@ -3473,9 +3464,7 @@ north_atlantic.0042 = {
 			just = minor_stress_impact_gain
 			generous = minor_stress_impact_gain
 		}
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.result.good
-		}
+		custom_tooltip = north_atlantic.expedition.result.good
 		custom_description_no_bullet = {
 			text = north_atlantic.expedition.result.intro
 		}
@@ -3490,9 +3479,7 @@ north_atlantic.0042 = {
 			}
 			custom_tooltip = north_atlantic.expedition.result.courtier
 		}
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.success_failure_counter
-		}
+		# custom_tooltip = north_atlantic.expedition.success_failure_counter
 	}
 	option = {
 		name = north_atlantic.0042.c
@@ -3502,20 +3489,17 @@ north_atlantic.0042 = {
 				has_character_flag = RICE_expedition_event_failure_flag_get_away
 			}
 		}
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.result.bad
-		}
+		custom_tooltip = north_atlantic.expedition.result.bad
 		custom_description_no_bullet = {
 			text = north_atlantic.expedition.result.intro
 		}
 		custom_tooltip = north_atlantic.expedition.result.gold.loss
 		custom_tooltip = north_atlantic.expedition.result.prestige.loss
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.success_failure_counter
-		}
+		# custom_tooltip = north_atlantic.expedition.success_failure_counter
 	}
 
 	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
 		hidden_effect = {
 			scope:native_leader = {
 				death = {
@@ -3714,6 +3698,7 @@ north_atlantic.0043 = {
 				}
 			}
 		}
+		RICE_display_america_expedition_success_view_count_effect = yes
 	}
 
 	option = { # Attempt to help them
@@ -3794,6 +3779,7 @@ north_atlantic.0043 = {
 				}
 			}
 		}
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
 		trigger_event = north_atlantic.0044
 		custom_tooltip = north_atlantic.expedition.skill.diplomacy
 	}
@@ -3862,14 +3848,14 @@ north_atlantic.0043 = {
 				}
 			}
 		}
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
 		trigger_event = north_atlantic.0045
 		custom_tooltip = north_atlantic.expedition.skill.diplomacy
 	}
 	option = {
 		name = north_atlantic.0043.c
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.result.neutral
-		}
+		custom_tooltip = north_atlantic.expedition.result.neutral
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
 		hidden_effect = {
 			scope:native = {
 				death = {
@@ -4002,18 +3988,6 @@ north_atlantic.0044 = {
 	immediate = {
 
 		if = {
-			limit = {
-				OR = {
-					var:RICE_north_atlantic_episode_result = flag:RICE_expedition_event_success_flag_steal
-					var:RICE_north_atlantic_episode_result = flag:RICE_expedition_event_success_flag_kidnap
-				}
-			}
-			change_variable = {
-				name = RICE_expedition_success
-				add = 1
-			}
-		}
-		else_if = {
 			limit = {	
 				OR = {
 					var:RICE_north_atlantic_episode_result = flag:success_accept
@@ -4021,11 +3995,28 @@ north_atlantic.0044 = {
 					var:RICE_north_atlantic_episode_result = flag:success_join
 				}
 			}
-			change_variable = {
-				name = RICE_expedition_failure
-				add = 1
+			scope:story = {
+				change_variable = {
+					name = RICE_expedition_success
+					add = 1
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				OR = {
+					var:RICE_north_atlantic_episode_result = flag:RICE_expedition_event_success_flag_steal
+					var:RICE_north_atlantic_episode_result = flag:RICE_expedition_event_success_flag_kidnap
+				}
+			}
+			scope:story = {
+				change_variable = {
+					name = RICE_expedition_failure
+					add = 1
+				}
 			}
 		}	
+		RICE_display_america_expedition_success_view_count_effect = yes
 
 	# 	if = {
 	# 		limit = {
@@ -4057,9 +4048,7 @@ north_atlantic.0044 = {
 				var:RICE_north_atlantic_episode_result = flag:failure_not_alone
 			}
 		}
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.result.bad
-		}
+		custom_tooltip = north_atlantic.expedition.result.bad
 		custom_description_no_bullet = {
 			text = north_atlantic.expedition.result.intro
 		}
@@ -4077,9 +4066,7 @@ north_atlantic.0044 = {
 			}
 			custom_tooltip = north_atlantic.expedition.result.viability.decrease
 		}
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.success_failure_counter
-		}
+		# custom_tooltip = north_atlantic.expedition.success_failure_counter
 	}
 
 	option = {
@@ -4090,9 +4077,7 @@ north_atlantic.0044 = {
 				var:RICE_north_atlantic_episode_result = flag:success_not_alone
 			}
 		}
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.result.good
-		}
+		custom_tooltip = north_atlantic.expedition.result.good
 		custom_description_no_bullet = {
 			text = north_atlantic.expedition.result.intro
 		}
@@ -4106,9 +4091,7 @@ north_atlantic.0044 = {
 			}
 			custom_tooltip = north_atlantic.expedition.result.viability.increase
 		}
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.success_failure_counter
-		}
+		# custom_tooltip = north_atlantic.expedition.success_failure_counter
 	}
 	option = {
 		name = north_atlantic.0044.c
@@ -4120,9 +4103,7 @@ north_atlantic.0044 = {
 			}
 			var:RICE_north_atlantic_episode_result = flag:success_join
 		}
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.result.good
-		}
+		custom_tooltip = north_atlantic.expedition.result.good
 		custom_description_no_bullet = {
 			text = north_atlantic.expedition.result.intro
 		}
@@ -4134,9 +4115,7 @@ north_atlantic.0044 = {
 			}
 			custom_tooltip = north_atlantic.expedition.result.viability.increase
 		}
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.success_failure_counter
-		}
+		# custom_tooltip = north_atlantic.expedition.success_failure_counter
 	}
 	option = {
 		name = north_atlantic.0044.d
@@ -4156,9 +4135,7 @@ north_atlantic.0044 = {
 			callous = minor_stress_impact_gain
 			arrogant = minor_stress_impact_gain
 		}
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.result.good
-		}
+		custom_tooltip = north_atlantic.expedition.result.good
 		custom_description_no_bullet = {
 			text = north_atlantic.expedition.result.intro
 		}
@@ -4170,12 +4147,11 @@ north_atlantic.0044 = {
 			}
 			custom_tooltip = north_atlantic.expedition.result.viability.increase
 		}
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.success_failure_counter
-		}
+		# custom_tooltip = north_atlantic.expedition.success_failure_counter
 	}
 
 	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
 		if = {
 			limit = {
 				NOT = { var:RICE_north_atlantic_episode_result = flag:success_join }
@@ -4304,9 +4280,11 @@ north_atlantic.0045 = {
 					var:RICE_north_atlantic_episode_result = flag:success_capture
 				}
 			}
-			change_variable = {
-				name = RICE_expedition_success
-				add = 1
+			scope:story = {
+				change_variable = {
+					name = RICE_expedition_success
+					add = 1
+				}
 			}
 		}
 		else_if = {
@@ -4316,11 +4294,14 @@ north_atlantic.0045 = {
 					var:RICE_north_atlantic_episode_result = flag:failure_not_alone
 				}
 			}
-			change_variable = {
-				name = RICE_expedition_failure
-				add = 1
+			scope:story = {
+				change_variable = {
+					name = RICE_expedition_failure
+					add = 1
+				}
 			}
 		}
+		RICE_display_america_expedition_success_view_count_effect = yes
 
 	# 	if = {
 	# 		limit = {
@@ -4352,9 +4333,7 @@ north_atlantic.0045 = {
 				var:RICE_north_atlantic_episode_result = flag:failure_not_alone
 			}
 		}
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.result.bad
-		}
+		custom_tooltip = north_atlantic.expedition.result.bad
 		custom_description_no_bullet = {
 			text = north_atlantic.expedition.result.intro
 		}
@@ -4372,9 +4351,7 @@ north_atlantic.0045 = {
 			}
 			custom_tooltip = north_atlantic.expedition.result.viability.decrease
 		}
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.success_failure_counter
-		}
+		# custom_tooltip = north_atlantic.expedition.success_failure_counter
 	}
 
 	option = {
@@ -4390,9 +4367,7 @@ north_atlantic.0045 = {
 				var:RICE_north_atlantic_episode_result = flag:success_capture
 			}
 		}
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.result.good
-		}
+		custom_tooltip = north_atlantic.expedition.result.good
 		custom_description_no_bullet = {
 			text = north_atlantic.expedition.result.intro
 		}
@@ -4413,9 +4388,7 @@ north_atlantic.0045 = {
 			}
 			custom_tooltip = north_atlantic.expedition.result.viability.increase
 		}
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.success_failure_counter
-		}
+		# custom_tooltip = north_atlantic.expedition.success_failure_counter
 	}
 
 	option = {
@@ -4434,9 +4407,7 @@ north_atlantic.0045 = {
 		trait = compassionate
 		trait = just
 		trait = generous
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.result.good
-		}
+		custom_tooltip = north_atlantic.expedition.result.good
 		custom_description_no_bullet = {
 			text = north_atlantic.expedition.result.intro
 		}
@@ -4457,12 +4428,11 @@ north_atlantic.0045 = {
 			}
 			custom_tooltip = north_atlantic.expedition.result.viability.increase
 		}
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.success_failure_counter
-		}
+		# custom_tooltip = north_atlantic.expedition.success_failure_counter
 	}
 
 	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
 		if = {
 			limit = {
 				NOT = { var:RICE_north_atlantic_episode_result = flag:success_capture }
@@ -4535,23 +4505,24 @@ north_atlantic.0046 = {
 	}
 
 	immediate = {
-		change_variable = {
-			name = RICE_expedition_success
-			add = 1
+		scope:story = {
+			change_variable = {
+				name = RICE_expedition_success
+				add = 1
+			}
 		}
 		create_character = {
 			location = root.location # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
 			template = random_barrel_character
 			save_scope_as = sailor
 		}	
+		RICE_display_america_expedition_success_view_count_effect = yes
 	}
 
 	option = {
 		name = north_atlantic.0046.a
 		#custom_tooltip = north_atlantic.expedition.skill.stewardship
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.result.good
-		}
+		custom_tooltip = north_atlantic.expedition.result.good
 		custom_description_no_bullet = {
 			text = north_atlantic.expedition.result.intro
 		}
@@ -4559,12 +4530,11 @@ north_atlantic.0046 = {
 		custom_tooltip = north_atlantic.expedition.result.prestige
 		custom_tooltip = north_atlantic.expedition.result.piety
 		custom_tooltip = north_atlantic.expedition.result.resilience.increase
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.success_failure_counter
-		}
+		# custom_tooltip = north_atlantic.expedition.success_failure_counter
 	}
 
 	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
 		hidden_effect = {
 			scope:sailor = {
 				death = {
@@ -4626,29 +4596,29 @@ north_atlantic.0047 = {
 	}
 
 	immediate = {
-		change_variable = {
-			name = RICE_expedition_failure
-			add = 1
-		}	
+		scope:story = {
+			change_variable = {
+				name = RICE_expedition_failure
+				add = 1
+			}
+		}
+		RICE_display_america_expedition_success_view_count_effect = yes
 	}
 
 	option = {
 		name = north_atlantic.0047.a
 		#custom_tooltip = north_atlantic.expedition.skill.stewardship
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.result.bad
-		}
+		custom_tooltip = north_atlantic.expedition.result.bad
 		custom_description_no_bullet = {
 			text = north_atlantic.expedition.result.intro
 		}
 		custom_tooltip = north_atlantic.expedition.result.gold.loss
 		custom_tooltip = north_atlantic.expedition.result.resilience.decrease
-		custom_description_no_bullet = {
-			text = north_atlantic.expedition.success_failure_counter
-		}
+		# custom_tooltip = north_atlantic.expedition.success_failure_counter
 	}
 
 	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
 		hidden_effect = {
 			scope:sailor = {
 				death = {
