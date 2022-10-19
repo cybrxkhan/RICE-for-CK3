@@ -274,6 +274,8 @@ RICE_greenland_resilience_fail_value = {
 		limit = { exists = global_var:RICE_greenland_resilience }
 		subtract = global_var:RICE_greenland_resilience
 	}
+	min = 1
+	max = 100
 }
 
 RICE_greenland_networks_fail_value = {
@@ -282,24 +284,35 @@ RICE_greenland_networks_fail_value = {
 		limit = { exists = global_var:RICE_greenland_networks }
 		subtract = global_var:RICE_greenland_networks
 	}
+	min = 1
+	max = 100
 }
 
 
 RICE_greenland_auto_fail_chance_value = {
-	value = 10
+	value = 0
 	if = {
 		limit = { exists = global_var:RICE_greenland_resilience }
 		add = {
 			value = RICE_greenland_resilience_fail_value
-			multiply = 0.1
+			multiply = 0.2
 		}
 	}
 	if = {
 		limit = { exists = global_var:RICE_greenland_networks }
 		add = {
 			value = RICE_greenland_networks_fail_value
-			multiply = 0.1
+			multiply = 0.2
 		}
+	}
+	if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+			}				
+		}
+		add = 5
 	}
 	if = {
 		limit = {
@@ -310,6 +323,7 @@ RICE_greenland_auto_fail_chance_value = {
 		}
 		add = 10
 	}
+	min = 1
 	max = 50
 }
 

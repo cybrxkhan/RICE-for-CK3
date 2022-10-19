@@ -9,7 +9,7 @@
 # north_atlantic.0110-north_atlantic.0119			Support Vinland
 # north_atlantic.0120-north_atlantic.0139			Nordsetur Hunt
 # north_atlantic.0140-north_atlantic.0159			Vinland Outposts and Settlements
-# north_atlantic.0160-north_atlantic.0169			Discovering Greenland
+# north_atlantic.0160-north_atlantic.0169			Discovering Greenland/Vinland
 # north_atlantic.0170-north_atlantic.0179			Greenland Struggle Ending Decisions
 # 
 # 
@@ -352,6 +352,69 @@ north_atlantic.0007 = { # Fullscreen Intro Event
 }
 
 
+
+
+# GREENLAND INTRO for people who aren't in the struggle region
+north_atlantic.0008 = { # Fullscreen Intro Event
+	type = fullscreen_event
+	title = north_atlantic.0008.t
+	desc = north_atlantic.0008.desc
+	theme = diplomacy_foreign_affairs_focus
+	override_background = { event_background = RICE_greenland_struggle_start }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	immediate = {
+		play_music_cue = "mx_Struggle_Opening"
+		ordered_in_global_list = {
+			variable = RICE_north_atlantic_erik_the_red
+			save_scope_as = erik
+		}
+	}
+
+	option = {
+		name = north_atlantic.0008.a
+		custom_tooltip = north_atlantic.0008.tooltip
+		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
+	}
+
+}
+
+
+
+# GREENLAND INTRO for people who aren't in the struggle region
+north_atlantic.0009 = { # Fullscreen Intro Event
+	type = fullscreen_event
+	title = north_atlantic.0009.t
+	desc = north_atlantic.0009.desc
+	theme = diplomacy_foreign_affairs_focus
+	override_background = { event_background = RICE_greenland_icebergs }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	immediate = {
+		play_music_cue = "mx_Struggle_ending_compromise"
+		ordered_in_global_list = {
+			variable = RICE_north_atlantic_erik_the_red
+			save_scope_as = erik
+		}
+	}
+
+	option = {
+		name = north_atlantic.0009.a
+		custom_tooltip = north_atlantic.0009.tooltip
+		RICE_greenland_struggle_collapse_ending_tooltip_effect = yes
+		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_view_close"
+	}
+
+	after = {
+		hidden_effect = {
+			RICE_greenland_struggle_abandonment_ending_compensation_effect = yes
+		}
+	}
+
+}
+
+
+
 # Vinland discovery notification
 north_atlantic.0010 = { # Fullscreen Intro Event
 	type = fullscreen_event
@@ -414,10 +477,10 @@ north_atlantic.0011 = { # Fullscreen Intro Event
 	title = north_atlantic.0011.t
 	desc = north_atlantic.0011.desc
 	theme = death
-	trigger = {
-		is_ai = no
-		has_global_variable = RICE_greenland_eastern_settlement_abandoned
- 	}
+	# trigger = {
+	# 	is_ai = no
+	# 	has_global_variable = RICE_greenland_eastern_settlement_abandoned
+ 	# }
 	override_background = { event_background = RICE_greenland_icebergs }
 	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
 
@@ -946,6 +1009,7 @@ north_atlantic.0022 = {
 	}
 
 	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
 		custom_tooltip = RICE_north_atlantic_form_iceland_effect_tooltip_1
 		custom_tooltip = north_atlantic.0022.vassal.tooltip
 		if = {
@@ -2539,6 +2603,7 @@ north_atlantic.0033 = {
 	}
 
 	immediate = {
+		#add_character_flag = RICE_expedition_underway
 		if = {
 			limit = {
 				scope:story = {
@@ -2548,7 +2613,6 @@ north_atlantic.0033 = {
 			# Generate the expedition leader if none exists
 			create_character = {
 				employer = root
-				location = root.capital_province
 				template = random_barrel_character
 				save_scope_as = leader
 			}
@@ -2611,6 +2675,12 @@ north_atlantic.0033 = {
 			}
 			remove_character_flag = RICE_expedition_leader_generated
 		}
+		# if = {
+		# 	limit = {
+		# 		has_character_flag = RICE_expedition_underway
+		# 	}
+		# 	remove_character_flag = RICE_expedition_underway
+		# }
 	}
 
 }
@@ -2652,6 +2722,20 @@ north_atlantic.0034 = {
 			}
 			desc = north_atlantic.0033.desc.leader_not_dead
 		}	
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_expedition_result = flag:success
+				}
+				desc = north_atlantic.0033.desc.success
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_expedition_result = flag:failure
+				}
+				desc = north_atlantic.0033.desc.failure
+			}
+		}	
 	}
 	theme = RICE_theme_north_atlantic_port
 
@@ -2675,7 +2759,7 @@ north_atlantic.0034 = {
 		if = {
 			limit = {
 				scope:story = {
-					var:RICE_expedition_failure >= var:RICE_expedition_success
+					var:RICE_expedition_failure.compare_value >= var:RICE_expedition_success.compare_value
 				}
 			}
 			set_variable = {
@@ -2913,7 +2997,7 @@ north_atlantic.0034 = {
 		}
 		if = {
 			limit = {
-				scope:story.var:RICE_expedition_artifact_count >= 1
+				scope:story.var:RICE_expedition_artifact_count.compare_value >= 1
 			}
 			show_as_tooltip = {
 				scope:native_american_artifact = {
@@ -2925,113 +3009,113 @@ north_atlantic.0034 = {
 		}
 		if = {
 			limit = {
-				scope:story.var:RICE_expedition_modifiers_count >= 1
+				scope:story.var:RICE_expedition_modifiers_count.compare_value >= 1
 			}
 		}
 		if = {
 			limit = {
-				scope:story.var:RICE_expedition_gold_count >= scope:story.var:RICE_expedition_gold_loss_count
+				scope:story.var:RICE_expedition_gold_count.compare_value >= scope:story.var:RICE_expedition_gold_loss_count.compare_value
 			}
 			add_gold = { 25 RICE_expedition_gold_gain_max_value }
 		}
 		else_if = {
 			limit = {
-				scope:story.var:RICE_expedition_gold_count < scope:story.var:RICE_expedition_gold_loss_count
+				scope:story.var:RICE_expedition_gold_count.compare_value < scope:story.var:RICE_expedition_gold_loss_count.compare_value
 			}
 			remove_short_term_gold = { 1 RICE_expedition_gold_loss_max_value }
 		}
 		if = {
 			limit = {
-				scope:story.var:RICE_expedition_prestige_count >= 1
-				scope:story.var:RICE_expedition_prestige_count >= scope:story.var:RICE_expedition_prestige_loss_count
+				scope:story.var:RICE_expedition_prestige_count.compare_value >= 1
+				scope:story.var:RICE_expedition_prestige_count.compare_value >= scope:story.var:RICE_expedition_prestige_loss_count.compare_value
 			}
 			if = {
 				limit = {
-					scope:story.var:RICE_expedition_prestige_count >= 3
+					scope:story.var:RICE_expedition_prestige_count.compare_value >= 3
 				}
 				add_prestige = { 25 300 }
 			}
 			else_if = {
 				limit = {
-					scope:story.var:RICE_expedition_prestige_count >= 2
+					scope:story.var:RICE_expedition_prestige_count.compare_value >= 2
 				}
 				add_prestige = { 25 200 }
 			}
 			else_if = {
 				limit = {
-					scope:story.var:RICE_expedition_prestige_count >= 1
+					scope:story.var:RICE_expedition_prestige_count.compare_value >= 1
 				}
 				add_prestige = { 25 100 }
 			}
 		}
 		else_if = {
 			limit = {
-				scope:story.var:RICE_expedition_prestige_loss_count >= 1
-				scope:story.var:RICE_expedition_prestige_count < scope:story.var:RICE_expedition_prestige_loss_count
+				scope:story.var:RICE_expedition_prestige_loss_count.compare_value >= 1
+				scope:story.var:RICE_expedition_prestige_count.compare_value < scope:story.var:RICE_expedition_prestige_loss_count.compare_value
 			}
 			if = {
 				limit = {
-					scope:story.var:RICE_expedition_prestige_count >= 3
+					scope:story.var:RICE_expedition_prestige_count.compare_value >= 3
 				}
 				add_prestige = { -25 -250 }
 			}
 			else_if = {
 				limit = {
-					scope:story.var:RICE_expedition_prestige_count >= 2
+					scope:story.var:RICE_expedition_prestige_count.compare_value >= 2
 				}
 				add_prestige = { -25 -150 }
 			}
 			else_if = {
 				limit = {
-					scope:story.var:RICE_expedition_prestige_count >= 1
+					scope:story.var:RICE_expedition_prestige_count.compare_value >= 1
 				}
 				add_prestige = { -25 -50 }
 			}
 		}
 		if = {
 			limit = {
-				scope:story.var:RICE_expedition_piety_count >= 1
-				scope:story.var:RICE_expedition_piety_count >= scope:story.var:RICE_expedition_piety_loss_count
+				scope:story.var:RICE_expedition_piety_count.compare_value >= 1
+				scope:story.var:RICE_expedition_piety_count.compare_value >= scope:story.var:RICE_expedition_piety_loss_count.compare_value
 			}
 			if = {
 				limit = {
-					scope:story.var:RICE_expedition_piety_count >= 3
+					scope:story.var:RICE_expedition_piety_count.compare_value >= 3
 				}
 				add_piety = { 25 300 }
 			}
 			else_if = {
 				limit = {
-					scope:story.var:RICE_expedition_piety_count >= 2
+					scope:story.var:RICE_expedition_piety_count.compare_value >= 2
 				}
 				add_piety = { 25 200 }
 			}
 			else_if = {
 				limit = {
-					scope:story.var:RICE_expedition_piety_count >= 1
+					scope:story.var:RICE_expedition_piety_count.compare_value >= 1
 				}
 				add_piety = { 25 100 }
 			}
 		}
 		else_if = {
 			limit = {
-				scope:story.var:RICE_expedition_piety_loss_count >= 1
-				scope:story.var:RICE_expedition_piety_count < scope:story.var:RICE_expedition_piety_loss_count
+				scope:story.var:RICE_expedition_piety_loss_count.compare_value >= 1
+				scope:story.var:RICE_expedition_piety_count.compare_value < scope:story.var:RICE_expedition_piety_loss_count.compare_value
 			}
 			if = {
 				limit = {
-					scope:story.var:RICE_expedition_piety_count >= 3
+					scope:story.var:RICE_expedition_piety_count.compare_value >= 3
 				}
 				add_piety = { -25 -250 }
 			}
 			else_if = {
 				limit = {
-					scope:story.var:RICE_expedition_piety_count >= 2
+					scope:story.var:RICE_expedition_piety_count.compare_value >= 2
 				}
 				add_piety = { -25 -150 }
 			}
 			else_if = {
 				limit = {
-					scope:story.var:RICE_expedition_piety_count >= 1
+					scope:story.var:RICE_expedition_piety_count.compare_value >= 1
 				}
 				add_piety = { -25 -50 }
 			}
@@ -3140,7 +3224,7 @@ north_atlantic.0040 = {
 
 	immediate = {
 		create_character = {
-			location = root.location # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
+			location = title:c_vestisland.holder.capital_province # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
 			template = RICE_native_chief_template
 			save_scope_as = native_leader
 			faith = root.faith
@@ -3667,7 +3751,7 @@ north_atlantic.0042 = {
 	# 			has_character_flag = RICE_expedition_event_success_flag_kidnap
 	# 		}
 	# 		create_character = {
-	#			location = root.location # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
+	#			location = title:c_vestisland.holder.capital_province # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
 	# 			save_scope_as = native_captive
 	# 			culture = scope:native_leader.culture
 	# 			faith = scope:native_leader.faith
@@ -4058,7 +4142,7 @@ north_atlantic.0043 = {
 
 	immediate = {
 		create_character = {
-			location = root.location # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
+			location = title:c_vestisland.holder.capital_province # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
 			template = RICE_native_generic_template
 			save_scope_as = native
 			faith = root.faith
@@ -4494,7 +4578,7 @@ north_atlantic.0044 = {
 	# 			has_character_flag = RICE_expedition_event_success_flag_kidnap
 	# 		}
 	# 		create_character = {
-	#			location = root.location # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
+	#			location = title:c_vestisland.holder.capital_province # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
 	# 			save_scope_as = native_captive
 	# 			culture = scope:native_leader.culture
 	# 			faith = scope:native_leader.faith
@@ -4829,7 +4913,7 @@ north_atlantic.0045 = {
 				trigger = {
 					var:RICE_north_atlantic_episode_result = flag:failure_not_alone
 				}
-				desc = north_atlantic.0045.desc.not_alone_bad
+				desc = north_atlantic.0045.desc.not_alone
 			}
 			triggered_desc = {
 				trigger = {
@@ -4947,7 +5031,7 @@ north_atlantic.0045 = {
 	# 			has_character_flag = RICE_expedition_event_success_flag_kidnap
 	# 		}
 	# 		create_character = {
-	#			location = root.location # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
+	#			location = title:c_vestisland.holder.capital_province # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
 	# 			save_scope_as = native_captive
 	# 			culture = scope:native_leader.culture
 	# 			faith = scope:native_leader.faith
@@ -5318,7 +5402,7 @@ north_atlantic.0046 = {
 			}
 		}
 		create_character = {
-			location = root.location # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
+			location = title:c_vestisland.holder.capital_province # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
 			template = random_barrel_character
 			save_scope_as = sailor
 		}	
@@ -5592,7 +5676,7 @@ north_atlantic.0047 = {
 
 # 	immediate = {
 # 		create_character = {
-#			location = root.location # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
+#			location = title:c_vestisland.holder.capital_province # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
 # 			template = RICE_native_chief_template
 # 			save_scope_as = native_leader
 # 			culture = culture:dorset
@@ -6900,7 +6984,7 @@ north_atlantic.0121 = {
 						has_global_variable = RICE_greenland_inuit_are_here
 					}					
 					create_character = {
-						location = root.location # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
+						location = title:c_vestisland.holder.capital_province # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
 						template = RICE_native_chief_template
 						save_scope_as = native_leader
 						culture = culture:inuit
@@ -6909,7 +6993,7 @@ north_atlantic.0121 = {
 				}
 				else = {				
 					create_character = {
-						location = root.location # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
+						location = title:c_vestisland.holder.capital_province # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
 						template = RICE_native_chief_template
 						save_scope_as = native_leader
 						culture = culture:dorset
@@ -6950,7 +7034,7 @@ north_atlantic.0121 = {
 						has_global_variable = RICE_greenland_inuit_are_here
 					}					
 					create_character = {
-						location = root.location # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
+						location = title:c_vestisland.holder.capital_province # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
 						template = RICE_native_chief_template
 						save_scope_as = native_leader
 						culture = culture:inuit
@@ -6959,7 +7043,7 @@ north_atlantic.0121 = {
 				}
 				else = {				
 					create_character = {
-						location = root.location # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
+						location = title:c_vestisland.holder.capital_province # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
 						template = RICE_native_chief_template
 						save_scope_as = native_leader
 						culture = culture:dorset
@@ -7349,7 +7433,7 @@ north_atlantic.0124 = {
 				has_global_variable = RICE_greenland_inuit_are_here
 			}					
 			create_character = {
-				location = root.location # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
+				location = title:c_vestisland.holder.capital_province # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
 				template = RICE_native_chief_template
 				save_scope_as = native_leader
 				culture = culture:inuit
@@ -7358,7 +7442,7 @@ north_atlantic.0124 = {
 		}
 		else = {				
 			create_character = {
-				location = root.location # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
+				location = title:c_vestisland.holder.capital_province # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
 				template = RICE_native_chief_template
 				save_scope_as = native_leader
 				culture = culture:dorset
@@ -7434,7 +7518,7 @@ north_atlantic.0125 = {
 				has_global_variable = RICE_greenland_inuit_are_here
 			}					
 			create_character = {
-				location = root.location # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
+				location = title:c_vestisland.holder.capital_province # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
 				template = RICE_native_chief_template
 				save_scope_as = native_leader
 				culture = culture:inuit
@@ -7443,7 +7527,7 @@ north_atlantic.0125 = {
 		}
 		else = {				
 			create_character = {
-				location = root.location # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
+				location = title:c_vestisland.holder.capital_province # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
 				template = RICE_native_chief_template
 				save_scope_as = native_leader
 				culture = culture:dorset
@@ -7551,7 +7635,7 @@ north_atlantic.0127 = {
 			}
 		}
 		create_character = {
-			location = root.location # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
+			location = title:c_vestisland.holder.capital_province # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
 			template = RICE_greenland_hunter_template
 			save_scope_as = hunter
 		}
@@ -8297,7 +8381,7 @@ north_atlantic.0160 = {
 		}
 		RICE_enable_greenland_struggle_effect = yes
 		create_character = {
-			location = root.location # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
+			location = title:c_vestisland.holder.capital_province # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
 			template = random_barrel_character
 			culture = root.culture
 			save_scope_as = greenlandic_creator_deity
@@ -8353,7 +8437,7 @@ north_atlantic.0160 = {
 				set_culture = scope:new_culture
 			}
 		}
-		trigger_event = north_atlantic.0161
+		trigger_event = north_atlantic.0161	
 	}
 
 }
@@ -8526,6 +8610,29 @@ north_atlantic.0161 = {
 	}
 
 	after = {
+
+		every_ruler = {
+			limit = {
+				is_ai = no
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = world_europe
+					}
+				}
+				NOR = {
+					any_character_struggle = {
+						involvement = involved
+						is_struggle_type = RICE_greenland_struggle
+					}
+					any_character_struggle = {
+						involvement = interloper
+						is_struggle_type = RICE_greenland_struggle
+					}
+				}
+			}
+			trigger_event = north_atlantic.0008
+		}
 
 		
 		# scope:greenlandic_deity = {
@@ -9159,17 +9266,16 @@ north_atlantic.0166 = {
 		every_ruler = {
 			limit = {
 				#is_ai = no
-				OR = {
-					any_held_title = {
-						tier = tier_county
-						any_county_province = {
-							OR = {
-								geographical_region = world_europe_west_britannia
-								geographical_region = world_europe_west_germania
-								geographical_region = world_europe_west_francia
-								geographical_region = world_europe_north
-							}
-						}
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = world_europe
+						#OR = {
+						#	geographical_region = world_europe_west_britannia
+						#	geographical_region = world_europe_west_germania
+						#	geographical_region = world_europe_west_francia
+						#	geographical_region = world_europe_north
+						#}
 					}
 				}
 			}
@@ -9343,6 +9449,18 @@ north_atlantic.0170 = {
 			limit = {
 				is_ai = no
 				# NOT = { scope:struggle_ender = root }
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = world_europe
+						#OR = {
+						#	geographical_region = world_europe_west_britannia
+						#	geographical_region = world_europe_west_germania
+						#	geographical_region = world_europe_west_francia
+						#	geographical_region = world_europe_north
+						#}
+					}
+				}
 			}
 			trigger_event = north_atlantic.0171
 		}
@@ -9491,6 +9609,18 @@ north_atlantic.0172 = {
 			limit = {
 				is_ai = no
 				# NOT = { scope:struggle_ender = root }
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = world_europe
+						#OR = {
+						#	geographical_region = world_europe_west_britannia
+						#	geographical_region = world_europe_west_germania
+						#	geographical_region = world_europe_west_francia
+						#	geographical_region = world_europe_north
+						#}
+					}
+				}
 			}
 			trigger_event = north_atlantic.0173
 		}
@@ -9599,6 +9729,10 @@ north_atlantic.0174 = {
 			every_ruler = {
 				limit = {
 					is_ai = yes
+					exists = house
+					house = {
+						has_house_modifier = RICE_north_atlantic_greenland_family_estate
+					}
 				}
 				add_gold = RICE_greenland_abandonment_compensation_value
 			}
@@ -9608,6 +9742,18 @@ north_atlantic.0174 = {
 			limit = {
 				is_ai = no
 				# NOT = { scope:struggle_ender = root }
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = world_europe
+						#OR = {
+						#	geographical_region = world_europe_west_britannia
+						#	geographical_region = world_europe_west_germania
+						#	geographical_region = world_europe_west_francia
+						#	geographical_region = world_europe_north
+						#}
+					}
+				}
 			}
 			trigger_event = north_atlantic.0175
 		}
@@ -9638,6 +9784,10 @@ north_atlantic.0175 = { # Fullscreen Intro Event
 		if = {
 			limit = {
 				NOT = { scope:struggle_ender = root }
+				exists = house
+				house = {
+					has_house_modifier = RICE_north_atlantic_greenland_family_estate
+				}
 			}
 			add_gold = RICE_greenland_abandonment_compensation_value
 		}
