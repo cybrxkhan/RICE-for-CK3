@@ -33,6 +33,163 @@ RICE_north_atlantic_maintenance_yearly_global_pulse = {
 			}
 		}
 
+		# Environmental changes
+		if = {
+			limit = {
+				exists = struggle:RICE_greenland_struggle	# Irrelevant if the Greenland struggle doesn't exist
+				NOT = { has_global_variable = RICE_greenland_environmental_change_warning }
+				NOT = { has_global_variable = RICE_greenland_environmental_pressures_timer }
+				current_date >= 1200.1.1
+			}
+			random = {
+				chance = 20
+				modifier = {
+					add = 10
+					current_date >= 1225.1.1
+				}
+				modifier = {
+					add = 10
+					current_date >= 1250.1.1
+				}
+				modifier = {
+					add = 10
+					current_date >= 1275.1.1
+				}
+				modifier = {
+					add = 10
+					current_date >= 1300.1.1
+				}
+				modifier = {
+					add = 10
+					current_date >= 1325.1.1
+				}
+				modifier = {
+					add = 10
+					current_date >= 1350.1.1
+				}
+				modifier = {
+					add = 10
+					current_date >= 1375.1.1
+				}
+				set_global_variable = {
+					name = RICE_greenland_environmental_change_warning
+					value = yes
+				}
+				if = {
+					limit = {
+						NOT = { has_global_variable = RICE_greenland_socio_economic_change_warning }
+					}
+					# Timer so they don't both happen too close to one another
+					set_global_variable = {
+						name = RICE_greenland_socio_economic_pressures_timer
+						value = yes
+						days = 3650 # 10 Years
+					}
+				}
+				every_ruler = {
+					limit = {
+						is_ai = no
+						OR = {
+							any_character_struggle = {
+								involvement = involved
+								is_struggle_type = RICE_greenland_struggle
+							}
+							any_character_struggle = {
+								involvement = interloper
+								is_struggle_type = RICE_greenland_struggle
+							}
+							any_held_title = {
+								tier = tier_county
+								any_county_province = {
+									geographical_region = RICE_greenland_struggle_region		
+								}
+							}
+						}
+					}
+					trigger_event = north_atlantic.0006
+				}
+			}
+		}
+
+		# Socio-Economic changes
+		if = {
+			limit = {
+				exists = struggle:RICE_greenland_struggle	# Irrelevant if the Greenland struggle doesn't exist
+				NOT = { has_global_variable = RICE_greenland_socio_economic_change_warning }
+				NOT = { has_global_variable = RICE_greenland_socio_economic_pressures_timer }
+				current_date >= 1200.1.1
+			}
+			random = {
+				chance = 20
+				modifier = {
+					add = 10
+					current_date >= 1225.1.1
+				}
+				modifier = {
+					add = 10
+					current_date >= 1250.1.1
+				}
+				modifier = {
+					add = 10
+					current_date >= 1275.1.1
+				}
+				modifier = {
+					add = 10
+					current_date >= 1300.1.1
+				}
+				modifier = {
+					add = 10
+					current_date >= 1325.1.1
+				}
+				modifier = {
+					add = 10
+					current_date >= 1350.1.1
+				}
+				modifier = {
+					add = 10
+					current_date >= 1375.1.1
+				}
+				set_global_variable = {
+					name = RICE_greenland_socio_economic_change_warning
+					value = yes
+				}
+				if = {
+					limit = {
+						NOT = { has_global_variable = RICE_greenland_environmental_change_warning }
+					}
+					# Timer so they don't both happen too close to one another
+					set_global_variable = {
+						name = RICE_greenland_environmental_pressures_timer
+						value = yes
+						days = 3650 # 10 Years
+					}
+				}
+				every_ruler = {
+					limit = {
+						is_ai = no
+						OR = {
+							any_character_struggle = {
+								involvement = involved
+								is_struggle_type = RICE_greenland_struggle
+							}
+							any_character_struggle = {
+								involvement = interloper
+								is_struggle_type = RICE_greenland_struggle
+							}
+							any_held_title = {
+								tier = tier_county
+								any_county_province = {
+									geographical_region = RICE_greenland_struggle_region		
+								}
+							}
+						}
+					}
+					trigger_event = north_atlantic.0007
+				}
+			}
+		}
+
+		# The Eastern Settlement Fails
 		if = {
 			limit = {
 				exists = struggle:RICE_greenland_struggle	# Irrelevant if the Greenland struggle doesn't exist
@@ -47,9 +204,46 @@ RICE_north_atlantic_maintenance_yearly_global_pulse = {
 						global_var:RICE_greenland_networks <= 500
 					}
 				}
+				current_date >= 1300.1.1
 			}
 			random = {
-				chance = RICE_greenland_auto_fail_chance_value
+				chance = 5
+				modifier = {
+					add = 10
+					current_date >= 1300.1.1
+				}
+				modifier = {
+					add = 10
+					current_date >= 1325.1.1
+				}
+				modifier = {
+					add = 10
+					current_date >= 1350.1.1
+				}
+				modifier = {
+					add = 10
+					current_date >= 1375.1.1
+				}
+				modifier = {
+					add = 10
+					current_date >= 1400.1.1
+				}
+				modifier = {
+					add = 10
+					global_var:RICE_greenland_resilience <= 250
+				}
+				modifier = {
+					add = 10
+					global_var:RICE_greenland_networks <= 250
+				}
+				modifier = {
+					add = 10
+					global_var:RICE_greenland_resilience <= 100
+				}
+				modifier = {
+					add = 10
+					global_var:RICE_greenland_networks <= 100
+				}
 				set_global_variable = {
 					name = RICE_greenland_eastern_settlement_abandoned
 					value = yes
