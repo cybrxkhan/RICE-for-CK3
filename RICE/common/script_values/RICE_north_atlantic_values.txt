@@ -399,6 +399,30 @@ RICE_greenland_annual_gold_max_value = {
 		}
 		multiply = 0.5
 	}
+	if = {
+		limit = {
+			exists = dynasty
+			dynasty = {
+				has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+			}
+		}
+		add = {
+			value = global_var:RICE_vinland_viability
+			multiply = 0.1
+		}
+	}
+	if = {
+		limit = {
+			exists = dynasty
+			dynasty = {
+				has_dynasty_modifier = RICE_north_atlantic_vinland_settlement
+			}
+		}
+		add = {
+			value = global_var:RICE_vinland_viability
+			multiply = 0.1
+		}
+	}
 	min = 0
 }
 
@@ -450,6 +474,30 @@ RICE_greenland_annual_prestige_max_value = {
 		}
 		multiply = 0.5
 	}
+	if = {
+		limit = {
+			exists = dynasty
+			dynasty = {
+				has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+			}
+		}
+		add = {
+			value = global_var:RICE_vinland_viability
+			multiply = 0.1
+		}
+	}
+	if = {
+		limit = {
+			exists = dynasty
+			dynasty = {
+				has_dynasty_modifier = RICE_north_atlantic_vinland_settlement
+			}
+		}
+		add = {
+			value = global_var:RICE_vinland_viability
+			multiply = 0.1
+		}
+	}
 	min = 0
 }
 
@@ -500,6 +548,30 @@ RICE_greenland_annual_piety_max_value = {
 			}				
 		}
 		multiply = 0.5
+	}
+	if = {
+		limit = {
+			exists = dynasty
+			dynasty = {
+				has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+			}
+		}
+		add = {
+			value = global_var:RICE_vinland_viability
+			multiply = 0.1
+		}
+	}
+	if = {
+		limit = {
+			exists = dynasty
+			dynasty = {
+				has_dynasty_modifier = RICE_north_atlantic_vinland_settlement
+			}
+		}
+		add = {
+			value = global_var:RICE_vinland_viability
+			multiply = 0.1
+		}
 	}
 	min = 0
 }
@@ -800,7 +872,7 @@ RICE_walrus_hunt_great_value = {
 
 
 RICE_walrus_hunt_success_chance = {
-	value = 30
+	value = 15
 	add = {
 		value = global_var:RICE_greenland_resilience
 		multiply = 0.1
@@ -942,3 +1014,94 @@ RICE_walrus_hunt_gold_gain_max_great_value = {
 	multiply = 1.5
 }
 
+RICE_vinland_cost_max_value = {
+	value = 0
+	if = {
+		limit = {
+			OR = {
+				has_global_variable = RICE_greenland_ending_integration
+				has_global_variable = RICE_greenland_ending_indigenous
+				AND = {						
+					exists = struggle:RICE_greenland_struggle
+					struggle:RICE_greenland_struggle = {
+						OR = {
+							is_struggle_phase = struggle_RICE_greenland_phase_integration
+							is_struggle_phase = struggle_RICE_greenland_phase_settlement
+
+						}
+					}
+				}
+			}
+		}
+		add = 10
+	}
+	else_if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+			}				
+		}
+		add = 8
+	}
+	else_if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+			}			
+		}
+		add = 5
+	}
+}
+
+RICE_north_atlantic_vinland_colony_cost_value = {
+	value = 0
+	if = {
+		limit = {
+			OR = {
+				has_global_variable = RICE_greenland_ending_integration
+				has_global_variable = RICE_greenland_ending_indigenous
+				AND = {						
+					exists = struggle:RICE_greenland_struggle
+					struggle:RICE_greenland_struggle = {
+						OR = {
+							is_struggle_phase = struggle_RICE_greenland_phase_integration
+							is_struggle_phase = struggle_RICE_greenland_phase_settlement
+
+						}
+					}
+				}
+			}
+		}
+		add = {
+			value = global_var:RICE_north_atlantic_vinland_outposts
+			multiply = 1
+		}
+	}
+	else_if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+			}				
+		}
+		add = {
+			value = global_var:RICE_north_atlantic_vinland_outposts
+			multiply = 2
+		}
+	}
+	else_if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+			}			
+		}
+		add = {
+			value = global_var:RICE_north_atlantic_vinland_outposts
+			multiply = 3
+		}
+	}
+	max = RICE_vinland_cost_max_value
+}

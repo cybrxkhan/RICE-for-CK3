@@ -663,11 +663,7 @@ RICE_north_atlantic_settle_vinland = {
 	effect = {
 
 		show_as_tooltip = {
-			dynasty = {
-				add_dynasty_modifier = {
-					modifier = RICE_north_atlantic_vinland_settlement
-				}
-			}
+			RICE_establish_permanent_vinland_colony_effect = yes
 		}
 
 		custom_tooltip = RICE_north_atlantic_settle_vinland_effect_tooltip_1
@@ -676,15 +672,15 @@ RICE_north_atlantic_settle_vinland = {
 		custom_tooltip = RICE_north_atlantic_settle_vinland_effect_tooltip_4
 
 
-		if = {
-			limit = {
-				NOR = {
-					has_global_variable = RICE_greenland_ending_integration
-					has_global_variable = RICE_greenland_ending_indigenous
-				}
-			}
-			custom_tooltip = RICE_north_atlantic_settle_vinland_effect_tooltip_5
-		}
+		# if = {
+		# 	limit = {
+		# 		NOR = {
+		# 			has_global_variable = RICE_greenland_ending_integration
+		# 			has_global_variable = RICE_greenland_ending_indigenous
+		# 		}
+		# 	}
+		# 	custom_tooltip = RICE_north_atlantic_settle_vinland_effect_tooltip_5
+		# }
 
 		if = {
 			limit = {
@@ -694,10 +690,10 @@ RICE_north_atlantic_settle_vinland = {
 		}
 
 		trigger_event = {
-			id = north_atlantic.8888 # Have some default courtier options, or allow time to wait for a pick
+			id = north_atlantic.0144 # Have some default courtier options, or allow time to wait for a pick
 									# Event notification to other players in the region
 		}
-		# Change later
+		
 		set_global_variable = {
 			name = RICE_north_atlantic_vinland_colonized
 			value = yes
@@ -913,8 +909,8 @@ RICE_north_atlantic_walrus_ivory_workshop_scandinavia = {
 		is_landed = yes
 		OR = {
 			AND = {
+				exists = struggle:RICE_greenland_struggle
 				OR = {
-					exists = struggle:RICE_greenland_struggle
 					any_character_struggle = {
 						involvement = involved
 						is_struggle_type = RICE_greenland_struggle
@@ -944,13 +940,27 @@ RICE_north_atlantic_walrus_ivory_workshop_scandinavia = {
 		#custom_tooltip = {
 			#	text = struggle_ending_decision_correct_involvement_tt
 			OR = {
-				any_character_struggle = {
-					involvement = involved
-					is_struggle_type = RICE_greenland_struggle
-				}
-				any_character_struggle = {
-					involvement = interloper
-					is_struggle_type = RICE_greenland_struggle
+				AND = {
+					custom_tooltip = {
+						text = RICE_greenland_struggle_integration_or_settlement_phase
+						any_character_struggle = {
+							is_struggle_type = RICE_greenland_struggle
+							OR = {
+								is_struggle_phase = struggle_RICE_greenland_phase_settlement
+								is_struggle_phase = struggle_RICE_greenland_phase_integration
+							}
+						}
+					}
+					OR = {
+						any_character_struggle = {
+							involvement = involved
+							is_struggle_type = RICE_greenland_struggle
+						}
+						any_character_struggle = {
+							involvement = interloper
+							is_struggle_type = RICE_greenland_struggle
+						}
+					}
 				}
 				AND = {
 					custom_description = {
@@ -972,16 +982,6 @@ RICE_north_atlantic_walrus_ivory_workshop_scandinavia = {
 				}
 			}
 		#}
-		custom_tooltip = {
-			text = RICE_greenland_struggle_integration_or_settlement_phase
-			any_character_struggle = {
-				is_struggle_type = RICE_greenland_struggle
-				OR = {
-					is_struggle_phase = struggle_RICE_greenland_phase_settlement
-					is_struggle_phase = struggle_RICE_greenland_phase_integration
-				}
-			}
-		}
 		capital_county = {
 			is_coastal_county = yes
 			#development_level >= 25
@@ -1114,14 +1114,24 @@ RICE_north_atlantic_walrus_ivory_workshop_europe = {
 				}
 			}
 		#}
-		custom_tooltip = {
-			text = RICE_greenland_struggle_integration_or_settlement_phase
-			struggle:RICE_greenland_struggle = {
+		OR = {
+			custom_tooltip = {
+				text = RICE_greenland_struggle_integration_or_settlement_phase
+				struggle:RICE_greenland_struggle = {
+					OR = {
+						is_struggle_phase = struggle_RICE_greenland_phase_settlement
+						is_struggle_phase = struggle_RICE_greenland_phase_integration
+					}
+				}
+			}			
+			custom_description = {
+				text = RICE_greenland_struggle_good_ending_req
 				OR = {
-					is_struggle_phase = struggle_RICE_greenland_phase_settlement
-					is_struggle_phase = struggle_RICE_greenland_phase_integration
+					has_global_variable = RICE_greenland_ending_integration
+					has_global_variable = RICE_greenland_ending_indigenous
 				}
 			}
+
 		}
 		capital_county = {
 			any_county_province = {
@@ -1606,6 +1616,7 @@ RICE_north_atlantic_build_outpost_vinland = {
 		custom_tooltip = RICE_north_atlantic_build_outpost_vinland_effect_tooltip_1
 		custom_tooltip = RICE_north_atlantic_build_outpost_vinland_effect_tooltip_2
 		custom_tooltip = RICE_north_atlantic_build_outpost_vinland_effect_tooltip_3
+		custom_tooltip = RICE_north_atlantic_build_outpost_vinland_effect_tooltip_4
 
 		if = {
 			limit = {
@@ -1614,7 +1625,7 @@ RICE_north_atlantic_build_outpost_vinland = {
 					has_global_variable = RICE_greenland_ending_indigenous
 				}
 			}
-			custom_tooltip = RICE_north_atlantic_build_outpost_vinland_effect_tooltip_4
+			custom_tooltip = RICE_north_atlantic_build_outpost_vinland_effect_tooltip_5
 		}
 
 		if = {

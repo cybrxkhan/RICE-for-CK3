@@ -421,10 +421,6 @@ north_atlantic.0010 = { # Fullscreen Intro Event
 	title = north_atlantic.0010.t
 	desc = north_atlantic.0010.desc
 	theme = realm
-	trigger = {
-		is_ai = no
-		has_global_variable = RICE_greenland_socio_economic_change_warning
- 	}
 	override_background = { event_background = RICE_greenland_struggle_vinland }
 	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
 
@@ -8563,10 +8559,10 @@ north_atlantic.0142 = {
 			desc = north_atlantic.0142.desc.fail
 		}		
 	}
-	theme = RICE_theme_north_atlantic_vinland
+	theme = RICE_theme_north_atlantic_vinland_outpost
 
 	left_portrait = {
-		character = root
+		character = scope:vinland_colonizer
 		animation = happiness
 	}
 	right_portrait = {
@@ -8581,6 +8577,7 @@ north_atlantic.0142 = {
 	}
 
 	immediate = {
+		save_scope_as = vinland_colonizer
 		random = {
 			chance = RICE_north_atlantic_vinland_outpost_success_value
 			modifier = {
@@ -8645,9 +8642,9 @@ north_atlantic.0142 = {
 					add_prestige = 100
 				}
 			}
-			scope:overseer.activity = {
-				complete_activity = yes
-			}
+			# scope:overseer.activity = {
+			# 	complete_activity = yes
+			# }
 			if = {
 				limit = {
 					scope:overseer = {
@@ -8673,6 +8670,15 @@ north_atlantic.0142 = {
 					character = root
 				}
 			}
+			dynasty = {
+				every_dynasty_member = {
+					limit = {
+						is_ruler = yes
+						is_ai = no
+					}
+					trigger_event = north_atlantic.0143
+				}
+			}
 		}
 		else = {
 			struggle:RICE_greenland_struggle = {
@@ -8680,15 +8686,6 @@ north_atlantic.0142 = {
 					catalyst = catalyst_RICE_failed_outpost_vinland
 					character = root
 				}
-			}
-		}
-		dynasty = {
-			every_dynasty_member = {
-				limit = {
-					is_ruler = yes
-					is_ai = no
-				}
-				trigger_event = north_atlantic.0143
 			}
 		}
 	}
@@ -8702,7 +8699,7 @@ north_atlantic.0142 = {
 		}
 		random_owned_story = {
 			limit = {
-				story_type = RICE_story_cycle_north_atlantic_expedition
+				story_type = RICE_story_cycle_north_atlantic_vinland_outpost
 			}
 			end_story = yes
 		}
@@ -8710,6 +8707,192 @@ north_atlantic.0142 = {
 
 }
 
+
+
+
+
+
+
+# Notification to family
+north_atlantic.0143 = {
+	type = character_event
+	title = north_atlantic.0143.t
+	desc = north_atlantic.0143.desc
+	theme = RICE_theme_north_atlantic_vinland_outpost
+
+	right_portrait = {
+		character = scope:vinland_colonizer
+		animation = personality_bold
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			dynasty = {
+				add_dynasty_modifier = {
+					modifier = RICE_north_atlantic_vinland_outpost
+				}
+			}	
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_successful_outpost_vinland
+					character = root
+				}
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.0143.a
+	}
+
+}
+
+
+
+
+# Prepare to Colonize Vinland
+north_atlantic.0144 = {
+	type = character_event
+	title = north_atlantic.0144.t
+	desc = north_atlantic.0144.desc
+	theme = hunt_activity
+	override_background = { event_background = RICE_background_north_atlantic_port }
+
+	right_portrait = {
+		character = root
+		animation = war_defender
+	}
+
+	immediate = {		
+		save_scope_as = vinland_person
+	}
+
+	option = {
+		name = north_atlantic.0144.a
+		custom_tooltip = north_atlantic.0144.a.tooltip
+		create_story = RICE_story_cycle_north_atlantic_vinland_colony
+		every_ruler = {
+			limit = {
+				is_ai = no
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_greenland_struggle_region
+					}
+				}
+			}
+			trigger_event = north_atlantic.0147
+		}
+	}
+
+}
+
+
+# Vinland colony adventure ends
+north_atlantic.0145 = {
+	type = character_event
+	title = north_atlantic.0145.t
+	desc = {
+		desc = north_atlantic.0145.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:overseer
+					scope:overseer = {
+						is_alive = no
+					}
+				}
+				desc = north_atlantic.0145.desc.overseer_not_alive
+			}
+			desc = north_atlantic.0145.desc.overseer_alive
+		}		
+	}
+	theme = RICE_theme_north_atlantic_vinland
+
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+
+	immediate = {	
+		save_scope_as = vinland_colonizer
+		RICE_establish_permanent_vinland_colony_effect = yes		
+	}
+
+	option = {
+		name = north_atlantic.0145.a
+	}
+
+	after = {
+		every_ruler = {
+			limit = {
+				is_ai = no
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_europe_and_mediterranean_region
+					}
+				}
+			}
+			trigger_event = north_atlantic.0146
+		}
+		random_owned_story = {
+			limit = {
+				story_type = RICE_story_cycle_north_atlantic_vinland_colony
+			}
+			end_story = yes
+		}
+	}
+
+}
+
+
+# Vinland colony notification
+north_atlantic.0146 = { # Fullscreen Intro Event
+	type = fullscreen_event
+	title = north_atlantic.0146.t
+	desc = north_atlantic.0146.desc
+	theme = realm
+	override_background = { event_background = RICE_greenland_struggle_vinland }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	immediate = {
+		play_music_cue = "mx_Struggle_ending_conciliation"
+		scope:vinland_colonizer = {			
+			show_as_tooltip = {
+				RICE_establish_permanent_vinland_colony_effect = yes
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.0146.a
+
+		custom_tooltip = north_atlantic.0146.tooltip
+
+		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
+	}
+}
+
+
+# Vinland settlement notification to all rulers
+north_atlantic.0147 = {
+	type = character_event
+	title = north_atlantic.0147.t
+	desc = north_atlantic.0147.desc
+	theme = RICE_theme_north_atlantic_port
+
+	right_portrait = {
+		character = scope:vinland_person
+		animation = war_defender
+	}
+
+	option = {
+		name = north_atlantic.0147.a
+		custom_tooltip = north_atlantic.0147.tooltip
+	}
+
+}
 
 
 
@@ -8969,7 +9152,7 @@ north_atlantic.0161 = {
 				any_held_title = {
 					tier = tier_county
 					any_county_province = {
-						geographical_region = world_europe
+						geographical_region = RICE_europe_and_mediterranean_region
 					}
 				}
 				NOR = {
@@ -9804,7 +9987,7 @@ north_atlantic.0170 = {
 				any_held_title = {
 					tier = tier_county
 					any_county_province = {
-						geographical_region = world_europe
+						geographical_region = RICE_europe_and_mediterranean_region
 						#OR = {
 						#	geographical_region = world_europe_west_britannia
 						#	geographical_region = world_europe_west_germania
@@ -9964,7 +10147,7 @@ north_atlantic.0172 = {
 				any_held_title = {
 					tier = tier_county
 					any_county_province = {
-						geographical_region = world_europe
+						geographical_region = RICE_europe_and_mediterranean_region
 						#OR = {
 						#	geographical_region = world_europe_west_britannia
 						#	geographical_region = world_europe_west_germania
@@ -10097,7 +10280,7 @@ north_atlantic.0174 = {
 				any_held_title = {
 					tier = tier_county
 					any_county_province = {
-						geographical_region = world_europe
+						geographical_region = RICE_europe_and_mediterranean_region
 						#OR = {
 						#	geographical_region = world_europe_west_britannia
 						#	geographical_region = world_europe_west_germania
