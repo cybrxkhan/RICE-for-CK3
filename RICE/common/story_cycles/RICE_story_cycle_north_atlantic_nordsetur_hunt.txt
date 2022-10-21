@@ -33,68 +33,67 @@
 
 	# Hunting trip fails
 	effect_group = {
-		days = { 20 30 }
-		chance = 25
+		days = { 20 75 }
+		chance = 100
 	
 		triggered_effect = {
 			trigger = {
 				exists = var:RICE_walrus_hunt_started
 				exists = var:RICE_walrus_hunt_timer
+				NOT = { exists = var:RICE_walrus_hunt_success_guaranteed }
 				NOT = { exists = var:RICE_walrus_hunt_success }
 				NOT = { exists = var:RICE_walrus_hunt_fail }
 			}
+			# Chances are determined in event north_atlantic.0120, which sets the chances
 			effect = {
 
-				random = {
-					chance = 20
-					set_variable = {
-						name = RICE_walrus_hunt_fail
-						value = yes
-					}
-	
-					set_variable = {
-						name = RICE_walrus_hunt_resilience_decrease
-						value = {
-							value = 0
-							if = {
-								limit = {
-									var:RICE_nordsetur_hunt_type = flag:minor
-								}
-								add = {
-									integer_range = {
-										min = 0
-										max = 3
-									}
+				set_variable = {
+					name = RICE_walrus_hunt_fail
+					value = yes
+				}
+
+				set_variable = {
+					name = RICE_walrus_hunt_resilience_decrease
+					value = {
+						value = 0
+						if = {
+							limit = {
+								var:RICE_nordsetur_hunt_type = flag:minor
+							}
+							add = {
+								integer_range = {
+									min = 0
+									max = 3
 								}
 							}
-							else_if = {
-								limit = {
-									var:RICE_nordsetur_hunt_type = flag:major
-								}
-								add = {
-									integer_range = {
-										min = 1
-										max = 5
-									}
+						}
+						else_if = {
+							limit = {
+								var:RICE_nordsetur_hunt_type = flag:major
+							}
+							add = {
+								integer_range = {
+									min = 1
+									max = 5
 								}
 							}
-							else_if = {
-								limit = {
-									var:RICE_nordsetur_hunt_type = flag:great
-								}
-								add = {
-									integer_range = {
-										min = 1
-										max = 10
-									}
+						}
+						else_if = {
+							limit = {
+								var:RICE_nordsetur_hunt_type = flag:great
+							}
+							add = {
+								integer_range = {
+									min = 1
+									max = 10
 								}
 							}
 						}
 					}
-	
-					story_owner = {
-						trigger_event = north_atlantic.0121 # The hunting trip fails
-					}
+				}
+
+				story_owner = {
+					trigger_event = north_atlantic.0121 # The hunting trip fails
 				}
 
 			}
@@ -109,6 +108,7 @@
 		triggered_effect = {
 			trigger = {
 				exists = var:RICE_walrus_hunt_started
+				exists = var:RICE_walrus_hunt_success_guaranteed
 				NOT = { exists = var:RICE_walrus_hunt_timer }
 				NOT = { exists = var:RICE_walrus_hunt_success }
 			}

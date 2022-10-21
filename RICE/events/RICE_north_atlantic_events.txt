@@ -506,6 +506,79 @@ north_atlantic.0012 = {
 	hidden = yes
 
 	immediate = {
+		# Need to preset the values, or else the interface message won't display correctly for whatever reason
+		set_variable = {
+			name = RICE_north_atlantic_add_gold_value
+			value = {
+				value = 0
+				add = {
+					integer_range = {
+						min = 0
+						max = RICE_greenland_annual_gold_max_value
+					}
+				}
+			}
+		}
+		set_variable = {
+			name = RICE_north_atlantic_add_prestige_value
+			value = {
+				value = 0
+				add = {
+					integer_range = {
+						min = 0
+						max = RICE_greenland_annual_prestige_max_value
+					}
+				}
+			}
+		}
+		set_variable = {
+			name = RICE_north_atlantic_add_piety_value
+			value = {
+				value = 0
+				add = {
+					integer_range = {
+						min = 0
+						max = RICE_greenland_annual_piety_max_value
+					}
+				}
+			}
+		}
+		set_variable = {
+			name = RICE_north_atlantic_subtract_gold_value
+			value = {
+				value = 0
+				add = {
+					integer_range = {
+						min = 0
+						max = RICE_greenland_annual_gold_min_value
+					}
+				}
+			}
+		}
+		set_variable = {
+			name = RICE_north_atlantic_subtract_prestige_value
+			value = {
+				value = 0
+				add = {
+					integer_range = {
+						min = RICE_greenland_annual_prestige_min_value
+						max = 0
+					}
+				}
+			}
+		}
+		set_variable = {
+			name = RICE_north_atlantic_subtract_piety_value
+			value = {
+				value = 0
+				add = {
+					integer_range = {
+						min = RICE_greenland_annual_piety_min_value
+						max = 0
+					}
+				}
+			}
+		}
 		send_interface_message = {
 			type = event_generic_neutral
 			title = RICE_greenland_values_notification.title
@@ -530,6 +603,7 @@ north_atlantic.0012 = {
 				custom_description_no_bullet = {
 					text = RICE_greenland_values_notification.estate.tooltip
 				}
+				# VALUES ARE NOT DISPLAYING CORRECTLY FOR SOME REASON
 				# Chance of gold loss depending on phase and Greenland's Networks
 				# Resilience affects how much is actually lost
 				random_list = {
@@ -554,7 +628,7 @@ north_atlantic.0012 = {
 							}	
 							add = 100							
 						}
-						remove_short_term_gold = { 0 RICE_greenland_annual_gold_min_value }
+						remove_short_term_gold = var:RICE_north_atlantic_subtract_gold_value
 					}
 					90 = {
 						modifier = {
@@ -577,13 +651,131 @@ north_atlantic.0012 = {
 							}	
 							add = 150							
 						}
-						add_gold = { 0 RICE_greenland_annual_gold_max_value }
+						add_gold = var:RICE_north_atlantic_add_gold_value
 					}
 				}
-				add_prestige = { RICE_greenland_annual_piety_min_value RICE_greenland_annual_prestige_max_value }
-				add_piety = { RICE_greenland_annual_prestige_min_value RICE_greenland_annual_piety_max_value }
+				random_list = {
+					20 = {
+						modifier = {
+							add = {
+								value = RICE_greenland_resilience_min_calc_value
+								multiply = -0.1
+							}
+						}
+						modifier = {
+							exists = struggle:RICE_greenland_struggle
+							struggle:RICE_greenland_struggle = {
+								is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+							}	
+							add = 50							
+						}
+						modifier = {
+							exists = struggle:RICE_greenland_struggle
+							struggle:RICE_greenland_struggle = {
+								is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+							}	
+							add = 100							
+						}
+						add_prestige = var:RICE_north_atlantic_subtract_prestige_value
+					}
+					80 = {
+						modifier = {
+							OR = {
+								AND = {
+									exists = struggle:RICE_greenland_struggle
+									struggle:RICE_greenland_struggle = {
+										is_struggle_phase = struggle_RICE_greenland_phase_integration
+									}
+								}
+								has_global_variable = RICE_greenland_ending_integration
+								has_global_variable = RICE_greenland_ending_indigenous
+							}
+							add = 250							
+						}
+						modifier = {
+							exists = struggle:RICE_greenland_struggle
+							struggle:RICE_greenland_struggle = {
+								is_struggle_phase = struggle_RICE_greenland_phase_settlement
+							}	
+							add = 150							
+						}
+						add_prestige = var:RICE_north_atlantic_add_prestige_value
+					}					
+				}
+				random_list = {
+					20 = {
+						modifier = {
+							add = {
+								value = RICE_greenland_resilience_min_calc_value
+								multiply = -0.1
+							}
+						}
+						modifier = {
+							exists = struggle:RICE_greenland_struggle
+							struggle:RICE_greenland_struggle = {
+								is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+							}	
+							add = 50							
+						}
+						modifier = {
+							exists = struggle:RICE_greenland_struggle
+							struggle:RICE_greenland_struggle = {
+								is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+							}	
+							add = 100							
+						}
+						add_piety = var:RICE_north_atlantic_subtract_piety_value
+					}
+					80 = {
+						modifier = {
+							OR = {
+								AND = {
+									exists = struggle:RICE_greenland_struggle
+									struggle:RICE_greenland_struggle = {
+										is_struggle_phase = struggle_RICE_greenland_phase_integration
+									}
+								}
+								has_global_variable = RICE_greenland_ending_integration
+								has_global_variable = RICE_greenland_ending_indigenous
+							}
+							add = 250							
+						}
+						modifier = {
+							exists = struggle:RICE_greenland_struggle
+							struggle:RICE_greenland_struggle = {
+								is_struggle_phase = struggle_RICE_greenland_phase_settlement
+							}	
+							add = 150							
+						}
+						add_piety = var:RICE_north_atlantic_add_piety_value
+					}					
+				}
 			}
 		}
+		if = {
+			limit = { has_variable = RICE_north_atlantic_add_gold_value }
+			remove_variable = RICE_north_atlantic_add_gold_value
+		}	
+		if = {
+			limit = { has_variable = RICE_north_atlantic_add_prestige_value }
+			remove_variable = RICE_north_atlantic_add_prestige_value
+		}	
+		if = {
+			limit = { has_variable = RICE_north_atlantic_add_piety_value }
+			remove_variable = RICE_north_atlantic_add_piety_value
+		}	
+		if = {
+			limit = { has_variable = RICE_north_atlantic_subtract_gold_value }
+			remove_variable = RICE_north_atlantic_subtract_gold_value
+		}	
+		if = {
+			limit = { has_variable = RICE_north_atlantic_subtract_prestige_value }
+			remove_variable = RICE_north_atlantic_subtract_prestige_value
+		}	
+		if = {
+			limit = { has_variable = RICE_north_atlantic_subtract_piety_value }
+			remove_variable = RICE_north_atlantic_subtract_piety_value
+		}	
 	}
 }
 
@@ -1224,7 +1416,7 @@ north_atlantic.0023 = {
 		random_list = {
 			# Small chance they're from somewhere from non-Mediterranean Europe in general
 			5 = {
-				limit = {
+				trigger = {
 					any_county_in_region = {
 						region = graphical_western
 						NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
@@ -1645,7 +1837,7 @@ north_atlantic.0024 = {
 		random_list = {
 			# Small chance they're from somewhere from non-Mediterranean Europe in general
 			5 = {
-				limit = {
+				trigger = {
 					any_county_in_region = {
 						region = graphical_western
 						NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
@@ -6952,6 +7144,21 @@ north_atlantic.0120 = {
 				name = RICE_walrus_hunt_timer
 				days = 75
 			}
+			random = {
+				chance = RICE_walrus_hunt_success_chance
+				modifier = {
+					add = 10
+					scope:story.var:RICE_nordsetur_hunt_type = flag:major
+				}
+				modifier = {
+					add = 20
+					scope:story.var:RICE_nordsetur_hunt_type = flag:great
+				}
+				set_variable = {
+					name = RICE_walrus_hunt_success_guaranteed
+					value = yes
+				}
+			}
 		}
 	}
 
@@ -8424,12 +8631,14 @@ north_atlantic.0142 = {
 				}
 			}
 		}
-		every_dynasty_member = {
-			limit = {
-				is_ruler = yes
-				is_ai = no
+		dynasty = {
+			every_dynasty_member = {
+				limit = {
+					is_ruler = yes
+					is_ai = no
+				}
+				trigger_event = north_atlantic.0143
 			}
-			trigger_event = north_atlantic.0143
 		}
 	}
 

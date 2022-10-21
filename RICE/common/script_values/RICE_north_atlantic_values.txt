@@ -399,6 +399,7 @@ RICE_greenland_annual_gold_max_value = {
 		}
 		multiply = 0.5
 	}
+	min = 0
 }
 
 RICE_greenland_annual_prestige_max_value = {
@@ -449,6 +450,7 @@ RICE_greenland_annual_prestige_max_value = {
 		}
 		multiply = 0.5
 	}
+	min = 0
 }
 
 RICE_greenland_annual_piety_max_value = {
@@ -499,6 +501,7 @@ RICE_greenland_annual_piety_max_value = {
 		}
 		multiply = 0.5
 	}
+	min = 0
 }
 
 
@@ -517,7 +520,7 @@ RICE_greenland_annual_gold_min_value = {
 	value = 0
 	add = {
 		value = RICE_greenland_resilience_min_calc_value
-		multiply = -0.01
+		multiply = -0.05
 	}
 	if = {
 		limit = {
@@ -710,4 +713,140 @@ RICE_expedition_resources_random_value = {
 	max = 100
 }
 
+
+
+
+RICE_walrus_hunt_minor_value = {
+	value = 100
+	subtract = {
+		value = global_var:RICE_greenland_networks
+		multiply = 0.1
+	}
+	if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+			}				
+		}
+		multiply = 1.5
+	}
+	else_if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+			}			
+		}
+		multiply = 2
+	}
+	min = 25
+}
+
+RICE_walrus_hunt_major_value = {
+	value = 150
+	subtract = {
+		value = global_var:RICE_greenland_networks
+		multiply = 0.1
+	}
+	if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+			}				
+		}
+		multiply = 1.5
+	}
+	else_if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+			}			
+		}
+		multiply = 2
+	}
+	min = 50
+}
+
+RICE_walrus_hunt_great_value = {
+	value = 250
+	subtract = {
+		value = global_var:RICE_greenland_networks
+		multiply = 0.1
+	}
+	if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+			}				
+		}
+		multiply = 1.5
+	}
+	else_if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+			}			
+		}
+		multiply = 2
+	}
+	min = 75
+}
+
+
+
+RICE_walrus_hunt_success_chance = {
+	value = 0
+	add = {
+		value = global_var:RICE_greenland_resilience
+		multiply = 0.1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_global_variable = RICE_greenland_ending_integration
+				has_global_variable = RICE_greenland_ending_indigenous
+				AND = {						
+					exists = struggle:RICE_greenland_struggle
+					struggle:RICE_greenland_struggle = {
+						is_struggle_phase = struggle_RICE_greenland_phase_integration
+					}
+				}
+			}
+		}
+		add = 30
+	}
+	else_if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_settlement
+			}				
+		}
+		add = 10
+	}
+	# else_if = {
+	# 	limit = {
+	# 		exists = struggle:RICE_greenland_struggle
+	# 		struggle:RICE_greenland_struggle = {
+	# 			is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+	# 		}				
+	# 	}
+	# 	add = 10
+	# }
+	else_if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+			}			
+		}
+		subtract = 10
+	}
+	min = 20
+}
 
