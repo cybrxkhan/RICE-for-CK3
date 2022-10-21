@@ -18,7 +18,31 @@
 	}
 
 	on_end = {
-
+		# Remove in case they're still around
+		if = {
+			limit = {
+				story_owner = {
+					has_character_flag = RICE_expedition_minor_hunt_flag
+				}
+			}
+			remove_character_flag = RICE_expedition_minor_hunt_flag
+		}
+		else_if = {
+			limit = {
+				story_owner = {
+					has_character_flag = RICE_expedition_major_hunt_flag
+				}
+			}
+			remove_character_flag = RICE_expedition_major_hunt_flag
+		}
+		else_if = {
+			limit = {
+				story_owner = {
+					has_character_flag = RICE_expedition_great_hunt_flag
+				}
+			}
+			remove_character_flag = RICE_expedition_great_hunt_flag
+		}
 	}
 
 	on_owner_death = {
@@ -117,6 +141,41 @@
 				set_variable = {
 					name = RICE_walrus_hunt_success
 					value = yes
+				}
+
+				if = {
+					limit = {
+						var:RICE_nordsetur_hunt_type = flag:minor
+					}
+					story_owner = {
+						add_character_flag = {
+							flag = RICE_expedition_minor_hunt_flag
+							days = 8
+						}
+					}
+				}
+				else_if = {
+					limit = {
+						var:RICE_nordsetur_hunt_type = flag:major
+					}
+					story_owner = {
+						add_character_flag = {
+							flag = RICE_expedition_major_hunt_flag
+							days = 8
+						}
+					}
+					add_character_flag = RICE_expedition_major_hunt_flag
+				}
+				else_if = {
+					limit = {
+						var:RICE_nordsetur_hunt_type = flag:great
+					}
+					story_owner = {
+						add_character_flag = {
+							flag = RICE_expedition_great_hunt_flag
+							days = 8
+						}
+					}
 				}
 
 				set_variable = {

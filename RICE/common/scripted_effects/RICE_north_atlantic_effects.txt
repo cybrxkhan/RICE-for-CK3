@@ -324,6 +324,7 @@ RICE_setup_north_atlantic_flavor_pack_effect = {
 		value = 0
 	}
 
+
 	if = {
 		limit = {
 			current_date > 980.1.1 # Approximate date of when Erik the Red discovered Greenland according to the sagas
@@ -364,6 +365,137 @@ RICE_setup_north_atlantic_flavor_pack_effect = {
 		}
 	}
 
+
+	# Don't know a better way to save costs for walrus hunts to display properly on custom GUI elements, so this method will have to do
+	set_global_variable = {
+		name = RICE_global_walrus_hunt_minor_cost
+		value = RICE_walrus_hunt_minor_value
+	}
+	set_global_variable = {
+		name = RICE_global_walrus_hunt_major_cost
+		value = RICE_walrus_hunt_major_value
+	}
+	set_global_variable = {
+		name = RICE_global_walrus_hunt_great_cost
+		value = RICE_walrus_hunt_great_value
+	}
+	set_global_variable = {
+		name = RICE_global_walrus_hunt_min_gain
+		value = RICE_walrus_hunt_gold_gain_min_value
+	}
+	set_global_variable = {
+		name = RICE_global_walrus_hunt_minor_max_gain
+		value = RICE_walrus_hunt_gold_gain_max_base_value
+	}
+	set_global_variable = {
+		name = RICE_global_walrus_hunt_major_max_gain
+		value = RICE_walrus_hunt_gold_gain_max_major_value
+	}
+	set_global_variable = {
+		name = RICE_global_walrus_hunt_great_max_gain
+		value = RICE_walrus_hunt_gold_gain_max_great_value
+	}	
+
+}
+
+
+RICE_setup_north_atlantic_after_game_start_effect = {
+	# Guarantee it for at least two rulers
+	random_ruler = {
+		limit = {
+			is_ai = yes
+			exists = house
+			NOT = { house = { has_house_modifier = RICE_north_atlantic_greenland_family_estate } }
+			any_character_struggle = {
+				involvement = involved
+				is_struggle_type = RICE_greenland_struggle
+			}
+		}
+		weight = {
+			base = 100
+
+			modifier = {
+				add = 10
+				highest_held_title_tier > tier_county
+			}
+
+			modifier = {
+				add = 10
+				highest_held_title_tier > tier_duchy
+			}
+
+			modifier = {
+				add = 10
+				stewardship > decent_skill_rating
+			}
+
+			modifier = {
+				add = 10
+				OR = {
+					has_trait = diligent
+					has_trait = ambitious
+					has_trait = greedy
+				}
+			}
+
+		}
+		house = {
+			add_house_modifier = {
+				modifier = RICE_north_atlantic_greenland_family_estate
+			}
+		}
+	}
+	if = {
+		limit = {
+			OR = {
+				exists = struggle:RICE_greenland_struggle
+				has_global_variable = RICE_greenland_ending_integration
+				has_global_variable = RICE_greenland_ending_indigenous
+			}			
+		}
+		every_ruler = {
+			limit = {
+				is_ai = yes
+				exists = house
+				NOT = { house = { has_house_modifier = RICE_north_atlantic_greenland_family_estate } }
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = RICE_greenland_struggle
+				}				
+			}
+			random = {
+				chance = 25
+				modifier = {
+					add = 5
+					highest_held_title_tier > tier_county
+				}
+	
+				modifier = {
+					add = 5
+					highest_held_title_tier > tier_duchy
+				}
+	
+				modifier = {
+					add = 5
+					stewardship > decent_skill_rating
+				}
+	
+				modifier = {
+					add = 5
+					OR = {
+						has_trait = diligent
+						has_trait = ambitious
+						has_trait = greedy
+					}
+				}
+				house = {
+					add_house_modifier = {
+						modifier = RICE_north_atlantic_greenland_family_estate
+					}
+				}
+			}
+		}
+	}
 }
 
 
@@ -378,13 +510,17 @@ RICE_enable_greenland_struggle_effect = {
 RICE_greenland_annual_values_calculator_effect = {
 	if = {
 		limit = {
-			exists = struggle:RICE_greenland_struggle
+			OR = {
+				exists = struggle:RICE_greenland_struggle
+				has_global_variable = RICE_greenland_ending_integration
+				has_global_variable = RICE_greenland_ending_indigenous
+			}
 		}
 
 
 		RICE_greenland_values_restart_calculator_effect = yes
 
-		# Calculate Chances
+		# Calculate Values
 		set_global_variable = {
 			name = RICE_vinland_viability_chances
 			value = RICE_north_atlantic_vinland_outpost_success_value
@@ -392,6 +528,36 @@ RICE_greenland_annual_values_calculator_effect = {
 		set_global_variable = {
 			name = RICE_greenland_auto_fail_chances
 			value = RICE_greenland_auto_fail_chance_value
+		}
+
+		# Don't know a better way to save costs for walrus hunts to display properly on custom GUI elements, so this method will have to do
+		set_global_variable = {
+			name = RICE_global_walrus_hunt_minor_cost
+			value = RICE_walrus_hunt_minor_value
+		}
+		set_global_variable = {
+			name = RICE_global_walrus_hunt_major_cost
+			value = RICE_walrus_hunt_major_value
+		}
+		set_global_variable = {
+			name = RICE_global_walrus_hunt_great_cost
+			value = RICE_walrus_hunt_great_value
+		}
+		set_global_variable = {
+			name = RICE_global_walrus_hunt_min_gain
+			value = RICE_walrus_hunt_gold_gain_min_value
+		}
+		set_global_variable = {
+			name = RICE_global_walrus_hunt_minor_max_gain
+			value = RICE_walrus_hunt_gold_gain_max_base_value
+		}
+		set_global_variable = {
+			name = RICE_global_walrus_hunt_major_max_gain
+			value = RICE_walrus_hunt_gold_gain_max_major_value
+		}
+		set_global_variable = {
+			name = RICE_global_walrus_hunt_great_max_gain
+			value = RICE_walrus_hunt_gold_gain_max_great_value
 		}
 
 		# SETTLEMENT PHASE
