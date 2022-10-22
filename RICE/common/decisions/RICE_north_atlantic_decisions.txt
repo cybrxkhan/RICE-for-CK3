@@ -594,25 +594,24 @@ RICE_north_atlantic_settle_vinland = {
 		exists = dynasty
 		highest_held_title_tier > tier_barony
 		is_landed = yes
-		OR = {
-			#exists = struggle:RICE_greenland_struggle
-			has_global_variable = RICE_greenland_ending_integration
-			has_global_variable = RICE_greenland_ending_indigenous
-		}
+		#OR = {
+		#	#exists = struggle:RICE_greenland_struggle
+		#	has_global_variable = RICE_greenland_ending_integration
+		#	has_global_variable = RICE_greenland_ending_indigenous
+		#}
 		any_held_title = {
 			tier = tier_county
 			any_county_province = {
 				geographical_region = RICE_greenland_struggle_region		
 			}
 		}
-		OR = {
-			has_global_variable = RICE_greenland_ending_integration
-			has_global_variable = RICE_greenland_ending_indigenous
-		}
+		#dynasty = {
+		#	has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+		#}
 		NOT = {
 			dynasty = { has_dynasty_modifier = RICE_north_atlantic_vinland_settlement }
 		}
-		global_var:RICE_north_atlantic_vinland_outposts > 0
+		#global_var:RICE_north_atlantic_vinland_outposts > 0
 		#debug_only = yes
 		RICE_is_not_native_american_culture_trigger = yes
 	}
@@ -654,6 +653,7 @@ RICE_north_atlantic_settle_vinland = {
 			has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
 		}
 		global_var:RICE_north_atlantic_vinland_outposts > 0
+		NOT = { has_character_flag = RICE_north_atlantic_ongoing_expedition }
 	}
 
 	is_valid_showing_failures_only = {
@@ -667,9 +667,7 @@ RICE_north_atlantic_settle_vinland = {
 		}
 
 		custom_tooltip = RICE_north_atlantic_settle_vinland_effect_tooltip_1
-		custom_tooltip = RICE_north_atlantic_settle_vinland_effect_tooltip_2
-		custom_tooltip = RICE_north_atlantic_settle_vinland_effect_tooltip_3
-		custom_tooltip = RICE_north_atlantic_settle_vinland_effect_tooltip_4
+		RICE_vinland_colony_tooltip_effect = yes
 
 
 		# if = {
@@ -1600,6 +1598,7 @@ RICE_north_atlantic_build_outpost_vinland = {
 		}
 		#is_house_head = yes
 		#NOT = { house = { has_house_modifier = RICE_north_atlantic_greenland_family_estate } }
+		NOT = { has_character_flag = RICE_north_atlantic_ongoing_expedition }
 	}
 
 	is_valid_showing_failures_only = {
@@ -1648,7 +1647,7 @@ RICE_north_atlantic_build_outpost_vinland = {
 	}
 
 	ai_will_do = {
-		base = 30
+		base = 20
 		modifier = {
 			add = -5
 			has_trait = content
@@ -1666,24 +1665,19 @@ RICE_north_atlantic_build_outpost_vinland = {
 			has_trait = brave
 		}
 		modifier = {
-			add = 25
-			# Happened early 1000s IRL
-			current_date >= 980.1.1
+			add = -10
+			global_var:RICE_vinland_viability < 25
 		}
 		modifier = {
-			add = 50
-			# Happened early 1000s IRL
-			current_date >= 1000.1.1
+			add = 10
+			global_var:RICE_vinland_viability > 60
 		}
 		modifier = {
-			add = 75
-			# Happened early 1000s IRL
-			current_date >= 1020.1.1
-		}
-		modifier = {
-			add = 100
-			# Happened early 1000s IRL
-			current_date >= 1040.1.1
+			add = 40
+			OR = {
+				has_global_variable = RICE_greenland_ending_integration
+				has_global_variable = RICE_greenland_ending_indigenous
+			}
 		}
 	}
 }

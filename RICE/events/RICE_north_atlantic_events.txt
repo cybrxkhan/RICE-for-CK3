@@ -2450,6 +2450,7 @@ north_atlantic.0030 = {
 	}
 
 	immediate = {
+		add_character_flag = RICE_north_atlantic_ongoing_expedition
 		# See scripted_trigger valid_scandinavian_adventurer just in case
 		every_courtier = {
 			limit = {
@@ -8264,6 +8265,10 @@ north_atlantic.0140 = {
 		animation = war_defender
 	}
 
+	immediate = {
+		add_character_flag = RICE_north_atlantic_ongoing_expedition
+	}
+
 	option = {
 		name = north_atlantic.0140.a
 		custom_tooltip = north_atlantic.0140.a.tooltip
@@ -8755,7 +8760,7 @@ north_atlantic.0144 = {
 	type = character_event
 	title = north_atlantic.0144.t
 	desc = north_atlantic.0144.desc
-	theme = hunt_activity
+	theme = realm
 	override_background = { event_background = RICE_background_north_atlantic_port }
 
 	right_portrait = {
@@ -8764,7 +8769,12 @@ north_atlantic.0144 = {
 	}
 
 	immediate = {		
+		add_character_flag = RICE_north_atlantic_ongoing_expedition
 		save_scope_as = vinland_person
+		ordered_in_global_list = {
+			variable = RICE_north_atlantic_leif_erikson_equivalent
+			save_scope_as = leif
+		}
 	}
 
 	option = {
@@ -8792,22 +8802,9 @@ north_atlantic.0144 = {
 north_atlantic.0145 = {
 	type = character_event
 	title = north_atlantic.0145.t
-	desc = {
-		desc = north_atlantic.0145.desc
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					exists = scope:overseer
-					scope:overseer = {
-						is_alive = no
-					}
-				}
-				desc = north_atlantic.0145.desc.overseer_not_alive
-			}
-			desc = north_atlantic.0145.desc.overseer_alive
-		}		
-	}
+	desc = north_atlantic.0145.desc
 	theme = RICE_theme_north_atlantic_vinland
+	override_icon = { reference = "gfx/interface/icons/event_types/type_domain.dds" }
 
 	left_portrait = {
 		character = root
@@ -8816,7 +8813,47 @@ north_atlantic.0145 = {
 
 	immediate = {	
 		save_scope_as = vinland_colonizer
-		RICE_establish_permanent_vinland_colony_effect = yes		
+		ordered_in_global_list = {
+			variable = RICE_north_atlantic_leif_erikson_equivalent
+			save_scope_as = leif
+		}
+		hidden_effect = {
+			if = {
+				limit = {
+					has_dlc_feature = hybridize_culture
+					scope:new_culture = {
+						NOT = {
+							has_cultural_tradition = tradition_culture_blending
+						}
+					}
+				}
+				scope:new_culture = {
+					remove_random_culture_tradition = yes
+					add_culture_tradition = tradition_culture_blending
+					remove_variable = tradition_cooldown
+				}
+			}
+			if = {
+				limit = {
+					scope:new_culture = {
+						NOT = {
+							has_cultural_tradition = tradition_forest_folk
+						}
+					}
+				}
+				scope:new_culture = {
+					remove_random_culture_tradition = yes
+					add_culture_tradition = tradition_forest_folk
+					remove_variable = tradition_cooldown
+				}
+			}
+		}
+
+		# Remove traditions that don't make sense for Greenlandic
+		# It is placed here on the off chance the Whalers or Hunters replaces them, then they aren't needed anymore
+		RICE_vinlandic_remove_nonsensical_traditions_effect = yes
+		RICE_establish_permanent_vinland_colony_effect = yes
+		RICE_vinland_colony_tooltip_effect = yes		
 	}
 
 	option = {
@@ -8868,7 +8905,7 @@ north_atlantic.0146 = { # Fullscreen Intro Event
 	option = {
 		name = north_atlantic.0146.a
 
-		custom_tooltip = north_atlantic.0146.tooltip
+		RICE_vinland_colony_tooltip_effect = yes
 
 		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
 	}
@@ -8894,6 +8931,83 @@ north_atlantic.0147 = {
 
 }
 
+
+# Create the new Vinlandic culture
+north_atlantic.0148 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		create_character = {
+			location = title:c_vestisland.holder.capital_province # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
+			template = random_barrel_character
+			culture = root.culture
+			save_scope_as = vinlandic_creator_deity
+		}
+		hidden_effect = {	
+			scope:vinlandic_creator_deity = {
+				create_divergent_culture = yes		
+			}
+		}
+		scope:new_culture = {
+			random_list = {
+				35 = {
+					modifier = {
+						factor = 1.5
+						root.culture = {
+							has_cultural_pillar = ethos_communal
+						}
+					}
+					set_culture_pillar = ethos_communal
+				}
+				35 = {
+					modifier = {
+						factor = 1.5
+						root.culture = {
+							has_cultural_pillar = ethos_egalitarian
+						}
+					}
+					set_culture_pillar = ethos_egalitarian
+				}
+				15 = {	
+					modifier = {
+						factor = 1.5
+						root.culture = {
+							has_cultural_pillar = ethos_stoic
+						}
+					}				
+					set_culture_pillar = ethos_stoic
+				}
+				15 = {
+					modifier = {
+						factor = 1.5
+						root.culture = {
+							has_cultural_pillar = ethos_spiritual
+						}
+					}					
+					set_culture_pillar = ethos_spiritual
+				}
+			}
+			set_culture_name = {
+				noun = vinlandic
+				collective_noun = vinlandic_collective_noun
+				prefix = vinlandic_prefix
+			}
+			# For random variation and flavor
+			add_random_valid_tradition_replace_if_necessary = scope:vinlandic_creator_deity
+			random = {
+				chance = 50
+				add_random_valid_tradition_replace_if_necessary = scope:vinlandic_creator_deity
+			}
+			# For future reference
+			character:RICE_greenlandic_deity_002 = {
+				set_culture = scope:new_culture
+			}
+		}
+		trigger_event = north_atlantic.0145
+	}
+
+}
 
 
 ######################################################################################
@@ -9245,6 +9359,7 @@ north_atlantic.0162 = {
 	}
 
 	immediate = {
+		add_character_flag = RICE_north_atlantic_ongoing_expedition
 		save_scope_as = leif_sponsor
 		if = {
 			limit = {
