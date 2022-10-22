@@ -2,18 +2,18 @@
 
 	on_setup = {
 		# If you selected one
-		if = {
-			limit = {
-				exists = story_owner.var:RICE_vinland_outpost_overseer_choice
-			}
-			set_variable = {
-				name = RICE_vinland_outpost_overseer
-				value = story_owner.var:RICE_vinland_outpost_overseer_choice
-			}
-			story_owner = {
-				remove_variable = RICE_vinland_outpost_overseer_choice
-			}
-		}
+		# if = {
+		# 	limit = {
+		# 		exists = story_owner.var:RICE_vinland_outpost_overseer_choice
+		# 	}
+		# 	set_variable = {
+		# 		name = RICE_vinland_outpost_overseer
+		# 		value = story_owner.var:RICE_vinland_outpost_overseer_choice
+		# 	}
+		# 	story_owner = {
+		# 		remove_variable = RICE_vinland_outpost_overseer_choice
+		# 	}
+		# }
 	}
 
 	on_end = {
@@ -31,24 +31,28 @@
 		if = {
 			limit = { exists = story_owner.player_heir }
 			# Should not happen, but if it does, heir returns and the expedition is prematurely canceled
-			if = {
-				limit = {
-					story_owner.player_heir = {
-						this = scope:story.var:RICE_vinland_outpost_overseer
-					}
-				}
-				scope:story = { end_story = yes }
-				story_owner.player_heir = {
-					trigger_event = north_atlantic.8888
-				}
-				# ADD CODE WHERE HEIR STILL GETS EXPLORER TRAIT IF THEY EXPLORED ENOUGH
-			}
-			# Should not happen, but if it does, heir returns and the expedition is prematurely canceled
-			else = {	
-				make_story_owner = story_owner.player_heir
-				story_owner.player_heir = {
-					add_character_flag = RICE_north_atlantic_ongoing_expedition
-				}
+			# if = {
+			# 	limit = {
+			# 		story_owner.player_heir = {
+			# 			this = scope:story.var:RICE_vinland_outpost_overseer
+			# 		}
+			# 	}
+			# 	scope:story = { end_story = yes }
+			# 	story_owner.player_heir = {
+			# 		trigger_event = north_atlantic.8888
+			# 	}
+			# 	# ADD CODE WHERE HEIR STILL GETS EXPLORER TRAIT IF THEY EXPLORED ENOUGH
+			# }
+			# # Should not happen, but if it does, heir returns and the expedition is prematurely canceled
+			# else = {	
+			# 	make_story_owner = story_owner.player_heir
+			# 	story_owner.player_heir = {
+			# 		add_character_flag = RICE_north_atlantic_ongoing_expedition
+			# 	}
+			# }	
+			make_story_owner = story_owner.player_heir
+			story_owner.player_heir = {
+				add_character_flag = RICE_north_atlantic_ongoing_expedition
 			}
 		}
 		else = {
@@ -60,28 +64,28 @@
 		}
 	}
 
-	# The overseer returns
+	# Results of the Vinland trip
 	effect_group = {
 		days = { 300 400 } # { 365 1095 } # 1-3 years
 		chance = 100
 	
 		triggered_effect = {
 			trigger = {
-				NOT = { exists = var:RICE_vinland_outpost_overseer_returns }
+				NOT = { exists = var:RICE_vinland_outpost_result_happened }
 			}
 			effect = {
 				set_variable = {
-					name = RICE_vinland_outpost_overseer_returns
+					name = RICE_vinland_outpost_result_happened
 					value = yes
 				}
-				if = {
-					limit = {
-						exists = scope:story.var:RICE_vinland_outpost_overseer
-					}
-					scope:story.var:RICE_vinland_outpost_overseer = {
-						save_scope_as = overseer
-					}
-				}
+				# if = {
+				# 	limit = {
+				# 		exists = scope:story.var:RICE_vinland_outpost_overseer
+				# 	}
+				# 	scope:story.var:RICE_vinland_outpost_overseer = {
+				# 		save_scope_as = overseer
+				# 	}
+				# }
 				story_owner = {
 					trigger_event = north_atlantic.0142
 				}
