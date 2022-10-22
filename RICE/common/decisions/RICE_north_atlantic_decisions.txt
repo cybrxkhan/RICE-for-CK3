@@ -75,6 +75,10 @@ RICE_greenland_struggle_ending_integration_decision = {
 		# 	change_struggle_phase = struggle_RICE_greenland_phase_marginalization
 		# }
 
+		# struggle:RICE_greenland_struggle = {
+		# 	change_struggle_phase = struggle_RICE_greenland_phase_marginalization			
+		# }
+
 		prestige_level >= very_high_prestige_level # Exalted among Men or higher
 
 		# Need to be moderately wealthy
@@ -905,91 +909,72 @@ RICE_north_atlantic_walrus_ivory_workshop_scandinavia = {
 	is_shown = {
 		highest_held_title_tier > tier_barony
 		is_landed = yes
-		OR = {
-			AND = {
-				exists = struggle:RICE_greenland_struggle
-				OR = {
-					any_character_struggle = {
-						involvement = involved
-						is_struggle_type = RICE_greenland_struggle
-					}
-					any_character_struggle = {
-						involvement = interloper
-						is_struggle_type = RICE_greenland_struggle
-					}
-				}
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_greenland_struggle_region		
 			}
-			AND = {
-				any_held_title = {
-					tier = tier_county
-					any_county_province = {
-						geographical_region = RICE_greenland_struggle_region		
-					}
-				}
-				OR = {
-					has_global_variable = RICE_greenland_ending_integration
-					has_global_variable = RICE_greenland_ending_indigenous
-				}
+		}
+		OR = {
+			exists = struggle:RICE_greenland_struggle
+			has_global_variable = RICE_greenland_ending_integration
+			has_global_variable = RICE_greenland_ending_indigenous
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_north_atlantic_walrus_scandinavia_flag
 			}
 		}
 	}
 	
 	is_valid = {
+		# custom_description = {
+		# 	text = RICE_greenland_struggle_region_req
+		# 	any_held_title = {
+		# 		tier = tier_county
+		# 		any_county_province = {
+		# 			geographical_region = RICE_greenland_struggle_region		
+		# 		}
+		# 	}
+		# }
 		#custom_tooltip = {
 			#	text = struggle_ending_decision_correct_involvement_tt
 			OR = {
-				AND = {
-					custom_tooltip = {
-						text = RICE_greenland_struggle_integration_or_settlement_phase
-						any_character_struggle = {
-							is_struggle_type = RICE_greenland_struggle
-							OR = {
-								is_struggle_phase = struggle_RICE_greenland_phase_settlement
-								is_struggle_phase = struggle_RICE_greenland_phase_integration
-							}
-						}
-					}
-					OR = {
-						any_character_struggle = {
-							involvement = involved
-							is_struggle_type = RICE_greenland_struggle
-						}
-						any_character_struggle = {
-							involvement = interloper
-							is_struggle_type = RICE_greenland_struggle
+				custom_tooltip = {
+					text = RICE_greenland_struggle_integration_or_settlement_phase
+					any_character_struggle = {
+						is_struggle_type = RICE_greenland_struggle
+						OR = {
+							is_struggle_phase = struggle_RICE_greenland_phase_settlement
+							is_struggle_phase = struggle_RICE_greenland_phase_integration
 						}
 					}
 				}
-				AND = {
-					custom_description = {
-						text = RICE_greenland_struggle_region_req
-						any_held_title = {
-							tier = tier_county
-							any_county_province = {
-								geographical_region = RICE_greenland_struggle_region		
-							}
-						}
-					}
-					custom_description = {
-						text = RICE_greenland_struggle_good_ending_req
-						OR = {
-							has_global_variable = RICE_greenland_ending_integration
-							has_global_variable = RICE_greenland_ending_indigenous
-						}
+				custom_description = {
+					text = RICE_greenland_struggle_good_ending_req
+					OR = {
+						has_global_variable = RICE_greenland_ending_integration
+						has_global_variable = RICE_greenland_ending_indigenous
 					}
 				}
 			}
 		#}
 		capital_county = {
-			is_coastal_county = yes
-			#development_level >= 25
-			any_county_struggle = { is_struggle_type = RICE_greenland_struggle }
+			any_county_province = {
+				is_coastal = yes
+				has_holding = yes
+				geographical_region = RICE_greenland_struggle_region
+			}
 		}
 		OR = {
-			prestige_level >= 3
-			custom_description = {
-				text = "is_king_or_emperor"
-				highest_held_title_tier >= tier_kingdom
+			prestige_level >= 4
+			AND = {
+				custom_description = {
+					text = "is_king_or_emperor"
+					highest_held_title_tier >= tier_kingdom
+				}
+				prestige_level >= 3
 			}
 		}
 	}
@@ -999,9 +984,16 @@ RICE_north_atlantic_walrus_ivory_workshop_scandinavia = {
 	}
 
 	effect = {
-		show_as_tooltip = {
-			RICE_north_atlantic_establish_walrus_workshop_inside_effect = yes
+		
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_north_atlantic_walrus_scandinavia_flag
 		}
+
+		save_scope_as = walrus_person
+
+		RICE_north_atlantic_establish_walrus_workshop_inside_effect = yes
 
 		custom_tooltip = RICE_north_atlantic_walrus_ivory_workshop_scandinavia_effect_tooltip_1
 		custom_tooltip = RICE_north_atlantic_walrus_ivory_workshop_scandinavia_effect_tooltip_2
@@ -1012,18 +1004,27 @@ RICE_north_atlantic_walrus_ivory_workshop_scandinavia = {
 			custom_tooltip = RICE_north_atlantic_walrus_ivory_workshop_scandinavia_context_tooltip
 		}
 
-		trigger_event = {
-			id = north_atlantic.8888
+		every_ruler = {
+			limit = {
+				is_ai = no
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_europe_and_mediterranean_region
+					}
+				}
+			}
+			trigger_event = north_atlantic.0023
 		}
 
 	}
 
 	cost = { 
-		gold = { value = medium_gold_value }
+		gold = { value = major_gold_value }
 	}	
 
 	ai_potential = {
-		short_term_gold > medium_gold_value
+		short_term_gold > major_gold_value
 	}
 
 	ai_will_do = {
@@ -1061,16 +1062,16 @@ RICE_north_atlantic_walrus_ivory_workshop_europe = {
 	is_shown = {
 		highest_held_title_tier > tier_barony
 		is_landed = yes
-		NOR = {
-			any_character_struggle = {
-				involvement = involved
-				is_struggle_type = RICE_greenland_struggle
-			}
-			any_character_struggle = {
-				involvement = interloper
-				is_struggle_type = RICE_greenland_struggle
-			}
-		}
+		# NOR = {
+		# 	any_character_struggle = {
+		# 		involvement = involved
+		# 		is_struggle_type = RICE_greenland_struggle
+		# 	}
+		# 	any_character_struggle = {
+		# 		involvement = interloper
+		# 		is_struggle_type = RICE_greenland_struggle
+		# 	}
+		# }
 		NOT = {
 			any_held_title = {
 				tier = tier_county
@@ -1096,22 +1097,28 @@ RICE_north_atlantic_walrus_ivory_workshop_europe = {
 				NOT = { geographical_region = RICE_greenland_struggle_region }	
 			}
 		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_north_atlantic_walrus_europe_flag
+			}
+		}
 	}
 	
 	is_valid = {
-		#custom_tooltip = {
-			#	text = struggle_ending_decision_correct_involvement_tt
-			NOR = {
-				any_character_struggle = {
-					involvement = involved
-					is_struggle_type = RICE_greenland_struggle
-				}
-				any_character_struggle = {
-					involvement = interloper
-					is_struggle_type = RICE_greenland_struggle
-				}
-			}
-		#}
+		# #custom_tooltip = {
+		# 	#	text = struggle_ending_decision_correct_involvement_tt
+		# 	NOR = {
+		# 		any_character_struggle = {
+		# 			involvement = involved
+		# 			is_struggle_type = RICE_greenland_struggle
+		# 		}
+		# 		any_character_struggle = {
+		# 			involvement = interloper
+		# 			is_struggle_type = RICE_greenland_struggle
+		# 		}
+		# 	}
+		# #}
 		OR = {
 			custom_tooltip = {
 				text = RICE_greenland_struggle_integration_or_settlement_phase
@@ -1140,10 +1147,13 @@ RICE_north_atlantic_walrus_ivory_workshop_europe = {
 			}
 		}
 		OR = {
-			prestige_level >= 3
-			custom_description = {
-				text = "is_king_or_emperor"
-				highest_held_title_tier >= tier_kingdom
+			prestige_level >= 4
+			AND = {
+				custom_description = {
+					text = "is_king_or_emperor"
+					highest_held_title_tier >= tier_kingdom
+				}
+				prestige_level >= 3
 			}
 		}
 	}
@@ -1152,10 +1162,17 @@ RICE_north_atlantic_walrus_ivory_workshop_europe = {
 		is_available_adult = yes
 	}
 
-	effect = {
-		show_as_tooltip = {
-			RICE_north_atlantic_establish_walrus_workshop_outside_effect = yes
+	effect = {		
+
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_north_atlantic_walrus_europe_flag
 		}
+
+		save_scope_as = walrus_person
+		
+		RICE_north_atlantic_establish_walrus_workshop_outside_effect = yes
 
 		custom_tooltip = RICE_north_atlantic_walrus_ivory_workshop_europe_effect_tooltip_1
 
@@ -1166,18 +1183,27 @@ RICE_north_atlantic_walrus_ivory_workshop_europe = {
 			custom_tooltip = RICE_north_atlantic_walrus_ivory_workshop_europe_context_tooltip
 		}
 
-		trigger_event = {
-			id = north_atlantic.8888
+		every_ruler = {
+			limit = {
+				is_ai = no
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_europe_and_mediterranean_region
+					}
+				}
+			}
+			trigger_event = north_atlantic.0024
 		}
 
 	}
 
 	cost = { 
-		gold = { value = medium_gold_value }
+		gold = { value = major_gold_value }
 	}	
 
 	ai_potential = {
-		short_term_gold > medium_gold_value
+		short_term_gold > major_gold_value
 	}
 
 	ai_will_do = {

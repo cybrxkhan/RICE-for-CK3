@@ -4,7 +4,8 @@
 # 
 # north_atlantic.0000-north_atlantic.0019			Setup events, history events, miscellaneous events and decisions
 # north_atlantic.0020-north_atlantic.0029			Misc decisions
-# north_atlantic.0030-north_atlantic.0099			Minor Expeditions
+# north_atlantic.0030-north_atlantic.0089			Minor Expeditions
+# north_atlantic.0090-north_atlantic.0099			Courtier Spawn
 # north_atlantic.0100-north_atlantic.0109			Support Greenland
 # north_atlantic.0110-north_atlantic.0119			Support Vinland
 # north_atlantic.0120-north_atlantic.0139			Nordsetur Hunt
@@ -777,6 +778,61 @@ north_atlantic.0012 = {
 
 
 
+# Phase change behind the scenes stuff
+north_atlantic.0013 = {
+	hidden = yes
+	type = empty
+	scope = struggle
+
+	trigger = { # Should not need this, but, redundancy check! -h
+		exists = struggle:RICE_greenland_struggle
+	}
+
+	immediate = {
+		
+		if = {
+			limit = { root = { is_struggle_phase = struggle_RICE_greenland_phase_marginalization } }
+			# Remove walrus hunt modifiers
+			random_county_in_region = {
+				region = RICE_greenland_struggle_region
+				limit = {
+					has_county_modifier = RICE_north_atlantic_walrus_carving_workshop_inside_region
+				}
+				save_scope_as = inside_county
+				remove_county_modifier = RICE_north_atlantic_walrus_carving_workshop_inside_region
+				remove_list_global_variable = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_north_atlantic_walrus_scandinavia_flag
+				}
+				holder = {
+					trigger_event = north_atlantic.0025
+				}
+			}
+		}
+		
+		if = {
+			limit = { root = { is_struggle_phase = struggle_RICE_greenland_phase_marginalization } }
+			# Remove walrus hunt modifiers
+			random_county_in_region = {
+				region = world_europe
+				limit = {
+					has_county_modifier = RICE_north_atlantic_walrus_carving_workshop_outside_region
+				}
+				save_scope_as = outside_county
+				remove_county_modifier = RICE_north_atlantic_walrus_carving_workshop_outside_region
+				remove_list_global_variable = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_north_atlantic_walrus_europe_flag
+				}
+				holder = {
+					trigger_event = north_atlantic.0026
+				}
+			}
+		}
+
+	}
+
+}
 
 # The Arrival of the Inuit
 north_atlantic.0014 = {
@@ -1343,1039 +1399,115 @@ north_atlantic.0022 = {
 
 
 
-# European/Gaelic servant/slave is noticed for abilities
+
+# Walrus carving center in Scandinavia
 north_atlantic.0023 = {
 	type = character_event
-	title = {
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					has_character_flag = RICE_north_atlantic_thrall_event
-				}
-				desc = north_atlantic.0023.t.thrall
-			}
-			desc = north_atlantic.0023.t.free
-		}
-	}
-	desc = {
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					has_character_flag = RICE_north_atlantic_thrall_event
-				}
-				desc = north_atlantic.0023.desc.thrall
-			}
-			desc = north_atlantic.0023.desc.free
-		}
-	}
-	theme = stewardship_duty_focus
-	override_background = { event_background = throne_room }
+	title = north_atlantic.0023.t
+	desc = north_atlantic.0023.desc
+	theme = stewardship_wealth_focus
+	override_background = { event_background = RICE_background_north_atlantic_port }
 
-	left_portrait = root
-	right_portrait = {
-		character = scope:thrall
-		triggered_animation = {
-			trigger = { has_character_flag = RICE_north_atlantic_thrall_event }
-			animation = throne_room_bow_2
-		}
-		triggered_animation = {
-			trigger = { NOT = { has_character_flag = RICE_north_atlantic_thrall_event } }
-			animation = personality_content
-		}
-		triggered_outfit = {
-			trigger = { has_character_flag = RICE_north_atlantic_thrall_event }
-			outfit_tags = { beggar_rags }
-		}
-	}
-
-	trigger = {
-		any_held_title = {
-			tier = tier_county
-			any_county_province = {
-				geographical_region = RICE_norse_frontier_region		
-			}
-		}
-		OR = {
-			culture = {
-				has_cultural_pillar = heritage_north_germanic
-			}
-			faith.religion = religion:germanic_religion
-		}
-	}
+	right_portrait = scope:walrus_person
 
 	immediate = {
-		random = {
-			chance = 70
-			add_character_flag = RICE_north_atlantic_thrall_event
-		}
-
-		random_list = {
-			# Small chance they're from somewhere from non-Mediterranean Europe in general
-			5 = {
-				trigger = {
-					any_county_in_region = {
-						region = graphical_western
-						NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
-						NOT = { faith.religion = religion:germanic_religion }
-					}
-				}
-				every_county_in_region = {
-					region = graphical_western
-					limit = {
-						NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
-						NOT = { faith.religion = religion:germanic_religion }
-					}
-					add_to_list = thrall_counties
-				}
-				random_in_list = {
-					list = thrall_counties
-					save_scope_as = county
-				}
-				create_character = {
-					location = root.location
-					template = RICE_gaelic_thrall_template
-					save_scope_as = thrall
-					culture = scope:county.culture
-					faith = scope:county.faith
-				}
-			}
-			# They're Gaelics from the British Isles
-			70 = {
-				trigger = {
-					any_county_in_region = {
-						region = world_europe_west_britannia
-						culture = {
-							has_cultural_pillar = heritage_goidelic
-						}
-						NOT = { faith.religion = religion:germanic_religion }
-					}
-				}
-				every_county_in_region = {
-					region = world_europe_west_britannia
-					limit = {
-						culture = {
-							has_cultural_pillar = heritage_goidelic
-						}
-						NOT = { faith.religion = religion:germanic_religion }
-					}
-					add_to_list = thrall_counties
-				}
-				random_in_list = {
-					list = thrall_counties
-					save_scope_as = county
-				}
-				create_character = {
-					location = root.location
-					template = RICE_gaelic_thrall_template
-					save_scope_as = thrall
-					culture = scope:county.culture
-					faith = scope:county.faith
-				}
-			}
-			# They're from British Isles otherwise
-			25 = {
-				# Find an appropriate county in the British Isles
-				if = {
-					limit = {
-						any_county_in_region = {
-							region = world_europe_west_britannia
-							culture = {
-								OR = {
-									has_cultural_pillar = heritage_brythonic
-									has_cultural_pillar = heritage_goidelic
-									has_cultural_pillar = heritage_west_germanic
-								}
-							}
-							NOT = { faith.religion = religion:germanic_religion }
-						}
-					}
-					every_county_in_region = {
-						region = world_europe_west_britannia
-						limit = {
-							culture = {
-								OR = {
-									has_cultural_pillar = heritage_brythonic
-									has_cultural_pillar = heritage_goidelic
-									has_cultural_pillar = heritage_west_germanic
-								}
-							}
-							NOT = { faith.religion = religion:germanic_religion }
-						}
-						add_to_list = thrall_counties
-					}
-					random_in_list = {
-						list = thrall_counties
-						save_scope_as = county
-					}
-					create_character = {
-						location = root.location
-						template = RICE_gaelic_thrall_template
-						save_scope_as = thrall
-						culture = scope:county.culture
-						faith = scope:county.faith
-					}
-				}
-				# Backup in case no such county can be found
-				else = {
-					random_list = {
-						# Irish
-						# Gaelic
-						# Welsh
-						# Anglo-Saxon
-						# English
-						40 = {
-							create_character = {
-								location = root.location
-								template = RICE_gaelic_thrall_template
-								save_scope_as = thrall
-								culture = culture:irish
-								faith = faith:insular_celtic
-							}				
-						}
-						30 = {
-							create_character = {
-								location = root.location
-								template = RICE_gaelic_thrall_template
-								save_scope_as = thrall
-								culture = culture:gaelic
-								faith = faith:catholic
-							}				
-						}
-						10 = {
-							create_character = {
-								location = root.location
-								template = RICE_gaelic_thrall_template
-								save_scope_as = thrall
-								culture = culture:welsh
-								faith = faith:catholic
-							}				
-						}
-						10 = {
-							trigger = {
-								NOT = {
-									is_target_in_global_variable_list = {
-										name = unavailable_unique_decisions
-										target = flag:embrace_english_culture_decision
-									}
-								}
-							}
-							create_character = {
-								location = root.location
-								template = RICE_gaelic_thrall_template
-								save_scope_as = thrall
-								culture = culture:anglo_saxon
-								faith = faith:catholic
-							}				
-						}
-						10 = {
-							trigger = {
-								is_target_in_global_variable_list = {
-									name = unavailable_unique_decisions
-									target = flag:embrace_english_culture_decision
-								}
-							}
-							create_character = {
-								location = root.location
-								template = RICE_gaelic_thrall_template
-								save_scope_as = thrall
-								culture = culture:english
-								faith = faith:catholic
-							}				
-						}
-					}
-				}
+		scope:walrus_person = {
+			show_as_tooltip = {
+				RICE_north_atlantic_establish_walrus_workshop_inside_effect = yes
 			}
 		}
-
 	}
 
-	# Welcome them to your court
 	option = {
 		name = north_atlantic.0023.a
-		add_prestige = -100
-		add_courtier = scope:thrall
-		if = {
-			limit = {
-				can_add_hook = {
-					target = scope:scope_VIET_otumeel_prankster
-					type = loyalty_hook
-				}
-			}
-			add_hook = {
-				target = scope:scope_VIET_otumeel_prankster
-				type = loyalty_hook
-			}
-		}
-	}
-
-	# No
-	option = {
-		name = north_atlantic.0023.b
-		hidden_effect = {
-			scope:thrall = {
-				death = {
-					death_reason = death_vanished
-				}
-			}
-		}
-	}
-
-	after = {
-		if = {
-			limit = {
-				has_character_flag = RICE_north_atlantic_thrall_event
-			}
-			remove_character_flag = RICE_north_atlantic_thrall_event
-		}
 	}
 
 }
 
 
-# Courtier marries or takes as a concubine a European/Gaelic servant/slave
+# Walrus carving center in Europe
 north_atlantic.0024 = {
 	type = character_event
-	title = {
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					has_character_flag = RICE_north_atlantic_thrall_event
-				}
-				desc = north_atlantic.0024.t.thrall
-			}
-			desc = north_atlantic.0024.t.free
-		}
-	}
-	desc = {
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					has_character_flag = RICE_north_atlantic_thrall_event
-				}
-				desc = north_atlantic.0024.desc.thrall
-			}
-			desc = north_atlantic.0024.desc.free
-		}
-		desc = north_atlantic.0024.desc.marriage
-		# first_valid = {
-		# 	triggered_desc = {
-		# 		trigger = {
-		# 			scope:thrall = { is_spouse_of = scope:courtier }
-		# 		}
-		# 		desc = north_atlantic.0024.desc.marriage
-		# 	}
-		# 	desc = north_atlantic.0024.desc.concubinage
-		# }
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					has_character_flag = RICE_north_atlantic_thrall_event
-				}
-				desc = north_atlantic.0024.desc.conclusion.thrall
-			}
-			desc = north_atlantic.0024.desc.conclusion.free
-		}
-	}
-	theme = marriage
-	override_background = { event_background = relaxing_room }
+	title = north_atlantic.0024.t
+	desc = north_atlantic.0024.desc
+	theme = stewardship_wealth_focus
+	override_background = { event_background = market }
 
-	left_portrait = {
-		character = scope:courtier
-		animation = personality_content
+	right_portrait = scope:walrus_person
+
+	immediate = {
+		scope:walrus_person = {
+			show_as_tooltip = {
+				RICE_north_atlantic_establish_walrus_workshop_outside_effect = yes
+			}
+		}
 	}
+
+	option = {
+		name = north_atlantic.0024.a
+	}
+
+}
+
+
+
+# Walrus carving center in Scandinavia disappears because of Marginalization phase
+north_atlantic.0025 = {
+	type = character_event
+	title = north_atlantic.0025.t
+	desc = north_atlantic.0025.desc
+	theme = stewardship_wealth_focus
+	override_background = { event_background = RICE_background_north_atlantic_port }
+
 	right_portrait = {
-		character = scope:thrall
-		triggered_animation = {
-			trigger = { has_character_flag = RICE_north_atlantic_thrall_event }
-			animation = throne_room_bow_2
-		}
-		triggered_animation = {
-			trigger = { NOT = { has_character_flag = RICE_north_atlantic_thrall_event } }
-			animation = personality_content
-		}
-		triggered_outfit = {
-			trigger = { has_character_flag = RICE_north_atlantic_thrall_event }
-			outfit_tags = { beggar_rags }
-		}
-	}
-
-	trigger = {
-		any_held_title = {
-			tier = tier_county
-			any_county_province = {
-				geographical_region = RICE_norse_frontier_region		
-			}
-		}
-		OR = {
-			culture = {
-				has_cultural_pillar = heritage_north_germanic
-			}
-			faith.religion = religion:germanic_religion
-		}
-		OR = {
-			any_courtier = {
-				is_available_ai_adult = yes
-				is_married = no
-				is_female = no
-				NOR = {
-					has_sexuality = asexual
-					has_sexuality = homosexual
-					has_trait = celibate
-					has_trait = eunuch
-					has_trait = devoted
-				}
-				NOT = { has_council_position = councillor_court_chaplain }
-			}
-			any_vassal = {
-				is_available_ai_adult = yes
-				is_married = no
-				is_female = no
-				NOR = {
-					has_sexuality = asexual
-					has_sexuality = homosexual
-					has_trait = celibate
-					has_trait = eunuch
-					has_trait = devoted
-				}
-				NOT = { has_council_position = councillor_court_chaplain }
-			}
-		}
+		character = root
+		animation = sadness
 	}
 
 	immediate = {
-		random = {
-			chance = 70
-			add_character_flag = RICE_north_atlantic_thrall_event
-		}
-
-		random_courtier = {
-			limit = {
-				is_available_ai_adult = yes
-				is_married = no
-				is_female = no
-				NOR = {
-					has_sexuality = asexual
-					has_sexuality = homosexual
-					has_trait = celibate
-					has_trait = eunuch
-					has_trait = devoted
-				}
-				NOT = { has_council_position = councillor_court_chaplain }
-			}
-			weight = {
-				base = 10
-				# Try to pick someone young
-				modifier = {
-					age <= 45
-					add = 15
-				}
-				# Try to pick someone horny
-				modifier = {
-					has_trait = lustful
-					add = 5
-				}
-				modifier = {
-					has_trait = chaste
-					add = -5
-				}
-				# Try to avoid someone in your dynasty
-				modifier = {
-					dynasty = root.dynasty
-					add = -8
-				}
-			}
-			add_to_list = marriage_candidate	
-		}
-		random_vassal = {
-			limit = {
-				is_available_ai_adult = yes
-				is_married = no
-				is_female = no
-				NOR = {
-					has_sexuality = asexual
-					has_sexuality = homosexual
-					has_trait = celibate
-					has_trait = eunuch
-					has_trait = devoted
-				}
-				NOT = { has_council_position = councillor_court_chaplain }
-			}
-			weight = {
-				base = 10
-				# Try to pick someone young
-				modifier = {
-					age <= 45
-					add = 15
-				}
-				# Try to pick someone horny
-				modifier = {
-					has_trait = lustful
-					add = 5
-				}
-				modifier = {
-					has_trait = chaste
-					add = -5
-				}
-				# Try to avoid someone in your dynasty
-				modifier = {
-					dynasty = root.dynasty
-					add = -8
-				}
-			}
-			add_to_list = marriage_candidate	
-		}
-
-		random_in_list = {
-			list = marriage_candidate
-			save_scope_as = courtier
-		}
-
-		random_list = {
-			# Small chance they're from somewhere from non-Mediterranean Europe in general
-			5 = {
-				trigger = {
-					any_county_in_region = {
-						region = graphical_western
-						NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
-						NOT = { faith.religion = religion:germanic_religion }
-					}
-				}
-				every_county_in_region = {
-					region = graphical_western
-					limit = {
-						NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
-						NOT = { faith.religion = religion:germanic_religion }
-					}
-					add_to_list = thrall_counties
-				}
-				random_in_list = {
-					list = thrall_counties
-					save_scope_as = county
-				}
-				create_character = {
-					location = root.location
-					template = RICE_gaelic_thrall_template
-					gender_female_chance = 100
-					save_scope_as = thrall
-					culture = scope:county.culture
-					faith = scope:county.faith
-				}
-			}
-			# They're Gaelics from the British Isles
-			70 = {
-				trigger = {
-					any_county_in_region = {
-						region = world_europe_west_britannia
-						culture = {
-							has_cultural_pillar = heritage_goidelic
-						}
-						NOT = { faith.religion = religion:germanic_religion }
-					}
-				}
-				every_county_in_region = {
-					region = world_europe_west_britannia
-					limit = {
-						culture = {
-							has_cultural_pillar = heritage_goidelic
-						}
-						NOT = { faith.religion = religion:germanic_religion }
-					}
-					add_to_list = thrall_counties
-				}
-				random_in_list = {
-					list = thrall_counties
-					save_scope_as = county
-				}
-				create_character = {
-					location = root.location
-					template = RICE_gaelic_thrall_template
-					gender_female_chance = 100
-					save_scope_as = thrall
-					culture = scope:county.culture
-					faith = scope:county.faith
-				}
-			}
-			# They're from British Isles otherwise
-			25 = {
-				# Find an appropriate county in the British Isles
-				if = {
-					limit = {
-						any_county_in_region = {
-							region = world_europe_west_britannia
-							culture = {
-								OR = {
-									has_cultural_pillar = heritage_brythonic
-									has_cultural_pillar = heritage_goidelic
-									has_cultural_pillar = heritage_west_germanic
-								}
-							}
-							NOT = { faith.religion = religion:germanic_religion }
-						}
-					}
-					every_county_in_region = {
-						region = world_europe_west_britannia
-						limit = {
-							culture = {
-								OR = {
-									has_cultural_pillar = heritage_brythonic
-									has_cultural_pillar = heritage_goidelic
-									has_cultural_pillar = heritage_west_germanic
-								}
-							}
-							NOT = { faith.religion = religion:germanic_religion }
-						}
-						add_to_list = thrall_counties
-					}
-					random_in_list = {
-						list = thrall_counties
-						save_scope_as = county
-					}
-					create_character = {
-						location = root.location
-						template = RICE_gaelic_thrall_template
-						gender_female_chance = 100
-						save_scope_as = thrall
-						culture = scope:county.culture
-						faith = scope:county.faith
-					}
-				}
-				# Backup in case no such county can be found
-				else = {
-					random_list = {
-						# Irish
-						# Gaelic
-						# Welsh
-						# Anglo-Saxon
-						# English
-						40 = {
-							create_character = {
-								location = root.location
-								template = RICE_gaelic_thrall_template
-								gender_female_chance = 100
-								save_scope_as = thrall
-								culture = culture:irish
-								faith = faith:insular_celtic
-							}				
-						}
-						30 = {
-							create_character = {
-								location = root.location
-								template = RICE_gaelic_thrall_template
-								gender_female_chance = 100
-								save_scope_as = thrall
-								culture = culture:gaelic
-								faith = faith:catholic
-							}				
-						}
-						10 = {
-							create_character = {
-								location = root.location
-								template = RICE_gaelic_thrall_template
-								gender_female_chance = 100
-								save_scope_as = thrall
-								culture = culture:welsh
-								faith = faith:catholic
-							}				
-						}
-						10 = {
-							trigger = {
-								NOT = {
-									is_target_in_global_variable_list = {
-										name = unavailable_unique_decisions
-										target = flag:embrace_english_culture_decision
-									}
-								}
-							}
-							create_character = {
-								location = root.location
-								template = RICE_gaelic_thrall_template
-								gender_female_chance = 100
-								save_scope_as = thrall
-								culture = culture:anglo_saxon
-								faith = faith:catholic
-							}				
-						}
-						10 = {
-							trigger = {
-								is_target_in_global_variable_list = {
-									name = unavailable_unique_decisions
-									target = flag:embrace_english_culture_decision
-								}
-							}
-							create_character = {
-								location = root.location
-								template = RICE_gaelic_thrall_template
-								gender_female_chance = 100
-								save_scope_as = thrall
-								culture = culture:english
-								faith = faith:catholic
-							}				
-						}
-					}
-				}
+		scope:inside_county = {
+			show_as_tooltip = {
+				remove_county_modifier = RICE_north_atlantic_walrus_carving_workshop_inside_region
 			}
 		}
-
-		hidden_effect = {
-			scope:thrall = {
-				random_list = {
-					40 = { }
-					30 = {
-						add_trait = beauty_good_1
-					}
-					20 = {
-						add_trait = beauty_good_2
-					}
-					10 = {
-						add_trait = beauty_good_3
-					}
-				}
-			}
-		}
-
-		# If concubinage is allowed
-		# if = {
-		# 	limit = {
-		# 		scope:thrall = {
-		# 			can_become_concubine_of_character_trigger = { CHARACTER = scope:courtier }
-		# 		}
-		# 		OR = {
-		# 			scope:courtier.culture = { has_cultural_tradition = tradition_concubines }
-		# 			scope:courtier.faith = { has_doctrine = doctrine_concubines }
-		# 		}
-		# 	}
-		# 	random_list = {
-		# 		20 = {
-		# 			scope:thrall = {
-		# 				make_concubine = scope:courtier
-		# 			}
-		# 		}
-		# 		10 = {
-		# 			scope:courtier = {
-		# 				marry = scope:thrall
-		# 			}
-		# 		}
-		# 	}
-		# }
-		# else = {
-		# 	scope:courtier = {
-		# 		marry = scope:thrall
-		# 	}
-		# }
-
-		# Because concubinage is not shown for courtiers
-		scope:courtier = {
-			marry = scope:thrall
-		}
-
-		# Small chance
-		hidden_effect = {
-			random = {
-				chance = 10
-				modifier = {
-					add = -15
-					scope:thrall = {
-						opinion = {
-							target = scope:courtier
-							value < 0
-						}
-					}
-				}
-				modifier = {
-					add = 10
-					scope:thrall = {
-						opinion = {
-							target = scope:courtier
-							value > 25
-						}
-					}
-				}
-				modifier = {
-					add = 10
-					scope:thrall = {
-						opinion = {
-							target = scope:courtier
-							value > 50
-						}
-					}
-				}
-				modifier = {
-					add = 10
-					scope:thrall = {
-						opinion = {
-							target = scope:courtier
-							value > 75
-						}
-					}
-				}
-				modifier = {
-					scope:courtier = { has_trait = sadistic }
-					add = -5
-				}
-				modifier = {
-					scope:courtier = { has_trait = compassionate }
-					add = 5
-				}
-				modifier = {
-					scope:courtier = { has_trait = callous }
-					add = -5
-				}
-				modifier = {
-					scope:courtier = { has_trait = gregarious }
-					add = 5
-				}
-				modifier = {
-					scope:courtier = {
-						OR = {
-							has_trait = beauty_good_1
-							has_trait = beauty_good_2
-							has_trait = beauty_good_3
-						}
-					}
-					add = 5
-				}
-				scope:courtier = {
-					set_random_lover_reason = { TARGET = scope:thrall }
-				}
-			}
-		}
-
-		if = {
-			limit = {
-				scope:courtier = {
-					is_landed = yes
-				}
-			}
-			scope:courtier = {				
-				add_courtier = scope:thrall
-			}
-		}
-		else = {		
-			add_courtier = scope:thrall
-		}
-
 	}
 
-	# Ok
 	option = {
-		name = north_atlantic.0024.a
-		trigger = {
-			has_character_flag = RICE_north_atlantic_thrall_event
-		}
-		stress_impact = {
-			callous = miniscule_stress_impact_gain
-			arrogant = miniscule_stress_impact_gain
-		}
-	}
-	# Ok
-	option = {
-		name = north_atlantic.0024.b
-		trigger = {
-			NOT = { has_character_flag = RICE_north_atlantic_thrall_event }
-		}
-		stress_impact = {
-			callous = miniscule_stress_impact_gain
-			arrogant = miniscule_stress_impact_gain
-		}
-	}
-	# Ok
-	option = {
-		name = north_atlantic.0024.c
-	}
-
-	# # Let the girl choose
-	# option = {
-	# 	name = north_atlantic.0023.b
-	# 	random_list = {
-	# 		desc = north_atlantic.0023.b.tooltip
-	# 		50 = {
-	# 			show_chance = no
-	# 			desc = north_atlantic.0023.b.tooltip.yes
-	# 			# She has to be at least neutral in opinion towards him
-	# 			trigger = {
-	# 				scope:thrall = {
-	# 					opinion = {
-	# 						target = scope:courtier
-	# 						value > -20
-	# 					}
-	# 				}
-	# 			}
-	# 			# He's good looking
-	# 			modifier = {
-	# 				add = 5
-	# 				scope:courtier = {
-	# 					has_trait = beauty_good_1
-	# 				}
-	# 			}
-	# 			modifier = {
-	# 				add = 10
-	# 				scope:courtier = {
-	# 					has_trait = beauty_good_2
-	# 				}
-	# 			}
-	# 			modifier = {
-	# 				add = 15
-	# 				scope:courtier = {
-	# 					has_trait = beauty_good_3
-	# 				}
-	# 			}
-	# 			# The girl is a gold digger or power hungry
-	# 			modifier = {
-	# 				add = 15
-	# 				scope:thrall = {
-	# 					OR = {
-	# 						ai_greed >= medium_positive_ai_value
-	# 						has_trait = greedy
-	# 						has_trait = ambitious
-	# 					}
-	# 				}
-	# 				scope:courtier = {
-	# 					is_landed = yes
-	# 				}
-	# 			}
-	# 			# The guy has a reputation for being nice
-	# 			modifier = {
-	# 				add = 10
-	# 				scope:courtier = {
-	# 					has_trait_benevolent_trigger = yes
-	# 				}
-	# 			}
-	# 			# The guy is good at charming women
-	# 			modifier = {
-	# 				add = 10
-	# 				scope:courtier = {
-	# 					OR = {
-	# 						has_trait = gallant
-	# 						has_trait = seducer
-	# 						has_trait = gregarious
-	# 					}
-	# 				}
-	# 			}							
-	# 			send_interface_toast = {
-	# 				left_icon = ROOT
-	# 				title = north_atlantic.0023.b.toast.yes
-	# 				# If concubinage is allowed
-	# 				if = {
-	# 					limit = {
-	# 						scope:thrall = {
-	# 							can_become_concubine_of_character_trigger = { CHARACTER = scope:courtier }
-	# 						}
-	# 						OR = {
-	# 							scope:courtier.culture = { has_cultural_tradition = tradition_concubines }
-	# 							scope:courtier.faith = { has_doctrine = doctrine_concubines }
-	# 						}
-	# 					}
-	# 					random_list = {
-	# 						20 = {
-	# 							scope:thrall = {
-	# 								make_concubine = scope:courtier
-	# 							}
-	# 						}
-	# 						10 = {
-	# 							scope:courtier = {
-	# 								marry = scope:thrall
-	# 							}
-	# 						}
-	# 					}
-	# 				}
-	# 				else = {
-	# 					scope:courtier = {
-	# 						marry = scope:thrall
-	# 					}
-	# 				}					
-	# 			}
-	# 		}
-	# 		# She is not interested
-	# 		50 = {
-	# 			show_chance = no
-	# 			desc = north_atlantic.0023.b.tooltip.no
-	# 			# He's ugly
-	# 			modifier = {
-	# 				add = 5
-	# 				scope:courtier = {
-	# 					has_trait = beauty_bad_1
-	# 				}
-	# 			}
-	# 			modifier = {
-	# 				add = 10
-	# 				scope:courtier = {
-	# 					has_trait = beauty_bad_2
-	# 				}
-	# 			}
-	# 			modifier = {
-	# 				add = 15
-	# 				scope:courtier = {
-	# 					has_trait = beauty_bad_3
-	# 				}
-	# 			}
-	# 			# The girl looks down on the guy
-	# 			modifier = {
-	# 				add = 5
-	# 				scope:thrall = {
-	# 					has_trait = arrogant
-	# 				}
-	# 			}
-	# 			# The girl is worried
-	# 			modifier = {
-	# 				add = 5
-	# 				scope:thrall = {
-	# 					has_trait = paranoid
-	# 				}
-	# 			}
-	# 			# The guy has a reputation for being an asshole
-	# 			modifier = {
-	# 				add = 25
-	# 				scope:courtier = {
-	# 					OR = {
-	# 						has_trait = sadistic
-	# 						has_trait = wrathful
-	# 						has_trait = arrogant
-	# 						has_trait = callous
-	# 						has_trait = vengeful
-	# 					}
-	# 				}
-	# 			}
-	# 			send_interface_toast = {
-	# 				left_icon = ROOT
-	# 				title = north_atlantic.0023.b.toast.no	
-	# 				scope:courtier = {
-	# 					add_prestige = -100
-	# 				}			
-	# 			}
-	# 			hidden_effect = {
-	# 				scope:thrall = {
-	# 					death = {
-	# 						death_reason = death_vanished
-	# 					}
-	# 				}		
-	# 			}
-	# 		}
-	# 	}
-	# }
-
-	# # Do not give permission
-	# option = {
-	# 	name = north_atlantic.0023.c
-	# 	hidden_effect = {
-	# 		scope:thrall = {
-	# 			death = {
-	# 				death_reason = death_vanished
-	# 			}
-	# 		}
-	# 	}
-	# }
-
-	
-	after = {
-		if = {
-			limit = {
-				has_character_flag = RICE_north_atlantic_thrall_event
-			}
-			remove_character_flag = RICE_north_atlantic_thrall_event
-		}
+		name = north_atlantic.0025.a
+		custom_tooltip = north_atlantic.0025.tooltip
 	}
 
 }
+
+
+# Walrus carving center in Europe
+north_atlantic.0026 = {
+	type = character_event
+	title = north_atlantic.0026.t
+	desc = north_atlantic.0026.desc
+	theme = stewardship_wealth_focus
+	override_background = { event_background = market }
+
+	right_portrait = {
+		character = root
+		animation = sadness
+	}
+
+	immediate = {
+		scope:outside_county = {
+			show_as_tooltip = {
+				remove_county_modifier = RICE_north_atlantic_walrus_carving_workshop_outside_region
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.0026.a
+		custom_tooltip = north_atlantic.0026.tooltip
+	}
+
+}
+
 
 
 
@@ -2384,7 +1516,7 @@ north_atlantic.0024 = {
 # 
 # MINOR EXPEDITIONS
 # 
-# north_atlantic.0030-north_atlantic.0099
+# north_atlantic.0030-north_atlantic.0089
 # 
 ######################################################################################
 
@@ -6076,6 +5208,1971 @@ north_atlantic.0047 = {
 
 
 
+######################################################################################
+# 
+# COURTIER SPAWN
+# 
+# north_atlantic.0090-north_atlantic.0099
+# 
+######################################################################################
+
+
+
+
+
+# European/Gaelic servant/slave is noticed for abilities
+north_atlantic.0090 = {
+	type = character_event
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_north_atlantic_thrall_event
+				}
+				desc = north_atlantic.0090.t.thrall
+			}
+			desc = north_atlantic.0090.t.free
+		}
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_north_atlantic_thrall_event
+				}
+				desc = north_atlantic.0090.desc.thrall
+			}
+			desc = north_atlantic.0090.desc.free
+		}
+	}
+	theme = stewardship_duty_focus
+	override_background = { event_background = throne_room }
+
+	left_portrait = root
+	right_portrait = {
+		character = scope:thrall
+		triggered_animation = {
+			trigger = { has_character_flag = RICE_north_atlantic_thrall_event }
+			animation = throne_room_bow_2
+		}
+		triggered_animation = {
+			trigger = { NOT = { has_character_flag = RICE_north_atlantic_thrall_event } }
+			animation = personality_content
+		}
+		triggered_outfit = {
+			trigger = { has_character_flag = RICE_north_atlantic_thrall_event }
+			outfit_tags = { beggar_rags }
+		}
+	}
+
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_norse_frontier_region		
+			}
+		}
+		OR = {
+			culture = {
+				has_cultural_pillar = heritage_north_germanic
+			}
+			faith.religion = religion:germanic_religion
+		}
+	}
+
+	immediate = {
+		random = {
+			chance = 70
+			add_character_flag = RICE_north_atlantic_thrall_event
+		}
+
+		random_list = {
+			# Small chance they're from somewhere from non-Mediterranean Europe in general
+			5 = {
+				trigger = {
+					any_county_in_region = {
+						region = graphical_western
+						NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
+						NOT = { faith.religion = religion:germanic_religion }
+					}
+				}
+				every_county_in_region = {
+					region = graphical_western
+					limit = {
+						NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
+						NOT = { faith.religion = religion:germanic_religion }
+					}
+					add_to_list = thrall_counties
+				}
+				random_in_list = {
+					list = thrall_counties
+					save_scope_as = county
+				}
+				create_character = {
+					location = root.location
+					template = RICE_gaelic_thrall_template
+					save_scope_as = thrall
+					culture = scope:county.culture
+					faith = scope:county.faith
+				}
+			}
+			# They're Gaelics from the British Isles
+			70 = {
+				trigger = {
+					any_county_in_region = {
+						region = world_europe_west_britannia
+						culture = {
+							has_cultural_pillar = heritage_goidelic
+						}
+						NOT = { faith.religion = religion:germanic_religion }
+					}
+				}
+				every_county_in_region = {
+					region = world_europe_west_britannia
+					limit = {
+						culture = {
+							has_cultural_pillar = heritage_goidelic
+						}
+						NOT = { faith.religion = religion:germanic_religion }
+					}
+					add_to_list = thrall_counties
+				}
+				random_in_list = {
+					list = thrall_counties
+					save_scope_as = county
+				}
+				create_character = {
+					location = root.location
+					template = RICE_gaelic_thrall_template
+					save_scope_as = thrall
+					culture = scope:county.culture
+					faith = scope:county.faith
+				}
+			}
+			# They're from British Isles otherwise
+			25 = {
+				# Find an appropriate county in the British Isles
+				if = {
+					limit = {
+						any_county_in_region = {
+							region = world_europe_west_britannia
+							culture = {
+								OR = {
+									has_cultural_pillar = heritage_brythonic
+									has_cultural_pillar = heritage_goidelic
+									has_cultural_pillar = heritage_west_germanic
+								}
+							}
+							NOT = { faith.religion = religion:germanic_religion }
+						}
+					}
+					every_county_in_region = {
+						region = world_europe_west_britannia
+						limit = {
+							culture = {
+								OR = {
+									has_cultural_pillar = heritage_brythonic
+									has_cultural_pillar = heritage_goidelic
+									has_cultural_pillar = heritage_west_germanic
+								}
+							}
+							NOT = { faith.religion = religion:germanic_religion }
+						}
+						add_to_list = thrall_counties
+					}
+					random_in_list = {
+						list = thrall_counties
+						save_scope_as = county
+					}
+					create_character = {
+						location = root.location
+						template = RICE_gaelic_thrall_template
+						save_scope_as = thrall
+						culture = scope:county.culture
+						faith = scope:county.faith
+					}
+				}
+				# Backup in case no such county can be found
+				else = {
+					random_list = {
+						# Irish
+						# Gaelic
+						# Welsh
+						# Anglo-Saxon
+						# English
+						40 = {
+							create_character = {
+								location = root.location
+								template = RICE_gaelic_thrall_template
+								save_scope_as = thrall
+								culture = culture:irish
+								faith = faith:insular_celtic
+							}				
+						}
+						30 = {
+							create_character = {
+								location = root.location
+								template = RICE_gaelic_thrall_template
+								save_scope_as = thrall
+								culture = culture:gaelic
+								faith = faith:catholic
+							}				
+						}
+						10 = {
+							create_character = {
+								location = root.location
+								template = RICE_gaelic_thrall_template
+								save_scope_as = thrall
+								culture = culture:welsh
+								faith = faith:catholic
+							}				
+						}
+						10 = {
+							trigger = {
+								NOT = {
+									is_target_in_global_variable_list = {
+										name = unavailable_unique_decisions
+										target = flag:embrace_english_culture_decision
+									}
+								}
+							}
+							create_character = {
+								location = root.location
+								template = RICE_gaelic_thrall_template
+								save_scope_as = thrall
+								culture = culture:anglo_saxon
+								faith = faith:catholic
+							}				
+						}
+						10 = {
+							trigger = {
+								is_target_in_global_variable_list = {
+									name = unavailable_unique_decisions
+									target = flag:embrace_english_culture_decision
+								}
+							}
+							create_character = {
+								location = root.location
+								template = RICE_gaelic_thrall_template
+								save_scope_as = thrall
+								culture = culture:english
+								faith = faith:catholic
+							}				
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+	# Welcome them to your court
+	option = {
+		name = north_atlantic.0090.a
+		add_prestige = -100
+		add_courtier = scope:thrall
+		if = {
+			limit = {
+				can_add_hook = {
+					target = scope:scope_VIET_otumeel_prankster
+					type = loyalty_hook
+				}
+			}
+			add_hook = {
+				target = scope:scope_VIET_otumeel_prankster
+				type = loyalty_hook
+			}
+		}
+	}
+
+	# No
+	option = {
+		name = north_atlantic.0090.b
+		hidden_effect = {
+			scope:thrall = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_north_atlantic_thrall_event
+			}
+			remove_character_flag = RICE_north_atlantic_thrall_event
+		}
+	}
+
+}
+
+
+# Courtier marries or takes as a concubine a European/Gaelic servant/slave
+north_atlantic.0091 = {
+	type = character_event
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_north_atlantic_thrall_event
+				}
+				desc = north_atlantic.0091.t.thrall
+			}
+			desc = north_atlantic.0091.t.free
+		}
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_north_atlantic_thrall_event
+				}
+				desc = north_atlantic.0091.desc.thrall
+			}
+			desc = north_atlantic.0091.desc.free
+		}
+		desc = north_atlantic.0091.desc.marriage
+		# first_valid = {
+		# 	triggered_desc = {
+		# 		trigger = {
+		# 			scope:thrall = { is_spouse_of = scope:courtier }
+		# 		}
+		# 		desc = north_atlantic.0091.desc.marriage
+		# 	}
+		# 	desc = north_atlantic.0091.desc.concubinage
+		# }
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_north_atlantic_thrall_event
+				}
+				desc = north_atlantic.0091.desc.conclusion.thrall
+			}
+			desc = north_atlantic.0091.desc.conclusion.free
+		}
+	}
+	theme = marriage
+	override_background = { event_background = relaxing_room }
+
+	left_portrait = {
+		character = scope:courtier
+		animation = personality_content
+	}
+	right_portrait = {
+		character = scope:thrall
+		triggered_animation = {
+			trigger = { has_character_flag = RICE_north_atlantic_thrall_event }
+			animation = throne_room_bow_2
+		}
+		triggered_animation = {
+			trigger = { NOT = { has_character_flag = RICE_north_atlantic_thrall_event } }
+			animation = personality_content
+		}
+		triggered_outfit = {
+			trigger = { has_character_flag = RICE_north_atlantic_thrall_event }
+			outfit_tags = { beggar_rags }
+		}
+	}
+
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_norse_frontier_region		
+			}
+		}
+		OR = {
+			culture = {
+				has_cultural_pillar = heritage_north_germanic
+			}
+			faith.religion = religion:germanic_religion
+		}
+		OR = {
+			any_courtier = {
+				is_available_ai_adult = yes
+				is_married = no
+				is_female = no
+				NOR = {
+					has_sexuality = asexual
+					has_sexuality = homosexual
+					has_trait = celibate
+					has_trait = eunuch
+					has_trait = devoted
+				}
+				NOT = { has_council_position = councillor_court_chaplain }
+			}
+			any_vassal = {
+				is_available_ai_adult = yes
+				is_married = no
+				is_female = no
+				NOR = {
+					has_sexuality = asexual
+					has_sexuality = homosexual
+					has_trait = celibate
+					has_trait = eunuch
+					has_trait = devoted
+				}
+				NOT = { has_council_position = councillor_court_chaplain }
+			}
+		}
+	}
+
+	immediate = {
+		random = {
+			chance = 70
+			add_character_flag = RICE_north_atlantic_thrall_event
+		}
+
+		random_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+				is_married = no
+				is_female = no
+				NOR = {
+					has_sexuality = asexual
+					has_sexuality = homosexual
+					has_trait = celibate
+					has_trait = eunuch
+					has_trait = devoted
+				}
+				NOT = { has_council_position = councillor_court_chaplain }
+			}
+			weight = {
+				base = 10
+				# Try to pick someone young
+				modifier = {
+					age <= 45
+					add = 15
+				}
+				# Try to pick someone horny
+				modifier = {
+					has_trait = lustful
+					add = 5
+				}
+				modifier = {
+					has_trait = chaste
+					add = -5
+				}
+				# Try to avoid someone in your dynasty
+				modifier = {
+					dynasty = root.dynasty
+					add = -8
+				}
+			}
+			add_to_list = marriage_candidate	
+		}
+		random_vassal = {
+			limit = {
+				is_available_ai_adult = yes
+				is_married = no
+				is_female = no
+				NOR = {
+					has_sexuality = asexual
+					has_sexuality = homosexual
+					has_trait = celibate
+					has_trait = eunuch
+					has_trait = devoted
+				}
+				NOT = { has_council_position = councillor_court_chaplain }
+			}
+			weight = {
+				base = 10
+				# Try to pick someone young
+				modifier = {
+					age <= 45
+					add = 15
+				}
+				# Try to pick someone horny
+				modifier = {
+					has_trait = lustful
+					add = 5
+				}
+				modifier = {
+					has_trait = chaste
+					add = -5
+				}
+				# Try to avoid someone in your dynasty
+				modifier = {
+					dynasty = root.dynasty
+					add = -8
+				}
+			}
+			add_to_list = marriage_candidate	
+		}
+
+		random_in_list = {
+			list = marriage_candidate
+			save_scope_as = courtier
+		}
+
+		random_list = {
+			# Small chance they're from somewhere from non-Mediterranean Europe in general
+			5 = {
+				trigger = {
+					any_county_in_region = {
+						region = graphical_western
+						NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
+						NOT = { faith.religion = religion:germanic_religion }
+					}
+				}
+				every_county_in_region = {
+					region = graphical_western
+					limit = {
+						NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
+						NOT = { faith.religion = religion:germanic_religion }
+					}
+					add_to_list = thrall_counties
+				}
+				random_in_list = {
+					list = thrall_counties
+					save_scope_as = county
+				}
+				create_character = {
+					location = root.location
+					template = RICE_gaelic_thrall_template
+					gender_female_chance = 100
+					save_scope_as = thrall
+					culture = scope:county.culture
+					faith = scope:county.faith
+				}
+			}
+			# They're Gaelics from the British Isles
+			70 = {
+				trigger = {
+					any_county_in_region = {
+						region = world_europe_west_britannia
+						culture = {
+							has_cultural_pillar = heritage_goidelic
+						}
+						NOT = { faith.religion = religion:germanic_religion }
+					}
+				}
+				every_county_in_region = {
+					region = world_europe_west_britannia
+					limit = {
+						culture = {
+							has_cultural_pillar = heritage_goidelic
+						}
+						NOT = { faith.religion = religion:germanic_religion }
+					}
+					add_to_list = thrall_counties
+				}
+				random_in_list = {
+					list = thrall_counties
+					save_scope_as = county
+				}
+				create_character = {
+					location = root.location
+					template = RICE_gaelic_thrall_template
+					gender_female_chance = 100
+					save_scope_as = thrall
+					culture = scope:county.culture
+					faith = scope:county.faith
+				}
+			}
+			# They're from British Isles otherwise
+			25 = {
+				# Find an appropriate county in the British Isles
+				if = {
+					limit = {
+						any_county_in_region = {
+							region = world_europe_west_britannia
+							culture = {
+								OR = {
+									has_cultural_pillar = heritage_brythonic
+									has_cultural_pillar = heritage_goidelic
+									has_cultural_pillar = heritage_west_germanic
+								}
+							}
+							NOT = { faith.religion = religion:germanic_religion }
+						}
+					}
+					every_county_in_region = {
+						region = world_europe_west_britannia
+						limit = {
+							culture = {
+								OR = {
+									has_cultural_pillar = heritage_brythonic
+									has_cultural_pillar = heritage_goidelic
+									has_cultural_pillar = heritage_west_germanic
+								}
+							}
+							NOT = { faith.religion = religion:germanic_religion }
+						}
+						add_to_list = thrall_counties
+					}
+					random_in_list = {
+						list = thrall_counties
+						save_scope_as = county
+					}
+					create_character = {
+						location = root.location
+						template = RICE_gaelic_thrall_template
+						gender_female_chance = 100
+						save_scope_as = thrall
+						culture = scope:county.culture
+						faith = scope:county.faith
+					}
+				}
+				# Backup in case no such county can be found
+				else = {
+					random_list = {
+						# Irish
+						# Gaelic
+						# Welsh
+						# Anglo-Saxon
+						# English
+						40 = {
+							create_character = {
+								location = root.location
+								template = RICE_gaelic_thrall_template
+								gender_female_chance = 100
+								save_scope_as = thrall
+								culture = culture:irish
+								faith = faith:insular_celtic
+							}				
+						}
+						30 = {
+							create_character = {
+								location = root.location
+								template = RICE_gaelic_thrall_template
+								gender_female_chance = 100
+								save_scope_as = thrall
+								culture = culture:gaelic
+								faith = faith:catholic
+							}				
+						}
+						10 = {
+							create_character = {
+								location = root.location
+								template = RICE_gaelic_thrall_template
+								gender_female_chance = 100
+								save_scope_as = thrall
+								culture = culture:welsh
+								faith = faith:catholic
+							}				
+						}
+						10 = {
+							trigger = {
+								NOT = {
+									is_target_in_global_variable_list = {
+										name = unavailable_unique_decisions
+										target = flag:embrace_english_culture_decision
+									}
+								}
+							}
+							create_character = {
+								location = root.location
+								template = RICE_gaelic_thrall_template
+								gender_female_chance = 100
+								save_scope_as = thrall
+								culture = culture:anglo_saxon
+								faith = faith:catholic
+							}				
+						}
+						10 = {
+							trigger = {
+								is_target_in_global_variable_list = {
+									name = unavailable_unique_decisions
+									target = flag:embrace_english_culture_decision
+								}
+							}
+							create_character = {
+								location = root.location
+								template = RICE_gaelic_thrall_template
+								gender_female_chance = 100
+								save_scope_as = thrall
+								culture = culture:english
+								faith = faith:catholic
+							}				
+						}
+					}
+				}
+			}
+		}
+
+		hidden_effect = {
+			scope:thrall = {
+				random_list = {
+					40 = { }
+					30 = {
+						add_trait = beauty_good_1
+					}
+					20 = {
+						add_trait = beauty_good_2
+					}
+					10 = {
+						add_trait = beauty_good_3
+					}
+				}
+			}
+		}
+
+		# If concubinage is allowed
+		# if = {
+		# 	limit = {
+		# 		scope:thrall = {
+		# 			can_become_concubine_of_character_trigger = { CHARACTER = scope:courtier }
+		# 		}
+		# 		OR = {
+		# 			scope:courtier.culture = { has_cultural_tradition = tradition_concubines }
+		# 			scope:courtier.faith = { has_doctrine = doctrine_concubines }
+		# 		}
+		# 	}
+		# 	random_list = {
+		# 		20 = {
+		# 			scope:thrall = {
+		# 				make_concubine = scope:courtier
+		# 			}
+		# 		}
+		# 		10 = {
+		# 			scope:courtier = {
+		# 				marry = scope:thrall
+		# 			}
+		# 		}
+		# 	}
+		# }
+		# else = {
+		# 	scope:courtier = {
+		# 		marry = scope:thrall
+		# 	}
+		# }
+
+		# Because concubinage is not shown for courtiers
+		scope:courtier = {
+			marry = scope:thrall
+		}
+
+		# Small chance
+		hidden_effect = {
+			random = {
+				chance = 10
+				modifier = {
+					add = -15
+					scope:thrall = {
+						opinion = {
+							target = scope:courtier
+							value < 0
+						}
+					}
+				}
+				modifier = {
+					add = 10
+					scope:thrall = {
+						opinion = {
+							target = scope:courtier
+							value > 25
+						}
+					}
+				}
+				modifier = {
+					add = 10
+					scope:thrall = {
+						opinion = {
+							target = scope:courtier
+							value > 50
+						}
+					}
+				}
+				modifier = {
+					add = 10
+					scope:thrall = {
+						opinion = {
+							target = scope:courtier
+							value > 75
+						}
+					}
+				}
+				modifier = {
+					scope:courtier = { has_trait = sadistic }
+					add = -5
+				}
+				modifier = {
+					scope:courtier = { has_trait = compassionate }
+					add = 5
+				}
+				modifier = {
+					scope:courtier = { has_trait = callous }
+					add = -5
+				}
+				modifier = {
+					scope:courtier = { has_trait = gregarious }
+					add = 5
+				}
+				modifier = {
+					scope:courtier = {
+						OR = {
+							has_trait = beauty_good_1
+							has_trait = beauty_good_2
+							has_trait = beauty_good_3
+						}
+					}
+					add = 5
+				}
+				scope:courtier = {
+					set_random_lover_reason = { TARGET = scope:thrall }
+				}
+			}
+		}
+
+		if = {
+			limit = {
+				scope:courtier = {
+					is_landed = yes
+				}
+			}
+			scope:courtier = {				
+				add_courtier = scope:thrall
+			}
+		}
+		else = {		
+			add_courtier = scope:thrall
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = north_atlantic.0091.a
+		trigger = {
+			has_character_flag = RICE_north_atlantic_thrall_event
+		}
+		stress_impact = {
+			callous = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+	# Ok
+	option = {
+		name = north_atlantic.0091.b
+		trigger = {
+			NOT = { has_character_flag = RICE_north_atlantic_thrall_event }
+		}
+		stress_impact = {
+			callous = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+	# Ok
+	option = {
+		name = north_atlantic.0091.c
+	}
+
+	# # Let the girl choose
+	# option = {
+	# 	name = north_atlantic.0090.b
+	# 	random_list = {
+	# 		desc = north_atlantic.0090.b.tooltip
+	# 		50 = {
+	# 			show_chance = no
+	# 			desc = north_atlantic.0090.b.tooltip.yes
+	# 			# She has to be at least neutral in opinion towards him
+	# 			trigger = {
+	# 				scope:thrall = {
+	# 					opinion = {
+	# 						target = scope:courtier
+	# 						value > -20
+	# 					}
+	# 				}
+	# 			}
+	# 			# He's good looking
+	# 			modifier = {
+	# 				add = 5
+	# 				scope:courtier = {
+	# 					has_trait = beauty_good_1
+	# 				}
+	# 			}
+	# 			modifier = {
+	# 				add = 10
+	# 				scope:courtier = {
+	# 					has_trait = beauty_good_2
+	# 				}
+	# 			}
+	# 			modifier = {
+	# 				add = 15
+	# 				scope:courtier = {
+	# 					has_trait = beauty_good_3
+	# 				}
+	# 			}
+	# 			# The girl is a gold digger or power hungry
+	# 			modifier = {
+	# 				add = 15
+	# 				scope:thrall = {
+	# 					OR = {
+	# 						ai_greed >= medium_positive_ai_value
+	# 						has_trait = greedy
+	# 						has_trait = ambitious
+	# 					}
+	# 				}
+	# 				scope:courtier = {
+	# 					is_landed = yes
+	# 				}
+	# 			}
+	# 			# The guy has a reputation for being nice
+	# 			modifier = {
+	# 				add = 10
+	# 				scope:courtier = {
+	# 					has_trait_benevolent_trigger = yes
+	# 				}
+	# 			}
+	# 			# The guy is good at charming women
+	# 			modifier = {
+	# 				add = 10
+	# 				scope:courtier = {
+	# 					OR = {
+	# 						has_trait = gallant
+	# 						has_trait = seducer
+	# 						has_trait = gregarious
+	# 					}
+	# 				}
+	# 			}							
+	# 			send_interface_toast = {
+	# 				left_icon = ROOT
+	# 				title = north_atlantic.0090.b.toast.yes
+	# 				# If concubinage is allowed
+	# 				if = {
+	# 					limit = {
+	# 						scope:thrall = {
+	# 							can_become_concubine_of_character_trigger = { CHARACTER = scope:courtier }
+	# 						}
+	# 						OR = {
+	# 							scope:courtier.culture = { has_cultural_tradition = tradition_concubines }
+	# 							scope:courtier.faith = { has_doctrine = doctrine_concubines }
+	# 						}
+	# 					}
+	# 					random_list = {
+	# 						20 = {
+	# 							scope:thrall = {
+	# 								make_concubine = scope:courtier
+	# 							}
+	# 						}
+	# 						10 = {
+	# 							scope:courtier = {
+	# 								marry = scope:thrall
+	# 							}
+	# 						}
+	# 					}
+	# 				}
+	# 				else = {
+	# 					scope:courtier = {
+	# 						marry = scope:thrall
+	# 					}
+	# 				}					
+	# 			}
+	# 		}
+	# 		# She is not interested
+	# 		50 = {
+	# 			show_chance = no
+	# 			desc = north_atlantic.0090.b.tooltip.no
+	# 			# He's ugly
+	# 			modifier = {
+	# 				add = 5
+	# 				scope:courtier = {
+	# 					has_trait = beauty_bad_1
+	# 				}
+	# 			}
+	# 			modifier = {
+	# 				add = 10
+	# 				scope:courtier = {
+	# 					has_trait = beauty_bad_2
+	# 				}
+	# 			}
+	# 			modifier = {
+	# 				add = 15
+	# 				scope:courtier = {
+	# 					has_trait = beauty_bad_3
+	# 				}
+	# 			}
+	# 			# The girl looks down on the guy
+	# 			modifier = {
+	# 				add = 5
+	# 				scope:thrall = {
+	# 					has_trait = arrogant
+	# 				}
+	# 			}
+	# 			# The girl is worried
+	# 			modifier = {
+	# 				add = 5
+	# 				scope:thrall = {
+	# 					has_trait = paranoid
+	# 				}
+	# 			}
+	# 			# The guy has a reputation for being an asshole
+	# 			modifier = {
+	# 				add = 25
+	# 				scope:courtier = {
+	# 					OR = {
+	# 						has_trait = sadistic
+	# 						has_trait = wrathful
+	# 						has_trait = arrogant
+	# 						has_trait = callous
+	# 						has_trait = vengeful
+	# 					}
+	# 				}
+	# 			}
+	# 			send_interface_toast = {
+	# 				left_icon = ROOT
+	# 				title = north_atlantic.0090.b.toast.no	
+	# 				scope:courtier = {
+	# 					add_prestige = -100
+	# 				}			
+	# 			}
+	# 			hidden_effect = {
+	# 				scope:thrall = {
+	# 					death = {
+	# 						death_reason = death_vanished
+	# 					}
+	# 				}		
+	# 			}
+	# 		}
+	# 	}
+	# }
+
+	# # Do not give permission
+	# option = {
+	# 	name = north_atlantic.0090.c
+	# 	hidden_effect = {
+	# 		scope:thrall = {
+	# 			death = {
+	# 				death_reason = death_vanished
+	# 			}
+	# 		}
+	# 	}
+	# }
+
+	
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_north_atlantic_thrall_event
+			}
+			remove_character_flag = RICE_north_atlantic_thrall_event
+		}
+	}
+
+}
+
+
+
+
+# Captured Native American arrives with crew
+north_atlantic.0092 = {
+	type = character_event
+	title = north_atlantic.0092.t
+	desc = {
+		desc = north_atlantic.0092.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_native_american_child
+				}
+				desc = north_atlantic.0092.desc.child
+			}
+			desc = north_atlantic.0092.desc.adult
+		}
+		desc = north_atlantic.0092.desc.conclusion
+	}
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = personality_cynical
+	}
+
+	right_portrait = {
+		character = scope:native
+		animation = throne_room_bow_1
+	}
+
+	trigger = {
+		OR = {			
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_northern_islands		
+				}
+			}
+			AND = {		
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_greenland_struggle_region		
+					}
+				}
+				OR = {
+					has_global_variable = RICE_greenland_ending_integration
+					has_global_variable = RICE_greenland_ending_indigenous
+				}
+			}
+		}
+		NAND = {			
+			exists = struggle:RICE_greenland_struggle
+			any_character_struggle = {
+				is_struggle_type = RICE_greenland_struggle
+				OR = {
+					is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+					is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = -0.8
+			NOR = {
+				has_global_variable = RICE_greenland_ending_integration
+				has_global_variable = RICE_greenland_ending_indigenous
+			}
+		}
+		modifier = {
+			add = -0.5
+			exists = house
+			NOT = {
+				house = { has_house_modifier = RICE_north_atlantic_greenland_family_estate }
+			}
+		}
+		# modifier = {
+		# 	add = 1.5
+		# 	has_global_variable = RICE_greenland_ending_indigenous
+		# }
+	}
+
+	immediate = {
+		random_list = {
+			35 = {
+				add_character_flag = RICE_native_american_child
+				create_character = {
+					location = root.location
+					template = RICE_native_child_generic_template
+					save_scope_as = native
+					faith = root.faith
+					random_culture = {
+						culture:inuit = {
+							trigger = {
+								has_global_variable = RICE_greenland_inuit_are_here
+							}
+							weight = { base = 120 }
+						}
+						culture:dorset = {
+							weight = { base = 120 }
+						}
+						culture:innu = {
+							weight = {
+								base = 25
+								modifier = {
+									add = 45
+									OR = {
+										has_global_variable = RICE_greenland_ending_integration
+										has_global_variable = RICE_greenland_ending_indigenous
+									}
+								}
+							}
+						}
+						culture:beothuk = {
+							weight = {
+								base = 25
+								modifier = {
+									add = 45
+									OR = {
+										has_global_variable = RICE_greenland_ending_integration
+										has_global_variable = RICE_greenland_ending_indigenous
+									}
+								}
+							}
+						}
+						culture:mikmaq = {
+							weight = {
+								base = 25
+								modifier = {
+									add = 55
+									OR = {
+										has_global_variable = RICE_greenland_ending_integration
+										has_global_variable = RICE_greenland_ending_indigenous
+									}
+								}
+							}
+						}
+						culture:east_cree = {
+							weight = {
+								base = 5
+								modifier = {
+									add = 35
+									OR = {
+										has_global_variable = RICE_greenland_ending_integration
+										has_global_variable = RICE_greenland_ending_indigenous
+									}
+								}
+							}
+						}
+						culture:maliseet = {
+							weight = {
+								base = 5
+								modifier = {
+									add = 35
+									OR = {
+										has_global_variable = RICE_greenland_ending_integration
+										has_global_variable = RICE_greenland_ending_indigenous
+									}
+								}
+							}
+						}
+						culture:passamaquoddy = {
+							weight = {
+								base = 5
+								modifier = {
+									add = 35
+									OR = {
+										has_global_variable = RICE_greenland_ending_integration
+										has_global_variable = RICE_greenland_ending_indigenous
+									}
+								}
+							}
+						}
+						culture:penobscot = {
+							weight = {
+								base = 5
+								modifier = {
+									add = 35
+									OR = {
+										has_global_variable = RICE_greenland_ending_integration
+										has_global_variable = RICE_greenland_ending_indigenous
+									}
+								}
+							}
+						}
+						culture:abenaki = {
+							weight = {
+								base = 5
+								modifier = {
+									add = 35
+									OR = {
+										has_global_variable = RICE_greenland_ending_integration
+										has_global_variable = RICE_greenland_ending_indigenous
+									}
+								}
+							}
+						}
+						culture:laurentian = {
+							weight = {
+								base = 5
+								modifier = {
+									add = 35
+									OR = {
+										has_global_variable = RICE_greenland_ending_integration
+										has_global_variable = RICE_greenland_ending_indigenous
+									}
+								}
+							}
+						}
+					}
+					after_creation = {
+						# Set religion
+						if = {
+							limit = {
+								OR = {
+									culture = { has_cultural_pillar = heritage_inuit }
+									culture = { has_cultural_pillar = heritage_paleo_inuit }
+								}
+							}
+							set_character_faith = faith:inuit_pagan
+						}
+						else_if = {
+							limit = {
+								culture = { has_cultural_pillar = heritage_iroquoian }
+							}
+							set_character_faith = faith:iroquoian_pagan
+						}
+						else_if = {
+							limit = {
+								culture = { has_cultural_pillar = heritage_algonquian }
+							}
+							set_character_faith = faith:algonquian_pagan
+						}
+					}
+				}
+			}
+			65 = {
+				create_character = {
+					location = root.location
+					template = RICE_native_generic_template
+					save_scope_as = native
+					faith = root.faith
+					random_culture = {
+						culture:inuit = {
+							trigger = {
+								has_global_variable = RICE_greenland_inuit_are_here
+							}
+							weight = { base = 120 }
+						}
+						culture:dorset = {
+							weight = {
+								base = 120
+								modifier = {
+									add = -60
+									has_global_variable = RICE_greenland_inuit_are_here
+								}
+							}
+						}
+						culture:innu = {
+							weight = {
+								base = 25
+								modifier = {
+									add = 45
+									OR = {
+										has_global_variable = RICE_greenland_ending_integration
+										has_global_variable = RICE_greenland_ending_indigenous
+									}
+								}
+							}
+						}
+						culture:beothuk = {
+							weight = {
+								base = 25
+								modifier = {
+									add = 45
+									OR = {
+										has_global_variable = RICE_greenland_ending_integration
+										has_global_variable = RICE_greenland_ending_indigenous
+									}
+								}
+							}
+						}
+						culture:mikmaq = {
+							weight = {
+								base = 25
+								modifier = {
+									add = 55
+									OR = {
+										has_global_variable = RICE_greenland_ending_integration
+										has_global_variable = RICE_greenland_ending_indigenous
+									}
+								}
+							}
+						}
+						culture:east_cree = {
+							weight = {
+								base = 5
+								modifier = {
+									add = 35
+									OR = {
+										has_global_variable = RICE_greenland_ending_integration
+										has_global_variable = RICE_greenland_ending_indigenous
+									}
+								}
+							}
+						}
+						culture:maliseet = {
+							weight = {
+								base = 5
+								modifier = {
+									add = 35
+									OR = {
+										has_global_variable = RICE_greenland_ending_integration
+										has_global_variable = RICE_greenland_ending_indigenous
+									}
+								}
+							}
+						}
+						culture:passamaquoddy = {
+							weight = {
+								base = 5
+								modifier = {
+									add = 35
+									OR = {
+										has_global_variable = RICE_greenland_ending_integration
+										has_global_variable = RICE_greenland_ending_indigenous
+									}
+								}
+							}
+						}
+						culture:penobscot = {
+							weight = {
+								base = 5
+								modifier = {
+									add = 35
+									OR = {
+										has_global_variable = RICE_greenland_ending_integration
+										has_global_variable = RICE_greenland_ending_indigenous
+									}
+								}
+							}
+						}
+						culture:abenaki = {
+							weight = {
+								base = 5
+								modifier = {
+									add = 35
+									OR = {
+										has_global_variable = RICE_greenland_ending_integration
+										has_global_variable = RICE_greenland_ending_indigenous
+									}
+								}
+							}
+						}
+						culture:laurentian = {
+							weight = {
+								base = 5
+								modifier = {
+									add = 35
+									OR = {
+										has_global_variable = RICE_greenland_ending_integration
+										has_global_variable = RICE_greenland_ending_indigenous
+									}
+								}
+							}
+						}
+					}
+					after_creation = {
+						# Set religion
+						if = {
+							limit = {
+								OR = {
+									culture = { has_cultural_pillar = heritage_inuit }
+									culture = { has_cultural_pillar = heritage_paleo_inuit }
+								}
+							}
+							set_character_faith = faith:inuit_pagan
+						}
+						else_if = {
+							limit = {
+								culture = { has_cultural_pillar = heritage_iroquoian }
+							}
+							set_character_faith = faith:iroquoian_pagan
+						}
+						else_if = {
+							limit = {
+								culture = { has_cultural_pillar = heritage_algonquian }
+							}
+							set_character_faith = faith:algonquian_pagan
+						}
+						add_character_flag = {
+							flag = blocked_from_leaving
+							years = 20 # Extra buffer so they don't run off to random places
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	# Ok
+	option = {
+		name = north_atlantic.0092.a
+		trigger = {
+			OR = {
+				gold >= 50
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 50
+		add_courtier = scope:native
+		stress_impact = {
+			paranoid = minor_stress_impact_gain
+		}
+	}
+
+	# No
+	option = {
+		name = north_atlantic.0092.b
+		hidden_effect = {
+			scope:native = {
+				death = {
+					death_reason = death_disappearance
+				}			
+			}
+		}
+	}
+
+	# Help them get back home
+	option = {
+		name = north_atlantic.0092.c
+		trigger = {
+			OR = {
+				gold >= 100
+				is_ai = no
+			}
+			OR = {
+				has_trait = compassionate
+				has_trait = just
+				has_trait = humble
+			}
+		}
+		trait = compassionate
+		trait = just
+		trait = humble
+		remove_short_term_gold = 100
+		add_prestige = 100
+		stress_impact = {
+			compassionate = medium_stress_impact_loss
+			just = minor_stress_impact_loss
+			humble = minor_stress_impact_loss
+		}
+		hidden_effect = {
+			scope:native = {
+				death = {
+					death_reason = death_disappearance
+				}			
+			}
+		}
+	}
+
+	after = {		
+		if = {
+			limit = {
+				has_character_flag = RICE_native_american_child
+			}
+			remove_character_flag = RICE_native_american_child
+		}
+	}
+}
+
+
+
+# Native American travels to your court
+north_atlantic.0093 = {
+	type = character_event
+	title = north_atlantic.0093.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_native_american_spawn_vinland_colony
+				}
+				desc = north_atlantic.0093.desc.vinland_colony
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_native_american_spawn_vinland_outpost
+				}
+				desc = north_atlantic.0093.desc.vinland_outpost
+			}
+			desc = north_atlantic.0093.desc.greenland
+		}
+		desc = north_atlantic.0093.desc.conclusion
+	}
+	theme = realm
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	right_portrait = {
+		character = scope:native
+		animation = throne_room_bow_1
+	}
+
+	trigger = {
+		OR = {
+			AND = {
+				exists = house
+				house = { has_house_modifier = RICE_north_atlantic_greenland_family_estate }
+			}
+			AND = {
+				exists = dynasty				
+				dynasty = {
+					has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+				}
+			}
+			AND = {				
+				exists = dynasty				
+				dynasty = {
+					has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+				}
+				has_global_variable = RICE_north_atlantic_vinland_colonized_done
+			}
+		}
+		OR = {			
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_northern_islands		
+				}
+			}
+			AND = {		
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_greenland_struggle_region		
+					}
+				}
+				OR = {
+					has_global_variable = RICE_greenland_ending_integration
+					has_global_variable = RICE_greenland_ending_indigenous
+				}
+			}
+		}
+		NAND = {			
+			exists = struggle:RICE_greenland_struggle
+			any_character_struggle = {
+				is_struggle_type = RICE_greenland_struggle
+				OR = {
+					is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+					is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = -0.6
+			NOR = {
+				has_global_variable = RICE_greenland_ending_integration
+				has_global_variable = RICE_greenland_ending_indigenous
+			}
+		}
+		# modifier = {
+		# 	add = 1.5
+		# 	has_global_variable = RICE_greenland_ending_indigenous
+		# }
+	}
+
+	immediate = {
+
+		random_list = {
+			10 = {
+				trigger = {
+					exists = house
+					house = { has_house_modifier = RICE_north_atlantic_greenland_family_estate }
+				}
+			}
+			5 = {
+				trigger = {
+					exists = dynasty				
+					dynasty = {
+						has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+					}
+				}
+				add_character_flag = RICE_native_american_spawn_vinland_outpost
+			}
+			5 = {
+				trigger = {
+					exists = dynasty				
+					dynasty = {
+						has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+					}
+					has_global_variable = RICE_north_atlantic_vinland_colonized_done
+				}
+				add_character_flag = RICE_native_american_spawn_vinland_colony
+			}
+		}
+		
+		create_character = {
+			location = root.location
+			template = RICE_native_generic_template
+			save_scope_as = native
+			faith = root.faith
+			random_culture = {
+				culture:inuit = {
+					trigger = {
+						NOR = {
+							has_character_flag = RICE_native_american_spawn_vinland_outpost
+							has_character_flag = RICE_native_american_spawn_vinland_colony							
+						}
+						has_global_variable = RICE_greenland_inuit_are_here
+					}
+					weight = { base = 100 }
+				}
+				culture:dorset = {
+					#trigger = {
+					#	OR = {
+					#		has_character_flag = RICE_native_american_spawn_vinland_outpost
+					#		has_character_flag = RICE_native_american_spawn_vinland_colony							
+					#	}
+					#}
+					weight = {
+						base = 150
+						modifier = {
+							add = -110
+							has_global_variable = RICE_greenland_inuit_are_here
+						}
+					}
+				}
+				culture:innu = {
+					trigger = {
+						OR = {
+							has_character_flag = RICE_native_american_spawn_vinland_outpost
+							has_character_flag = RICE_native_american_spawn_vinland_colony							
+						}
+					}
+					weight = {
+						base = 100
+						modifier = {
+							add = 50
+							OR = {
+								has_global_variable = RICE_greenland_ending_integration
+								has_global_variable = RICE_greenland_ending_indigenous
+							}
+						}
+					}
+				}
+				culture:beothuk = {
+					trigger = {
+						OR = {
+							has_character_flag = RICE_native_american_spawn_vinland_outpost
+							has_character_flag = RICE_native_american_spawn_vinland_colony							
+						}
+					}
+					weight = {
+						base = 100
+						modifier = {
+							add = 50
+							OR = {
+								has_global_variable = RICE_greenland_ending_integration
+								has_global_variable = RICE_greenland_ending_indigenous
+							}
+						}
+					}
+				}
+				culture:mikmaq = {
+					trigger = {
+						OR = {
+							has_character_flag = RICE_native_american_spawn_vinland_outpost
+							has_character_flag = RICE_native_american_spawn_vinland_colony							
+						}
+					}
+					weight = {
+						base = 50
+						modifier = {
+							add = 100
+							OR = {
+								has_global_variable = RICE_greenland_ending_integration
+								has_global_variable = RICE_greenland_ending_indigenous
+							}
+						}
+					}
+				}
+				culture:east_cree = {
+					trigger = {
+						OR = {
+							has_character_flag = RICE_native_american_spawn_vinland_outpost
+							has_character_flag = RICE_native_american_spawn_vinland_colony							
+						}
+					}
+					weight = {
+						base = 50
+						modifier = {
+							add = 25
+							OR = {
+								has_global_variable = RICE_greenland_ending_integration
+								has_global_variable = RICE_greenland_ending_indigenous
+							}
+						}
+					}
+				}
+				culture:maliseet = {
+					trigger = {
+						OR = {
+							has_character_flag = RICE_native_american_spawn_vinland_outpost
+							has_character_flag = RICE_native_american_spawn_vinland_colony							
+						}
+					}
+					weight = {
+						base = 50
+						modifier = {
+							add = 25
+							OR = {
+								has_global_variable = RICE_greenland_ending_integration
+								has_global_variable = RICE_greenland_ending_indigenous
+							}
+						}
+					}
+				}
+				culture:passamaquoddy = {
+					trigger = {
+						OR = {
+							has_character_flag = RICE_native_american_spawn_vinland_outpost
+							has_character_flag = RICE_native_american_spawn_vinland_colony							
+						}
+					}
+					weight = {
+						base = 50
+						modifier = {
+							add = 25
+							OR = {
+								has_global_variable = RICE_greenland_ending_integration
+								has_global_variable = RICE_greenland_ending_indigenous
+							}
+						}
+					}
+				}
+				culture:penobscot = {
+					trigger = {
+						OR = {
+							has_character_flag = RICE_native_american_spawn_vinland_outpost
+							has_character_flag = RICE_native_american_spawn_vinland_colony							
+						}
+					}
+					weight = {
+						base = 50
+						modifier = {
+							add = 25
+							OR = {
+								has_global_variable = RICE_greenland_ending_integration
+								has_global_variable = RICE_greenland_ending_indigenous
+							}
+						}
+					}
+				}
+				culture:abenaki = {
+					trigger = {
+						OR = {
+							has_character_flag = RICE_native_american_spawn_vinland_outpost
+							has_character_flag = RICE_native_american_spawn_vinland_colony							
+						}
+					}
+					weight = {
+						base = 50
+						modifier = {
+							add = 25
+							OR = {
+								has_global_variable = RICE_greenland_ending_integration
+								has_global_variable = RICE_greenland_ending_indigenous
+							}
+						}
+					}
+				}
+				culture:laurentian = {
+					trigger = {
+						OR = {
+							has_character_flag = RICE_native_american_spawn_vinland_outpost
+							has_character_flag = RICE_native_american_spawn_vinland_colony							
+						}
+					}
+					weight = {
+						base = 50
+						modifier = {
+							add = 25
+							OR = {
+								has_global_variable = RICE_greenland_ending_integration
+								has_global_variable = RICE_greenland_ending_indigenous
+							}
+						}
+					}
+				}
+			}
+			after_creation = {
+				# Set religion
+				if = {
+					limit = {
+						OR = {
+							culture = { has_cultural_pillar = heritage_inuit }
+							culture = { has_cultural_pillar = heritage_paleo_inuit }
+						}
+					}
+					set_character_faith = faith:inuit_pagan
+				}
+				else_if = {
+					limit = {
+						culture = { has_cultural_pillar = heritage_iroquoian }
+					}
+					set_character_faith = faith:iroquoian_pagan
+				}
+				else_if = {
+					limit = {
+						culture = { has_cultural_pillar = heritage_algonquian }
+					}
+					set_character_faith = faith:algonquian_pagan
+				}
+				add_character_flag = {
+					flag = blocked_from_leaving
+					years = 20 # Extra buffer so they don't run off to random places
+				}
+			}
+		}
+	}
+	
+	# Ok
+	option = {
+		name = north_atlantic.0093.a
+		duel = {
+			skill = diplomacy
+			value = 14
+			30 = {
+				desc = north_atlantic.0093.a.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+				}
+				modifier = {
+					scope:native = {
+						opinion = {
+							target = root
+							value >= 40
+						}
+					}
+					factor = 2
+				}
+				modifier = {
+					scope:native = {
+						opinion = {
+							target = root
+							value >= 80
+						}
+					}
+					factor = 2
+				}
+				send_interface_toast = {
+					title = north_atlantic.0093.a.success
+					left_icon = scope:native
+					add_courtier = scope:native
+				}
+			}
+			70 = {
+				desc = north_atlantic.0093.a.failure
+				send_interface_toast = {
+					title = north_atlantic.0093.a.failure
+					left_icon = scope:native
+					custom_tooltip = north_atlantic.0093.a.failure.tooltip
+					hidden_effect = {
+						scope:native = {
+							death = {
+								death_reason = death_disappearance
+							}
+						}
+					}
+				}
+			}
+		}
+		stress_impact = {
+			paranoid = minor_stress_impact_gain
+		}
+	}
+
+	# No
+	option = {
+		name = north_atlantic.0093.b
+		hidden_effect = {
+			scope:native = {
+				death = {
+					death_reason = death_disappearance
+				}			
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_native_american_spawn_vinland_outpost 
+			}
+			remove_character_flag = RICE_native_american_spawn_vinland_outpost
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_native_american_spawn_vinland_colony 
+			}
+			remove_character_flag = RICE_native_american_spawn_vinland_colony
+		}
+	} 
+
+}
 
 
 
