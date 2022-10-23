@@ -12,6 +12,7 @@
 # north_atlantic.0140-north_atlantic.0159			Vinland Outposts and Settlements
 # north_atlantic.0160-north_atlantic.0169			Discovering Greenland/Vinland
 # north_atlantic.0170-north_atlantic.0179			Greenland Struggle Ending Decisions
+# north_atlantic.0180-north_atlantic.0189			Whaling
 # 
 # 
 ###############################################################################
@@ -1504,6 +1505,34 @@ north_atlantic.0026 = {
 	option = {
 		name = north_atlantic.0026.a
 		custom_tooltip = north_atlantic.0026.tooltip
+	}
+
+}
+
+# Whaling expedition sets out
+north_atlantic.0027 = {
+	type = character_event
+	title = north_atlantic.0027.t
+	desc = north_atlantic.0027.desc
+	theme = hunt_activity
+	override_background = { event_background = market }
+
+	right_portrait = {
+		character = root
+		animation = sadness
+	}
+
+	immediate = {
+		scope:outside_county = {
+			show_as_tooltip = {
+				remove_county_modifier = RICE_north_atlantic_walrus_carving_workshop_outside_region
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.0027.a
+		custom_tooltip = north_atlantic.0027.tooltip
 	}
 
 }
@@ -11552,3 +11581,259 @@ north_atlantic.0175 = { # Fullscreen Intro Event
 		}
 	}
 }
+
+
+
+######################################################################################
+# 
+# WHALING
+# 
+# north_atlantic.0180-north_atlantic.0189
+# 
+######################################################################################
+
+# Whaling expedition sets out
+north_atlantic.0180 = {
+	type = character_event
+	title = north_atlantic.0180.t
+	desc = north_atlantic.0180.desc
+	theme = hunt_activity
+	override_background = { event_background = docks }
+
+	left_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+
+	immediate = {
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				is_coastal_county = yes
+			}	
+			save_scope_as = county
+		}
+	}
+
+	option = {
+		name = north_atlantic.0180.a
+		trigger_event = {
+			id = north_atlantic.0181
+			days = { 7 21 }
+		}
+	}
+
+}
+
+
+# Whaling expedition returns
+north_atlantic.0181 = {
+	type = character_event
+	title = north_atlantic.0181.t
+	desc = {
+		desc = north_atlantic.0181.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_whaling_success
+				}
+				desc = north_atlantic.0181.desc.success
+			}
+			desc = north_atlantic.0181.desc.fail
+		}		
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_whaling_low
+				}
+				desc = north_atlantic.0181.desc.low
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_whaling_medium
+				}
+				desc = north_atlantic.0181.desc.medium
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_whaling_high
+				}
+				desc = north_atlantic.0181.desc.high
+			}
+		}		
+	}
+	theme = hunt_activity
+	override_background = { event_background = docks }
+
+	right_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = { has_character_flag = RICE_whaling_success }
+			animation = happiness
+		}
+		triggered_animation = {
+			trigger = { NOT = { has_character_flag = RICE_whaling_success } }
+			animation = sadness
+		}
+	}
+
+	immediate = {
+		random = {
+			chance = RICE_north_atlantic_whaling_success_chance
+			add_character_flag = RICE_whaling_success
+			random_list = {
+				20 = {
+					add_character_flag = RICE_whaling_low
+				}
+				20 = {
+					modifier = {
+						add = {
+							value = stewardship
+							multiply = 0.5
+							max = 10
+						}
+					}
+					add_character_flag = RICE_whaling_medium
+				}
+				15 = {
+					modifier = {
+						add = {
+							value = stewardship
+							multiply = 0.25
+							max = 10
+						}
+					}
+					add_character_flag = RICE_whaling_high
+				}
+			}
+		}
+	}
+
+	option = {
+		name = {
+			trigger = { NOT = { has_character_flag = RICE_whaling_success } }
+			text = north_atlantic.0181.a.failure
+		}
+		name = {
+			trigger = { has_character_flag = RICE_whaling_low }
+			text = north_atlantic.0181.a.low
+		}
+		name = {
+			trigger = { has_character_flag = RICE_whaling_medium }
+			text = north_atlantic.0181.a.medium
+		}
+		name = {
+			trigger = { has_character_flag = RICE_whaling_high }
+			text = north_atlantic.0181.a.high
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_whaling_success
+			}
+			add_gold = { RICE_north_atlantic_whaling_min_gold_gain_value RICE_north_atlantic_whaling_max_gold_gain_value }
+		}
+		if = {
+			limit = {
+				NOT = { has_character_flag = RICE_whaling_success }
+			}
+			stress_impact = {
+				greedy = minor_stress_impact_gain
+				ambitious = miniscule_stress_impact_gain
+				wrathful = miniscule_stress_impact_gain
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_character_flag = RICE_whaling_medium
+					has_character_flag = RICE_whaling_high
+				}
+			}
+			stress_impact = {
+				greedy = minor_stress_impact_loss
+				ambitious = miniscule_stress_impact_loss
+				diligent = miniscule_stress_impact_loss
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_whaling_success
+			}
+			remove_character_flag = RICE_whaling_success
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_whaling_low
+			}
+			remove_character_flag = RICE_whaling_low
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_whaling_medium
+			}
+			remove_character_flag = RICE_whaling_medium
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_whaling_high
+			}
+			remove_character_flag = RICE_whaling_high
+		}
+	}
+
+}
+
+
+
+# Tax exemptions on whaling towns
+north_atlantic.0182 = {
+	type = character_event
+	title = north_atlantic.0182.t
+	desc = north_atlantic.0182.desc
+	theme = stewardship_wealth_focus
+	override_background = { event_background = docks }
+
+	right_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+
+	immediate = {
+		RICE_exempt_from_tax_whaling_towns_effect = yes
+	}
+
+	option = {
+		name = north_atlantic.0182.a
+	}
+
+}
+
+
+# Levy extra taxes on whaling towns
+north_atlantic.0183 = {
+	type = character_event
+	title = north_atlantic.0183.t
+	desc = north_atlantic.0183.desc
+	theme = stewardship_wealth_focus
+	override_background = { event_background = docks }
+
+	right_portrait = {
+		character = root
+		animation = personality_callous
+	}
+
+	immediate = {
+		RICE_levy_extra_tax_whaling_towns_effect = yes
+	}
+
+	option = {
+		name = north_atlantic.0183.a
+	}
+
+}
+
+
+
