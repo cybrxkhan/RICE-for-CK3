@@ -2794,6 +2794,7 @@ north_atlantic.0040 = {
 
 	option = { # Attempt to trade
 		name = north_atlantic.0040.a
+		custom_tooltip = north_atlantic.expedition.success_failure_counter_preview
 		scope:leader = {
 			duel = {
 				skill = diplomacy
@@ -2837,6 +2838,7 @@ north_atlantic.0040 = {
 	}
 	option = { # Try to steal and kidnap
 		name = north_atlantic.0040.c
+		custom_tooltip = north_atlantic.expedition.success_failure_counter_preview
 		scope:leader = {
 			duel = {
 				skill = intrigue
@@ -3712,6 +3714,7 @@ north_atlantic.0043 = {
 
 	option = { # Attempt to help them
 		name = north_atlantic.0043.a
+		custom_tooltip = north_atlantic.expedition.success_failure_counter_preview
 		scope:leader = {
 			duel = {
 				skill = diplomacy
@@ -3795,6 +3798,7 @@ north_atlantic.0043 = {
 
 	option = { # Attempt to kidnap them
 		name = north_atlantic.0043.b
+		custom_tooltip = north_atlantic.expedition.success_failure_counter_preview
 		scope:leader = {
 			duel = {
 				skill = intrigue
@@ -5075,6 +5079,281 @@ north_atlantic.0047 = {
 
 }
 
+
+
+
+# Find grapes in Vinland
+north_atlantic.0048 = {
+	type = character_event
+	title = north_atlantic.0048.t
+	desc = {
+		desc = north_atlantic.expedition.intro.vinland
+		desc = north_atlantic.0048.desc
+	}
+	theme = love
+	override_background = {
+		event_background = RICE_background_north_atlantic_vinland
+	}
+
+	left_portrait = {
+		character = scope:leader
+		animation = worry
+	}
+
+	lower_center_portrait = {
+		character = scope:tyrker
+	}
+
+	trigger = {
+		scope:story.var:RICE_expedition_destination = flag:vinland
+	}
+
+	immediate = {
+		create_character = {
+			location = title:c_vestisland.holder.capital_province # Should be off-map, but have to give them a location somewhere or else it'll throw up errors
+			template = RICE_expedition_crew_member_template
+			save_scope_as = tyrker
+		}	
+		RICE_display_america_expedition_success_view_count_effect = yes
+	}
+
+	option = { # Attempt to trade
+		name = north_atlantic.0048.a
+		custom_tooltip = north_atlantic.expedition.success_failure_counter_preview
+		scope:leader = {
+			duel = {
+				skill = intrigue
+				target = scope:tyrker
+				10 = { # Failure
+					#show_chance = no
+					custom_tooltip = north_atlantic.0048.a.failure
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -0.5
+					}
+					root = {
+						set_variable = {
+							name = RICE_north_atlantic_episode_result
+							value = flag:failure
+						}
+					}
+				}
+				10 = { # Success
+					#show_chance = no
+					custom_tooltip = north_atlantic.0048.a.success
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 0.5
+					}
+					root = {
+						set_variable = {
+							name = RICE_north_atlantic_episode_result
+							value = flag:success
+						}
+					}
+				}
+			}
+		}
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
+		trigger_event = north_atlantic.0049
+		custom_tooltip = north_atlantic.expedition.skill.intrigue
+	}
+	option = {
+		name = north_atlantic.0048.b
+		custom_tooltip = north_atlantic.expedition.result.neutral
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
+		hidden_effect = {
+			scope:tyrker = {
+				death = {
+					death_reason = death_vanished
+				}
+			}			
+		}
+	}
+}
+
+
+# Find grapes in Vinland - result
+north_atlantic.0049 = {
+	type = character_event
+	title = north_atlantic.0049.t
+	desc = {
+		desc = north_atlantic.expedition.intro.continue
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					root = { var:RICE_north_atlantic_episode_result = flag:success }
+				}
+				desc = north_atlantic.0049.desc.found
+			}
+			triggered_desc = {
+				trigger = {
+					root = { var:RICE_north_atlantic_episode_result = flag:failure }
+				}
+				desc = north_atlantic.0049.desc.lost
+			}
+		}
+	}
+	theme = love
+	override_background = {
+		event_background = RICE_background_north_atlantic_vinland
+	}
+
+	left_portrait = {
+		character = scope:leader
+		triggered_animation = {
+			trigger = { root = { var:RICE_north_atlantic_episode_result = flag:success }  }
+			animation = personality_forgiving
+		}
+		triggered_animation = {
+			trigger = { root = { var:RICE_north_atlantic_episode_result = flag:failure } }
+			animation = sadness
+		}
+	}
+	right_portrait = {
+		character = scope:tyrker
+		animation = drink
+		trigger = { root = { var:RICE_north_atlantic_episode_result = flag:success } }
+	}
+
+	immediate = {
+		ordered_in_global_list = {
+			variable = RICE_north_atlantic_leif_erikson_equivalent
+			save_scope_as = leif
+		}
+		if = {
+			limit = {
+				var:RICE_north_atlantic_episode_result = flag:success
+			}
+			scope:story = {
+				change_variable = {
+					name = RICE_expedition_success
+					add = 1
+				}
+			}
+		}
+		else_if = {
+			limit = {	
+				var:RICE_north_atlantic_episode_result = flag:failure
+			}
+			scope:story = {
+				change_variable = {
+					name = RICE_expedition_failure
+					add = 1
+				}
+			}
+		}
+		RICE_display_america_expedition_success_view_count_effect = yes
+	}
+
+	option = {
+		name = north_atlantic.0049.a
+		trigger = {
+			var:RICE_north_atlantic_episode_result = flag:success
+		}
+		#custom_tooltip = north_atlantic.expedition.skill.stewardship
+		custom_tooltip = north_atlantic.expedition.result.good
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.prestige
+		custom_tooltip = north_atlantic.expedition.result.modifiers
+		custom_tooltip = north_atlantic.expedition.result.viability.increase
+		hidden_effect = {
+			random_list = {
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_prestige_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_modifiers_count
+							add = 1
+						}
+					}
+				}
+			}
+			random_list = {
+				10 = { }
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_viability_increase_count
+							add = 1
+						}
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = north_atlantic.0049.b
+		trigger = {
+			var:RICE_north_atlantic_episode_result = flag:failure
+		}
+		custom_tooltip = north_atlantic.expedition.result.bad
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.prestige
+		custom_tooltip = north_atlantic.expedition.result.piety
+		custom_tooltip = north_atlantic.expedition.result.viability.decrease
+		hidden_effect = {
+			random_list = {
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_prestige_loss_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_piety_loss_count
+							add = 1
+						}
+					}
+				}
+			}
+			random_list = {
+				10 = { }
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_viability_decrease_count
+							add = 1
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
+		hidden_effect = {
+			scope:tyrker = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+		if = {
+			limit = { has_variable = RICE_north_atlantic_episode_result }
+			remove_variable = RICE_north_atlantic_episode_result
+		}
+	}
+	
+
+}
 
 
 
