@@ -2468,13 +2468,13 @@ north_atlantic.0034 = {
 		}
 		if = {
 			limit = {
-				scope:story.var:RICE_expedition_gold_count.compare_value >= scope:story.var:RICE_expedition_gold_loss_count.compare_value
+				scope:story.var:RICE_expedition_gold_count.compare_value > scope:story.var:RICE_expedition_gold_loss_count.compare_value
 			}
 			add_gold = { 25 RICE_expedition_gold_gain_max_value }
 		}
 		else_if = {
 			limit = {
-				scope:story.var:RICE_expedition_gold_count.compare_value < scope:story.var:RICE_expedition_gold_loss_count.compare_value
+				scope:story.var:RICE_expedition_gold_count.compare_value <= scope:story.var:RICE_expedition_gold_loss_count.compare_value
 			}
 			remove_short_term_gold = { 1 RICE_expedition_gold_loss_max_value }
 		}
@@ -5068,13 +5068,6 @@ north_atlantic.0047 = {
 
 	after = {
 		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
-		hidden_effect = {
-			scope:sailor = {
-				death = {
-					death_reason = death_disappearance
-				}
-			}
-		}
 	}
 
 }
@@ -5354,6 +5347,1325 @@ north_atlantic.0049 = {
 	
 
 }
+
+
+
+
+# Driftwood
+north_atlantic.0050 = {
+	type = character_event
+	title = north_atlantic.0050.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:helluland
+				}
+				desc = north_atlantic.expedition.intro.helluland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:markland
+				}
+				desc = north_atlantic.expedition.intro.markland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:vinland
+				}
+				desc = north_atlantic.expedition.intro.vinland
+			}
+		}
+		desc = north_atlantic.0050.desc
+	}
+	theme = realm
+	override_background = { event_background = fp1_ocean }
+	# override_background = {
+	# 	trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+	# 	event_background = RICE_background_north_atlantic_baffin_island
+	# }
+	# override_background = {
+	# 	trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+	# 	event_background = RICE_background_north_atlantic_markland
+	# }
+	# override_background = {
+	# 	trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+	# 	event_background = RICE_background_north_atlantic_vinland
+	# }
+
+	left_portrait = {
+		character = scope:leader
+		animation = happiness
+	}
+
+	immediate = {
+		scope:story = {
+			change_variable = {
+				name = RICE_expedition_success
+				add = 1
+			}
+		}
+		RICE_display_america_expedition_success_view_count_effect = yes
+	}
+
+	option = {
+		name = north_atlantic.0050.a
+		custom_tooltip = north_atlantic.expedition.result.good
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.gold
+		custom_tooltip = north_atlantic.expedition.result.prestige
+		if = {
+			limit = {
+				scope:story.var:RICE_expedition_destination = flag:vinland
+			}
+			custom_tooltip = north_atlantic.expedition.result.viability.increase
+		}
+		else = {
+			custom_tooltip = north_atlantic.expedition.result.resilience.increase
+		}
+		hidden_effect = {
+			random_list = {
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_gold_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_prestige_count
+							add = 1
+						}
+					}
+				}
+			}
+			random_list = {
+				10 = { }
+				10 = {
+					trigger = {
+						NOT = { scope:story.var:RICE_expedition_destination = flag:vinland }
+					}
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_resilience_increase_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_viability_increase_count
+							add = 1
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
+	}
+
+}
+
+
+
+# Discovering skeletons
+north_atlantic.0051 = {
+	type = character_event
+	title = north_atlantic.0051.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:helluland
+				}
+				desc = north_atlantic.expedition.intro.helluland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:markland
+				}
+				desc = north_atlantic.expedition.intro.markland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:vinland
+				}
+				desc = north_atlantic.expedition.intro.vinland
+			}
+		}
+		desc = north_atlantic.0051.desc
+	}
+	theme = realm
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+		event_background = RICE_background_north_atlantic_baffin_island
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+		event_background = RICE_background_north_atlantic_markland
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+		event_background = RICE_background_north_atlantic_vinland
+	}
+
+	left_portrait = {
+		character = scope:leader
+		animation = personality_cynical
+	}
+
+	immediate = {
+		scope:story = {
+			change_variable = {
+				name = RICE_expedition_success
+				add = 1
+			}
+		}
+		RICE_display_america_expedition_success_view_count_effect = yes
+	}
+
+	option = {
+		name = north_atlantic.0051.a
+		#custom_tooltip = north_atlantic.expedition.skill.stewardship
+		custom_tooltip = north_atlantic.expedition.result.good
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.gold
+		custom_tooltip = north_atlantic.expedition.result.prestige
+		custom_tooltip = north_atlantic.expedition.result.piety
+		if = {
+			limit = {
+				scope:story.var:RICE_expedition_destination = flag:vinland
+			}
+			custom_tooltip = north_atlantic.expedition.result.viability.increase
+		}
+		else = {
+			custom_tooltip = north_atlantic.expedition.result.resilience.increase
+		}
+		hidden_effect = {
+			random_list = {
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_gold_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_prestige_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_piety_count
+							add = 1
+						}
+					}
+				}
+			}
+			random_list = {
+				10 = { }
+				10 = {
+					trigger = {
+						NOT = { scope:story.var:RICE_expedition_destination = flag:vinland }
+					}
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_resilience_increase_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_viability_increase_count
+							add = 1
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
+	}
+
+}
+
+
+
+
+# Bears!
+north_atlantic.0052 = {
+	type = character_event
+	title = north_atlantic.0052.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:helluland
+				}
+				desc = north_atlantic.expedition.intro.helluland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:markland
+				}
+				desc = north_atlantic.expedition.intro.markland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:vinland
+				}
+				desc = north_atlantic.expedition.intro.vinland
+			}
+		}
+		desc = north_atlantic.0052.desc
+	}
+	theme = death
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+		event_background = RICE_background_north_atlantic_baffin_island
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+		event_background = RICE_background_north_atlantic_markland
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+		event_background = RICE_background_north_atlantic_vinland
+	}
+
+	right_portrait = {
+		character = scope:leader
+		animation = shock
+	}
+
+	immediate = {
+		scope:story = {
+			change_variable = {
+				name = RICE_expedition_failure
+				add = 1
+			}
+		}
+		RICE_display_america_expedition_success_view_count_effect = yes
+	}
+
+	option = {
+		name = north_atlantic.0052.a
+		custom_tooltip = north_atlantic.expedition.result.bad
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.prestige.loss
+		custom_tooltip = north_atlantic.expedition.result.piety.loss
+		if = {
+			limit = {
+				scope:story.var:RICE_expedition_destination = flag:vinland
+			}
+			custom_tooltip = north_atlantic.expedition.result.viability.decrease
+		}
+		else = {
+			custom_tooltip = north_atlantic.expedition.result.resilience.decrease
+		}
+		hidden_effect = {
+			random_list = {
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_prestige_loss_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_piety_loss_count
+							add = 1
+						}
+					}
+				}
+			}
+			random_list = {
+				10 = { }
+				10 = {
+					trigger = {
+						NOT = { scope:story.var:RICE_expedition_destination = flag:vinland }
+					}
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_resilience_decrease_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_viability_decrease_count
+							add = 1
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
+	}
+
+}
+
+
+# Ambush by mysterious, possibly one-legged people
+north_atlantic.0053 = {
+	type = character_event
+	title = north_atlantic.0053.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:helluland
+				}
+				desc = north_atlantic.expedition.intro.helluland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:markland
+				}
+				desc = north_atlantic.expedition.intro.markland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:vinland
+				}
+				desc = north_atlantic.expedition.intro.vinland
+			}
+		}
+		desc = north_atlantic.0053.desc
+	}
+	theme = battle
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+		event_background = RICE_background_north_atlantic_baffin_island
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+		event_background = RICE_background_north_atlantic_markland
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+		event_background = RICE_background_north_atlantic_vinland
+	}
+
+	right_portrait = {
+		character = scope:leader
+		animation = shock
+	}
+
+	immediate = {
+		scope:story = {
+			change_variable = {
+				name = RICE_expedition_failure
+				add = 1
+			}
+		}
+		RICE_display_america_expedition_success_view_count_effect = yes
+	}
+
+	option = {
+		name = north_atlantic.0053.a
+		custom_tooltip = north_atlantic.expedition.result.bad
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.gold.loss
+		custom_tooltip = north_atlantic.expedition.result.prestige.loss
+		if = {
+			limit = {
+				scope:story.var:RICE_expedition_destination = flag:vinland
+			}
+			custom_tooltip = north_atlantic.expedition.result.viability.decrease
+		}
+		else = {
+			custom_tooltip = north_atlantic.expedition.result.resilience.decrease
+		}
+		hidden_effect = {
+			random_list = {
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_gold_loss_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_piety_loss_count
+							add = 1
+						}
+					}
+				}
+			}
+			random_list = {
+				10 = { }
+				10 = {
+					trigger = {
+						NOT = { scope:story.var:RICE_expedition_destination = flag:vinland }
+					}
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_resilience_decrease_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_viability_decrease_count
+							add = 1
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
+	}
+
+}
+
+
+
+
+# Seal hunting
+north_atlantic.0054 = {
+	type = character_event
+	title = north_atlantic.0054.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:helluland
+				}
+				desc = north_atlantic.expedition.intro.helluland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:markland
+				}
+				desc = north_atlantic.expedition.intro.markland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:vinland
+				}
+				desc = north_atlantic.expedition.intro.vinland
+			}
+		}
+		desc = north_atlantic.0054.desc
+	}
+	theme = hunt_activity
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+		event_background = RICE_background_north_atlantic_baffin_island
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+		event_background = RICE_background_north_atlantic_markland
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+		event_background = RICE_background_north_atlantic_vinland
+	}
+
+	left_portrait = {
+		character = scope:leader
+		animation = personality_greedy
+	}
+
+	immediate = {
+		scope:story = {
+			change_variable = {
+				name = RICE_expedition_success
+				add = 1
+			}
+		}
+		RICE_display_america_expedition_success_view_count_effect = yes
+	}
+
+	option = {
+		name = north_atlantic.0054.a
+		custom_tooltip = north_atlantic.expedition.result.good
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.gold
+		custom_tooltip = north_atlantic.expedition.result.prestige
+		custom_tooltip = north_atlantic.expedition.result.modifiers
+		if = {
+			limit = {
+				scope:story.var:RICE_expedition_destination = flag:vinland
+			}
+			custom_tooltip = north_atlantic.expedition.result.viability.increase
+		}
+		else = {
+			custom_tooltip = north_atlantic.expedition.result.resilience.increase
+		}
+		hidden_effect = {
+			random_list = {
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_gold_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_prestige_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_modifiers_count
+							add = 1
+						}
+					}
+				}
+			}
+			random_list = {
+				10 = { }
+				10 = {
+					trigger = {
+						NOT = { scope:story.var:RICE_expedition_destination = flag:vinland }
+					}
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_resilience_increase_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_viability_increase_count
+							add = 1
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
+	}
+
+}
+
+
+
+# One of the ships sinks
+north_atlantic.0055 = {
+	type = character_event
+	title = north_atlantic.0055.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:helluland
+				}
+				desc = north_atlantic.expedition.intro.helluland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:markland
+				}
+				desc = north_atlantic.expedition.intro.markland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:vinland
+				}
+				desc = north_atlantic.expedition.intro.vinland
+			}
+		}
+		desc = north_atlantic.0055.desc
+	}
+	theme = death
+	override_background = {
+		event_background = fp1_ocean
+	}
+	# override_background = {
+	# 	trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+	# 	event_background = RICE_background_north_atlantic_baffin_island
+	# }
+	# override_background = {
+	# 	trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+	# 	event_background = RICE_background_north_atlantic_markland
+	# }
+	# override_background = {
+	# 	trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+	# 	event_background = RICE_background_north_atlantic_vinland
+	# }
+
+	left_portrait = {
+		character = scope:leader
+		animation = stress
+	}
+
+	immediate = {
+		scope:story = {
+			change_variable = {
+				name = RICE_expedition_failure
+				add = 1
+			}
+		}
+		RICE_display_america_expedition_success_view_count_effect = yes
+	}
+
+	option = {
+		name = north_atlantic.0055.a
+		custom_tooltip = north_atlantic.expedition.result.bad
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.gold.loss
+		custom_tooltip = north_atlantic.expedition.result.piety.loss
+		if = {
+			limit = {
+				scope:story.var:RICE_expedition_destination = flag:vinland
+			}
+			custom_tooltip = north_atlantic.expedition.result.viability.decrease
+		}
+		else = {
+			custom_tooltip = north_atlantic.expedition.result.resilience.decrease
+		}
+		hidden_effect = {
+			random_list = {
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_gold_loss_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_piety_loss_count
+							add = 1
+						}
+					}
+				}
+			}
+			random_list = {
+				10 = { }
+				10 = {
+					trigger = {
+						NOT = { scope:story.var:RICE_expedition_destination = flag:vinland }
+					}
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_resilience_decrease_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_viability_decrease_count
+							add = 1
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
+	}
+
+}
+
+
+
+
+
+# Finding the camp site of a previous explorer
+north_atlantic.0056 = {
+	type = character_event
+	title = north_atlantic.0056.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:helluland
+				}
+				desc = north_atlantic.expedition.intro.helluland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:markland
+				}
+				desc = north_atlantic.expedition.intro.markland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:vinland
+				}
+				desc = north_atlantic.expedition.intro.vinland
+			}
+		}
+		desc = north_atlantic.0056.desc
+	}
+	theme = stewardship_duty_focus
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+		event_background = RICE_background_north_atlantic_baffin_island
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+		event_background = RICE_background_north_atlantic_markland
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+		event_background = RICE_background_north_atlantic_vinland
+	}
+
+	right_portrait = {
+		character = scope:leader
+		animation = personality_zealous
+	}
+
+	immediate = {
+		scope:story = {
+			change_variable = {
+				name = RICE_expedition_success
+				add = 1
+			}
+		}
+		RICE_display_america_expedition_success_view_count_effect = yes
+	}
+
+	option = {
+		name = north_atlantic.0056.a
+		custom_tooltip = north_atlantic.expedition.result.good
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.prestige
+		custom_tooltip = north_atlantic.expedition.result.piety
+		if = {
+			limit = {
+				scope:story.var:RICE_expedition_destination = flag:vinland
+			}
+			custom_tooltip = north_atlantic.expedition.result.viability.increase
+		}
+		else = {
+			custom_tooltip = north_atlantic.expedition.result.networks.increase
+		}
+		hidden_effect = {
+			random_list = {
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_prestige_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_piety_count
+							add = 1
+						}
+					}
+				}
+			}
+			random_list = {
+				10 = { }
+				10 = {
+					trigger = {
+						NOT = { scope:story.var:RICE_expedition_destination = flag:vinland }
+					}
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_networks_increase_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_viability_increase_count
+							add = 1
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
+	}
+
+}
+
+
+
+# Eating strange whale meat
+north_atlantic.0057 = {
+	type = character_event
+	title = north_atlantic.0057.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:helluland
+				}
+				desc = north_atlantic.expedition.intro.helluland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:markland
+				}
+				desc = north_atlantic.expedition.intro.markland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:vinland
+				}
+				desc = north_atlantic.expedition.intro.vinland
+			}
+		}
+		desc = north_atlantic.0057.desc
+	}
+	theme = feast_activity
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+		event_background = RICE_background_north_atlantic_baffin_island
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+		event_background = RICE_background_north_atlantic_markland
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+		event_background = RICE_background_north_atlantic_vinland
+	}
+
+	left_portrait = {
+		character = scope:leader
+		animation = severelywounded
+	}
+
+	immediate = {
+		scope:story = {
+			change_variable = {
+				name = RICE_expedition_failure
+				add = 1
+			}
+		}
+		RICE_display_america_expedition_success_view_count_effect = yes
+	}
+
+	option = {
+		name = north_atlantic.0057.a
+		custom_tooltip = north_atlantic.expedition.result.bad
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.prestige.loss
+		custom_tooltip = north_atlantic.expedition.result.piety.loss
+		if = {
+			limit = {
+				scope:story.var:RICE_expedition_destination = flag:vinland
+			}
+			custom_tooltip = north_atlantic.expedition.result.viability.decrease
+		}
+		else = {
+			custom_tooltip = north_atlantic.expedition.result.resilience.decrease
+		}
+		hidden_effect = {
+			random_list = {
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_prestige_loss_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_piety_loss_count
+							add = 1
+						}
+					}
+				}
+			}
+			random_list = {
+				10 = { }
+				10 = {
+					trigger = {
+						NOT = { scope:story.var:RICE_expedition_destination = flag:vinland }
+					}
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_resilience_decrease_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_viability_decrease_count
+							add = 1
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
+	}
+
+}
+
+
+
+
+# Studying wildlife and plants
+north_atlantic.0058 = {
+	type = character_event
+	title = north_atlantic.0058.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:helluland
+				}
+				desc = north_atlantic.expedition.intro.helluland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:markland
+				}
+				desc = north_atlantic.expedition.intro.markland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:vinland
+				}
+				desc = north_atlantic.expedition.intro.vinland
+			}
+		}
+		desc = north_atlantic.0058.desc
+	}
+	theme = love
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+		event_background = RICE_background_north_atlantic_baffin_island
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+		event_background = RICE_background_north_atlantic_markland
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+		event_background = RICE_background_north_atlantic_vinland
+	}
+
+	right_portrait = {
+		character = scope:leader
+		animation = chancellor
+	}
+
+	immediate = {
+		scope:story = {
+			change_variable = {
+				name = RICE_expedition_success
+				add = 1
+			}
+		}
+		RICE_display_america_expedition_success_view_count_effect = yes
+	}
+
+	option = {
+		name = north_atlantic.0058.a
+		custom_tooltip = north_atlantic.expedition.result.good
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.prestige
+		custom_tooltip = north_atlantic.expedition.result.piety
+		custom_tooltip = north_atlantic.expedition.result.modifiers
+		if = {
+			limit = {
+				scope:story.var:RICE_expedition_destination = flag:vinland
+			}
+			custom_tooltip = north_atlantic.expedition.result.viability.increase
+		}
+		else = {
+			custom_tooltip = north_atlantic.expedition.result.networks.increase
+		}
+		hidden_effect = {
+			random_list = {
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_prestige_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_piety_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_modifiers_count
+							add = 1
+						}
+					}
+				}
+			}
+			random_list = {
+				10 = { }
+				10 = {
+					trigger = {
+						NOT = { scope:story.var:RICE_expedition_destination = flag:vinland }
+					}
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_networks_increase_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_viability_increase_count
+							add = 1
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
+	}
+
+}
+
+
+
+# Crew members claim to be ambushed, but no attackers come
+north_atlantic.0059 = {
+	type = character_event
+	title = north_atlantic.0059.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:helluland
+				}
+				desc = north_atlantic.expedition.intro.helluland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:markland
+				}
+				desc = north_atlantic.expedition.intro.markland
+			}
+			triggered_desc = {
+				trigger = {
+					scope:story.var:RICE_expedition_destination = flag:vinland
+				}
+				desc = north_atlantic.expedition.intro.vinland
+			}
+		}
+		desc = north_atlantic.0059.desc
+	}
+	theme = battle
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
+		event_background = RICE_background_north_atlantic_baffin_island
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:markland }
+		event_background = RICE_background_north_atlantic_markland
+	}
+	override_background = {
+		trigger = { scope:story.var:RICE_expedition_destination = flag:vinland }
+		event_background = RICE_background_north_atlantic_vinland
+	}
+
+	right_portrait = {
+		character = scope:leader
+		animation = paranoia
+	}
+
+	immediate = {
+		scope:story = {
+			change_variable = {
+				name = RICE_expedition_failure
+				add = 1
+			}
+		}
+		RICE_display_america_expedition_success_view_count_effect = yes
+	}
+
+	option = {
+		name = north_atlantic.0059.a
+		custom_tooltip = north_atlantic.expedition.result.bad
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.prestige.loss
+		custom_tooltip = north_atlantic.expedition.result.piety.loss
+		if = {
+			limit = {
+				scope:story.var:RICE_expedition_destination = flag:vinland
+			}
+			custom_tooltip = north_atlantic.expedition.result.viability.decrease
+		}
+		else = {
+			custom_tooltip = north_atlantic.expedition.result.networks.decrease
+		}
+		hidden_effect = {
+			random_list = {
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_prestige_loss_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_piety_loss_count
+							add = 1
+						}
+					}
+				}
+			}
+			random_list = {
+				10 = { }
+				10 = {
+					trigger = {
+						NOT = { scope:story.var:RICE_expedition_destination = flag:vinland }
+					}
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_networks_decrease_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					trigger = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_viability_decrease_count
+							add = 1
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
+	}
+
+}
+
+
 
 
 
