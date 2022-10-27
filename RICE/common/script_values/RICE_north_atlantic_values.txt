@@ -991,7 +991,7 @@ RICE_walrus_hunt_great_value = {
 
 
 RICE_walrus_hunt_success_chance = {
-	value = 15
+	value = 25
 	add = {
 		value = global_var:RICE_greenland_resilience
 		multiply = 0.1
@@ -1038,7 +1038,7 @@ RICE_walrus_hunt_success_chance = {
 		}
 		subtract = 10
 	}
-	min = 20
+	min = 25
 }
 
 RICE_walrus_hunt_gold_gain_min_value = {
@@ -1226,10 +1226,10 @@ RICE_north_atlantic_vinland_colony_cost_value = {
 }
 
 RICE_north_atlantic_whaling_success_chance = {
-	value = 50
+	value = 30
 	add = {
 		value = stewardship
-		multiply = 1.25
+		multiply = 2.5
 		max = 25
 	}
 	add = {
@@ -1278,8 +1278,9 @@ RICE_north_atlantic_whaling_success_chance = {
 				has_cultural_tradition = tradition_RICE_master_whalers
 			}
 		}
-		multiply = 1.25
+		multiply = 1.15
 	}
+	min = 25
 }
 
 RICE_north_atlantic_whaling_min_gold_gain_value = {
@@ -1343,7 +1344,7 @@ RICE_north_atlantic_whaling_max_gold_gain_value = {
 }
 
 RICE_north_atlantic_whaling_max_gold_display_value = {
-	value = 200
+	value = 250
 	if = {
 		limit = {
 			culture = {
@@ -1355,44 +1356,208 @@ RICE_north_atlantic_whaling_max_gold_display_value = {
 }
 
 RICE_helluland_expedition_cost_value = {
-	value = 50
-	
-	# if = {
-	# 	limit = {
-	# 		OR = {
-	# 			has_global_variable = RICE_greenland_ending_integration
-	# 			has_global_variable = RICE_greenland_ending_indigenous
-	# 			AND = {						
-	# 				exists = struggle:RICE_greenland_struggle
-	# 				struggle:RICE_greenland_struggle = {
-	# 					OR = {
-	# 						is_struggle_phase = struggle_RICE_greenland_phase_integration
-	# 						is_struggle_phase = struggle_RICE_greenland_phase_settlement
-	# 					}
-	# 				}
-	# 			}
-	# 		}
-	# 	}
-	# 	add = 300
-	# }
+	value = 200
 	if = {
 		limit = {
 			exists = struggle:RICE_greenland_struggle
 			struggle:RICE_greenland_struggle = {
-				is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+				is_struggle_phase = struggle_RICE_greenland_phase_settlement
 			}				
 		}
-		multiply = 1.25
+		subtract = {
+			value = global_var:RICE_greenland_networks
+			multiply = 0.15
+		}	
+		subtract = {
+			value = global_var:RICE_greenland_resilience
+			multiply = 0.15
+		}	
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_global_variable = RICE_greenland_ending_integration
+				has_global_variable = RICE_greenland_ending_indigenous
+				AND = {						
+					exists = struggle:RICE_greenland_struggle
+					struggle:RICE_greenland_struggle = {
+						OR = {
+							is_struggle_phase = struggle_RICE_greenland_phase_integration
+							is_struggle_phase = struggle_RICE_greenland_phase_settlement
+
+						}
+					}
+				}
+			}		
+		}
+		subtract = {
+			value = global_var:RICE_greenland_networks
+			multiply = 0.1
+		}	
+		subtract = {
+			value = global_var:RICE_greenland_resilience
+			multiply = 0.1
+		}	
 	}
 	else_if = {
 		limit = {
 			exists = struggle:RICE_greenland_struggle
 			struggle:RICE_greenland_struggle = {
-				is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+				is_struggle_phase = struggle_RICE_greenland_phase_subsistence
 			}			
 		}
-		multiply = 1.5
+		subtract = {
+			value = global_var:RICE_greenland_networks
+			multiply = 0.05
+		}	
+		subtract = {
+			value = global_var:RICE_greenland_resilience
+			multiply = 0.05
+		}
 	}
+	min = 50
+}
+
+RICE_markland_expedition_cost_value = {
+	value = 250
+	if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_settlement
+			}				
+		}
+		subtract = {
+			value = global_var:RICE_greenland_networks
+			multiply = 0.15
+		}	
+		subtract = {
+			value = global_var:RICE_greenland_resilience
+			multiply = 0.15
+		}	
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_global_variable = RICE_greenland_ending_integration
+				has_global_variable = RICE_greenland_ending_indigenous
+				AND = {						
+					exists = struggle:RICE_greenland_struggle
+					struggle:RICE_greenland_struggle = {
+						OR = {
+							is_struggle_phase = struggle_RICE_greenland_phase_integration
+							is_struggle_phase = struggle_RICE_greenland_phase_settlement
+
+						}
+					}
+				}
+			}		
+		}
+		subtract = {
+			value = global_var:RICE_greenland_networks
+			multiply = 0.1
+		}	
+		subtract = {
+			value = global_var:RICE_greenland_resilience
+			multiply = 0.1
+		}	
+	}
+	else_if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+			}			
+		}
+		subtract = {
+			value = global_var:RICE_greenland_networks
+			multiply = 0.05
+		}	
+		subtract = {
+			value = global_var:RICE_greenland_resilience
+			multiply = 0.05
+		}
+	}
+	min = 50
+}
+
+RICE_vinland_expedition_cost_value = {
+	value = 350
+	if = {
+		limit = {
+			OR = {
+				has_global_variable = RICE_greenland_ending_integration
+				has_global_variable = RICE_greenland_ending_indigenous
+			}		
+		}
+		subtract = {
+			value = global_var:RICE_greenland_networks
+			multiply = 0.25
+		}	
+		subtract = {
+			value = global_var:RICE_greenland_resilience
+			multiply = 0.25
+		}	
+	}
+	else_if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_settlement
+			}				
+		}
+		subtract = {
+			value = global_var:RICE_greenland_networks
+			multiply = 0.15
+		}	
+		subtract = {
+			value = global_var:RICE_greenland_resilience
+			multiply = 0.15
+		}	
+	}
+	else_if = {
+		limit = {					
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				OR = {
+					is_struggle_phase = struggle_RICE_greenland_phase_integration
+					is_struggle_phase = struggle_RICE_greenland_phase_settlement
+
+				}
+			}		
+		}
+		subtract = {
+			value = global_var:RICE_greenland_networks
+			multiply = 0.1
+		}	
+		subtract = {
+			value = global_var:RICE_greenland_resilience
+			multiply = 0.1
+		}	
+	}
+	else_if = {
+		limit = {
+			exists = struggle:RICE_greenland_struggle
+			struggle:RICE_greenland_struggle = {
+				is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+			}			
+		}
+		subtract = {
+			value = global_var:RICE_greenland_networks
+			multiply = 0.05
+		}	
+		subtract = {
+			value = global_var:RICE_greenland_resilience
+			multiply = 0.05
+		}
+	}
+	if = {
+		limit = {
+			has_global_variable = RICE_north_atlantic_vinland_colonized_done
+		}
+		multiply = 0.8
+	}
+	min = 100
 }
 
 

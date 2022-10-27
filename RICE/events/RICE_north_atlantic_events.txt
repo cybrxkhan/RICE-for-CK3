@@ -1615,26 +1615,17 @@ north_atlantic.0030 = {
 
 		if = { # Helluland
 			limit = { var:RICE_expedition_destination_pick = flag:helluland }
-			set_variable = {
-				name = RICE_expedition_destination_pick
-				value = flag:helluland
-			}
+			remove_short_term_gold = global_var:RICE_global_helluland_expedition_cost
 		}
 
 		else_if = { # Markland
 			limit = { var:RICE_expedition_destination_pick = flag:markland }
-			set_variable = {
-				name = RICE_expedition_destination_pick
-				value = flag:markland
-			}
+			remove_short_term_gold = global_var:RICE_global_markland_expedition_cost
 		}
 
 		else_if = { # Vinland
 			limit = { var:RICE_expedition_destination_pick = flag:vinland }
-			set_variable = {
-				name = RICE_expedition_destination_pick
-				value = flag:vinland
-			}
+			remove_short_term_gold = global_var:RICE_global_vinland_expedition_cost
 		}
 
 		# See scripted_trigger valid_scandinavian_adventurer just in case
@@ -2226,13 +2217,14 @@ north_atlantic.0034 = {
 		if = {
 			limit = {
 				scope:story = {
-					var:RICE_expedition_failure.compare_value >= var:RICE_expedition_success.compare_value
+					var:RICE_expedition_failure.compare_value > var:RICE_expedition_success.compare_value
 				}
 			}
 			set_variable = {
 				name = RICE_expedition_result
 				value = flag:failure
-			}			
+			}	
+			add_prestige = 50		
 		}
 		# Expedition is considered a success
 		else = {
@@ -2240,8 +2232,8 @@ north_atlantic.0034 = {
 				name = RICE_expedition_result
 				value = flag:success
 			}	
+			add_prestige = 200
 		}
-		#add_prestige = 100
 		if = {
 			limit = {
 				scope:leader = {
@@ -8019,7 +8011,7 @@ north_atlantic.0063 = {
 
 
 
-# Abandoned residences - Native Americans?
+# Abandoned village of Native Americans
 north_atlantic.0064 = {
 	type = character_event
 	title = north_atlantic.0064.t
@@ -8115,8 +8107,9 @@ north_atlantic.0064 = {
 						}
 					}
 				}
+				RICE_display_america_expedition_success_view_count_cleanup_effect = yes
 				trigger_event = north_atlantic.0065
-				custom_tooltip = north_atlantic.expedition.skill.intrigue
+				custom_tooltip = north_atlantic.expedition.skill.martial
 			}
 			50 = {
 				desc = north_atlantic.0064.empty
@@ -8154,11 +8147,11 @@ north_atlantic.0064 = {
 						}
 					}
 				}
+				RICE_display_america_expedition_success_view_count_cleanup_effect = yes
 				trigger_event = north_atlantic.0066
 				custom_tooltip = north_atlantic.expedition.skill.stewardship				
 			}
 		}
-		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
 	}
 
 	# Wait for the villagers to return
@@ -8201,6 +8194,7 @@ north_atlantic.0064 = {
 						}
 					}
 				}
+				RICE_display_america_expedition_success_view_count_cleanup_effect = yes
 				trigger_event = north_atlantic.0067
 				custom_tooltip = north_atlantic.expedition.skill.diplomacy
 			}
@@ -8240,11 +8234,11 @@ north_atlantic.0064 = {
 						}
 					}
 				}
+				RICE_display_america_expedition_success_view_count_cleanup_effect = yes
 				trigger_event = north_atlantic.0066
 				custom_tooltip = north_atlantic.expedition.skill.stewardship				
 			}
 		}
-		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
 	}
 
 }
@@ -8262,7 +8256,7 @@ north_atlantic.0065 = {
 				trigger = {
 					var:RICE_north_atlantic_episode_result = flag:failure_battle_defeat
 				}
-				desc = north_atlantic.0065.desc.no_battle
+				desc = north_atlantic.0065.desc.battle_defeat
 			}
 			triggered_desc = {
 				trigger = {
@@ -8617,7 +8611,7 @@ north_atlantic.0065 = {
 
 # The village is indeed abandoned
 north_atlantic.0066 = {
-	type = duel_event
+	type = character_event
 	title = north_atlantic.0066.t
 	desc = {
 		desc = north_atlantic.expedition.intro.continue
@@ -8648,7 +8642,7 @@ north_atlantic.0066 = {
 			}
 		}
 	}
-	theme = battle
+	theme = corruption
 	override_background = {
 		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
 		event_background = RICE_background_north_atlantic_baffin_island
@@ -8887,7 +8881,7 @@ north_atlantic.0066 = {
 
 # The village is not abandoned, and a peaceful encounter ensues
 north_atlantic.0067 = {
-	type = duel_event
+	type = character_event
 	title = north_atlantic.0067.t
 	desc = {
 		desc = north_atlantic.expedition.intro.continue
@@ -8907,7 +8901,7 @@ north_atlantic.0067 = {
 
 		}
 	}
-	theme = battle
+	theme = diplomacy_foreign_affairs_focus
 	override_background = {
 		trigger = { scope:story.var:RICE_expedition_destination = flag:helluland }
 		event_background = RICE_background_north_atlantic_baffin_island
@@ -8923,11 +8917,25 @@ north_atlantic.0067 = {
 
 	left_portrait = {
 		character = scope:leader
-		animation = aggressive_spear
+		triggered_animation = {
+			trigger = { root = {var:RICE_north_atlantic_episode_result = flag:failure_no_trade } }
+			animation = personality_coward
+		}
+		triggered_animation = {
+			trigger = { root = {var:RICE_north_atlantic_episode_result = flag:success_trade } }
+			animation = personality_greedy
+		}
 	}
 	right_portrait = {
 		character = scope:native_leader
-		animation = aggressive_spear
+		triggered_animation = {
+			trigger = { root = {var:RICE_north_atlantic_episode_result = flag:failure_no_trade } }
+			animation = dismissal
+		}
+		triggered_animation = {
+			trigger = { root = {var:RICE_north_atlantic_episode_result = flag:success_trade } }
+			animation = personality_honorable
+		}
 	}
 
 	immediate = {
@@ -15806,7 +15814,29 @@ north_atlantic.0181 = {
 north_atlantic.0182 = {
 	type = character_event
 	title = north_atlantic.0182.t
-	desc = north_atlantic.0182.desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					culture = {
+						has_cultural_tradition = tradition_RICE_master_whalers
+					}
+				}
+				desc = north_atlantic.0182.desc.culture
+			}
+			triggered_desc = {
+				trigger = {
+					NOT = {
+						culture = {
+							has_cultural_tradition = tradition_RICE_master_whalers
+						}
+					}
+				}
+				desc = north_atlantic.0182.desc.not_culture
+			}
+		}
+		desc = north_atlantic.0182.desc
+	}
 	theme = stewardship_wealth_focus
 	override_background = { event_background = docks }
 
@@ -15816,11 +15846,27 @@ north_atlantic.0182 = {
 	}
 
 	immediate = {
-		RICE_exempt_from_tax_whaling_towns_effect = yes
+		hidden_effect = {			
+			RICE_exempt_from_tax_whaling_towns_effect = yes
+		}
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				is_coastal_county = yes	
+				culture = {
+					has_cultural_tradition = tradition_RICE_master_whalers
+				}				
+			}
+			save_scope_as = county
+		}
+		scope:county.culture = {
+			save_scope_as = culture
+		}
 	}
 
 	option = {
 		name = north_atlantic.0182.a
+		RICE_exempt_from_tax_whaling_towns_effect = yes
 	}
 
 }
@@ -15830,7 +15876,29 @@ north_atlantic.0182 = {
 north_atlantic.0183 = {
 	type = character_event
 	title = north_atlantic.0183.t
-	desc = north_atlantic.0183.desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					culture = {
+						has_cultural_tradition = tradition_RICE_master_whalers
+					}
+				}
+				desc = north_atlantic.0183.desc.culture
+			}
+			triggered_desc = {
+				trigger = {
+					NOT = {
+						culture = {
+							has_cultural_tradition = tradition_RICE_master_whalers
+						}
+					}
+				}
+				desc = north_atlantic.0183.desc.not_culture
+			}
+		}
+		desc = north_atlantic.0183.desc
+	}
 	theme = stewardship_wealth_focus
 	override_background = { event_background = docks }
 
@@ -15840,11 +15908,27 @@ north_atlantic.0183 = {
 	}
 
 	immediate = {
-		RICE_levy_extra_tax_whaling_towns_effect = yes
+		hidden_effect = {			
+			RICE_levy_extra_tax_whaling_towns_effect = yes
+		}
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				is_coastal_county = yes	
+				culture = {
+					has_cultural_tradition = tradition_RICE_master_whalers
+				}				
+			}
+			save_scope_as = county
+		}
+		scope:county.culture = {
+			save_scope_as = culture
+		}
 	}
 
 	option = {
 		name = north_atlantic.0183.a
+		RICE_levy_extra_tax_whaling_towns_effect = yes
 	}
 
 }

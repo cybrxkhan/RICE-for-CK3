@@ -39,6 +39,11 @@ RICE_setup_north_atlantic_flavor_pack_effect = {
 	# 	remove_variable = tradition_cooldown
 	# }
 	
+	culture:norse = {
+		add_culture_tradition = tradition_RICE_whalers
+		remove_variable = tradition_cooldown
+	}	
+	
 	culture:breton = {
 		add_culture_tradition = tradition_RICE_whalers
 		remove_variable = tradition_cooldown
@@ -50,6 +55,11 @@ RICE_setup_north_atlantic_flavor_pack_effect = {
 	}	
 	
 	culture:samoyed = {
+		add_culture_tradition = tradition_RICE_whalers
+		remove_variable = tradition_cooldown
+	}
+
+	culture:norman = {
 		add_culture_tradition = tradition_RICE_whalers
 		remove_variable = tradition_cooldown
 	}	
@@ -366,7 +376,7 @@ RICE_setup_north_atlantic_flavor_pack_effect = {
 	}
 
 
-	# Don't know a better way to save costs for walrus hunts to display properly on custom GUI elements, so this method will have to do
+	# Don't know a better way to save costs for walrus hunts and expeditions to display properly on custom GUI elements, so this method will have to do
 	set_global_variable = {
 		name = RICE_global_walrus_hunt_minor_cost
 		value = RICE_walrus_hunt_minor_value
@@ -395,6 +405,18 @@ RICE_setup_north_atlantic_flavor_pack_effect = {
 		name = RICE_global_walrus_hunt_great_max_gain
 		value = RICE_walrus_hunt_gold_gain_max_great_value
 	}	
+	set_global_variable = {
+		name = RICE_global_helluland_expedition_cost
+		value = RICE_helluland_expedition_cost_value
+	}	
+	set_global_variable = {
+		name = RICE_global_markland_expedition_cost
+		value = RICE_markland_expedition_cost_value
+	}	
+	set_global_variable = {
+		name = RICE_global_vinland_expedition_cost
+		value = RICE_vinland_expedition_cost_value
+	}	
 
 }
 
@@ -406,6 +428,52 @@ RICE_setup_north_atlantic_after_game_start_effect = {
 			is_ai = yes
 			exists = house
 			NOT = { house = { has_house_modifier = RICE_north_atlantic_greenland_family_estate } }
+			exists = struggle:RICE_greenland_struggle
+			any_character_struggle = {
+				involvement = involved
+				is_struggle_type = RICE_greenland_struggle
+			}
+		}
+		weight = {
+			base = 100
+
+			modifier = {
+				add = 15
+				highest_held_title_tier > tier_county
+			}
+
+			modifier = {
+				add = 15
+				highest_held_title_tier > tier_duchy
+			}
+
+			modifier = {
+				add = 10
+				stewardship > decent_skill_rating
+			}
+
+			modifier = {
+				add = 10
+				OR = {
+					has_trait = diligent
+					has_trait = ambitious
+					has_trait = greedy
+				}
+			}
+
+		}
+		house = {
+			add_house_modifier = {
+				modifier = RICE_north_atlantic_greenland_family_estate
+			}
+		}
+	}
+	random_ruler = {
+		limit = {
+			is_ai = yes
+			exists = house
+			NOT = { house = { has_house_modifier = RICE_north_atlantic_greenland_family_estate } }
+			exists = struggle:RICE_greenland_struggle
 			any_character_struggle = {
 				involvement = involved
 				is_struggle_type = RICE_greenland_struggle
@@ -559,6 +627,18 @@ RICE_greenland_annual_values_calculator_effect = {
 			name = RICE_global_walrus_hunt_great_max_gain
 			value = RICE_walrus_hunt_gold_gain_max_great_value
 		}
+		set_global_variable = {
+			name = RICE_global_helluland_expedition_cost
+			value = RICE_helluland_expedition_cost_value
+		}	
+		set_global_variable = {
+			name = RICE_global_markland_expedition_cost
+			value = RICE_markland_expedition_cost_value
+		}	
+		set_global_variable = {
+			name = RICE_global_vinland_expedition_cost
+			value = RICE_vinland_expedition_cost_value
+		}	
 
 		# Vinland Colony
 		
@@ -2790,14 +2870,21 @@ RICE_exempt_from_tax_whaling_towns_effect = {
 		modifier = RICE_north_atlantic_whale_tax_exempter
 		years = 10
 	}
+	stress_impact = {
+		greedy = minor_stress_impact_gain
+		arbitrary = miniscule_stress_impact_gain
+	}
 	every_held_title = {
-		custom = RICE_every_coastal_county
+		custom = RICE_every_coastal_whaling_county
 		limit = {
 			tier = tier_county
-			is_coastal_county = yes					
+			is_coastal_county = yes	
+			culture = {
+				has_cultural_tradition = tradition_RICE_master_whalers
+			}				
 		}
 		add_county_modifier = {
-			modifier = RICE_north_atlantic_whale_exempt_from_tax
+			modifier = RICE_north_atlantic_whale_exempt_from_tax_modifier
 			years = 10
 		}
 	}
@@ -2808,16 +2895,24 @@ RICE_levy_extra_tax_whaling_towns_effect = {
 		modifier = RICE_north_atlantic_whale_tax_levier
 		years = 10
 	}
+	stress_impact = {
+		generous = minor_stress_impact_gain
+		just = miniscule_stress_impact_gain
+	}
 	every_held_title = {
-		custom = RICE_every_coastal_county
+		custom = RICE_every_coastal_whaling_county
 		limit = {
 			tier = tier_county
-			is_coastal_county = yes					
+			is_coastal_county = yes
+			culture = {
+				has_cultural_tradition = tradition_RICE_master_whalers
+			}					
 		}
 		add_county_modifier = {
-			modifier = RICE_north_atlantic_whale_levy_extra_tax
+			modifier = RICE_north_atlantic_whale_levy_extra_tax_modifier
 			years = 10
 		}
 	}
 }
+
 

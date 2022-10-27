@@ -657,7 +657,10 @@ RICE_north_atlantic_settle_vinland = {
 			has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
 		}
 		global_var:RICE_north_atlantic_vinland_outposts > 0
-		NOT = { has_character_flag = RICE_north_atlantic_ongoing_expedition }
+		custom_description = {
+			text = RICE_no_ongoing_expedition_req
+			NOT = { has_character_flag = RICE_north_atlantic_ongoing_expedition }
+		}
 	}
 
 	is_valid_showing_failures_only = {
@@ -1624,7 +1627,10 @@ RICE_north_atlantic_build_outpost_vinland = {
 		}
 		#is_house_head = yes
 		#NOT = { house = { has_house_modifier = RICE_north_atlantic_greenland_family_estate } }
-		NOT = { has_character_flag = RICE_north_atlantic_ongoing_expedition }
+		custom_description = {
+			text = RICE_no_ongoing_expedition_req
+			NOT = { has_character_flag = RICE_north_atlantic_ongoing_expedition }
+		}
 	}
 
 	is_valid_showing_failures_only = {
@@ -1876,7 +1882,45 @@ RICE_north_atlantic_hunting_trip = {
 		custom_tooltip = RICE_north_atlantic_hunting_trip_effect_tooltip_3
 		custom_tooltip = RICE_north_atlantic_hunting_trip_effect_tooltip_4
 		custom_tooltip = RICE_north_atlantic_hunting_trip_effect_tooltip_5
-		custom_tooltip = RICE_north_atlantic_hunting_trip_effect_tooltip_6
+		if = {
+			limit = {
+				exists = struggle:RICE_greenland_struggle
+				struggle:RICE_greenland_struggle = {
+					OR = {
+						is_struggle_phase = struggle_RICE_greenland_phase_settlement
+						is_struggle_phase = struggle_RICE_greenland_phase_integration
+					}
+				}	
+			}
+			custom_tooltip = RICE_north_atlantic_hunting_trip_effect_tooltip_6
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_global_variable = RICE_greenland_ending_integration
+					has_global_variable = RICE_greenland_ending_indigenous
+				}
+			}
+			custom_tooltip = RICE_north_atlantic_hunting_trip_effect_tooltip_7
+		}
+		else_if = {
+			limit = {
+				exists = struggle:RICE_greenland_struggle
+				struggle:RICE_greenland_struggle = {
+					is_struggle_phase = struggle_RICE_greenland_phase_subsistence
+				}
+			}
+			custom_tooltip = RICE_north_atlantic_hunting_trip_effect_tooltip_8
+		}
+		else_if = {
+			limit = {
+				exists = struggle:RICE_greenland_struggle
+				struggle:RICE_greenland_struggle = {
+					is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+				}
+			}
+			custom_tooltip = RICE_north_atlantic_hunting_trip_effect_tooltip_9
+		}
 
 
 		if = {
@@ -2731,7 +2775,10 @@ RICE_north_atlantic_explore_americas = {
 				}
 			}
 		}
-		NOT = { has_character_flag = RICE_north_atlantic_ongoing_expedition }
+		custom_description = {
+			text = RICE_no_ongoing_expedition_req
+			NOT = { has_character_flag = RICE_north_atlantic_ongoing_expedition }
+		}
 	}
 	
 	is_valid_showing_failures_only = {
@@ -2857,9 +2904,9 @@ RICE_north_atlantic_explore_americas = {
 		}
 	}
 
-	minimum_cost = { 
-		gold = 100
-	}	
+	# minimum_cost = { 
+	# 	gold = global_var:RICE_helluland_expedition_cost_value
+	# }	
 
 	ai_potential = {
 		short_term_gold > 100
@@ -3176,28 +3223,40 @@ RICE_north_atlantic_whale_exempt_tax = {
 	ai_check_interval = 24
 
 	cooldown = { days = 3650 }
-	
-	desc = RICE_north_atlantic_whale_exempt_tax_desc
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					culture = {
+						has_cultural_tradition = tradition_RICE_master_whalers
+					}
+				}
+				desc = RICE_north_atlantic_whale_exempt_tax_desc
+			}
+			desc = RICE_north_atlantic_whale_exempt_tax_not_basque_desc
+		}
+	}
 	
 	is_shown = {
 		highest_held_title_tier > tier_barony
 		is_landed = yes
-		culture = {
-			has_cultural_tradition = tradition_RICE_master_whalers
-		}
-		# any_held_title = {
-		# 	tier = tier_county
-		# 	is_coastal_county = yes
-		# }
-	}
-	
-	is_valid = {
-		culture = {
-			has_cultural_tradition = tradition_RICE_master_whalers
-		}
 		any_held_title = {
 			tier = tier_county
 			is_coastal_county = yes
+			culture = {
+				has_cultural_tradition = tradition_RICE_master_whalers
+			}
+		}
+	}
+	
+	is_valid = {
+		any_held_title = {
+			tier = tier_county
+			is_coastal_county = yes
+			culture = {
+				has_cultural_tradition = tradition_RICE_master_whalers
+			}
 		}	
 		NOR = {
 			has_character_modifier = RICE_north_atlantic_whale_tax_exempter
@@ -3209,6 +3268,9 @@ RICE_north_atlantic_whale_exempt_tax = {
 				text = "is_king_or_emperor"
 				highest_held_title_tier >= tier_kingdom
 			}
+		}
+		culture = {
+			has_innovation = innovation_development_02
 		}
 	}
 	
@@ -3271,28 +3333,43 @@ RICE_north_atlantic_whale_levy_extra_tax = {
 	ai_check_interval = 24
 
 	cooldown = { days = 3650 }
-	
-	desc = RICE_north_atlantic_whale_levy_extra_tax_desc
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					culture = {
+						has_cultural_tradition = tradition_RICE_master_whalers
+					}
+				}
+				desc = RICE_north_atlantic_whale_levy_extra_tax_desc
+			}
+			desc = RICE_north_atlantic_whale_levy_extra_tax_not_basque_desc
+		}
+	}
 	
 	is_shown = {
 		highest_held_title_tier > tier_barony
 		is_landed = yes
-		culture = {
-			has_cultural_tradition = tradition_RICE_master_whalers
-		}
-		# any_held_title = {
-		# 	tier = tier_county
-		# 	is_coastal_county = yes
-		# }
-	}
-	
-	is_valid = {
-		culture = {
-			has_cultural_tradition = tradition_RICE_master_whalers
-		}
 		any_held_title = {
 			tier = tier_county
 			is_coastal_county = yes
+			culture = {
+				has_cultural_tradition = tradition_RICE_master_whalers
+			}
+		}
+	}
+	
+	is_valid = {
+		# culture = {
+		# 	has_cultural_tradition = tradition_RICE_master_whalers
+		# }
+		any_held_title = {
+			tier = tier_county
+			is_coastal_county = yes
+			culture = {
+				has_cultural_tradition = tradition_RICE_master_whalers
+			}
 		}	
 		NOR = {
 			has_character_modifier = RICE_north_atlantic_whale_tax_exempter
@@ -3304,6 +3381,9 @@ RICE_north_atlantic_whale_levy_extra_tax = {
 				text = "is_king_or_emperor"
 				highest_held_title_tier >= tier_kingdom
 			}
+		}
+		culture = {
+			has_innovation = innovation_development_02
 		}
 	}
 	
