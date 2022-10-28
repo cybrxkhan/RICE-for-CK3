@@ -640,8 +640,7 @@ RICE_greenland_annual_values_calculator_effect = {
 			value = RICE_vinland_expedition_cost_value
 		}	
 
-		# Vinland Colony
-		
+		# Vinland Colony		
 		if = {
 			limit = {
 				exists = global_var:RICE_north_atlantic_vinland_outposts
@@ -654,6 +653,39 @@ RICE_greenland_annual_values_calculator_effect = {
 			change_global_variable = {
 				name = RICE_greenland_networks
 				subtract = RICE_north_atlantic_vinland_colony_cost_value
+			}
+		}
+
+		if = {
+			limit = {
+				OR = {
+					has_global_variable = RICE_greenland_ending_integration
+					has_global_variable = RICE_greenland_ending_indigenous
+				}
+				global_var:RICE_vinland_viability <= 50	
+			}
+			random_list = {
+				10 = {
+
+				}
+				10 = {
+					change_global_variable = {
+						name = RICE_vinland_viability
+						add = 1
+					}
+				}
+				10 = {
+					change_global_variable = {
+						name = RICE_vinland_viability
+						add = 2
+					}
+				}
+				10 = {
+					change_global_variable = {
+						name = RICE_vinland_viability
+						add = 3
+					}
+				}
 			}
 		}
 
@@ -2763,7 +2795,7 @@ RICE_greenland_struggle_ending_culture_list_effect = {
 			#TODO_CD_FP2 (JP) check if this can be more performant, every_struggle_culture would be better
 			save_temporary_scope_as = this_culture
 			struggle:RICE_greenland_struggle = { is_culture_involved_in_struggle = scope:this_culture }
-			culture_number_of_counties > 0
+			#culture_number_of_counties > 0
 		}
 		save_scope_as = culture_scope
 		add_to_global_variable_list = {
