@@ -2485,13 +2485,15 @@ north_atlantic.0034 = {
 		}
 		if = {
 			limit = {
-				scope:story.var:RICE_expedition_gold_count.compare_value > scope:story.var:RICE_expedition_gold_loss_count.compare_value
+				scope:story.var:RICE_expedition_gold_count.compare_value >= 1
+				#scope:story.var:RICE_expedition_gold_count.compare_value >= scope:story.var:RICE_expedition_gold_loss_count.compare_value
 			}
 			add_gold = { 25 RICE_expedition_gold_gain_max_value }
 		}
 		else_if = {
 			limit = {
-				scope:story.var:RICE_expedition_gold_count.compare_value <= scope:story.var:RICE_expedition_gold_loss_count.compare_value
+				scope:story.var:RICE_expedition_gold_loss_count.compare_value >= 1
+				#scope:story.var:RICE_expedition_gold_count.compare_value < scope:story.var:RICE_expedition_gold_loss_count.compare_value
 			}
 			remove_short_term_gold = { 1 RICE_expedition_gold_loss_max_value }
 		}
@@ -5127,7 +5129,7 @@ north_atlantic.0048 = {
 		RICE_display_america_expedition_success_view_count_effect = yes
 	}
 
-	option = { # Attempt to trade
+	option = { # Search for them
 		name = north_atlantic.0048.a
 		custom_tooltip = north_atlantic.expedition.success_failure_counter_preview
 		scope:leader = {
@@ -5168,6 +5170,8 @@ north_atlantic.0048 = {
 		trigger_event = north_atlantic.0049
 		custom_tooltip = north_atlantic.expedition.skill.intrigue
 	}
+
+	# Give up
 	option = {
 		name = north_atlantic.0048.b
 		custom_tooltip = north_atlantic.expedition.result.neutral
@@ -6969,7 +6973,7 @@ north_atlantic.0060 = {
 						}
 					}
 				}
-				102 = { # Success - kidnap one of the native people
+				2 = { # Success - kidnap one of the native people
 					#show_chance = no
 					custom_tooltip = north_atlantic.0060.c.success.kidnap_battle
 					compare_modifier = {
@@ -7052,7 +7056,7 @@ north_atlantic.0060 = {
 						}
 					}
 				}
-				102 = { # Success - kidnap after the raid
+				2 = { # Success - kidnap after the raid
 					#show_chance = no
 					custom_tooltip = north_atlantic.0060.d.success.kidnap_raid
 					compare_modifier = {
@@ -9197,22 +9201,11 @@ north_atlantic.0067 = {
 				10 = {
 					scope:story = {
 						change_variable = {
-							name = RICE_expedition_gold_loss_count
-							add = 1
-						}
-					}
-				}
-				10 = {
-					scope:story = {
-						change_variable = {
 							name = RICE_expedition_prestige_loss_count
 							add = 1
 						}
 					}
 				}
-			}
-			random_list = {
-				10 = { }
 				10 = {
 					trigger = {
 						NOT = { scope:story.var:RICE_expedition_destination = flag:vinland }
@@ -9255,6 +9248,427 @@ north_atlantic.0067 = {
 		}
 	}
 
+}
+
+
+
+
+
+
+
+# Timber in Markland (good)
+north_atlantic.0068 = {
+	type = character_event
+	title = north_atlantic.0068.t
+	desc = {
+		desc = north_atlantic.expedition.intro.markland
+		desc = north_atlantic.0068.desc
+	}
+	theme = love
+	override_background = {
+		event_background = RICE_background_north_atlantic_markland
+	}
+
+	left_portrait = {
+		character = scope:leader
+		animation = personality_greedy
+	}
+
+	trigger = {
+		scope:story.var:RICE_expedition_destination = flag:markland
+	}
+
+	immediate = {
+		scope:story = {
+			change_variable = {
+				name = RICE_expedition_success
+				add = 1
+			}
+		}
+		RICE_display_america_expedition_success_view_count_effect = yes
+	}
+
+	option = {
+		name = north_atlantic.0068.a
+		custom_tooltip = north_atlantic.expedition.result.good
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.gold
+		custom_tooltip = north_atlantic.expedition.result.resilience.increase
+		hidden_effect = {
+			random_list = {
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_gold_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_resilience_increase_count
+							add = 1
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
+	}
+}
+
+
+
+
+# Timber in Markland (bad)
+north_atlantic.0069 = {
+	type = character_event
+	title = north_atlantic.0069.t
+	desc = {
+		desc = north_atlantic.expedition.intro.markland
+		desc = north_atlantic.0069.desc
+	}
+	theme = love
+	override_background = {
+		event_background = RICE_background_north_atlantic_markland
+	}
+
+	right_portrait = {
+		character = scope:leader
+		animation = disapproval
+	}
+
+	trigger = {
+		scope:story.var:RICE_expedition_destination = flag:markland
+	}
+
+	immediate = {
+		scope:story = {
+			change_variable = {
+				name = RICE_expedition_failure
+				add = 1
+			}
+		}
+		RICE_display_america_expedition_success_view_count_effect = yes
+	}
+
+	option = {
+		name = north_atlantic.0069.a
+		custom_tooltip = north_atlantic.expedition.result.bad
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.gold.loss
+		custom_tooltip = north_atlantic.expedition.result.resilience.decrease
+		hidden_effect = {
+			random_list = {
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_gold_loss_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_resilience_decrease_count
+							add = 1
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
+	}
+}
+
+
+
+
+# Discover logging camp of a previous Markland expedition
+north_atlantic.0070 = {
+	type = character_event
+	title = north_atlantic.0070.t
+	desc = {
+		desc = north_atlantic.expedition.intro.markland
+		desc = north_atlantic.0070.desc
+	}
+	theme = love
+	override_background = {
+		event_background = RICE_background_north_atlantic_markland
+	}
+
+	right_portrait = {
+		character = scope:leader
+		animation = happiness
+	}
+
+	trigger = {
+		scope:story.var:RICE_expedition_destination = flag:markland
+	}
+
+	immediate = {
+		scope:story = {
+			change_variable = {
+				name = RICE_expedition_success
+				add = 1
+			}
+		}
+		RICE_display_america_expedition_success_view_count_effect = yes
+	}
+
+	option = {
+		name = north_atlantic.0070.a
+		custom_tooltip = north_atlantic.expedition.result.good
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.gold
+		custom_tooltip = north_atlantic.expedition.result.resilience.increase
+		hidden_effect = {
+			random_list = {
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_gold_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_resilience_increase_count
+							add = 1
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
+	}
+}
+
+
+
+
+# Accident happens during a logging expedition in Markland
+north_atlantic.0071 = {
+	type = character_event
+	title = north_atlantic.0071.t
+	desc = {
+		desc = north_atlantic.expedition.intro.markland
+		desc = north_atlantic.0071.desc
+	}
+	theme = love
+	override_background = {
+		event_background = RICE_background_north_atlantic_markland
+	}
+
+	right_portrait = {
+		character = scope:leader
+		animation = disapproval
+	}
+
+	trigger = {
+		scope:story.var:RICE_expedition_destination = flag:markland
+	}
+
+	immediate = {
+		scope:story = {
+			change_variable = {
+				name = RICE_expedition_failure
+				add = 1
+			}
+		}
+		RICE_display_america_expedition_success_view_count_effect = yes
+	}
+
+	option = {
+		name = north_atlantic.0071.a
+		custom_tooltip = north_atlantic.expedition.result.bad
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.gold.loss
+		custom_tooltip = north_atlantic.expedition.result.resilience.decrease
+		hidden_effect = {
+			random_list = {
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_gold_loss_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_resilience_decrease_count
+							add = 1
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
+	}
+}
+
+
+# Markland logging instructions are good
+north_atlantic.0072 = {
+	type = character_event
+	title = north_atlantic.0072.t
+	desc = {
+		desc = north_atlantic.expedition.intro.markland
+		desc = north_atlantic.0072.desc
+	}
+	theme = love
+	override_background = {
+		event_background = RICE_background_north_atlantic_markland
+	}
+
+	right_portrait = {
+		character = scope:leader
+		animation = happiness
+	}
+
+	trigger = {
+		scope:story.var:RICE_expedition_destination = flag:markland
+	}
+
+	immediate = {
+		scope:story = {
+			change_variable = {
+				name = RICE_expedition_success
+				add = 1
+			}
+		}
+		RICE_display_america_expedition_success_view_count_effect = yes
+	}
+
+	option = {
+		name = north_atlantic.0072.a
+		custom_tooltip = north_atlantic.expedition.result.good
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.gold
+		custom_tooltip = north_atlantic.expedition.result.resilience.increase
+		hidden_effect = {
+			random_list = {
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_gold_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_resilience_increase_count
+							add = 1
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
+	}
+}
+
+
+
+
+# Markland logging instructions are bad
+north_atlantic.0073 = {
+	type = character_event
+	title = north_atlantic.0073.t
+	desc = {
+		desc = north_atlantic.expedition.intro.markland
+		desc = north_atlantic.0073.desc
+	}
+	theme = love
+	override_background = {
+		event_background = RICE_background_north_atlantic_markland
+	}
+
+	right_portrait = {
+		character = scope:leader
+		animation = disapproval
+	}
+
+	trigger = {
+		scope:story.var:RICE_expedition_destination = flag:markland
+	}
+
+	immediate = {
+		scope:story = {
+			change_variable = {
+				name = RICE_expedition_failure
+				add = 1
+			}
+		}
+		RICE_display_america_expedition_success_view_count_effect = yes
+	}
+
+	option = {
+		name = north_atlantic.0073.a
+		custom_tooltip = north_atlantic.expedition.result.bad
+		custom_description_no_bullet = {
+			text = north_atlantic.expedition.result.intro
+		}
+		custom_tooltip = north_atlantic.expedition.result.gold.loss
+		custom_tooltip = north_atlantic.expedition.result.resilience.decrease
+		hidden_effect = {
+			random_list = {
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_gold_loss_count
+							add = 1
+						}
+					}
+				}
+				10 = {
+					scope:story = {
+						change_variable = {
+							name = RICE_expedition_resilience_decrease_count
+							add = 1
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_display_america_expedition_success_view_count_cleanup_effect = yes
+	}
 }
 
 

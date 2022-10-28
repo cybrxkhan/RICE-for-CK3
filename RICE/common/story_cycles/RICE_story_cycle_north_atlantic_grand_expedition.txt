@@ -69,10 +69,22 @@
 			}
 			# Resume as normal
 			else = {
-				make_story_owner = story_owner.player_heir
 				story_owner.player_heir = {
 					add_character_flag = RICE_north_atlantic_ongoing_expedition
+					if = {
+						limit = {
+							exists = scope:story.var:RICE_expedition_leader
+							scope:story.var:RICE_expedition_leader = {
+								is_landed = no
+								NOT = { is_courtier_of = story_owner.player_heir }
+							}
+						}
+						story_owner.player_heir = {
+							add_courtier = scope:story.var:RICE_expedition_leader
+						}
+					}
 				}
+				make_story_owner = story_owner.player_heir
 			}
 		}
 		else = {
