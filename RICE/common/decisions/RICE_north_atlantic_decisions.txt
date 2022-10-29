@@ -1998,7 +1998,7 @@ RICE_north_atlantic_hunting_trip = {
 	}
 
 	ai_potential = {
-		short_term_gold > 50
+		gold > 50
 	}
 
 	ai_will_do = {
@@ -2709,7 +2709,7 @@ RICE_north_atlantic_support_vinland = {
 RICE_north_atlantic_explore_americas = {
 	picture = "gfx/interface/illustrations/decisions/decision_vinland.dds"
 
-	ai_check_interval = 60
+	ai_check_interval = 48
 
 	cooldown = { days = 3650 }
 	
@@ -2792,6 +2792,22 @@ RICE_north_atlantic_explore_americas = {
 		decision_custom_widget_container = "custom_widgets_container_step_two"
 		decision_to_second_step_button = "RICE_north_atlantic_pick_expedition_destination_type" 
 
+		# AI option
+		item = {
+			value = RICE_north_atlantic_expedition_ai_option
+			is_shown = {
+				exists = dynasty
+				is_ai = yes # AI picker
+			}
+			current_description = RICE_north_atlantic_expedition_ai__option_desc
+			localization = RICE_north_atlantic_expedition_ai_option
+			icon = "gfx/interface/icons/widgets/RICE_north_atlantic_vinland.dds"
+
+			ai_chance = {
+				value = 20
+			}
+		}
+
 
 		# # Nordsetur
 		# item = {
@@ -2813,6 +2829,7 @@ RICE_north_atlantic_explore_americas = {
 			value = RICE_north_atlantic_helluland_option
 			is_valid = {
 				exists = dynasty
+				is_ai = no
 			}
 			current_description = RICE_north_atlantic_helluland_option_desc
 			localization = RICE_north_atlantic_helluland_option
@@ -2828,6 +2845,7 @@ RICE_north_atlantic_explore_americas = {
 			value = RICE_north_atlantic_markland_option
 			is_valid = {
 				exists = dynasty
+				is_ai = no
 			}
 			current_description = RICE_north_atlantic_markland_option_desc
 			localization = RICE_north_atlantic_markland_option
@@ -2843,6 +2861,7 @@ RICE_north_atlantic_explore_americas = {
 			value = RICE_north_atlantic_vinland_option
 			is_valid = {
 				exists = dynasty
+				is_ai = no
 				NAND = {			
 					exists = struggle:RICE_greenland_struggle
 					any_character_struggle = {
@@ -2881,7 +2900,55 @@ RICE_north_atlantic_explore_americas = {
 			custom_tooltip = RICE_north_atlantic_explore_americas_context_tooltip
 		}
 
-		if = { # Helluland
+		if = { # AI choice
+			limit = { scope:RICE_north_atlantic_expedition_ai_option = yes }
+			random_list = {
+				30 = {
+					set_variable = {
+						name = RICE_expedition_destination_pick
+						value = flag:helluland
+					}
+				}
+				18 = {
+					modifier = {
+						add = 5
+						OR = {
+							has_global_variable = RICE_greenland_ending_integration
+							has_global_variable = RICE_greenland_ending_indigenous
+						}
+					}
+					set_variable = {
+						name = RICE_expedition_destination_pick
+						value = flag:markland
+					}
+				}
+				2 = {
+					trigger = {
+						OR = {
+							gold >= 150
+							has_trait = ambitious
+						}
+					}
+					modifier = {
+						add = 5
+						OR = {
+							has_global_variable = RICE_greenland_ending_integration
+							has_global_variable = RICE_greenland_ending_indigenous
+						}
+					}
+					modifier = {
+						add = 5
+						has_global_variable = RICE_north_atlantic_vinland_colonized_done
+					}
+					set_variable = {
+						name = RICE_expedition_destination_pick
+						value = flag:vinland
+					}
+				}
+			}
+		}
+
+		else_if = { # Helluland
 			limit = { scope:RICE_north_atlantic_helluland_option = yes }
 			set_variable = {
 				name = RICE_expedition_destination_pick
@@ -2915,11 +2982,29 @@ RICE_north_atlantic_explore_americas = {
 	}	
 
 	ai_potential = {
-		short_term_gold > 100
+		gold >= 100
 	}
 
 	ai_will_do = {
-		base = 20
+		base = 40
+		modifier = {
+			add = 20
+			OR = {
+				has_global_variable = RICE_greenland_ending_integration
+				has_global_variable = RICE_greenland_ending_indigenous
+			}
+		}
+		modifier = {
+			add = 10
+			exists = struggle:RICE_greenland_struggle
+			any_character_struggle = {
+				is_struggle_type = RICE_greenland_struggle
+				OR = {
+					is_struggle_phase = struggle_RICE_greenland_phase_settlement
+					is_struggle_phase = struggle_RICE_greenland_phase_integration
+				}
+			}
+		}
 		modifier = {
 			add = -8
 			has_trait = content
