@@ -12,7 +12,8 @@
 # north_atlantic.0140-north_atlantic.0159			Vinland Outposts and Settlements
 # north_atlantic.0160-north_atlantic.0169			Discovering Greenland/Vinland
 # north_atlantic.0170-north_atlantic.0179			Greenland Struggle Ending Decisions
-# north_atlantic.0180-north_atlantic.0189			Whaling
+# north_atlantic.0180-north_atlantic.0199			Whaling
+# north_atlantic.0200-north_atlantic.0249			Generic flavor events
 # 
 # 
 ###############################################################################
@@ -842,23 +843,11 @@ north_atlantic.0014 = {
 	desc = north_atlantic.0014.desc
 	theme = RICE_theme_north_atlantic_greenland
 
-	trigger = {
-		NOT = { has_global_variable = RICE_greenland_inuit_are_here }
-	}
+	# trigger = {
+	# 	NOT = { has_global_variable = RICE_greenland_inuit_are_here }
+	# }
 
 	immediate = {
-		# Just in case it doesn't work for some reason
-		if = {
-			limit = {
-				struggle:RICE_greenland_struggle = { is_culture_involved_in_struggle = scope:inuit }
-			}
-			show_as_tooltip = {
-				struggle:RICE_greenland_struggle = { set_culture_as_involved = culture:inuit }				
-			}
-		}
-		else = {
-			struggle:RICE_greenland_struggle = { set_culture_as_involved = culture:inuit }
-		}
 		# Save scopes
 		culture:inuit = {
 			save_scope_as = inuit
@@ -869,18 +858,11 @@ north_atlantic.0014 = {
 		title:d_iceland = {
 			save_scope_as = iceland
 		}
-		set_global_variable = {
-			name = RICE_greenland_inuit_are_here
-			value = yes
-		}
 	}
 
 	option = {
 		name = north_atlantic.0014.a
 		custom_tooltip = north_atlantic.0014.a.tooltip
-		struggle:RICE_greenland_struggle = {
-			activate_struggle_catalyst = catalyst_RICE_inuit_arrival
-		}
 	}
 
 }
@@ -10356,6 +10338,14 @@ north_atlantic.0090 = {
 				type = loyalty_hook
 			}
 		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = north_atlantic.0090.info
+			}
+		}
 	}
 
 	# No
@@ -10366,6 +10356,14 @@ north_atlantic.0090 = {
 				death = {
 					death_reason = death_vanished
 				}
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = north_atlantic.0090.info
 			}
 		}
 	}
@@ -10890,19 +10888,19 @@ north_atlantic.0091 = {
 			}
 		}
 
-		if = {
-			limit = {
-				scope:courtier = {
-					is_landed = yes
-				}
-			}
-			scope:courtier = {				
-				add_courtier = scope:thrall
-			}
-		}
-		else = {		
-			add_courtier = scope:thrall
-		}
+		# if = {
+		# 	limit = {
+		# 		scope:courtier = {
+		# 			is_landed = yes
+		# 		}
+		# 	}
+		# 	scope:courtier = {				
+		# 		add_courtier = scope:thrall
+		# 	}
+		# }
+		# else = {		
+		# 	add_courtier = scope:thrall
+		# }
 
 	}
 
@@ -10916,6 +10914,14 @@ north_atlantic.0091 = {
 			callous = miniscule_stress_impact_gain
 			arrogant = miniscule_stress_impact_gain
 		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = north_atlantic.0090.info
+			}
+		}
 	}
 	# Ok
 	option = {
@@ -10927,10 +10933,26 @@ north_atlantic.0091 = {
 			callous = miniscule_stress_impact_gain
 			arrogant = miniscule_stress_impact_gain
 		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = north_atlantic.0090.info
+			}
+		}
 	}
 	# Ok
 	option = {
 		name = north_atlantic.0091.c
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = north_atlantic.0090.info
+			}
+		}
 	}
 
 	# # Let the girl choose
@@ -16777,3 +16799,1026 @@ north_atlantic.0183 = {
 
 
 
+
+
+
+######################################################################################
+# 
+# FLAVOR EVENTS
+# 
+# north_atlantic.0200-north_atlantic.0249 reserved
+# 
+######################################################################################
+
+
+# Eating great auks
+north_atlantic.0200 = {
+	type = character_event
+	title = north_atlantic.0200.t
+	desc = north_atlantic.0200.desc
+	theme = hunt_activity
+	override_background = { event_background = bp1_kitchen_western }
+	
+	right_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			is_coastal_county = yes
+			any_county_province = {
+				OR = {
+					geographical_region = world_europe_west_britannia
+					geographical_region = world_europe_north
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+	}
+
+	option = { # buy meat
+		name = north_atlantic.0200.a
+		trigger = {
+			OR = {
+				gold >= 20
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 20
+		add_character_modifier = {
+			modifier = RICE_north_atlantic_auk_meat
+			years = 5
+		}
+		stress_impact = {
+			greedy = miniscule_stress_impact_gain
+			temperate = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # buy eggs
+		name = north_atlantic.0200.b
+		trigger = {
+			OR = {
+				gold >= 20
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 20
+		add_character_modifier = {
+			modifier = RICE_north_atlantic_auk_eggs
+			years = 5
+		}
+		stress_impact = {
+			greedy = miniscule_stress_impact_gain
+			temperate = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # buy both
+		name = north_atlantic.0200.c
+		trigger = {
+			OR = {
+				gold >= 40
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 40
+		add_character_modifier = {
+			modifier = RICE_north_atlantic_auk_meat
+			years = 5
+		}
+		add_character_modifier = {
+			modifier = RICE_north_atlantic_auk_eggs
+			years = 5
+		}
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			temperate = minor_stress_impact_gain
+		}
+	}
+
+	option = { # buy neither
+		name = north_atlantic.0200.d
+		stress_impact = {
+			gluttonous = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+# Horse fighting in Iceland - two courtiers fight fight fight
+north_atlantic.0201 = {
+	type = character_event
+	title = north_atlantic.0201.t
+	desc = north_atlantic.0201.desc
+	theme = unfriendly
+	override_background = { event_background = RICE_background_north_atlantic_iceland }
+	
+	left_portrait = {
+		character = scope:horse_1
+		animation = dismissal
+	}
+	
+	right_portrait = {
+		character = scope:horse_2
+		animation = rage
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = custom_iceland
+			}
+		}
+		any_courtier_or_guest = {
+			count >= 2
+			is_available_ai_adult = yes
+			OR = {
+				has_trait = arrogant
+				has_trait = wrathful
+				has_trait = vengeful
+				has_trait = stubborn
+				has_trait = ambitious
+				has_trait = arbitrary
+				has_trait = callous
+				has_trait = paranoid
+			}
+			NOT = { has_trait = calm }
+			NOT = { has_trait = content }
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = sadistic
+		}
+		modifier = {
+			add = 0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = -0.2
+			has_trait = zealous
+		}
+	}
+
+	immediate = {
+		every_courtier_or_guest = {
+			limit = {
+				count >= 2
+				is_available_ai_adult = yes
+				OR = {
+					has_trait = arrogant
+					has_trait = wrathful
+					has_trait = vengeful
+					has_trait = stubborn
+					has_trait = ambitious
+					has_trait = arbitrary
+					has_trait = callous
+					has_trait = paranoid
+				}
+				NOT = { has_trait = calm }
+				NOT = { has_trait = content }
+			}
+			add_to_list = horse_courtiers
+		}
+		ordered_in_list = {
+			list = horse_courtiers
+			max = 2
+			check_range_bounds = no
+			if = {
+				limit = {
+					NOT = { exists = scope:horse_1 }
+				}
+				save_scope_as = horse_1
+				court_event_character_flag_effect = yes
+			}
+			else = {
+				save_scope_as = horse_2
+			}
+		}
+	}
+
+	option = { # Convince them to chill out
+		name = north_atlantic.0201.a
+		duel = {
+			skill = diplomacy
+			value = 11
+			10 = {
+				desc = north_atlantic.0201.a.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -1.2
+				}
+				send_interface_toast = {
+					title = north_atlantic.0201.a.failure
+					left_icon = scope:native
+					add_prestige = -100
+					scope:horse_1 = {
+						set_relation_rival = {
+							target = scope:horse_2
+							reason = RICE_rival_reason_placeholder
+						}
+					}
+				}
+			}
+			10 = {
+				desc = north_atlantic.0201.a.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 1.2
+				}
+				send_interface_toast = {
+					title = north_atlantic.0201.a.success
+					left_icon = scope:horse_1
+					right_icon = scope:horse_2
+					add_prestige = 100
+				}
+			}
+		}
+		stress_impact = {
+			lazy = minor_stress_impact_gain
+			shy = minor_stress_impact_gain
+		}
+	}
+
+	option = { # don't bother
+		name = north_atlantic.0201.b
+		scope:horse_1 = {
+			set_relation_rival = {
+				target = scope:horse_2
+				reason = RICE_rival_reason_placeholder
+			}
+		}
+		stress_impact = {
+			diligent = minor_stress_impact_gain
+			wrathful = miniscule_stress_impact_gain
+			just = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+# Broches in Scotland
+north_atlantic.0202 = {
+	type = character_event
+	title = north_atlantic.0202.t
+	desc = north_atlantic.0202.desc
+	theme = faith
+	override_background = { event_background = RICE_background_north_atlantic_ruins }
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_greater_scotland
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_greater_scotland
+				}
+			}
+			save_scope_as = county
+		}
+	}
+
+	option = { # ok
+		name = north_atlantic.0202.a
+		add_character_modifier = {
+			modifier = RICE_north_atlantic_broch_encounter
+			years = 5
+		}
+	}
+}
+
+
+# Bullroarer in Scotland
+north_atlantic.0203 = {
+	type = character_event
+	title = north_atlantic.0203.t
+	desc = north_atlantic.0203.desc
+	theme = unfriendly
+	override_background = { event_background = RICE_background_north_atlantic_ruins }
+	
+	left_portrait = {
+		character = root
+		animation = fear
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_greater_scotland
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = paranoid
+		}
+		modifier = {
+			add = -0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = 0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = -0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_greater_scotland
+				}
+			}
+			save_scope_as = county
+		}
+	}
+
+	option = { # ok
+		name = north_atlantic.0203.a
+		add_piety = 25
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+			wrathful = miniscule_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # ok
+		name = north_atlantic.0203.b
+		add_prestige = 25
+		stress_impact = {
+			calm = miniscule_stress_impact_gain
+			compassionate = miniscule_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+# Hearing tales about Gaelic monks in the northern isles
+north_atlantic.0204 = {
+	type = character_event
+	title = north_atlantic.0204.t
+	desc = north_atlantic.0204.desc
+	theme = learning
+	override_background = { event_background = throne_room }
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_atlantic_region
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = paranoid
+		}
+		modifier = {
+			add = -0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = 0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = -0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	option = { # ok
+		name = north_atlantic.0204.a
+		add_character_modifier = {
+			modifier = RICE_north_atlantic_inspired_by_gaelic_monks
+			years = 10
+		}
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # ok
+		name = north_atlantic.0204.b
+		add_character_modifier = {
+			modifier = RICE_north_atlantic_inspired_by_monks_voyages
+			years = 10
+		}
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # ok
+		name = north_atlantic.0204.c
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+	}
+}
+
+
+# Seeing a geyser in Iceland
+north_atlantic.0205 = {
+	type = character_event
+	title = north_atlantic.0205.t
+	desc = north_atlantic.0205.desc
+	theme = hunt_activity
+	override_background = { event_background = RICE_background_north_atlantic_iceland }
+	
+	right_portrait = {
+		character = root
+		animation = admiration
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_atlantic_region
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = -0.2
+			has_trait = paranoid
+		}
+	}
+
+	option = { # ok
+		name = north_atlantic.0205.a
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			brave = miniscule_stress_impact_loss
+		}
+	}
+}
+
+
+# Get some Iceland Moss or not?
+north_atlantic.0206 = {
+	type = character_event
+	title = north_atlantic.0206.t
+	desc = north_atlantic.0206.desc
+	theme = medicine
+	override_background = { event_background = RICE_background_north_atlantic_iceland }
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = custom_iceland
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = paranoid
+		}
+		modifier = {
+			add = -0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	option = { # ok
+		name = north_atlantic.0206.a
+		stress_impact = {
+			humble = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # ok
+		name = north_atlantic.0206.b
+		add_prestige = -100
+		add_character_modifier = {
+			modifier = RICE_north_atlantic_iceland_moss
+			years = 10
+		}
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+		}
+	}
+}
+
+
+# Puffin meat
+north_atlantic.0207 = {
+	type = character_event
+	title = north_atlantic.0207.t
+	desc = north_atlantic.0207.desc
+	theme = feast_activity
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = custom_iceland
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = lustful
+		}
+		modifier = {
+			add = -0.2
+			has_trait = chaste
+		}
+	}
+
+	option = { # ok
+		name = north_atlantic.0207.a
+		add_prestige = 50
+		add_character_modifier = {
+			modifier = RICE_north_atlantic_puffin_meat
+			years = 10
+		}
+	}
+}
+
+
+# Courtier keeps serving people dairy, thus being an inhospitable host (at least according to medieval Icelandic norms), and they only serve you skyr, Icelandic yogurt (which is tasty IRL btw)
+north_atlantic.0208 = {
+	type = character_event
+	title = north_atlantic.0208.t
+	desc = north_atlantic.0208.desc
+	theme = unfriendly
+	override_background = { event_background = bp1_kitchen_western }
+
+	
+	left_portrait = {
+		character = scope:milkdrinker
+		animation = eyeroll
+	}	
+	right_portrait = {
+		character = root
+		animation = disapproval
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = custom_iceland
+			}
+		}
+		OR = {
+			any_courtier = {
+				is_available_ai_adult = yes
+				OR = {
+					has_trait = arbitrary
+					has_trait = callous
+					has_trait = lazy
+					has_trait = temperate
+					has_trait = lunatic_1
+					has_trait = lunatic_genetic
+					has_trait = greedy
+					has_trait = arrogant
+				}
+				NOR = {
+					has_trait = just
+					has_trait = humble
+				}
+			}
+			any_vassal = {
+				is_available_ai_adult = yes
+				OR = {
+					has_trait = arbitrary
+					has_trait = callous
+					has_trait = lazy
+					has_trait = temperate
+					has_trait = lunatic_1
+					has_trait = lunatic_genetic
+					has_trait = greedy
+					has_trait = arrogant
+				}
+				NOR = {
+					has_trait = just
+					has_trait = humble
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+	}
+
+	immediate = {
+		random_list = {
+			50 = {
+				trigger = {
+					any_courtier = {
+						is_available_ai_adult = yes
+						OR = {
+							has_trait = arbitrary
+							has_trait = callous
+							has_trait = lazy
+							has_trait = temperate
+							has_trait = lunatic_1
+							has_trait = lunatic_genetic
+							has_trait = greedy
+							has_trait = arrogant
+						}
+						NOR = {
+							has_trait = just
+							has_trait = humble
+						}
+					}
+				}
+				random_courtier = {					
+					limit = {
+						is_available_ai_adult = yes
+						OR = {
+							has_trait = arbitrary
+							has_trait = callous
+							has_trait = lazy
+							has_trait = temperate
+							has_trait = lunatic_1
+							has_trait = lunatic_genetic
+							has_trait = greedy
+							has_trait = arrogant
+						}
+						NOR = {
+							has_trait = just
+							has_trait = humble
+						}
+					}
+					save_scope_as = milkdrinker
+					add_character_modifier = {
+						modifier = RICE_north_atlantic_dairy_inhospitality
+						years = 10
+					}
+				}
+			}
+			50 = {
+				trigger = {
+					any_vassal = {
+						is_available_ai_adult = yes
+						OR = {
+							has_trait = arbitrary
+							has_trait = callous
+							has_trait = lazy
+							has_trait = temperate
+							has_trait = lunatic_1
+							has_trait = lunatic_genetic
+							has_trait = greedy
+							has_trait = arrogant
+						}
+						NOR = {
+							has_trait = just
+							has_trait = humble
+						}
+					}
+				}
+				random_vassal = {					
+					limit = {
+						is_available_ai_adult = yes
+						OR = {
+							has_trait = arbitrary
+							has_trait = callous
+							has_trait = lazy
+							has_trait = temperate
+							has_trait = lunatic_1
+							has_trait = lunatic_genetic
+							has_trait = greedy
+							has_trait = arrogant
+						}
+						NOR = {
+							has_trait = just
+							has_trait = humble
+						}
+					}
+					save_scope_as = milkdrinker
+					add_character_modifier = {
+						modifier = RICE_north_atlantic_dairy_inhospitality
+						years = 10
+					}
+				}
+			}
+		}
+	}
+
+	option = { # ok
+		name = north_atlantic.0208.a
+		add_prestige = -50
+		add_character_modifier = {
+			modifier = RICE_north_atlantic_tasty_skyr_yogurt
+			years = 5
+		}
+		stress_impact = {
+			arrogant = medium_stress_impact_gain
+			wrathful = minor_stress_impact_gain
+			vengeful = minor_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+			just = miniscule_stress_impact_gain
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = north_atlantic.0208.info
+			}
+		}
+	}
+
+	option = { # Tell them to screw off
+		name = north_atlantic.0208.b
+		add_prestige = 50
+		progress_towards_rival_effect = {
+			CHARACTER = scope:milkdrinker
+			OPINION = no
+			REASON = RICE_rival_reason_placeholder
+		}
+		stress_impact = {
+			forgiving = minor_stress_impact_gain
+			calm = minor_stress_impact_gain
+			patient = miniscule_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+			content = miniscule_stress_impact_gain
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = north_atlantic.0208.info
+			}
+		}
+	}
+
+	option = { # Convince them to chill out and learn some basic etiquette
+		name = north_atlantic.0208.c
+		duel = {
+			skill = diplomacy
+			target = scope:milkdrinker
+			10 = {
+				desc = north_atlantic.0208.c.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.9
+				}
+				send_interface_toast = {
+					title = north_atlantic.0208.c.failure
+					left_icon = scope:milkdrinker
+					add_prestige = -50
+					progress_towards_rival_effect = {
+						CHARACTER = scope:milkdrinker
+						OPINION = no
+						REASON = RICE_rival_reason_placeholder
+					}
+				}
+			}
+			10 = {
+				desc = north_atlantic.0208.c.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.9
+				}
+				send_interface_toast = {
+					title = north_atlantic.0208.c.success
+					left_icon = scope:milkdrinker
+					add_prestige = 100
+					scope:milkdrinker = {
+						remove_character_modifier = RICE_north_atlantic_dairy_inhospitality
+					}
+				}
+			}
+		}
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			wrathful = medium_stress_impact_gain
+			vengeful = medium_stress_impact_gain
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = north_atlantic.0208.info
+			}
+		}
+	}
+}
