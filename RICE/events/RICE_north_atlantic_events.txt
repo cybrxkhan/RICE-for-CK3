@@ -138,6 +138,7 @@ north_atlantic.0002 = {
 	hidden = yes
 	type = empty
 	scope = struggle
+	orphan = yes
 
 	trigger = { # Should not need this, but, redundancy check! -h
 		exists = struggle:RICE_greenland_struggle
@@ -1497,33 +1498,33 @@ north_atlantic.0026 = {
 
 }
 
-# Whaling expedition sets out
-north_atlantic.0027 = {
-	type = character_event
-	title = north_atlantic.0027.t
-	desc = north_atlantic.0027.desc
-	theme = hunt_activity
-	override_background = { event_background = market }
+# # Whaling expedition sets out
+# north_atlantic.0027 = {
+# 	type = character_event
+# 	title = north_atlantic.0027.t
+# 	desc = north_atlantic.0027.desc
+# 	theme = hunt_activity
+# 	override_background = { event_background = market }
 
-	right_portrait = {
-		character = root
-		animation = sadness
-	}
+# 	right_portrait = {
+# 		character = root
+# 		animation = sadness
+# 	}
 
-	immediate = {
-		scope:outside_county = {
-			show_as_tooltip = {
-				remove_county_modifier = RICE_north_atlantic_walrus_carving_workshop_outside_region
-			}
-		}
-	}
+# 	immediate = {
+# 		scope:outside_county = {
+# 			show_as_tooltip = {
+# 				remove_county_modifier = RICE_north_atlantic_walrus_carving_workshop_outside_region
+# 			}
+# 		}
+# 	}
 
-	option = {
-		name = north_atlantic.0027.a
-		custom_tooltip = north_atlantic.0027.tooltip
-	}
+# 	option = {
+# 		name = north_atlantic.0027.a
+# 		custom_tooltip = north_atlantic.0027.tooltip
+# 	}
 
-}
+# }
 
 
 
@@ -9882,13 +9883,13 @@ north_atlantic.0075 = {
 				trigger = {
 					root = { var:RICE_north_atlantic_episode_result = flag:success_new_info }
 				}
-				desc = north_atlantic.0075.desc.found
+				desc = north_atlantic.0075.desc.new_info
 			}
 			triggered_desc = {
 				trigger = {
 					root = { var:RICE_north_atlantic_episode_result = flag:failure_no_info }
 				}
-				desc = north_atlantic.0075.desc.lost
+				desc = north_atlantic.0075.desc.no_info
 			}
 		}
 	}
@@ -10329,12 +10330,12 @@ north_atlantic.0090 = {
 		if = {
 			limit = {
 				can_add_hook = {
-					target = scope:scope_VIET_otumeel_prankster
+					target = scope:thrall
 					type = loyalty_hook
 				}
 			}
 			add_hook = {
-				target = scope:scope_VIET_otumeel_prankster
+				target = scope:thrall
 				type = loyalty_hook
 			}
 		}
@@ -10820,42 +10821,42 @@ north_atlantic.0091 = {
 		hidden_effect = {
 			random = {
 				chance = 10
-				modifier = {
-					add = -15
-					scope:thrall = {
-						opinion = {
-							target = scope:courtier
-							value < 0
-						}
-					}
-				}
-				modifier = {
-					add = 10
-					scope:thrall = {
-						opinion = {
-							target = scope:courtier
-							value > 25
-						}
-					}
-				}
-				modifier = {
-					add = 10
-					scope:thrall = {
-						opinion = {
-							target = scope:courtier
-							value > 50
-						}
-					}
-				}
-				modifier = {
-					add = 10
-					scope:thrall = {
-						opinion = {
-							target = scope:courtier
-							value > 75
-						}
-					}
-				}
+				# modifier = {
+				# 	add = -15
+				# 	scope:thrall = {
+				# 		opinion = {
+				# 			target = scope:courtier
+				# 			value < 0
+				# 		}
+				# 	}
+				# }
+				# modifier = {
+				# 	add = 10
+				# 	scope:thrall = {
+				# 		opinion = {
+				# 			target = scope:courtier
+				# 			value > 25
+				# 		}
+				# 	}
+				# }
+				# modifier = {
+				# 	add = 10
+				# 	scope:thrall = {
+				# 		opinion = {
+				# 			target = scope:courtier
+				# 			value > 50
+				# 		}
+				# 	}
+				# }
+				# modifier = {
+				# 	add = 10
+				# 	scope:thrall = {
+				# 		opinion = {
+				# 			target = scope:courtier
+				# 			value > 75
+				# 		}
+				# 	}
+				# }
 				modifier = {
 					scope:courtier = { has_trait = sadistic }
 					add = -5
@@ -15679,6 +15680,24 @@ north_atlantic.0162 = {
 	}
 
 	after = {
+		every_ruler = {
+			limit = {
+				#is_ai = no
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = world_europe
+						#OR = {
+						#	geographical_region = world_europe_west_britannia
+						#	geographical_region = world_europe_west_germania
+						#	geographical_region = world_europe_west_francia
+						#	geographical_region = world_europe_north
+						#}
+					}
+				}
+			}
+			trigger_event = north_atlantic.0167
+		}
 		create_story = RICE_story_cycle_north_atlantic_grand_expedition
 	}
 
@@ -17009,7 +17028,6 @@ north_atlantic.0201 = {
 	immediate = {
 		every_courtier_or_guest = {
 			limit = {
-				count >= 2
 				is_available_ai_adult = yes
 				OR = {
 					has_trait = arrogant
