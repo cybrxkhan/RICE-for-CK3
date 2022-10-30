@@ -1,4 +1,4 @@
-<img src="https://i.imgur.com/GB3Rza3.jpg">
+<img src="https://i.imgur.com/7eGcIDb.jpg">
 
 ## Latest Version: Version 1.7.2 "North Atlantic" (Released 10/30/22, for vanilla patch 1.7.x)
 
