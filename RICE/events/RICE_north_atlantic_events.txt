@@ -251,40 +251,49 @@ north_atlantic.0005 = {
 	type = empty
 	scope = struggle
 
+	trigger = {
+		exists = struggle:RICE_greenland_struggle
+	}
+
 	immediate = {
-		# Activate the catalyst
-		# If *both* Socio-Economic and Environmental Pressures are ongoing
 		if = {
 			limit = {
-				has_global_variable = RICE_greenland_environmental_change_warning
-				has_global_variable = RICE_greenland_socio_economic_change_warning
+				exists = struggle:RICE_greenland_struggle
 			}
-			activate_struggle_catalyst = catalyst_RICE_greenland_passing_of_time_4
-		}
-		# Environmental pressures but not socio-economic pressures
-		else_if = {
-			limit = {
-				has_global_variable = RICE_greenland_environmental_change_warning
-				NOT = { has_global_variable = RICE_greenland_socio_economic_change_warning }
+			# Activate the catalyst
+			# If *both* Socio-Economic and Environmental Pressures are ongoing
+			if = {
+				limit = {
+					has_global_variable = RICE_greenland_environmental_change_warning
+					has_global_variable = RICE_greenland_socio_economic_change_warning
+				}
+				activate_struggle_catalyst = catalyst_RICE_greenland_passing_of_time_4
 			}
-			activate_struggle_catalyst = catalyst_RICE_greenland_passing_of_time_3
-		}
-		# Socio-economic pressures are active but not environmental pressures
-		else_if = {
-			limit = {
-				has_global_variable = RICE_greenland_socio_economic_change_warning
-				NOT = { has_global_variable = RICE_greenland_environmental_change_warning }
+			# Environmental pressures but not socio-economic pressures
+			else_if = {
+				limit = {
+					has_global_variable = RICE_greenland_environmental_change_warning
+					NOT = { has_global_variable = RICE_greenland_socio_economic_change_warning }
+				}
+				activate_struggle_catalyst = catalyst_RICE_greenland_passing_of_time_3
 			}
-			activate_struggle_catalyst = catalyst_RICE_greenland_passing_of_time_2
-		}
-		# Normal year before the pressures start
-		else = {
-			activate_struggle_catalyst = catalyst_RICE_greenland_passing_of_time_1
-		}
-		# Then queue the event up against for a year hence.
-		trigger_event = {
-			id = north_atlantic.0005
-			years = 1
+			# Socio-economic pressures are active but not environmental pressures
+			else_if = {
+				limit = {
+					has_global_variable = RICE_greenland_socio_economic_change_warning
+					NOT = { has_global_variable = RICE_greenland_environmental_change_warning }
+				}
+				activate_struggle_catalyst = catalyst_RICE_greenland_passing_of_time_2
+			}
+			# Normal year before the pressures start
+			else = {
+				activate_struggle_catalyst = catalyst_RICE_greenland_passing_of_time_1
+			}
+			# Then queue the event up against for a year hence.
+			trigger_event = {
+				id = north_atlantic.0005
+				years = 1
+			}
 		}
 	}
 }
@@ -315,9 +324,6 @@ north_atlantic.0006 = { # Fullscreen Intro Event
 	}
 	option = {
 		name = north_atlantic.0006.a
-		struggle:RICE_greenland_struggle = {
-			activate_struggle_catalyst = catalyst_RICE_environmental_changes
-		}
 		custom_description_no_bullet = {
 			text = north_atlantic.0006.tooltip
 		}
@@ -345,9 +351,6 @@ north_atlantic.0007 = { # Fullscreen Intro Event
 	}
 	option = {
 		name = north_atlantic.0007.a
-		struggle:RICE_greenland_struggle = {
-			activate_struggle_catalyst = catalyst_RICE_socio_economic_changes
-		}
 		custom_description_no_bullet = {
 			text = north_atlantic.0007.tooltip
 		}
@@ -385,7 +388,7 @@ north_atlantic.0008 = { # Fullscreen Intro Event
 
 
 
-# GREENLAND INTRO for people who aren't in the struggle region
+# Greenland collapses
 north_atlantic.0009 = { # Fullscreen Intro Event
 	type = fullscreen_event
 	title = north_atlantic.0009.t
@@ -395,7 +398,7 @@ north_atlantic.0009 = { # Fullscreen Intro Event
 	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
 
 	immediate = {
-		play_music_cue = "mx_RICE_greenland_struggle_integration"
+		play_music_cue = "mx_RICE_greenland_struggle_abandonment"
 		ordered_in_global_list = {
 			variable = RICE_north_atlantic_erik_the_red
 			save_scope_as = erik
@@ -510,7 +513,7 @@ north_atlantic.0012 = {
 		set_variable = {
 			name = RICE_north_atlantic_add_gold_value
 			value = {
-				value = 0
+				value = 1
 				add = {
 					integer_range = {
 						min = 0
@@ -849,6 +852,7 @@ north_atlantic.0014 = {
 	# }
 
 	immediate = {
+		play_music_cue = "mx_RICE_greenland_struggle_integration"
 		# Save scopes
 		culture:inuit = {
 			save_scope_as = inuit
@@ -879,8 +883,13 @@ north_atlantic.0015 = {
 			name = RICE_north_atlantic_vinland_outposts
 			value = 0
 		}
-		struggle:RICE_greenland_struggle = {
-			activate_struggle_catalyst = catalyst_RICE_vinland_settlements_abandoned
+		if = {
+			limit = {
+				exists = struggle:RICE_greenland_struggle
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = catalyst_RICE_vinland_settlements_abandoned
+			}
 		}
 		# Reduce Viability
 		random_list = {
@@ -1222,13 +1231,20 @@ north_atlantic.0020 = {
 		trigger = { NOT = { root = scope:establisher } }
 	}
 
-	immediate = {		
-		struggle:RICE_greenland_struggle = {
-			activate_struggle_catalyst = {
-				catalyst = catalyst_RICE_establish_estate_greenland
-				character = root
+	immediate = {
+		#play_music_cue = "mx_RICE_greenland_struggle_integration"
+		play_music_cue = "mx_cue_low_key_positive"
+		if = {
+			limit = {
+				exists = struggle:RICE_greenland_struggle
+			}	
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_establish_estate_greenland
+					character = root
+				}
 			}
-		}
+		}	
 		show_as_tooltip = {
 			house = {
 				add_house_modifier = {
@@ -2137,6 +2153,7 @@ north_atlantic.0033 = {
 
 	option = {
 		name = north_atlantic.0033.a
+		custom_tooltip = north_atlantic.0033.tooltip
 		show_as_tooltip = {
 			scope:leader = {
 				add_trait = RICE_exploring_western_seas
@@ -2244,6 +2261,9 @@ north_atlantic.0034 = {
 					var:RICE_expedition_failure.compare_value > var:RICE_expedition_success.compare_value
 				}
 			}
+			immediate = {
+				play_music_cue = "mx_cue_negative"
+			}
 			set_variable = {
 				name = RICE_expedition_result
 				value = flag:failure
@@ -2252,6 +2272,9 @@ north_atlantic.0034 = {
 		}
 		# Expedition is considered a success
 		else = {
+			immediate = {
+				play_music_cue = "mx_cue_positive_effect"
+			}
 			set_variable = {
 				name = RICE_expedition_result
 				value = flag:success
@@ -2414,34 +2437,39 @@ north_atlantic.0034 = {
 			custom_tooltip = north_atlantic.0034.tooltip.success
 			if = {
 				limit = {
-					scope:story.var:RICE_expedition_destination = flag:helluland
+					exists = struggle:RICE_greenland_struggle
 				}
-				struggle:RICE_greenland_struggle = {
-					activate_struggle_catalyst = {
-						catalyst = catalyst_RICE_successful_expedition_to_helluland
-						character = root
+				if = {
+					limit = {
+						scope:story.var:RICE_expedition_destination = flag:helluland
+					}
+					struggle:RICE_greenland_struggle = {
+						activate_struggle_catalyst = {
+							catalyst = catalyst_RICE_successful_expedition_to_helluland
+							character = root
+						}
 					}
 				}
-			}
-			else_if = {
-				limit = {
-					scope:story.var:RICE_expedition_destination = flag:markland
-				}
-				struggle:RICE_greenland_struggle = {
-					activate_struggle_catalyst = {
-						catalyst = catalyst_RICE_successful_expedition_to_markland
-						character = root
+				else_if = {
+					limit = {
+						scope:story.var:RICE_expedition_destination = flag:markland
+					}
+					struggle:RICE_greenland_struggle = {
+						activate_struggle_catalyst = {
+							catalyst = catalyst_RICE_successful_expedition_to_markland
+							character = root
+						}
 					}
 				}
-			}
-			else_if = {
-				limit = {
-					scope:story.var:RICE_expedition_destination = flag:vinland
-				}
-				struggle:RICE_greenland_struggle = {
-					activate_struggle_catalyst = {
-						catalyst = catalyst_RICE_successful_expedition_to_vinland
-						character = root
+				else_if = {
+					limit = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					struggle:RICE_greenland_struggle = {
+						activate_struggle_catalyst = {
+							catalyst = catalyst_RICE_successful_expedition_to_vinland
+							character = root
+						}
 					}
 				}
 			}
@@ -2458,34 +2486,39 @@ north_atlantic.0034 = {
 			}
 			if = {
 				limit = {
-					scope:story.var:RICE_expedition_destination = flag:helluland
+					exists = struggle:RICE_greenland_struggle
 				}
-				struggle:RICE_greenland_struggle = {
-					activate_struggle_catalyst = {
-						catalyst = catalyst_RICE_failed_expedition_to_helluland
-						character = root
+				if = {
+					limit = {
+						scope:story.var:RICE_expedition_destination = flag:helluland
+					}
+					struggle:RICE_greenland_struggle = {
+						activate_struggle_catalyst = {
+							catalyst = catalyst_RICE_failed_expedition_to_helluland
+							character = root
+						}
 					}
 				}
-			}
-			else_if = {
-				limit = {
-					scope:story.var:RICE_expedition_destination = flag:markland
-				}
-				struggle:RICE_greenland_struggle = {
-					activate_struggle_catalyst = {
-						catalyst = catalyst_RICE_failed_expedition_to_markland
-						character = root
+				else_if = {
+					limit = {
+						scope:story.var:RICE_expedition_destination = flag:markland
+					}
+					struggle:RICE_greenland_struggle = {
+						activate_struggle_catalyst = {
+							catalyst = catalyst_RICE_failed_expedition_to_markland
+							character = root
+						}
 					}
 				}
-			}
-			else_if = {
-				limit = {
-					scope:story.var:RICE_expedition_destination = flag:vinland
-				}
-				struggle:RICE_greenland_struggle = {
-					activate_struggle_catalyst = {
-						catalyst = catalyst_RICE_failed_expedition_to_vinland
-						character = root
+				else_if = {
+					limit = {
+						scope:story.var:RICE_expedition_destination = flag:vinland
+					}
+					struggle:RICE_greenland_struggle = {
+						activate_struggle_catalyst = {
+							catalyst = catalyst_RICE_failed_expedition_to_vinland
+							character = root
+						}
 					}
 				}
 			}
@@ -12851,26 +12884,36 @@ north_atlantic.0101 = {
 			}
 			add_piety = 50
 			add_prestige = 50
-			custom_tooltip = north_atlantic.0101.tooltip.basic_supplies			
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_greenland_basic_supplies
-					character = root
+			custom_tooltip = north_atlantic.0101.tooltip.basic_supplies	
+			if = {
+				limit = {
+					exists = struggle:RICE_greenland_struggle
+				}	
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_greenland_basic_supplies
+						character = root
+					}
 				}
-			}
+			}	
 		}
 		else_if = {
 			limit = {
 				scope:story.var:RICE_greenland_aid_type = flag:settlers
 			}
 			add_piety = 100
-			custom_tooltip = north_atlantic.0101.tooltip.settlers		
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_greenland_settlers
-					character = root
+			custom_tooltip = north_atlantic.0101.tooltip.settlers	
+			if = {
+				limit = {
+					exists = struggle:RICE_greenland_struggle
 				}
-			}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_greenland_settlers
+						character = root
+					}
+				}
+			}	
 		}
 		else_if = {
 			limit = {
@@ -12878,10 +12921,15 @@ north_atlantic.0101 = {
 			}
 			add_prestige = 100
 			custom_tooltip = north_atlantic.0101.tooltip.food
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_greenland_food
-					character = root
+			if = {
+				limit = {
+					exists = struggle:RICE_greenland_struggle
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_greenland_food
+						character = root
+					}
 				}
 			}
 		}
@@ -12891,10 +12939,15 @@ north_atlantic.0101 = {
 			}
 			add_prestige = 100
 			custom_tooltip = north_atlantic.0101.tooltip.materials
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_greenland_materials
-					character = root
+			if = {
+				limit = {
+					exists = struggle:RICE_greenland_struggle
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_greenland_materials
+						character = root
+					}
 				}
 			}
 		}
@@ -12904,10 +12957,15 @@ north_atlantic.0101 = {
 			}
 			add_piety = 100
 			custom_tooltip = north_atlantic.0101.tooltip.clergy
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_greenland_clergy
-					character = root
+			if = {
+				limit = {
+					exists = struggle:RICE_greenland_struggle
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_greenland_clergy
+						character = root
+					}
 				}
 			}
 		}
@@ -12921,10 +12979,15 @@ north_atlantic.0101 = {
 				years = 10
 			}
 			custom_tooltip = north_atlantic.0101.tooltip.hunting_stations
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_greenland_hunting_stations
-					character = root
+			if = {
+				limit = {
+					exists = struggle:RICE_greenland_struggle
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_greenland_hunting_stations
+						character = root
+					}
 				}
 			}
 		}
@@ -12939,10 +13002,15 @@ north_atlantic.0101 = {
 				years = 10
 			}
 			custom_tooltip = north_atlantic.0101.tooltip.shielings
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_greenland_shielings
-					character = root
+			if = {
+				limit = {
+					exists = struggle:RICE_greenland_struggle
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_greenland_shielings
+						character = root
+					}
 				}
 			}
 		}
@@ -12956,10 +13024,15 @@ north_atlantic.0101 = {
 				years = 10
 			}
 			custom_tooltip = north_atlantic.0101.tooltip.temples
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_greenland_temples
-					character = root
+			if = {
+				limit = {
+					exists = struggle:RICE_greenland_struggle
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_greenland_temples
+						character = root
+					}
 				}
 			}
 		}
@@ -13112,89 +13185,94 @@ north_atlantic.0102 = {
 		}
 		if = {
 			limit = {
-				scope:story.var:RICE_greenland_aid_type = flag:basic_supplies
+				exists = struggle:RICE_greenland_struggle
 			}
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_fail_greenland_basic_supplies
-					character = root
+			if = {
+				limit = {
+					scope:story.var:RICE_greenland_aid_type = flag:basic_supplies
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_fail_greenland_basic_supplies
+						character = root
+					}
 				}
 			}
-		}
-		else_if = {
-			limit = {
-				scope:story.var:RICE_greenland_aid_type = flag:settlers
-			}
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_fail_greenland_settlers
-					character = root
+			else_if = {
+				limit = {
+					scope:story.var:RICE_greenland_aid_type = flag:settlers
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_fail_greenland_settlers
+						character = root
+					}
 				}
 			}
-		}
-		else_if = {
-			limit = {
-				scope:story.var:RICE_greenland_aid_type = flag:food
-			}
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_fail_greenland_food
-					character = root
+			else_if = {
+				limit = {
+					scope:story.var:RICE_greenland_aid_type = flag:food
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_fail_greenland_food
+						character = root
+					}
 				}
 			}
-		}
-		else_if = {
-			limit = {
-				scope:story.var:RICE_greenland_aid_type = flag:materials
-			}
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_fail_greenland_materials
-					character = root
+			else_if = {
+				limit = {
+					scope:story.var:RICE_greenland_aid_type = flag:materials
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_fail_greenland_materials
+						character = root
+					}
 				}
 			}
-		}
-		else_if = {
-			limit = {
-				scope:story.var:RICE_greenland_aid_type = flag:clergy
-			}
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_fail_greenland_clergy
-					character = root
+			else_if = {
+				limit = {
+					scope:story.var:RICE_greenland_aid_type = flag:clergy
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_fail_greenland_clergy
+						character = root
+					}
 				}
 			}
-		}
-		else_if = {
-			limit = {
-				scope:story.var:RICE_greenland_aid_type = flag:hunting_stations
-			}
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_fail_greenland_hunting_stations
-					character = root
+			else_if = {
+				limit = {
+					scope:story.var:RICE_greenland_aid_type = flag:hunting_stations
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_fail_greenland_hunting_stations
+						character = root
+					}
 				}
 			}
-		}
-		else_if = {
-			limit = {
-				scope:story.var:RICE_greenland_aid_type = flag:shielings
-			}
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_fail_greenland_shielings
-					character = root
+			else_if = {
+				limit = {
+					scope:story.var:RICE_greenland_aid_type = flag:shielings
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_fail_greenland_shielings
+						character = root
+					}
 				}
 			}
-		}
-		else_if = {
-			limit = {
-				scope:story.var:RICE_greenland_aid_type = flag:temples
-			}
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_fail_greenland_temples
-					character = root
+			else_if = {
+				limit = {
+					scope:story.var:RICE_greenland_aid_type = flag:temples
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_fail_greenland_temples
+						character = root
+					}
 				}
 			}
 		}
@@ -13375,11 +13453,15 @@ north_atlantic.0111 = {
 				scope:story.var:RICE_vinland_aid_type = flag:supplies
 			}
 			add_piety = 50	
-			#exists = struggle	
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_vinland_supplies
-					character = root
+			if = {
+				limit = {
+					exists = struggle:RICE_greenland_struggle
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_vinland_supplies
+						character = root
+					}
 				}
 			}
 		}
@@ -13388,10 +13470,15 @@ north_atlantic.0111 = {
 				scope:story.var:RICE_vinland_aid_type = flag:settlers
 			}
 			add_prestige = 50	
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_vinland_settlers
-					character = root
+			if = {
+				limit = {
+					exists = struggle:RICE_greenland_struggle
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_vinland_settlers
+						character = root
+					}
 				}
 			}
 		}
@@ -13400,10 +13487,15 @@ north_atlantic.0111 = {
 				scope:story.var:RICE_vinland_aid_type = flag:base_camps
 			}
 			add_prestige = 100
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_vinland_base_camps
-					character = root
+			if = {
+				limit = {
+					exists = struggle:RICE_greenland_struggle
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_vinland_base_camps
+						character = root
+					}
 				}
 			}
 		}
@@ -13412,10 +13504,15 @@ north_atlantic.0111 = {
 				scope:story.var:RICE_vinland_aid_type = flag:temples
 			}
 			add_piety = 100
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_vinland_temples
-					character = root
+			if = {
+				limit = {
+					exists = struggle:RICE_greenland_struggle
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_vinland_temples
+						character = root
+					}
 				}
 			}
 		}
@@ -13520,45 +13617,50 @@ north_atlantic.0112 = {
 		custom_tooltip = north_atlantic.0112.tooltip.decrease_networks
 		if = {
 			limit = {
-				scope:story.var:RICE_vinland_aid_type = flag:supplies
+				exists = struggle:RICE_greenland_struggle
 			}
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_fail_vinland_supplies
-					character = root
+			if = {
+				limit = {
+					scope:story.var:RICE_vinland_aid_type = flag:supplies
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_fail_vinland_supplies
+						character = root
+					}
 				}
 			}
-		}
-		else_if = {
-			limit = {
-				scope:story.var:RICE_vinland_aid_type = flag:settlers
-			}
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_fail_vinland_settlers
-					character = root
+			else_if = {
+				limit = {
+					scope:story.var:RICE_vinland_aid_type = flag:settlers
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_fail_vinland_settlers
+						character = root
+					}
 				}
 			}
-		}
-		else_if = {
-			limit = {
-				scope:story.var:RICE_vinland_aid_type = flag:base_camps
-			}
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_fail_vinland_base_camps
-					character = root
+			else_if = {
+				limit = {
+					scope:story.var:RICE_vinland_aid_type = flag:base_camps
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_fail_vinland_base_camps
+						character = root
+					}
 				}
 			}
-		}
-		else_if = {
-			limit = {
-				scope:story.var:RICE_vinland_aid_type = flag:temples
-			}
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_support_fail_vinland_temples
-					character = root
+			else_if = {
+				limit = {
+					scope:story.var:RICE_vinland_aid_type = flag:temples
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_support_fail_vinland_temples
+						character = root
+					}
 				}
 			}
 		}
@@ -13622,21 +13724,6 @@ north_atlantic.0120 = {
 			set_variable = {
 				name = RICE_walrus_hunt_timer
 				days = 75
-			}
-			random = {
-				chance = RICE_walrus_hunt_success_chance
-				modifier = {
-					add = 10
-					scope:story.var:RICE_nordsetur_hunt_type = flag:major
-				}
-				modifier = {
-					add = 20
-					scope:story.var:RICE_nordsetur_hunt_type = flag:great
-				}
-				set_variable = {
-					name = RICE_walrus_hunt_success_guaranteed
-					value = yes
-				}
 			}
 		}
 	}
@@ -13875,34 +13962,39 @@ north_atlantic.0121 = {
 		}
 		if = {
 			limit = {
-				scope:story.var:RICE_nordsetur_hunt_type = flag:minor
+				exists = struggle:RICE_greenland_struggle
 			}
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_walrus_hunt_minor_fail
-					character = root
+			if = {
+				limit = {
+					scope:story.var:RICE_nordsetur_hunt_type = flag:minor
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_walrus_hunt_minor_fail
+						character = root
+					}
 				}
 			}
-		}
-		else_if = {
-			limit = {
-				scope:story.var:RICE_nordsetur_hunt_type = flag:major
-			}
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_walrus_hunt_major_fail
-					character = root
+			else_if = {
+				limit = {
+					scope:story.var:RICE_nordsetur_hunt_type = flag:major
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_walrus_hunt_major_fail
+						character = root
+					}
 				}
 			}
-		}
-		else_if = {
-			limit = {
-				scope:story.var:RICE_nordsetur_hunt_type = flag:great
-			}
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_walrus_hunt_great_fail
-					character = root
+			else_if = {
+				limit = {
+					scope:story.var:RICE_nordsetur_hunt_type = flag:great
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_walrus_hunt_great_fail
+						character = root
+					}
 				}
 			}
 		}
@@ -14109,37 +14201,42 @@ north_atlantic.0122 = {
 		}
 		if = {
 			limit = {
-				scope:story.var:RICE_nordsetur_hunt_type = flag:minor
+				exists = struggle:RICE_greenland_struggle
 			}
-			#add_gold = { RICE_walrus_hunt_gold_gain_min_value RICE_walrus_hunt_gold_gain_max_base_value }
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_walrus_hunt_minor_success
-					character = root
+			if = {
+				limit = {
+					scope:story.var:RICE_nordsetur_hunt_type = flag:minor
+				}
+				#add_gold = { RICE_walrus_hunt_gold_gain_min_value RICE_walrus_hunt_gold_gain_max_base_value }
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_walrus_hunt_minor_success
+						character = root
+					}
 				}
 			}
-		}
-		else_if = {
-			limit = {
-				scope:story.var:RICE_nordsetur_hunt_type = flag:major
-			}
-			#add_gold = { RICE_walrus_hunt_gold_gain_min_value RICE_walrus_hunt_gold_gain_max_major_value }
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_walrus_hunt_major_success
-					character = root
+			else_if = {
+				limit = {
+					scope:story.var:RICE_nordsetur_hunt_type = flag:major
+				}
+				#add_gold = { RICE_walrus_hunt_gold_gain_min_value RICE_walrus_hunt_gold_gain_max_major_value }
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_walrus_hunt_major_success
+						character = root
+					}
 				}
 			}
-		}
-		else_if = {
-			limit = {
-				scope:story.var:RICE_nordsetur_hunt_type = flag:great
-			}
-			#add_gold = { RICE_walrus_hunt_gold_gain_min_value RICE_walrus_hunt_gold_gain_max_great_value }
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_walrus_hunt_great_success
-					character = root
+			else_if = {
+				limit = {
+					scope:story.var:RICE_nordsetur_hunt_type = flag:great
+				}
+				#add_gold = { RICE_walrus_hunt_gold_gain_min_value RICE_walrus_hunt_gold_gain_max_great_value }
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_walrus_hunt_great_success
+						character = root
+					}
 				}
 			}
 		}
@@ -15151,10 +15248,15 @@ north_atlantic.0142 = {
 			limit = {
 				has_character_flag = RICE_vinland_success
 			}
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_successful_outpost_vinland
-					character = root
+			if = {
+				limit = {
+					exists = struggle:RICE_greenland_struggle
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_successful_outpost_vinland
+						character = root
+					}
 				}
 			}
 			dynasty = {
@@ -15167,7 +15269,10 @@ north_atlantic.0142 = {
 				}
 			}
 		}
-		else = {
+		else_if = {
+			limit = {
+				exists = struggle:RICE_greenland_struggle
+			}
 			struggle:RICE_greenland_struggle = {
 				activate_struggle_catalyst = {
 					catalyst = catalyst_RICE_failed_outpost_vinland
@@ -15218,13 +15323,18 @@ north_atlantic.0143 = {
 				add_dynasty_modifier = {
 					modifier = RICE_north_atlantic_vinland_outpost
 				}
-			}	
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_successful_outpost_vinland
-					character = root
-				}
 			}
+			if = {
+				limit = {
+					exists = struggle:RICE_greenland_struggle
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_successful_outpost_vinland
+						character = root
+					}
+				}
+			}	
 		}
 	}
 
@@ -15719,10 +15829,15 @@ north_atlantic.0161 = {
 			limit = {
 				exists = house
 			}
-			struggle:RICE_greenland_struggle = {
-				activate_struggle_catalyst = {
-					catalyst = catalyst_RICE_establish_estate_greenland
-					character = root
+			if = {
+				limit = {
+					exists = struggle:RICE_greenland_struggle
+				}
+				struggle:RICE_greenland_struggle = {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_establish_estate_greenland
+						character = root
+					}
 				}
 			}
 			house = {
@@ -16319,6 +16434,7 @@ north_atlantic.0166 = {
 	}
 
 	immediate = {
+		
 		set_global_variable = {
 			name = RICE_north_atlantic_vinland_discovered
 			value = yes
@@ -16410,10 +16526,15 @@ north_atlantic.0166 = {
 
 	option = {
 		name = north_atlantic.0166.a
-		struggle:RICE_greenland_struggle = {
-			activate_struggle_catalyst = {
-				catalyst = catalyst_RICE_americas_discovered
-				character = root
+		if = {
+			limit = {
+				exists = struggle:RICE_greenland_struggle
+			}
+			struggle:RICE_greenland_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_americas_discovered
+					character = root
+				}
 			}
 		}
 
