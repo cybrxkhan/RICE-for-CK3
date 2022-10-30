@@ -1,12 +1,14 @@
 <img src="https://i.imgur.com/GB3Rza3.jpg">
 
-## Latest Version: Version 1.7.1 "Hunza" (Released 10/3/22, for vanilla patch 1.7.x)
+## Latest Version: Version 1.7.2 "North Atlantic" (Released 10/30/22, for vanilla patch 1.7.x)
 
-**Newest Flavor Pack - Niger Delta: Heirs of Oduduwa**
+**Newest Flavor Pack - North Atlantic: From Iceland to Vinland**
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_Hunza is the name of one of many mountain valleys in the Pamir mountain region in north Pakistan. It is home to the Burusho people (who speak a language isolate), as well as various Indo-Iranian peoples, and it historically was part of various trade routes criss-crossing Asia. The Burusho are also sometimes referred to as the Hunza people._
+_“After being tossed about at sea for a long time, Leif chanced upon land where he had not expected any to be found. Fields of self-sown wheat and vines were growing there. [....] Leif converted the country [Greenland] to Christianity. Afterward he became known as Leif the Lucky.”_
+
+_- Two excerpts from the Saga of Erik the Red_
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places and peoples.
 
@@ -25,6 +27,7 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 - [Harran: The Last Hellenic Pagans](https://docs.google.com/document/d/e/2PACX-1vQOVaDq59Adp5PsNw7r8KhK9cgHMBBWGPWG085FdTKegkD8G8BFLa_e1lz8usY164B42gAVZD4D_2Rs/pub)
 - [Magadha: Diamond Throne of Buddhism](https://docs.google.com/document/d/e/2PACX-1vQvXP97M8x7lXYDilOlkVz-lCT0dk6Qq2R6cFyoySNv6g5mqAhIxzquf_1TeR9eEllCkA0HhpOfErnT/pub)
 - [Niger Delta: Heirs of Oduduwa](https://docs.google.com/document/d/e/2PACX-1vTgW9FFORhgNKseRIGdOXnsCLe5Nee8f8dK9yQxkvWshD3ZJf5vzXhMHQKmoy3qnMEjm2kLImgExhvt/pub)
+- [North Atlantic: From Iceland to Vinland](https://docs.google.com/document/d/e/2PACX-1vQmBr7TYKBGRMtVYj8IWAjLHHAadsxJwGZI1VIG0PRA4ZV3mru5HGv3vAqaktbnVMe1oFpTdCEPKFLd/pub)
 - [Pamir and Zunist: Roof of the World](https://docs.google.com/document/d/e/2PACX-1vQmHEFpko8WE1fnHLHyG-4t01Xyka4eTe88WuLJWRL6jk0S3ju3fA1CFyX_dDArSduFlzqUl58pjRRO/pub)
 - [Red Sea: Treasures of the Eastern Desert](https://docs.google.com/document/d/e/2PACX-1vQzLb-MR90fMQvjqZsxceuydKihTehAlpxexdhdim5pfxi_aGVBeLl1rJMmuR-89nVB7PVLfboZKBuy/pub)
 - [Rhodes: Shadow of the Colossus](https://docs.google.com/document/d/e/2PACX-1vRXCGUoynvQtA3RuaJUE9FYagIHOX4wJkyeDHRsV-cjvyyBTONIEy0oOYr3yvcUt1eG_fEHtzUgv_wA/pub)
@@ -52,15 +55,18 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ## Latest Changelog
 
-### 1.7.1 "Hunza"
+### 1.7.2 "Leif Erikson"
 
-- Added Pamir Tribesmen MAA, which is unlockable with either the White Huns or Beyond the Reach of Eagles cultural traditions
-- Added preset traits to the Timothee Umlaut easter egg character
-- Children of the Nile decision will now be applied to the Kemetic culture from the recently updated Polytheism Reborn mod
-- Decision to Become the Khan and Sultan of China is no longer blocked to cultures of Chinese, Mongolic, or Qiangic heritage
-- Silk Road Dynasty Legacy is now only available in the land-based Silk Road region for consistency with the Silk Road Communities decision (unless your culture has the Silk Road tradition)
-- Trans-Saharan merchant spawn is now rarer in the coastal regions of West Africa
-- Fixed Zhang Yichao not getting Huaishen’s artifacts if he is kept as ruler of Guiyi
+- Added North Atlantic Flavor Pack: From Iceland to Vinland
+- Added 3 Renaissance, 4 Norse, and 1 Celtic themed soundtracks
+- Added a few loading screens
+- Added a lot of new German translations (thanks to Dillo234 again!)
+- Armies from Silk Road Communities are no longer inheritable
+- Celtic music now also plays in a slightly broader range in Northern Europe
+- Reduced chances AI will take decision to Request a Coronoation by the Ọọ̀ni (to prevent spam in the mid to late game)
+- Uncrowned by Ooni modifier will no longer be given to Baron-tier characters
+- Baron-tier characters can no longer take the decision to Request a Coronoation by the Ọọ̀ni (to prevent spam in the mid to late game)
+- Fixed Lop Nur announcement event triggering globally (for TFE and early start dates)
 - Miscellaneous bugfixes
 
 ## Credits
@@ -71,12 +77,14 @@ Special thanks in particular to:
 
 - B7E7 for the Amazigh religion/faith and Guanche culture code from BlackEmperor's Africa Plus
 - Bonseny for the amazing VIET and RICE logos and the beautiful 3D art assets
+- George Hammond for some music ([url=https://fanlink.to/georgehammondmusic]see here[/url] for more of his work)
 - Shatzi for more Breton content
 
 Thanks also to:
 
 - Fische for the Dragon Blood art icon and Vertimnus for donating it to me (originally made for Sinews of War)
 - Henry for the Better Bedouin Culture mod
+- Lahom for most of the Native American names
 - Nezaros for reformed religion template
 - Nix for Evenki names
 - PinkPanzer for some decision art
