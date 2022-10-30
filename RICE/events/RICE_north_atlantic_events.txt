@@ -2261,9 +2261,7 @@ north_atlantic.0034 = {
 					var:RICE_expedition_failure.compare_value > var:RICE_expedition_success.compare_value
 				}
 			}
-			immediate = {
-				play_music_cue = "mx_cue_negative"
-			}
+			play_music_cue = "mx_cue_negative"
 			set_variable = {
 				name = RICE_expedition_result
 				value = flag:failure
@@ -2272,9 +2270,7 @@ north_atlantic.0034 = {
 		}
 		# Expedition is considered a success
 		else = {
-			immediate = {
-				play_music_cue = "mx_cue_positive_effect"
-			}
+			play_music_cue = "mx_cue_positive_effect"
 			set_variable = {
 				name = RICE_expedition_result
 				value = flag:success
@@ -13726,6 +13722,76 @@ north_atlantic.0120 = {
 				days = 75
 			}
 		}
+		
+		random = {
+			chance = 20 # Doesn't work as a scripted value for some frustratingly bizarre reason
+			modifier = {				
+				add = {
+					value = global_var:RICE_greenland_resilience
+					multiply = 0.05
+				}
+			}
+			modifier = {				
+				add = {
+					value = diplomacy
+					multiply = 0.5
+					max = 15
+				}
+			}
+			modifier = {				
+				add = {
+					value = stewardship
+					multiply = 1.25
+					max = 15
+				}
+			}
+			modifier = {
+				add = 15
+				OR = {
+					has_global_variable = RICE_greenland_ending_integration
+					has_global_variable = RICE_greenland_ending_indigenous
+					AND = {						
+						exists = struggle:RICE_greenland_struggle
+						struggle:RICE_greenland_struggle = {
+							is_struggle_phase = struggle_RICE_greenland_phase_integration
+						}
+					}
+				}	
+			}
+			modifier = {
+				add = 10
+				exists = struggle:RICE_greenland_struggle
+				struggle:RICE_greenland_struggle = {
+					is_struggle_phase = struggle_RICE_greenland_phase_settlement
+				}	
+			}
+			modifier = {
+				add = -10
+				exists = struggle:RICE_greenland_struggle
+				struggle:RICE_greenland_struggle = {
+					is_struggle_phase = struggle_RICE_greenland_phase_marginalization
+				}
+			}
+			modifier = {
+				add = 10
+				scope:story.var:RICE_nordsetur_hunt_type = flag:major
+			}
+			modifier = {
+				add = 20
+				scope:story.var:RICE_nordsetur_hunt_type = flag:great
+			}
+			#story_owner = {
+				add_character_flag = {
+					flag = RICE_walrus_hunt_success_guaranteed
+					days = 365
+				}
+				#add_character_flag = RICE_walrus_hunt_success_guaranteed
+			#}
+			# set_variable = {
+			# 	name = RICE_walrus_hunt_success_guaranteed
+			# 	value = yes
+			# }
+		}
 	}
 
 	option = {
@@ -14270,36 +14336,38 @@ north_atlantic.0122 = {
 			}
 		}
 		else = {
-			# Potential random extras
-			random_list = {
-				# Native encounter - peaceful
-				10 = {
-					trigger_event = north_atlantic.0124
+			hidden_effect = {
+				# Potential random extras
+				random_list = {
+					# Native encounter - peaceful
+					10 = {
+						trigger_event = north_atlantic.0124
+					}
+					# Native encounter - hostile
+					10 = {
+						trigger_event = north_atlantic.0125
+					}
+					# Found remnants of another hunting party
+					10 = {
+						trigger_event = north_atlantic.0126
+					}
+					# Rescued another hunting party
+					10 = {
+						trigger_event = north_atlantic.0127
+					}
+					# Narwhal tusk
+					10 = {
+						trigger_event = north_atlantic.0128
+					}
+					# Polar Bear hunted
+					10 = {
+						trigger_event = north_atlantic.0129
+					}
+					# Native encounter - witch?
+					#10 = {
+					#	trigger_event = north_atlantic.0126
+					#}
 				}
-				# Native encounter - hostile
-				10 = {
-					trigger_event = north_atlantic.0125
-				}
-				# Found remnants of another hunting party
-				10 = {
-					trigger_event = north_atlantic.0126
-				}
-				# Rescued another hunting party
-				10 = {
-					trigger_event = north_atlantic.0127
-				}
-				# Narwhal tusk
-				10 = {
-					trigger_event = north_atlantic.0128
-				}
-				# Polar Bear hunted
-				10 = {
-					trigger_event = north_atlantic.0129
-				}
-				# Native encounter - witch?
-				#10 = {
-				#	trigger_event = north_atlantic.0126
-				#}
 			}
 		}
 
@@ -16254,7 +16322,7 @@ north_atlantic.0162 = {
 		}
 		set_variable = { # For use in the Story
 			name = RICE_expedition_leader_choice
-			value = scope:candidate_3
+			value = scope:local
 		}
 	}
 
