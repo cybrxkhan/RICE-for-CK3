@@ -57,7 +57,7 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ### 1.7.2.a Hotfix for "Leif Erikson"
 
-- Separated Native American heritages and languages in the code for some compatibility issues with Cultures Expanded, like everyone getting the Native American decision or having no beards (this does not resolve CCU-related issues)
+- Separated Native American heritages and languages in the code for some compatibility issues with Cultures Expanded and potentially other mods, like everyone getting the Native American decision or having no beards (this does not resolve CCU-related issues)
 - Added catalyst for the Greenland struggle when taking the decision to Incorporate Inuit Ideas
 - Added localization for Native American ethnicities
 - Changed culture colors to HSV values for languages for better compatibility with other mods
