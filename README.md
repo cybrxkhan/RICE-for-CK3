@@ -55,6 +55,17 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ## Latest Changelog
 
+### 1.7.2.a Hotfix for "Leif Erikson"
+
+- Separated Native American heritages and languages in the code for some compatibility issues with Cultures Expanded, like everyone getting the Native American decision or having no beards (this does not resolve CCU-related issues)
+- Added catalyst for the Greenland struggle when taking the decision to Incorporate Inuit Ideas
+- Added localization for Native American ethnicities
+- Changed culture colors to HSV values for languages for better compatibility with other mods
+- Decision to Send an Expedition to the West (and thus start the Greenland struggle) now requires having a capital in the struggle region, rather than just having any county in it
+- Decision to Convene Iceland’s First Althing now properly displays the requirement that your capital needs to be in Iceland
+- Both decisions to Establish Ivory Carving Centers no longer require needing a coastal county, and require having at least 10 development instead
+- Fixed missing lines of code in Native American ethnicities files (added in “using = finnish”)
+
 ### 1.7.2 "Leif Erikson"
 
 - Added North Atlantic Flavor Pack: From Iceland to Vinland
