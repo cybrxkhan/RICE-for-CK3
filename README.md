@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/7eGcIDb.jpg">
 
-## Latest Version: Version 1.7.2 "North Atlantic" (Released 10/30/22, for vanilla patch 1.7.x)
+## Latest Version: Version 1.7.2.b Hotfix for "Leif Erikson" (Released 10/31/22, for vanilla patch 1.7.x)
 
 **Newest Flavor Pack - North Atlantic: From Iceland to Vinland**
 
@@ -54,6 +54,25 @@ DO NOT manually download the master branch unless you know what you're doing as 
 NOTE: **If you are re-installing a mod manually, delete the old version of the mod first before copy and pasting the new one! It's a good habit to do to prevent potential issues.**
 
 ## Latest Changelog
+
+### 1.7.2.b Hotfix for "Leif Erikson"
+
+- Added new CBs that are functionally identical to the county and ducal conquest CBs for rulers in the Greenland struggle to use on those outside the struggle, as a workaround for the issue where the CBs we're disabled, to avoid editing vanilla code
+- Added counties of North Riding (York), Dublin, and Middlesex (i.e. London) and the Duchy of Mann to the Greenland struggle region
+- Added Eeyou (East Cree) and Innu names (credits again to Lahom for finding Native American names for me)
+- Decision to explore Greenland is disabled for pre-medieval dates (like in TFE and WTWSMS)
+- Reduced the discount you get on the decision to explore Greenland if you took the Icelandic Althing decision/are of North Germanic or Goidelic heritage
+- Increased the base cost of the decision to explore Greenland to 250
+- Increased how much Resilience and Networks can potentially increase when taking the decision to Support Greenland
+- Reduced failure rate of Supporting Greenland to 20% (was previously 30%)
+- Support Greenland decision now clarifies how much Resilience and Networks can potentially increase for each type of support
+- Tweaked Resilience penalty for hunting trips to Nordsetur to be a bit more forgiving, especially for major and great hunts
+- Increased grace period between each Vinland outpost failure from one year to five years (i.e. during the grace period, outposts will not fail)
+- Reduced the impact of Viability on the chances of Vinland outposts failing - Viability now increases the chances at half rate normally, and a fifth rate after the Greenland struggle is resolved with a good ending (it’s still going to be tough) 
+- Reduced the chances of Vinland outposts failing if the Greenland struggle has been resolved with a good ending
+- Fixed Marginalization phase decreasing the chances of Vinland outposts failing instead of increasing it
+- Fixed Decision to Organize a Hunting Trip to Nordsetur not decreasing Resilience if you resolved the Greenland struggle with a good ending
+- Fixed localization error for the Decision to Explore the Seas West of Greenland
 
 ### 1.7.2.a Hotfix for "Leif Erikson"
 
