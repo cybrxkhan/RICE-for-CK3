@@ -107,7 +107,7 @@ Special thanks in particular to:
 
 - B7E7 for the Amazigh religion/faith and Guanche culture code from BlackEmperor's Africa Plus
 - Bonseny for the amazing VIET and RICE logos and the beautiful 3D art assets
-- George Hammond for some music ([url=https://fanlink.to/georgehammondmusic]see here[/url] for more of his work)
+- George Hammond for some music ([see here](https://fanlink.to/georgehammondmusic) for more of his work)
 - Shatzi for more Breton content
 
 Thanks also to:
