@@ -1,14 +1,12 @@
 <img src="https://i.imgur.com/7eGcIDb.jpg">
 
-## Latest Version: Version 1.7.2.b Hotfix for "Leif Erikson" (Released 10/31/22, for vanilla patch 1.7.x)
+## Latest Version: Version 1.8.0 "Tuniit" (Released 12/1/22, for vanilla patch 1.8.x)
 
 **Newest Flavor Pack - North Atlantic: From Iceland to Vinland**
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_“After being tossed about at sea for a long time, Leif chanced upon land where he had not expected any to be found. Fields of self-sown wheat and vines were growing there. [....] Leif converted the country [Greenland] to Christianity. Afterward he became known as Leif the Lucky.”_
-
-_- Two excerpts from the Saga of Erik the Red_
+_In Inuit legend, the Tuniit are a race of giants who preceded them and who, despite being taller and stronger, were supposedly timid and fearful of the Inuit. The Tuniit might correspond to the people belonging to the so-called archaeological Dorset culture, a pre-Inuit people inhabiting Greenland and Northern Canada before the arrival of the Inuit, who may have interacted with the Norse. They disappeared by the early modern period for reasons that are still debated._
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places and peoples.
 
@@ -55,49 +53,31 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ## Latest Changelog
 
-### 1.7.2.b Hotfix for "Leif Erikson"
+### 1.8.0 "Tuniit"
 
-- Added new CBs that are functionally identical to the county and ducal conquest CBs for rulers in the Greenland struggle to use on those outside the struggle, as a workaround for the issue where the CBs we're disabled, to avoid editing vanilla code
-- Added counties of North Riding (York), Dublin, and Middlesex (i.e. London) and the Duchy of Mann to the Greenland struggle region
-- Added Eeyou (East Cree) and Innu names (credits again to Lahom for finding Native American names for me)
-- Decision to explore Greenland is disabled for pre-medieval dates (like in TFE and WTWSMS)
-- Reduced the discount you get on the decision to explore Greenland if you took the Icelandic Althing decision/are of North Germanic or Goidelic heritage
-- Increased the base cost of the decision to explore Greenland to 250
-- Increased how much Resilience and Networks can potentially increase when taking the decision to Support Greenland
-- Reduced failure rate of Supporting Greenland to 20% (was previously 30%)
-- Support Greenland decision now clarifies how much Resilience and Networks can potentially increase for each type of support
-- Tweaked Resilience penalty for hunting trips to Nordsetur to be a bit more forgiving, especially for major and great hunts
-- Increased grace period between each Vinland outpost failure from one year to five years (i.e. during the grace period, outposts will not fail)
-- Reduced the impact of Viability on the chances of Vinland outposts failing - Viability now increases the chances at half rate normally, and a fifth rate after the Greenland struggle is resolved with a good ending (it’s still going to be tough) 
-- Reduced the chances of Vinland outposts failing if the Greenland struggle has been resolved with a good ending
-- Fixed Marginalization phase decreasing the chances of Vinland outposts failing instead of increasing it
-- Fixed Decision to Organize a Hunting Trip to Nordsetur not decreasing Resilience if you resolved the Greenland struggle with a good ending
-- Fixed localization error for the Decision to Explore the Seas West of Greenland
-
-### 1.7.2.a Hotfix for "Leif Erikson"
-
-- Separated Native American heritages and languages in the code for some compatibility issues with Cultures Expanded and potentially other mods, like everyone getting the Native American decision or having no beards (this does not resolve CCU-related issues)
-- Added catalyst for the Greenland struggle when taking the decision to Incorporate Inuit Ideas
-- Added localization for Native American ethnicities
-- Changed culture colors to HSV values for languages for better compatibility with other mods
-- Decision to Send an Expedition to the West (and thus start the Greenland struggle) now requires having a capital in the struggle region, rather than just having any county in it
-- Decision to Convene Iceland’s First Althing now properly displays the requirement that your capital needs to be in Iceland
-- Both decisions to Establish Ivory Carving Centers no longer require needing a coastal county, and require having at least 10 development instead
-- Fixed missing lines of code in Native American ethnicities files (added in “using = finnish”)
-
-### 1.7.2 "Leif Erikson"
-
-- Added North Atlantic Flavor Pack: From Iceland to Vinland
-- Added 3 Renaissance, 4 Norse, and 1 Celtic themed soundtracks
-- Added a few loading screens
-- Added a lot of new German translations (thanks to Dillo234 again!)
-- Armies from Silk Road Communities are no longer inheritable
-- Celtic music now also plays in a slightly broader range in Northern Europe
-- Reduced chances AI will take decision to Request a Coronoation by the Ọọ̀ni (to prevent spam in the mid to late game)
-- Uncrowned by Ooni modifier will no longer be given to Baron-tier characters
-- Baron-tier characters can no longer take the decision to Request a Coronoation by the Ọọ̀ni (to prevent spam in the mid to late game)
-- Fixed Lop Nur announcement event triggering globally (for TFE and early start dates)
-- Miscellaneous bugfixes
+- Updated to vanilla patch 1.8 “Robe”
+- Added new Kingdom Invasion CB that is functionally identical to the vanilla one for rulers in the Greenland struggle, as a workaround for the issue where the CB was disabled to avoid editing vanilla code
+- Added additional French and German localization (thanks to NicolasGrosjean and Dillo respectively)
+- Decision to explore the Americas is now more expensive than the one to explore Greenland (50 more gold by default)
+- Abandon Greenland decision requires being below 300 Resilience and Networks
+- AI will never take the decision to abandon Greenland unless Resilience and Networks are below 100
+- Vinland’s viability now starts at 10 in the 1066 start date
+- Increased the effect leader skills have on the results of some expedition results
+- Slightly increased the chances of getting Native American courtiers from expeditions (it should still be rare, though)
+- Made the AI slightly more likely to do walrus hunts and expeditions
+- Decisions to explore Greenland and Americas now require either your capital to have at least 10 development, or controlling the Duchy of Iceland, or being a King or Emperor
+- Decision to Sponsor a Whale Hunt now clarifies you need to own a coastal county
+- Decision to Sponsor a Whale Hunt is now visible even if you don’t own a coastal county, but requirements still apply
+- Temple of Hibis now gives 1% dynasty prestige instead of 0.5% (so it now displays properly too)
+- Counties of Aalborg and Aarhus have been added to the Greenland struggle region
+- Fixed being unable to retake the decision to Reinforce Relations with Silk Road after unlocking the second Silk Road dynasty perk, Envoys and Explorers (it was previously pegged to the third perk, rather than the second one)
+- Fixed Icelandic marriage event not checking for clergy or other situations where the character can’t marry
+- Fixed homosexuality doctrine of Semitic pagan faiths being accepted instead of shunned
+- Fixed Nordsetur hunts automatically succeeding if your character dies
+- Fixed modifiers from construction Shielings/Hunting Stations in Greenland not doing anything even though they’re supposed to (Temples doesn’t have a special effect yet, but this will be fixed in the next update)
+- Fixed Arctic Adaptations tradition not displaying requirement to own a county in the Greenland struggle region
+- Fixed missing loc for Vinland Support decision tooltip
+- Miscellaneous fixes for typos and minor bugs
 
 ## Credits
 
@@ -105,18 +85,17 @@ Thanks to all I worked with, took stuff from, and provided me encouragement and 
 
 Special thanks in particular to:
 
-- B7E7 for the Amazigh religion/faith and Guanche culture code from BlackEmperor's Africa Plus
+- B7E7 for collaboration and various cultures/faiths from BlackEmperor's Africa Plus
 - Bonseny for the amazing VIET and RICE logos and the beautiful 3D art assets
-- George Hammond for some music ([see here](https://fanlink.to/georgehammondmusic) for more of his work)
-- Shatzi for more Breton content
-
-Thanks also to:
-
+- Celticus for a lot of useful help and suggestions
 - Fische for the Dragon Blood art icon and Vertimnus for donating it to me (originally made for Sinews of War)
+- George Hammond for some music ([see here](https://fanlink.to/georgehammondmusic) for more of his work)
 - Henry for the Better Bedouin Culture mod
 - Lahom for most of the Native American names
 - Nezaros for reformed religion template
 - Nix for Evenki names
 - PinkPanzer for some decision art
+- Shatzi for more Breton content
 - The Not So Lonely Arrikirri and Tundragrass for suggestions and sources on the Zunbils
+- YTnuBF for Native American ethnicities from the [Amerindian Steppe Tribe](url=https://steamcommunity.com/workshop/filedetails/?id=2417123207) mod
 
