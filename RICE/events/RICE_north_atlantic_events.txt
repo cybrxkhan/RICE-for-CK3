@@ -14,6 +14,7 @@
 # north_atlantic.0170-north_atlantic.0179			Greenland Struggle Ending Decisions
 # north_atlantic.0180-north_atlantic.0199			Whaling
 # north_atlantic.0200-north_atlantic.0249			Generic flavor events
+# north_atlantic.0250-north_atlantic.0269			Exile/send to Greenland/Vinland
 # 
 # 
 ###############################################################################
@@ -12798,7 +12799,7 @@ north_atlantic.0100 = {
 			limit = {
 				var:RICE_greenland_aid = flag:basic_supplies
 			}
-			remove_short_term_gold = 50
+			remove_short_term_gold = RICE_greenland_support_small_cost
 		}
 		else_if = {
 			limit = {
@@ -12809,7 +12810,7 @@ north_atlantic.0100 = {
 					var:RICE_greenland_aid = flag:clergy
 				}
 			}
-			remove_short_term_gold = 100
+			remove_short_term_gold = RICE_greenland_support_medium_cost
 		}
 		else_if = {
 			limit = {
@@ -12819,7 +12820,7 @@ north_atlantic.0100 = {
 					var:RICE_greenland_aid = flag:temples
 				}
 			}
-			remove_short_term_gold = 200
+			remove_short_term_gold = RICE_greenland_support_large_cost
 		}
 	}
 
@@ -13536,7 +13537,7 @@ north_atlantic.0110 = {
 	}
 
 	immediate = {
-		remove_short_term_gold = 50
+		remove_short_term_gold = RICE_vinland_cost
 	}
 
 	option = {
@@ -13585,7 +13586,7 @@ north_atlantic.0111 = {
 				desc = north_atlantic.0111.desc.base_camps
 			}
 		}
-		desc = north_atlantic.0112.desc
+		desc = north_atlantic.0111.desc
 	}
 	theme = RICE_theme_north_atlantic_vinland_outpost
 
@@ -13727,7 +13728,7 @@ north_atlantic.0111 = {
 
 
 
-# Aid fails to arrive in Vinland safely
+# Aid fails to arrive in Vinland not safely
 north_atlantic.0112 = {
 	type = character_event
 	title = north_atlantic.0112.t
@@ -18710,3 +18711,190 @@ north_atlantic.0208 = {
 		}
 	}
 }
+
+
+######################################################################################
+# 
+# EXILE/SEND TO GREENLAND/VINLAND
+# 
+# north_atlantic.0250-north_atlantic.0269
+# 
+######################################################################################
+
+
+# Accept the offer
+north_atlantic.0250 = {
+	type = letter_event
+	opening = {
+		desc = north_atlantic.0250.opening
+	}
+	desc = {
+		desc = north_atlantic.0250.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:greenland_eastern_settlement = yes
+				}
+				desc = north_atlantic.0250.desc.greenland_eastern_settlement
+			}
+			triggered_desc = {
+				trigger = {
+					scope:greenland_western_settlement = yes
+				}
+				desc = north_atlantic.0250.desc.greenland_western_settlement
+			}
+			triggered_desc = {
+				trigger = {
+					scope:vinland = yes
+				}
+				desc = north_atlantic.0250.desc.vinland
+			}
+		}
+	}
+	sender = scope:recipient
+	
+	immediate = {
+		show_as_tooltip = {
+			# Eastern Settlement
+			if = {
+				limit = {
+					scope:greenland_eastern_settlement = yes
+				}
+				add_prestige = RICE_greenland_exile_prestige_cost
+				remove_short_term_gold = RICE_greenland_exile_gold_cost
+				custom_tooltip = RICE_north_atlantic_send_americas_death_happened_greenland
+				if = {
+					limit = {
+						exists = struggle:RICE_greenland_struggle
+					}
+					struggle:RICE_greenland_struggle = {
+						activate_struggle_catalyst = {
+							catalyst = catalyst_RICE_exile_to_greenland
+							character = scope:actor
+						}
+					}
+				}
+			}
+			# Western Settlement
+			else_if = {
+				limit = {
+					scope:greenland_western_settlement = yes
+				}
+				add_prestige = RICE_greenland_exile_prestige_cost
+				remove_short_term_gold = RICE_greenland_exile_gold_cost
+				custom_tooltip = RICE_north_atlantic_send_americas_death_happened_greenland
+				if = {
+					limit = {
+						exists = struggle:RICE_greenland_struggle
+					}
+					struggle:RICE_greenland_struggle = {
+						activate_struggle_catalyst = {
+							catalyst = catalyst_RICE_exile_to_greenland
+							character = scope:actor
+						}
+					}
+				}
+			}
+			# Vinland
+			else_if = {
+				limit = {
+					scope:vinland = yes
+				}
+				add_prestige = RICE_vinland_exile_prestige_cost
+				remove_short_term_gold = RICE_vinland_exile_gold_cost
+				custom_tooltip = RICE_north_atlantic_send_americas_death_happened_vinland
+			}				
+		}
+	}
+
+	option = { # Great
+		name = north_atlantic.0250.a
+	}
+}
+
+
+# Refuse exile
+north_atlantic.0251 = {
+	type = letter_event
+	opening = {
+		desc = north_atlantic.0251.opening
+	}
+	desc = {
+		desc = north_atlantic.0251.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:greenland_eastern_settlement = yes
+				}
+				desc = north_atlantic.0251.desc.greenland_eastern_settlement
+			}
+			triggered_desc = {
+				trigger = {
+					scope:greenland_western_settlement = yes
+				}
+				desc = north_atlantic.0251.desc.greenland_western_settlement
+			}
+			triggered_desc = {
+				trigger = {
+					scope:vinland = yes
+				}
+				desc = north_atlantic.0251.desc.vinland
+			}
+		}
+	}
+	sender = scope:recipient
+
+	immediate = {
+		show_as_tooltip = {
+			# Eastern Settlement
+			if = {
+				limit = {
+					scope:greenland_eastern_settlement = yes
+				}
+				if = {
+					limit = {
+						exists = struggle:RICE_greenland_struggle
+					}
+					struggle:RICE_greenland_struggle = {
+						activate_struggle_catalyst = {
+							catalyst = catalyst_RICE_failed_exile_to_greenland
+							character = scope:actor
+						}
+					}
+				}
+			}
+			# Western Settlement
+			else_if = {
+				limit = {
+					scope:greenland_western_settlement = yes
+				}
+				if = {
+					limit = {
+						exists = struggle:RICE_greenland_struggle
+					}
+					struggle:RICE_greenland_struggle = {
+						activate_struggle_catalyst = {
+							catalyst = catalyst_RICE_failed_exile_to_greenland
+							character = scope:actor
+						}
+					}
+				}
+			}
+			# Vinland
+			# else_if = {
+			# 	limit = {
+			# 		scope:vinland = yes
+			# 	}
+			# 	add_prestige = RICE_vinland_exile_prestige_cost
+			# 	remove_short_term_gold = RICE_vinland_exile_gold_cost
+			# 	custom_tooltip = RICE_north_atlantic_send_americas_death_happened_vinland
+			# }				
+		}
+	}
+
+	option = { # Oh no
+		name = north_atlantic.0251.a
+	}
+}
+
+
