@@ -509,6 +509,19 @@ RICE_north_atlantic_exile_to_americas = {
 							}
 						}
 					}
+					set_variable = {
+						name = RICE_exile_courtier_global_resource_increase
+						value = {
+							value = 0
+							add = {
+								integer_range = {
+									min = RICE_greenland_exile_networks_low
+									max = RICE_greenland_exile_networks_high
+								}
+							}
+						}
+						days = 1
+					}
 				}
 				# Western Settlement
 				else_if = {
@@ -529,6 +542,19 @@ RICE_north_atlantic_exile_to_americas = {
 							}
 						}
 					}
+					set_variable = {
+						name = RICE_exile_courtier_global_resource_increase
+						value = {
+							value = 0
+							add = {
+								integer_range = {
+									min = RICE_greenland_exile_resilience_low
+									max = RICE_greenland_exile_resilience_high
+								}
+							}
+						}
+						days = 1
+					}
 				}
 				# Vinland
 				else_if = {
@@ -548,6 +574,19 @@ RICE_north_atlantic_exile_to_americas = {
 								character = scope:actor
 							}
 						}
+					}
+					set_variable = {
+						name = RICE_exile_courtier_global_resource_increase
+						value = {
+							value = 0
+							add = {
+								integer_range = {
+									min = RICE_vinland_exile_viability_low
+									max = RICE_vinland_exile_viability_high
+								}
+							}
+						}
+						days = 1
 					}
 				}	
 				trigger_event = north_atlantic.0250	
@@ -655,6 +694,13 @@ RICE_north_atlantic_exile_to_americas = {
 			desc = "WANTS_FREEDOM_REASON"
 		}
 
+		opinion_modifier = { # Opinion Factor
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 0.25
+			desc = AI_SIMPLE_OPINION_REASON
+		}
+
 		modifier = {
 			trigger = {
 				scope:vinland = yes
@@ -715,6 +761,169 @@ RICE_north_atlantic_exile_to_americas = {
 			has_relation_lover = liege
 			add = -100
 			desc = AI_THEIR_LOVER
+		}
+
+		#Other Modifiers
+
+		modifier = {
+			add = -500
+			scope:recipient = {
+				has_trait = pregnant
+			}
+			desc = TAKE_THE_VOWS_PREGNANT
+		}
+
+
+		modifier = {
+			add = -25
+			scope:recipient = {
+				OR = {
+					is_married = yes
+					exists = betrothed
+				}
+			}
+			desc = TAKE_THE_VOWS_MARRIED_OR_BETROTHED
+		}
+		
+		modifier = {
+			add = -25
+			scope:recipient = {
+				is_primary_heir_of = scope:actor
+			}
+			desc = TAKE_THE_VOWS_PRIMARY_HEIR
+		}
+
+		modifier = {
+			add = -20
+			scope:recipient = {
+				NOT = {
+					is_primary_heir_of = scope:actor
+				}
+			}
+			scope:actor.primary_title = {
+				place_in_line_of_succession = {
+					target = prev
+					value == 2
+				}
+			}
+			desc = TAKE_THE_VOWS_SECOND_HEIR
+		}
+
+		modifier = {
+			add = -15
+			scope:recipient = {
+				NOT = {
+					is_primary_heir_of = scope:actor
+				}
+			}
+			scope:actor.primary_title = {
+				place_in_line_of_succession = {
+					target = prev
+					value == 3
+				}
+			}
+			desc = TAKE_THE_VOWS_THIRD_HEIR
+		}
+
+		modifier = {
+			add = -10
+			scope:recipient = {
+				NOT = {
+					is_primary_heir_of = scope:actor
+				}
+			}
+			scope:actor.primary_title = {
+				place_in_line_of_succession = {
+					target = prev
+					value >= 4
+				}
+			}
+			desc = TAKE_THE_VOWS_HEIR
+		}
+
+		modifier = {
+			add = -30
+			scope:recipient = {
+				NOT = { is_heir_of = scope:actor }
+				any_heir_title = {
+					exists = holder
+					NOT = {
+						holder = scope:actor
+					}
+					place_in_line_of_succession = {
+						target = scope:recipient
+						value < 2
+					}
+				}
+				NOT = {
+					is_primary_heir_of = scope:actor
+				}
+			}
+			desc = TAKE_THE_VOWS_HEIR_TO_OTHER_TITLE
+		}
+
+		modifier = {
+			add = -30
+			scope:recipient = {
+				NOT = { is_heir_of = scope:actor }
+				any_heir_title = {
+					exists = holder
+					NOT = {
+						holder = scope:actor
+					}
+					place_in_line_of_succession = {
+						target = scope:recipient
+						value < 5
+					}
+					NOT = {
+						place_in_line_of_succession = {
+							target = scope:recipient
+							value < 2
+						}
+					}
+				}
+				NOT = {
+					is_primary_heir_of = scope:actor
+				}
+			}
+			desc = TAKE_THE_VOWS_IN_LINE_TO_OTHER_TITLE
+		}
+
+		modifier = {
+			add = -50
+			scope:recipient = {
+				any_child = { count >= 1 }
+			}
+			desc = RICE_UNDERAGE_CHILDREN_MODIFIER
+		}
+
+		modifier = {
+			add = -10
+			scope:recipient = {
+				age > 60
+			}
+			desc = RICE_OLD_AGE_MODIFIER
+		}
+
+		# Rival modifier 
+		modifier = {
+			desc = offer_vassalization_interaction_aibehavior_rival_tt
+			trigger = {
+				scope:recipient = {
+					has_relation_nemesis = scope:actor
+				}
+			}
+			add = -25
+		}
+		# Nemesis modifier
+		modifier = {
+			desc = offer_vassalization_interaction_aibehavior_nemesis_tt
+			trigger = {
+				scope:recipient = {
+					has_relation_nemesis = scope:actor
+				}
+			}
+			add = -50
 		}
 
 		# PERSONALITY
@@ -894,6 +1103,21 @@ RICE_north_atlantic_send_to_americas = {
 				custom_tooltip = RICE_north_atlantic_send_eastern_settlement_desc
 				custom_tooltip = RICE_north_atlantic_send_networks_desc
 				custom_tooltip = RICE_north_atlantic_send_americas_death_warning
+				scope:actor = {
+					set_variable = {
+						name = RICE_send_courtier_global_resource_increase
+						value = {
+							value = 0
+							add = {
+								integer_range = {
+									min = RICE_greenland_send_resource_gain_min_real
+									max = RICE_greenland_send_resource_gain_max_real
+								}
+							}
+						}
+						days = 1
+					}
+				}
 				hidden_effect = {
 					scope:recipient = {
 						death = {
@@ -911,6 +1135,21 @@ RICE_north_atlantic_send_to_americas = {
 				custom_tooltip = RICE_north_atlantic_send_western_settlement_desc
 				custom_tooltip = RICE_north_atlantic_send_resilience_desc
 				custom_tooltip = RICE_north_atlantic_send_americas_death_warning
+				scope:actor = {
+					set_variable = {
+						name = RICE_send_courtier_global_resource_increase
+						value = {
+							value = 0
+							add = {
+								integer_range = {
+									min = RICE_greenland_send_resource_gain_min_real
+									max = RICE_greenland_send_resource_gain_max_real
+								}
+							}
+						}
+						days = 1
+					}
+				}
 				hidden_effect = {
 					scope:recipient = {
 						death = {
@@ -928,6 +1167,21 @@ RICE_north_atlantic_send_to_americas = {
 				custom_tooltip = RICE_north_atlantic_send_vinland_desc
 				custom_tooltip = RICE_north_atlantic_send_viability_desc
 				custom_tooltip = RICE_north_atlantic_send_americas_death_warning
+				scope:actor = {
+					set_variable = {
+						name = RICE_send_courtier_global_resource_increase
+						value = {
+							value = 0
+							add = {
+								integer_range = {
+									min = 1
+									max = RICE_vinland_send_resource_gain_max_real
+								}
+							}
+						}
+						days = 1
+					}
+				}
 				hidden_effect = {
 					scope:recipient = {
 						death = {
@@ -1238,6 +1492,13 @@ RICE_north_atlantic_send_to_americas = {
 	ai_accept = {
 		base = 0
 
+		opinion_modifier = { # Opinion Factor
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 0.5
+			desc = AI_SIMPLE_OPINION_REASON
+		}
+
 		modifier = {
 			trigger = {
 				scope:vinland = yes
@@ -1289,6 +1550,169 @@ RICE_north_atlantic_send_to_americas = {
 			has_relation_lover = liege
 			add = -100
 			desc = AI_THEIR_LOVER
+		}
+
+		#Other Modifiers
+
+		modifier = {
+			add = -500
+			scope:recipient = {
+				has_trait = pregnant
+			}
+			desc = TAKE_THE_VOWS_PREGNANT
+		}
+
+
+		modifier = {
+			add = -50
+			scope:recipient = {
+				OR = {
+					is_married = yes
+					exists = betrothed
+				}
+			}
+			desc = TAKE_THE_VOWS_MARRIED_OR_BETROTHED
+		}
+		
+		modifier = {
+			add = -50
+			scope:recipient = {
+				is_primary_heir_of = scope:actor
+			}
+			desc = TAKE_THE_VOWS_PRIMARY_HEIR
+		}
+
+		modifier = {
+			add = -40
+			scope:recipient = {
+				NOT = {
+					is_primary_heir_of = scope:actor
+				}
+			}
+			scope:actor.primary_title = {
+				place_in_line_of_succession = {
+					target = prev
+					value == 2
+				}
+			}
+			desc = TAKE_THE_VOWS_SECOND_HEIR
+		}
+
+		modifier = {
+			add = -30
+			scope:recipient = {
+				NOT = {
+					is_primary_heir_of = scope:actor
+				}
+			}
+			scope:actor.primary_title = {
+				place_in_line_of_succession = {
+					target = prev
+					value == 3
+				}
+			}
+			desc = TAKE_THE_VOWS_THIRD_HEIR
+		}
+
+		modifier = {
+			add = -20
+			scope:recipient = {
+				NOT = {
+					is_primary_heir_of = scope:actor
+				}
+			}
+			scope:actor.primary_title = {
+				place_in_line_of_succession = {
+					target = prev
+					value >= 4
+				}
+			}
+			desc = TAKE_THE_VOWS_HEIR
+		}
+
+		modifier = {
+			add = -50
+			scope:recipient = {
+				NOT = { is_heir_of = scope:actor }
+				any_heir_title = {
+					exists = holder
+					NOT = {
+						holder = scope:actor
+					}
+					place_in_line_of_succession = {
+						target = scope:recipient
+						value < 2
+					}
+				}
+				NOT = {
+					is_primary_heir_of = scope:actor
+				}
+			}
+			desc = TAKE_THE_VOWS_HEIR_TO_OTHER_TITLE
+		}
+
+		modifier = {
+			add = -80
+			scope:recipient = {
+				NOT = { is_heir_of = scope:actor }
+				any_heir_title = {
+					exists = holder
+					NOT = {
+						holder = scope:actor
+					}
+					place_in_line_of_succession = {
+						target = scope:recipient
+						value < 5
+					}
+					NOT = {
+						place_in_line_of_succession = {
+							target = scope:recipient
+							value < 2
+						}
+					}
+				}
+				NOT = {
+					is_primary_heir_of = scope:actor
+				}
+			}
+			desc = TAKE_THE_VOWS_IN_LINE_TO_OTHER_TITLE
+		}
+
+		modifier = {
+			add = -50
+			scope:recipient = {
+				any_child = { count >= 1 }
+			}
+			desc = RICE_UNDERAGE_CHILDREN_MODIFIER
+		}
+
+		modifier = {
+			add = -20
+			scope:recipient = {
+				age > 60
+			}
+			desc = RICE_OLD_AGE_MODIFIER
+		}
+
+		# Rival modifier 
+		modifier = {
+			desc = offer_vassalization_interaction_aibehavior_rival_tt
+			trigger = {
+				scope:recipient = {
+					has_relation_nemesis = scope:actor
+				}
+			}
+			add = -50
+		}
+		# Nemesis modifier
+		modifier = {
+			desc = offer_vassalization_interaction_aibehavior_nemesis_tt
+			trigger = {
+				scope:recipient = {
+					has_relation_nemesis = scope:actor
+				}
+			}
+			add = -100
 		}
 
 		# PERSONALITY
