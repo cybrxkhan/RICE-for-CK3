@@ -1304,6 +1304,12 @@ north_atlantic.0021 = {
 	}
 
 	immediate = {
+		
+		character:RICE_greenlandic_deity_001 = {
+			culture = {
+				save_scope_as = greenlandic
+			}
+		}
 		RICE_north_atlantic_attract_greenland_immigrants_effect = yes
 		random = {
 			chance = 70
@@ -12718,6 +12724,190 @@ north_atlantic.0093 = {
 
 
 
+# Greenlander arrives at your court
+north_atlantic.0094 = {
+	type = character_event
+	title = north_atlantic.0094.t
+	desc = north_atlantic.0094.desc
+	theme = diplomacy_foreign_affairs_focus
+
+	left_portrait = root
+	right_portrait = {
+		character = scope:greenlander
+		animation = throne_room_bow_1
+	}
+
+	trigger = {
+		OR = {
+			has_global_variable = RICE_greenland_ending_integration
+			has_global_variable = RICE_greenland_ending_indigenous
+			AND = {
+				exists = struggle:RICE_greenland_struggle				
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = RICE_greenland_struggle
+				}
+				any_character_struggle = {
+					involvement = interloper
+					is_struggle_type = RICE_greenland_struggle
+				}
+			}
+		}
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_greenland_struggle_region
+			}
+		}
+		NOT = { has_character_modifier = RICE_north_atlantic_new_greenland_courtier }
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.5
+			exists = house
+			house = {
+				has_house_modifier = RICE_north_atlantic_greenland_family_estate
+			}
+		}
+	}
+
+	immediate = {
+		ordered_in_global_list = {
+			variable = RICE_north_atlantic_erik_the_red
+			save_scope_as = erik
+		}
+		character:RICE_greenlandic_deity_001 = {
+			culture = {
+				save_scope_as = greenlandic
+			}
+		}
+		create_character = {
+			location = root.capital_province
+			template = RICE_greenlandic_generic_template
+			save_scope_as = greenlander			
+		}
+		scope:greenlander = {
+			add_character_flag = RICE_no_americas_possible
+		}
+	}
+
+	# Hire them
+	option = {
+		name = north_atlantic.0094.a
+		add_courtier = scope:greenlander
+		pay_short_term_gold = {
+			target = scope:greenlander
+			gold = 50
+		}
+		add_character_modifier = {
+			modifier = RICE_north_atlantic_new_greenland_courtier
+			years = 20
+		}
+	}
+
+	# Don't hire them
+	option = {
+		name = north_atlantic.0094.b
+		hidden_effect = {
+			scope:greenlander = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+}
+
+# Vinlander arrives at your court
+north_atlantic.0095 = {
+	type = character_event
+	title = north_atlantic.0095.t
+	desc = north_atlantic.0095.desc
+	theme = diplomacy_foreign_affairs_focus
+
+	left_portrait = root
+	right_portrait = {
+		character = scope:vinlander
+		animation = throne_room_bow_1
+	}
+
+	trigger = {
+		has_global_variable = RICE_north_atlantic_vinland_colonized_done
+		exists = dynasty
+		dynasty = {
+			has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+			has_dynasty_modifier = RICE_north_atlantic_vinland_settlement	
+		}
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_greenland_struggle_region
+			}
+		}
+		NOT = { has_character_modifier = RICE_north_atlantic_new_vinland_courtier }
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.5
+			exists = house
+			house = {
+				has_house_modifier = RICE_north_atlantic_greenland_family_estate
+			}
+		}
+	}
+
+	immediate = {
+		ordered_in_global_list = {
+			variable = RICE_north_atlantic_leif_erikson_equivalent
+			save_scope_as = leif
+		}
+		character:RICE_greenlandic_deity_002 = {
+			culture = {
+				save_scope_as = vinlandic
+			}
+		}
+		create_character = {
+			location = root.capital_province
+			template = RICE_vinlandic_generic_template
+			save_scope_as = vinlander
+		}
+		scope:greenlander = {
+			add_character_flag = RICE_no_americas_possible
+		}
+	}
+
+	# Hire them
+	option = {
+		name = north_atlantic.0095.a
+		add_courtier = scope:vinlander
+		pay_short_term_gold = {
+			target = scope:vinlander
+			gold = 50
+		}
+		add_character_modifier = {
+			modifier = RICE_north_atlantic_new_vinland_courtier
+			years = 20
+		}
+	}
+
+	# Don't hire them
+	option = {
+		name = north_atlantic.0095.b
+		hidden_effect = {
+			scope:vinlander = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+}
 
 
 ######################################################################################
@@ -18933,6 +19123,12 @@ north_atlantic.0251 = {
 						}
 					}
 				}
+			}
+			scope:recipient = {
+				add_opinion = {
+					target = scope:actor
+					modifier = RICE_north_atlantic_tried_exile_west
+				}
 			}			
 		}
 	}
@@ -19313,6 +19509,12 @@ north_atlantic.0253 = {
 							}
 						}
 					}
+				}
+			}
+			scope:recipient = {
+				add_opinion = {
+					target = scope:actor
+					modifier = RICE_north_atlantic_tried_send_west
 				}
 			}			
 		}
