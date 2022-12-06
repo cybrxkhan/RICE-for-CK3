@@ -475,7 +475,7 @@ north_atlantic.0010 = { # Fullscreen Intro Event
 
 
 
-# Eastern Settlement is abandoned
+# Western Settlement is abandoned
 north_atlantic.0011 = { # Fullscreen Intro Event
 	type = fullscreen_event
 	title = north_atlantic.0011.t
@@ -495,6 +495,7 @@ north_atlantic.0011 = { # Fullscreen Intro Event
 		name = north_atlantic.0011.a
 		custom_tooltip = north_atlantic.0011.tooltip.resilience
 		custom_tooltip = north_atlantic.0011.tooltip.networks
+		custom_tooltip = north_atlantic.0011.tooltip.exile_send_courtier
 		custom_description_no_bullet = {
 			text = north_atlantic.0011.tooltip
 		}
@@ -3049,7 +3050,7 @@ north_atlantic.0040 = {
 		scope:leader = {
 			duel = {
 				skill = diplomacy
-				value = 10
+				value = 8
 				10 = { # Failure
 					#show_chance = no
 					custom_tooltip = north_atlantic.0040.a.failure
@@ -3454,8 +3455,10 @@ north_atlantic.0042 = {
 			animation = aggressive_spear
 		}
 	}
-
-	# GENERATE CAPTIVE AT END OF JOURNEY
+	# lower_center_portrait = {
+	# 	character = scope:captive
+	# 	trigger = { exists = scope:captive }
+	# }
 	immediate = {
 		if = {
 			limit = {
@@ -3485,6 +3488,31 @@ north_atlantic.0042 = {
 				}
 			}
 		}	
+		if = {
+			limit = {
+				has_character_flag = RICE_expedition_event_success_flag_kidnap
+			}
+			random_list = {
+				35 = {
+					create_character = {
+						location = root.location
+						template = RICE_native_child_generic_template
+						faith = scope:native_leader.faith
+						culture = scope:native_leader.culture
+						save_scope_as = captive
+					}
+				}
+				65 = {
+					create_character = {
+						location = root.location
+						template = RICE_native_generic_template
+						faith = scope:native_leader.faith
+						culture = scope:native_leader.culture
+						save_scope_as = captive
+					}
+				}
+			}
+		}
 		RICE_display_america_expedition_success_view_count_effect = yes
 
 	}
@@ -3518,6 +3546,12 @@ north_atlantic.0042 = {
 		}
 		else = {
 			custom_tooltip = north_atlantic.expedition.result.resilience.increase
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_expedition_event_success_flag_kidnap
+			}
+			add_courtier = scope:captive
 		}
 		# if = {
 		# 	limit = {
@@ -7699,6 +7733,7 @@ north_atlantic.0061 = {
 			animation = personality_forgiving
 		}
 	}
+	
 
 	immediate = {
 
@@ -7986,10 +8021,10 @@ north_atlantic.0062 = {
 		animation = aggressive_spear
 	}
 
-	# lower_center_portrait = {
-	# 	character = scope:captive
-	# 	trigger = { exists = scope:captive }
-	# }
+	lower_center_portrait = {
+		character = scope:captive
+		trigger = { exists = scope:captive }
+	}
 
 	immediate = {
 
@@ -8676,7 +8711,7 @@ north_atlantic.0064 = {
 				scope:leader = {
 					duel = {
 						skill = martial
-						value = 10
+						value = 8
 						10 = { # Failure - lose battle
 							#show_chance = no
 							custom_tooltip = north_atlantic.0064.b.failure.battle_defeat
@@ -8716,7 +8751,7 @@ north_atlantic.0064 = {
 				scope:leader = {
 					duel = {
 						skill = stewardship
-						value = 10
+						value = 8
 						10 = { # Failure - useless stuff
 							#show_chance = no
 							custom_tooltip = north_atlantic.0064.b.failure.useless
@@ -8763,7 +8798,7 @@ north_atlantic.0064 = {
 				scope:leader = {
 					duel = {
 						skill = diplomacy
-						value = 10
+						value = 8
 						10 = { # Failure - not interested in trade
 							#show_chance = no
 							custom_tooltip = north_atlantic.0064.c.failure.no_trade
@@ -8803,7 +8838,7 @@ north_atlantic.0064 = {
 				scope:leader = {
 					duel = {
 						skill = stewardship
-						value = 10
+						value = 8
 						10 = { # Failure - useless stuff
 							#show_chance = no
 							custom_tooltip = north_atlantic.0064.c.failure.useless
@@ -10408,7 +10443,7 @@ north_atlantic.0074 = {
 		scope:leader = {
 			duel = {
 				skill = learning
-				value = 10
+				value = 8
 				10 = { # Failure - no info
 					#show_chance = no
 					custom_tooltip = north_atlantic.0074.b.failure.no_info
@@ -12690,6 +12725,104 @@ north_atlantic.0093 = {
 		}
 		stress_impact = {
 			paranoid = minor_stress_impact_gain
+		}
+	}
+
+	# Pay them
+	option = {
+		name = north_atlantic.0093.c
+		random_list = {
+			50 = {
+				desc = north_atlantic.0093.a.success
+				modifier = {
+					scope:native = {
+						has_trait = greedy
+					}
+					add = 10
+				}
+				modifier = {
+					scope:native = {
+						has_trait = ambitious
+					}
+					add = 10
+				}
+				modifier = {
+					scope:native = {
+						has_trait = content
+					}
+					add = -10
+				}
+				modifier = {
+					add = {
+						value = ai_boldness
+						multiply = 0.25
+					}
+					NOT = { ai_boldness = 0 }
+				}
+				modifier = {
+					add = {
+						value = ai_energy
+						multiply = 0.25
+					}
+					NOT = { ai_energy = 0 }
+				}
+				modifier = {
+					add = {
+						value = ai_greed
+						multiply = 0.5
+					}
+					NOT = { ai_greed = 0 }
+				}
+				pay_short_term_gold = {
+					target = scope:native
+					gold = 50
+				}
+				send_interface_toast = {
+					title = north_atlantic.0093.a.success
+					left_icon = scope:native
+					add_courtier = scope:native
+				}
+			}
+			50 = {
+				desc = north_atlantic.0093.a.failure
+				modifier = {
+					scope:native = {
+						has_trait = craven
+					}
+					add = 10
+				}
+				modifier = {
+					scope:native = {
+						has_trait = paranoid
+					}
+					add = 10
+				}
+				modifier = {
+					scope:native = {
+						has_trait = content
+					}
+					add = 10
+				}
+				modifier = {
+					add = {
+						value = ai_zeal
+						multiply = 0.25
+					}
+					NOT = { ai_zeal = 0 }
+				}
+				send_interface_toast = {
+					title = north_atlantic.0093.a.failure
+					left_icon = scope:native
+					custom_tooltip = north_atlantic.0093.a.failure.tooltip
+					hidden_effect = {
+						scope:native = {
+							death = {
+								death_reason = death_disappearance
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 
