@@ -54,6 +54,8 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ## Latest Changelog
 
+<img src="https://i.imgur.com/iGzIzw5.jpg">
+
 ### 1.8.1 "Erik the Red"
 
 - Added UI for some Greenland/Vinland decisions and events to show the current Resilience/Networks/Viability (credits to KeizerHarm, aka Mr. Sunset Invasion)
