@@ -1,12 +1,13 @@
-<img src="https://i.imgur.com/7eGcIDb.jpg">
+<img src="https://i.imgur.com/pg1tJRO.jpg">
 
-## Latest Version: Version 1.8.0 "Tuniit" (Released 12/1/22, for vanilla patch 1.8.x)
+## Latest Version: Version 1.8.1 "Erik the Red" (Released 12/7/22, for vanilla patch 1.8.x)
 
 **Newest Flavor Pack - North Atlantic: From Iceland to Vinland**
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_In Inuit legend, the Tuniit are a race of giants who preceded them and who, despite being taller and stronger, were supposedly timid and fearful of the Inuit. The Tuniit might correspond to the people belonging to the so-called archaeological Dorset culture, a pre-Inuit people inhabiting Greenland and Northern Canada before the arrival of the Inuit, who may have interacted with the Norse. They disappeared by the early modern period for reasons that are still debated._
+_“Men will desire much the more to go [to Greenland] if the land has a good name.”_
+_- Erik the Red, in the Saga of Erik the Red_
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places and peoples.
 
@@ -42,7 +43,7 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 
 ## Manual Installation Steps
 
-DO NOT manually download the master branch unless you know what you're doing as it is a WIP version and not necessarily stable!
+Do NOT manually download the master branch unless you know what you're doing as it is a WIP version and not necessarily stable!
 
 1. Go to https://github.com/cybrxkhan/RICE-for-CK3/releases and find the latest version you wish to download.
 2. Extract the .zip file to Documents\Paradox Interactive\Crusader Kings III\mod
@@ -53,31 +54,39 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ## Latest Changelog
 
-### 1.8.0 "Tuniit"
+### 1.8.1 "Erik the Red"
 
-- Updated to vanilla patch 1.8 “Robe”
-- Added new Kingdom Invasion CB that is functionally identical to the vanilla one for rulers in the Greenland struggle, as a workaround for the issue where the CB was disabled to avoid editing vanilla code
-- Added additional French and German localization (thanks to NicolasGrosjean and Dillo respectively)
-- Decision to explore the Americas is now more expensive than the one to explore Greenland (50 more gold by default)
-- Abandon Greenland decision requires being below 300 Resilience and Networks
-- AI will never take the decision to abandon Greenland unless Resilience and Networks are below 100
-- Vinland’s viability now starts at 10 in the 1066 start date
-- Increased the effect leader skills have on the results of some expedition results
-- Slightly increased the chances of getting Native American courtiers from expeditions (it should still be rare, though)
-- Made the AI slightly more likely to do walrus hunts and expeditions
-- Decisions to explore Greenland and Americas now require either your capital to have at least 10 development, or controlling the Duchy of Iceland, or being a King or Emperor
-- Decision to Sponsor a Whale Hunt now clarifies you need to own a coastal county
-- Decision to Sponsor a Whale Hunt is now visible even if you don’t own a coastal county, but requirements still apply
-- Temple of Hibis now gives 1% dynasty prestige instead of 0.5% (so it now displays properly too)
-- Counties of Aalborg and Aarhus have been added to the Greenland struggle region
-- Fixed being unable to retake the decision to Reinforce Relations with Silk Road after unlocking the second Silk Road dynasty perk, Envoys and Explorers (it was previously pegged to the third perk, rather than the second one)
-- Fixed Icelandic marriage event not checking for clergy or other situations where the character can’t marry
-- Fixed homosexuality doctrine of Semitic pagan faiths being accepted instead of shunned
-- Fixed Nordsetur hunts automatically succeeding if your character dies
-- Fixed modifiers from construction Shielings/Hunting Stations in Greenland not doing anything even though they’re supposed to (Temples doesn’t have a special effect yet, but this will be fixed in the next update)
-- Fixed Arctic Adaptations tradition not displaying requirement to own a county in the Greenland struggle region
-- Fixed missing loc for Vinland Support decision tooltip
-- Miscellaneous fixes for typos and minor bugs
+- Added UI for some Greenland/Vinland decisions and events to show the current Resilience/Networks/Viability (credits to KeizerHarm, aka Mr. Sunset Invasion)
+- Added character interactions to send courtiers or exile prisoners to Greenland/Vinland, in order to raise Resilience, Networks, or Viability
+- Added decision to Found Iceland's First Major Religious School, available after the Althing is Convened
+- Added several new game rules:
+    - Courtier Spawn frequency - how likely courtier spawn events will trigger (Very low, Low, Default, High, Very High)
+    - Greenland Ending Difficulty - how much Resilience/Networks is needed for the Regional Integration ending, and if Greenland autofails or not (Cheat Mode, Easy, Default, Hard)
+    - Vinland Realism - chances of success for Vinland outposts/colonies (Default, Unhistorical, Fantasy)
+    - Greenland Costs - costs of decisions related to Greenland (Default, Lower, Even Lower)
+    - Vinland Costs - costs of decisions related to Vinland (Default, Unhistorical, Fantasy)
+    - Native American Frequency - how likely N.A. courtiers are to spawn or acquired through events (Rare, Uncommon, Common, Very Common)
+- Added events to spawn Greenlandic and Vinlandic courtiers occasionally, which increase the maximum gold/prestige/piety gain from Greenland estates if you allow them to stay
+- Expanded Isleifur Haukadalur’s family to include his wife Dalla, other son Gissur, and daughter-in-laws Jorunn and Steinunn
+- Bjorg Eyvindrsdottir and her husband Úlfr Högnason (Leif Erikson’s great-grandparents) now start in the court of her brother, Helgi Eyvindarson
+- Rebalanced the effect skills have on some Greenland expedition episodes, thus making it a little easier to gain good outcomes with average stat leaders in some cases
+- Decision to Organize a Walrus Hunt to Nordsetur now also decreases Networks by a random amount as well
+- Increased default cost of the decision to Support Vinland to 80 gold
+- Lightly rebalanced the chances which houses are randomly chosen to receive the Greenland Estate house modifier at game start
+- Added an option to gift gold to the Native American character to become your courtier in one of the rare Native American courtier events
+- Azur Jamshid’s son Garg will now convert to the faith he chooses at game start
+- Reduced volume of the Greenland-related cues
+- Increased base chance of support failing to arrive in Greenland to 25%
+- Chances of the support you send to Greenland or Vinland failing are increased slightly in the Marginalization and Subsistence phases by 10% and 5% respectively
+- Fixed Native Sovereignty ending for the Greenland struggle requiring less than 250 Resilience and Networks
+- Fixed Abandon Greenland ending for the Greenland struggle NOT requiring less than 250 Resilience and Networks
+- Fixed Native American courtiers not spawning during the Marginalization or Subsistence phases (however, during these phases, it is still extremely rare)
+- Fixed Support Vinland event saying you failed even though support arrived safely
+- Fixed Decision to Explore the Seas West of Iceland not requiring a capital in the Greenland struggle region
+- Fixed Greenlandic immigrant generated from the Attract Immigrants from Greenland decision not having the right culture if Greenlandic culture was dynamically generated
+- Fixed Native American courtier not spawning if you successfully captured one in the Greenland expedition episode where you encounter peaceful Native Americans
+- Fixed heir being unable to partake in any activities if they were in the middle of leading an expedition when they inherited a title
+- Miscellaneous bugfixes
 
 ## Credits
 
@@ -91,6 +100,7 @@ Special thanks in particular to:
 - Fische for the Dragon Blood art icon and Vertimnus for donating it to me (originally made for Sinews of War)
 - George Hammond for some music ([see here](https://fanlink.to/georgehammondmusic) for more of his work)
 - Henry for the Better Bedouin Culture mod
+- KeizerHarm for UI work
 - Lahom for most of the Native American names
 - Nezaros for reformed religion template
 - Nix for Evenki names
