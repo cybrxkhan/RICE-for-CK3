@@ -955,8 +955,12 @@ north_atlantic.0015 = {
 			limit = {
 				exists = dynasty
 				is_dynast = yes
-				dynasty = {
-					has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+				dynasty = {					
+					#OR = {
+						has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+					#	has_dynasty_modifier = RICE_north_atlantic_vinland_settlement
+					#}	
+					#has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
 					#has_dynasty_modifier = RICE_north_atlantic_vinland_settlement	
 				}
 			}
@@ -1559,33 +1563,57 @@ north_atlantic.0026 = {
 
 }
 
-# # Whaling expedition sets out
-# north_atlantic.0027 = {
-# 	type = character_event
-# 	title = north_atlantic.0027.t
-# 	desc = north_atlantic.0027.desc
-# 	theme = hunt_activity
-# 	override_background = { event_background = market }
+# Establish the school at Skalholt
+north_atlantic.0027 = {
+	type = character_event
+	title = north_atlantic.0027.t
+	desc = north_atlantic.0027.desc
+	theme = faith
+	override_background = { event_background = RICE_background_north_atlantic_iceland }
 
-# 	right_portrait = {
-# 		character = root
-# 		animation = sadness
-# 	}
+	right_portrait = {
+		character = scope:isleifur
+		animation = personality_zealous
+	}
 
-# 	immediate = {
-# 		scope:outside_county = {
-# 			show_as_tooltip = {
-# 				remove_county_modifier = RICE_north_atlantic_walrus_carving_workshop_outside_region
-# 			}
-# 		}
-# 	}
+	immediate = {
+		scope:isleifur = {
+			show_as_tooltip = {
+				RICE_skalholt_school_decision_effect = yes
+			}
+		}		
+		add_character_flag = RICE_icelandic_notification_skalholt
+	}
 
-# 	option = {
-# 		name = north_atlantic.0027.a
-# 		custom_tooltip = north_atlantic.0027.tooltip
-# 	}
+	option = {
+		name = north_atlantic.0027.a
+		
+		every_ruler = {
+			limit = {
+				is_ai = no
+				NOT = { root = scope:isleifur }
+				NOT = { has_character_flag = RICE_icelandic_notification_skalholt }
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = custom_iceland
+					}
+				}
+			}
+			trigger_event = north_atlantic.0027
+		}
+	}
 
-# }
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_icelandic_notification_skalholt
+			}
+			remove_character_flag = RICE_icelandic_notification_skalholt
+		}
+	}
+
+}
 
 
 
@@ -12971,8 +12999,10 @@ north_atlantic.0095 = {
 		has_global_variable = RICE_north_atlantic_vinland_colonized_done
 		exists = dynasty
 		dynasty = {
-			has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
-			has_dynasty_modifier = RICE_north_atlantic_vinland_settlement	
+			OR = {
+				has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+				has_dynasty_modifier = RICE_north_atlantic_vinland_settlement
+			}	
 		}
 		any_held_title = {
 			tier = tier_county
@@ -14211,7 +14241,7 @@ north_atlantic.0112 = {
 ######################################################################################
 
 
-# Preparing for the hunt
+# Preparing for the walrus hunt
 north_atlantic.0120 = {
 	type = character_event
 	title = north_atlantic.0120.t
@@ -14419,6 +14449,19 @@ north_atlantic.0121 = {
 				value = scope:story.var:RICE_walrus_hunt_resilience_decrease
 			}
 		}
+		if = {
+			limit = {
+				scope:story.var:RICE_walrus_hunt_networks_decrease > 0
+			}
+			change_global_variable = {
+				name = RICE_greenland_resilience
+				subtract = scope:story.var:RICE_walrus_hunt_networks_decrease
+			}
+			set_variable = {
+				name = RICE_networks_value_temp
+				value = scope:story.var:RICE_walrus_hunt_networks_decrease
+			}
+		}
 		# Random variety
 		random_list = {
 			# Attacked by natives
@@ -14549,6 +14592,12 @@ north_atlantic.0121 = {
 		}
 		if = {
 			limit = {
+				scope:story.var:RICE_walrus_hunt_networks_decrease > 0
+			}
+			custom_tooltip = north_atlantic.0121.tooltip.decrease_networks
+		}
+		if = {
+			limit = {
 				exists = struggle:RICE_greenland_struggle
 			}
 			if = {
@@ -14610,6 +14659,10 @@ north_atlantic.0121 = {
 		if = {
 			limit = { has_variable = RICE_resilience_value_temp }
 			remove_variable = RICE_resilience_value_temp
+		}
+		if = {
+			limit = { has_variable = RICE_networks_value_temp }
+			remove_variable = RICE_networks_value_temp
 		}
 		random_owned_story = {
 			limit = {
@@ -14685,6 +14738,19 @@ north_atlantic.0122 = {
 			set_variable = {
 				name = RICE_resilience_value_temp
 				value = scope:story.var:RICE_walrus_hunt_resilience_decrease
+			}
+		}
+		if = {
+			limit = {
+				scope:story.var:RICE_walrus_hunt_networks_decrease > 0
+			}
+			change_global_variable = {
+				name = RICE_greenland_networks
+				subtract = scope:story.var:RICE_walrus_hunt_networks_decrease
+			}
+			set_variable = {
+				name = RICE_networks_value_temp
+				value = scope:story.var:RICE_walrus_hunt_networks_decrease
 			}
 		}
 
@@ -14788,6 +14854,12 @@ north_atlantic.0122 = {
 		}
 		if = {
 			limit = {
+				scope:story.var:RICE_walrus_hunt_networks_decrease > 0
+			}
+			custom_tooltip = north_atlantic.0121.tooltip.decrease_networks
+		}
+		if = {
+			limit = {
 				exists = struggle:RICE_greenland_struggle
 			}
 			if = {
@@ -14839,6 +14911,10 @@ north_atlantic.0122 = {
 		if = {
 			limit = { has_variable = RICE_resilience_value_temp }
 			remove_variable = RICE_resilience_value_temp
+		}
+		if = {
+			limit = { has_variable = RICE_networks_value_temp }
+			remove_variable = RICE_networks_value_temp
 		}
 		if = {
 			limit = { has_variable = RICE_walrus_hunt_gold_gain_value }
@@ -19629,7 +19705,7 @@ north_atlantic.0253 = {
 						}
 						struggle:RICE_greenland_struggle = {
 							activate_struggle_catalyst = {
-								catalyst = catalyst_RICE_failed_family_to_vinland
+								catalyst = catalyst_RICE_failed_send_family_to_vinland
 								character = scope:actor
 							}
 						}
@@ -19637,7 +19713,7 @@ north_atlantic.0253 = {
 					else = {
 						struggle:RICE_greenland_struggle = {
 							activate_struggle_catalyst = {
-								catalyst = catalyst_RICE_failed_courtier_to_vinland
+								catalyst = catalyst_RICE_failed_send_courtier_to_vinland
 								character = scope:actor
 							}
 						}

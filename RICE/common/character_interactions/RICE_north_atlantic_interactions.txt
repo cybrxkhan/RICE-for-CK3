@@ -366,6 +366,8 @@ RICE_north_atlantic_exile_to_americas = {
 	
 	is_shown = {
 		scope:actor = {
+			is_ai = no # This is because we can't modify AI to pick one send_options or another apparently - there is a separate AI interaction for that
+			highest_held_title_tier > tier_barony
 			OR = {
 				AND = {
 					exists = struggle:RICE_greenland_struggle
@@ -724,6 +726,7 @@ RICE_north_atlantic_exile_to_americas = {
 			trigger = {
 				scope:vinland = yes
 			}
+			NOT = { exists = struggle:RICE_greenland_struggle }
 			NOT = { has_global_variable = RICE_north_atlantic_vinland_colonized_done }
 			add = -15
 			desc = RICE_vinland_interaction_modifier_crazy
@@ -909,7 +912,10 @@ RICE_north_atlantic_exile_to_americas = {
 		modifier = {
 			add = -50
 			scope:recipient = {
-				any_child = { count >= 1 }
+				any_child = {
+					count >= 1
+					is_adult = no
+				}
 			}
 			desc = RICE_UNDERAGE_CHILDREN_MODIFIER
 		}
@@ -1009,27 +1015,680 @@ RICE_north_atlantic_exile_to_americas = {
 	ai_targets = {
 		ai_recipients = prisoners
 	}
-	ai_frequency = 10
+	ai_frequency = 24
 
 	ai_potential = {
 		has_prisoners = yes
 	}
 
+	# AI will never do
 	ai_will_do = {
+		base = 5
+
+		# modifier = {
+		# 	add = 30
+		# 	scope:greenland_eastern_settlement = yes
+		# }
+		# modifier = {
+		# 	add = 20
+		# 	scope:greenland_western_settlement = yes
+		# }
+		# modifier = {
+		# 	add = 10
+		# 	scope:vinland = yes
+		# }
+		# modifier = { # Help the struggle
+		# 	add = 10
+		# 	has_trait = ambitious
+		# }
+		# modifier = { # Help the struggle
+		# 	add = 5
+		# 	has_trait = just
+		# }
+	}
+}
+
+
+
+RICE_north_atlantic_exile_to_americas_ai = {
+	interface_priority = 30
+	common_interaction = yes
+	category = interaction_category_prison
+	#special_interaction = RICE_north_atlantic_exile_to_americas
+
+	# desc = {
+	# 	first_valid = {
+	# 		triggered_desc = {
+	# 			trigger = { scope:vinland = yes }
+	# 			desc = RICE_north_atlantic_exile_to_americas_yes_vinland_desc
+	# 		}
+	# 		desc = RICE_north_atlantic_exile_to_americas_no_vinland_desc
+	# 	}
+	# }
+
+	# notification_text = {
+	# 	first_valid = {
+	# 		triggered_desc = {
+	# 			trigger = {
+	# 				scope:vinland = no
+	# 			}
+	# 			desc = RICE_north_atlantic_exile_offer_vinland
+	# 		}
+	# 		desc = RICE_north_atlantic_exile_offer_greenland
+	# 	}
+	# }
+
+	ai_maybe = yes
+	ai_min_reply_days = 0
+	ai_max_reply_days = 0
+
+	cooldown = { years = 3 }
+	cooldown_against_recipient = { years = 5 }
+	
+	is_shown = {
+		scope:actor = {
+			OR = {
+				is_ai = yes # This is because we can't modify AI to pick one send_options or another apparently - there is a separate AI interaction for that
+				debug_only = yes
+			}
+			highest_held_title_tier > tier_barony
+			OR = {
+				AND = {
+					exists = struggle:RICE_greenland_struggle
+					any_character_struggle = {
+						involvement = involved
+						is_struggle_type = RICE_greenland_struggle
+					}
+				}
+				AND = {
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_greenland_struggle_region		
+						}
+					}
+					OR = {
+						has_global_variable = RICE_greenland_ending_integration
+						has_global_variable = RICE_greenland_ending_indigenous
+					}
+				}
+			}
+			exists = house
+			house = { has_house_modifier = RICE_north_atlantic_greenland_family_estate }
+		}
+		scope:recipient = {
+			is_ai = yes
+			is_imprisoned_by = scope:actor
+		}
+		# AND = {
+		# 	scope:actor = {				
+		# 		is_ai = no
+		# 	}
+		# 	scope:recipient = {				
+		# 		is_ai = no
+		# 	}
+		# }
+	}
+
+	is_valid_showing_failures_only = {
+		#trigger_if = {
+		#	limit = {
+		#		scope:actor = { exists = house }
+		#	}
+		#	scope:actor = {		
+		#		house = { has_house_modifier = RICE_north_atlantic_greenland_family_estate }
+		#	}
+		#}
+		scope:recipient = { is_busy_in_events_localised = yes } #Prisoner
+		scope:recipient = {
+			is_ruler = no
+		}
+		scope:recipient = {
+			custom_description = {
+				text = "currently_being_tortured"
+				NOT = { has_character_flag = is_being_tortured }
+			}
+		}
+	}
+	
+	on_accept = {
+		if = {
+			limit = { scope:recipient = { is_imprisoned_by = scope:actor } }
+			random_list = {
+				25 = {
+					trigger = {
+						scope:actor = {
+							exists = dynasty
+							dynasty = {
+								OR = {
+									has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+									has_dynasty_modifier = RICE_north_atlantic_vinland_settlement
+								}	
+							}
+						}
+					}
+					scope:recipient = {
+						death = {
+							death_reason = death_RICE_north_atlantic_vinland_exile
+							killer = scope:actor
+						}		
+					}
+					scope:actor = {
+						add_prestige = RICE_vinland_exile_prestige_cost
+						remove_short_term_gold = RICE_vinland_exile_gold_cost
+						if = {
+							limit = {
+								exists = struggle:RICE_greenland_struggle
+							}
+							struggle:RICE_greenland_struggle = {
+								activate_struggle_catalyst = {
+									catalyst = catalyst_RICE_exile_to_vinland
+									character = scope:actor
+								}
+							}
+						}
+						# set_variable = {
+						# 	name = RICE_exile_courtier_global_resource_increase
+						# 	value = {
+						# 		value = 0
+						# 		add = {
+						# 			integer_range = {
+						# 				min = RICE_vinland_exile_viability_low
+						# 				max = RICE_vinland_exile_viability_high
+						# 			}
+						# 		}
+						# 	}
+						# 	days = 1
+						# }			
+						change_global_variable = {
+							name = RICE_vinland_viability
+							#add = scope:actor.var:RICE_send_courtier_global_resource_increase
+							add = {
+								value = {
+									integer_range = {
+										min = RICE_vinland_exile_viability_low
+										max = RICE_vinland_exile_viability_high
+									}
+								}
+							}
+						}
+					}	
+				}
+				75 = {
+					scope:recipient = {
+						death = {
+							death_reason = death_RICE_north_atlantic_greenland_exile
+							killer = scope:actor
+						}		
+					}
+					scope:actor = {
+						add_prestige = RICE_greenland_exile_prestige_cost
+						remove_short_term_gold = RICE_greenland_exile_gold_cost
+						if = {
+							limit = {
+								exists = struggle:RICE_greenland_struggle
+							}
+							struggle:RICE_greenland_struggle = {
+								activate_struggle_catalyst = {
+									catalyst = catalyst_RICE_exile_to_greenland
+									character = scope:actor
+								}
+							}
+						}
+					}
+					random_list = {
+						50 = {
+							trigger = {
+								NOT = { has_global_variable = RICE_greenland_eastern_settlement_abandoned }
+							}
+							# set_variable = {
+							# 	name = RICE_exile_courtier_global_resource_increase
+							# 	value = {
+							# 		value = 0
+							# 		add = {
+							# 			integer_range = {
+							# 				min = RICE_greenland_exile_resilience_low
+							# 				max = RICE_greenland_exile_resilience_high
+							# 			}
+							# 		}
+							# 	}
+							# 	days = 1
+							# }					
+							change_global_variable = {
+								name = RICE_greenland_resilience							
+								#add = scope:actor.var:RICE_send_courtier_global_resource_increase
+								add = {
+									value = {
+										integer_range = {
+											min = RICE_greenland_exile_resilience_low
+											max = RICE_greenland_exile_resilience_high
+										}
+									}
+								}
+							}
+						}
+						50 = {
+							# set_variable = {
+							# 	name = RICE_exile_courtier_global_resource_increase
+							# 	value = {
+							# 		value = 0
+							# 		add = {
+							# 			integer_range = {
+							# 				min = RICE_greenland_exile_networks_low
+							# 				max = RICE_greenland_exile_networks_high
+							# 			}
+							# 		}
+							# 	}
+							# 	days = 1
+							# }						
+							change_global_variable = {
+								name = RICE_greenland_networks						
+								#add = scope:actor.var:RICE_send_courtier_global_resource_increase
+								add = {
+									value = {
+										integer_range = {
+											min = RICE_greenland_exile_networks_low
+											max = RICE_greenland_exile_networks_high
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+		}
+	}
+
+	on_decline = {
+		scope:actor = {
+			if = {
+				limit = {
+					exists = struggle:RICE_greenland_struggle
+				}
+				random_list = {
+					25 = {
+						trigger = {
+							exists = dynasty
+							dynasty = {
+								OR = {
+									has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+									has_dynasty_modifier = RICE_north_atlantic_vinland_settlement	
+								}
+							}
+						}
+						struggle:RICE_greenland_struggle = {
+							activate_struggle_catalyst = {
+								catalyst = catalyst_RICE_failed_exile_to_vinland
+								character = scope:actor
+							}
+						}
+					}
+					75 = {
+						struggle:RICE_greenland_struggle = {
+							activate_struggle_catalyst = {
+								catalyst = catalyst_RICE_failed_exile_to_greenland
+								character = scope:actor
+							}
+						}
+					}
+				}
+			}
+		}
+		scope:recipient = {
+			add_opinion = {
+				target = scope:actor
+				modifier = RICE_north_atlantic_tried_exile_west
+			}
+		}
+	}
+	
+	#send_options_exclusive = yes
+
+	# auto_accept = {
+	# 	scope:greenland_eastern_settlement = no
+	# 	scope:greenland_western_settlement = no
+	# 	scope:vinland = no
+	# }
+	
+	ai_accept = {
 		base = 0
 
 		modifier = {
-			add = 30
-			scope:greenland_eastern_settlement = yes
-		}
-		modifier = {
-			add = 20
-			scope:greenland_western_settlement = yes
-		}
-		modifier = {
 			add = 10
-			scope:vinland = yes
+			desc = "WANTS_FREEDOM_REASON"
 		}
+
+		opinion_modifier = { # Opinion Factor
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 0.25
+			desc = AI_SIMPLE_OPINION_REASON
+		}
+
+		# modifier = {
+		# 	trigger = {
+		# 		scope:vinland = yes
+		# 	}
+		# 	exists = struggle:RICE_greenland_struggle
+		# 	NOT = { has_global_variable = RICE_north_atlantic_vinland_colonized_done }
+		# 	add = -30
+		# 	desc = RICE_vinland_interaction_modifier_crazy
+		# }
+
+		# modifier = {
+		# 	trigger = {
+		# 		scope:vinland = yes
+		# 	}
+		# 	NOT = { has_global_variable = RICE_north_atlantic_vinland_colonized_done }
+		# 	add = -15
+		# 	desc = RICE_vinland_interaction_modifier_crazy
+		# }
+
+		modifier = { # Legalistic tradition
+			add = legalistic_vassal_punishment_acceptance
+			scope:actor = {
+				has_imprisonment_reason = scope:recipient
+				culture = { has_cultural_parameter = vassals_more_likely_accept_punishments }
+			}
+			desc = tradition_legalistic_name
+		}
+
+		#Relations & relatives (with actor)
+
+		modifier = {
+			has_relation_friend = scope:actor
+			add = -50
+			desc = AI_YOUR_FRIEND
+		}
+
+		modifier = {
+			this.dynasty.dynast = scope:actor
+			add = 10
+			desc = AI_YOU_ARE_THE_DYNAST
+		}
+
+		modifier = {
+			this.house.house_head = scope:actor
+			add = 10
+			desc = AI_YOU_ARE_THE_HOUSE_HEAD
+		}
+
+		modifier = {
+			is_spouse_of = scope:actor
+			add = -100
+			desc = AI_YOUR_SPOUSE
+		}
+
+		#Relations & relatives (with host)
+		modifier = {
+			exists = liege
+			has_relation_lover = liege
+			add = -100
+			desc = AI_THEIR_LOVER
+		}
+
+		#Other Modifiers
+
+		modifier = {
+			add = -50
+			scope:recipient = {
+				has_character_flag = RICE_no_americas_possible
+			}
+			desc = "RICE_CAME_FROM_AMERICAS"
+		}
+
+		modifier = {
+			add = -500
+			scope:recipient = {
+				has_trait = pregnant
+			}
+			desc = TAKE_THE_VOWS_PREGNANT
+		}
+
+
+		modifier = {
+			add = -25
+			scope:recipient = {
+				OR = {
+					is_married = yes
+					exists = betrothed
+				}
+			}
+			desc = TAKE_THE_VOWS_MARRIED_OR_BETROTHED
+		}
+		
+		modifier = {
+			add = -25
+			scope:recipient = {
+				is_primary_heir_of = scope:actor
+			}
+			desc = TAKE_THE_VOWS_PRIMARY_HEIR
+		}
+
+		modifier = {
+			add = -20
+			scope:recipient = {
+				NOT = {
+					is_primary_heir_of = scope:actor
+				}
+			}
+			scope:actor.primary_title = {
+				place_in_line_of_succession = {
+					target = prev
+					value == 2
+				}
+			}
+			desc = TAKE_THE_VOWS_SECOND_HEIR
+		}
+
+		modifier = {
+			add = -15
+			scope:recipient = {
+				NOT = {
+					is_primary_heir_of = scope:actor
+				}
+			}
+			scope:actor.primary_title = {
+				place_in_line_of_succession = {
+					target = prev
+					value == 3
+				}
+			}
+			desc = TAKE_THE_VOWS_THIRD_HEIR
+		}
+
+		modifier = {
+			add = -10
+			scope:recipient = {
+				NOT = {
+					is_primary_heir_of = scope:actor
+				}
+			}
+			scope:actor.primary_title = {
+				place_in_line_of_succession = {
+					target = prev
+					value >= 4
+				}
+			}
+			desc = TAKE_THE_VOWS_HEIR
+		}
+
+		modifier = {
+			add = -30
+			scope:recipient = {
+				NOT = { is_heir_of = scope:actor }
+				any_heir_title = {
+					exists = holder
+					NOT = {
+						holder = scope:actor
+					}
+					place_in_line_of_succession = {
+						target = scope:recipient
+						value < 2
+					}
+				}
+				NOT = {
+					is_primary_heir_of = scope:actor
+				}
+			}
+			desc = TAKE_THE_VOWS_HEIR_TO_OTHER_TITLE
+		}
+
+		modifier = {
+			add = -30
+			scope:recipient = {
+				NOT = { is_heir_of = scope:actor }
+				any_heir_title = {
+					exists = holder
+					NOT = {
+						holder = scope:actor
+					}
+					place_in_line_of_succession = {
+						target = scope:recipient
+						value < 5
+					}
+					NOT = {
+						place_in_line_of_succession = {
+							target = scope:recipient
+							value < 2
+						}
+					}
+				}
+				NOT = {
+					is_primary_heir_of = scope:actor
+				}
+			}
+			desc = TAKE_THE_VOWS_IN_LINE_TO_OTHER_TITLE
+		}
+
+		modifier = {
+			add = -50
+			scope:recipient = {
+				any_child = {
+					count >= 1
+					is_adult = no
+				}
+			}
+			desc = RICE_UNDERAGE_CHILDREN_MODIFIER
+		}
+
+		modifier = {
+			add = -10
+			scope:recipient = {
+				age > 60
+			}
+			desc = RICE_OLD_AGE_MODIFIER
+		}
+
+		# Rival modifier 
+		modifier = {
+			desc = offer_vassalization_interaction_aibehavior_rival_tt
+			trigger = {
+				scope:recipient = {
+					has_relation_nemesis = scope:actor
+				}
+			}
+			add = -25
+		}
+		# Nemesis modifier
+		modifier = {
+			desc = offer_vassalization_interaction_aibehavior_nemesis_tt
+			trigger = {
+				scope:recipient = {
+					has_relation_nemesis = scope:actor
+				}
+			}
+			add = -50
+		}
+
+		# PERSONALITY
+		# Boldness always plays a factor.
+		modifier = {
+			add = {
+				value = ai_boldness
+				multiply = 0.3
+			}
+			NOT = { ai_boldness = 0 }
+			desc = AI_VALUE_MODIFIER_BOLDNESS
+		}
+
+		# Energy always plays a factor.
+		modifier = {
+			add = {
+				value = ai_energy
+				multiply = 0.3
+			}
+			NOT = { ai_energy = 0 }
+			desc = AI_VALUE_MODIFIER_ENERGY
+		}
+
+		# Honor always plays a factor.
+		modifier = {
+			add = {
+				value = ai_honor
+				multiply = 0.3
+			}
+			NOT = { ai_honor = 0 }
+			desc = AI_VALUE_MODIFIER_HONOR
+		}
+
+		# TRAITS
+		modifier = {
+			add = 15
+			scope:recipient = {
+				has_trait = brave
+			}
+			desc = RICE_appoint_expedition_leader_brave_acceptance
+		}
+		modifier = {
+			add = -15
+			scope:recipient = {
+				has_trait = craven
+			}
+			desc = RICE_appoint_expedition_leader_craven_acceptance
+		}
+		modifier = {
+			add = 15
+			scope:recipient = {
+				has_trait = ambitious
+			}
+			desc = RICE_appoint_expedition_leader_ambitious_acceptance
+		}
+		modifier = {
+			add = -15
+			scope:recipient = {
+				has_trait = lazy
+			}
+			desc = RICE_appoint_expedition_leader_lazy_acceptance
+		}
+	}
+	
+	# AI
+	ai_targets = {
+		ai_recipients = prisoners
+	}
+	ai_frequency = 24
+
+	ai_potential = {
+		has_prisoners = yes
+	}
+	ai_will_do = {
+		base = 5
+
+		# modifier = {
+		# 	add = 30
+		# 	scope:greenland_eastern_settlement = yes
+		# }
+		# modifier = {
+		# 	add = 20
+		# 	scope:greenland_western_settlement = yes
+		# }
+		# modifier = {
+		# 	add = 10
+		# 	scope:vinland = yes
+		# }
 		modifier = { # Help the struggle
 			add = 10
 			has_trait = ambitious
@@ -1040,6 +1699,8 @@ RICE_north_atlantic_exile_to_americas = {
 		}
 	}
 }
+
+
 
 
 
@@ -1067,6 +1728,8 @@ RICE_north_atlantic_send_to_americas = {
 	
 	is_shown = {
 		scope:actor = {
+			is_ai = no
+			highest_held_title_tier > tier_barony
 			OR = {
 				AND = {
 					exists = struggle:RICE_greenland_struggle
@@ -1432,7 +2095,7 @@ RICE_north_atlantic_send_to_americas = {
 						}
 						struggle:RICE_greenland_struggle = {
 							activate_struggle_catalyst = {
-								catalyst = catalyst_RICE_failed_family_to_vinland
+								catalyst = catalyst_RICE_failed_send_family_to_vinland
 								character = scope:actor
 							}
 						}
@@ -1440,7 +2103,7 @@ RICE_north_atlantic_send_to_americas = {
 					else = {
 						struggle:RICE_greenland_struggle = {
 							activate_struggle_catalyst = {
-								catalyst = catalyst_RICE_failed_courtier_to_vinland
+								catalyst = catalyst_RICE_failed_send_courtier_to_vinland
 								character = scope:actor
 							}
 						}
@@ -1539,6 +2202,7 @@ RICE_north_atlantic_send_to_americas = {
 			trigger = {
 				scope:vinland = yes
 			}
+			NOT = { exists = struggle:RICE_greenland_struggle }
 			NOT = { has_global_variable = RICE_north_atlantic_vinland_colonized_done }
 			add = -15
 			desc = RICE_vinland_interaction_modifier_crazy
@@ -1715,7 +2379,10 @@ RICE_north_atlantic_send_to_americas = {
 		modifier = {
 			add = -50
 			scope:recipient = {
-				any_child = { count >= 1 }
+				any_child = {
+					count >= 1
+					is_adult = no
+				}
 			}
 			desc = RICE_UNDERAGE_CHILDREN_MODIFIER
 		}
@@ -1815,7 +2482,7 @@ RICE_north_atlantic_send_to_americas = {
 	ai_targets = {
 		ai_recipients = courtiers
 	}
-	ai_frequency = 12
+	ai_frequency = 48
 
 	ai_potential = {
 		# At least have a few courtiers to send out
@@ -1826,7 +2493,7 @@ RICE_north_atlantic_send_to_americas = {
 	}
 
 	ai_will_do = {
-		base = 0
+		base = 5
 
 		modifier = {
 			add = 30
@@ -1840,6 +2507,693 @@ RICE_north_atlantic_send_to_americas = {
 			add = 10
 			scope:vinland = yes
 		}
+		modifier = { # Help the struggle
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = { # Help the struggle
+			add = 5
+			has_trait = just
+		}
+	}
+}
+
+
+
+
+RICE_north_atlantic_send_to_americas_ai = {
+	category = interaction_category_diplomacy
+	
+	# desc = {
+	# 	first_valid = {
+	# 		triggered_desc = {
+	# 			trigger = { scope:vinland = yes }
+	# 			desc = RICE_north_atlantic_send_to_americas_yes_vinland_desc
+	# 		}
+	# 		desc = RICE_north_atlantic_send_to_americas_no_vinland_desc
+	# 	}
+	# }
+	
+	ai_maybe = yes
+	ai_min_reply_days = 0
+	ai_max_reply_days = 0
+
+	cooldown = { years = 3 }
+	cooldown_against_recipient = { years = 5 }
+	
+	is_shown = {
+		scope:actor = {
+			OR = {
+				is_ai = yes # This is because we can't modify AI to pick one send_options or another apparently - there is a separate AI interaction for that
+				debug_only = yes
+			}
+			highest_held_title_tier > tier_barony
+			OR = {
+				AND = {
+					exists = struggle:RICE_greenland_struggle
+					any_character_struggle = {
+						involvement = involved
+						is_struggle_type = RICE_greenland_struggle
+					}
+				}
+				AND = {
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_greenland_struggle_region		
+						}
+					}
+					OR = {
+						has_global_variable = RICE_greenland_ending_integration
+						has_global_variable = RICE_greenland_ending_indigenous
+					}
+				}
+			}
+			exists = house
+			house = { has_house_modifier = RICE_north_atlantic_greenland_family_estate }
+		}
+		scope:recipient = {
+			is_courtier_of = scope:actor
+			is_ai = yes
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:recipient = {
+			is_ruler = no
+			is_imprisoned = no
+			is_available = yes
+			custom_description = {
+				text = RICE_heir_title_req
+				any_heir_to_title = { count = 0 }
+			}
+		}
+	}
+	
+	on_accept = {
+		scope:actor = {
+			random_list = {
+				25 = {
+					trigger = {	
+						scope:actor = {
+							exists = dynasty
+							dynasty = {
+								OR = {
+									has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+									has_dynasty_modifier = RICE_north_atlantic_vinland_settlement
+								}	
+							}
+						}
+					}
+					scope:recipient = {
+						death = {
+							death_reason = death_RICE_north_atlantic_vinland
+							killer = scope:actor
+						}
+					}
+					# set_variable = {
+					# 	name = RICE_send_courtier_global_resource_increase
+					# 	value = {
+					# 		value = 0
+					# 		add = {
+					# 			integer_range = {
+					# 				min = 1
+					# 				max = RICE_vinland_send_resource_gain_max_real
+					# 			}
+					# 		}
+					# 	}
+					# 	days = 1
+					# }			
+					change_global_variable = {
+						name = RICE_vinland_viability
+						#add = scope:actor.var:RICE_send_courtier_global_resource_increase
+						add = {
+							value = {
+								integer_range = {
+									min = 1
+									max = RICE_vinland_send_resource_gain_max_real
+								}
+							}
+						}
+					}
+					remove_short_term_gold = RICE_vinland_exile_gold_cost
+					if = {
+						limit = {
+							is_close_or_extended_family_of = scope:recipient
+							#dynasty = scope:recipient.dynasty
+						}
+						add_prestige = RICE_greenland_exile_family_prestige_gain
+						if = {
+							limit = {
+								exists = dynasty
+							}
+							dynasty = {
+								add_dynasty_prestige = 25
+							}
+						}
+					}
+					else = {
+						add_prestige = RICE_greenland_exile_prestige_gain
+					}
+					if = {
+						limit = {
+							exists = struggle:RICE_greenland_struggle
+						}
+						if = {
+							limit = {
+								is_close_or_extended_family_of = scope:recipient
+								#dynasty = scope:recipient.dynasty
+							}
+							struggle:RICE_greenland_struggle = {
+								activate_struggle_catalyst = {
+									catalyst = catalyst_RICE_send_family_to_vinland
+									character = scope:actor
+								}
+							}
+						}
+						else = {
+							struggle:RICE_greenland_struggle = {
+								activate_struggle_catalyst = {
+									catalyst = catalyst_RICE_send_courtier_to_vinland
+									character = scope:actor
+								}
+							}
+						}
+					}
+				}
+				75 = {
+					remove_short_term_gold = RICE_greenland_exile_gold_cost		
+					
+					scope:recipient = {
+						death = {
+							death_reason = death_RICE_north_atlantic_greenland
+							killer = scope:actor
+						}
+					}		
+					# set_variable = {
+					# 	name = RICE_send_courtier_global_resource_increase
+					# 	value = {
+					# 		value = 0
+					# 		add = {
+					# 			integer_range = {
+					# 				min = RICE_greenland_send_resource_gain_min_real
+					# 				max = RICE_greenland_send_resource_gain_max_real
+					# 			}
+					# 		}
+					# 	}
+					# 	days = 1
+					# }
+					if = {
+						limit = {
+							is_close_or_extended_family_of = scope:recipient
+							#dynasty = scope:recipient.dynasty
+						}
+						add_prestige = RICE_greenland_exile_family_prestige_gain
+						if = {
+							limit = {
+								exists = dynasty
+							}
+							dynasty = {
+								add_dynasty_prestige = 25
+							}
+						}
+					}
+					else = {
+						add_prestige = RICE_greenland_exile_prestige_gain
+					}
+					if = {
+						limit = {
+							exists = struggle:RICE_greenland_struggle
+						}
+						if = {
+							limit = {
+								is_close_or_extended_family_of = scope:recipient
+								#dynasty = scope:recipient.dynasty
+							}
+							struggle:RICE_greenland_struggle = {
+								activate_struggle_catalyst = {
+									catalyst = catalyst_RICE_send_family_to_greenland
+									character = scope:actor
+								}
+							}
+						}
+						else = {
+							struggle:RICE_greenland_struggle = {
+								activate_struggle_catalyst = {
+									catalyst = catalyst_RICE_send_courtier_to_greenland
+									character = scope:actor
+								}
+							}
+						}
+					}
+					random_list = {
+						50 = {
+							trigger = {
+								NOT = { has_global_variable = RICE_greenland_eastern_settlement_abandoned }
+							}		
+									
+							change_global_variable = {
+								name = RICE_greenland_resilience
+								#add = scope:actor.var:RICE_send_courtier_global_resource_increase
+								add = {
+									value = {
+										integer_range = {
+											min = RICE_greenland_send_resource_gain_min_real
+											max = RICE_greenland_send_resource_gain_max_real
+										}
+									}
+								}
+							}
+						}
+						50 = {			
+							change_global_variable = {
+								name = RICE_greenland_networks
+								#add = scope:actor.var:RICE_send_courtier_global_resource_increase
+								add = {
+									value = {
+										integer_range = {
+											min = RICE_greenland_send_resource_gain_min_real
+											max = RICE_greenland_send_resource_gain_max_real
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+	on_decline = {
+		scope:actor = {
+			if = {
+				limit = {
+					exists = struggle:RICE_greenland_struggle
+				}
+				random_list = {
+					25 = {
+						trigger = {
+							exists = dynasty
+							dynasty = {
+								OR = {
+									has_dynasty_modifier = RICE_north_atlantic_vinland_outpost
+									has_dynasty_modifier = RICE_north_atlantic_vinland_settlement	
+								}
+							}
+						}
+						if = {
+							limit = {
+								is_close_or_extended_family_of = scope:recipient
+								#dynasty = scope:recipient.dynasty
+							}
+							struggle:RICE_greenland_struggle = {
+								activate_struggle_catalyst = {
+									catalyst = catalyst_RICE_failed_send_family_to_vinland
+									character = scope:actor
+								}
+							}
+						}
+						else = {
+							struggle:RICE_greenland_struggle = {
+								activate_struggle_catalyst = {
+									catalyst = catalyst_RICE_failed_send_courtier_to_vinland
+									character = scope:actor
+								}
+							}
+						}
+					}
+					75 = {
+						if = {
+							limit = {
+								is_close_or_extended_family_of = scope:recipient
+								#dynasty = scope:recipient.dynasty
+							}
+							struggle:RICE_greenland_struggle = {
+								activate_struggle_catalyst = {
+									catalyst = catalyst_RICE_failed_send_family_to_greenland
+									character = scope:actor
+								}
+							}
+						}
+						else = {
+							struggle:RICE_greenland_struggle = {
+								activate_struggle_catalyst = {
+									catalyst = catalyst_RICE_failed_send_courtier_to_greenland
+									character = scope:actor
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		scope:recipient = {
+			add_opinion = {
+				target = scope:actor
+				modifier = RICE_north_atlantic_tried_send_west
+			}
+		}
+	}
+	
+	#send_options_exclusive = yes
+
+	# auto_accept = {
+	# 	scope:greenland_eastern_settlement = no
+	# 	scope:greenland_western_settlement = no
+	# 	scope:vinland = no
+	# }
+	
+	ai_accept = {
+		base = 0
+
+		opinion_modifier = { # Opinion Factor
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 0.5
+			desc = AI_SIMPLE_OPINION_REASON
+		}
+
+		# modifier = {
+		# 	trigger = {
+		# 		scope:vinland = yes
+		# 	}
+		# 	exists = struggle:RICE_greenland_struggle
+		# 	NOT = { has_global_variable = RICE_north_atlantic_vinland_colonized_done }
+		# 	add = -30
+		# 	desc = RICE_vinland_interaction_modifier_crazy
+		# }
+
+		# modifier = {
+		# 	trigger = {
+		# 		scope:vinland = yes
+		# 	}
+		# 	NOT = { has_global_variable = RICE_north_atlantic_vinland_colonized_done }
+		# 	add = -15
+		# 	desc = RICE_vinland_interaction_modifier_crazy
+		# }
+
+		#Relations & relatives (with actor)
+
+		modifier = {
+			has_relation_friend = scope:actor
+			add = -50
+			desc = AI_YOUR_FRIEND
+		}
+
+		modifier = {
+			this.dynasty.dynast = scope:actor
+			add = 10
+			desc = AI_YOU_ARE_THE_DYNAST
+		}
+
+		modifier = {
+			this.house.house_head = scope:actor
+			add = 10
+			desc = AI_YOU_ARE_THE_HOUSE_HEAD
+		}
+
+		modifier = {
+			is_spouse_of = scope:actor
+			add = -100
+			desc = AI_YOUR_SPOUSE
+		}
+
+		#Relations & relatives (with host)
+		modifier = {
+			exists = liege
+			has_relation_lover = liege
+			add = -100
+			desc = AI_THEIR_LOVER
+		}
+
+		#Other Modifiers
+
+		modifier = {
+			add = -50
+			scope:recipient = {
+				has_character_flag = RICE_no_americas_possible
+			}
+			desc = "RICE_CAME_FROM_AMERICAS"
+		}
+
+		modifier = {
+			add = -500
+			scope:recipient = {
+				has_trait = pregnant
+			}
+			desc = TAKE_THE_VOWS_PREGNANT
+		}
+
+
+		modifier = {
+			add = -50
+			scope:recipient = {
+				OR = {
+					is_married = yes
+					exists = betrothed
+				}
+			}
+			desc = TAKE_THE_VOWS_MARRIED_OR_BETROTHED
+		}
+		
+		modifier = {
+			add = -50
+			scope:recipient = {
+				is_primary_heir_of = scope:actor
+			}
+			desc = TAKE_THE_VOWS_PRIMARY_HEIR
+		}
+
+		modifier = {
+			add = -40
+			scope:recipient = {
+				NOT = {
+					is_primary_heir_of = scope:actor
+				}
+			}
+			scope:actor.primary_title = {
+				place_in_line_of_succession = {
+					target = prev
+					value == 2
+				}
+			}
+			desc = TAKE_THE_VOWS_SECOND_HEIR
+		}
+
+		modifier = {
+			add = -30
+			scope:recipient = {
+				NOT = {
+					is_primary_heir_of = scope:actor
+				}
+			}
+			scope:actor.primary_title = {
+				place_in_line_of_succession = {
+					target = prev
+					value == 3
+				}
+			}
+			desc = TAKE_THE_VOWS_THIRD_HEIR
+		}
+
+		modifier = {
+			add = -20
+			scope:recipient = {
+				NOT = {
+					is_primary_heir_of = scope:actor
+				}
+			}
+			scope:actor.primary_title = {
+				place_in_line_of_succession = {
+					target = prev
+					value >= 4
+				}
+			}
+			desc = TAKE_THE_VOWS_HEIR
+		}
+
+		modifier = {
+			add = -50
+			scope:recipient = {
+				NOT = { is_heir_of = scope:actor }
+				any_heir_title = {
+					exists = holder
+					NOT = {
+						holder = scope:actor
+					}
+					place_in_line_of_succession = {
+						target = scope:recipient
+						value < 2
+					}
+				}
+				NOT = {
+					is_primary_heir_of = scope:actor
+				}
+			}
+			desc = TAKE_THE_VOWS_HEIR_TO_OTHER_TITLE
+		}
+
+		modifier = {
+			add = -80
+			scope:recipient = {
+				NOT = { is_heir_of = scope:actor }
+				any_heir_title = {
+					exists = holder
+					NOT = {
+						holder = scope:actor
+					}
+					place_in_line_of_succession = {
+						target = scope:recipient
+						value < 5
+					}
+					NOT = {
+						place_in_line_of_succession = {
+							target = scope:recipient
+							value < 2
+						}
+					}
+				}
+				NOT = {
+					is_primary_heir_of = scope:actor
+				}
+			}
+			desc = TAKE_THE_VOWS_IN_LINE_TO_OTHER_TITLE
+		}
+
+		modifier = {
+			add = -50
+			scope:recipient = {
+				any_child = {
+					count >= 1
+					is_adult = no
+				}
+			}
+			desc = RICE_UNDERAGE_CHILDREN_MODIFIER
+		}
+
+		modifier = {
+			add = -20
+			scope:recipient = {
+				age > 60
+			}
+			desc = RICE_OLD_AGE_MODIFIER
+		}
+
+		# Rival modifier 
+		modifier = {
+			desc = offer_vassalization_interaction_aibehavior_rival_tt
+			trigger = {
+				scope:recipient = {
+					has_relation_nemesis = scope:actor
+				}
+			}
+			add = -50
+		}
+		# Nemesis modifier
+		modifier = {
+			desc = offer_vassalization_interaction_aibehavior_nemesis_tt
+			trigger = {
+				scope:recipient = {
+					has_relation_nemesis = scope:actor
+				}
+			}
+			add = -100
+		}
+
+		# PERSONALITY
+		# Boldness always plays a factor.
+		modifier = {
+			add = {
+				value = ai_boldness
+				multiply = 0.5
+			}
+			NOT = { ai_boldness = 0 }
+			desc = AI_VALUE_MODIFIER_BOLDNESS
+		}
+
+		# Energy always plays a factor.
+		modifier = {
+			add = {
+				value = ai_energy
+				multiply = 0.5
+			}
+			NOT = { ai_energy = 0 }
+			desc = AI_VALUE_MODIFIER_ENERGY
+		}
+
+		# Honor always plays a factor.
+		modifier = {
+			add = {
+				value = ai_honor
+				multiply = 0.5
+			}
+			NOT = { ai_honor = 0 }
+			desc = AI_VALUE_MODIFIER_HONOR
+		}
+
+		# TRAITS
+		modifier = {
+			add = 15
+			scope:recipient = {
+				has_trait = brave
+			}
+			desc = RICE_appoint_expedition_leader_brave_acceptance
+		}
+		modifier = {
+			add = -15
+			scope:recipient = {
+				has_trait = craven
+			}
+			desc = RICE_appoint_expedition_leader_craven_acceptance
+		}
+		modifier = {
+			add = 15
+			scope:recipient = {
+				has_trait = ambitious
+			}
+			desc = RICE_appoint_expedition_leader_ambitious_acceptance
+		}
+		modifier = {
+			add = -15
+			scope:recipient = {
+				has_trait = lazy
+			}
+			desc = RICE_appoint_expedition_leader_lazy_acceptance
+		}
+	}
+	
+	# AI
+	ai_targets = {
+		ai_recipients = courtiers
+	}
+	ai_frequency = 48
+
+	ai_potential = {
+		# At least have a few courtiers to send out
+		any_courtier_or_guest = {
+			is_alive = yes
+			count >= 6
+		}
+	}
+
+	ai_will_do = {
+		base = 5
+
+		# modifier = {
+		# 	add = 30
+		# 	scope:greenland_eastern_settlement = yes
+		# }
+		# modifier = {
+		# 	add = 20
+		# 	scope:greenland_western_settlement = yes
+		# }
+		# modifier = {
+		# 	add = 10
+		# 	scope:vinland = yes
+		# }
 		modifier = { # Help the struggle
 			add = 10
 			has_trait = ambitious

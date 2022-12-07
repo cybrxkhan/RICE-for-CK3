@@ -1443,6 +1443,152 @@ RICE_north_atlantic_incorporate_inuit_ideas = {
 
 
 
+# Establish the Skalholt School
+RICE_north_atlantic_skalholt_school = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_european_book.dds"
+
+	desc = RICE_north_atlantic_skalholt_school_desc
+	selection_tooltip = RICE_north_atlantic_skalholt_school_tooltip
+	major = yes
+
+	ai_check_interval = 24
+
+	is_shown = {
+		exists = dynasty
+		is_landed = yes
+		OR = {
+			has_title = title:c_vestisland
+			has_title = title:c_nordrland
+			has_title = title:c_austisland
+			has_title = title:c_sudurland
+		}
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_north_atlantic_iceland_formed_flag
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_north_atlantic_established_skalholt_school
+			}
+		}
+	}
+	
+	is_valid = {
+		custom_description = {
+			text = faith_is_reformed
+			subject = root
+			faith = { NOT = { has_doctrine_parameter = unreformed } }
+		}
+
+		# culture = {
+		# 	has_cultural_pillar = heritage_north_germanic
+		# }
+		custom_description = {
+			text = RICE_althing_iceland_capital_req
+			capital_county = {
+				title:d_iceland = {
+					is_de_jure_liege_or_above_target = prev
+				}
+			}
+		}
+		custom_description = {
+			text = RICE_capital_same_religion_req
+			capital_county = {
+				religion = root.religion
+			}
+		}
+		piety_level >= 3
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_north_atlantic_established_skalholt_school
+		}
+
+		save_scope_as = isleifur
+
+		#custom_tooltip = RICE_north_atlantic_skalholt_school_effect_tooltip_1
+
+		RICE_skalholt_school_decision_effect = yes
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_north_atlantic_skalholt_school_context_tooltip
+		}
+
+		trigger_event = north_atlantic.0027
+
+
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # Cheaper if you have an estate in Greenland
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 15
+			# Happened after Isleifur became bishop IRL in 1056
+			current_date >= 1000.1.1
+		}
+		modifier = {
+			add = 15
+			# Happened after Isleifur became bishop IRL in 1056
+			current_date >= 1050.1.1
+		}
+		modifier = {
+			add = 15
+			# Happened after Isleifur became bishop IRL in 1056
+			current_date >= 1100.1.1
+		}
+		modifier = {
+			add = 15
+			# Happened after Isleifur became bishop IRL in 1056
+			current_date >= 1150.1.1
+		}
+		modifier = {
+			add = -5
+			has_trait = lazy
+		}
+		modifier = {
+			add = 5
+			has_trait = diligent
+		}
+		modifier = {
+			add = 5
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -5
+			has_trait = shy
+		}
+		modifier = {
+			add = 5
+			has_trait = zealous
+		}
+		modifier = {
+			add = -5
+			has_trait = cynical
+		}
+	}
+}
+
+
 #############################################
 #											#
 # NORMAL GREENLAND DECISIONS			    #
