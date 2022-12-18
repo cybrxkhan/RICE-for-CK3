@@ -1,12 +1,12 @@
 ﻿
-RICE_mordvin_rasken_ozks_festival = {
+RICE_mordvin_major_ozks_festival = {
 	picture = "gfx/interface/illustrations/decisions/decision_finno_ugric_celebration.dds"
 
-	ai_check_interval = 36
+	ai_check_interval = 48
 
 	cooldown = { days = RICE_guanche_standard_festival_cooldown_time } #3650 1825
 	
-	desc = RICE_mordvin_rasken_ozks_festival_desc
+	desc = RICE_mordvin_major_ozks_festival_desc
 	
 	is_shown = {
 		highest_held_title_tier > tier_barony
@@ -24,17 +24,18 @@ RICE_mordvin_rasken_ozks_festival = {
 
 	effect = {
 
-		custom_tooltip = RICE_mordvin_rasken_ozks_festival_effect_tooltip_1
+		custom_tooltip = RICE_mordvin_major_ozks_festival_effect_tooltip_1
+		custom_tooltip = RICE_mordvin_major_ozks_festival_effect_tooltip_2
 		
 		if = {
 			limit = {
 				has_game_rule = RICE_historical_context_on
 			}
-			custom_tooltip = RICE_mordvin_rasken_ozks_festival_context_tooltip
+			custom_tooltip = RICE_mordvin_major_ozks_festival_context_tooltip
 		}
 
 		trigger_event = {
-			id = mordvin.8888
+			id = mordvin.0030
 		}
 	}
 
@@ -75,7 +76,7 @@ RICE_mordvin_rasken_ozks_festival = {
 RICE_misc_sacrifice_horses = {
 	picture = "gfx/interface/illustrations/decisions/decision_RICE_horse_spirit.dds"
 
-	ai_check_interval = 24
+	ai_check_interval = 48
 
 	cooldown = { days = 1825 } #3650 1825
 	
@@ -90,6 +91,7 @@ RICE_misc_sacrifice_horses = {
 			religion = religion:magyar_religion
 			religion = religion:mordvin_religion		
 			religion = religion:mari_religion		
+			religion = religion:permic_religion		
 		}
 	}
 	
@@ -100,6 +102,7 @@ RICE_misc_sacrifice_horses = {
 			religion = religion:magyar_religion
 			religion = religion:mordvin_religion		
 			religion = religion:mari_religion		
+			religion = religion:permic_religion		
 		}
 	}
 	
@@ -107,16 +110,148 @@ RICE_misc_sacrifice_horses = {
 		is_available_adult = yes
 	}
 
+    widget = {
+    	gui = "decision_view_widget_RICE_misc_sacrifice_horses"
+		controller = decision_option_list_controller
+    	
+		decision_has_second_step = yes
+		decision_custom_widget_container = "custom_widgets_container_step_two"
+		decision_to_second_step_button = "RICE_misc_sacrifice_horses_type" 
+
+		# Minor
+		item = {
+			value = RICE_misc_horse_sacrifice_minor_option
+			is_valid = {
+				gold >= RICE_misc_horse_sacrifice_cost_minor
+				is_ai = no # AI is apparently too dumb to properly pick something
+			}
+			current_description = RICE_misc_horse_sacrifice_minor_option_desc
+			localization = RICE_misc_horse_sacrifice_minor_option
+			icon = "gfx/interface/icons/widgets/RICE_misc_horse_sacrifice_minor.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		# Major
+		item = {
+			value = RICE_misc_horse_sacrifice_major_option
+			is_valid = {
+				gold >= RICE_misc_horse_sacrifice_cost_major
+				is_ai = no # AI is apparently too dumb to properly pick something
+			}
+			current_description = RICE_misc_horse_sacrifice_major_option_desc
+			localization = RICE_misc_horse_sacrifice_major_option
+			icon = "gfx/interface/icons/widgets/RICE_misc_horse_sacrifice_major.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		# Great
+		item = {
+			value = RICE_misc_horse_sacrifice_great_option
+			is_valid = {
+				gold >= RICE_misc_horse_sacrifice_cost_great
+				is_ai = no # AI is apparently too dumb to properly pick something
+			}
+			current_description = RICE_misc_horse_sacrifice_great_option_desc
+			localization = RICE_misc_horse_sacrifice_great_option
+			icon = "gfx/interface/icons/widgets/RICE_misc_horse_sacrifice_great.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		# AI option
+		item = {
+			value = RICE_misc_horse_sacrifice_ai_option
+			is_shown = {
+				OR = {
+					is_ai = yes # AI picker
+					debug_only = yes
+				}
+			}
+			current_description = RICE_misc_horse_sacrifice_ai_option_desc
+			localization = RICE_misc_horse_sacrifice_ai_option
+			icon = "gfx/interface/icons/widgets/RICE_misc_horse_sacrifice_great.dds"
+
+			ai_chance = {
+				value = 20
+			}
+		}
+
+	}
+
 	effect = {
+
 		custom_tooltip = RICE_misc_sacrifice_horses_effect_tooltip_1
+		#custom_tooltip = RICE_misc_sacrifice_horses_effect_tooltip_2
 		if = {
 			limit = {
 				has_game_rule = RICE_historical_context_on
 			}
 			custom_tooltip = RICE_misc_sacrifice_horses_context_tooltip
 		}
+
+		if = { # AI
+			limit = { scope:RICE_misc_horse_sacrifice_ai_option = yes }
+			random_list = {
+				40 = {
+					set_variable = {
+						name = RICE_horse_sacrifice_type
+						value = flag:minor
+					}				
+				}
+				40 = {
+					trigger = {
+						gold >= RICE_misc_horse_sacrifice_cost_major
+					}
+					set_variable = {
+						name = RICE_horse_sacrifice_type
+						value = flag:major
+					}
+				}
+				20 = {
+					trigger = {
+						gold >= RICE_misc_horse_sacrifice_cost_great
+					}
+					set_variable = {
+						name = RICE_horse_sacrifice_type
+						value = flag:great
+					}
+				}
+			}
+		}
+		else_if = { # Honey
+			limit = { scope:RICE_misc_horse_sacrifice_minor_option = yes }
+			set_variable = {
+				name = RICE_horse_sacrifice_type
+				value = flag:minor
+			}
+		}
+		else_if = { # Beeswax
+			limit = { scope:RICE_misc_horse_sacrifice_major_option = yes }
+			set_variable = {
+				name = RICE_horse_sacrifice_type
+				value = flag:major
+			}
+		}
+		else_if = { # Honey and Beeswax
+			limit = { scope:RICE_misc_horse_sacrifice_great_option = yes }
+			set_variable = {
+				name = RICE_horse_sacrifice_type
+				value = flag:great
+			}
+		}
+
+
+
 		trigger_event = {
-			id = pamir.0035
+			id = mordvin.0010
 		}
 	}
 
@@ -129,7 +264,214 @@ RICE_misc_sacrifice_horses = {
 	}
 
 	ai_will_do = {
-		base = 30
+		base = 25
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 10
+			has_trait = zealous
+		}
+		modifier = {
+			add = -10
+			has_trait = cynical
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+	}
+}
+
+
+
+RICE_mordvin_acquire_volga_bee_products = {
+	picture = "gfx/interface/illustrations/decisions/decision_small_town.dds"
+
+	ai_check_interval = 48
+
+	cooldown = { days = 3650 } #3650 1825
+	
+	desc = RICE_mordvin_acquire_volga_bee_products_desc
+	
+	is_shown = {
+		highest_held_title_tier > tier_barony
+		is_landed = yes
+		culture = {
+			has_cultural_tradition = tradition_RICE_volga_apiculture
+		}
+	}
+	
+	is_valid = {
+		culture = {
+			has_cultural_tradition = tradition_RICE_volga_apiculture
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+    widget = {
+    	gui = "decision_view_widget_RICE_mordvin_acquire_volga_bee_products"
+		controller = decision_option_list_controller
+    	
+		decision_has_second_step = yes
+		decision_custom_widget_container = "custom_widgets_container_step_two"
+		decision_to_second_step_button = "RICE_mordvin_acquire_volga_bee_products_type" 
+
+		# Minor
+		item = {
+			value = RICE_mordvin_honey_option
+			is_valid = {
+				gold >= RICE_mordvin_honey_cost
+				is_ai = no # AI is apparently too dumb to properly pick something
+			}
+			current_description = RICE_mordvin_honey_option_desc
+			localization = RICE_mordvin_honey_option
+			icon = "gfx/interface/icons/widgets/RICE_mordvin_honey.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		# Major
+		item = {
+			value = RICE_mordvin_beeswax_option
+			is_valid = {
+				gold >= RICE_mordvin_beeswax_cost
+				is_ai = no # AI is apparently too dumb to properly pick something
+			}
+			current_description = RICE_mordvin_beeswax_option_desc
+			localization = RICE_mordvin_beeswax_option
+			icon = "gfx/interface/icons/widgets/RICE_mordvin_beeswax.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		# Great
+		item = {
+			value = RICE_mordvin_honey_and_beeswax_option
+			is_valid = {
+				gold >= RICE_mordvin_honey_and_beeswax_cost
+				is_ai = no # AI is apparently too dumb to properly pick something
+			}
+			current_description = RICE_mordvin_honey_and_beeswax_option_desc
+			localization = RICE_mordvin_honey_and_beeswax_option
+			icon = "gfx/interface/icons/widgets/RICE_mordvin_honey_and_beeswax.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		# AI option
+		item = {
+			value = RICE_mordvin_bee_product_ai
+			is_shown = {
+				OR = {
+					is_ai = yes # AI picker
+					debug_only = yes
+				}
+			}
+			current_description = RICE_mordvin_bee_product_ai_desc
+			localization = RICE_mordvin_bee_product_ai
+			icon = "gfx/interface/icons/widgets/RICE_mordvin_honey_and_beeswax.dds"
+
+			ai_chance = {
+				value = 20
+			}
+		}
+
+	}
+
+	effect = {
+
+		custom_tooltip = RICE_mordvin_acquire_volga_bee_products_effect_tooltip_1
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_mordvin_acquire_volga_bee_products_context_tooltip
+		}
+
+		if = { # AI
+			limit = { scope:RICE_mordvin_bee_product_ai = yes }
+			random_list = {
+				40 = {
+					set_variable = {
+						name = RICE_bee_product_type
+						value = flag:honey
+					}					
+				}
+				40 = {
+					trigger = {
+						gold >= RICE_mordvin_beeswax_cost
+					}
+					set_variable = {
+						name = RICE_bee_product_type
+						value = flag:beeswax
+					}
+				}
+				20 = {
+					trigger = {
+						gold >= RICE_mordvin_honey_and_beeswax_cost
+					}
+					set_variable = {
+						name = RICE_bee_product_type
+						value = flag:honey_and_beeswax
+					}
+				}
+			}
+		}
+		else_if = { # Honey
+			limit = { scope:RICE_mordvin_honey_option = yes }
+			set_variable = {
+				name = RICE_bee_product_type
+				value = flag:honey
+			}
+		}
+		else_if = { # Beeswax
+			limit = { scope:RICE_mordvin_beeswax_option = yes }
+			set_variable = {
+				name = RICE_bee_product_type
+				value = flag:beeswax
+			}
+		}
+		else_if = { # Honey and Beeswax
+			limit = { scope:RICE_mordvin_honey_and_beeswax_option = yes }
+			set_variable = {
+				name = RICE_bee_product_type
+				value = flag:honey_and_beeswax
+			}
+		}
+
+
+		trigger_event = {
+			id = mordvin.0022
+		}
+	}
+
+	minimum_cost = {
+		gold = RICE_mordvin_honey_cost
+	}
+	
+	ai_potential = {
+		short_term_gold > RICE_mordvin_honey_cost		
+		NOR = {
+			has_character_modifier = RICE_mordvin_honey
+			has_character_modifier = RICE_mordvin_beeswax
+			has_character_modifier = RICE_mordvin_honey_and_beeswax
+		}
+	}
+
+	ai_will_do = {
+		base = 25
 		modifier = {
 			add = 10
 			has_trait = ambitious
@@ -173,12 +515,19 @@ RICE_mordvin_extract_beekeeper_tribute = {
 	}
 	
 	is_valid = {
-		any_held_title = {
-			tier = tier_county
-			culture = {
-				has_cultural_tradition = tradition_RICE_volga_apiculture
+
+		prestige_level >= 2
+		
+		custom_description = {
+			text = "RICE_mordvin_any_county_has_volga_apiculture_culture_req"
+			any_held_title = {
+				tier = tier_county
+				culture = {
+					has_cultural_tradition = tradition_RICE_volga_apiculture
+				}
 			}
 		}
+
 		NOT = {
 			has_character_modifier = RICE_mordvin_beekeeper_tribute_extracted
 		}
@@ -192,9 +541,9 @@ RICE_mordvin_extract_beekeeper_tribute = {
 		custom_tooltip = RICE_mordvin_extract_beekeeper_tribute_effect_tooltip_1
 		custom_tooltip = RICE_mordvin_extract_beekeeper_tribute_effect_tooltip_2
 
-		#show_as_tooltip = {
-		#	RICE_mordvin_extract_beekeeper_tribute_effect = yes
-		#}
+		show_as_tooltip = {
+			RICE_mordvin_extract_beekeeper_tribute_effect = yes
+		}
 
 		if = {
 			limit = {
@@ -204,7 +553,7 @@ RICE_mordvin_extract_beekeeper_tribute = {
 		}
 
 		trigger_event = {
-			id = mordvin.8888
+			id = mordvin.0023
 		}
 	}
 

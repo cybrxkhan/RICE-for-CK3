@@ -1,0 +1,1761 @@
+﻿###############################################################################
+# 
+# Niger Delta
+# 
+# mordvin.0000-mordvin.0019			Setup events, history events, miscellaneous events and decisions
+# mordvin.0020-mordvin.0029			Volga Beekeeper/Honey Flavor
+# mordvin.0030-mordvin.0049			Ozks Prayer decision
+# mordvin.0050-mordvin.0099			Generic flavor events
+# 
+# 
+###############################################################################
+
+namespace = mordvin
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# mordvin.0000-mordvin.0019
+# 
+######################################################################################
+
+
+# Horse sacrifice start
+mordvin.0010 = {
+	type = character_event
+	title = mordvin.0010.t
+	desc = {
+		desc = mordvin.0010.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_horse_sacrifice_type = flag:minor
+				}
+				desc = mordvin.0010.desc.minor
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_horse_sacrifice_type = flag:major
+				}
+				desc = mordvin.0010.desc.major
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_horse_sacrifice_type = flag:great
+				}
+				desc = mordvin.0010.desc.great
+			}
+		}
+		desc = mordvin.0010.desc.conclusion
+	}
+	theme = faith
+	override_background = { event_background = sitting_room }
+	
+	left_portrait = root
+	
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+		if = {
+			limit = {
+				var:RICE_horse_sacrifice_type = flag:minor
+			}
+			remove_short_term_gold = RICE_misc_horse_sacrifice_cost_minor
+		}
+		else_if = {
+			limit = {
+				var:RICE_horse_sacrifice_type = flag:major
+			}
+			remove_short_term_gold = RICE_misc_horse_sacrifice_cost_major
+		}
+		else_if = {
+			limit = {
+				var:RICE_horse_sacrifice_type = flag:great
+			}
+			remove_short_term_gold = RICE_misc_horse_sacrifice_cost_great
+		}
+	}
+	
+	option = { # Ok
+		name = mordvin.0010.a
+		# Choose appropriate location
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_horse_sacrifice
+			}	
+		}	
+	}
+}
+
+
+# Horse sacrifice done
+mordvin.0011 = {
+	type = character_event
+	title = mordvin.0011.t
+	desc = mordvin.0011.desc
+	theme = faith
+	override_background = { event_background = RICE_fp1_runestone_circle }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	immediate = {
+		play_music_cue = mx_cue_sacredrite
+		if = {
+			limit = {
+				var:RICE_horse_sacrifice_type = flag:minor
+			}
+			add_piety = { 0 50 }
+			add_prestige = { 0 50 }
+			random_list = {
+				10 = {
+					add_character_modifier = {
+						modifier = RICE_horse_sacrifice_boon_minor_war
+						years = 10
+					}
+				}
+				10 = {
+					add_character_modifier = {
+						modifier = RICE_horse_sacrifice_boon_minor_political
+						years = 10
+					}
+				}
+				10 = {
+					add_character_modifier = {
+						modifier = RICE_horse_sacrifice_boon_minor_ritual
+						years = 10
+					}
+				}
+				10 = {
+					add_character_modifier = {
+						modifier = RICE_horse_sacrifice_boon_minor_material
+						years = 10
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_horse_sacrifice_type = flag:major
+			}
+			add_piety = { 25 100 }
+			add_prestige = { 25 100 }
+			random_list = {
+				10 = {
+					random_list = {
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_horse_sacrifice_boon_minor_war
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_horse_sacrifice_boon_minor_political
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_horse_sacrifice_boon_minor_ritual
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_horse_sacrifice_boon_minor_material
+								years = 10
+							}
+						}
+					}
+				}
+				10 = {	
+					random_list = {
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_horse_sacrifice_boon_major_war
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_horse_sacrifice_boon_major_political
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_horse_sacrifice_boon_major_ritual
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_horse_sacrifice_boon_major_material
+								years = 10
+							}
+						}
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_horse_sacrifice_type = flag:great
+			}
+			add_piety = { 50 200 }
+			add_prestige = { 50 200 }
+			random_list = {
+				10 = {
+					random_list = {
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_horse_sacrifice_boon_minor_war
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_horse_sacrifice_boon_minor_political
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_horse_sacrifice_boon_minor_ritual
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_horse_sacrifice_boon_minor_material
+								years = 10
+							}
+						}
+					}
+				}
+				10 = {
+					random_list = {
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_horse_sacrifice_boon_major_war
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_horse_sacrifice_boon_major_political
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_horse_sacrifice_boon_major_ritual
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_horse_sacrifice_boon_major_material
+								years = 10
+							}
+						}
+					}
+				}
+				10 = {	
+					random_list = {
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_horse_sacrifice_boon_great_war
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_horse_sacrifice_boon_great_political
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_horse_sacrifice_boon_great_ritual
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_horse_sacrifice_boon_great_material
+								years = 10
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = mordvin.0011.a		
+		# scope:activity = {
+		# 	complete_activity = yes
+		# }
+	}
+
+	
+	after = {		
+		if = {
+			limit = { has_variable = RICE_horse_sacrifice_type }
+			remove_variable = RICE_horse_sacrifice_type
+		}	
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
+
+
+
+
+
+######################################################################################
+# 
+# VOLGA BEEKEEPER/HONEY FLAVOR
+# 
+# mordvin.0020-mordvin.0029
+# 
+######################################################################################
+
+
+# Prepare to send Volga Bee products
+mordvin.0020 = {
+	type = character_event
+	title = mordvin.0020.t
+	desc = {
+		desc = mordvin.0020.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:actor = {
+						var:RICE_bee_gift = flag:honey
+					}
+				}
+				desc = mordvin.0020.desc.honey
+			}
+			triggered_desc = {
+				trigger = {
+					scope:actor = {
+						var:RICE_bee_gift = flag:beeswax
+					}
+				}
+				desc = mordvin.0020.desc.beeswax
+			}
+			triggered_desc = {
+				trigger = {
+					scope:actor = {
+						var:RICE_bee_gift = flag:honey_and_beeswax
+					}
+				}
+				desc = mordvin.0020.desc.honey_and_beeswax
+			}
+		}
+	}
+	theme = diplomacy_foreign_affairs_focus
+	override_background = { event_background = RICE_background_mordvin_countryside }
+	
+	left_portrait = scope:actor
+	right_portrait = scope:recipient
+
+	immediate = {
+		if = {
+			limit = {
+				scope:actor = {
+					var:RICE_bee_gift = flag:honey
+				}	
+			}	
+			show_as_tooltip = {			
+				scope:actor = {
+					remove_short_term_gold = RICE_mordvin_honey_cost	
+					add_prestige = 25
+				}
+			}
+			scope:recipient = {
+				add_character_modifier = {
+					modifier = RICE_mordvin_honey
+					years = 10
+				}
+				add_opinion = {
+					target = scope:actor
+					modifier = RICE_mordvin_opinion_honey
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:actor = {
+					var:RICE_bee_gift = flag:beeswax
+				}	
+			}	
+			show_as_tooltip = {		
+				scope:actor = {
+					remove_short_term_gold = RICE_mordvin_beeswax_cost
+					add_prestige = 75	
+				}
+			}
+			scope:recipient = {
+				add_character_modifier = {
+					modifier = RICE_mordvin_beeswax
+					years = 10
+				}
+				add_opinion = {
+					target = scope:actor
+					modifier = RICE_mordvin_opinion_beeswax
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:actor = {
+					var:RICE_bee_gift = flag:honey_and_beeswax
+				}
+			}
+			show_as_tooltip = {
+				scope:actor = {
+					remove_short_term_gold = RICE_mordvin_honey_and_beeswax_cost
+					add_prestige = 100		
+				}
+			}
+			scope:recipient = {
+				add_character_modifier = {
+					modifier = RICE_mordvin_honey_and_beeswax
+					years = 10
+				}
+				add_opinion = {
+					target = scope:actor
+					modifier = RICE_mordvin_opinion_honey_and_beeswax
+				}	
+			}
+		}
+	}
+
+	option = { # OK
+		name = mordvin.0020.a
+	}
+
+	after = {
+		scope:recipient = {
+			trigger_event = mordvin.0021
+		}
+	}
+
+}
+
+
+
+# Gift target receives Volga bee products
+mordvin.0021 = {
+	type = letter_event
+	opening = {
+		desc = mordvin.0021.opening
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:actor = {
+						var:RICE_bee_gift = flag:honey
+					}
+				}
+				desc = mordvin.0021.desc.honey
+			}
+			triggered_desc = {
+				trigger = {
+					scope:actor = {
+						var:RICE_bee_gift = flag:beeswax
+					}
+				}
+				desc = mordvin.0021.desc.beeswax
+			}
+			triggered_desc = {
+				trigger = {
+					scope:actor = {
+						var:RICE_bee_gift = flag:honey_and_beeswax
+					}
+				}
+				desc = mordvin.0021.desc.honey_and_beeswax
+			}
+		}
+		desc = mordvin.0021.desc
+	}
+	
+	sender = scope:actor
+	
+	immediate = {
+		show_as_tooltip = {
+			if = {
+				limit = {
+					scope:actor = {
+						var:RICE_bee_gift = flag:honey
+					}	
+				}				
+				scope:actor = {
+					remove_short_term_gold = RICE_mordvin_honey_cost	
+					add_prestige = 25
+				}
+				scope:recipient = {
+					add_character_modifier = {
+						modifier = RICE_mordvin_honey
+						years = 10
+					}
+					add_opinion = {
+						target = scope:actor
+						modifier = RICE_mordvin_opinion_honey
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					scope:actor = {
+						var:RICE_bee_gift = flag:beeswax
+					}	
+				}			
+				scope:actor = {
+					remove_short_term_gold = RICE_mordvin_beeswax_cost
+					add_prestige = 75	
+				}
+				scope:recipient = {
+					add_character_modifier = {
+						modifier = RICE_mordvin_beeswax
+						years = 10
+					}
+					add_opinion = {
+						target = scope:actor
+						modifier = RICE_mordvin_opinion_beeswax
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					scope:actor = {
+						var:RICE_bee_gift = flag:honey_and_beeswax
+					}
+				}
+				scope:actor = {
+					remove_short_term_gold = RICE_mordvin_honey_and_beeswax_cost
+					add_prestige = 100		
+				}
+				scope:recipient = {
+					add_character_modifier = {
+						modifier = RICE_mordvin_honey_and_beeswax
+						years = 10
+					}
+					add_opinion = {
+						target = scope:actor
+						modifier = RICE_mordvin_opinion_honey_and_beeswax
+					}	
+				}
+			}
+		}	
+	}
+
+	option = {
+		name = mordvin.0021.a
+	}
+
+	
+	after = {		
+		if = {
+			limit = { scope:actor = { has_variable = RICE_bee_gift } }
+			scope:actor = { 
+				remove_variable = RICE_bee_gift
+			}
+		}
+	}
+}
+
+
+
+
+# Purchase Volga bee products
+mordvin.0022 = {
+	type = character_event
+	title = mordvin.0022.t
+	desc = {
+		desc = mordvin.0022.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_bee_product_type = flag:honey
+				}
+				desc = mordvin.0022.desc.honey
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_bee_product_type = flag:beeswax
+				}
+				desc = mordvin.0022.desc.beeswax
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_bee_product_type = flag:honey_and_beeswax
+				}
+				desc = mordvin.0022.desc.honey_and_beeswax
+			}
+		}
+	}
+	theme = RICE_theme_mordvin_countryside
+	
+	left_portrait = root
+
+	immediate = {
+		if = {
+			limit = {
+				var:RICE_bee_product_type = flag:honey
+			}
+			remove_short_term_gold = RICE_mordvin_honey_cost
+		}
+		else_if = {
+			limit = {
+				var:RICE_bee_product_type = flag:beeswax
+			}
+			remove_short_term_gold = RICE_mordvin_beeswax_cost
+		}
+		else_if = {
+			limit = {
+				var:RICE_bee_product_type = flag:honey_and_beeswax	
+			}
+			remove_short_term_gold = RICE_mordvin_honey_and_beeswax_cost
+		}
+	}
+
+	option = { # OK
+		name = mordvin.0022.a
+		if = {
+			limit = {
+				var:RICE_bee_product_type = flag:honey
+			}
+			add_character_modifier = {
+				modifier = RICE_mordvin_honey
+				years = 10
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_bee_product_type = flag:beeswax
+			}
+			add_character_modifier = {
+				modifier = RICE_mordvin_beeswax
+				years = 10
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_bee_product_type = flag:honey_and_beeswax	
+			}
+			add_character_modifier = {
+				modifier = RICE_mordvin_honey_and_beeswax
+				years = 10
+			}
+		}
+	}
+
+	after = {		
+		if = {
+			limit = { has_variable = RICE_bee_product_type }
+			remove_variable = RICE_bee_product_type
+		}
+	}
+
+}
+
+# Volga Beekeeper tribute
+mordvin.0023 = {
+	type = character_event
+	title = mordvin.0023.t
+	desc = mordvin.0023.desc
+	theme = RICE_theme_mordvin_countryside
+	
+	right_portrait = {
+		character = root
+		animation = personality_callous
+	}
+
+	immediate = {
+		add_gold = { RICE_mordvin_beekeeper_extra_tribute_min_value RICE_mordvin_beekeeper_extra_tribute_max_value }
+		RICE_mordvin_extract_beekeeper_tribute_effect = yes
+	}
+
+	option = { # OK
+		name = mordvin.0023.a
+	}
+
+}
+
+
+
+
+######################################################################################
+# 
+# OZKS PRAYER DECISION
+# 
+# mordvin.0030-mordvin.0049
+# 
+######################################################################################
+
+
+# Prepare for Ozks Prayer
+mordvin.0030 = {
+	type = character_event
+	title = mordvin.0030.t
+	desc = mordvin.0030.desc
+	theme = RICE_theme_northern_tribal_temple
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		# Stop characters from planning multiple activities at once.
+		add_character_flag = planning_an_activity
+	}
+	
+	option = { # Ok
+		name = mordvin.0030.a
+		# Choose appropriate location
+		scope:capital_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_mordvin_ine_ozks
+			}	
+		}
+	}
+}
+
+
+# Ine Ozks begins
+mordvin.0031 = {
+	type = character_event
+	title = mordvin.0031.t
+	desc = mordvin.0031.desc
+	theme = faith
+	override_background = { event_background = RICE_fp1_runestone_circle }
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		play_music_cue = mx_cue_banquet
+	}
+	
+	option = { # Ok
+		name = mordvin.0031.a
+		hidden_effect = {
+			random = {
+				chance = 20
+				trigger_event = {
+					id = mordvin.0033
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = mordvin.0034
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = mordvin.0035
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = mordvin.0036
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = mordvin.0037
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = mordvin.0038
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = mordvin.0039
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = mordvin.0040
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = mordvin.0041
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = mordvin.0042
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = mordvin.0043
+					days = { 5 23 }
+				}
+			}
+			random = {
+				chance = 20
+				trigger_event = {
+					id = mordvin.0044
+					days = { 5 23 }
+				}
+			}
+		}
+		trigger_event = {
+			id = mordvin.0032
+			days = { 25 30 }
+		}
+	}
+}
+
+# Ine Ozks ends
+mordvin.0032 = {
+	type = character_event
+	title = mordvin.0032.t
+	desc = mordvin.0032.desc
+	theme = faith
+	override_background = { event_background = RICE_background_mordvin_countryside }
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Fun!
+		name = mordvin.0032.a
+		add_character_modifier = {
+			modifier = RICE_mordvin_recently_celebrated_ine_ozks
+			years = 5
+		}
+		if = {
+			limit = {
+				scope:capital_province = {
+					religion = religion:mordvin_religion
+				}
+			}
+			scope:capital_province = {
+				county = {
+					add_county_modifier = {
+						modifier = RICE_mordvin_ine_ozks_recently_held
+						years = 5
+					}
+				}
+			}
+		}
+	}
+	
+	after = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}	
+}
+
+
+# Thinking of the ancestors
+mordvin.0033 = {
+	type = character_event
+	title = mordvin.0033.t
+	desc = mordvin.0033.desc
+	theme = dynasty
+	override_background = { event_background = RICE_background_mordvin_countryside }
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Fun!
+		name = mordvin.0033.a
+		add_piety = 25
+		if = {
+			limit = {
+				exists = dynasty
+			}
+			random = {
+				chance = 25
+				dynasty = {
+					add_dynasty_prestige = 10
+				}
+			}
+		}
+	}	
+}
+
+
+# Spending time with the family
+mordvin.0034 = {
+	type = character_event
+	title = mordvin.0034.t
+	desc = mordvin.0034.desc
+	theme = dynasty
+	override_background = { event_background = RICE_background_mordvin_countryside }
+	
+	left_portrait = {
+		character = root
+		animation = personality_happiness
+	}
+	
+	option = { # Fun!
+		name = mordvin.0034.a
+		every_close_or_extended_family_member = {
+			custom = all_family_members
+			add_opinion = {
+				target = root
+				modifier = RICE_mordvin_opinion_family_ozks_time
+			}
+		}
+	}	
+}
+
+# Harvest prayers
+mordvin.0035 = {
+	type = character_event
+	title = mordvin.0035.t
+	desc = mordvin.0035.desc
+	theme = faith
+	override_background = { event_background = RICE_fp1_runestone_circle }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Fun!
+		name = mordvin.0035.a
+		add_piety = 15
+		if = {
+			limit = {
+				scope:capital_province = {
+					religion = religion:mordvin_religion
+				}
+			}
+			random = {
+				chance = 40 # Change
+				send_interface_toast = {
+					left_icon = ROOT
+					title = mordvin.0035.toast
+					scope:capital_province = {
+						county = {
+							add_county_modifier = {
+								modifier = RICE_mordvin_ozks_fertility_blessing
+								years = 3
+							}
+						}
+					}
+				}
+			}	
+		}	
+	}	
+}
+
+# Divine Protection
+mordvin.0036 = {
+	type = character_event
+	title = mordvin.0036.t
+	desc = mordvin.0036.desc
+	theme = faith
+	override_background = { event_background = RICE_fp1_runestone_circle }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Fun!
+		name = mordvin.0036.a
+		add_piety = 15
+		random = {
+			chance = 40 # Change
+			send_interface_toast = {
+				left_icon = ROOT
+				title = mordvin.0036.toast				
+				add_character_modifier = {
+					modifier = RICE_mordvin_ozks_defense_blessing
+					years = 3
+				}
+			}
+		}
+	}	
+}
+
+# Resolving problems
+mordvin.0037 = {
+	type = character_event
+	title = mordvin.0037.t
+	desc = mordvin.0037.desc
+	theme = feast_activity
+	override_icon = { reference = "gfx/interface/icons/event_types/type_relation_friendly.dds" }
+	
+	right_portrait = {
+		character = root
+		animation = eavesdrop
+	}
+	
+	option = { # Fun!
+		name = mordvin.0037.a
+		add_prestige = 10
+		if = {
+			limit = { has_lifestyle = diplomacy_lifestyle }
+			add_diplomacy_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = martial_lifestyle }
+			add_martial_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = stewardship_lifestyle }
+			add_stewardship_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = intrigue_lifestyle }
+			add_intrigue_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = learning_lifestyle }
+			add_learning_lifestyle_xp = minor_lifestyle_xp
+		}
+	}	
+}
+
+
+# Sports activity
+mordvin.0038 = {
+	type = character_event
+	title = mordvin.0038.t
+	desc = mordvin.0038.desc
+	theme = martial_strategy_focus
+	override_background = { event_background = RICE_background_mordvin_countryside }
+	
+	right_portrait = {
+		character = root
+		animation = throne_room_cheer_2
+	}
+	
+	option = { # Fun!
+		name = mordvin.0038.a
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			brave = miniscule_stress_impact_loss
+			gregarious = miniscule_stress_impact_loss
+		}
+	}	
+}
+
+# Sports activity - with a winner
+mordvin.0039 = {
+	type = character_event
+	title = mordvin.0039.t
+	desc = {
+		desc = mordvin.0039.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:warrior
+				}
+				desc = mordvin.0039.desc.winner_knight
+			}
+			desc = mordvin.0039.desc.winner_local
+		}
+	}
+	theme = martial_strategy_focus
+	override_background = { event_background = RICE_background_mordvin_countryside }
+	
+	left_portrait = {
+		character = root
+		animation = throne_room_applaud_1
+	}
+	right_portrait = {
+		character = scope:warrior
+		animation = happiness
+		trigger = {
+			exists = scope:warrior
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {				
+				any_knight = {
+					is_available_ai_adult = yes
+					religion = religion:mordvin_religion
+					prowess >= mediocre_skill_rating # Don't want some random mofo winning
+				}
+			}
+			random = {
+				chance = 66 # Doesn't always happen
+				random_knight = {				
+					limit = {
+						is_available_ai_adult = yes
+						religion = religion:mordvin_religion
+						prowess >= mediocre_skill_rating # Don't want some random mofo winning
+					}
+					save_scope_as = warrior
+					add_character_modifier = {
+						modifier = RICE_mordvin_ozks_ushmandey_winner
+						years = 5
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Fun!
+		name = mordvin.0039.a
+		add_prestige = 15
+	}	
+}
+
+# Dancing
+mordvin.0040 = {
+	type = character_event
+	title = mordvin.0040.t
+	desc = mordvin.0040.desc
+	theme = friendly
+	override_background = { event_background = RICE_fp1_runestone_circle }
+	
+	left_portrait = {
+		character = root
+		animation = throne_room_applaud_1
+	}
+	
+	option = { # Fun!
+		name = mordvin.0040.a
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			gregarious = miniscule_stress_impact_loss
+		}
+	}	
+}
+
+# Prayers for the household
+mordvin.0041 = {
+	type = character_event
+	title = mordvin.0041.t
+	desc = mordvin.0041.desc
+	theme = faith
+	override_background = { event_background = RICE_fp1_runestone_circle }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Fun!
+		name = mordvin.0041.a
+		add_piety = 10
+	}	
+}
+
+# Great feast
+mordvin.0042 = {
+	type = character_event
+	title = mordvin.0042.t
+	desc = mordvin.0042.desc
+	theme = feast_activity
+	
+	right_portrait = {
+		character = root
+		animation = ecstasy
+	}
+	
+	option = { # Eat!
+		name = mordvin.0042.a
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			gluttonous = minor_stress_impact_loss
+			shy = miniscule_stress_impact_loss
+			lazy = miniscule_stress_impact_loss
+		}
+	}	
+	
+	option = { # Talk!
+		name = mordvin.0042.b
+		add_prestige = 25
+		stress_impact = {
+			gregarious = minor_stress_impact_loss
+		}
+	}	
+}
+
+
+# Great Shtatol Candle
+mordvin.0043 = {
+	type = character_event
+	title = mordvin.0043.t
+	desc = mordvin.0043.desc
+	theme = stewardship_duty_focus
+	override_background = { event_background = RICE_fp1_runestone_circle }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # ok
+		name = mordvin.0043.a
+		add_prestige = 20
+	}	
+}
+
+# Bull Meat Soup
+mordvin.0044 = {
+	type = character_event
+	title = mordvin.0044.t
+	desc = mordvin.0044.desc
+	theme = feast_activity
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # ok
+		name = mordvin.0044.a
+		add_character_modifier = {
+			modifier = RICE_mordvin_ozks_bull_meat_soup
+			years = 3
+		}
+	}	
+}
+
+
+
+
+######################################################################################
+# 
+# FLAVOR EVENTS
+# 
+# mordvin.0050-mordvin.0099 reserved
+# 
+######################################################################################
+
+
+# Clearing out evil with horses
+mordvin.0050 = {
+	type = character_event
+	title = mordvin.0050.t
+	desc = mordvin.0050.desc
+	theme = RICE_theme_mordvin_countryside
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	trigger = {
+		religion = religion:mordvin_religion
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+	}
+
+	option = { # Ok
+		name = mordvin.0050.a
+		add_character_modifier = {
+			modifier = RICE_mordvin_horses_cast_out_evil
+			years = 5
+		}
+	}
+}
+
+
+# Mordvin wedding ceremony
+mordvin.0051 = {
+	type = character_event
+	title = mordvin.0051.t
+	desc = mordvin.0051.desc
+	theme = marriage
+	override_background = { event_background = RICE_background_volga_river }
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		religion = religion:mordvin_religion
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+	}
+
+	option = { # Ok
+		name = mordvin.0051.a
+		add_prestige = 20
+	}
+}
+
+
+# Mordvin water prayer cermony/Ozks
+mordvin.0052 = {
+	type = character_event
+	title = mordvin.0052.t
+	desc = mordvin.0052.desc
+	theme = faith
+	override_background = { event_background = RICE_background_volga_river }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	trigger = {
+		religion = religion:mordvin_religion
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+	}
+
+	option = { # Ok
+		name = mordvin.0052.a
+		add_character_modifier = {
+			modifier = RICE_mordvin_participated_in_water_ozks
+			years = 5
+		}
+	}
+}
+
+
+# Mordvin birch tree prayer cermony/Ozks
+mordvin.0053 = {
+	type = character_event
+	title = mordvin.0053.t
+	desc = mordvin.0053.desc
+	theme = faith
+	override_background = { event_background = RICE_background_mordvin_countryside }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	trigger = {
+		religion = religion:mordvin_religion
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+	}
+
+	option = { # Ok
+		name = mordvin.0053.a
+		add_character_modifier = {
+			modifier = RICE_mordvin_participated_in_birch_tree_ozks
+			years = 5
+		}
+	}
+}
+
+
+# Legends from freogin lands about Mordvins being ruthless, violent people
+mordvin.0054 = {
+	type = character_event
+	title = mordvin.0054.t
+	desc = mordvin.0054.desc
+	theme = martial
+	override_background = { event_background = RICE_background_mordvin_countryside }
+	
+	left_portrait = {
+		character = root
+		animation = personality_cynical
+	}
+	
+	trigger = {
+		OR = {
+			culture = culture:moksha
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:moksha
+				}
+			}
+			culture = culture:mordvin
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:mordvin
+				}
+			}
+			culture = {
+				AND = {					
+					has_cultural_pillar = heritage_volga_finnic
+					OR = {
+						has_cultural_pillar = ethos_stoic
+						has_cultural_pillar = ethos_bellicose
+					}
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = wrathful
+		}
+		modifier = {
+			add = -0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = 0.2
+			has_trait = vengeful
+		}
+		modifier = {
+			add = -0.2
+			has_trait = forgiving
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+	}
+
+	option = { # Ok
+		name = mordvin.0054.a
+		add_prestige = 25
+		stress_impact = {
+			calm = miniscule_stress_impact_gain
+			forgiving = miniscule_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+			content = miniscule_stress_impact_gain
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = mordvin.0054.info
+			}
+		}
+	}
+
+	option = { # Ok
+		name = mordvin.0054.b
+		add_piety = 25
+		stress_impact = {
+			wrathful = miniscule_stress_impact_gain
+			vengeful = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = mordvin.0054.info
+			}
+		}
+	}
+}
+
+
+# The "silent trade" with the Volga Finnic peoples
+mordvin.0055 = {
+	type = character_event
+	title = mordvin.0055.t
+	desc = mordvin.0055.desc
+	theme = RICE_theme_volga_river
+	
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		culture = {
+			has_cultural_pillar = heritage_volga_finnic
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	option = { # Ok
+		name = mordvin.0055.a
+		add_character_modifier = {
+			modifier = RICE_mordvin_encourages_silent_trade_with_foreigners
+			years = 10
+		}
+		stress_impact = {
+			calm = miniscule_stress_impact_gain
+			forgiving = miniscule_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+			content = miniscule_stress_impact_gain
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = mordvin.0055.info
+		}
+	}
+
+	option = { # Ok
+		name = mordvin.0055.b
+		add_character_modifier = {
+			modifier = RICE_mordvin_merely_tolerates_silent_trade_with_foreigners
+			years = 10
+		}
+		stress_impact = {
+			wrathful = miniscule_stress_impact_gain
+			vengeful = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = mordvin.0055.info
+		}
+	}
+}
+
+
+# Beekeeper county is doing well
+mordvin.0056 = {
+	type = character_event
+	title = mordvin.0056.t
+	desc = mordvin.0056.desc
+	theme = realm
+	
+	right_portrait = {
+		character = root
+		animation = admiration
+	}
+	
+	trigger = {
+		culture = {
+			has_cultural_tradition = tradition_RICE_volga_apiculture
+		}
+		any_held_title = {
+			tier = tier_county
+			culture = {
+				has_cultural_tradition = tradition_RICE_volga_apiculture
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	immediate = {
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				culture = {
+					has_cultural_tradition = tradition_RICE_volga_apiculture
+				}
+			}
+			save_scope_as = county
+		}
+	}
+
+	option = { # Ok
+		name = mordvin.0056.a
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_mordvin_buzzing_beekeeper_industry
+				years = 10
+			}
+		}
+	}
+}

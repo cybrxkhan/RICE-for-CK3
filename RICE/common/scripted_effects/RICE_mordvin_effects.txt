@@ -17,17 +17,25 @@ RICE_setup_mordvin_flavor_pack_effect = {
 		get_all_innovations_from = scope:mordvin
 	}	
 
-	culture:mordvin = {
-		set_culture_pillar = ethos_bellicose
+	culture:mordvin = { # Erzya
+		#set_culture_pillar = ethos_bellicose
 		remove_culture_tradition = tradition_festivities
-		remove_culture_tradition = tradition_music_theory
+		#remove_culture_tradition = tradition_music_theory
 		remove_culture_tradition = tradition_religion_blending
 		add_culture_tradition = tradition_isolationist
-		add_culture_tradition = tradition_stalwart_defenders
-		add_culture_tradition = tradition_warriors_by_merit
-		add_culture_tradition = tradition_RICE_volga_apiculture
-		remove_variable = tradition_cooldown
-	}	
+		add_culture_tradition = tradition_forest_wardens
+		#add_culture_tradition = tradition_stalwart_defenders
+		#add_culture_tradition = tradition_warriors_by_merit
+		if = {
+			limit = {
+				has_fp1_dlc_trigger = yes
+			}
+			add_culture_tradition = tradition_fp1_the_right_to_prove
+		}
+		add_culture_tradition = tradition_RICE_volga_apiculture	
+		remove_variable = tradition_cooldown		
+		set_name_list = name_list_erzya
+	}
 
 	culture:udmurt = {
 		add_culture_tradition = tradition_RICE_volga_apiculture
@@ -41,10 +49,10 @@ RICE_setup_mordvin_flavor_pack_effect = {
 		remove_variable = tradition_cooldown
 	}	
 
-	culture:khanty = {
-		add_culture_tradition = tradition_RICE_volga_apiculture
-		remove_variable = tradition_cooldown
-	}	
+	# culture:khanty = {
+	# 	add_culture_tradition = tradition_RICE_volga_apiculture
+	# 	remove_variable = tradition_cooldown
+	# }	
 
 	culture:bolghar = {
 		add_culture_tradition = tradition_RICE_volga_apiculture
@@ -57,6 +65,11 @@ RICE_setup_mordvin_flavor_pack_effect = {
 	}	
 
 	culture:mari = {
+		set_culture_pillar = ethos_spiritual
+		remove_culture_tradition = tradition_festivities
+		add_culture_tradition = tradition_staunch_traditionalists
+		add_culture_tradition = tradition_zealous_people
+		add_culture_tradition = tradition_sacred_groves
 		add_culture_tradition = tradition_RICE_volga_apiculture
 		remove_variable = tradition_cooldown
 	}	
@@ -72,18 +85,45 @@ RICE_setup_mordvin_flavor_pack_effect = {
 	}	
 
 	culture:meshchera = {
+		set_culture_pillar = ethos_communal
 		add_culture_tradition = tradition_RICE_volga_apiculture
 		remove_variable = tradition_cooldown
 	}	
 
 	culture:merya = {
+		set_culture_pillar = ethos_communal
+		remove_culture_tradition = tradition_storytellers
+		add_culture_tradition = tradition_caravaneers
+		add_culture_tradition = tradition_sacred_groves
 		add_culture_tradition = tradition_RICE_volga_apiculture
 		remove_variable = tradition_cooldown
 	}	
 
 	culture:muroma = {
+		set_culture_pillar = ethos_communal
+		remove_culture_tradition = tradition_festivities
 		add_culture_tradition = tradition_artisans
 		add_culture_tradition = tradition_RICE_volga_apiculture
+		remove_variable = tradition_cooldown
+	}	
+
+	culture:finnish = {
+		add_culture_tradition = tradition_RICE_finnic_sorcerers
+		remove_variable = tradition_cooldown
+	}	
+
+	culture:sami = {
+		add_culture_tradition = tradition_RICE_finnic_sorcerers
+		remove_variable = tradition_cooldown
+	}	
+
+	culture:estonian = {
+		add_culture_tradition = tradition_RICE_finnic_sorcerers
+		remove_variable = tradition_cooldown
+	}	
+
+	culture:karelian = {
+		add_culture_tradition = tradition_RICE_finnic_sorcerers
 		remove_variable = tradition_cooldown
 	}	
 
@@ -92,6 +132,15 @@ RICE_setup_mordvin_flavor_pack_effect = {
 	# SET UP HISTORY
 	#
 	#########################################################################	
+
+	if = {
+		limit = {
+			game_start_date = 1066.9.15
+		}
+		title:c_murom = {
+			set_county_culture = culture:muroma
+		}
+	}
 
 	every_county = {
 		limit = {
@@ -680,15 +729,43 @@ make_udmurt_culture_effect = {
 	}
 }
 
-# RICE_mordvin_extract_beekeeper_tribute_effect = {
-# 	# Every county with the right tradition
-# 	every_held_title = {
-# 		limit = {
-# 			tier = tier_county
-# 			culture = {
-# 				has_cultural_tradition = tradition_RICE_volga_apiculture
-# 			}
-# 		}
-# 		add = 10
-# 	}
-# }
+RICE_mordvin_extract_beekeeper_tribute_effect = {
+
+	if = {
+		limit = {
+			has_trait = greedy
+		}
+		stress_impact = {
+			greedy = minor_stress_impact_loss
+		}
+	}
+	else = {
+		stress_impact = {
+			compassionate = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+			just = minor_stress_impact_gain
+		}
+	}
+
+
+	add_character_modifier = {
+		modifier = RICE_mordvin_beekeeper_tribute_extracted
+		years = 10
+	}
+
+	# Every county with the right tradition
+	every_held_title = {
+		custom = RICE_every_volga_beekeeper_county
+		limit = {
+			tier = tier_county
+			culture = {
+				has_cultural_tradition = tradition_RICE_volga_apiculture
+			}
+		}
+		add_county_modifier = {
+			modifier = RICE_mordvin_beekeeper_tribute_extracted_county
+			years = 10
+		}
+	}
+
+}

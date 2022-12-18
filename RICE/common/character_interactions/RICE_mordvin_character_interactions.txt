@@ -1,0 +1,477 @@
+﻿
+RICE_mordvin_give_bee_products = {
+	category = interaction_category_friendly
+	common_interaction = yes
+
+	desc = RICE_mordvin_give_bee_products_desc
+
+	auto_accept = yes
+	
+	ai_targets = {
+		ai_recipients = scripted_relations
+	}
+	ai_targets = {
+		ai_recipients = liege
+	}
+	ai_targets = {
+		ai_recipients = neighboring_rulers
+		ai_recipients = peer_vassals
+		max = 10
+	}
+	ai_targets = {
+		ai_recipients = vassals
+		max = 10
+	}
+	ai_targets = {
+		ai_recipients = family
+		max = 20
+	}
+	ai_target_quick_trigger = {
+		adult = yes
+	}
+	ai_frequency = 48
+	
+	cooldown = { years = 3 }
+	cooldown_against_recipient = { years = 10 }
+	
+	is_shown = {
+		NOT = {
+			scope:recipient = scope:actor
+		}
+		scope:actor = {	
+			culture = {
+				has_cultural_tradition = tradition_RICE_volga_apiculture
+			}
+			is_ruler = yes
+		}
+		scope:recipient = {
+			#is_ai = yes
+			is_adult = yes
+			#is_ruler = yes
+		}
+	}
+	
+	is_valid = {
+		scope:actor = {
+			gold >= RICE_mordvin_honey_cost
+		}
+	}
+
+		
+	# AI option because AI is too dumb to choose between options apparently
+	send_option = {
+		is_shown = {
+			OR = {
+				debug_only = yes
+				scope:actor = {
+					is_ai = yes
+					#gold >= RICE_mordvin_ai_calc_value
+				}
+			}
+			exists = scope:recipient
+		}
+		flag = bee_product_ai
+		localization = RICE_north_atlantic_ai_option_tooltip
+	}
+		
+	# Give honey
+	send_option = {
+		is_shown = {
+			scope:actor = {
+				is_ai = no
+				#gold >= RICE_mordvin_honey_cost
+			}
+			exists = scope:recipient
+		}
+		flag = honey
+		localization = RICE_bee_product_honey
+	}
+		
+	# Give beeswax
+	send_option = {
+		is_shown = {
+			scope:actor = {
+				is_ai = no
+				#gold >= RICE_mordvin_beeswax_cost
+			}
+			exists = scope:recipient
+		}
+		flag = beeswax
+		localization = RICE_bee_product_beeswax
+	}
+		
+	# Give both
+	send_option = {
+		is_shown = {
+			scope:actor = {
+				is_ai = no
+				#gold >= RICE_mordvin_honey_and_beeswax_cost
+			}
+			exists = scope:recipient
+		}
+		flag = honey_and_beeswax
+		localization = RICE_bee_product_honey_and_beeswax
+	}
+
+	send_options_exclusive = yes
+	
+	on_accept = {
+		if = {
+			limit = {
+				scope:bee_product_ai = yes
+			}
+			random_list = {
+				40 = {
+					scope:actor = {
+						remove_short_term_gold = RICE_mordvin_honey_cost	
+						add_prestige = 25
+						set_variable = {
+							name = RICE_bee_gift
+							value = flag:honey
+							days = 1
+						}
+					}
+					scope:recipient = {
+						show_as_tooltip = {
+							add_character_modifier = {
+								modifier = RICE_mordvin_honey
+								years = 10
+							}
+							add_opinion = {
+								target = scope:actor
+								modifier = RICE_mordvin_opinion_honey
+							}				
+						}
+					}
+				}
+				40 = {
+					trigger = {
+						scope:actor = {
+							gold >= 70
+						}
+					}
+					scope:actor = {
+						remove_short_term_gold = RICE_mordvin_beeswax_cost	
+						add_prestige = 75
+						set_variable = {
+							name = RICE_bee_gift
+							value = flag:beeswax
+							days = 1
+						}
+					}
+					scope:recipient = {
+						show_as_tooltip = {
+							add_character_modifier = {
+								modifier = RICE_mordvin_beeswax
+								years = 10
+							}
+							add_opinion = {
+								target = scope:actor
+								modifier = RICE_mordvin_opinion_beeswax
+							}				
+						}
+					}
+				}
+				20 = {
+					trigger = {
+						scope:actor = {
+							gold >= 90
+						}
+					}
+					scope:actor = {
+						remove_short_term_gold = RICE_mordvin_honey_and_beeswax_cost
+						add_prestige = 100
+						set_variable = {
+							name = RICE_bee_gift
+							value = flag:honey_and_beeswax
+							days = 1
+						}	
+					}
+					scope:recipient = {
+						show_as_tooltip = {
+							add_character_modifier = {
+								modifier = RICE_mordvin_honey_and_beeswax
+								years = 10
+							}
+							add_opinion = {
+								target = scope:actor
+								modifier = RICE_mordvin_opinion_honey_and_beeswax
+							}				
+						}
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:honey = yes
+			}
+			scope:actor = {
+				remove_short_term_gold = RICE_mordvin_honey_cost	
+				add_prestige = 25
+				set_variable = {
+					name = RICE_bee_gift
+					value = flag:honey
+					days = 1
+				}
+			}
+			scope:recipient = {
+				show_as_tooltip = {
+					add_character_modifier = {
+						modifier = RICE_mordvin_honey
+						years = 10
+					}
+					add_opinion = {
+						target = scope:actor
+						modifier = RICE_mordvin_opinion_honey
+					}				
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:beeswax = yes
+			}
+			scope:actor = {
+				remove_short_term_gold = RICE_mordvin_beeswax_cost
+				add_prestige = 75	
+				set_variable = {
+					name = RICE_bee_gift
+					value = flag:beeswax
+					days = 1
+				}
+			}
+			scope:recipient = {
+				show_as_tooltip = {
+					add_character_modifier = {
+						modifier = RICE_mordvin_beeswax
+						years = 10
+					}
+					add_opinion = {
+						target = scope:actor
+						modifier = RICE_mordvin_opinion_beeswax
+					}				
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:honey_and_beeswax = yes
+			}
+			scope:actor = {
+				remove_short_term_gold = RICE_mordvin_honey_and_beeswax_cost
+				add_prestige = 100
+				set_variable = {
+					name = RICE_bee_gift
+					value = flag:honey_and_beeswax
+					days = 1
+				}		
+			}
+			scope:recipient = {
+				show_as_tooltip = {
+					add_character_modifier = {
+						modifier = RICE_mordvin_honey_and_beeswax
+						years = 10
+					}
+					add_opinion = {
+						target = scope:actor
+						modifier = RICE_mordvin_opinion_honey_and_beeswax
+					}				
+				}
+			}
+		}
+		scope:actor = {
+			trigger_event = mordvin.0020
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 60
+		modifier = { # Basic Filtering
+			factor = 0
+			scope:recipient = {
+				NOR = {
+					AND = { # Bankrupt vassals, lovers, friends and a bankrupt liege should be considered
+						OR = {
+							is_vassal_of = scope:actor
+							AND = {
+								exists = liege
+								liege = scope:actor
+							}
+							has_secret_relation_lover = scope:actor
+							has_relation_lover = scope:actor
+							has_relation_soulmate = scope:actor
+							has_relation_friend = scope:actor
+							has_relation_best_friend = scope:actor
+						}
+						gold < 0
+					}
+					AND = { # Generous characters will give gifts to their friends/lovers
+						OR = {
+							has_secret_relation_lover = scope:actor
+							has_relation_lover = scope:actor
+							has_relation_soulmate = scope:actor
+							has_relation_friend = scope:actor
+							has_relation_best_friend = scope:actor
+						}
+						scope:actor = {
+							OR = {
+								ai_greed <= high_negative_ai_value
+								AND = {
+									ai_greed < 0
+									culture = {
+										has_cultural_parameter = gives_more_gifts
+									}
+								}
+							}
+						}
+					}
+					AND = { # Characters with the Generous Cultural Tradition will give gifts to more people
+						is_ruler = yes
+						OR = {
+							is_allied_to = scope:actor
+							is_close_or_extended_family_of = scope:actor
+						}
+						scope:actor = {
+							ai_greed < 0
+							culture = {
+								has_cultural_parameter = gives_more_gifts
+							}
+						}
+					}
+					AND = { # Powerful vassals should be considered
+						is_powerful_vassal_of = scope:actor
+						opinion = {
+							target = scope:actor
+							value < 0
+						}
+						NOT ={
+							has_opinion_modifier = {
+								target = scope:actor
+								modifier = gift_opinion
+							}
+						}
+					}
+					AND = { # Factioneering vassals should be considered
+						is_vassal_of = scope:actor
+						is_a_faction_member = yes
+						NOT ={
+							has_opinion_modifier = {
+								target = scope:actor
+								modifier = gift_opinion
+							}
+						}
+					}
+					AND = { # Realm Priests should be considered
+						scope:actor = {
+							faith = { has_doctrine = doctrine_theocracy_temporal }
+							exists = cp:councillor_court_chaplain
+							cp:councillor_court_chaplain = scope:recipient
+						}
+						opinion = {
+							target = scope:actor
+							value <= 25
+						}
+						NOT = {
+							has_opinion_modifier = {
+								target = scope:actor
+								modifier = gift_opinion
+							}
+						}
+					}
+					AND = { # Rulers at war with your rivals deserve gold if they're bankrupt
+						gold < 0
+						is_at_war = yes
+						any_war_enemy = {
+							has_relation_rival = scope:actor
+						}
+					}
+				}
+			}
+		}
+		
+		modifier = {
+			factor = 0.1
+			scope:recipient = {
+				opinion = {
+					target = scope:actor
+					value < 0
+				}
+				NAND = {
+					is_vassal_of = scope:actor
+					scope:actor = {
+						ai_rationality > 50
+					}
+				}
+			}
+		}
+	}
+
+}
+
+
+# RICE_mordvin_give_bee_products_self = {
+# 	category = interaction_category_friendly
+# 	common_interaction = yes
+
+# 	desc = RICE_mordvin_give_bee_products_self_desc
+
+# 	use_diplomatic_range = no
+
+# 	cooldown = { years = 10 }
+	
+# 	is_shown = {
+# 		scope:actor = {
+# 			culture = {
+# 				has_cultural_tradition = tradition_RICE_volga_apiculture
+# 			}
+# 			is_ruler = yes
+# 		}
+# 		scope:recipient = {
+# 			culture = {
+# 				has_cultural_tradition = tradition_RICE_volga_apiculture
+# 			}
+# 		}
+# 	}
+
+# 	is_valid = {
+# 		scope:actor = {
+# 			gold >= 50
+# 		}
+# 	}
+	
+# 	on_accept = {
+# 		scope:recipient = {
+# 			remove_short_term_gold = 50
+# 			add_prestige = 50
+# 			add_character_modifier = {
+# 				modifier = RICE_rhodes_character_kalymnian_sponges
+# 				years = 10
+# 			}
+# 		}
+# 	}	
+# 	auto_accept = yes
+
+# 	# AI
+# 	ai_frequency = 48
+	
+# 	ai_targets = {
+# 		ai_recipients = self
+# 	}
+
+# 	ai_potential = {
+# 		NOT = { has_character_modifier = RICE_rhodes_character_kalymnian_sponges }
+# 	}
+
+# 	ai_frequency = 60
+
+# 	ai_will_do = {
+# 		base = 80
+# 	}
+
+# }
+
