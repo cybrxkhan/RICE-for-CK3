@@ -1,13 +1,12 @@
-<img src="https://i.imgur.com/pg1tJRO.jpg">
+<img src="https://i.imgur.com/5RCaDDK.jpg">
 
-## Latest Version: Version 1.8.1 "Erik the Red" (Released 12/7/22, for vanilla patch 1.8.x)
+## Latest Version: Version 1.8.2 "Tyushtya" (Released 12/19/22, for vanilla patch 1.8.x)
 
-**Newest Flavor Pack - North Atlantic: From Iceland to Vinland**
+**Newest Flavor Pack - Mordvin: Along the Volga**
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_“Men will desire much the more to go [to Greenland] if the land has a good name.”_
-_- Erik the Red, in the Saga of Erik the Red_
+_Tyushtya is a hero, king, and god/demi-god in the mythology and folklore of the Erzyas and Mokshas, the two Mordvin peoples._
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places and peoples.
 
@@ -25,6 +24,7 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 - [Guanche: The Fortunate Isles](https://docs.google.com/document/d/e/2PACX-1vSs5DoK_1Hux5Uqe8cZp9qKdClxq_8W6PF3Rdejo8hR_C3mn1_qd166bbpw096x0DtwBGTBHC8aQYTO/pub)
 - [Harran: The Last Hellenic Pagans](https://docs.google.com/document/d/e/2PACX-1vQOVaDq59Adp5PsNw7r8KhK9cgHMBBWGPWG085FdTKegkD8G8BFLa_e1lz8usY164B42gAVZD4D_2Rs/pub)
 - [Magadha: Diamond Throne of Buddhism](https://docs.google.com/document/d/e/2PACX-1vQvXP97M8x7lXYDilOlkVz-lCT0dk6Qq2R6cFyoySNv6g5mqAhIxzquf_1TeR9eEllCkA0HhpOfErnT/pub)
+- [Mordvin: Along the Volga](https://docs.google.com/document/d/e/2PACX-1vSJLf-BGou98MSCHMEVO1QWEme1kKSe8CiriXgpfEUHeySTLJOsPLQobPnu_fIt-W-GqcL3VBXFqJzZ/pub)
 - [Niger Delta: Heirs of Oduduwa](https://docs.google.com/document/d/e/2PACX-1vTgW9FFORhgNKseRIGdOXnsCLe5Nee8f8dK9yQxkvWshD3ZJf5vzXhMHQKmoy3qnMEjm2kLImgExhvt/pub)
 - [North Atlantic: From Iceland to Vinland](https://docs.google.com/document/d/e/2PACX-1vQmBr7TYKBGRMtVYj8IWAjLHHAadsxJwGZI1VIG0PRA4ZV3mru5HGv3vAqaktbnVMe1oFpTdCEPKFLd/pub)
 - [Pamir and Zunist: Roof of the World](https://docs.google.com/document/d/e/2PACX-1vQmHEFpko8WE1fnHLHyG-4t01Xyka4eTe88WuLJWRL6jk0S3ju3fA1CFyX_dDArSduFlzqUl58pjRRO/pub)
@@ -54,40 +54,25 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/iGzIzw5.jpg">
+<img src="https://i.imgur.com/z9oVOP2.jpg">
 
-### 1.8.1 "Erik the Red"
+### 1.8.2 "Tyushtya"
 
-- Added UI for some Greenland/Vinland decisions and events to show the current Resilience/Networks/Viability (credits to KeizerHarm, aka Mr. Sunset Invasion)
-- Added character interactions to send courtiers or exile prisoners to Greenland/Vinland, in order to raise Resilience, Networks, or Viability
-- Added decision to Found Iceland's First Major Religious School, available after the Althing is Convened
-- Added several new game rules:
-    - Courtier Spawn frequency - how likely courtier spawn events will trigger (Very low, Low, Default, High, Very High)
-    - Greenland Ending Difficulty - how much Resilience/Networks is needed for the Regional Integration ending, and if Greenland autofails or not (Cheat Mode, Easy, Default, Hard)
-    - Vinland Realism - chances of success for Vinland outposts/colonies (Default, Unhistorical, Fantasy)
-    - Greenland Costs - costs of decisions related to Greenland (Default, Lower, Even Lower)
-    - Vinland Costs - costs of decisions related to Vinland (Default, Unhistorical, Fantasy)
-    - Native American Frequency - how likely N.A. courtiers are to spawn or acquired through events (Rare, Uncommon, Common, Very Common)
-- Added events to spawn Greenlandic and Vinlandic courtiers occasionally, which increase the maximum gold/prestige/piety gain from Greenland estates if you allow them to stay
-- Expanded Isleifur Haukadalur’s family to include his wife Dalla, other son Gissur, and daughter-in-laws Jorunn and Steinunn
-- Bjorg Eyvindrsdottir and her husband Úlfr Högnason (Leif Erikson’s great-grandparents) now start in the court of her brother, Helgi Eyvindarson
-- Rebalanced the effect skills have on some Greenland expedition episodes, thus making it a little easier to gain good outcomes with average stat leaders in some cases
-- Decision to Organize a Walrus Hunt to Nordsetur now also decreases Networks by a random amount as well
-- Increased default cost of the decision to Support Vinland to 80 gold
-- Lightly rebalanced the chances which houses are randomly chosen to receive the Greenland Estate house modifier at game start
-- Added an option to gift gold to the Native American character to become your courtier in one of the rare Native American courtier events
-- Azur Jamshid’s son Garg will now convert to the faith he chooses at game start
-- Reduced volume of the Greenland-related cues
-- Increased base chance of support failing to arrive in Greenland to 25%
-- Chances of the support you send to Greenland or Vinland failing are increased slightly in the Marginalization and Subsistence phases by 10% and 5% respectively
-- Fixed Native Sovereignty ending for the Greenland struggle requiring less than 250 Resilience and Networks
-- Fixed Abandon Greenland ending for the Greenland struggle NOT requiring less than 250 Resilience and Networks
-- Fixed Native American courtiers not spawning during the Marginalization or Subsistence phases (however, during these phases, it is still extremely rare)
-- Fixed Support Vinland event saying you failed even though support arrived safely
-- Fixed Decision to Explore the Seas West of Iceland not requiring a capital in the Greenland struggle region
-- Fixed Greenlandic immigrant generated from the Attract Immigrants from Greenland decision not having the right culture if Greenlandic culture was dynamically generated
-- Fixed Native American courtier not spawning if you successfully captured one in the Greenland expedition episode where you encounter peaceful Native Americans
-- Fixed heir being unable to partake in any activities if they were in the middle of leading an expedition when they inherited a title
+- Added Mordvin Flavor Pack: Along the Volga
+- Added four new bookmarks, two for each start date, featuring recommended playthroughs that highlight various RICE content
+- Added new Erzya and Moksha namelists with more accurate names and dynasty  names to replace the old Mordvin namelist (credits to Макс for compiling the list)
+- Added Finnic Sorcerers tradition for Balto-Finnic, Volga Finnic, and Ugro-Permian cultures; Finnish, Estonian, Sami, and Karelian cultures have it by default
+- Added Ahmad al-Daya and his family of Tulunid officials/scholars
+- Almeria now starts off as independent in 1066
+- Tweaked the family of Abu Bakr al-Madhara'i (RICE added character under Tulunids in 867)
+- Minor tweaks to Lady Godiva and Ealdgyth in the 1066 bookmark
+- Umar ibn Hafsun now always starts off with the vengeful, ambitious, and wrathful traits
+- Some features are now disabled when run with TFE (in preparation for the TFE update to 1.8)
+- Pamiri and Turco-Hephthalite culture no longer uses Indian clothing
+- Changed event backgrounds for a couple events in the Reindeer Sacrifice decision/event chain
+- Fixed Greenland difficulty rule not working
+- Fixed AI being more likely to levy extra taxes on whaling towns if they’re just and generous, and less likely if they’re arbitrary and generous, rather than the other way around
+- Fixed Buddhist doctrine icon names to match capitalization to prevent buggy appearance for linux users
 - Miscellaneous bugfixes
 
 ## Credits
@@ -104,6 +89,8 @@ Special thanks in particular to:
 - Henry for the Better Bedouin Culture mod
 - KeizerHarm for UI work
 - Lahom for most of the Native American names
+- Макс for Erzya and Moksha names and info
+- Naatturi for faiths and other features from the [Ukonusko Overhaul](url=https://steamcommunity.com/sharedfiles/filedetails/?id=2224796496) mod
 - Nezaros for reformed religion template
 - Nix for Evenki names
 - PinkPanzer for some decision art
