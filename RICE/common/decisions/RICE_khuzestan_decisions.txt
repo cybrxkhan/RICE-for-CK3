@@ -170,11 +170,11 @@ RICE_khuzestan_rebury_daniel = {
 		OR = {
 			AND = {
 				highest_held_title_tier = tier_county
-				prestige_level >= 5
+				prestige_level >= 3
 			}
 			AND = {
-				highest_held_title_tier >= tier_duchy
-				prestige_level >= 3
+				highest_held_title_tier >= tier_kingdom
+				prestige_level >= 2
 			}
 		}
 		has_title = title:c_tustar
@@ -194,9 +194,9 @@ RICE_khuzestan_rebury_daniel = {
 		gold = {
 			value = major_gold_value
 		}
-		prestige = {
-			value = major_prestige_value
-		}
+		# prestige = {
+		# 	value = major_prestige_value
+		# }
 	}
 
 	effect = {
@@ -206,9 +206,13 @@ RICE_khuzestan_rebury_daniel = {
 			target = flag:RICE_khuzestan_daniel_reburied
 		}
 
-		save_scope_as = daniel_mover
+		save_scope_as = sanjar
+
+		show_as_tooltip = {
+			RICE_khuzestan_move_daniel_tomb_effect = yes
+		}
 		
-		custom_tooltip = RICE_khuzestan_rebury_daniel_effect_tooltip_1
+		#custom_tooltip = RICE_khuzestan_rebury_daniel_effect_tooltip_1
 		
 		if = {
 			limit = {
@@ -217,7 +221,7 @@ RICE_khuzestan_rebury_daniel = {
 			custom_tooltip = RICE_khuzestan_rebury_daniel_context_tooltip
 		}
 		
-		trigger_event = aachen.0003
+		trigger_event = khuzestan.0025
 
 		add_to_list = notification_sent
 	}
@@ -270,6 +274,13 @@ RICE_khuzestan_tomb_of_daniel_decision = {
 			religion = religion:islam_religion
 			religion = religion:christianity_religion
 			religion = religion:judaism_religion
+			faith = {
+				OR = {
+					has_doctrine = tenet_islamic_syncretism
+					has_doctrine = tenet_jewish_syncretism
+					has_doctrine = tenet_christian_syncretism
+				}
+			}
 		}
 		OR = {
 			title:c_tustar = {
@@ -286,20 +297,38 @@ RICE_khuzestan_tomb_of_daniel_decision = {
 	}
 	
 	is_valid = {
-		custom_description = {
-			text = RICE_tomb_of_daniel_pilgrimage_distance_req
-			title:c_tustar = {
-				squared_distance = {
-					target = root.capital_province
-					value <= squared_distance_medium
+		OR = {
+			religion = religion:islam_religion
+			religion = religion:christianity_religion
+			religion = religion:judaism_religion
+			faith = {
+				OR = {
+					has_doctrine = tenet_islamic_syncretism
+					has_doctrine = tenet_jewish_syncretism
+					has_doctrine = tenet_christian_syncretism
 				}
 			}
 		}
-		custom_description = {
-			text = RICE_khuzestan_geographical_req
-			any_held_title = {
-				tier = tier_county
-				duchy = title:d_khuzestan
+		OR = {
+			custom_description = {
+				text = RICE_tomb_of_daniel_pilgrimage_distance_req						
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_khuzestan_daniel_reburied
+				}
+				title:c_tustar = {
+					squared_distance = {
+						target = root.capital_province
+						value <= squared_distance_medium
+					}
+				}
+			}
+			custom_description = {
+				text = RICE_khuzestan_geographical_req
+				any_held_title = {
+					tier = tier_county
+					duchy = title:d_khuzestan
+				}
 			}
 		}
 	}
@@ -317,7 +346,7 @@ RICE_khuzestan_tomb_of_daniel_decision = {
 			custom_tooltip = RICE_khuzestan_tomb_of_daniel_decision_context_tooltip
 		}
 		trigger_event = {
-			id = khuzestan.8888
+			id = khuzestan.0020
 		}
 	}
 

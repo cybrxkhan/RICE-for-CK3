@@ -1,0 +1,301 @@
+﻿###############################################################################
+# 
+# Niger Delta
+# 
+# khuzestan.0000-khuzestan.0019			Setup events, history events, miscellaneous events and decisions
+# khuzestan.0020-khuzestan.0029			Tomb of Daniel
+# khuzestan.0030-khuzestan.0039			Tiraz
+# khuzestan.0040-khuzestan.0049			Gundishapur
+# khuzestan.0050-khuzestan.0099			Generic flavor events
+# 
+# 
+###############################################################################
+
+namespace = khuzestan
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# khuzestan.0000-khuzestan.0019
+# 
+######################################################################################
+
+
+
+######################################################################################
+# 
+# TOMB OF DANIEL
+# 
+# khuzestan.0020-khuzestan.0029
+# 
+######################################################################################
+
+
+
+
+# Make preparations to begin the pilgrimage
+khuzestan.0020 = {
+	type = character_event
+	title = khuzestan.0020.t
+	desc = khuzestan.0020.desc
+	theme = friendly
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	left_portrait = root
+	
+	immediate = {
+		# title:c_tustar = { #For loc.
+		# 	save_scope_as = tustar
+		# }
+		# Stop characters from planning multiple activities at once
+		add_character_flag = planning_an_activity
+	}
+	
+	option = { # Ok
+		name = khuzestan.0020.a
+		# Choose appropriate location - Tustar
+		title:b_as-sus.title_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_khuzestan_tomb_of_daniel_pilgrimage
+			}	
+		}
+	}
+}
+
+# Pilgrimage begins
+khuzestan.0021 = {
+	type = character_event
+	title = khuzestan.0021.t
+	desc = khuzestan.0021.desc
+	theme = RICE_theme_khuzestan_nature
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_khuzestan_daniel_reburied
+				}
+			}
+			ordered_in_global_list = {
+				variable = RICE_khuzestan_sanjar_random_list
+				save_scope_as = sanjar
+			}
+		}
+		religion:christianity_religion = { save_scope_as = christianity }
+		religion:islam_religion = { save_scope_as = islam }
+		religion:judaism_religion = { save_scope_as = judaism }
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+	
+	option = { # Ok
+		name = khuzestan.0021.a
+		trigger_event = {
+			id = khuzestan.0022
+			days = { 10 20 }
+		}
+	}
+}
+
+# Arrival in Sus
+khuzestan.0022 = {
+	type = character_event
+	title = khuzestan.0022.t
+	desc = {
+		desc = khuzestan.0022.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:RICE_khuzestan_daniel_reburied
+					}
+				}
+				desc = khuzestan.0022.desc.after
+			}
+			desc = khuzestan.0022.desc.before
+		}
+	}
+	theme = RICE_theme_khuzestan_farmland
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	right_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	option = { # Ok
+		name = khuzestan.0022.a
+		trigger_event = {
+			id = khuzestan.0023
+			days = { 3 6 }
+		}
+	}
+}
+
+# Visit the tomb
+khuzestan.0023 = {
+	type = character_event
+	title = khuzestan.0023.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:RICE_khuzestan_daniel_reburied
+					}
+				}
+				desc = khuzestan.0023.desc.after
+			}
+			desc = khuzestan.0023.desc.before
+		}
+		desc = khuzestan.0023.desc
+	}
+	theme = faith
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = khuzestan.0023.a
+		trigger_event = {
+			id = khuzestan.0024
+			days = { 3 6 }
+		}
+	}
+}
+
+# Return home
+khuzestan.0024 = {
+	type = character_event
+	title = khuzestan.0024.t
+	desc = khuzestan.0024.desc
+	theme = friendly
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Ok
+		name = khuzestan.0024.a
+		if = {
+			limit = {				
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_khuzestan_daniel_reburied
+				}
+			}			
+			add_piety = 250
+		}
+		else = {
+			add_piety = 150
+		}
+		pilgrimage_additional_reward_effect = yes
+		add_character_modifier = {
+			modifier = RICE_khuzestan_daniel_pilgrimage_done
+			years = 10
+		}
+	}
+
+	after = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+}
+
+# Move the tomb
+khuzestan.0025 = {
+	type = character_event
+	title = khuzestan.0025.t
+	desc = khuzestan.0025.desc
+	theme = RICE_theme_khuzestan_farmland
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	right_portrait = {
+		character = scope:sanjar
+		animation = war_defender
+	}
+
+	immediate = {		
+		add_to_global_variable_list = {
+			name = RICE_khuzestan_sanjar_random_list
+			target = scope:sanjar
+		}
+		RICE_khuzestan_move_daniel_tomb_effect = yes
+	}
+	
+	option = { # Ok
+		name = khuzestan.0025.a
+		every_player = {
+			limit = {
+				is_ai = no
+				NOT = { this = root }
+				OR = {
+					religion = religion:islam_religion
+					religion = religion:christianity_religion
+					religion = religion:judaism_religion
+					faith = {
+						OR = {
+							has_doctrine = tenet_islamic_syncretism
+							has_doctrine = tenet_jewish_syncretism
+							has_doctrine = tenet_christian_syncretism
+						}
+					}
+				}
+				OR = {
+					title:c_tustar = {
+						squared_distance = {
+							target = root.capital_province
+							value <= squared_distance_medium
+						}
+					}
+					any_held_title = {
+						tier = tier_county
+						duchy = title:d_khuzestan			
+					}
+				}
+			}
+			trigger_event = khuzestan.0026
+		}
+	}
+
+}
+
+# Move the tomb notification
+khuzestan.0026 = {
+	type = character_event
+	title = khuzestan.0026.t
+	desc = khuzestan.0026.desc
+	theme = RICE_theme_khuzestan_farmland
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	right_portrait = {
+		character = scope:sanjar
+		animation = war_defender
+	}
+
+	immediate = {		
+		scope:sanjar = {
+			RICE_khuzestan_move_daniel_tomb_effect = yes
+		}
+	}
+	
+	option = { # Ok
+		name = khuzestan.0026.a
+	}
+
+}
