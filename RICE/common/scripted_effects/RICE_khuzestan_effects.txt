@@ -1,0 +1,162 @@
+﻿
+RICE_setup_khuzestan_flavor_pack_effect = {
+
+	#########################################################################
+	#
+	# CULTURE AND RELIGION STUFF
+	#
+	#########################################################################
+
+	culture:persian = { save_scope_as = persian }
+
+	culture:elamite = {
+		get_all_innovations_from = scope:persian
+	}	
+
+	culture:elymaean = {
+		get_all_innovations_from = scope:persian
+	}	
+
+	culture:khuzi = {
+		add_innovation = innovation_RICE_khuzi
+		add_culture_tradition = tradition_RICE_khuzi
+		remove_variable = tradition_cooldown
+		get_all_innovations_from = scope:persian
+	}	
+
+	if = {
+		limit = {
+			game_start_date >= 650.1.1
+			game_start_date <= 1000.1.1
+		}
+		title:c_sardan = {
+			set_county_culture = culture:khuzi
+		}
+		title:c_tustar = {
+			set_county_culture = culture:khuzi
+		}
+		# title:c_abbadan = {
+		# 	set_county_culture = culture:khuzi
+		# }
+		title:c_dawraq = {
+			set_county_culture = culture:khuzi
+		}
+		#title:c_ramhurmuz = {
+		#	set_county_culture = culture:khuzi
+		#}
+		title:c_arrajan = {
+			set_county_culture = culture:khuzi
+		}
+
+		# Ramhormoz survived to c. 980 CE? 
+	}
+
+	if = {
+		limit = {
+			game_start_date >= 650.1.1
+			game_start_date <= 1100.1.1
+		}
+		title:c_ramhurmuz = {
+			set_county_culture = culture:khuzi
+		}
+	}
+
+	
+	#########################################################################
+	#
+	# SET UP HISTORY
+	# Icelandic Chieftains, Papar, etc.
+	#
+	#########################################################################
+
+	# For 867 bookmark
+	if = {
+		limit = {
+			game_start_date = 867.1.1
+		}
+		# Give Baridi family territory in Khuzestan/Basra
+		character:RICE_khuzestan_001 = {
+			get_title = title:c_dawraq
+			get_title = title:c_abbadan
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+		}
+
+	}
+
+	# For 1066 bookmark
+	if = {
+		limit = {
+			game_start_date = 1066.9.15
+		}
+		# Give parts of Khuzestan to the actual governor, Hazarasp
+		character:RICE_khuzestan_011 = {
+			get_title = title:c_ramhurmuz
+			#get_title = title:c_ahvaz
+			get_title = title:c_dawraq
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+		}
+		# Give Arrajan to governor Fakhr
+		character:RICE_khuzestan_027 = {
+			get_title = title:c_arrajan
+			get_title = title:c_istakhr
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+		}
+		# Give Shushtar and Luristan to Barsuq
+		character:RICE_khuzestan_020 = {
+			get_title = title:c_tustar
+			get_title = title:c_luristan
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+		}
+
+	}
+
+}
+
+
+
+RICE_khuzestan_kingdom_effect = {
+	dynasty = { add_dynasty_prestige = 1000 }
+	#Create the title and make it primary
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:k_khuzestan = {
+		set_de_jure_liege_title = title:e_persia
+		change_title_holder = {
+			holder = root
+			change = scope:title_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:title_change
+	set_primary_title_to = title:k_khuzestan
+
+	hidden_effect = {
+		title:d_khuzestan = {
+			if = {
+				limit = {
+					NOT = { is_in_list = new_de_jure_duchies }
+				}
+				add_to_list = new_de_jure_duchies
+			}
+		}
+		every_in_list = {
+			list = new_de_jure_duchies
+			limit = {
+				trigger_if = {
+					limit = {
+						exists = this
+						root = { is_ai = yes }
+						exists = holder
+					}
+					NOR = {
+						holder.top_liege = { is_ai = no }
+						holder = { is_ai = no }
+					}
+				}
+			}
+			set_de_jure_liege_title = title:k_khuzestan
+		}
+	}
+}
