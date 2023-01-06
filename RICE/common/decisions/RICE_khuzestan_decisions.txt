@@ -397,25 +397,149 @@ RICE_khuzestan_repair_shushtar_hydraulics = {
 		is_available_adult = yes
 	}
 
+	
+    widget = {
+    	gui = "decision_view_widget_RICE_silk_road_community"
+		controller = decision_option_list_controller
+    	
+		decision_has_second_step = yes
+		decision_custom_widget_container = "custom_widgets_container_step_two"
+		decision_to_second_step_button = "RICE_khuzestan_pick_shushtar_hydraulics" 
+
+
+		# Dams
+		item = {
+			value = RICE_khuzestan_shushtar_dams_option
+			current_description = RICE_khuzestan_shushtar_dams_option_desc
+			localization = RICE_khuzestan_shushtar_dams_option
+			icon = "gfx/interface/icons/widgets/RICE_khuzestan_shushtar_dams.dds"
+
+			ai_chance = {
+				value = 1
+			}
+		}
+
+		# Canals
+		item = {
+			value = RICE_khuzestan_shushtar_canals_option
+			current_description = RICE_khuzestan_shushtar_canals_option_desc
+			localization = RICE_khuzestan_shushtar_canals_option
+			icon = "gfx/interface/icons/widgets/RICE_khuzestan_shushtar_canals.dds"
+
+			ai_chance = {
+				value = 1
+			}
+		}
+
+		# Bridges
+		item = {
+			value = RICE_khuzestan_shushtar_bridges_option
+			current_description = RICE_khuzestan_shushtar_bridges_option_desc
+			localization = RICE_khuzestan_shushtar_bridges_option
+			icon = "gfx/interface/icons/widgets/RICE_khuzestan_shushtar_bridges.dds"
+
+			ai_chance = {
+				value = 1
+			}
+		}
+
+		# Watermills
+		item = {
+			value = RICE_khuzestan_shushtar_watermills_option
+			current_description = RICE_khuzestan_shushtar_watermills_option_desc
+			localization = RICE_khuzestan_shushtar_watermills_option
+			icon = "gfx/interface/icons/widgets/RICE_khuzestan_shushtar_watermills.dds"
+
+			ai_chance = {
+				value = 1
+			}
+		}
+	}
+
 	effect = {
 		custom_tooltip = RICE_khuzestan_repair_shushtar_hydraulics_effect_tooltip_1
+		custom_tooltip = RICE_khuzestan_repair_shushtar_hydraulics_effect_tooltip_2
 		if = {
 			limit = {
 				has_game_rule = RICE_historical_context_on
 			}
 			custom_tooltip = RICE_khuzestan_repair_shushtar_hydraulics_context_tooltip
 		}
+
+		# Not sure why AI can't pick one option or another
+		if = {
+			limit = { is_ai = yes }
+			random_list = {
+				10 = {
+					set_variable = {
+						name = RICE_shushtar_work_type
+						value = flag:dams
+					}
+				}
+				10 = {
+					set_variable = {
+						name = RICE_shushtar_work_type
+						value = flag:canals
+					}
+				}
+				10 = {
+					set_variable = {
+						name = RICE_shushtar_work_type
+						value = flag:bridges
+					}
+				}
+				10 = {
+					set_variable = {
+						name = RICE_shushtar_work_type
+						value = flag:watermills
+					}
+				}
+			}
+		}
+
+		else_if = { # Dams
+			limit = { scope:RICE_khuzestan_shushtar_dams_option = yes }
+			set_variable = {
+				name = RICE_shushtar_work_type
+				value = flag:dams
+			}
+		}
+
+		else_if = { # Canals
+			limit = { scope:RICE_khuzestan_shushtar_canals_option = yes }
+			set_variable = {
+				name = RICE_shushtar_work_type
+				value = flag:canals
+			}
+		}
+
+		else_if = { # Bridges
+			limit = { scope:RICE_khuzestan_shushtar_bridges_option = yes }
+			set_variable = {
+				name = RICE_shushtar_work_type
+				value = flag:bridges
+			}
+		}
+
+		else_if = { # Watermills
+			limit = { scope:RICE_khuzestan_shushtar_watermills_option = yes }
+			set_variable = {
+				name = RICE_shushtar_work_type
+				value = flag:watermills
+			}
+		}
+
 		trigger_event = {
-			id = khuzestan.8888
+			id = khuzestan.0010
 		}
 	}
 
-	cost = { 
-		gold = { value = medium_gold_value } # Will depend
-	}	
+	minimum_cost = {
+		gold = RICE_khuzestan_shushtar_repair_cost_value
+	}
 
 	ai_potential = {
-		short_term_gold > medium_gold_value
+		short_term_gold > RICE_khuzestan_shushtar_repair_cost_value
 	}
 
 	ai_will_do = {
