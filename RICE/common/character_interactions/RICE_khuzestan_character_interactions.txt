@@ -1,0 +1,242 @@
+﻿
+RICE_khuzestan_gift_tiraz_robes = {
+	category = interaction_category_friendly
+	common_interaction = yes
+
+	desc = RICE_khuzestan_gift_tiraz_robes_desc
+
+	auto_accept = yes
+	
+	ai_targets = {
+		ai_recipients = scripted_relations
+	}
+	ai_targets = {
+		ai_recipients = liege
+	}
+	ai_targets = {
+		ai_recipients = neighboring_rulers
+		ai_recipients = peer_vassals
+		max = 10
+	}
+	ai_targets = {
+		ai_recipients = vassals
+		max = 10
+	}
+	# ai_targets = {
+	# 	ai_recipients = courtiers
+	# 	max = 5
+	# }
+	ai_target_quick_trigger = {
+		adult = yes
+	}
+	ai_frequency = 60
+	
+	#cooldown = { years = 3 }
+	cooldown_against_recipient = { years = 5 }
+	
+	is_shown = {
+
+		scope:actor = {
+			RICE_khuzestan_gift_tiraz_era_trigger = yes
+			OR = {
+				religion = religion:islam_religion
+				faith = {
+					has_doctrine = tenet_islamic_syncretism
+				}
+			}
+			OR = {
+				NOT = { is_vassal_or_below_of = scope:recipient } # Doesn't make sense to give it to your liege
+				any_held_title = { is_head_of_faith = yes } # Unless you're the Caliph
+			}
+		}
+
+		NOT = {
+			scope:recipient = scope:actor
+		}
+		
+		# Prioritize paying back loans first
+		# scope:actor = {
+		# 	trigger_if = {
+		# 		limit = {
+		# 			exists = var:loan_amount_owed
+		# 			exists = var:loan_holder
+		# 		}
+		# 		NOT = { var:loan_holder = scope:recipient }
+		# 	}
+		# }
+
+		scope:recipient = {
+			is_adult = yes
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		scope:actor.gold >= RICE_tiraz_gift_cost_value
+		# scope:actor = {
+		# 	#NOT = { is_vassal_or_below_of = scope:recipient } # Doesn't make sense to give it to your liege
+		# }
+		scope:recipient = {
+			OR = {
+				religion = religion:islam_religion
+				faith = {
+					has_doctrine = tenet_islamic_syncretism
+				}
+			}
+			is_busy_in_events_localised = yes
+		}
+	}
+	
+	on_accept = {
+		custom_tooltip = RICE_khuzestan_gift_tiraz_robes_tooltip
+		show_as_tooltip = {
+			RICE_tiraz_interaction_effect = yes
+		}
+		scope:actor = {
+			trigger_event = khuzestan.0011
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 60
+
+		# Caliphs are more likely to do it
+		modifier = {
+			factor = 1.3
+			scope:actor = {
+				any_held_title = { is_head_of_faith = yes }
+			}
+		}
+
+		# Lower tier rulers are less likely to do it, even after it is allowed
+		modifier = {
+			factor = 0.8
+			scope:actor = {
+				highest_held_title_tier <= tier_duchy
+			}
+		}
+		
+		# Increase chances the player will get it from someone
+		modifier = {
+			factor = 1.3
+			scope:recipient = {
+				is_ai = no
+			}
+		}
+
+		modifier = { # Basic Filtering
+			factor = 0
+			scope:recipient = {
+				NOR = {
+					AND = { # Bankrupt vassals, lovers, friends and a bankrupt liege should be considered
+						OR = {
+							is_vassal_of = scope:actor
+							AND = {
+								exists = liege
+								liege = scope:actor
+							}
+							has_secret_relation_lover = scope:actor
+							has_relation_lover = scope:actor
+							has_relation_soulmate = scope:actor
+							has_relation_friend = scope:actor
+							has_relation_best_friend = scope:actor
+						}
+						gold < 0
+					}
+					AND = { # Generous characters will give gifts to their friends/lovers
+						OR = {
+							has_secret_relation_lover = scope:actor
+							has_relation_lover = scope:actor
+							has_relation_soulmate = scope:actor
+							has_relation_friend = scope:actor
+							has_relation_best_friend = scope:actor
+						}
+						scope:actor = {
+							OR = {
+								ai_greed <= high_negative_ai_value
+								AND = {
+									ai_greed < 0
+									culture = {
+										has_cultural_parameter = gives_more_gifts
+									}
+								}
+							}
+						}
+					}
+					AND = { # Characters with the Generous Cultural Tradition will give gifts to more people
+						is_ruler = yes
+						OR = {
+							is_allied_to = scope:actor
+							is_close_or_extended_family_of = scope:actor
+						}
+						scope:actor = {
+							ai_greed < 0
+							culture = {
+								has_cultural_parameter = gives_more_gifts
+							}
+						}
+					}
+					AND = { # Powerful vassals should be considered
+						is_powerful_vassal_of = scope:actor
+						opinion = {
+							target = scope:actor
+							value < 0
+						}
+						NOT ={
+							has_opinion_modifier = {
+								target = scope:actor
+								modifier = gift_opinion
+							}
+						}
+					}
+					AND = { # Factioneering vassals should be considered
+						is_vassal_of = scope:actor
+						is_a_faction_member = yes
+						NOT ={
+							has_opinion_modifier = {
+								target = scope:actor
+								modifier = gift_opinion
+							}
+						}
+					}
+					AND = { # Realm Priests should be considered
+						scope:actor = {
+							faith = { has_doctrine = doctrine_theocracy_temporal }
+							exists = cp:councillor_court_chaplain
+							cp:councillor_court_chaplain = scope:recipient
+						}
+						opinion = {
+							target = scope:actor
+							value <= 25
+						}
+						NOT = {
+							has_opinion_modifier = {
+								target = scope:actor
+								modifier = gift_opinion
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		modifier = {
+			factor = 0.1
+			scope:recipient = {
+				opinion = {
+					target = scope:actor
+					value < 0
+				}
+				NAND = {
+					is_vassal_of = scope:actor
+					scope:actor = {
+						ai_rationality > 50
+					}
+				}
+			}
+		}
+	}
+}

@@ -18,6 +18,32 @@ RICE_setup_khuzestan_flavor_pack_effect = {
 			add_special_building = RICE_khuzestan_shushtar_hydraulic_system
 		}
 	}
+	# Main centers of Tiraz production for the Abbasid, Umayyad, and Fatimid dynasties respectively
+	# Weirdly enough, they won't build the duchy building unless the Duchy exists, go figure
+	if = {
+		limit = {
+			exists = title:d_khuzestan
+		}
+		title:b_ahvaz.title_province = {
+			add_building = RICE_tiraz_factories_02
+		}
+	}
+	if = {
+		limit = {
+			exists = title:d_cordoba
+		}
+		title:b_cordoba.title_province = {
+			add_building = RICE_tiraz_factories_02
+		}
+	}
+	if = {
+		limit = {
+			exists = title:d_cairo
+		}
+		title:b_cairo.title_province = {
+			add_building = RICE_tiraz_factories_02
+		}
+	}
 
 	#########################################################################
 	#
@@ -183,5 +209,53 @@ RICE_khuzestan_move_daniel_tomb_effect = {
 	add_piety = 500
 	add_prestige = 250
 	custom_tooltip = RICE_khuzestan_rebury_daniel_effect_tooltip_1
+}
+
+RICE_tiraz_interaction_effect = {
+	scope:actor = {
+		remove_short_term_gold = RICE_tiraz_gift_cost_value
+		add_prestige = RICE_tiraz_giver_prestige_value
+		if = {
+			limit = {
+				scope:recipient = {
+					OR = {
+						is_landed = yes
+						is_councillor_of = scope:actor
+						dynasty = scope:actor.dynasty
+					}
+				}
+			}
+			add_character_modifier = {
+				modifier = RICE_khuzestan_recently_gifted_tiraz
+				years = 3
+			}
+		}
+	}
+	scope:recipient = {
+		add_prestige = RICE_tiraz_receiver_prestige_value
+		if = {
+			limit = {
+				scope:actor = {
+					any_held_title = { is_head_of_faith = yes }
+					faith = scope:recipient.faith
+				}
+			}
+			add_piety = RICE_tiraz_receiver_prestige_value
+			add_character_modifier = {
+				modifier = RICE_khuzestan_received_tiraz_from_head_of_faith
+				years = 10
+			}
+			add_opinion = {
+				target = scope:actor
+				modifier = RICE_khuzestan_gifted_tiraz
+			}
+		}
+		else = {					
+			add_opinion = {
+				target = scope:actor
+				modifier = RICE_khuzestan_gifted_tiraz
+			}
+		}
+	}	
 }
 
