@@ -22,6 +22,14 @@ RICE_setup_khuzestan_flavor_pack_effect = {
 	# Weirdly enough, they won't build the duchy building unless the Duchy exists, go figure
 	if = {
 		limit = {
+			NOT = { exists = title:d_cairo }
+		}
+		title:c_cairo.holder = {
+			get_title = title:d_cairo
+		}
+	}
+	if = {
+		limit = {
 			exists = title:d_khuzestan
 		}
 		title:b_ahvaz.title_province = {
@@ -67,6 +75,14 @@ RICE_setup_khuzestan_flavor_pack_effect = {
 		remove_variable = tradition_cooldown
 		get_all_innovations_from = scope:persian
 	}	
+
+	title:c_wasit = {
+		set_county_faith = faith:mandeaism
+	}
+
+	title:c_tib = {
+		set_county_faith = faith:mandeaism
+	}
 
 	if = {
 		limit = {
@@ -144,7 +160,7 @@ RICE_setup_khuzestan_flavor_pack_effect = {
 			get_title = title:c_istakhr
 			RICE_setup_new_granted_ruler_bonuses_effect = yes
 		}
-		# Give Shushtar and Luristan to Barsuq
+		# Give Shushtar and Luristan to Bursuq
 		character:RICE_khuzestan_020 = {
 			get_title = title:c_tustar
 			get_title = title:c_luristan
@@ -221,7 +237,8 @@ RICE_tiraz_interaction_effect = {
 					OR = {
 						is_landed = yes
 						is_councillor_of = scope:actor
-						dynasty = scope:actor.dynasty
+						is_extended_family_of = scope:actor
+						#dynasty = scope:actor.dynasty
 					}
 				}
 			}
@@ -259,3 +276,33 @@ RICE_tiraz_interaction_effect = {
 	}	
 }
 
+RICE_mandaean_baptism_effect = {
+	stress_impact = {
+		base = minor_stress_impact_loss
+		zealous = miniscule_stress_impact_loss
+	}
+	if = {
+		limit = {
+			piety_level <= 1
+		}
+		add_piety = 25
+	}
+	else_if = {
+		limit = {
+			piety_level = 2
+		}
+		add_piety = 50
+	}
+	else_if = {
+		limit = {
+			piety_level = 3
+		}
+		add_piety = 75
+	}
+	else_if = {
+		limit = {
+			piety_level >= 4
+		}
+		add_piety = 100
+	}
+}
