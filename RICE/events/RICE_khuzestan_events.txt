@@ -21,6 +21,20 @@ namespace = khuzestan
 ######################################################################################
 
 
+# Startup stuff
+khuzestan.0001 = {
+	hidden = yes
+
+	immediate = {
+		# Spawn some Mandaean characters
+		create_character = {
+			location = root.capital_province
+			template = RICE_mandean_generic_template
+			save_scope_as = mandaean		
+		}
+		add_courtier = scope:mandaean
+	}
+}
 
 # Move the tomb notification
 khuzestan.0010 = {
@@ -354,6 +368,76 @@ khuzestan.0012 = {
 	}
 }
 
+
+
+
+
+# Mandaean arrives at your court
+khuzestan.0013 = {
+	type = character_event
+	title = khuzestan.0013.t
+	desc = khuzestan.0013.desc
+	theme = diplomacy_foreign_affairs_focus
+
+	left_portrait = root
+	right_portrait = {
+		character = scope:mandaean
+		animation = throne_room_bow_1
+	}
+
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_mandaean_heartland
+			}
+		}
+	}
+
+	immediate = {
+		create_character = {
+			location = root.capital_province
+			template = RICE_mandean_generic_template
+			save_scope_as = mandaean			
+		}
+	}
+
+	# Hire them
+	option = {
+		name = khuzestan.0013.a
+		add_courtier = scope:mandaean
+		if = {
+			limit = {
+				NOR = {
+					faith = { has_doctrine = tenet_gnosticism }
+					religion = religion:dualism_religion
+				}
+			}
+			add_piety = -100
+		}
+		pay_short_term_gold = {
+			target = scope:mandaean
+			gold = 25
+		}
+		add_character_modifier = {
+			modifier = RICE_khuzestan_mandaean_connections
+			years = 10
+		}
+	}
+
+	# Don't hire them
+	option = {
+		name = khuzestan.0013.b
+		hidden_effect = {
+			scope:mandaean = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+}
 
 
 ######################################################################################
