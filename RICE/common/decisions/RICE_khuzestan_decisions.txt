@@ -331,31 +331,33 @@ RICE_khuzestan_parwanaya_festival = {
 }
 
 
-RICE_khuzestan_gnostic_baptism_festival = {
-	picture = "gfx/interface/illustrations/decisions/decision_RICE_heavenly_light.dds"
+RICE_khuzestan_gnostic_baptism_rite = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_water.dds"
 
 	ai_check_interval = 36
 
 	cooldown = { days = 1095 }
 	
-	desc = RICE_khuzestan_gnostic_baptism_festival_desc
+	desc = RICE_khuzestan_gnostic_baptism_rite_desc
 	
 	is_shown = {
 		highest_held_title_tier > tier_barony
 		is_landed = yes
-		OR = {
-			faith = faith:mandeaism
-			faith = faith:sethianism
-			faith = faith:valentinianism
-		}
+		# OR = {
+		# 	faith = faith:mandeaism
+		# 	faith = faith:sethianism
+		# 	faith = faith:valentinianism
+		# }
+		faith = { has_doctrine = rice_baptism_purification_doctrine }
 	}
 	
 	is_valid = {
-		OR = {
-			faith = faith:mandeaism
-			faith = faith:sethianism
-			faith = faith:valentinianism
-		}
+		# OR = {
+		# 	faith = faith:mandeaism
+		# 	faith = faith:sethianism
+		# 	faith = faith:valentinianism
+		# }
+		faith = { has_doctrine = rice_baptism_purification_doctrine }
 	}
 	
 	is_valid_showing_failures_only = {
@@ -368,13 +370,13 @@ RICE_khuzestan_gnostic_baptism_festival = {
 			RICE_mandaean_baptism_effect = yes
 		}
 
-		custom_tooltip = RICE_khuzestan_gnostic_baptism_festival_effect_tooltip_1
+		custom_tooltip = RICE_khuzestan_gnostic_baptism_rite_effect_tooltip_1
 		
 		if = {
 			limit = {
 				has_game_rule = RICE_historical_context_on
 			}
-			custom_tooltip = RICE_khuzestan_gnostic_baptism_festival_context_tooltip
+			custom_tooltip = RICE_khuzestan_gnostic_baptism_rite_context_tooltip
 		}
 
 		trigger_event = {
@@ -437,10 +439,16 @@ RICE_khuzestan_tomb_of_daniel_decision = {
 			}
 		}
 		OR = {
-			title:c_tustar = {
-				squared_distance = {
-					target = root.capital_province
-					value <= squared_distance_medium
+			AND = {
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_khuzestan_daniel_reburied
+				}
+				title:c_tustar = {
+					squared_distance = {
+						target = root.capital_province
+						value <= squared_distance_medium
+					}
 				}
 			}
 			any_held_title = {
