@@ -1,0 +1,85 @@
+﻿###############################################################################
+# 
+# Niger Delta
+# 
+# khwarezm.0000-khwarezm.0019			Setup events, history events, miscellaneous events and decisions
+# khwarezm.0020-khwarezm.0029			Patron deities
+# khwarezm.0030-khwarezm.0039			Siyavash Worship
+# khwarezm.0040-khwarezm.0049			Wakhsh/Oxus Worship
+# khwarezm.0050-khwarezm.0099			Generic flavor events
+# 
+# 
+###############################################################################
+
+namespace = khwarezm
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# khwarezm.0000-khwarezm.0019
+# 
+######################################################################################
+
+
+
+# Citadel of Al-Fir is destroyed
+khwarezm.0010 = {
+	hidden = yes
+
+	immediate = {
+		set_global_variable = {
+			name = RICE_khwarezm_al_fir_destroyed
+			value = yes
+		}
+		title:c_kath = {
+			save_scope_as = kath
+		}
+		title:c_kath.holder = {
+			save_scope_as = kath_ruler
+		}
+		title:b_kath.title_province = {
+			remove_building = RICE_khwarezm_al_fir_fortress
+		}
+		every_ruler = {
+			limit = {
+				is_ai = no
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_lower_oxus_region
+					}
+				}
+			}
+			trigger_event = khwarezm.0011
+		}
+	}
+}
+
+# Citadel of Al-Fir is destroyed
+khwarezm.0011 = {
+	type = character_event
+	title = khwarezm.0011.t
+	desc = khwarezm.0011.desc
+	theme = RICE_theme_khwarezm_kala_fortress
+	
+	right_portrait = {
+		character = scope:kath_ruler
+		animation = sadness
+	}
+
+	immediate = {
+		show_as_tooltip = {	
+			title:b_kath.title_province = {
+				remove_building = RICE_khwarezm_al_fir_fortress
+			}
+		}
+	}
+	
+	option = { # Repairs
+		name = khwarezm.0011.a
+	}
+
+}
+
+
