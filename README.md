@@ -81,6 +81,7 @@ Thanks to all I worked with, took stuff from, and provided me encouragement and 
 
 Special thanks in particular to:
 
+- Atreides for bookmark icons
 - B7E7 for collaboration and various cultures/faiths from BlackEmperor's Africa Plus
 - Bonseny for the amazing VIET and RICE logos and the beautiful 3D art assets
 - Celticus for a lot of useful help and suggestions
