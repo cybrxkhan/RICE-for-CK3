@@ -4,7 +4,6 @@
 # 
 # khuzestan.0000-khuzestan.0019			Setup events, history events, miscellaneous events and decisions
 # khuzestan.0020-khuzestan.0029			Tomb of Daniel
-# khuzestan.0030-khuzestan.0049			Gundishapur
 # khuzestan.0050-khuzestan.0099			Generic flavor events
 # 
 # 
@@ -36,7 +35,140 @@ khuzestan.0001 = {
 	}
 }
 
-# Move the tomb notification
+
+
+# Khuzestan kingdom is made
+khuzestan.0005 = {
+	type = character_event
+	title = khuzestan.0005.t
+	desc = khuzestan.0005.desc
+	theme = diplomacy_majesty_focus
+	override_background = { event_background = RICE_background_iranian_throne_room }
+	
+	left_portrait = scope:khuzi_hero
+	
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		scope:khuzi_hero.culture = {
+			save_scope_as = khuzi
+		}
+		RICE_khuzestan_kingdom_effect = yes
+	}
+	
+	option = { # Ok
+		name = khuzestan.0005.a
+		RICE_khuzestan_counties_elymaean_effect = yes
+		set_global_variable = {
+			name = RICE_khuzestan_khuzi_elymais
+			value = yes
+		}
+	}
+	
+	option = { # Ok
+		name = khuzestan.0005.b
+		RICE_khuzestan_counties_community_effect = yes
+		set_global_variable = {
+			name = RICE_khuzestan_khuzi_community
+			value = yes
+		}
+	}
+	
+	option = { # Ok
+		name = khuzestan.0005.c
+		RICE_khuzestan_counties_traders_effect = yes
+		set_global_variable = {
+			name = RICE_khuzestan_khuzi_traders
+			value = yes
+		}
+	}
+
+	after = {
+		every_ruler = {
+			limit = {
+				is_ai = no
+				NOT = { this = root }
+				OR = {
+					is_within_diplo_range = { CHARACTER = root }
+					culture = culture:elamite
+					culture = {
+						any_parent_culture_or_above = {
+							this = culture:elamite
+						}
+					}
+				}
+			}
+			trigger_event = khuzestan.0006
+		}
+	}
+}
+
+# Khuzestan kingdom is made - notification
+khuzestan.0006 = {
+	type = character_event
+	title = khuzestan.0006.t
+	desc = {
+		desc = khuzestan.0006.desc
+		triggered_desc = {
+			trigger = {
+				has_global_variable = RICE_khuzestan_khuzi_elymais
+			}
+			desc = khuzestan.0006.desc.elymais
+		}		
+		triggered_desc = {
+			trigger = {
+				has_global_variable = RICE_khuzestan_khuzi_community
+			}
+			desc = khuzestan.0006.desc.community
+		}		
+		triggered_desc = {
+			trigger = {
+				has_global_variable = RICE_khuzestan_khuzi_traders
+			}
+			desc = khuzestan.0006.desc.traders
+		}	
+	}
+	theme = diplomacy_majesty_focus
+	override_background = { event_background = RICE_background_iranian_throne_room }
+	
+	left_portrait = {
+		character = scope:khuzi_hero
+		animation = personality_bold
+	}
+	
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		show_as_tooltip = {
+			scope:khuzi_hero = {
+				RICE_khuzestan_kingdom_effect = yes
+				if = {
+					limit = {
+						has_global_variable = RICE_khuzestan_khuzi_elymais
+					}
+					RICE_khuzestan_counties_elymaean_effect = yes
+				}			
+				else_if = {
+					limit = {
+						has_global_variable = RICE_khuzestan_khuzi_community
+					}
+					RICE_khuzestan_counties_community_effect = yes
+				}			
+				else_if = {
+					limit = {
+						has_global_variable = RICE_khuzestan_khuzi_traders
+					}
+					RICE_khuzestan_counties_traders_effect = yes
+				}			
+			}			
+		}
+	}
+	
+	option = { # Ok
+		name = khuzestan.0006.a
+	}
+}
+
+
+# Shushtar hydraulic system event
 khuzestan.0010 = {
 	type = character_event
 	title = khuzestan.0010.t
@@ -716,3 +848,19 @@ khuzestan.0026 = {
 	}
 
 }
+
+
+######################################################################################
+# 
+# KHUZI STUFF
+# 
+# khuzestan.0030-khuzestan.0039
+# 
+######################################################################################
+
+
+
+
+
+
+
