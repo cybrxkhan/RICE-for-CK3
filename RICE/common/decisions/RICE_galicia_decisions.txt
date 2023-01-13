@@ -1412,14 +1412,37 @@ RICE_galicia_cantiga_decision = {
 			custom_tooltip = RICE_galicia_cantiga_decision_context_tooltip
 		}
 
-		if = { # Courtly Love / Cantigas de Amor
+		# Not sure why AI is always picking first option, so we'll go with this for now as a wonky workaround
+		if = {
+			limit = { is_ai = yes }
+			random_list = {
+				10 = {					
+					set_variable = {
+						name = RICE_cantiga_type
+						value = flag:courtly_love
+					}
+				}
+				10 = {					
+					set_variable = {
+						name = RICE_cantiga_type
+						value = flag:romantic_love
+					}
+				}
+				10 = {					
+					set_variable = {
+						name = RICE_cantiga_type
+						value = flag:satire
+					}
+				}
+			}
+		}
+		else_if = { # Courtly Love / Cantigas de Amor
 			limit = { scope:RICE_cantiga_courtly_love_option = yes }
 			set_variable = {
 				name = RICE_cantiga_type
 				value = flag:courtly_love
 			}
 		}
-
 		else_if = { # Romantic Love / Cantigas de Amigo
 			limit = { scope:RICE_cantiga_romantic_love_option = yes }
 			set_variable = {
@@ -1427,7 +1450,6 @@ RICE_galicia_cantiga_decision = {
 				value = flag:romantic_love
 			}
 		}
-
 		else_if = { # Satire / Cantigas de Escarnio e Maldizer
 			limit = { scope:RICE_cantiga_satire_option = yes }
 			set_variable = {
