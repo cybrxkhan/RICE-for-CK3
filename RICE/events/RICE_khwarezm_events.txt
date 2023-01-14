@@ -266,4 +266,240 @@ khwarezm.0020 = {
 
 
 
+# Cult Center
+khwarezm.0021 = {
+	type = character_event
+	title = khwarezm.0021.t
+	desc = {
+		desc = khwarezm.0021.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:RICE_yazata_cult_center = flag:anahita }
+				desc = khwarezm.0021.desc.anahita
+			}		
+			triggered_desc = {
+				trigger = { var:RICE_yazata_cult_center = flag:bahram }
+				desc = khwarezm.0021.desc.bahram
+			}		
+			triggered_desc = {
+				trigger = { var:RICE_yazata_cult_center = flag:mah }
+				desc = khwarezm.0021.desc.mah
+			}		
+			triggered_desc = {
+				trigger = { var:RICE_yazata_cult_center = flag:mithra }
+				desc = khwarezm.0021.desc.mithra
+			}		
+			triggered_desc = {
+				trigger = { var:RICE_yazata_cult_center = flag:nana }
+				desc = khwarezm.0021.desc.nana
+			}		
+			triggered_desc = {
+				trigger = { var:RICE_yazata_cult_center = flag:rashnu }
+				desc = khwarezm.0021.desc.rashnu
+			}		
+			triggered_desc = {
+				trigger = { var:RICE_yazata_cult_center = flag:sraosha }
+				desc = khwarezm.0021.desc.sraosha
+			}		
+			triggered_desc = {
+				trigger = { var:RICE_yazata_cult_center = flag:tir }
+				desc = khwarezm.0021.desc.tir
+			}		
+			triggered_desc = {
+				trigger = { var:RICE_yazata_cult_center = flag:siyavash }
+				desc = khwarezm.0021.desc.siyavash
+			}		
+			triggered_desc = {
+				trigger = { var:RICE_yazata_cult_center = flag:wakhsh }
+				desc = khwarezm.0021.desc.wakhsh
+			}		
+			triggered_desc = {
+				trigger = { var:RICE_yazata_cult_center = flag:weshparkar }
+				desc = khwarezm.0021.desc.weshparkar
+			}		
+			triggered_desc = {
+				trigger = { var:RICE_yazata_cult_center = flag:astghik }
+				desc = khwarezm.0021.desc.astghik
+			}		
+			triggered_desc = {
+				trigger = { var:RICE_yazata_cult_center = flag:barshamin }
+				desc = khwarezm.0021.desc.barshamin
+			}		
+			triggered_desc = {
+				trigger = { var:RICE_yazata_cult_center = flag:tork }
+				desc = khwarezm.0021.desc.tork
+			}		
+			triggered_desc = {
+				trigger = { var:RICE_yazata_cult_center = flag:vahagn }
+				desc = khwarezm.0021.desc.vahagn
+			}		
+			triggered_desc = {
+				trigger = { var:RICE_yazata_cult_center = flag:dali }
+				desc = khwarezm.0021.desc.dali
+			}		
+			triggered_desc = {
+				trigger = { var:RICE_yazata_cult_center = flag:gaim }
+				desc = khwarezm.0021.desc.gaim
+			}		
+			triggered_desc = {
+				trigger = { var:RICE_yazata_cult_center = flag:gatsi }
+				desc = khwarezm.0021.desc.gatsi
+			}		
+			triggered_desc = {
+				trigger = { var:RICE_yazata_cult_center = flag:kopala }
+				desc = khwarezm.0021.desc.kopala
+			}		
+			triggered_desc = {
+				trigger = { var:RICE_yazata_cult_center = flag:zaden }
+				desc = khwarezm.0021.desc.zaden
+			}		
+		}
+		desc = khwarezm.0021.desc.conclusion
+	}
+	theme = RICE_theme_zoroastrian_temple
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_sacredrite
+		capital_county = {
+			save_scope_as = capital
+		}
+		RICE_yazata_establish_cult_center_effect = yes
+	}
+	
+	option = { # Ok
+		name = khwarezm.0021.a
+	}
+
+}
+
+
+
+# Destroy Cult Centers
+khwarezm.0022 = {
+	type = character_event
+	title = khwarezm.0022.t
+	desc = {
+		desc = khwarezm.0022.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = { religion = religion:zoroastrianism_religion }
+				desc = khwarezm.0022.desc.zoroastrian
+			}
+			desc = khwarezm.0022.desc.non_zoroastrian
+		}
+		desc = khwarezm.0022.desc.conclusion
+	}
+	theme = RICE_theme_zoroastrian_temple
+	
+	right_portrait = {
+		character = root
+		animation = war_attacker
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_crusade_starts
+		save_scope_as = RICE_yazata_cult_destroyer		
+		religion:zoroastrianism_religion = { save_scope_as = zoroastrianism }
+	}
+	
+	option = { # Ok
+		name = khwarezm.0022.a
+		add_gold = RICE_khwarezm_destroy_cult_center_value
+		add_piety = RICE_khwarezm_destroy_cult_center_value
+		if = {
+			limit = {
+				faith = { has_doctrine = rice_zoroastrian_sassanian_doctrine }
+			}
+			custom_tooltip = RICE_khwarezm_destroy_cult_center_first_person_sassanian_tooltip
+		}
+		else = {
+			custom_tooltip = RICE_khwarezm_destroy_cult_center_first_person_normal_tooltip
+		}
+	}
+
+	after = {
+		hidden_effect = {
+			RICE_destroy_yazata_cult_centers_effect = yes
+		}
+		every_ruler = {
+			limit = {
+				is_ai = no
+				NOT = { this = scope:RICE_yazata_cult_destroyer }
+				OR = {
+					is_vassal_of = scope:RICE_yazata_cult_destroyer
+					capital_county = {
+						squared_distance = {
+							target = scope:RICE_yazata_cult_destroyer.capital_province
+							value < squared_distance_medium
+						}	
+					}
+				}				
+				#RICE_has_unorthodox_yazatas_trigger = yes
+			}
+			trigger_event = khwarezm.0023
+		}		
+	}
+
+}
+
+
+# Destroy Cult Centers notification
+khwarezm.0023 = {
+	type = character_event
+	title = khwarezm.0023.t
+	desc = {
+		desc = khwarezm.0023.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = { religion = religion:zoroastrianism_religion }
+				desc = khwarezm.0023.desc.zoroastrian
+			}
+			desc = khwarezm.0023.desc.non_zoroastrian
+		}
+		desc = khwarezm.0023.desc.conclusion
+	}
+	theme = RICE_theme_zoroastrian_temple
+	
+	right_portrait = {
+		character = scope:RICE_yazata_cult_destroyer
+		animation = war_attacker
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_crusade_starts
+		# scope:RICE_yazata_cult_destroyer = {
+		# 	add_gold = RICE_khwarezm_destroy_cult_center_value
+		# 	add_piety = RICE_khwarezm_destroy_cult_center_value
+		# }
+		if = {
+			limit = {
+				faith = { has_doctrine = rice_zoroastrian_sassanian_doctrine }
+			}
+			custom_tooltip = RICE_khwarezm_destroy_cult_center_third_person_sassanian_tooltip
+		}
+		else = {
+			custom_tooltip = RICE_khwarezm_destroy_cult_center_third_person_normal_tooltip
+		}
+	}
+	
+	option = { # Ok
+		name = {
+			trigger = { RICE_has_unorthodox_yazatas_trigger = yes }
+			text = khwarezm.0023.a.cult
+		}
+		name = {
+			trigger = { RICE_has_unorthodox_yazatas_trigger = no }
+			text = khwarezm.0023.a.not_cult
+		}
+	}
+
+}
+
+
+
 

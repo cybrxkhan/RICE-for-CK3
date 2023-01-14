@@ -14,24 +14,27 @@ RICE_khwarezm_establish_cult_center = {
 		is_ruler = yes
 		is_landed = yes
 		religion = religion:zoroastrianism_religion
-		faith = {
-			OR = {
-				has_doctrine = rice_zoroastrian_eastern_doctrine
-				has_doctrine = rice_zoroastrian_armenian_doctrine
-				has_doctrine = rice_zoroastrian_georgian_doctrine
-			}
+		RICE_has_unorthodox_yazatas_trigger = yes
+		any_held_county = {
+			RICE_has_yazata_cult_center_trigger = no
 		}
 	}
 	
 	is_valid = {
 		religion = religion:zoroastrianism_religion
-		faith = {
-			OR = {
-				has_doctrine = rice_zoroastrian_eastern_doctrine
-				has_doctrine = rice_zoroastrian_armenian_doctrine
-				has_doctrine = rice_zoroastrian_georgian_doctrine
+		RICE_has_unorthodox_yazatas_trigger = yes
+		custom_description = {
+			text = RICE_establish_yazata_no_other_cult_centers_req
+			NOT = {
+				capital_county.duchy = {
+					any_in_de_jure_hierarchy = {
+						tier = tier_county
+						RICE_has_yazata_cult_center_trigger = yes
+					}
+				}
 			}
 		}
+		piety_level >= 3
 	}
 	
 	is_valid_showing_failures_only = {
@@ -319,6 +322,11 @@ RICE_khwarezm_establish_cult_center = {
 		custom_tooltip = RICE_khwarezm_establish_cult_center_effect_tooltip_1
 		custom_tooltip = RICE_khwarezm_establish_cult_center_effect_tooltip_2	
 		custom_tooltip = RICE_khwarezm_establish_cult_center_effect_tooltip_3
+
+		show_as_tooltip = {
+			add_piety = 150
+			add_prestige = 100
+		}
 
 
 		if = { # AI
@@ -625,16 +633,15 @@ RICE_khwarezm_establish_cult_center = {
 			}
 		}		
 		
-		trigger_event = khwarezm.8888
+		trigger_event = khwarezm.0021
 	}
 
 	cost = {
-		gold = minor_gold_value # Will depend
-		piety = medium_piety_gain
+		gold = 125 # Will depend
 	}
 	
 	ai_potential = {
-		short_term_gold > minor_gold_value
+		short_term_gold > 125
 	}
 
 	ai_will_do = {
@@ -684,6 +691,7 @@ RICE_khwarezm_destroy_cult_center = {
 				}
 			}
 		}
+		RICE_qualifies_for_destroying_yazata_cult_centers_trigger = yes
 	}
 	
 	is_valid = {
@@ -699,6 +707,23 @@ RICE_khwarezm_destroy_cult_center = {
 				}
 			}
 		}
+
+		custom_description = {
+			text = RICE_destroy_yazata_cult_center_req
+			RICE_qualifies_for_destroying_yazata_cult_centers_trigger = yes
+		}
+
+		OR = {
+			AND = {
+				highest_held_title_tier >= tier_county
+				prestige_level >= 4
+			}
+			AND = {
+				highest_held_title_tier >= tier_kingdom
+				prestige_level >= 2
+			}
+		}
+		
 	}
 	
 	is_valid_showing_failures_only = {
@@ -723,16 +748,15 @@ RICE_khwarezm_destroy_cult_center = {
 		}
 		custom_tooltip = RICE_khwarezm_destroy_cult_center_effect_tooltip_3
 		
-		trigger_event = khwarezm.8888
+		trigger_event = khwarezm.0022
 	}
 
 	cost = {
-		gold = minor_gold_value # Will depend
-		piety = medium_piety_gain
+		prestige = major_prestige_value
 	}
 	
 	ai_potential = {
-		short_term_gold > minor_gold_value
+		prestige > major_prestige_value
 	}
 
 	ai_will_do = {
