@@ -14,13 +14,24 @@ RICE_khwarezm_establish_cult_center = {
 		is_ruler = yes
 		is_landed = yes
 		religion = religion:zoroastrianism_religion
-		faith = { has_doctrine_parameter = rice_unlock_yazata_cult_center } 
-		NOT = { faith = { has_doctrine_parameter = rice_no_yazatas } }
+		faith = {
+			OR = {
+				has_doctrine = rice_zoroastrian_eastern_doctrine
+				has_doctrine = rice_zoroastrian_armenian_doctrine
+				has_doctrine = rice_zoroastrian_georgian_doctrine
+			}
+		}
 	}
 	
 	is_valid = {
 		religion = religion:zoroastrianism_religion
-		faith = { has_doctrine_parameter = rice_unlock_yazata_cult_center } 
+		faith = {
+			OR = {
+				has_doctrine = rice_zoroastrian_eastern_doctrine
+				has_doctrine = rice_zoroastrian_armenian_doctrine
+				has_doctrine = rice_zoroastrian_georgian_doctrine
+			}
+		}
 	}
 	
 	is_valid_showing_failures_only = {
@@ -664,8 +675,13 @@ RICE_khwarezm_destroy_cult_center = {
 		OR = {
 			NOT = { religion = religion:zoroastrianism_religion }
 			AND = {
-				faith = { has_doctrine_parameter = rice_unlock_destroy_cult_centers }
 				religion = religion:zoroastrianism_religion
+				faith = {
+					OR = {
+						has_doctrine = rice_zoroastrian_sassanian_doctrine
+						has_doctrine = rice_zoroastrian_no_yazatas_doctrine
+					}
+				}
 			}
 		}
 	}
@@ -674,8 +690,13 @@ RICE_khwarezm_destroy_cult_center = {
 		OR = {
 			NOT = { religion = religion:zoroastrianism_religion }
 			AND = {
-				faith = { has_doctrine_parameter = rice_unlock_destroy_cult_centers }
 				religion = religion:zoroastrianism_religion
+				faith = {
+					OR = {
+						has_doctrine = rice_zoroastrian_sassanian_doctrine
+						has_doctrine = rice_zoroastrian_no_yazatas_doctrine
+					}
+				}
 			}
 		}
 	}
@@ -748,12 +769,14 @@ RICE_khwarezm_worship_yazata = {
 		is_ruler = yes
 		is_landed = yes
 		religion = religion:zoroastrianism_religion
-		NOT = { faith = { has_doctrine_parameter = rice_no_yazatas } }
+		NOT = { faith = { has_doctrine = rice_zoroastrian_no_yazatas_doctrine } }
+		#NOT = { faith = { has_doctrine_parameter = rice_no_yazatas } }
 	}
 	
 	is_valid = {
 		religion = religion:zoroastrianism_religion
-		NOT = { faith = { has_doctrine_parameter = rice_no_yazatas } }
+		NOT = { faith = { has_doctrine = rice_zoroastrian_no_yazatas_doctrine } }
+		#NOT = { faith = { has_doctrine_parameter = rice_no_yazatas } }
 	}
 	
 	is_valid_showing_failures_only = {
@@ -1061,13 +1084,6 @@ RICE_khwarezm_worship_yazata = {
 			}
 			custom_tooltip = RICE_khwarezm_worship_yazata_effect_tooltip_5
 		}
-		
-		if = {
-			limit = {
-				has_game_rule = RICE_historical_context_on
-			}
-			custom_tooltip = RICE_khwarezm_worship_yazata_context_tooltip
-		}
 
 		if = { # AI
 			limit = { is_ai = yes }
@@ -1345,6 +1361,13 @@ RICE_khwarezm_worship_yazata = {
 			}
 		}
 		else_if = {
+			limit = { scope:RICE_yazata_dali_option = yes }
+			set_variable = {
+				name = RICE_yazata_worship
+				value = flag:dali
+			}
+		}
+		else_if = {
 			limit = { scope:RICE_yazata_gaim_option = yes }
 			set_variable = {
 				name = RICE_yazata_worship
@@ -1373,16 +1396,32 @@ RICE_khwarezm_worship_yazata = {
 			}
 		}
 		
-		trigger_event = khwarezm.8888
+		#trigger_event = khwarezm.0020
+
+		# Choose appropriate location
+		capital_province = {
+			spawn_activity = {
+				type = activity_yazata_worship
+				owner = root
+			}
+		}
+		
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_khwarezm_worship_yazata_context_tooltip
+		}
 	}
 
 	cost = {
-		gold = minor_gold_value # Will depend
-		piety = medium_piety_gain
+		gold = RICE_activity_cost # Will depend
+		#piety = medium_piety_gain
 	}
 	
 	ai_potential = {
-		short_term_gold > minor_gold_value
+		short_term_gold > RICE_activity_cost
 	}
 
 	ai_will_do = {
