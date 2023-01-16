@@ -1,12 +1,13 @@
-<img src="https://i.imgur.com/5RCaDDK.jpg">
+<img src="https://i.imgur.com/QkPidiM.jpg">
 
-## Latest Version: Version 1.8.2 "Tyushtya" (Released 12/19/22, for vanilla patch 1.8.x)
+## Latest Version: Version 1.8.3 "Šuš" (Released 1/15/22, for vanilla patch 1.8.x)
 
-**Newest Flavor Pack - Mordvin: Along the Volga**
+**Newest Flavor Packs: *Khozestan: Land of the Sugar Cane* & *Khwarezm: The Oxus Borderlands***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_Tyushtya is a hero, king, and god/demi-god in the mythology and folklore of the Erzyas and Mokshas, the two Mordvin peoples._
+_“Darius the King says: At Susa a very excellent work was ordered, a very excellent work was brought to completion.”_
+_- Inscription at the Palace of Darius in Susa, or Šuš in Persian_
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places and peoples.
 
@@ -23,6 +24,8 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 - [Granada: Memories of the Alhambra](https://docs.google.com/document/d/e/2PACX-1vSFZFsesbXB3S4L2cgOfu_IYL6WzxbzLjzps4qGizN-8avV7Wvi99A5V8K-oq4IiiILonH_e85kIAgy/pub)
 - [Guanche: The Fortunate Isles](https://docs.google.com/document/d/e/2PACX-1vSs5DoK_1Hux5Uqe8cZp9qKdClxq_8W6PF3Rdejo8hR_C3mn1_qd166bbpw096x0DtwBGTBHC8aQYTO/pub)
 - [Harran: The Last Hellenic Pagans](https://docs.google.com/document/d/e/2PACX-1vQOVaDq59Adp5PsNw7r8KhK9cgHMBBWGPWG085FdTKegkD8G8BFLa_e1lz8usY164B42gAVZD4D_2Rs/pub)
+- [Khuzestan: Land of the Sugar Cane](https://docs.google.com/document/d/e/2PACX-1vRI3FkOVenhxblZjwPx5v9OI_SxzK-i5DO4S4Yd2983gkrLwvoD9rSxKJ5nLai8TsMVxtCU147Km6je/pub)
+- [Khwarezm: The Oxus Borderlands](https://docs.google.com/document/d/e/2PACX-1vRb7KJnolu0twdKXwN0N6K9qZSSNxm2yyS6VroADAGod9VjUGBKf5nIh-ZzsdYr93W3XuN0MGO8OeXd/pub)
 - [Magadha: Diamond Throne of Buddhism](https://docs.google.com/document/d/e/2PACX-1vQvXP97M8x7lXYDilOlkVz-lCT0dk6Qq2R6cFyoySNv6g5mqAhIxzquf_1TeR9eEllCkA0HhpOfErnT/pub)
 - [Mordvin: Along the Volga](https://docs.google.com/document/d/e/2PACX-1vSJLf-BGou98MSCHMEVO1QWEme1kKSe8CiriXgpfEUHeySTLJOsPLQobPnu_fIt-W-GqcL3VBXFqJzZ/pub)
 - [Niger Delta: Heirs of Oduduwa](https://docs.google.com/document/d/e/2PACX-1vTgW9FFORhgNKseRIGdOXnsCLe5Nee8f8dK9yQxkvWshD3ZJf5vzXhMHQKmoy3qnMEjm2kLImgExhvt/pub)
@@ -54,25 +57,25 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/z9oVOP2.jpg">
+<img src="https://i.imgur.com/c1V3CtB.jpg">
 
-### 1.8.2 "Tyushtya"
+### 1.8.3 "Šuš"
 
-- Added Mordvin Flavor Pack: Along the Volga
-- Added four new bookmarks, two for each start date, featuring recommended playthroughs that highlight various RICE content
-- Added new Erzya and Moksha namelists with more accurate names and dynasty  names to replace the old Mordvin namelist (credits to Макс for compiling the list)
-- Added Finnic Sorcerers tradition for Balto-Finnic, Volga Finnic, and Ugro-Permian cultures; Finnish, Estonian, Sami, and Karelian cultures have it by default
-- Added Ahmad al-Daya and his family of Tulunid officials/scholars
-- Almeria now starts off as independent in 1066
-- Tweaked the family of Abu Bakr al-Madhara'i (RICE added character under Tulunids in 867)
-- Minor tweaks to Lady Godiva and Ealdgyth in the 1066 bookmark
-- Umar ibn Hafsun now always starts off with the vengeful, ambitious, and wrathful traits
-- Some features are now disabled when run with TFE (in preparation for the TFE update to 1.8)
-- Pamiri and Turco-Hephthalite culture no longer uses Indian clothing
-- Changed event backgrounds for a couple events in the Reindeer Sacrifice decision/event chain
-- Fixed Greenland difficulty rule not working
-- Fixed AI being more likely to levy extra taxes on whaling towns if they’re just and generous, and less likely if they’re arbitrary and generous, rather than the other way around
-- Fixed Buddhist doctrine icon names to match capitalization to prevent buggy appearance for linux users
+- Added two Iranian flavor packs – **Khuzestan: Land of the Sugar Cane** and **Khwarezm: The Oxus Borderlands**
+- Added 3 Middle Eastern and 3 Central Asian themed music tracks
+- Added four new bookmark characters: Denha of Socotra (867), Muhammad al-Baridi (867), Eraq ibn Mansur (867), Bursuq the Elder (1066)
+- Lady Godiva now starts off as Countess under her grandson Eadwin, to represent her landholdings
+- Tweaked bonuses of the Harranian Neoplatonic Academy to be slightly stronger
+- Changed intro noise for several event backgrounds/themes
+- Changed Tulun (Ibn Tulun’s father) to Uyghur culture
+- Ibn Tulun’s mother Qasim now correctly has his mentor, Yarjukh, as her second husband
+- Some decisions now have a maximum cap of 150 gold cost to prevent them from costing an unrealistically large amount
+- Replaced icon for the People of the Silk Road tradition
+- Slightly expanded the range where you can take the decision to Patronize the Neoplatonic Academy
+- Added in “cheat” scripted effects to help with Greenland/Vinland when using console commands: RICE_give_greenland_resilience_effect, RICE_give_greenland_networks_effect, and RICE_give_vinland_viability_effect, to increase each resource by 100, 100, or 10 respectively
+- Fixed the Greenland difficulty rule not working for realsies this time, promise!
+- Fixed AI always taking the first option in several decisions with widgets where you can choose between different options
+- Fixed Kakuyid bookmark not working
 - Miscellaneous bugfixes
 
 ## Credits
