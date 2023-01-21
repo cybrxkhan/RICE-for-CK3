@@ -1,13 +1,14 @@
 <img src="https://i.imgur.com/QkPidiM.jpg">
 
-## Latest Version: Version 1.8.3 "Šuš" (Released 1/15/22, for vanilla patch 1.8.x)
+## Latest Version: Version 1.8.4 "Al-Biruni" (Released 1/20/22, for vanilla patch 1.8.x)
 
 **Newest Flavor Packs: *Khozestan: Land of the Sugar Cane* & *Khwarezm: The Oxus Borderlands***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_“Darius the King says: At Susa a very excellent work was ordered, a very excellent work was brought to completion.”_
-_- Inscription at the Palace of Darius in Susa, or Šuš in Persian_
+_"For what the crowd calls courage - bravely dashing into the fight of plunging into an abyss of destruction - is only a species of courage, whilst the genus, far above all species, is to scorn death, whether by word or deed."_
+
+_- Al-Biruni (973 - c.1050 CE), Khwarezmian polymath and scholar_
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places and peoples.
 
@@ -59,7 +60,7 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 <img src="https://i.imgur.com/c1V3CtB.jpg">
 
-### 1.8.3 "Šuš"
+### 1.8.4 "Al-Biruni"
 
 - Added two Iranian flavor packs – **Khuzestan: Land of the Sugar Cane** and **Khwarezm: The Oxus Borderlands**
 - Added 3 Middle Eastern and 3 Central Asian themed music tracks
