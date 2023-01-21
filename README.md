@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/QkPidiM.jpg">
 
-## Latest Version: Version 1.8.4 "Al-Biruni" (Released 1/20/22, for vanilla patch 1.8.x)
+## Latest Version: Version 1.8.4 "Al-Biruni" (Released 1/20/23, for vanilla patch 1.8.x)
 
 **Newest Flavor Packs: *Khozestan: Land of the Sugar Cane* & *Khwarezm: The Oxus Borderlands***
 
