@@ -159,6 +159,17 @@ RICE_setup_non_optional_flavor_events_effect = {
 		character:244004 = {
 			trigger_event = tarim_basin.0050
 		}
+		# Rollo of Normandy
+		if = {
+			limit = {
+				character:242 = {
+					is_landed = yes
+				}
+			}
+			character:242 = {
+				trigger_event = normandy.0080
+			}
+		}
 	}
 
 	if = {
@@ -224,25 +235,28 @@ RICE_setup_music_effect = {
 			NOT = { has_game_rule = RICE_music_off }
 			OR = {
 				has_game_rule = RICE_music_unrestricted
-				culture_has_mena_heritage_pillar_trigger = yes
-				culture_has_west_asian_heritage_pillar_trigger = yes
+				#culture_has_european_heritage_pillar_trigger = yes
+				culture = {
+					has_cultural_pillar = heritage_frankish
+				}
+				culture = {
+					has_cultural_pillar = heritage_north_germanic
+				}
 				capital_province = {
 					OR = {
-						geographical_region = world_asia_minor
-						geographical_region = world_middle_east
-						geographical_region = world_africa_east
-						geographical_region = world_africa_north
-						geographical_region = world_africa_sahara
-						geographical_region = world_middle_east_persia
-						geographical_region = ghw_region_caucasus
-						geographical_region = ghw_region_near_east
-						geographical_region = ghw_region_anatolia
-						geographical_region = world_steppe_tarim
+						geographical_region = world_europe_west_francia
+						geographical_region = world_europe_north
+						geographical_region = world_europe_west_britannia
 					}
+					# OR = {
+					# 	geographical_region = world_europe
+					# 	geographical_region = world_asia_minor
+					# 	geographical_region = world_steppe_west
+					# }
 				}
 			}		
 		}
-		play_music_cue = mx_susian_fields_of_sugar
+		play_music_cue = mx_cue_combat_3
 	}
 }
 
@@ -295,6 +309,22 @@ RICE_setup_misc_after_effect = {
 		}
 		character:161279 = {
 			remove_trait = celibate
+		}
+	}
+
+	# If player doesn't want to play as Rollo, return the title to Rognvaldr
+	if = {
+		limit = {
+			game_start_date = 867.1.1
+			character:242 = {
+				is_ai = yes
+			}
+		}
+		character:186004 = {
+			get_title = title:c_trandheim
+		}
+		character:186004 = {
+			add_courtier = character:242
 		}
 	}
 

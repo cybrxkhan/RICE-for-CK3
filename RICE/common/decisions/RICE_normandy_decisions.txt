@@ -1,0 +1,1975 @@
+﻿
+#############################################
+#											#
+# STRUGGLE ENDING DECISIONS				    #
+#											#
+#############################################
+
+# Norman Conquest Ending
+RICE_normandy_struggle_ending_conquest_decision = {
+	major = yes
+	title = RICE_normandy_struggle_ending_conquest_decision
+	picture = "gfx/interface/illustrations/decisions/decision_norman_adventurers.dds"
+	extra_picture = "gfx/interface/illustrations/struggle_decisions_buttons/RICE_decision_normandy_ending_conquest_button.dds"
+	desc = RICE_normandy_struggle_ending_conquest_decision_desc
+	selection_tooltip = RICE_normandy_struggle_ending_conquest_decision_tooltip
+	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
+	is_invisible = yes
+
+	sort_order = 80
+
+	is_valid = {
+		is_independent_ruler = yes
+
+		custom_tooltip = {
+			text = RICE_normandy_struggle_conquest_decision_correct_phase_tt
+			struggle:RICE_normandy_struggle = {
+				is_struggle_phase = struggle_RICE_normandy_phase_adventure
+			}
+		}
+
+		has_title = title:d_normandy
+		completely_controls = title:d_normandy
+
+		OR = {
+			custom_tooltip = {
+				text = struggle_ending_decision_correct_involvement_tt
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = RICE_normandy_struggle
+				}
+			}
+			AND = {
+				#completely_controls_region = RICE_normandy_region
+				custom_description = {
+					text = RICE_normandy_struggle_is_norman_req
+					OR = {
+						culture = culture:norman
+						culture = {
+							any_parent_culture_or_above = {
+								this = culture:norman
+							}
+						}
+					}
+				}
+				custom_description = {
+					text = RICE_normandy_struggle_culture_involved_req
+					struggle:RICE_normandy_struggle = { is_culture_involved_in_struggle = root.culture }
+				}
+				custom_description = {
+					text = RICE_normandy_struggle_faith_involved_req
+					struggle:RICE_normandy_struggle = { is_faith_involved_in_struggle = root.faith }
+				}
+			}
+		}
+
+		exists = struggle:RICE_normandy_struggle
+
+		# Completely control at least 2 of the important North Atlantic duchies
+		calc_true_if = {
+			amount >= 1
+			completely_controls_region = custom_england
+			completely_controls_region = custom_west_francia_minus_mediterranean
+			completely_controls_region = custom_frisia
+		}
+
+	}
+
+	effect = {
+
+		save_scope_as = normandy_struggle_ender
+
+		##### Major Effects #####
+		show_as_tooltip = {
+			RICE_normandy_struggle_conquest_ender_effect = yes
+		}
+		RICE_normandy_struggle_conquest_ending_tooltip_effect = yes
+
+		# show_as_tooltip = {
+		# 	stress_impact = {
+		# 		lazy = minor_stress_impact_gain
+		# 		content = minor_stress_impact_gain
+		# 		craven = minor_stress_impact_gain
+		# 	}
+		# }
+
+		# Trigger the ending event
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:normandy_struggle_ender
+					is_ai = no
+				}
+				OR = {
+					any_character_struggle = {
+						involvement = involved
+						is_struggle_type = RICE_normandy_struggle
+					}					
+					any_character_struggle = {
+						involvement = interloper
+						is_struggle_type = RICE_normandy_struggle
+					}
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							OR = {
+								geographical_region = world_europe_west
+								geographical_region = world_europe_south_italy
+							}
+						}
+					}					
+				}
+			}
+			trigger_event = normandy.0005
+		}
+	}
+
+	cost = {}
+
+	ai_check_interval = 120
+
+	ai_potential = { always = yes }
+
+	ai_will_do = { base = 100 }
+}
+
+# Complete Assimilation Ending
+RICE_normandy_struggle_ending_assimilation_decision = {
+	major = yes
+	title = RICE_normandy_struggle_ending_assimilation_decision
+	picture = "gfx/interface/illustrations/decisions/decision_norman_construction.dds"
+	extra_picture = "gfx/interface/illustrations/struggle_decisions_buttons/RICE_decision_normandy_ending_assimilation_button.dds"
+	desc = RICE_normandy_struggle_ending_assimilation_decision_desc
+	selection_tooltip = RICE_normandy_struggle_ending_assimilation_decision_tooltip
+	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
+	is_invisible = yes
+
+	sort_order = 80
+
+	is_valid = {
+		is_independent_ruler = yes
+
+		custom_tooltip = {
+			text = RICE_normandy_struggle_assimilation_decision_correct_phase_tt
+			struggle:RICE_normandy_struggle = {
+				is_struggle_phase = struggle_RICE_normandy_phase_acculturation
+			}
+		}
+
+		custom_tooltip = {
+			text = struggle_ending_decision_correct_involvement_tt
+			any_character_struggle = {
+				involvement = involved
+				is_struggle_type = RICE_normandy_struggle
+			}
+		}
+
+		exists = struggle:RICE_normandy_struggle
+
+		prestige_level >= 5
+
+		has_title = title:d_normandy
+		completely_controls = title:d_normandy
+
+		custom_tooltip = {
+			text = RICE_normandy_struggle_assimilation_decision_development_req
+			title:b_rouen.county = { development_level >= RICE_normandy_assimilation_ending_general_development_level }
+			title:b_evreux.county = { development_level >= RICE_normandy_assimilation_ending_general_development_level }
+			title:b_bayeux.county = { development_level >= RICE_normandy_assimilation_ending_general_development_level }
+			title:b_avranches.county = { development_level >= RICE_normandy_assimilation_ending_general_development_level }
+			title:b_alencon.county = { development_level >= RICE_normandy_assimilation_ending_general_development_level }
+			title:b_lisieux.county = { development_level >= RICE_normandy_assimilation_ending_general_development_level }
+			title:b_eu.county = { development_level >= RICE_normandy_assimilation_ending_general_development_level }
+		}
+
+		custom_tooltip = {
+			text = RICE_normandy_struggle_assimilation_decision_capital_development_req
+			capital_county = {
+				development_level >= RICE_normandy_assimilation_ending_capital_development_level
+				title_province = { geographical_region = RICE_normandy_region }
+			}
+		}
+
+		# Completely control at least 2 of the important North Atlantic duchies
+		# calc_true_if = {
+		# 	amount >= 1
+		# 	completely_controls = title:k_england
+		# 	completely_controls = title:k_france
+		# }
+
+	}
+
+	effect = {
+
+		save_scope_as = normandy_struggle_ender
+
+		##### Major Effects #####
+		show_as_tooltip = {
+			RICE_normandy_struggle_assimilation_ender_effect = yes
+		}
+		RICE_normandy_struggle_assimilation_ending_tooltip_effect = yes
+
+		# show_as_tooltip = {
+		# 	stress_impact = {
+		# 		lazy = minor_stress_impact_gain
+		# 		content = minor_stress_impact_gain
+		# 		craven = minor_stress_impact_gain
+		# 	}
+		# }
+
+		# Trigger the ending event
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:normandy_struggle_ender
+					is_ai = no
+				}
+				OR = {
+					any_character_struggle = {
+						involvement = involved
+						is_struggle_type = RICE_normandy_struggle
+					}					
+					any_character_struggle = {
+						involvement = interloper
+						is_struggle_type = RICE_normandy_struggle
+					}
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							OR = {
+								geographical_region = world_europe_west
+								geographical_region = world_europe_south_italy
+							}
+						}
+					}					
+				}
+			}
+			trigger_event = normandy.0006
+		}
+	}
+
+	cost = {}
+
+	ai_check_interval = 120
+
+	ai_potential = { always = yes }
+
+	ai_will_do = { base = 100 }
+}
+
+# Outsider's Yoke Ending
+RICE_normandy_struggle_ending_outsider_decision = {
+	major = yes
+	title = RICE_normandy_struggle_ending_outsider_decision
+	picture = "gfx/interface/illustrations/decisions/decision_european_king.dds"
+	extra_picture = "gfx/interface/illustrations/struggle_decisions_buttons/RICE_decision_normandy_ending_outsider_button.dds"
+	desc = RICE_normandy_struggle_ending_outsider_decision_desc
+	selection_tooltip = RICE_normandy_struggle_ending_outsider_decision_tooltip
+	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
+	is_invisible = yes
+
+	sort_order = 80
+
+	is_valid = {
+		is_independent_ruler = yes
+
+		# custom_tooltip = {
+		# 	text = RICE_greenland_struggle_integration_decision_correct_phase_tt
+		# 	any_character_struggle = {
+		# 		is_struggle_type = RICE_greenland_struggle
+		# 		is_struggle_phase = struggle_RICE_greenland_phase_integration
+		# 	}
+		# }
+
+		custom_tooltip = {
+			text = struggle_ending_decision_correct_involvement_tt
+			any_character_struggle = {
+				involvement = involved
+				is_struggle_type = RICE_normandy_struggle
+			}
+		}
+
+		exists = struggle:RICE_normandy_struggle
+
+		prestige_level >= 5
+
+		has_title = title:d_normandy
+		completely_controls = title:d_normandy
+
+		custom_tooltip = {
+			text = RICE_normandy_struggle_not_norman_req
+			NOR = {
+				culture = culture:norman
+				culture = {
+					any_parent_culture_or_above = {
+						this = culture:norman
+					}
+				}
+			}
+		}
+
+		
+		# custom_tooltip = {
+		# 	text = RICE_normandy_struggle_no_norman_culture_req
+		# 	NOT = {
+		# 		any_county_in_region = {
+		#			region = RICE_normandy_region
+		# 			OR = {
+		# 				culture = culture:norman
+		# 				culture = {
+		# 					any_parent_culture_or_above = {
+		# 						this = culture:norman
+		# 					}
+		# 				}
+		# 			}
+		# 		}
+		# 	}
+		# }
+		
+		custom_tooltip = {
+			text = RICE_normandy_struggle_no_norman_rulers_req
+			NOT = {
+				any_county_in_region = {
+					region = RICE_normandy_region
+					holder = {
+						OR = {
+							culture = culture:norman
+							culture = {
+								any_parent_culture_or_above = {
+									this = culture:norman
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+	effect = {
+
+		save_scope_as = normandy_struggle_ender
+
+		##### Major Effects #####
+		show_as_tooltip = {
+			RICE_normandy_struggle_outsider_ender_effect = yes
+		}
+		RICE_normandy_struggle_outsider_ending_tooltip_effect = yes
+
+		# show_as_tooltip = {
+		# 	stress_impact = {
+		# 		lazy = minor_stress_impact_gain
+		# 		content = minor_stress_impact_gain
+		# 		craven = minor_stress_impact_gain
+		# 	}
+		# }
+
+		# Trigger the ending event
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:normandy_struggle_ender
+					is_ai = no
+				}
+				OR = {
+					any_character_struggle = {
+						involvement = involved
+						is_struggle_type = RICE_normandy_struggle
+					}					
+					any_character_struggle = {
+						involvement = interloper
+						is_struggle_type = RICE_normandy_struggle
+					}
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							OR = {
+								geographical_region = world_europe_west
+								geographical_region = world_europe_south_italy
+							}
+						}
+					}					
+				}
+			}
+			trigger_event = normandy.0007
+		}
+	}
+
+	cost = {}
+
+	ai_check_interval = 120
+
+	ai_potential = { always = yes }
+
+	ai_will_do = { base = 100 }
+}
+
+
+
+#########################################
+#
+# MAJOR DECISIONS
+#
+#########################################
+
+
+
+# Compile the Domesday Book
+RICE_normandy_compile_domesday_book = {
+	picture = "gfx/interface/illustrations/decisions/decision_norman_construction.dds"
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_global_variable = RICE_normandy_ending_norman_conquest_england
+				}
+				desc = RICE_normandy_compile_domesday_book_desc_england
+			}
+			triggered_desc = {
+				trigger = {
+					has_global_variable = RICE_normandy_ending_norman_conquest_francia
+				}
+				desc = RICE_normandy_compile_domesday_book_desc_francia
+			}
+			triggered_desc = {
+				trigger = {
+					has_global_variable = RICE_normandy_ending_norman_conquest_greater_normandy
+				}
+				desc = RICE_normandy_compile_domesday_book_desc_greater_normandy
+			}
+			desc = RICE_normandy_compile_domesday_book_desc # Default backup			
+		}
+	}
+
+	selection_tooltip = RICE_normandy_compile_domesday_book_tooltip
+	major = yes
+
+	ai_check_interval = 36
+
+	is_shown = {
+		exists = dynasty
+		highest_held_title_tier > tier_barony
+		is_landed = yes
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_normandy_domesday_book_compiled
+			}
+		}
+		OR = {
+			culture = culture:norman
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:norman
+				}
+			}
+			dynasty = {
+				has_dynasty_modifier = RICE_normandy_rollo_family_equivalent
+			}
+		}
+		has_global_variable = RICE_normandy_ending_norman_conquest
+	}
+	
+	is_valid = {
+		OR = {
+			culture = culture:norman
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:norman
+				}
+			}
+			dynasty = {
+				has_dynasty_modifier = RICE_normandy_rollo_family_equivalent
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_global_variable = RICE_normandy_ending_norman_conquest_england
+			}
+			completely_controls_region = custom_england
+		}
+		trigger_else_if = {
+			limit = {
+				has_global_variable = RICE_normandy_ending_norman_conquest_francia
+			}
+			completely_controls_region = custom_west_francia_minus_mediterranean
+		}
+		trigger_else_if = {
+			limit = {
+				has_global_variable = RICE_normandy_ending_norman_conquest_greater_normandy
+			}
+			completely_controls_region = custom_frisia
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {		
+
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_normandy_domesday_book_compiled
+		}
+
+		show_as_tooltip = {
+			add_prestige = 2000
+			dynasty = {
+				add_dynasty_prestige = 500
+			}
+		}
+
+		custom_tooltip = RICE_normandy_compile_domesday_book_effect_tooltip_1
+		custom_tooltip = RICE_normandy_compile_domesday_book_effect_tooltip_2
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_normandy_compile_domesday_book_context_tooltip
+		}
+
+		trigger_event = {
+			id = normandy.8888
+		}
+
+	}
+
+	cost = { 
+		gold = major_gold_value # Will depend
+	}	
+
+	ai_potential = {
+		gold > major_gold_value
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = -10
+			has_trait = content
+		}
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+	}
+}
+
+
+
+
+RICE_normandy_grant_to_norse = {
+	picture = "gfx/interface/illustrations/decisions/decision_european_king.dds"
+	ai_check_interval = 40
+	
+	#cooldown = { days = 3650 }
+
+	desc = RICE_normandy_grant_to_norse_desc
+	selection_tooltip = RICE_normandy_grant_to_norse_tooltip
+
+	is_shown = {
+		highest_held_title_tier > tier_barony
+		is_landed = yes
+		# any_held_title = {
+		# 	tier = tier_county
+		# 	any_county_province = {
+		# 		geographical_region = RICE_normandy_region	
+		# 	}
+		# }
+		any_sub_realm_county = {
+			title_province = {
+				geographical_region = RICE_normandy_region
+			}
+		}
+		#highest_held_title_tier >= tier_kingdom
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_normandy_granted_to_norse_already
+			}
+		}
+		NOT = { has_global_variable = RICE_normandy_struggle_started }
+	}
+	
+	is_valid = {
+		#completely_controls = title:d_normandy
+		highest_held_title_tier >= tier_duchy
+		# Don't want you to lose your capital
+		NOT = {
+			capital_province = {
+				geographical_region = RICE_normandy_region
+			}
+		}
+		# Completely control at least 3 counties in Normandy
+		calc_true_if = {
+			amount >= 4
+			completely_controls = title:c_rouen
+			completely_controls = title:c_eu
+			completely_controls = title:c_evreux
+			completely_controls = title:c_lisieux
+			completely_controls = title:c_alencon
+			completely_controls = title:c_bayeux
+			completely_controls = title:c_avranches
+		}
+		NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+
+		culture:norse = {
+			save_scope_as = norse
+		}
+
+		culture:norman = {
+			save_scope_as = norman
+		}
+
+		root.culture = {
+			save_scope_as = latin
+		}
+
+		save_scope_as = charles
+
+		# culture:frankish = {
+		# 	save_scope_as = frankish
+		# }
+
+
+		# scope:actor = {
+		# 	save_scope_as = charles
+		# }
+
+		# scope:recipient = {
+		# 	save_scope_as = rollo
+		# }
+
+
+		custom_tooltip = RICE_normandy_grant_to_norse_effect_tooltip_1
+		custom_tooltip = RICE_normandy_grant_to_norse_effect_tooltip_2
+		custom_tooltip = RICE_normandy_grant_to_norse_effect_tooltip_3
+		custom_tooltip = RICE_normandy_grant_to_norse_effect_tooltip_4
+
+		show_as_tooltip = {
+			culture:norman = {
+				get_all_innovations_from = scope:norse
+				get_all_innovations_from = scope:latin
+			}
+			# Rename the duchy to Normandy
+			title:d_normandy = {
+				save_scope_as = normandy_title
+				hidden_effect = {
+					set_title_name = d_normandy
+				}
+				custom_tooltip = establish_norman_culture_decision_effect.tt.2
+			}
+		}
+
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:flag_formed_normandy_decision
+		}
+
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_normandy_granted_to_norse_already
+		}
+
+		
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_normandy_grant_to_norse_context_tooltip
+		}
+		
+		trigger_event = normandy.0040
+	}
+
+	minimum_cost = { 
+		gold = { value = RICE_activity_cost } # Will depend
+	}	
+
+	ai_potential = {
+		short_term_gold > RICE_activity_cost
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = craven
+		}
+		modifier = {
+			add = -10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 10
+			has_trait = deceitful
+		}
+		modifier = {
+			add = -10
+			has_trait = greedy
+		}
+	}
+}
+
+
+
+
+
+# Commission the Historia Normannorum
+RICE_normandy_commission_historia_normannorum = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_european_book.dds"
+
+	desc = RICE_normandy_commission_historia_normannorum_desc
+	selection_tooltip = RICE_normandy_commission_historia_normannorum_tooltip
+	major = yes
+
+	ai_check_interval = 64
+
+	is_shown = {
+		exists = dynasty
+		highest_held_title_tier > tier_barony
+		is_landed = yes
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_normandy_commission_normandy_history
+			}
+		}
+		OR = {
+			culture = culture:norman
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:norman
+				}
+			}
+			dynasty = {
+				has_dynasty_modifier = RICE_normandy_rollo_family_equivalent
+			}
+		}
+	}
+	
+	is_valid = {
+		completely_controls = title:d_normandy
+		OR = {
+			culture = culture:norman
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:norman
+				}
+			}
+			dynasty = {
+				has_dynasty_modifier = RICE_normandy_rollo_family_equivalent
+			}
+		}
+		OR = {
+			prestige_level >= 4
+			dynasty = {
+				dynasty_prestige_level >= 3
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {		
+
+		culture:norman = {
+			save_scope_as = norman
+		}
+
+		culture:french = {
+			save_scope_as = french
+		}
+
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_normandy_commission_normandy_history
+		}
+
+		custom_tooltip = RICE_normandy_commission_historia_normannorum_effect_tooltip_1
+		custom_tooltip = RICE_normandy_commission_historia_normannorum_effect_tooltip_2
+		custom_tooltip = RICE_normandy_commission_historia_normannorum_effect_tooltip_3
+		custom_tooltip = RICE_normandy_commission_historia_normannorum_effect_tooltip_4
+		custom_tooltip = RICE_normandy_commission_historia_normannorum_effect_tooltip_5
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_normandy_commission_historia_normannorum_context_tooltip
+		}
+
+		trigger_event = {
+			id = normandy.8888
+		}
+
+	}
+
+	cost = { 
+		gold = medium_gold_value # Will depend
+	}	
+
+	ai_potential = {
+		gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = -5
+			has_trait = content
+		}
+		modifier = {
+			add = 5
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -5
+			has_trait = craven
+		}
+		modifier = {
+			add = 5
+			has_trait = brave
+		}
+		modifier = {
+			add = 25
+			# Happened late 900s IRL
+			current_date >= 950.1.1
+		}
+		modifier = {
+			add = 50
+			# Happened late 900s IRL
+			current_date >= 975.1.1
+		}
+		modifier = {
+			add = 75
+			# Happened late 900s IRL
+			current_date >= 1000.1.1
+		}
+		modifier = {
+			add = 100
+			# Happened late 900s IRL
+			current_date >= 1025.1.1
+		}
+	}
+}
+
+
+
+
+RICE_normandy_find_saint_aubert_relics = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_cathedral.dds"
+	major = yes
+	desc = RICE_normandy_find_saint_aubert_relics_desc
+
+	ai_check_interval = 48
+
+	is_shown = {
+		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+		is_landed = yes
+		OR = {
+			has_title = title:c_avranches
+			title:b_avranches = {
+				squared_distance = {
+					target = root.capital_province
+					value <= squared_distance_small
+				}
+			}	
+		}
+		religion = religion:christianity_religion
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_normandy_saint_aubert_relics_found
+			}
+		}
+	}
+
+	is_valid = {
+		OR = {
+			piety_level >= 5
+			AND = {
+				piety_level >= 3
+				OR = {
+					intrigue >= decent_skill_rating
+					learning >= decent_skill_rating
+				}
+			}
+		}
+		has_title = title:c_avranches
+		religion = religion:christianity_religion
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_available = yes
+	}
+
+	cost = {
+		gold = {
+			value = minor_gold_value
+		}
+		prestige = {
+			value = medium_prestige_value
+		}
+	}
+
+	effect = {
+
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_normandy_saint_aubert_relics_found
+		}
+
+		save_scope_as = relic_finder
+		
+		custom_tooltip = RICE_normandy_find_saint_aubert_relics_effect_tooltip_1
+
+		show_as_tooltip = {
+			RICE_find_saint_aubert_relics_effect = yes
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_normandy_find_saint_aubert_relics_context_tooltip
+		}
+		
+		trigger_event = normandy.8888
+	}
+
+	ai_will_do = {
+		base = 5
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 10
+			has_trait = zealous
+		}
+		modifier = {
+			add = -20
+			# Happened under Abbot Hildebert (1009-1017) IRL
+			current_date <= 975.1.1
+		}
+		modifier = {
+			add = 10
+			# Happened under Abbot Hildebert (1009-1017) IRL
+			current_date > 1000.1.1
+		}
+		modifier = {
+			add = 20
+			# Happened under Abbot Hildebert (1009-1017) IRL
+			current_date > 1050.1.1
+		}
+		modifier = {
+			add = 30
+			# Happened under Abbot Hildebert (1009-1017) IRL
+			current_date > 1100.1.1
+		}
+	}
+}
+
+
+
+RICE_normandy_archangel_michael_statue = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_cathedral.dds"
+	major = yes
+	desc = RICE_normandy_archangel_michael_statue_desc
+
+	ai_check_interval = 120
+
+	is_shown = {
+		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+		is_landed = yes
+		OR = {
+			has_title = title:c_avranches
+			title:b_avranches = {
+				squared_distance = {
+					target = root.capital_province
+					value <= squared_distance_medium
+				}
+			}
+			capital_province = {
+				geographical_region = world_europe_west_francia
+			}
+		}
+		religion = religion:christianity_religion
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_normandy_saint_aubert_relics_found
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_normandy_michael_statue_dedicated
+			}
+		}
+	}
+
+	is_valid = {
+		OR = {
+			has_title = title:c_avranches
+			title:b_avranches = {
+				squared_distance = {
+					target = root.capital_province
+					value <= squared_distance_medium
+				}
+			}
+			capital_province = {
+				geographical_region = world_europe_west_francia
+			}
+		}
+		OR = {
+			piety_level >= 3
+			AND = {
+				piety_level >= 2
+				highest_held_title_tier >= tier_kingdom
+			}
+		}
+		#has_title = title:c_avranches
+		religion = religion:christianity_religion
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_available = yes
+	}
+
+	cost = {
+		gold = {
+			value = minor_gold_value
+		}
+		prestige = {
+			value = medium_prestige_value
+		}
+	}
+
+	effect = {
+
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_normandy_michael_statue_dedicated
+		}
+
+		save_scope_as = relic_finder
+		
+		custom_tooltip = RICE_normandy_archangel_michael_statue_effect_tooltip_1
+		custom_tooltip = RICE_normandy_archangel_michael_statue_effect_tooltip_2
+
+		show_as_tooltip = {
+			RICE_mont_saint_michel_statue_effect = yes
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_normandy_archangel_michael_statue_context_tooltip
+		}
+		
+		trigger_event = normandy.8888
+	}
+
+	ai_will_do = {
+		base = 5
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 10
+			has_trait = zealous
+		}
+		modifier = {
+			add = -20
+			# Golden image dedicated by King Philip IV in 1306
+			current_date <= 1250.1.1
+		}
+		modifier = {
+			add = 10
+			# Golden image dedicated by King Philip IV in 1306
+			current_date > 1300.1.1
+		}
+		modifier = {
+			add = 20
+			# Golden image dedicated by King Philip IV in 1306
+			current_date > 1325.1.1
+		}
+		modifier = {
+			add = 30
+			# Golden image dedicated by King Philip IV in 1306
+			current_date > 1350.1.1
+		}
+	}
+}
+
+
+
+#########################################
+#
+# NORMAL DECISIONS
+#
+#########################################
+
+
+
+RICE_normandy_recruit_norse_adventurers = {
+	picture = "gfx/interface/illustrations/decisions/decision_longship_warriors.dds"
+	ai_check_interval = 40
+	
+	cooldown = { days = RICE_norse_adventurer_decision_cooldown_time }
+
+	
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					culture = { has_cultural_pillar = heritage_north_germanic }
+				}
+				desc = RICE_normandy_recruit_norse_adventurers_desc_norse
+			}
+			desc = RICE_normandy_recruit_norse_adventurers_desc
+		}
+	}
+	selection_tooltip = RICE_normandy_recruit_norse_adventurers_tooltip
+
+	is_shown = {
+		highest_held_title_tier > tier_barony
+		is_landed = yes
+		capital_province = {
+			OR = {
+				geographical_region = RICE_northern_europe_region
+				geographical_region = RICE_southern_europe_region				
+			}
+			NOT = { geographical_region = dlc_fp1_region_core_mainland_scandinavia }
+		}	
+		OR = {
+			NOT = { has_government = tribal_government }
+			NOT = {
+				faith = { has_doctrine_parameter = unreformed }
+			}
+			culture = { has_cultural_pillar = heritage_north_germanic }
+		}
+		culture = {
+			NOT = { has_cultural_era_or_later = culture_era_high_medieval }
+		}
+		# culture = {
+		# 	NOT = { has_cultural_pillar = heritage_north_germanic }
+		# }
+	}
+	
+	is_valid = {
+		capital_province = {
+			OR = {
+				geographical_region = RICE_northern_europe_region
+				geographical_region = RICE_southern_europe_region				
+			}
+			NOT = { geographical_region = dlc_fp1_region_core_mainland_scandinavia }
+		}	
+		OR = {
+			NOT = { has_government = tribal_government }
+			custom_description = {
+				text = "hof_interaction_unreformed_faith"
+				NOT = {
+					faith = { has_doctrine_parameter = unreformed }
+				}
+			}
+			culture = { has_cultural_pillar = heritage_north_germanic }
+		}
+		culture = {
+			NOT = { has_cultural_era_or_later = culture_era_high_medieval }
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+
+		
+    widget = {
+    	gui = "decision_view_widget_RICE_normandy_recruit_norse_adventurers"
+		controller = decision_option_list_controller
+    	
+		decision_has_second_step = yes
+		decision_custom_widget_container = "custom_widgets_container_step_two"
+		decision_to_second_step_button = "RICE_normandy_invite_norse_type" 
+
+		item = {
+			value = RICE_normandy_invite_norse_courtiers_option
+			current_description = RICE_normandy_invite_norse_courtiers_option_desc
+			localization = RICE_normandy_invite_norse_courtiers_option
+			icon = "gfx/interface/icons/widgets/RICE_normandy_northmen_courtiers.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = RICE_normandy_invite_norse_colonists_option
+			current_description = RICE_normandy_invite_norse_colonists_option_desc
+			localization = RICE_normandy_invite_norse_colonists_option
+			icon = "gfx/interface/icons/widgets/RICE_normandy_northmen_settlers.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = RICE_normandy_invite_norse_mercenaries_option
+			current_description = RICE_normandy_invite_norse_mercenaries_option_desc
+			localization = RICE_normandy_invite_norse_mercenaries_option
+			icon = "gfx/interface/icons/widgets/RICE_normandy_northmen_warriors.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = RICE_normandy_invite_norse_traders_option
+			current_description = RICE_normandy_invite_norse_traders_option_desc
+			localization = RICE_normandy_invite_norse_traders_option
+			icon = "gfx/interface/icons/widgets/RICE_normandy_northmen_traders.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			is_valid_showing_failures_only = {
+				any_held_county = {
+					count > 1 #Don't give away your only title
+				}
+			}
+			value = RICE_normandy_invite_norse_rulers_option
+			current_description = RICE_normandy_invite_norse_rulers_option_desc
+			localization = RICE_normandy_invite_norse_rulers_option
+			icon = "gfx/interface/icons/widgets/RICE_normandy_northmen_rulers.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+	}
+
+	effect = {
+
+		custom_tooltip = RICE_normandy_recruit_norse_adventurers_effect_tooltip_1
+		custom_tooltip = RICE_normandy_recruit_norse_adventurers_effect_tooltip_2
+		custom_tooltip = RICE_normandy_recruit_norse_adventurers_effect_tooltip_3
+
+				
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_normandy_recruit_norse_adventurers_context_tooltip
+		}
+
+		# Not sure why AI can't pick one option or another
+		if = {
+			limit = { is_ai = yes }
+			random_list = {
+				10 = {
+					set_variable = {
+						name = RICE_norse_adventurer_type
+						value = flag:courtiers
+					}
+				}
+				10 = {
+					set_variable = {
+						name = RICE_norse_adventurer_type
+						value = flag:colonists
+					}
+				}
+				10 = {
+					set_variable = {
+						name = RICE_norse_adventurer_type
+						value = flag:mercenaries
+					}
+				}
+				10 = {
+					set_variable = {
+						name = RICE_norse_adventurer_type
+						value = flag:traders
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:RICE_normandy_invite_norse_courtiers_option = yes
+			}
+			set_variable = {
+				name = RICE_norse_adventurer_type
+				value = flag:courtiers
+			}
+		}
+		else_if = {
+			limit = {
+				scope:RICE_normandy_invite_norse_colonists_option = yes
+			}
+			set_variable = {
+				name = RICE_norse_adventurer_type
+				value = flag:colonists
+			}
+		}
+		else_if = {
+			limit = {
+				scope:RICE_normandy_invite_norse_mercenaries_option = yes
+			}
+			set_variable = {
+				name = RICE_norse_adventurer_type
+				value = flag:mercenaries
+			}
+		}
+		else_if = {
+			limit = {
+				scope:RICE_normandy_invite_norse_traders_option = yes
+			}
+			set_variable = {
+				name = RICE_norse_adventurer_type
+				value = flag:traders
+			}
+		}
+		
+		trigger_event = normandy.0020
+	}
+
+	cost = { 
+		gold = { value = RICE_norse_adventurers_small_cost } # Will depend
+	}	
+
+	ai_potential = {
+		short_term_gold > RICE_norse_adventurers_small_cost
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -10
+			has_trait = paranoid
+		}
+	}
+}
+
+
+
+
+
+RICE_normandy_recruit_norman_adventurers = {
+	picture = "gfx/interface/illustrations/decisions/decision_norman_adventurers.dds"
+	ai_check_interval = 40
+	
+	cooldown = { days = 3650 }
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					OR = {
+						culture = culture:norman
+						culture = {
+							any_parent_culture_or_above = {
+								this = culture:norman
+							}
+						}
+					}
+				}
+				desc = RICE_normandy_recruit_norman_adventurers_desc_norman
+			}
+			desc = RICE_normandy_recruit_norman_adventurers_desc
+		}
+	}
+	selection_tooltip = RICE_normandy_recruit_norman_adventurers_tooltip
+
+	is_shown = {
+		highest_held_title_tier > tier_barony
+		is_landed = yes
+		capital_province = {
+			OR = {
+				geographical_region = RICE_northern_europe_region
+				geographical_region = RICE_southern_europe_region				
+			}
+			NOT = { geographical_region = RICE_normandy_region }
+		}	
+		OR = {
+			NOT = { has_government = tribal_government }
+			NOT = {
+				faith = { has_doctrine_parameter = unreformed }
+			}
+		}
+		culture = {
+			has_cultural_era_or_later = culture_era_early_medieval
+			NOT = { has_cultural_era_or_later = culture_era_late_medieval }
+		}
+		has_global_variable = RICE_normandy_struggle_started
+	}
+	
+	is_valid = {
+		capital_province = {
+			OR = {
+				geographical_region = RICE_northern_europe_region
+				geographical_region = RICE_southern_europe_region				
+			}
+			NOT = { geographical_region = RICE_normandy_region }
+		}	
+		OR = {
+			NOT = { has_government = tribal_government }
+			custom_description = {
+				text = "hof_interaction_unreformed_faith"
+				NOT = {
+					faith = { has_doctrine_parameter = unreformed }
+				}
+			}
+		}
+		culture = {
+			has_cultural_era_or_later = culture_era_early_medieval
+			NOT = { has_cultural_era_or_later = culture_era_late_medieval }
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+
+		
+    widget = {
+    	gui = "decision_view_widget_RICE_normandy_recruit_norman_adventurers"
+		controller = decision_option_list_controller
+    	
+		decision_has_second_step = yes
+		decision_custom_widget_container = "custom_widgets_container_step_two"
+		decision_to_second_step_button = "RICE_normandy_invite_norman_type" 
+
+		item = {
+			value = RICE_normandy_invite_norman_courtiers_option
+			current_description = RICE_normandy_invite_norman_courtiers_option_desc
+			localization = RICE_normandy_invite_norman_courtiers_option
+			icon = "gfx/interface/icons/widgets/RICE_normandy_northmen_courtiers.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = RICE_normandy_invite_norman_colonists_option
+			current_description = RICE_normandy_invite_norman_colonists_option_desc
+			localization = RICE_normandy_invite_norman_colonists_option
+			icon = "gfx/interface/icons/widgets/RICE_normandy_northmen_settlers.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = RICE_normandy_invite_norman_mercenaries_option
+			current_description = RICE_normandy_invite_norman_mercenaries_option_desc
+			localization = RICE_normandy_invite_norman_mercenaries_option
+			icon = "gfx/interface/icons/widgets/RICE_normandy_northmen_warriors.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = RICE_normandy_invite_norman_traders_option
+			current_description = RICE_normandy_invite_norman_traders_option_desc
+			localization = RICE_normandy_invite_norman_traders_option
+			icon = "gfx/interface/icons/widgets/RICE_normandy_northmen_traders.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = RICE_normandy_invite_norman_scholars_option
+			is_shown = {
+				has_global_variable = RICE_normandy_ending_norman_assimilation
+			}
+			current_description = RICE_normandy_invite_norman_scholars_option_desc
+			localization = RICE_normandy_invite_norman_scholars_option
+			icon = "gfx/interface/icons/widgets/RICE_normandy_northmen_scholars.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			is_valid_showing_failures_only = {
+				any_held_county = {
+					count > 1 #Don't give away your only title
+				}
+			}
+			value = RICE_normandy_invite_norman_rulers_option
+			current_description = RICE_normandy_invite_norman_rulers_option_desc
+			localization = RICE_normandy_invite_norman_rulers_option
+			icon = "gfx/interface/icons/widgets/RICE_normandy_northmen_rulers.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+	}
+
+	effect = {
+
+		custom_tooltip = RICE_normandy_recruit_norman_adventurers_effect_tooltip_1
+		custom_tooltip = RICE_normandy_recruit_norman_adventurers_effect_tooltip_2
+		custom_tooltip = RICE_normandy_recruit_norman_adventurers_effect_tooltip_3
+
+				
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_normandy_recruit_norman_adventurers_context_tooltip
+		}
+		
+		trigger_event = normandy.8888
+	}
+
+	cost = { 
+		gold = { value = RICE_norman_adventurers_small_cost } # Will depend
+	}	
+
+	ai_potential = {
+		short_term_gold > RICE_norman_adventurers_small_cost
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -10
+			has_trait = paranoid
+		}
+	}
+}
+
+
+
+RICE_normandy_mont_saint_michael_pilgrimage = {
+	picture = "gfx/interface/illustrations/decisions/decision_christian_pilgrimage.dds"
+	ai_check_interval = 40
+	
+	cooldown = { days = 3650 }
+
+	desc = RICE_normandy_mont_saint_michael_pilgrimage_desc
+	selection_tooltip = RICE_normandy_mont_saint_michael_pilgrimage_tooltip
+
+	is_shown = {
+		highest_held_title_tier > tier_barony
+		is_landed = yes
+		religion = religion:christianity_religion
+		OR = {
+			has_title = title:c_avranches
+			title:b_avranches = {
+				squared_distance = {
+					target = root.capital_province
+					value <= squared_distance_medium
+				}
+			}
+			capital_province = {
+				geographical_region = world_europe_west_francia
+			}	
+		}
+	}
+	
+	is_valid = {
+		religion = religion:christianity_religion
+		OR = {
+			has_title = title:c_avranches
+			title:b_avranches = {
+				squared_distance = {
+					target = root.capital_province
+					value <= squared_distance_medium
+				}
+			}
+			capital_province = {
+				geographical_region = world_europe_west_francia
+			}	
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+
+		if = {
+			limit = {
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_normandy_michael_statue_dedicated
+				}
+			}
+			custom_tooltip = RICE_normandy_mont_saint_michael_pilgrimage_effect_tooltip_2
+		}
+		else = {
+			custom_tooltip = RICE_normandy_mont_saint_michael_pilgrimage_effect_tooltip_1
+		}
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_normandy_mont_saint_michael_pilgrimage_context_tooltip
+		}
+		
+		trigger_event = normandy.8888
+	}
+
+	cost = { 
+		gold = { value = RICE_activity_cost } # Will depend
+	}	
+
+	ai_potential = {
+		short_term_gold > RICE_activity_cost
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 5
+			has_trait = zealous
+		}
+		modifier = {
+			add = -15
+			has_trait = cynical
+		}
+	}
+}
+
+RICE_normandy_observe_procession_of_saint_aubert = {
+	picture = "gfx/interface/illustrations/decisions/decision_small_town.dds"
+	ai_check_interval = 40
+	
+	cooldown = { days = 3650 }
+
+	desc = RICE_normandy_observe_procession_of_saint_aubert_desc
+	selection_tooltip = RICE_normandy_observe_procession_of_saint_aubert_tooltip
+
+	is_shown = {
+		highest_held_title_tier > tier_barony
+		is_landed = yes
+		religion = religion:christianity_religion
+		OR = {
+			has_title = title:c_avranches
+			title:b_avranches = {
+				squared_distance = {
+					target = root.capital_province
+					value <= squared_distance_small
+				}
+			}	
+		}
+	}
+	
+	is_valid = {
+		religion = religion:christianity_religion
+		OR = {
+			has_title = title:c_avranches
+			title:b_avranches = {
+				squared_distance = {
+					target = root.capital_province
+					value <= squared_distance_small
+				}
+			}	
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+
+		custom_tooltip = RICE_normandy_observe_procession_of_saint_aubert_effect_tooltip_1
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_normandy_observe_procession_of_saint_aubert_context_tooltip
+		}
+		
+		trigger_event = normandy.8888
+	}
+
+	cost = { 
+		gold = { value = RICE_activity_cost } # Will depend
+	}	
+
+	ai_potential = {
+		short_term_gold > RICE_activity_cost
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 5
+			has_trait = zealous
+		}
+		modifier = {
+			add = -15
+			has_trait = cynical
+		}
+	}
+}
+
+# RICE_normandy_mont_saint_michael_renovations = {
+# 	picture = "gfx/interface/illustrations/decisions/decision_norman_construction.dds"
+# 	ai_check_interval = 40
+	
+# 	cooldown = { days = 3650 }
+
+# 	desc = RICE_normandy_mont_saint_michael_renovations_desc
+# 	selection_tooltip = RICE_normandy_mont_saint_michael_renovations_tooltip
+
+# 	is_shown = {
+# 		highest_held_title_tier > tier_barony
+# 		is_landed = yes
+# 		religion = religion:christianity_religion
+# 		OR = {
+# 			title:c_avranches = {
+# 				squared_distance = {
+# 					target = root.capital_province
+# 					value <= squared_distance_medium
+# 				}
+# 			}
+# 			has_landed_title = title:c_avranches	
+# 		}
+# 	}
+	
+# 	is_valid = {
+# 		religion = religion:christianity_religion
+# 		OR = {
+# 			title:c_avranches = {
+# 				squared_distance = {
+# 					target = root.capital_province
+# 					value <= squared_distance_medium
+# 				}
+# 			}
+# 			has_landed_title = title:c_avranches	
+# 		}
+# 	}
+	
+# 	is_valid_showing_failures_only = {
+# 		is_available_adult = yes
+# 	}
+
+# 	effect = {
+
+# 		custom_tooltip = RICE_normandy_mont_saint_michael_renovations_effect_tooltip_1
+		
+# 		trigger_event = normandy.8888
+# 	}
+
+# 	cost = { 
+# 		gold = { value = RICE_activity_cost } # Will depend
+# 	}	
+
+# 	ai_potential = {
+# 		short_term_gold > RICE_activity_cost
+# 	}
+
+# 	ai_will_do = {
+# 		base = 30
+# 		modifier = {
+# 			add = 5
+# 			has_trait = zealous
+# 		}
+# 		modifier = {
+# 			add = -15
+# 			has_trait = cynical
+# 		}
+# 	}
+# }
+
+RICE_normandy_build_minor_christian_holy_building = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_stone_church.dds"
+	ai_check_interval = 40
+	
+	cooldown = { days = 3650 }
+
+	desc = RICE_normandy_build_minor_christian_holy_building_desc
+	selection_tooltip = RICE_normandy_build_minor_christian_holy_building_tooltip
+
+	is_shown = {
+		highest_held_title_tier > tier_barony
+		is_landed = yes
+		religion = religion:christianity_religion
+	}
+	
+	is_valid = {
+		religion = religion:christianity_religion
+		custom_description = {
+			text = RICE_normandy_build_minor_christian_holy_building_county_req
+			RICE_magadha_donate_holy_site_req_trigger = yes # CHANGE
+		}
+		custom_description = {
+			text = RICE_normandy_build_minor_christian_holy_building_current_req
+			NOT = { has_character_flag = RICE_christian_currently_building_religious_site }
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	
+		
+    widget = {
+    	gui = "decision_view_widget_RICE_normandy_build_minor_christian_holy_building"
+		controller = decision_option_list_controller
+    	
+		decision_has_second_step = yes
+		decision_custom_widget_container = "custom_widgets_container_step_two"
+		decision_to_second_step_button = "RICE_normandy_minor_christian_building_type" 
+
+		item = {
+			value = RICE_normandy_build_christian_site_chapel_option
+			current_description = RICE_normandy_build_christian_site_chapel_option_desc
+			localization = RICE_normandy_build_christian_site_chapel_option
+			icon = "gfx/interface/icons/building_types/icon_building_hill_farms.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = RICE_normandy_build_christian_site_small_church_option
+			current_description = RICE_normandy_build_christian_site_small_church_option_desc
+			localization = RICE_normandy_build_christian_site_small_church_option
+			icon = "gfx/interface/icons/building_types/icon_building_generic_house.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = RICE_normandy_build_christian_site_small_monastery_option
+			current_description = RICE_normandy_build_christian_site_small_monastery_option_desc
+			localization = RICE_normandy_build_christian_site_small_monastery_option
+			icon = "gfx/interface/icons/building_types/icon_building_monastic_schools.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = RICE_normandy_build_christian_site_large_church_option
+			current_description = RICE_normandy_build_christian_site_large_church_option_desc
+			localization = RICE_normandy_build_christian_site_large_church_option
+			icon = "gfx/interface/icons/building_types/icon_structure_cologne_cathedral.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+		item = {
+			value = RICE_normandy_build_christian_site_large_monastery_option
+			current_description = RICE_normandy_build_christian_site_large_monastery_option_desc
+			localization = RICE_normandy_build_christian_site_large_monastery_option
+			icon = "gfx/interface/icons/building_types/icon_building_university.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+	}
+
+	effect = {
+
+		custom_tooltip = RICE_normandy_build_minor_christian_holy_building_effect_tooltip_1
+		custom_tooltip = RICE_normandy_build_minor_christian_holy_building_effect_tooltip_2
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_normandy_build_minor_christian_holy_building_context_tooltip
+		}
+		
+		trigger_event = normandy.8888
+	}
+
+	cost = { 
+		gold = { value = RICE_activity_cost } # Will depend
+	}	
+
+	ai_potential = {
+		short_term_gold > RICE_activity_cost
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 5
+			has_trait = zealous
+		}
+		modifier = {
+			add = -15
+			has_trait = cynical
+		}
+	}
+}
+
+
+
+
+
+
+
+
+

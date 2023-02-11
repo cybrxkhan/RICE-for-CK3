@@ -1,0 +1,387 @@
+﻿
+# Available only to the player, AI will take decision by default
+RICE_normandy_grant_normandy_interaction = {
+	category = interaction_category_friendly
+	common_interaction = yes
+
+	desc = RICE_normandy_grant_normandy_interaction_desc
+
+	auto_accept = yes
+	
+	# ai_targets = {
+	# 	ai_recipients = scripted_relations
+	# }
+	# ai_targets = {
+	# 	ai_recipients = liege
+	# }
+	# ai_targets = {
+	# 	ai_recipients = neighboring_rulers
+	# 	ai_recipients = peer_vassals
+	# 	max = 10
+	# }
+	# ai_targets = {
+	# 	ai_recipients = vassals
+	# 	max = 10
+	# }
+	# ai_targets = {
+	# 	ai_recipients = courtiers
+	# 	max = 5
+	# }
+	# ai_target_quick_trigger = {
+	# 	adult = yes
+	# }
+	ai_frequency = 60
+	
+	#cooldown = { years = 3 }
+	#cooldown_against_recipient = { years = 5 }
+	
+	is_shown = {
+
+		scope:actor = {
+			NOT = {
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_normandy_granted_to_norse_already
+				}
+			}
+			NOT = { has_global_variable = RICE_normandy_struggle_started }
+			highest_held_title_tier >= tier_duchy
+			# Don't want you to lose your capital
+			NOT = {
+				capital_province = {
+					geographical_region = RICE_normandy_region
+				}
+			}
+			# Completely control at least 3 counties in Normandy
+			# calc_true_if = {
+			# 	amount >= 3
+			# 	completely_controls = title:c_rouen
+			# 	completely_controls = title:c_eu
+			# 	completely_controls = title:c_evreux
+			# 	completely_controls = title:c_lisieux
+			# 	completely_controls = title:c_alencon
+			# 	completely_controls = title:c_bayeux
+			# 	completely_controls = title:c_avranches
+			# }
+			OR = {
+				has_title = title:c_rouen
+				any_vassal_or_below = {
+					has_title = title:c_rouen
+				}
+			}
+			NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
+		}
+
+		NOT = {
+			scope:recipient = scope:actor
+		}
+		
+		# Prioritize paying back loans first
+		# scope:actor = {
+		# 	trigger_if = {
+		# 		limit = {
+		# 			exists = var:loan_amount_owed
+		# 			exists = var:loan_holder
+		# 		}
+		# 		NOT = { var:loan_holder = scope:recipient }
+		# 	}
+		# }
+
+		scope:recipient = {
+			is_adult = yes
+			culture = { has_cultural_pillar = heritage_north_germanic }
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		scope:actor.gold >= RICE_activity_cost
+		scope:actor = {
+			# Whoever controls Rouen cannot become landless
+			title:c_rouen.holder = {
+				any_held_county = {
+					count > 1
+				}
+			}
+			#NOT = { has_title = title:c_rouen }
+		 	#NOT = { is_vassal_or_below_of = scope:recipient } # Doesn't make sense to give it to your liege
+		}
+		scope:recipient = {
+			is_landed = no
+			is_busy_in_events_localised = yes
+		}
+		scope:actor.faith = { has_dominant_ruling_gender = scope:recipient }
+	}
+
+	is_valid = {
+		scope:actor = {
+			# Don't want you to lose your capital
+			NOT = {
+				capital_province = {
+					geographical_region = RICE_normandy_region
+				}
+			}
+			# Completely control at least 3 counties in Normandy
+			calc_true_if = {
+				amount >= 3
+				completely_controls = title:c_rouen
+				completely_controls = title:c_eu
+				completely_controls = title:c_evreux
+				completely_controls = title:c_lisieux
+				completely_controls = title:c_alencon
+				completely_controls = title:c_bayeux
+				completely_controls = title:c_avranches
+			}
+			NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
+		}
+
+	}
+	
+	on_accept = {
+		# show_as_tooltip = {
+		# 	RICE_tiraz_interaction_effect = yes
+		# }
+		scope:actor = {
+			save_scope_as = charles
+			show_as_tooltip = {
+				add_prestige = -500
+				pay_short_term_gold = {
+					target = scope:recipient
+					gold = RICE_activity_cost
+				}
+			}
+			custom_tooltip = RICE_normandy_grant_normandy_interaction_tooltip_4
+		}
+		scope:recipient = {
+			save_scope_as = rollo
+			show_as_tooltip = {
+				add_prestige = 500
+			}
+			custom_tooltip = RICE_normandy_grant_normandy_interaction_tooltip_1
+			custom_tooltip = RICE_normandy_grant_normandy_interaction_tooltip_2	
+			if = {
+				limit = {
+					scope:actor = {
+						NOT = { faith = { has_doctrine_parameter = unreformed } }
+					}
+				}
+				custom_tooltip = RICE_normandy_grant_normandy_interaction_tooltip_5
+			}	
+		}
+		custom_tooltip = RICE_normandy_grant_normandy_interaction_tooltip_3	
+		scope:actor = {
+			trigger_event = normandy.0040
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 60
+		
+		modifier = {
+			factor = 0.1
+			scope:recipient = {
+				opinion = {
+					target = scope:actor
+					value < 0
+				}
+				NAND = {
+					is_vassal_of = scope:actor
+					scope:actor = {
+						ai_rationality > 50
+					}
+				}
+			}
+		}
+	}
+}
+
+# Available only to the player, AI will take decision by default
+RICE_normandy_negotiate_normandy_interaction = {
+	category = interaction_category_friendly
+	common_interaction = yes
+
+	desc = RICE_normandy_negotiate_normandy_interaction_desc
+
+	auto_accept = yes
+	
+	# ai_targets = {
+	# 	ai_recipients = scripted_relations
+	# }
+	# ai_targets = {
+	# 	ai_recipients = liege
+	# }
+	# ai_targets = {
+	# 	ai_recipients = neighboring_rulers
+	# 	ai_recipients = peer_vassals
+	# 	max = 10
+	# }
+	# ai_targets = {
+	# 	ai_recipients = vassals
+	# 	max = 10
+	# }
+	# ai_targets = {
+	# 	ai_recipients = courtiers
+	# 	max = 5
+	# }
+	# ai_target_quick_trigger = {
+	# 	adult = yes
+	# }
+	ai_frequency = 60
+	
+	#cooldown = { years = 3 }
+	#cooldown_against_recipient = { years = 5 }
+	
+	is_shown = {
+
+
+		scope:actor = {
+			is_adult = yes
+			culture = { has_cultural_pillar = heritage_north_germanic }
+		}
+
+		scope:recipient = {
+			NOT = {
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_normandy_granted_to_norse_already
+				}
+			}
+			NOT = { has_global_variable = RICE_normandy_struggle_started }
+			highest_held_title_tier >= tier_duchy
+			OR = {
+				has_title = title:c_rouen
+				any_vassal_or_below = {
+					has_title = title:c_rouen
+				}
+			}
+			NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
+		}
+
+		NOT = {
+			scope:recipient = scope:actor
+		}
+
+	}
+	
+	is_valid_showing_failures_only = {
+		#scope:actor.gold >= RICE_activity_cost
+		scope:actor = {
+			# Whoever controls Rouen cannot become landless
+			title:c_rouen.holder = {
+				any_held_county = {
+					count > 1
+				}
+			}
+			#NOT = { has_title = title:c_rouen }
+		 	#NOT = { is_vassal_or_below_of = scope:recipient } # Doesn't make sense to give it to your liege
+		}
+		scope:recipient = {
+			#is_landed = no
+			is_busy_in_events_localised = yes
+		}
+		scope:actor.faith = { has_dominant_ruling_gender = scope:recipient }
+	}
+
+	is_valid = {
+		scope:recipient = {
+			# Don't want you to lose your capital
+			NOT = {
+				capital_province = {
+					geographical_region = RICE_normandy_region
+				}
+			}
+			# Completely control at least 3 counties in Normandy
+			calc_true_if = {
+				amount >= 3
+				completely_controls = title:c_rouen
+				completely_controls = title:c_eu
+				completely_controls = title:c_evreux
+				completely_controls = title:c_lisieux
+				completely_controls = title:c_alencon
+				completely_controls = title:c_bayeux
+				completely_controls = title:c_avranches
+			}
+			NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
+			OR = {
+				opinion = {
+					target = scope:actor
+					value >= -25
+				}
+				scope:actor = {
+					has_character_modifier = RICE_normandy_rollo_modifier
+				}
+			}
+		}
+	}
+	
+	on_accept = {
+		# show_as_tooltip = {
+		# 	RICE_tiraz_interaction_effect = yes
+		# }
+		scope:actor = {
+			save_scope_as = rollo
+			show_as_tooltip = {
+				add_prestige = 500
+			}
+			custom_tooltip = RICE_normandy_negotiate_normandy_interaction_tooltip_1
+			custom_tooltip = RICE_normandy_negotiate_normandy_interaction_tooltip_2	
+			if = {
+				limit = {
+					scope:recipient = {
+						NOT = { faith = { has_doctrine_parameter = unreformed } }
+					}
+				}
+				custom_tooltip = RICE_normandy_negotiate_normandy_interaction_tooltip_5
+			}	
+		}
+		scope:recipient = {
+			save_scope_as = charles
+			show_as_tooltip = {
+				add_prestige = -500
+				pay_short_term_gold = {
+					target = scope:actor
+					gold = RICE_activity_cost
+				}
+			}
+			custom_tooltip = RICE_normandy_negotiate_normandy_interaction_tooltip_3
+		}
+		custom_tooltip = RICE_normandy_negotiate_normandy_interaction_tooltip_4
+		scope:actor = {
+			trigger_event = normandy.0040
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 20
+		
+		# modifier = {
+		# 	factor = 0.1
+		# 	scope:recipient = {
+		# 		opinion = {
+		# 			target = scope:actor
+		# 			value < 0
+		# 		}
+		# 		NAND = {
+		# 			is_vassal_of = scope:actor
+		# 			scope:actor = {
+		# 				ai_rationality > 50
+		# 			}
+		# 		}
+		# 	}
+		# }
+	}
+}
+
+
+
+
+
+
+

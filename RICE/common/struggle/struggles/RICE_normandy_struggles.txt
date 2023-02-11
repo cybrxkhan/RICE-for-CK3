@@ -1,0 +1,1054 @@
+﻿RICE_normandy_struggle = {
+	# has_fp2_dlc_trigger = yes  #TODO_CD_AN Request support for dlc locking on struggles
+
+	##################################################
+	# Setup
+	##################################################
+	cultures = {
+		# Norse
+		norse
+		norwegian
+		icelandic
+		danish
+		swedish
+		# Frankish
+		norman
+		frankish
+		french
+		# Brythonic
+		breton
+		# West Germanic
+		english
+	}
+	faiths = {
+		# Christian
+		catholic
+		# Pagan
+		norse_pagan
+	}
+	regions = { 
+		RICE_normandy_region
+	}
+
+	# A culture or faith becomes involved if 20% of the total number of counties belonging to it are inside the struggle region.
+	involvement_prerequisite_percentage = 0.2
+
+	on_start = {
+		# Starting Events
+		trigger_event = { on_action = RICE_normandy_struggle_starting_events }
+		#trigger_event = normandy.0001
+	}
+
+	on_change_phase = {
+
+		#trigger_event = { on_action = RICE_normandy_struggle_phase_change_events }
+
+		# # Set up AI Intent
+		# trigger_event = fp2_struggle.0003
+	}
+	
+	# Root = the current struggle
+	# scope:character = the character which has joined the struggle
+ 	on_join = {
+		if = {
+			limit = {
+				is_ai = no
+			}
+			trigger_event = normandy.0001
+		}
+		# else = {
+		# 	# assign an intent to the freshly joined character
+		# 	trigger_event = fp2_struggle.004
+		# }
+ 	}  
+
+	##################################################
+	# Phases
+	##################################################
+	start_phase = struggle_RICE_normandy_phase_adventure	
+	
+	phase_list = {
+
+		# Opportunity Phase represents complacency after a long period of coexistence during Conciliation; people are comfortable that things are good and so actors with ill-intent can get away with things once again.
+		struggle_RICE_normandy_phase_confrontation = {
+			##################################################
+			# General Set-Up
+
+			background = "gfx/interface/illustrations/struggle_backgrounds/struggle_RICE_normandy_phase_confrontation.dds"
+			
+			future_phases = {
+				struggle_RICE_normandy_phase_acculturation = {						
+					catalysts = {
+						catalyst_improve_development_vassal_diff_faith_culture = minimal_struggle_catalyst_gain # How to do AI?
+						catalyst_gift_independent_ruler = minor_struggle_catalyst_gain # AI done
+						catalyst_became_friend_lover_with_character = minor_struggle_catalyst_gain
+						catalyst_learned_new_language_important = minor_struggle_catalyst_gain # AI done
+						catalyst_new_building_in_city = minor_struggle_catalyst_gain # How to do AI?
+						catalyst_sign_truce_outside_war = minor_struggle_catalyst_gain # will need update when addding truce through wards
+						# catalyst_formed_interreligious_alliance_with_important_character = minor_struggle_catalyst_gain
+						catalyst_ransom_important = medium_struggle_catalyst_gain
+						catalyst_grant_privilege_to_diff_faith_culture_vassal = medium_struggle_catalyst_gain
+						# catalyst_invite_diff_faith_culture_to_feast = medium_struggle_catalyst_gain
+						# catalyst_independence_from_non_dejure_vassal = major_struggle_catalyst_gain
+						catalyst_grant_land_local_noble = major_struggle_catalyst_gain
+						catalyst_became_best_friend_soulmate_with_very_important_character = major_struggle_catalyst_gain # AI done
+						catalyst_convert_local_culture_faith = major_struggle_catalyst_gain
+						catalyst_release_important = massive_struggle_catalyst_gain
+
+
+						catalyst_RICE_normandy_married_to_frankish = medium_struggle_catalyst_gain
+						catalyst_RICE_normandy_frankish_ally = medium_struggle_catalyst_gain
+						catalyst_RICE_normandy_invited_norse_colonists = massive_struggle_catalyst_gain
+						catalyst_RICE_normandy_invited_norse_traders = massive_struggle_catalyst_gain
+						catalyst_RICE_normandy_high_diplomacy = minor_struggle_catalyst_gain
+						catalyst_RICE_normandy_high_stewardship = minor_struggle_catalyst_gain
+						catalyst_RICE_normandy_high_learning = minor_struggle_catalyst_gain
+						catalyst_RICE_normandy_vassal_positive_opinion = minor_struggle_catalyst_gain	
+					}
+				}
+				struggle_RICE_normandy_phase_adventure = {
+					catalysts = {
+						# catalyst_passing_of_time = minimal_struggle_catalyst_gain
+						catalyst_gain_claim_on_title = minor_struggle_catalyst_gain
+						catalyst_win_any_war_within_the_region = minor_struggle_catalyst_gain # Good
+						catalyst_new_building_in_castle = minor_struggle_catalyst_gain # Good
+						catalyst_becomes_rival_with_involved = major_struggle_catalyst_gain # Good
+						catalyst_using_a_hook_on_very_important_character = medium_struggle_catalyst_gain # good
+						#- Host a Feast when having at least two different-faith vassals
+						catalyst_unnatural_death_important_character = medium_struggle_catalyst_gain
+						catalyst_usurp_title = major_struggle_catalyst_gain # good
+						catalyst_forced_conversion = medium_struggle_catalyst_gain
+						catalyst_reveal_secret_important = major_struggle_catalyst_gain
+						catalyst_broke_truce_against_important_character = massive_struggle_catalyst_gain # Cannot motivate the AI to do that without code support
+						
+						
+						catalyst_RICE_normandy_married_to_scandinavian = medium_struggle_catalyst_gain
+						catalyst_RICE_normandy_scandinavian_ally = medium_struggle_catalyst_gain
+						catalyst_RICE_normandy_invited_norse_courtiers = massive_struggle_catalyst_gain
+						catalyst_RICE_normandy_invited_norse_mercenaries = massive_struggle_catalyst_gain
+						catalyst_RICE_normandy_high_martial = minor_struggle_catalyst_gain
+						catalyst_RICE_normandy_high_intrigue = minor_struggle_catalyst_gain
+						catalyst_RICE_normandy_high_prowess = minor_struggle_catalyst_gain
+						catalyst_RICE_normandy_vassal_negative_opinion = minor_struggle_catalyst_gain	
+					}
+				}
+			}
+
+			war_effects = {
+				###### Common
+
+				# Nothing
+
+				###### Involved
+				
+				involved_character_modifier = {
+					mercenary_hire_cost_mult = -0.05
+					levy_reinforcement_rate_friendly_territory = 0.05
+				}
+
+				###### Interlopers
+				
+				# Nothing
+
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			faith_effects = {
+				###### Common
+				common_parameters = {
+					cheaper_to_convert_to_struggle_faith = yes
+				}
+
+				###### Involved
+				involved_parameters = {
+					interfaith_marriages_available_between_involved_characters = yes
+				}
+				
+				involved_character_modifier = {
+					opinion_of_different_faith = 10
+				}
+
+				###### Interlopers
+				interloper_character_modifier = {
+					opinion_of_different_faith = 10
+				}
+
+				###### Uninvolved
+
+				# Nothing
+
+			}
+
+			culture_effects = {
+				###### Common
+
+				common_parameters = {
+					county_culture_conversion_in_region_proceeds_faster = yes
+				}
+
+				###### Involved
+				involved_parameters = {
+					granting_title_to_local_noble_gives_prestige = yes
+				}
+
+				###### Interlopers
+
+				# Nothing
+
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			other_effects = {
+				###### Common
+
+				common_parameters = {
+					RICE_greenland_resilience_settlement_phase_increase = yes
+					RICE_greenland_networks_settlement_phase_increase = yes
+				}
+
+
+				###### Involved
+				involved_parameters = {
+					RICE_greenland_walrus_hunt_resilience_impact_integration = yes
+					RICE_greenland_walrus_hunt_success_chance_settlement = yes
+					RICE_greenland_walrus_hunt_gold_gain_integration = yes
+					RICE_greenland_expedition_reduced_gold_loss = yes
+				}
+
+				involved_character_modifier = {
+					monthly_prestige_gain_mult = 0.04
+				}
+
+				involved_county_modifier = {
+					tax_mult = 0.1
+					development_growth_factor = 0.2
+				}
+
+				###### Interlopers
+
+				interloper_county_modifier = {
+					tax_mult = 0.05
+					development_growth_factor = 0.1
+				}
+
+				###### Uninvolved
+
+				uninvolved_county_modifier = {
+					tax_mult = 0.02
+				}
+
+			}
+
+			#We are listing all available decision to give players insights on how they can end the Struggle
+			ending_decisions = {
+				RICE_normandy_struggle_ending_conquest_decision
+				RICE_normandy_struggle_ending_assimilation_decision
+				RICE_normandy_struggle_ending_outsider_decision
+			 }
+		}
+
+		# The Hostility phase accounts for the more brutal & fundamentalist side of the struggle; intolerance and violence break out even in stable areas & resentments over slights real or imagined escalate dramatically.
+		# Should we add a transition to Opportunity? A smaller deescalation than going to compromise
+		struggle_RICE_normandy_phase_acculturation = {
+			##################################################
+			# General Set-Up
+
+			background = "gfx/interface/illustrations/struggle_backgrounds/struggle_RICE_normandy_phase_acculturation.dds"
+
+			future_phases = {
+				struggle_RICE_normandy_phase_adventure = {
+					catalysts = {
+						# catalyst_passing_of_time = minimal_struggle_catalyst_gain
+						catalyst_gain_claim_on_title = minor_struggle_catalyst_gain
+						catalyst_win_any_war_within_the_region = minor_struggle_catalyst_gain # Good
+						catalyst_new_building_in_castle = minor_struggle_catalyst_gain # Good
+						catalyst_becomes_rival_with_involved = major_struggle_catalyst_gain # Good
+						catalyst_using_a_hook_on_very_important_character = medium_struggle_catalyst_gain # good
+						#- Host a Feast when having at least two different-faith vassals
+						catalyst_unnatural_death_important_character = medium_struggle_catalyst_gain
+						catalyst_usurp_title = major_struggle_catalyst_gain # good
+						catalyst_forced_conversion = medium_struggle_catalyst_gain
+						catalyst_reveal_secret_important = major_struggle_catalyst_gain
+						catalyst_broke_truce_against_important_character = massive_struggle_catalyst_gain # Cannot motivate the AI to do that without code support
+					
+						catalyst_RICE_normandy_married_to_scandinavian = medium_struggle_catalyst_gain
+						catalyst_RICE_normandy_scandinavian_ally = medium_struggle_catalyst_gain
+						catalyst_RICE_normandy_invited_norse_courtiers = massive_struggle_catalyst_gain
+						catalyst_RICE_normandy_invited_norse_mercenaries = massive_struggle_catalyst_gain
+						catalyst_RICE_normandy_high_martial = minor_struggle_catalyst_gain
+						catalyst_RICE_normandy_high_intrigue = minor_struggle_catalyst_gain
+						catalyst_RICE_normandy_high_prowess = minor_struggle_catalyst_gain
+						catalyst_RICE_normandy_vassal_positive_opinion = minor_struggle_catalyst_gain	
+
+					}
+				}
+				struggle_RICE_normandy_phase_confrontation = {
+					catalysts = {
+						# catalyst_passing_of_time = minimal_struggle_catalyst_gain
+						catalyst_gain_claim_on_title = minor_struggle_catalyst_gain
+						catalyst_win_any_war_within_the_region = minor_struggle_catalyst_gain # Good
+						catalyst_new_building_in_castle = minor_struggle_catalyst_gain # Good
+						catalyst_becomes_rival_with_involved = major_struggle_catalyst_gain # Good
+						catalyst_using_a_hook_on_very_important_character = medium_struggle_catalyst_gain # good
+						#- Host a Feast when having at least two different-faith vassals
+						catalyst_unnatural_death_important_character = medium_struggle_catalyst_gain
+						catalyst_usurp_title = major_struggle_catalyst_gain # good
+						catalyst_forced_conversion = medium_struggle_catalyst_gain
+						catalyst_reveal_secret_important = major_struggle_catalyst_gain
+						catalyst_broke_truce_against_important_character = massive_struggle_catalyst_gain # Cannot motivate the AI to do that without code support
+
+						catalyst_RICE_normandy_married_to_frankish = medium_struggle_catalyst_gain
+						catalyst_RICE_normandy_frankish_ally = medium_struggle_catalyst_gain
+						catalyst_RICE_normandy_invited_norse_colonists = massive_struggle_catalyst_gain
+						catalyst_RICE_normandy_invited_norse_traders = massive_struggle_catalyst_gain
+						catalyst_RICE_normandy_high_diplomacy = minor_struggle_catalyst_gain
+						catalyst_RICE_normandy_high_stewardship = minor_struggle_catalyst_gain
+						catalyst_RICE_normandy_high_learning = minor_struggle_catalyst_gain	
+						catalyst_RICE_normandy_vassal_negative_opinion = minor_struggle_catalyst_gain	
+
+
+					}
+				}				
+			}
+
+			war_effects = {
+				###### Common
+				
+				# Nothing
+
+				##### Involved
+				
+				involved_character_modifier = {
+					mercenary_hire_cost_mult = -0.05
+					levy_reinforcement_rate_friendly_territory = 0.05
+				}
+
+				###### Interlopers
+				
+				# Nothing
+
+				###### Uninvolved
+				
+				# Nothing
+
+			}
+
+			faith_effects = {
+				###### Common
+				
+				# Nothing
+
+				###### Involved
+
+				involved_parameters = {
+					interfaith_marriages_available_between_involved_characters = yes
+				}
+				
+				involved_character_modifier = {
+					opinion_of_different_faith = 10
+				}
+
+				###### Interlopers
+				interloper_character_modifier = {
+					opinion_of_different_faith = 10
+				}
+
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			culture_effects = {
+
+				###### Common
+
+				common_parameters = {
+					county_culture_conversion_in_region_proceeds_faster = yes
+				}
+
+				###### Involved
+				involved_character_modifier = {
+					opinion_of_different_culture = 10
+
+					cultural_head_fascination_mult = 0.25
+					cultural_head_acceptance_gain_mult = 0.25
+				}
+				###### Interlopers
+				interloper_character_modifier = {
+					opinion_of_different_culture = 5
+					cultural_head_fascination_mult = 0.25
+					cultural_head_acceptance_gain_mult = 0.25
+				}
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			other_effects = {
+				###### Common
+				
+				common_parameters = {
+					RICE_greenland_resilience_integration_phase_increase = yes
+					RICE_greenland_networks_integration_phase_increase = yes
+				}
+
+				###### Involved
+				involved_parameters = {
+					RICE_greenland_walrus_hunt_resilience_impact_integration = yes
+					RICE_greenland_support_cooldown_reduced = yes
+					RICE_greenland_reduced_vinland_failure = yes
+					RICE_greenland_walrus_hunt_success_chance_integration = yes
+					RICE_greenland_walrus_hunt_gold_gain_integration = yes
+					RICE_greenland_expedition_reduced_gold_loss = yes
+				}
+
+				involved_character_modifier = {
+					monthly_prestige_gain_mult = 0.02
+				}
+
+				involved_county_modifier = {
+					tax_mult = 0.15
+					development_growth_factor = 0.3
+				}
+
+				###### Interlopers
+
+				interloper_county_modifier = {
+					tax_mult = 0.1
+					development_growth_factor = 0.2
+				}
+
+				###### Uninvolved
+
+				uninvolved_county_modifier = {
+					tax_mult = 0.05
+					development_growth_factor = 0.1
+				}
+			}
+
+			##################################################
+			# Ending
+
+			#We are listing all available decision to give players insights on how they can end the Struggle
+			ending_decisions = {
+				RICE_normandy_struggle_ending_conquest_decision
+				RICE_normandy_struggle_ending_assimilation_decision
+				RICE_normandy_struggle_ending_outsider_decision
+			 }
+		}
+
+		# The Hostility phase accounts for the more brutal & fundamentalist side of the struggle; intolerance and violence break out even in stable areas & resentments over slights real or imagined escalate dramatically.
+		# Should we add a transition to Opportunity? A smaller deescalation than going to compromise
+		struggle_RICE_normandy_phase_adventure = {
+			##################################################
+			# General Set-Up
+
+			background = "gfx/interface/illustrations/struggle_backgrounds/struggle_RICE_normandy_phase_adventure.dds"
+
+			future_phases = {
+				struggle_RICE_normandy_phase_acculturation = {
+					catalysts = {
+						catalyst_improve_development_vassal_diff_faith_culture = minimal_struggle_catalyst_gain # How to do AI?
+						catalyst_gift_independent_ruler = minor_struggle_catalyst_gain # AI done
+						catalyst_became_friend_lover_with_character = minor_struggle_catalyst_gain
+						catalyst_learned_new_language_important = minor_struggle_catalyst_gain # AI done
+						catalyst_new_building_in_city = minor_struggle_catalyst_gain # How to do AI?
+						catalyst_sign_truce_outside_war = minor_struggle_catalyst_gain # will need update when addding truce through wards
+						# catalyst_formed_interreligious_alliance_with_important_character = minor_struggle_catalyst_gain
+						catalyst_ransom_important = medium_struggle_catalyst_gain
+						catalyst_grant_privilege_to_diff_faith_culture_vassal = medium_struggle_catalyst_gain
+						# catalyst_invite_diff_faith_culture_to_feast = medium_struggle_catalyst_gain
+						# catalyst_independence_from_non_dejure_vassal = major_struggle_catalyst_gain
+						catalyst_grant_land_local_noble = major_struggle_catalyst_gain
+						catalyst_became_best_friend_soulmate_with_very_important_character = major_struggle_catalyst_gain # AI done
+						catalyst_convert_local_culture_faith = major_struggle_catalyst_gain
+						catalyst_release_important = massive_struggle_catalyst_gain
+
+						
+						catalyst_RICE_normandy_married_to_frankish = medium_struggle_catalyst_gain
+						catalyst_RICE_normandy_frankish_ally = medium_struggle_catalyst_gain
+						catalyst_RICE_normandy_invited_norse_courtiers = massive_struggle_catalyst_gain
+						catalyst_RICE_normandy_invited_norse_traders = massive_struggle_catalyst_gain
+						catalyst_RICE_normandy_high_diplomacy = minor_struggle_catalyst_gain
+						catalyst_RICE_normandy_high_stewardship = minor_struggle_catalyst_gain
+						catalyst_RICE_normandy_high_learning = minor_struggle_catalyst_gain	
+						catalyst_RICE_normandy_vassal_positive_opinion = minor_struggle_catalyst_gain	
+
+					}
+				}
+				struggle_RICE_normandy_phase_confrontation = {
+					catalysts = {
+						# catalyst_passing_of_time = minimal_struggle_catalyst_gain
+						catalyst_gain_claim_on_title = minor_struggle_catalyst_gain
+						catalyst_win_any_war_within_the_region = minor_struggle_catalyst_gain # Good
+						catalyst_new_building_in_castle = minor_struggle_catalyst_gain # Good
+						catalyst_becomes_rival_with_involved = major_struggle_catalyst_gain # Good
+						catalyst_using_a_hook_on_very_important_character = medium_struggle_catalyst_gain # good
+						# # #- Host a Feast when having at least two different-faith vassals
+						catalyst_unnatural_death_important_character = medium_struggle_catalyst_gain
+						catalyst_usurp_title = major_struggle_catalyst_gain # good
+						# # catalyst_forced_conversion = medium_struggle_catalyst_gain
+						catalyst_reveal_secret_important = major_struggle_catalyst_gain
+						catalyst_broke_truce_against_important_character = massive_struggle_catalyst_gain # Cannot motivate the AI to do that without code support
+					
+						catalyst_RICE_normandy_married_to_scandinavian = medium_struggle_catalyst_gain
+						catalyst_RICE_normandy_scandinavian_ally = medium_struggle_catalyst_gain
+						catalyst_RICE_normandy_invited_norse_colonists = massive_struggle_catalyst_gain
+						catalyst_RICE_normandy_invited_norse_mercenaries = massive_struggle_catalyst_gain
+						catalyst_RICE_normandy_high_martial = minor_struggle_catalyst_gain
+						catalyst_RICE_normandy_high_intrigue = minor_struggle_catalyst_gain
+						catalyst_RICE_normandy_high_prowess = minor_struggle_catalyst_gain
+						catalyst_RICE_normandy_vassal_negative_opinion = minor_struggle_catalyst_gain	
+
+					}
+				}				
+			}
+
+			war_effects = {
+				###### Common
+				
+				# Nothing
+
+				##### Involved
+				
+				involved_character_modifier = {
+					garrison_size = -0.05
+				}
+
+
+				###### Interlopers
+				
+				# Nothing
+
+				###### Uninvolved
+				
+				# Nothing
+
+
+			}
+
+			faith_effects = {
+				###### Common
+				
+				# Nothing
+
+
+				###### Involved
+				involved_parameters = {
+					interfaith_marriages_available_between_involved_characters = yes
+				}
+
+				###### Interlopers
+				interloper_character_modifier = {
+					holy_order_hire_cost_mult = -0.25
+				}
+
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			culture_effects = {
+
+				###### Common
+
+				common_parameters = {
+					county_culture_conversion_in_region_proceeds_slower = yes
+				}
+
+				###### Involved
+				involved_character_modifier = {
+					cultural_head_fascination_mult = -0.1
+					cultural_head_acceptance_gain_mult = -0.1
+				}
+				###### Interlopers
+				interloper_character_modifier = {
+					cultural_head_fascination_mult = -0.1
+					cultural_head_acceptance_gain_mult = -0.1
+				}
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			other_effects = {
+				###### Common
+				
+				common_parameters = {
+					RICE_greenland_resilience_subsistence_phase_unpredictable = yes
+					RICE_greenland_networks_subsistence_phase_unpredictable = yes
+				}
+
+				###### Involved
+				involved_parameters = {
+					RICE_greenland_walrus_hunt_resilience_impact_subsistence = yes
+					RICE_greenland_walrus_hunt_subsistence_increased_costs = yes
+					#RICE_greenland_walrus_hunt_success_chance_subsistence = yes
+					RICE_greenland_walrus_hunt_gold_gain_subsistence = yes
+					RICE_greenland_send_exile_increased_cost = yes
+				}
+
+				involved_county_modifier = {
+					tax_mult = -0.02
+					development_growth_factor = -0.1
+				}
+
+				###### Interlopers
+
+				interloper_county_modifier = {
+					tax_mult = -0.02
+					development_growth_factor = -0.1
+				}
+
+				###### Uninvolved
+
+				uninvolved_county_modifier = {
+					tax_mult = -0.02
+					development_growth_factor = -0.1
+				}
+			}
+
+			##################################################
+			# Ending
+
+			#We are listing all available decision to give players insights on how they can end the Struggle
+			ending_decisions = {
+				RICE_normandy_struggle_ending_conquest_decision
+				RICE_normandy_struggle_ending_assimilation_decision
+				RICE_normandy_struggle_ending_outsider_decision
+			 }
+		}
+
+
+		
+		# Placed here to suppress errors
+		struggle_iberia_phase_opportunity = {
+			##################################################
+			# General Set-Up
+
+			background = "gfx/interface/illustrations/struggle_backgrounds/struggle_opportunity_bg.dds"
+			
+			future_phases = {
+				struggle_RICE_normandy_phase_confrontation = {						
+					catalysts = {
+						catalyst_passing_of_time = minimal_struggle_catalyst_gain
+					}
+				}
+			}
+
+			war_effects = {
+				###### Common
+
+				# Nothing
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				involved_character_modifier = {
+				}
+
+				###### Interlopers
+				interloper_parameters = {
+				}
+
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			faith_effects = {
+				###### Common
+				common_parameters = {
+				}
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				###### Interlopers
+
+				# Nothing
+
+				###### Uninvolved
+
+				# Nothing
+
+			}
+
+			culture_effects = {
+				###### Common
+				common_parameters = {
+				}
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				###### Interlopers
+
+				# Nothing
+
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			other_effects = {
+				###### Common
+
+				# Nothing
+
+
+				###### Involved
+				involved_parameters = {
+
+				}
+
+				###### Interlopers
+				interloper_parameters = {
+				}
+
+				interloper_character_modifier = {
+				}
+
+				###### Uninvolved
+				uninvolved_parameters = {
+				}
+
+				uninvolved_county_modifier = {
+				}
+
+			}
+
+			#We are listing all available decision to give players insights on how they can end the Struggle
+			ending_decisions = {
+			}
+		}
+
+		# Placed here to suppress errors
+		struggle_iberia_phase_hostility = {
+			##################################################
+			# General Set-Up
+
+			background = "gfx/interface/illustrations/struggle_backgrounds/struggle_opportunity_bg.dds"
+			
+			future_phases = {
+				struggle_RICE_normandy_phase_confrontation = {						
+					catalysts = {
+						catalyst_passing_of_time = minimal_struggle_catalyst_gain
+					}
+				}
+			}
+
+			war_effects = {
+				###### Common
+
+				# Nothing
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				involved_character_modifier = {
+				}
+
+				###### Interlopers
+				interloper_parameters = {
+				}
+
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			faith_effects = {
+				###### Common
+				common_parameters = {
+				}
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				###### Interlopers
+
+				# Nothing
+
+				###### Uninvolved
+
+				# Nothing
+
+			}
+
+			culture_effects = {
+				###### Common
+				common_parameters = {
+				}
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				###### Interlopers
+
+				# Nothing
+
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			other_effects = {
+				###### Common
+
+				# Nothing
+
+
+				###### Involved
+				involved_parameters = {
+
+				}
+
+				###### Interlopers
+				interloper_parameters = {
+				}
+
+				interloper_character_modifier = {
+				}
+
+				###### Uninvolved
+				uninvolved_parameters = {
+				}
+
+				uninvolved_county_modifier = {
+				}
+
+			}
+
+			#We are listing all available decision to give players insights on how they can end the Struggle
+			ending_decisions = {
+			}
+		}
+
+		# Placed here to suppress errors
+		struggle_iberia_phase_compromise = {
+			##################################################
+			# General Set-Up
+
+			background = "gfx/interface/illustrations/struggle_backgrounds/struggle_opportunity_bg.dds"
+			
+			future_phases = {
+				struggle_RICE_normandy_phase_confrontation = {						
+					catalysts = {
+						catalyst_passing_of_time = minimal_struggle_catalyst_gain
+					}
+				}
+			}
+
+			war_effects = {
+				###### Common
+
+				# Nothing
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				involved_character_modifier = {
+				}
+
+				###### Interlopers
+				interloper_parameters = {
+				}
+
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			faith_effects = {
+				###### Common
+				common_parameters = {
+				}
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				###### Interlopers
+
+				# Nothing
+
+				###### Uninvolved
+
+				# Nothing
+
+			}
+
+			culture_effects = {
+				###### Common
+				common_parameters = {
+				}
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				###### Interlopers
+
+				# Nothing
+
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			other_effects = {
+				###### Common
+
+				# Nothing
+
+
+				###### Involved
+				involved_parameters = {
+
+				}
+
+				###### Interlopers
+				interloper_parameters = {
+				}
+
+				interloper_character_modifier = {
+				}
+
+				###### Uninvolved
+				uninvolved_parameters = {
+				}
+
+				uninvolved_county_modifier = {
+				}
+
+			}
+
+			#We are listing all available decision to give players insights on how they can end the Struggle
+			ending_decisions = {
+			}
+		}
+
+		# Placed here to suppress errors
+		struggle_iberia_phase_conciliation = {
+			##################################################
+			# General Set-Up
+
+			background = "gfx/interface/illustrations/struggle_backgrounds/struggle_opportunity_bg.dds"
+			
+			future_phases = {
+				struggle_RICE_normandy_phase_confrontation = {						
+					catalysts = {
+						catalyst_passing_of_time = minimal_struggle_catalyst_gain
+					}
+				}
+			}
+
+			war_effects = {
+				###### Common
+
+				# Nothing
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				involved_character_modifier = {
+				}
+
+				###### Interlopers
+				interloper_parameters = {
+				}
+
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			faith_effects = {
+				###### Common
+				common_parameters = {
+				}
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				###### Interlopers
+
+				# Nothing
+
+				###### Uninvolved
+
+				# Nothing
+
+			}
+
+			culture_effects = {
+				###### Common
+				common_parameters = {
+				}
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				###### Interlopers
+
+				# Nothing
+
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			other_effects = {
+				###### Common
+
+				# Nothing
+
+
+				###### Involved
+				involved_parameters = {
+
+				}
+
+				###### Interlopers
+				interloper_parameters = {
+				}
+
+				interloper_character_modifier = {
+				}
+
+				###### Uninvolved
+				uninvolved_parameters = {
+				}
+
+				uninvolved_county_modifier = {
+				}
+
+			}
+
+			#We are listing all available decision to give players insights on how they can end the Struggle
+			ending_decisions = {
+			}
+		}
+	}
+
+	# AI should gift
+
+
+
+
+}
