@@ -8,6 +8,7 @@
 # normandy.0050-normandy.0069			Mont Saint Michel
 # normandy.0070-normandy.0079			Christian religious buildings
 # normandy.0080-normandy.0089			Rollo narrative events
+# normandy.0090-normandy.0109			William the Conqueror/Matilda of Flanders narrative events
 # normandy.0100-normandy.0149			Generic flavor events
 # 
 # 
@@ -612,6 +613,8 @@ normandy.0020 = {
 
 	immediate = {
 
+		save_scope_as = current_ruler
+
 		# Determine original source of these Norse
 		# If there are any Norse in Scandinavia or connected regions, go there first
 		if = {
@@ -872,6 +875,9 @@ normandy.0020 = {
 			}
 			# They demand more, either gold or titles
 			20 = {
+				trigger = {
+					NOT = { var:RICE_norse_adventurer_type = flag:rulers }
+				}
 				trigger_event = normandy.0023			
 			}
 		}
@@ -909,8 +915,21 @@ normandy.0021 = {
 				}
 				desc = normandy.0021.desc.traders
 			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_norse_adventurer_type = flag:rulers
+				}
+				desc = normandy.0021.desc.rulers
+			}
 		}
-		desc = normandy.0021.desc.conclusion
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { var:RICE_norse_adventurer_type = flag:rulers }
+				}
+				desc = normandy.0021.desc.conclusion
+			}
+		}
 	}
 	theme = realm
 	
@@ -1199,6 +1218,59 @@ normandy.0021 = {
 				}
 			}
 		}
+		else_if = {
+			limit = {
+				var:RICE_norse_adventurer_type = flag:rulers
+			}
+			random_held_title = {
+				limit = {
+					tier = tier_county
+					NOT = { this = root.capital_county }
+					#NOT = { this = scope:capital_county }
+				}	
+				save_scope_as = award_county
+			}			
+			scope:courtier_1 = {
+				get_title = scope:award_county
+			}
+			create_title_and_vassal_change = {
+				type = swear_fealty
+				save_scope_as = change
+			}
+			scope:courtier_1 = {
+				change_liege = {
+					liege = root
+					change = scope:change
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+			random_list = {
+				# 20 = {
+				# 	add_character_modifier = {
+				# 		modifier = fp1_reprieve_from_sa_modifier
+				# 		years = 5
+				# 	}
+				# }
+				10 = {
+					add_character_modifier = {
+						modifier = fp1_reprieve_from_sa_modifier
+						years = 10
+					}
+				}
+				10 = {
+					add_character_modifier = {
+						modifier = fp1_reprieve_from_sa_modifier
+						years = 15
+					}
+				}
+				10 = {
+					add_character_modifier = {
+						modifier = fp1_reprieve_from_sa_modifier
+						years = 20
+					}
+				}
+			}
+		}
 		
 	}
 	
@@ -1412,7 +1484,29 @@ normandy.0021 = {
 		trigger_event = normandy.0022
 	}
 
+		
+	option = { # Play as them
+		name = normandy.0021.d
+		trigger = {
+			var:RICE_norse_adventurer_type = flag:rulers
+		}
+		set_player_character = scope:courtier_1
+	}
+
 	after = {
+		if = {
+			limit = {
+				var:RICE_norse_adventurer_type = flag:rulers
+			}
+			trigger_event = normandy.0024
+			# Small chance they want to convert
+			# random = {
+			# 	chance = 25
+			# 	scope:courtier_1 = {					
+			# 		trigger_event = 
+			# 	}
+			# }
+		}
 		if = {
 			limit = {
 				NOT = { has_variable = RICE_overrated_vikings_gtfo }
@@ -1810,6 +1904,45 @@ normandy.0023 = {
 
 
 
+
+# New Norse ruler
+normandy.0024 = {
+	type = character_event
+	title = normandy.0024.t
+	desc = normandy.0024.desc
+	theme = RICE_theme_normandy_outpost
+	
+	left_portrait = {
+		character = scope:current_ruler
+		animation = war_over_tie
+	}
+	right_portrait = scope:courtier_1
+
+	
+	# Will convert
+	option = {
+		name = normandy.0024.a		
+		trigger = {
+			NOT = { scope:current_ruler.faith = scope:courtier_1.faith }
+			NOT = { scope:current_ruler.faith = { has_doctrine_parameter = unreformed } }
+		}
+		set_character_faith_with_conversion = scope:current_ruler.faith
+		add_piety = -100
+		add_prestige = -100
+		scope:actor = {
+			add_opinion = {
+				target = scope:current_ruler
+				modifier = pleased_opinion
+				opinion = 15
+			}
+		}
+	}
+	
+	# Ok
+	option = {
+		name = normandy.0024.b
+	}
+}
 
 
 ######################################################################################
@@ -2766,6 +2899,291 @@ normandy.0041 = {
 
 
 
+
+##################################################################
+# 
+# PILGRIMAGE TO AACHEN
+# normandy.0050-0069 reserved
+# 
+##################################################################
+
+# Make preparations to begin the pilgrimage
+normandy.0050 = {
+	type = character_event
+	title = normandy.0050.t
+	desc = normandy.0050.desc
+	theme = friendly
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	right_portrait = root
+	
+	immediate = {
+		# Stop characters from planning multiple activities at once
+		add_character_flag = planning_an_activity
+	}
+	
+	option = { # Ok
+		name = normandy.0050.a
+		# Choose appropriate location
+		title:b_avranches.title_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_mont_saint_michel_pilgrimage
+			}	
+		}
+	}
+}
+
+# Pilgrimage begins
+normandy.0051 = {
+	type = character_event
+	title = normandy.0051.t
+	desc = normandy.0051.desc
+	theme = RICE_theme_normandy_meadow
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Ok
+		name = normandy.0051.a
+		trigger_event = {
+			id = normandy.0052
+			days = { 10 20 }
+		}
+	}
+	
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+}
+
+# Arrive in Mont Saint Michel
+normandy.0052 = {
+	type = character_event
+	title = normandy.0052.t
+	desc = normandy.0052.desc
+	theme = RICE_theme_normandy_mont_saint_michel
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = normandy.0052.a
+		trigger_event = {
+			id = normandy.0053
+			days = { 4 12 }
+		}
+	}
+}
+
+# Choose what to focus on
+normandy.0053 = {
+	type = character_event
+	title = normandy.0053.t
+	desc = {
+		desc = normandy.0053.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { has_global_variable = RICE_normandy_michael_now_more_prominent }
+				}
+				desc = normandy.0053.desc.early
+			}
+			desc = normandy.0053.desc.late
+		}
+	}
+	theme = RICE_theme_normandy_mont_saint_michel
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	option = { # Saint Aubert
+		name = normandy.0053.a
+		trigger = {
+			NOT = { has_global_variable = RICE_normandy_michael_now_more_prominent }
+		}
+	}
+	
+	option = { # Michael (Early)
+		name = normandy.0053.b
+		trigger = {
+			NOT = { has_global_variable = RICE_normandy_michael_now_more_prominent }
+		}
+	}
+	
+	option = { # Michael Warrior (Late)
+		name = normandy.0053.c
+		trigger = {
+			has_global_variable = RICE_normandy_michael_now_more_prominent
+		}
+	}
+	option = { # Michael Merciful (Late)
+		name = normandy.0053.d
+		trigger = {
+			has_global_variable = RICE_normandy_michael_now_more_prominent
+		}
+	}
+
+	after = {		
+		trigger_event = {
+			id = normandy.0054
+			days = { 4 12 }
+		}
+	}
+
+}
+
+# Preparing to go home
+normandy.0054 = {
+	type = character_event
+	title = normandy.0054.t
+	desc = normandy.0054.desc
+	theme = RICE_theme_normandy_mont_saint_michel
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # ok
+		name = normandy.0054.a
+		trigger_event = {
+			id = normandy.0055
+			days = { 4 12 }
+		}
+	}
+
+}
+
+# Going home
+normandy.0055 = {
+	type = character_event
+	title = normandy.0055.t
+	desc = normandy.0055.desc
+	theme = friendly
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # ok
+		name = normandy.0055.a
+		add_piety = 200
+		pilgrimage_additional_reward_effect = yes
+		add_trait = pilgrim
+	}
+
+	after = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+
+}
+
+
+
+
+# Make preparations to go to proccession
+normandy.0060 = {
+	type = character_event
+	title = normandy.0060.t
+	desc = normandy.0060.desc
+	theme = friendly
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	right_portrait = root
+	
+	immediate = {
+		# Stop characters from planning multiple activities at once
+		add_character_flag = planning_an_activity
+	}
+	
+	option = { # Ok
+		name = normandy.0060.a
+		# Choose appropriate location
+		title:b_avranches.title_province = {	
+			spawn_activity = {
+				owner = root
+				type = activity_saint_aubert_procession
+			}	
+		}
+	}
+}
+
+# Arrive at Avranches
+normandy.0061 = {
+	type = character_event
+	title = normandy.0061.t
+	desc = normandy.0061.desc
+	theme = RICE_theme_normandy_mont_saint_michel
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Ok
+		name = normandy.0061.a
+		random = {
+			chance = RICE_normandy_procession_miracle_chance
+			send_interface_toast = {
+				left_icon = ROOT
+				type = event_generic_good
+				title = normandy.0061.toast
+				add_piety = 100
+				add_character_modifier = {
+					modifier = RICE_normandy_saint_aubert_miracle
+					years = 10
+				}
+			}
+		}
+		trigger_event = {
+			id = normandy.0062
+			days = { 10 20 }
+		}
+	}
+	
+	immediate = {
+		play_music_cue = "mx_cue_low_key_positive"
+	}
+}
+
+
+# Come home
+normandy.0062 = {
+	type = character_event
+	title = normandy.0062.t
+	desc = normandy.0055.desc
+	theme = 0062
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # ok
+		name = normandy.0062.a
+		add_piety = 100
+	}
+
+	after = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+
+}
+
+
 ######################################################################################
 # 
 # ROLLO EVENTS
@@ -2925,6 +3343,271 @@ normandy.0080 = {
 	#after = {
 	#	trigger_event = normandy.0082
 	#}
+
+
+}
+
+
+######################################################################################
+# 
+# WILLIAM THE CONQUEROR/MATILDA OF FLANDERS EVENTS
+# 
+# normandy.0090-normandy.0099 reserved
+# 
+######################################################################################
+
+
+
+# William the Conqueror - begin the event chain
+normandy.0090 = {
+	type = character_event
+	title = normandy.0090.t
+	desc = normandy.0090.desc
+	theme = memory_positive
+	override_background = { event_background = fp1_ocean }
+
+	
+	right_portrait = {
+		character = scope:william
+		animation = personality_forgiving
+	}
+
+	lower_center_portrait = scope:matilda
+
+	trigger = {
+		character:367 = {
+			is_alive = yes
+		}		
+		character:140 = {
+			is_alive = yes
+		}
+	}
+	
+	immediate = {
+		character:140 = {
+			save_scope_as = william
+		}
+		character:367 = {
+			save_scope_as = matilda
+		}
+		character:364 = {
+			save_scope_as = baldwin
+		}
+	}
+	
+	# Contemplate marriage
+	option = {
+		name = normandy.0090.a
+		custom_tooltip = normandy.0090.a.tooltip
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0090.info
+			}
+		}
+		trigger_event = normandy.0091
+	}
+
+	
+	# Skip the whole shebang
+	option = {
+		name = normandy.0090.b
+		custom_tooltip = normandy.0090.b.tooltip
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0090.info
+			}
+		}
+	}
+
+	#after = {
+	#	trigger_event = normandy.0091
+	#}
+
+
+}
+
+
+
+# William the Conqueror - decide whether to be lovers or friends with Matilda
+normandy.0091 = {
+	type = character_event
+	title = normandy.0091.t
+	desc = normandy.0091.desc
+	theme = marriage
+	override_background = { event_background = relaxing_room }
+	
+	left_portrait = {
+		character = scope:william
+		animation = personality_content
+	}
+	
+	right_portrait = {
+		character = scope:matilda
+		animation = personality_compassionate
+	}
+
+	lower_center_portrait = scope:baldwin
+	
+	# Be lovers
+	option = {
+		name = normandy.0091.a
+		set_relation_lover = {
+			reason = lover_history
+			target = scope:matilda
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0091.info
+			}
+		}
+	}
+	
+	# Be friends
+	option = {
+		name = normandy.0091.b
+		set_relation_friend = {
+			reason = friend_generic_history
+			target = scope:matilda
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0091.info
+			}
+		}
+	}
+
+	after = {
+		trigger_event = normandy.0092
+	}
+
+
+}
+
+
+
+# Matilda imprisons Beorhtric and seizes his properties
+normandy.0096 = {
+	type = character_event
+	title = normandy.0096.t
+	desc = normandy.0096.desc
+	theme = intrigue_skulduggery_focus
+	override_background = { event_background = throne_room }
+	
+	left_portrait = {
+		character = scope:william
+		animation = worry
+	}
+	
+	right_portrait = {
+		character = scope:matilda
+		animation = personality_vengeful
+	}
+
+	lower_center_portrait = scope:beorhtric
+
+	trigger = {
+		character:140 = {
+			is_alive = yes
+			is_landed = yes
+			OR = {
+				opinion = {
+					target = character:367
+					value >= 0
+				}
+				is_ai = no
+			}
+		}
+		character:367 = {
+			is_alive = yes
+			is_spouse_of = character:140
+		}
+		character:normandy_002 = {
+			is_alive = yes
+			is_ai = yes
+			is_vassal_or_below_of = scope:william
+		}
+	}
+
+	immediate = {
+		set_global_variable = {
+			name = RICE_matilda_woman_scored_event
+			value = yes
+		}
+		character:140 = {
+			save_scope_as = william
+		}
+		character:367 = {
+			save_scope_as = matilda
+		}
+		character:normandy_002 = {
+			save_scope_as = beorhtric
+		}
+		character:364 = {
+			save_scope_as = baldwin
+		}
+	}
+	
+	# Great, get all his lands
+	option = {
+		name = normandy.0096.a
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0096.info
+			}
+		}
+	}
+	
+	# Imprison him, but don't take his lands
+	option = {
+		name = normandy.0096.b
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0096.info
+			}
+		}
+	}
+	
+	# Calm down!
+	option = {
+		name = normandy.0096.c
+		scope:matilda = {
+			add_opinion = {
+				modifier = disappointed_opinion
+				target = scope:william
+				opinion = -20
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0096.info
+			}
+		}
+	}
+
+	after = {
+		trigger_event = normandy.0092
+	}
 
 
 }
