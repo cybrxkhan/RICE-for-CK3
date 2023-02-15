@@ -28,29 +28,22 @@ namespace = normandy
 normandy.0001 = { # Fullscreen Intro Event
 	type = fullscreen_event
 	title = normandy.0001.t
-	#desc = {
-		desc = normandy.0001.desc
-		# first_valid = {
-		# 	triggered_desc = {
-		# 		trigger = {
-		# 			any_character_struggle = {
-		# 				involvement = involved
-		# 				is_struggle_type = RICE_normandy_struggle
-		# 			}
-		# 		}
-		# 		desc = normandy.0001.desc.involved
-		# 	}
-		# 	triggered_desc = {
-		# 		trigger = {
-		# 			any_character_struggle = {
-		# 				involvement = interloper
-		# 				is_struggle_type = RICE_normandy_struggle
-		# 			}
-		# 		}
-		# 		desc = normandy.0001.desc.interloper
-		# 	}
-		# }
-	#}
+	desc = {
+		first_valid = {
+			# If done through granting
+			triggered_desc = {
+				trigger = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:RICE_normandy_granted_to_norse_already
+					}
+				}
+				desc = normandy.0001.desc.RICE
+			}
+			# If done through other means
+			desc = normandy.0001.desc.vanilla
+		}
+	}
 	theme = diplomacy_foreign_affairs_focus
 	trigger = { # we need to prevent this from firing for all players when a new player joins in MP
 		is_ai = no
@@ -3133,18 +3126,21 @@ normandy.0061 = {
 	
 	option = { # Ok
 		name = normandy.0061.a
+		# You witness the miracle
 		random = {
 			chance = RICE_normandy_procession_miracle_chance
-			send_interface_toast = {
-				left_icon = ROOT
-				type = event_generic_good
-				title = normandy.0061.toast
-				add_piety = 100
-				add_character_modifier = {
-					modifier = RICE_normandy_saint_aubert_miracle
-					years = 10
-				}
-			}
+			custom_tooltip = normandy.0061.miracle.tooltip	
+			trigger_event = normandy.0063
+			# send_interface_toast = {
+			# 	left_icon = ROOT
+			# 	type = event_generic_good
+			# 	title = normandy.0061.toast
+			# 	add_piety = 100
+			# 	add_character_modifier = {
+			# 		modifier = RICE_normandy_saint_aubert_miracle
+			# 		years = 10
+			# 	}
+			# }
 		}
 		trigger_event = {
 			id = normandy.0062
@@ -3162,8 +3158,9 @@ normandy.0061 = {
 normandy.0062 = {
 	type = character_event
 	title = normandy.0062.t
-	desc = normandy.0055.desc
-	theme = 0062
+	desc = normandy.0062.desc
+	theme = friendly
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
 	
 	right_portrait = {
 		character = root
@@ -3178,6 +3175,214 @@ normandy.0062 = {
 	after = {
 		scope:activity = {
 			complete_activity = yes
+		}
+	}
+
+}
+
+# Miracle
+normandy.0063 = {
+	type = character_event
+	title = normandy.0063.t
+	desc = normandy.0063.desc
+	theme = RICE_theme_normandy_mont_saint_michel
+	
+	right_portrait = {
+		character = root
+		animation = admiration
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_sacredrite
+	}
+	
+	option = { # ok
+		name = normandy.0062.a
+		add_piety = 100
+		add_character_modifier = {
+			modifier = RICE_normandy_saint_aubert_miracle
+			years = 10
+		}
+	}
+
+}
+
+# Scavenger hunt for Saint Aubert's relics
+normandy.0065 = {
+	type = character_event
+	title = normandy.0065.t
+	desc = {
+		desc = normandy.0065.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:RICE_normandy_saint_aubert_relics_found
+					}
+				}
+				desc = normandy.0065.desc.found
+			}
+			desc = normandy.0065.desc.not_found
+		}
+	}
+	theme = RICE_theme_normandy_mont_saint_michel
+	
+	right_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+
+	immediate = {
+		random = {
+			chance = RICE_normandy_saint_aubert_relic_discovery_chance
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_normandy_saint_aubert_relics_found
+			}
+		}
+		play_music_cue = mx_cue_sacredrite
+	}
+	
+	option = { # ok
+		name = normandy.0065.a
+		trigger = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_normandy_saint_aubert_relics_found
+			}
+		}
+		save_scope_as = relic_discoverer
+		add_piety = { 150 250 }
+		add_character_modifier = {
+			modifier = RICE_normandy_saint_aubert_relic_discoverer
+		}
+		custom_tooltip = normandy.0065.tooltip
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = normandy.0065.info
+		}
+		every_ruler = {
+			limit = {
+				is_ai = no
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						OR = {
+							geographical_region = world_europe_west_francia
+							geographical_region = ghw_region_england
+						}
+					}
+				}
+			}
+			trigger_event = normandy.0067
+		}
+	}
+	
+	option = { # ok
+		name = normandy.0065.b
+		trigger = {
+			NOT = {
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_normandy_saint_aubert_relics_found
+				}
+			}
+		}
+		add_piety = { 50 100 }
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = normandy.0065.info
+		}
+	}
+
+}
+
+# Notification event about Saint Aubert's relics being lost
+normandy.0066 = {
+	type = character_event
+	title = normandy.0066.t
+	desc = normandy.0066.desc
+	theme = RICE_theme_normandy_mont_saint_michel
+	
+	right_portrait = {
+		character = scope:mont_saint_michel_ruler
+		triggered_animation = {
+			trigger = { scope:mont_saint_michel_ruler.faith.religion = religion:christianity_religion }
+			animation = worry
+		}
+		triggered_animation = {
+			trigger = { NOT = { scope:mont_saint_michel_ruler.faith.religion = religion:christianity_religion } }
+			animation = personality_callous
+		}
+	}
+
+	immediate = {
+		title:c_avranches.holder = {
+			save_scope_as = mont_saint_michel_ruler
+		}
+		religion:christianity_religion = { save_scope_as = christian }
+	}
+	
+	option = { # ok
+		name = normandy.0066.a
+		custom_tooltip = normandy.0066.tooltip
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = normandy.0066.info
+		}
+	}
+
+}
+
+# Notification event about Saint Aubert's relics being found
+normandy.0067 = {
+	type = character_event
+	title = normandy.0067.t
+	desc = normandy.0067.desc
+	theme = RICE_theme_normandy_mont_saint_michel
+	
+	right_portrait = {
+		character = scope:relic_discoverer
+		animation = personality_content
+	}
+
+	immediate = {
+		religion:christianity_religion = { save_scope_as = christian }
+		play_music_cue = mx_cue_sacredrite
+	}
+	
+	option = { # ok
+		name = normandy.0067.a
+		trigger = {
+			religion = religion:christianity_religion
+		}
+		custom_tooltip = normandy.0067.tooltip
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = normandy.0065.info
+		}
+	}
+	
+	option = { # ok
+		name = normandy.0067.b
+		trigger = {
+			NOT = { religion = religion:christianity_religion }
+		}
+		custom_tooltip = normandy.0067.tooltip
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = normandy.0065.info
 		}
 	}
 
