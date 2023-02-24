@@ -1261,6 +1261,12 @@ normandy.0021 = {
 		}
 		if = {
 			limit = {
+				var:RICE_norse_adventurer_type = flag:rulers
+			}
+			save_scope_as = granter
+		}
+		if = {
+			limit = {
 				var:RICE_norse_adventurer_type = flag:courtiers
 			}
 			remove_short_term_gold = RICE_norse_adventurers_small_cost
@@ -1547,6 +1553,11 @@ normandy.0021 = {
 				}
 			}
 			resolve_title_and_vassal_change = scope:change
+			add_truce_both_ways = {
+				character = scope:courtier_1
+				days = purchase_truce_interaction_truce_days_small_value
+				name = RICE_normandy_adventurer_truce
+			}
 			random_list = {
 				# 20 = {
 				# 	add_character_modifier = {
@@ -1632,6 +1643,9 @@ normandy.0021 = {
 	
 	option = { # Defend against borders?
 		name = normandy.0021.e
+		trigger = {
+			NOT = { var:RICE_norse_adventurer_type = flag:rulers }
+		}
 		if = {
 			limit = {
 				highest_held_title_tier = tier_county
@@ -1789,7 +1803,7 @@ normandy.0021 = {
 
 		
 	option = { # Play as them
-		name = normandy.0021.d
+		name = normandy.0021.f
 		trigger = {
 			var:RICE_norse_adventurer_type = flag:rulers
 		}
@@ -1801,7 +1815,9 @@ normandy.0021 = {
 			limit = {
 				var:RICE_norse_adventurer_type = flag:rulers
 			}
-			trigger_event = normandy.0024
+			scope:courtier_1 = {
+				trigger_event = normandy.0025
+			}
 			# Small chance they want to convert
 			# random = {
 			# 	chance = 25
@@ -1826,7 +1842,10 @@ normandy.0021 = {
 			}
 			if = {
 				limit = {
-					NOT = { var:RICE_norse_adventurer_type = flag:courtiers }
+					NOR = {
+						var:RICE_norse_adventurer_type = flag:courtiers
+						var:RICE_norse_adventurer_type = flag:rulers
+					}
 				}
 				hidden_effect = {
 					scope:courtier_1 = {
@@ -1990,6 +2009,18 @@ normandy.0022 = {
 		
 	option = { # Defend against borders?
 		name = normandy.0022.a
+		trigger = {
+			var:RICE_overrated_vikings_gtfo = flag:yes
+		}
+	}
+		
+	option = { # Defend against borders?
+		name = normandy.0022.b
+		trigger = {
+			NOT = {
+				var:RICE_overrated_vikings_gtfo = flag:yes
+			}
+		}
 	}
 
 	after = {		
@@ -2123,7 +2154,7 @@ normandy.0023 = {
 						NOT = { this = root.capital_county }
 						#NOT = { this = scope:capital_county }
 					}	
-					save_scope_as = county
+					save_scope_as = award_county
 				}
 			}
 		}
@@ -2136,8 +2167,9 @@ normandy.0023 = {
 			limit = {
 				var:RICE_norse_adventurer_demands = flag:titles
 			}
+			save_scope_as = granter
 			scope:courtier_1 = {
-				get_title = scope:county
+				get_title = scope:award_county
 			}
 			if = {
 				limit = {
@@ -2154,6 +2186,27 @@ normandy.0023 = {
 					}
 				}
 				resolve_title_and_vassal_change = scope:change
+			}
+			else_if = {
+				limit = {
+					is_independent_ruler = no
+				}
+				create_title_and_vassal_change = {
+					type = swear_fealty
+					save_scope_as = change
+				}
+				scope:courtier_1 = {
+					change_liege = {
+						liege = scope:granter.liege
+						change = scope:change
+					}
+				}
+				resolve_title_and_vassal_change = scope:change
+			}
+			add_truce_both_ways = {
+				character = scope:courtier_1
+				days = purchase_truce_interaction_truce_days_small_value
+				name = RICE_normandy_adventurer_truce
 			}
 		}
 		else_if = {
@@ -2198,6 +2251,12 @@ normandy.0023 = {
 
 	after = {
 		if = {
+			limit = {
+				var:RICE_norse_adventurer_demands = flag:titles
+			}
+			trigger_event = normandy.0024
+		}
+		if = {
 			limit = { has_variable = RICE_norse_adventurer_demands }
 			remove_variable = RICE_norse_adventurer_demands
 		}
@@ -2217,6 +2276,74 @@ normandy.0024 = {
 	
 	left_portrait = {
 		character = scope:current_ruler
+		animation = personality_vengeful
+	}
+	right_portrait = {
+		character = scope:courtier_1
+		animation = personality_callous
+	}
+
+	
+	# Play as them
+	option = {
+		name = normandy.0024.a
+		set_player_character = scope:courtier_1
+	}
+	
+	# Don't play as them
+	option = {
+		name = normandy.0024.b
+	}
+
+	after = {
+		scope:courtier_1 = {			
+			trigger_event = normandy.0025
+		}
+	}
+}
+
+
+# New Norse ruler
+normandy.0025 = {
+	type = character_event
+	title = normandy.0025.t
+	desc = {
+		desc = normandy.0025.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:courtier_1.liege = scope:granter
+				}
+				desc = normandy.0025.desc.vassal
+			}
+			triggered_desc = {
+				trigger = {
+					scope:courtier_1.liege = scope:granter.liege
+				}
+				desc = normandy.0025.desc.vassal_in_realm
+			}
+			triggered_desc = {
+				trigger = {
+					NOT = {
+						scope:courtier_1.liege = scope:granter
+					}
+				}
+				desc = normandy.0025.desc.independent
+			}
+		}
+		triggered_desc = {
+			trigger = {
+				NOT = { scope:current_ruler.faith = scope:courtier_1.faith }
+				NOT = { scope:current_ruler.faith = { has_doctrine_parameter = unreformed } }
+			}
+			desc = normandy.0025.desc.conversion
+		}
+	}
+	# normandy.0025.desc.conversion
+	theme = RICE_theme_normandy_outpost
+	
+	left_portrait = {
+		character = scope:current_ruler
 		animation = war_over_tie
 	}
 	right_portrait = scope:courtier_1
@@ -2224,15 +2351,15 @@ normandy.0024 = {
 	
 	# Will convert
 	option = {
-		name = normandy.0024.a		
+		name = normandy.0025.a		
 		trigger = {
 			NOT = { scope:current_ruler.faith = scope:courtier_1.faith }
 			NOT = { scope:current_ruler.faith = { has_doctrine_parameter = unreformed } }
 		}
 		set_character_faith_with_conversion = scope:current_ruler.faith
-		add_piety = -100
-		add_prestige = -100
-		scope:actor = {
+		add_piety = -200
+		add_prestige = 100
+		scope:granter = {
 			add_opinion = {
 				target = scope:current_ruler
 				modifier = pleased_opinion
@@ -2243,7 +2370,7 @@ normandy.0024 = {
 	
 	# Ok
 	option = {
-		name = normandy.0024.b
+		name = normandy.0025.b
 	}
 }
 
