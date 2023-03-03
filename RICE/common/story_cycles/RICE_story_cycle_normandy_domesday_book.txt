@@ -1,0 +1,79 @@
+﻿RICE_story_cycle_normandy_domesday_book = {
+
+	on_setup = {
+
+	}
+
+	on_end = {
+		story_owner = {	
+			if = {
+				limit = {
+					has_character_flag = RICE_normandy_domesday_book_ongoing
+				}
+				remove_character_flag = RICE_normandy_domesday_book_ongoing
+			}
+		}
+
+		# In case it doesn't work for some reason, quietly re-enable the decision
+		if = {
+			limit = {
+				has_global_variable = RICE_normandy_domesday_book_in_progress
+				NOT = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:RICE_normandy_domesday_book_compiled
+					}
+				}
+			}
+			remove_global_variable = RICE_normandy_domesday_book_in_progress
+		}
+
+	}
+
+	on_owner_death = {
+		if = {
+			limit = { exists = story_owner.player_heir }
+			make_story_owner = story_owner.player_heir
+			story_owner.player_heir = {
+				add_character_flag = RICE_normandy_domesday_book_ongoing
+			}
+		}
+		else = {
+			scope:story = { end_story = yes }
+		}
+	}
+
+	# The survey is done
+	effect_group = {
+		days = { 365 550 } # { 365 1095 } # 1-1.5 years
+		chance = 100
+	
+		triggered_effect = {
+			trigger = { always = yes }
+			effect = {
+				add_to_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_normandy_domesday_book_in_progress
+				}
+				story_owner = {
+					trigger_event = normandy.0016
+				}
+			}
+		}
+	}
+
+	
+	# 1.5 years self destruct in case it drags on for some reason
+	effect_group = {
+		days = 600
+		chance = 100
+
+		triggered_effect = {
+			trigger = { always = yes }
+			effect = {
+				end_story = yes
+			}
+		}
+	}	
+	
+}
