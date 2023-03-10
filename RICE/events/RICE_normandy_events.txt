@@ -1769,8 +1769,6 @@ normandy.0021 = {
 		name = normandy.0021.c
 		trigger = {
 			var:RICE_norse_adventurer_type = flag:courtiers
-		}
-		trigger = {
 			OR = {
 				gold >= RICE_norse_adventurers_small_cost
 				is_ai = no
@@ -1971,7 +1969,20 @@ normandy.0021 = {
 			# 	scope:courtier_1 = {					
 			# 		trigger_event = 
 			# 	}
-			# }
+			# }		
+			if = {
+				limit = {
+					is_independent_ruler = no
+					NOT = {
+						scope:courtier_1 = {
+							is_vassal_of = scope:granter 
+						}
+					}
+				}
+				scope:granter.liege = {
+					trigger_event = normandy.0027
+				}
+			}	
 		}
 		if = {
 			limit = {
@@ -2158,6 +2169,7 @@ normandy.0022 = {
 		name = normandy.0022.a
 		trigger = {
 			var:RICE_overrated_vikings_gtfo = flag:yes
+			NOT = { var:RICE_norse_adventurer_type = flag:courtiers }
 		}
 	}
 		
@@ -2167,7 +2179,52 @@ normandy.0022 = {
 			NOT = {
 				var:RICE_overrated_vikings_gtfo = flag:yes
 			}
+			NOT = { var:RICE_norse_adventurer_type = flag:courtiers }
 		}
+	}
+		
+	option = { # Courtier 1
+		name = normandy.0022.c
+		trigger = {
+			var:RICE_norse_adventurer_type = flag:courtiers
+		}
+		add_courtier = scope:courtier_1
+		hidden_effect = {
+			scope:courtier_2 = {
+				death = {
+					death_reason = death_vanished
+				}
+			}			
+		}
+	}
+		
+	option = { # Courtier 2
+		name = normandy.0022.d
+		trigger = {
+			var:RICE_norse_adventurer_type = flag:courtiers
+		}
+		add_courtier = scope:courtier_1
+		hidden_effect = {
+			scope:courtier_2 = {
+				death = {
+					death_reason = death_vanished
+				}
+			}			
+		}
+	}
+		
+	option = { # Courtier 1 and Courtier 2
+		name = normandy.0022.e
+		trigger = {
+			var:RICE_norse_adventurer_type = flag:courtiers
+			OR = {
+				gold >= RICE_norse_adventurers_small_cost
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = RICE_norse_adventurers_small_cost
+		add_courtier = scope:courtier_1
+		add_courtier = scope:courtier_2
 	}
 
 	after = {		

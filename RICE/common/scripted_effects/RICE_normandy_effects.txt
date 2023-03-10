@@ -976,6 +976,7 @@ RICE_invite_norse_main_effect = {
 		limit = {
 			var:RICE_norse_adventurer_type = flag:rulers
 		}
+		save_scope_as = granter
 		random_held_title = {
 			limit = {
 				tier = tier_county
@@ -987,17 +988,38 @@ RICE_invite_norse_main_effect = {
 		scope:courtier_1 = {
 			get_title = scope:award_county
 		}
-		create_title_and_vassal_change = {
-			type = swear_fealty
-			save_scope_as = change
-		}
-		scope:courtier_1 = {
-			change_liege = {
-				liege = root
-				change = scope:change
+		if = {
+			limit = {
+				highest_held_title_tier > tier_county
 			}
+			create_title_and_vassal_change = {
+				type = swear_fealty
+				save_scope_as = change
+			}
+			scope:courtier_1 = {
+				change_liege = {
+					liege = root
+					change = scope:change
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
 		}
-		resolve_title_and_vassal_change = scope:change
+		else_if = {
+			limit = {
+				is_independent_ruler = no
+			}
+			create_title_and_vassal_change = {
+				type = swear_fealty
+				save_scope_as = change
+			}
+			scope:courtier_1 = {
+				change_liege = {
+					liege = scope:granter.liege
+					change = scope:change
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+		}
 		add_truce_both_ways = {
 			character = scope:courtier_1
 			days = purchase_truce_interaction_truce_days_small_value
@@ -1028,6 +1050,9 @@ RICE_invite_norse_main_effect = {
 					years = 20
 				}
 			}
+		}
+		scope:courtier_1 = {			
+			custom_tooltip = RICE_norse_adventurer_convert_tooltip
 		}
 	}
 }
