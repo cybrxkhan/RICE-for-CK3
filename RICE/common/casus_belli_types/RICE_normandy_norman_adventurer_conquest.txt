@@ -56,12 +56,33 @@ RICE_norman_adventure_cb = {
 				# }
 			#}
 		}
+		OR = {
+			exists = struggle:RICE_normandy_struggle
+			has_global_variable = RICE_normandy_ending_norman_conquest
+			has_global_variable = RICE_normandy_ending_norman_assimilation
+		}
 	}
 
 	allowed_for_character_display_regardless = {
 		# Ensure that this is only done every now and then.
 		is_independent_ruler = yes
 		highest_held_title_tier <= tier_duchy
+		OR = {
+			custom_tooltip = {
+				text = RICE_normandy_struggle_conquest_decision_correct_phase_tt
+				exists = struggle:RICE_normandy_struggle
+				struggle:RICE_normandy_struggle = {
+					is_struggle_phase = struggle_RICE_normandy_phase_adventure
+				}
+			}
+			custom_tooltip = {
+				text = RICE_normandy_struggle_good_ending_req
+				OR = {
+					has_global_variable = RICE_normandy_ending_norman_conquest
+					has_global_variable = RICE_normandy_ending_norman_assimilation
+				}
+			}
+		}
 		trigger_if = {
 			limit = { is_ai = no }
 			trigger_if = {
@@ -172,6 +193,17 @@ RICE_norman_adventure_cb = {
 
 	on_declaration = {
 		on_declared_war = yes
+		if = {
+			limit = {
+				exists = struggle:RICE_normandy_struggle
+			}
+			struggle:RICE_normandy_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_normandy_adventurer_cb
+					character = scope:attacker
+				}
+			}
+		}
 		# Dish out event troops, if appropriate.
 		## We give out x200 troops per same-culture same-faith core mainland Scandinavian county, up to a maximum of ten counties.
 		## These are evenly split between good MaA -> average MaA -> good MaA again, to give a decent bell curve.
