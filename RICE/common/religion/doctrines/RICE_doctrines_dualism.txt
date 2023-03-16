@@ -2,6 +2,7 @@
 	group = "main_group"
 	is_available_on_create = {
 		religion_tag = dualism_religion
+		# Do it via on_actions
 	}
 	
 	rice_baptism_purification_doctrine = {		# Baptism
@@ -18,6 +19,10 @@
 			else_if = {
 				limit = { has_doctrine = rice_prayer_purification_doctrine }
 				multiply = faith_unchanged_doctrine_cost_mult
+			}
+			else_if = {
+				limit = { has_doctrine = rice_prayer_love_doctrine }
+				multiply = faith_changed_doctrine_cost_mult_three_step
 			}
 		}
 		parameters = {
@@ -40,10 +45,57 @@
 				limit = { has_doctrine = rice_prayer_purification_doctrine }
 				multiply = faith_unchanged_doctrine_cost_mult
 			}
+			else_if = {
+				limit = { has_doctrine = rice_prayer_love_doctrine }
+				multiply = faith_changed_doctrine_cost_mult_three_step
+			}
 		}
 		character_modifier = {
 			health = 0.2
 			negate_health_penalty_add = 0.2
+		}
+		# parameters = {
+		# 	rice_baptism_decision_unlocked_active = yes
+		# }
+	}
+	
+	rice_prayer_love_doctrine = {		# Procreation
+		piety_cost = {
+			value = faith_doctrine_cost_mid
+			if = {
+				limit = { has_doctrine = rice_prayer_love_doctrine }
+				multiply = 0
+			}
+			else_if = {
+				limit = { has_doctrine = rice_baptism_purification_doctrine }
+				multiply = faith_changed_doctrine_cost_mult_three_step
+			}
+			else_if = {
+				limit = { has_doctrine = rice_food_purification_doctrine }
+				multiply = faith_changed_doctrine_cost_mult_three_step
+			}
+			else_if = {
+				limit = { has_doctrine = rice_prayer_purification_doctrine }
+				multiply = faith_changed_doctrine_cost_mult_three_step
+			}
+		}
+
+		can_pick = {
+			#custom_description = {
+			#	text = incompatible_doctrine_spiritual_appointment_temporal_trigger
+			#	NOT = { flag:doctrine_temporal_head = { is_in_list = selected_doctrines } }
+			#}
+			NOR = {
+				flag:doctrine_adultery_men_accepted = { is_in_list = selected_doctrines }
+				flag:doctrine_adultery_women_accepted = { is_in_list = selected_doctrines }
+				flag:tenet_polyamory = { is_in_list = selected_doctrines }
+			}
+		}	
+
+		character_modifier = {
+			fertility = 0.05
+			spouse_opinion = 10
+			child_opinion = 5
 		}
 		# parameters = {
 		# 	rice_baptism_decision_unlocked_active = yes
@@ -64,6 +116,10 @@
 			else_if = {
 				limit = { has_doctrine = rice_food_purification_doctrine }
 				multiply = faith_unchanged_doctrine_cost_mult
+			}
+			else_if = {
+				limit = { has_doctrine = rice_prayer_love_doctrine }
+				multiply = faith_changed_doctrine_cost_mult_three_step
 			}
 		}
 		character_modifier = {
