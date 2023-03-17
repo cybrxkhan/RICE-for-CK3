@@ -358,6 +358,50 @@ RICE_yearly_global_pulse = {
 			}
 		}
 
+		# Historia Normannorum
+		# Trigger within a year
+		if = {
+			limit = {
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_normandy_commission_normandy_history
+				}
+				NOT = { has_global_variable = RICE_normandy_historia_normannorum_done }
+			}
+			if = {
+				limit = {
+					NOT = { has_global_variable = RICE_normandy_historia_normannorum_timer_min } # Minimum timer has passed
+					has_global_variable = RICE_normandy_historia_normannorum_timer_max # But Maximum timer hasn't passed
+				}
+				set_global_variable = {
+					name = RICE_normandy_historia_normannorum_done
+					value = yes
+				}
+				random = {
+					chance = 25
+					trigger_event = {
+						id = normandy.0111
+						days = { 0 365 }
+					}
+				}
+			}
+			# Max timer has passed
+			else_if = {
+				limit = {
+					NOT = { has_global_variable = RICE_normandy_historia_normannorum_timer_min }
+					NOT = { has_global_variable = RICE_normandy_historia_normannorum_timer_max }
+				}
+				set_global_variable = {
+					name = RICE_normandy_historia_normannorum_done
+					value = yes
+				}
+				trigger_event = {
+					id = normandy.0111
+					days = { 0 365 }
+				}
+			}
+		}
+
 	}
 }
 

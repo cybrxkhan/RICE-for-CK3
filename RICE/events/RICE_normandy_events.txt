@@ -9,6 +9,7 @@
 # normandy.0070-normandy.0079			Christian religious buildings
 # normandy.0080-normandy.0089			Rollo narrative events
 # normandy.0090-normandy.0109			William the Conqueror/Matilda of Flanders narrative events
+# normandy.0110-normandy.0119			Historia Normannorum
 # normandy.0100-normandy.0149			Generic flavor events
 # 
 # 
@@ -908,240 +909,6 @@ normandy.0012 = {
 
 }
 
-
-
-
-# Historia Normannorum - choose candidate
-normandy.0013 = {
-	type = character_event
-	title = normandy.0013.t
-	desc = {
-		desc = normandy.0013.desc
-		triggered_desc = {
-			trigger = {
-				OR = {
-					exists = scope:candidate_1
-					exists = scope:candidate_2
-				}
-			}
-			desc = normandy.0013.desc.candidate
-		}	
-	}
-	theme = diplomacy_majesty_focus
-	override_icon = { reference = "gfx/interface/icons/event_types/type_learning.dds" }
-	
-	right_portrait = {
-		character = root
-		animation = personality_rational
-	}
-
-	lower_left_portrait = {
-		character = scope:candidate_1
-		trigger = { exists = scope:candidate_1 }
-	}
-	lower_center_portrait = {
-		character = scope:candidate_2
-		trigger = { exists = scope:candidate_2 }
-	}
-	lower_right_portrait = {
-		character = scope:scholar
-		trigger = { exists = scope:scholar }
-	}
-
-	immediate = {
-		save_scope_as = original_sponsor
-
-		capital_county = { save_scope_as = capital_county }
-
-		# See scripted_trigger valid_scandinavian_adventurer just in case
-		every_courtier = {
-			limit = {
-				is_available_healthy_ai_adult = yes
-				age <= 65 # Don't want someone too old who could die on the journey
-				is_alive = yes
-				is_ruler = no
-				OR = {
-					diplomacy >= mediocre_skill_rating
-					has_trait = scholar
-					has_trait = education_learning_3
-					has_trait = education_learning_4
-				}
-				OR = {
-					learning >= medium_skill_rating
-					has_trait = scholar
-					has_trait = education_learning_3
-					has_trait = education_learning_4
-				}
-				# Will not inherit anything anytime soon
-				OR = {					
-					any_heir_title = { count = 0 }
-					AND = {
-						save_temporary_scope_as = potential
-						any_heir_title = {
-							place_in_line_of_succession = {
-								target = scope:potential
-								value >= 3
-							}
-						}
-					}
-				}
-			}
-			add_to_list = dudo_of_saint_quentin_candidate
-		}
-
-		if = {
-			limit = {
-				any_in_list = {
-					list = dudo_of_saint_quentin_candidate
-					count >= 2
-					opinion = {
-						target = root
-						value > -25
-					}
-				}
-			}
-			random_in_list = {
-				list = dudo_of_saint_quentin_candidate
-				weight = {
-					base = 10
-					modifier = {
-						has_trait = ambitious
-						add = 5
-					}
-					modifier = {
-						has_trait = content
-						add = -5
-					}
-					modifier = {
-						has_trait = diligent
-						add = 5
-					}
-					modifier = {
-						has_trait = lazy
-						add = -5
-					}
-					modifier = {
-						is_female = yes
-						faith = { has_doctrine = doctrine_gender_male_dominated }
-						add = -15
-					}
-					modifier = {
-						is_female = no
-						faith = { has_doctrine = doctrine_gender_female_dominated }
-						add = -15
-					}
-				}
-				save_scope_as = candidate_1
-			}
-		}
-
-		if = {
-			limit = {
-				any_in_list = {
-					list = dudo_of_saint_quentin_candidate
-					count >= 1
-				}
-			}
-			random_in_list = {
-				list = dudo_of_saint_quentin_candidate
-				weight = {
-					base = 10
-					modifier = {
-						has_trait = ambitious
-						add = 5
-					}
-					modifier = {
-						has_trait = content
-						add = -5
-					}
-					modifier = {
-						has_trait = diligent
-						add = 5
-					}
-					modifier = {
-						has_trait = lazy
-						add = -5
-					}
-					modifier = {
-						is_female = yes
-						faith = { has_doctrine = doctrine_gender_male_dominated }
-						add = -15
-					}
-					modifier = {
-						is_female = no
-						faith = { has_doctrine = doctrine_gender_female_dominated }
-						add = -15
-					}
-				}
-				save_scope_as = candidate_2
-			}
-		}
-
-		create_character = {
-			location = root.capital_province
-			template = capital_scholar_character
-			save_scope_as = scholar
-		}
-
-	}
-
-	option = { # ok
-		name = normandy.0013.a
-		trigger = {
-			exists = scope:candidate_1
-		}
-		scope:candidate_1 = {
-			save_scope_as = dudo_of_saint_quentin
-			add_prestige = 100
-		}
-		custom_tooltip = normandy.0013.a.tooltip
-	}
-
-	option = { # ok
-		name = normandy.0013.b
-		trigger = {
-			exists = scope:candidate_2
-		}
-		scope:candidate_1 = {
-			save_scope_as = dudo_of_saint_quentin
-			add_prestige = 100
-		}
-		custom_tooltip = normandy.0013.b.tooltip
-	}
-
-	option = { # ok
-		name = normandy.0013.c
-		add_courtier = scope:scholar
-		scope:scholar = {
-			save_scope_as = dudo_of_saint_quentin
-			add_prestige = 100
-		}
-		custom_tooltip = normandy.0013.c.tooltip
-	}
-
-	after = {
-		set_global_variable = {
-			name = RICE_normandy_historia_normannorum_timer
-			value = yes
-			days = 1095 # 1095
-		}
-		add_to_global_variable_list = {
-			name = RICE_normandy_dudo_of_saint_quentin_equivalent
-			target = scope:dudo_of_saint_quentin
-		}
-		scope:dudo_of_saint_quentin = {
-			add_character_flag = {
-				flag = planning_an_activity
-				years = 2
-			}
-			add_character_flag = {
-				flag = blocked_from_leaving
-				years = 2 # Little extra buffer just in case
-			}			
-		}
-	}
-
-}
 
 
 
@@ -5413,5 +5180,686 @@ normandy.0096 = {
 
 
 
+
+######################################################################################
+# 
+# HISTORIA NORMANNORUM
+# 
+# normandy.0110-normandy.0119 reserved
+# 
+######################################################################################
+
+
+# Historia Normannorum - choose candidate
+normandy.0110 = {
+	type = character_event
+	title = normandy.0110.t
+	desc = {
+		desc = normandy.0110.desc
+		triggered_desc = {
+			trigger = {
+				OR = {
+					exists = scope:candidate_1
+					exists = scope:candidate_2
+				}
+			}
+			desc = normandy.0110.desc.candidate
+		}	
+	}
+	theme = learning
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	lower_left_portrait = {
+		character = scope:candidate_1
+		trigger = { exists = scope:candidate_1 }
+	}
+	lower_center_portrait = {
+		character = scope:candidate_2
+		trigger = { exists = scope:candidate_2 }
+	}
+	lower_right_portrait = {
+		character = scope:scholar
+		trigger = { exists = scope:scholar }
+	}
+
+	immediate = {
+		save_scope_as = original_sponsor
+		add_prestige = 200
+		dynasty = {
+			add_dynasty_prestige = 100
+		}
+		add_character_flag = RICE_normandy_historia_normannorum_original_sponsor
+
+		capital_county = { save_scope_as = capital_county }
+
+		# See scripted_trigger valid_scandinavian_adventurer just in case
+		every_courtier = {
+			limit = {
+				is_available_healthy_ai_adult = yes
+				age <= 65 # Don't want someone too old who could die on the journey
+				is_alive = yes
+				is_ruler = no
+				OR = {
+					diplomacy >= mediocre_skill_rating
+					has_trait = scholar
+					has_trait = education_learning_3
+					has_trait = education_learning_4
+				}
+				OR = {
+					learning >= medium_skill_rating
+					has_trait = scholar
+					has_trait = education_learning_3
+					has_trait = education_learning_4
+				}
+				# Will not inherit anything anytime soon
+				OR = {					
+					any_heir_title = { count = 0 }
+					AND = {
+						save_temporary_scope_as = potential
+						any_heir_title = {
+							place_in_line_of_succession = {
+								target = scope:potential
+								value >= 3
+							}
+						}
+					}
+				}
+			}
+			add_to_list = dudo_of_saint_quentin_candidate
+		}
+
+		if = {
+			limit = {
+				any_in_list = {
+					list = dudo_of_saint_quentin_candidate
+					count >= 2
+					opinion = {
+						target = root
+						value > -25
+					}
+				}
+			}
+			random_in_list = {
+				list = dudo_of_saint_quentin_candidate
+				weight = {
+					base = 10
+					modifier = {
+						has_trait = ambitious
+						add = 5
+					}
+					modifier = {
+						has_trait = content
+						add = -5
+					}
+					modifier = {
+						has_trait = diligent
+						add = 5
+					}
+					modifier = {
+						has_trait = lazy
+						add = -5
+					}
+					modifier = {
+						is_female = yes
+						faith = { has_doctrine = doctrine_gender_male_dominated }
+						add = -15
+					}
+					modifier = {
+						is_female = no
+						faith = { has_doctrine = doctrine_gender_female_dominated }
+						add = -15
+					}
+				}
+				save_scope_as = candidate_1
+			}
+		}
+
+		if = {
+			limit = {
+				any_in_list = {
+					list = dudo_of_saint_quentin_candidate
+					count >= 1
+				}
+			}
+			random_in_list = {
+				list = dudo_of_saint_quentin_candidate
+				weight = {
+					base = 10
+					modifier = {
+						has_trait = ambitious
+						add = 5
+					}
+					modifier = {
+						has_trait = content
+						add = -5
+					}
+					modifier = {
+						has_trait = diligent
+						add = 5
+					}
+					modifier = {
+						has_trait = lazy
+						add = -5
+					}
+					modifier = {
+						is_female = yes
+						faith = { has_doctrine = doctrine_gender_male_dominated }
+						add = -15
+					}
+					modifier = {
+						is_female = no
+						faith = { has_doctrine = doctrine_gender_female_dominated }
+						add = -15
+					}
+				}
+				save_scope_as = candidate_2
+			}
+		}
+
+		create_character = {
+			location = root.capital_province
+			template = capital_scholar_character
+			save_scope_as = scholar
+		}
+
+	}
+
+	option = { # ok
+		name = normandy.0110.a
+		trigger = {
+			exists = scope:candidate_1
+		}
+		scope:candidate_1 = {
+			save_scope_as = dudo_of_saint_quentin
+			add_prestige = 100
+		}
+		custom_tooltip = normandy.0110.a.tooltip
+	}
+
+	option = { # ok
+		name = normandy.0110.b
+		trigger = {
+			exists = scope:candidate_2
+		}
+		scope:candidate_1 = {
+			save_scope_as = dudo_of_saint_quentin
+			add_prestige = 100
+		}
+		custom_tooltip = normandy.0110.b.tooltip
+	}
+
+	option = { # ok
+		name = normandy.0110.c
+		add_courtier = scope:scholar
+		scope:scholar = {
+			save_scope_as = dudo_of_saint_quentin
+			add_prestige = 100
+		}
+		custom_tooltip = normandy.0110.c.tooltip
+	}
+
+	after = {
+		# At minimum 3 years to complete
+		set_global_variable = {
+			name = RICE_normandy_historia_normannorum_timer_min
+			value = yes
+			days = 1095 # 1095
+		}
+		# "Maximum" of 10 years to complete, if it isn't done after this date, it will trigger within a year
+		# IRL it took 20 years, but this is lessened to 10 years make it drag out less
+		set_global_variable = {
+			name = RICE_normandy_historia_normannorum_timer_max
+			value = yes
+			days = 1095 # 1095
+		}
+		add_to_global_variable_list = {
+			name = RICE_normandy_dudo_of_saint_quentin_equivalent
+			target = scope:dudo_of_saint_quentin
+		}
+		add_to_global_variable_list = {
+			name = RICE_normandy_dudo_original_sponsor_list
+			target = scope:original_sponsor
+		}
+		scope:dudo_of_saint_quentin = {
+			add_character_modifier = {
+				modifier = RICE_normandy_dudo_of_saint_quentin_WIP_modifier
+			}
+			add_character_flag = {
+				flag = planning_an_activity
+				years = 2
+			}
+			add_character_flag = {
+				flag = blocked_from_leaving
+				years = 2 # Little extra buffer just in case
+			}			
+		}
+	}
+
+}
+
+
+
+
+# Complete the Normannorum
+normandy.0111 = {
+	hidden = yes
+	type = empty
+
+	immediate = {
+		culture:norman = {
+			save_scope_as = norman
+		}
+		ordered_in_global_list = {
+			variable = RICE_normandy_dudo_of_saint_quentin_equivalent
+			save_scope_as = dudo_of_saint_quentin
+		}
+		ordered_in_global_list = {
+			variable = RICE_normandy_dudo_original_sponsor_list
+			save_scope_as = original_sponsor
+		}
+		ordered_in_global_list = {
+			variable = RICE_normandy_rollo_list
+			save_scope_as = rollo
+		}
+		# The Duke of Normandy exists
+		if = {
+			limit = {
+				exists = title:d_normandy.holder
+			}
+			title:d_normandy.holder = {
+				save_scope_as = norman_duke
+			}
+		}
+		# The original sponsor, if they own land in Normandy
+		else_if = {
+			limit = {
+				any_county_in_region = {
+					region = RICE_normandy_region
+					holder = {
+						has_character_flag = RICE_normandy_historia_normannorum_original_sponsor
+					}
+				}
+			}
+			random_county_in_region = {				
+				region = RICE_normandy_region
+				limit = {
+					holder = {
+						has_character_flag = RICE_normandy_historia_normannorum_original_sponsor
+					}
+				}
+				holder = {
+					save_scope_as = norman_duke
+				}
+			}
+		}
+		# Choose a count who has Dudo of Quentin in their court
+		else_if = {
+			limit = {
+				scope:dudo_of_saint_quentin = {
+					is_alive = yes
+				}
+				scope:dudo_of_saint_quentin.liege = {
+					OR = {
+						has_title = title:c_rouen
+						has_title = title:c_eu
+						has_title = title:c_evreux
+						has_title = title:c_lisieux
+						has_title = title:c_alencon
+						has_title = title:c_bayeux
+						has_title = title:c_avranches
+					}
+				}
+			}
+			scope:dudo_of_saint_quentin.liege = {
+				save_scope_as = norman_duke
+			}
+		}
+		# Otherewise, pick a random count in Normandy
+		else = {
+			random_county_in_region = {				
+				region = RICE_normandy_region
+				holder = {
+					save_scope_as = norman_duke
+				}
+			}
+		}
+
+		# Create the artifact
+		hidden_effect_new_artifact = {
+			create_artifact = {
+				name = RICE_normandy_historia_normannorum_name
+				description = RICE_normandy_historia_normannorum_desc
+				type = miscellaneous
+				visuals = RICE_normandy_historia_normannorum_artifact
+				quality = 100
+				wealth = 100
+				modifier = RICE_normandy_historia_normannorum_modifier
+				#max_durability = 40
+				save_scope_as = RICE_historia_normannorum_book_artifact
+				decaying = no
+			}
+			# scope:RICE_domesday_book_artifact = {
+			# 	set_variable = RICE_domesday_book_variable
+			# }
+		}
+		scope:RICE_historia_normannorum_book_artifact = {
+			set_owner = {
+				target = scope:norman_duke
+			}
+		}
+
+		scope:norman_duke = {
+			if = {
+				limit = {
+					exists = dynasty
+				}
+				dynasty = {
+					add_dynasty_prestige = 1000
+				}
+			}
+		}
+		
+		if = {
+			limit = {				
+				scope:dudo_of_saint_quentin = {
+					is_alive = yes
+				}
+			}
+			scope:dudo_of_saint_quentin = {
+				remove_character_modifier = RICE_normandy_dudo_of_saint_quentin_WIP_modifier
+				add_character_modifier = {
+					modifier = RICE_normandy_dudo_of_saint_quentin_modifier
+				}
+			}
+		}
+
+		if = {
+			limit = {
+				scope:dudo_of_saint_quentin = {
+					is_alive = yes
+				}
+				NOT = { has_relation_friend = root }
+				can_set_relation_friend_trigger = { CHARACTER = root }
+			}
+			set_relation_friend = { reason = RICE_normandy_historia_normannorum_reason target = scope:dudo_of_saint_quentin }
+		}
+		else = {
+			add_opinion = {
+				target = scope:dudo_of_saint_quentin
+				modifier = friendliness_opinion
+				opinion = 40
+			}
+		}
+
+		culture:norman = {
+			set_culture_pillar = language_french
+			remove_culture_tradition = tradition_RICE_northmen
+			add_culture_tradition = tradition_RICE_adventurers_and_aristocrats
+			remove_variable = tradition_cooldown
+		}
+
+		every_culture_global = {
+			if = {
+				limit = {
+					#OR = {
+					#	this = culture:norman
+						any_parent_culture = { this = culture:norman }
+					#}
+				}
+				if = {
+					limit = {
+						has_cultural_pillar = language_norse
+					}
+					set_culture_pillar = language_french
+				}
+				if = {
+					limit = {
+						has_cultural_tradition = tradition_RICE_northmen
+					}
+					remove_culture_tradition = tradition_RICE_northmen
+				}
+				add_culture_tradition = tradition_RICE_adventurers_and_aristocrats
+				remove_variable = tradition_cooldown
+			}
+		}
+
+		every_ruler = {
+			limit = {
+				OR = {
+					any_sub_realm_county = {
+						title_province = { geographical_region = RICE_normandy_region }
+					}		
+					this = scope:norman_duke
+				}
+			}
+			trigger_event = normandy.0112
+		}
+
+		
+	}
+}
+
+# Historia Normannorum - choose candidate
+normandy.0112 = {
+	type = character_event
+	title = normandy.0112.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:original_sponsor = {
+						is_alive = no
+					}
+				}
+				desc = normandy.0112.desc.sponsor_dead
+			}	
+			triggered_desc = {
+				trigger = {
+					scope:original_sponsor = {
+						is_alive = yes
+						
+					}
+					scope:norman_duke = {
+						has_character_flag = RICE_normandy_historia_normannorum_original_sponsor
+					}
+				}
+				desc = normandy.0112.desc.sponsor_alive
+			}	
+			triggered_desc = {
+				trigger = {
+					scope:original_sponsor = {
+						is_alive = yes
+						
+					}
+					scope:norman_duke = {
+						NOT = { has_character_flag = RICE_normandy_historia_normannorum_original_sponsor }
+					}
+				}
+				desc = normandy.0112.desc.sponsor_other
+			}	
+			desc = normandy.0112.desc.sponsor_backup
+		}
+		desc = normandy.0112.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:dudo_of_saint_quentin = {
+						is_alive = yes
+					}
+				}
+				desc = normandy.0112.desc.dudo_alive
+			}	
+			desc = normandy.0112.desc.dudo_dead
+		}
+		desc = normandy.0112.desc.conclusion
+	}
+	theme = diplomacy_majesty_focus
+	
+	left_portrait = {
+		character = scope:norman_duke
+		animation = personality_content
+	}
+	right_portrait = {
+		character = scope:dudo_of_saint_quentin
+		animation = throne_room_writer
+	}
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:RICE_historia_normannorum_book_artifact
+		position = lower_center_portrait
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			scope:RICE_historia_normannorum_book_artifact = {
+				set_owner = {
+					target = scope:norman_duke
+				}
+			}
+			scope:norman_duke = {
+				if = {
+					limit = {
+						exists = dynasty
+					}
+					dynasty = {
+						add_dynasty_prestige = 1000
+					}
+				}
+			}
+			if = {
+				limit = {
+					scope:dudo_of_saint_quentin = {
+						is_alive = yes
+					}
+				}
+				scope:dudo_of_saint_quentin = {
+					remove_character_modifier = RICE_normandy_dudo_of_saint_quentin_WIP_modifier
+					add_character_modifier = {
+						modifier = RICE_normandy_dudo_of_saint_quentin_modifier
+					}
+				}
+				if = {
+					limit = {
+						scope:norman_duke = {
+							has_relation_friend = scope:dudo_of_saint_quentin
+						}
+					}
+					scope:norman_duke = {
+						set_relation_friend = { reason = RICE_normandy_historia_normannorum_reason target = scope:dudo_of_saint_quentin }
+					}
+				}
+				else = {
+					scope:norman_duke = {					
+						add_opinion = {
+							target = scope:dudo_of_saint_quentin
+							modifier = friendliness_opinion
+							opinion = 40
+						}
+					}
+				}
+			}
+		}
+		custom_tooltip = normandy.0112.tooltip.culture_language
+		custom_tooltip = normandy.0112.tooltip.culture_tradition
+		custom_tooltip = normandy.0112.tooltip.struggle_req
+	}
+
+	
+	option = { # ok
+		name = normandy.0112.a
+		#custom_tooltip = normandy.0112.tooltip
+	}
+
+}
+
+
+
+
+# Complete the Normannorum
+normandy.0113 = {
+	hidden = yes
+	type = empty
+
+	trigger = {
+		has_character_modifier = RICE_normandy_dudo_of_saint_quentin_WIP_modifier
+	}
+
+	immediate = {
+		ordered_in_global_list = {
+			variable = RICE_normandy_dudo_of_saint_quentin_equivalent
+			save_scope_as = dudo_of_saint_quentin
+		}
+		ordered_in_global_list = {
+			variable = RICE_normandy_dudo_original_sponsor_list
+			save_scope_as = original_sponsor
+		}
+		every_ruler = {
+			limit = {
+				OR = {
+					has_title = title:c_rouen
+					has_title = title:c_eu
+					has_title = title:c_evreux
+					has_title = title:c_lisieux
+					has_title = title:c_alencon
+					has_title = title:c_bayeux
+					has_title = title:c_avranches
+					has_title = title:d_normandy
+					has_character_flag = RICE_normandy_historia_normannorum_original_sponsor
+				}
+			}
+			trigger_event = normandy.0114
+		}		
+	}
+}
+
+
+# Historia Normannorum - death notification
+normandy.0114 = {
+	type = character_event
+	title = normandy.0114.t
+	desc = {
+		desc = normandy.0114.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_normandy_historia_normannorum_original_sponsor
+				}
+				desc = normandy.0114.desc.original_sponsor
+			}	
+			desc = normandy.0114.desc.not_original_sponsor
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { has_global_variable = RICE_normandy_historia_normannorum_timer_max } # Getting very close to completion
+				}
+				desc = normandy.0114.desc.almost_done
+			}	
+			triggered_desc = {
+				trigger = {
+					NOT = { has_global_variable = RICE_normandy_historia_normannorum_timer_min } # Partway complete
+				}
+				desc = normandy.0114.desc.partway
+			}	
+			desc = normandy.0114.desc.starting
+		}
+	}
+	theme = death
+	override_background = { event_background = study }
+
+	right_portrait = scope:dudo_of_saint_quentin
+
+	# immediate = {
+	# }
+	
+	option = { # ok
+		name = normandy.0114.a
+	}
+
+}
 
 
