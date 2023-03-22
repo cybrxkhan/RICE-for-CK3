@@ -5196,15 +5196,19 @@ normandy.0110 = {
 	title = normandy.0110.t
 	desc = {
 		desc = normandy.0110.desc
-		triggered_desc = {
-			trigger = {
-				OR = {
-					exists = scope:candidate_1
-					exists = scope:candidate_2
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					OR = {
+						exists = scope:candidate_1
+						exists = scope:candidate_2
+					}
 				}
-			}
-			desc = normandy.0110.desc.candidate
+				desc = normandy.0110.desc.candidate
+			}	
+			desc = normandy.0110.desc.no_candidate
 		}	
+		desc = normandy.0110.desc.conclusion
 	}
 	theme = learning
 	
@@ -5228,6 +5232,16 @@ normandy.0110 = {
 
 	immediate = {
 		save_scope_as = original_sponsor
+		ordered_in_global_list = {
+			variable = RICE_normandy_rollo_list
+			save_scope_as = rollo
+		}
+		culture:norman = {
+			save_scope_as = norman
+		}
+		title:d_normandy = {
+			save_scope_as = normandy
+		}
 		add_prestige = 200
 		dynasty = {
 			add_dynasty_prestige = 100
@@ -5327,6 +5341,10 @@ normandy.0110 = {
 			}
 			random_in_list = {
 				list = dudo_of_saint_quentin_candidate
+				limit = {
+					exists = scope:candidate_1
+					NOT = { this = scope:candidate_1 }
+				}
 				weight = {
 					base = 10
 					modifier = {
@@ -5425,8 +5443,10 @@ normandy.0110 = {
 			target = scope:original_sponsor
 		}
 		scope:dudo_of_saint_quentin = {
-			add_character_modifier = {
-				modifier = RICE_normandy_dudo_of_saint_quentin_WIP_modifier
+			hidden_effect = {
+				add_character_modifier = {
+					modifier = RICE_normandy_dudo_of_saint_quentin_WIP_modifier
+				}				
 			}
 			add_character_flag = {
 				flag = planning_an_activity
@@ -5528,29 +5548,7 @@ normandy.0111 = {
 			}
 		}
 
-		# Create the artifact
-		hidden_effect_new_artifact = {
-			create_artifact = {
-				name = RICE_normandy_historia_normannorum_name
-				description = RICE_normandy_historia_normannorum_desc
-				type = miscellaneous
-				visuals = RICE_normandy_historia_normannorum_artifact
-				quality = 100
-				wealth = 100
-				modifier = RICE_normandy_historia_normannorum_modifier
-				#max_durability = 40
-				save_scope_as = RICE_historia_normannorum_book_artifact
-				decaying = no
-			}
-			# scope:RICE_domesday_book_artifact = {
-			# 	set_variable = RICE_domesday_book_variable
-			# }
-		}
-		scope:RICE_historia_normannorum_book_artifact = {
-			set_owner = {
-				target = scope:norman_duke
-			}
-		}
+
 
 		scope:norman_duke = {
 			if = {
@@ -5559,6 +5557,29 @@ normandy.0111 = {
 				}
 				dynasty = {
 					add_dynasty_prestige = 1000
+				}
+			}
+			# Create the artifact
+			hidden_effect_new_artifact = {
+				create_artifact = {
+					name = RICE_normandy_historia_normannorum_name
+					description = RICE_normandy_historia_normannorum_desc
+					type = miscellaneous
+					visuals = RICE_normandy_historia_normannorum_artifact
+					quality = 100
+					wealth = 100
+					modifier = RICE_normandy_historia_normannorum_modifier
+					#max_durability = 40
+					save_scope_as = RICE_historia_normannorum_book_artifact
+					decaying = no
+				}
+				# scope:RICE_domesday_book_artifact = {
+				# 	set_variable = RICE_domesday_book_variable
+				# }
+			}
+			scope:RICE_historia_normannorum_book_artifact = {
+				set_owner = {
+					target = scope:norman_duke
 				}
 			}
 		}
@@ -5582,10 +5603,14 @@ normandy.0111 = {
 				scope:dudo_of_saint_quentin = {
 					is_alive = yes
 				}
-				NOT = { has_relation_friend = root }
-				can_set_relation_friend_trigger = { CHARACTER = root }
+				#NOT = { has_relation_friend = root }
+				scope:norman_duke = {
+					can_set_relation_friend_trigger = { CHARACTER = scope:dudo_of_saint_quentin }
+				}
 			}
-			set_relation_friend = { reason = RICE_normandy_historia_normannorum_reason target = scope:dudo_of_saint_quentin }
+			scope:norman_duke = {
+				set_relation_friend = { reason = RICE_normandy_historia_normannorum_reason target = scope:dudo_of_saint_quentin }
+			}
 		}
 		else = {
 			add_opinion = {
@@ -5627,6 +5652,13 @@ normandy.0111 = {
 			}
 		}
 
+		
+		struggle:RICE_normandy_struggle = {
+			activate_struggle_catalyst = {
+				catalyst = catalyst_RICE_normandy_historia_normannorum
+			}
+		}
+
 		every_ruler = {
 			limit = {
 				OR = {
@@ -5643,11 +5675,12 @@ normandy.0111 = {
 	}
 }
 
-# Historia Normannorum - choose candidate
+# Historia Normannorum - done
 normandy.0112 = {
 	type = character_event
 	title = normandy.0112.t
 	desc = {
+		desc = normandy.0112.desc
 		first_valid = {
 			triggered_desc = {
 				trigger = {
@@ -5683,7 +5716,6 @@ normandy.0112 = {
 			}	
 			desc = normandy.0112.desc.sponsor_backup
 		}
-		desc = normandy.0112.desc
 		first_valid = {
 			triggered_desc = {
 				trigger = {
@@ -5714,6 +5746,22 @@ normandy.0112 = {
 	}
 
 	immediate = {
+		title:d_normandy = {
+			save_scope_as = normandy
+		}
+		culture:norman = {
+			save_scope_as = norman
+		}
+		culture:french = {
+			save_scope_as = french
+		}
+		culture:norse = {
+			save_scope_as = norse
+		}
+		ordered_in_global_list = {
+			variable = RICE_normandy_rollo_list
+			save_scope_as = rollo
+		}
 		show_as_tooltip = {
 			scope:RICE_historia_normannorum_book_artifact = {
 				set_owner = {
@@ -5759,7 +5807,17 @@ normandy.0112 = {
 							modifier = friendliness_opinion
 							opinion = 40
 						}
+						reverse_add_opinion = {
+							target = scope:dudo_of_saint_quentin
+							modifier = friendliness_opinion
+							opinion = 40
+						}
 					}
+				}
+			}				
+			struggle:RICE_normandy_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_normandy_historia_normannorum
 				}
 			}
 		}
@@ -5779,7 +5837,7 @@ normandy.0112 = {
 
 
 
-# Complete the Normannorum
+# Historia Normannorum - Dudo equivalent dies
 normandy.0113 = {
 	hidden = yes
 	type = empty
@@ -5826,15 +5884,6 @@ normandy.0114 = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					has_character_flag = RICE_normandy_historia_normannorum_original_sponsor
-				}
-				desc = normandy.0114.desc.original_sponsor
-			}	
-			desc = normandy.0114.desc.not_original_sponsor
-		}
-		first_valid = {
-			triggered_desc = {
-				trigger = {
 					NOT = { has_global_variable = RICE_normandy_historia_normannorum_timer_max } # Getting very close to completion
 				}
 				desc = normandy.0114.desc.almost_done
@@ -5847,14 +5896,14 @@ normandy.0114 = {
 			}	
 			desc = normandy.0114.desc.starting
 		}
+		desc = normandy.0114.desc.conclusion
 	}
 	theme = death
 	override_background = { event_background = study }
 
-	right_portrait = scope:dudo_of_saint_quentin
+	right_portrait = scope:dudo_of_saint_quentin	
 
-	# immediate = {
-	# }
+	lower_center_portrait = scope:original_sponsor
 	
 	option = { # ok
 		name = normandy.0114.a
