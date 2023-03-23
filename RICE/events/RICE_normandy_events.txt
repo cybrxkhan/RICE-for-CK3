@@ -3105,15 +3105,6 @@ normandy.0040 = {
 
 		#save_scope_as = charles
 
-		# Save Rollo's old culture and faith in case it's needed
-		scope:rollo = {
-			culture = {
-				save_scope_as = rollo_old_culture
-			}
-			faith = {
-				save_scope_as = rollo_old_faith
-			}
-		}
 
 		start_struggle = {
 			struggle_type = RICE_normandy_struggle
@@ -3167,6 +3158,30 @@ normandy.0040 = {
 				}
 			}
 		}
+
+		
+		# Save Rollo's old culture and faith in case it's needed
+		scope:rollo = {
+			culture = {
+				save_scope_as = rollo_old_culture
+			}
+			faith = {
+				save_scope_as = rollo_old_faith
+			}
+		}
+
+		# If Rollo is landed but has a liege, make note of that
+		if = {
+			limit = {
+				scope:rollo = {
+					is_ruler = yes
+					is_independent_ruler = no
+				}
+			}
+			scope:rollo.liege = {
+				save_scope_as = original_liege
+			}
+		}
 				
 		if = {
 			limit = {
@@ -3213,21 +3228,7 @@ normandy.0040 = {
 				add_to_list = norman_counties
 			}
 		}
-		# every_sub_realm_title = {
-		# 	limit = {
-		# 		tier = tier_county
-		# 	}
-		# 	if = {
-		# 		limit = {
-		# 			title_province = { geographical_region = custom_normandy_and_adjacent }
-		# 			OR = {
-		# 				culture = culture:french
-		# 				culture = culture:norse
-		# 			}
-		# 		}
-		# 		add_to_list = norman_counties
-		# 	}
-		# }
+
 
 		
 		culture:norse = {save_scope_as = old_culture_1 }
@@ -3253,31 +3254,6 @@ normandy.0040 = {
 			save_scope_as = new_culture
 		}
 
-		# every_player = {
-		# 	if = {
-		# 		limit = {
-		# 			NOT = { this = scope:rollo }
-		# 			OR = {
-		# 				culture = culture:french
-		# 				culture = culture:norse
-		# 			}
-		# 			exists = capital_province
-		# 			capital_province = { geographical_region = custom_normandy_and_adjacent }
-		# 		}
-		# 		trigger_event = global_culture.3002
-		# 	}
-		# 	else_if = {
-		# 		limit = { this = scope:rollo }
-		# 		trigger_event = global_culture.3003
-		# 	}
-		# 	else_if = {
-		# 		limit = {
-		# 			exists = capital_province
-		# 			capital_province = { geographical_region = world_europe }
-		# 		}
-		# 		trigger_event = global_culture.3005
-		# 	}
-		# }
 
 		
 		# If you are a king or emperor, or vassal to one, Rollo also becomes a vassal
@@ -3287,10 +3263,16 @@ normandy.0040 = {
 			add_character_flag = converted_culture_this_lifetime
 			get_title = title:c_rouen
 			get_title = title:d_normandy
-			dynasty = {
-				set_dynasty_name = "dynn_Normandie"
-				add_dynasty_modifier = {
-					modifier = RICE_normandy_rollo_family_equivalent
+			if = {
+				limit = {
+					scope:rollo = {
+						exists = dynasty
+					}
+				}
+				dynasty = {
+					add_dynasty_modifier = {
+						modifier = RICE_normandy_rollo_family_equivalent
+					}
 				}
 			}		
 			if = {
@@ -3305,6 +3287,35 @@ normandy.0040 = {
 				add_character_flag = RICE_normandy_rollo_did_convert_flag
 				set_character_faith_with_conversion = scope:charles.faith
 			}	
+		}
+
+		if = {
+			limit = {
+				scope:rollo = {
+					is_dynast = yes
+					exists = dynasty
+				}
+			}
+			scope:rollo = {
+				dynasty = {				
+					set_dynasty_name = "dynn_RICE_normandie"
+				}
+				house = {
+					set_house_name = "dynn_RICE_normandie"
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:rollo = {
+					exists = house
+				}
+			}
+			scope:rollo = {
+				house = {
+					set_house_name = "dynn_RICE_normandie"
+				}
+			}
 		}
 
 		
@@ -3784,7 +3795,7 @@ normandy.0040 = {
 				}
 			}
 			scope:rollo = {
-				# Give vassals independence if they don't own territory in Normandy 
+				# Give vassals independence or to original liege if they don't own territory in Normandy
 				every_vassal = {
 					# limit = {
 					# 	any_held_title = {
@@ -3803,6 +3814,22 @@ normandy.0040 = {
 							}
 						}
 					}
+					# Give to old liege
+					else_if = {
+						limit = {
+							exists = scope:original_liege
+						}
+						create_title_and_vassal_change = {
+							type = swear_fealty
+							save_scope_as = change
+						}
+						change_liege = {
+							liege = scope:original_liege
+							change = scope:change
+						}
+						resolve_title_and_vassal_change = scope:change
+					}
+					# Otherwise become independent
 					else = {
 						create_title_and_vassal_change = {
 							type = independency
@@ -3824,45 +3851,70 @@ normandy.0040 = {
 					#save_temporary_scope_as = destroyed_title
 					root = { destroy_title = prev }
 				}
-				# Give owned territory outside of Normandy to randos
-				every_held_title = {
+				if = {
 					limit = {
-						tier = tier_county
-						NOT = {
-							title_capital_county.title_province = { geographical_region = RICE_normandy_region }
+						exists = scope:original_liege
+					}
+					every_held_title = {
+						limit = {
+							tier = tier_county
+							NOT = {
+								title_capital_county.title_province = { geographical_region = RICE_normandy_region }
+							}
 						}
-					}
-					save_temporary_scope_as = seceding_county
-					#Create a local peasant warlord for the county.
-					create_character = {
-						location = scope:seceding_county.title_province
-						template = post_migration_minor_warlord_template
-						save_scope_as = minor_warlord
-					}
-					#Assign the seceding title to the new peasant warlord.
-					create_title_and_vassal_change = {
-						type = usurped
-						save_scope_as = change
-						add_claim_on_loss = no
-					}
-					scope:seceding_county = {
+						create_title_and_vassal_change = {
+							type = granted
+							save_scope_as = title_change
+							add_claim_on_loss = no
+						}
 						change_title_holder = {
-							holder = scope:minor_warlord
-							change = scope:change
-							take_baronies = yes
+							holder = scope:original_liege
+							change = scope:title_change
 						}
+						resolve_title_and_vassal_change = scope:title_change
 					}
-					resolve_title_and_vassal_change = scope:change
-					#And give the warlord their independence.
-					create_title_and_vassal_change = {
-						type = independency
-						save_scope_as = change
-						add_claim_on_loss = no
+				}
+				else = {
+					# Give owned territory outside of Normandy to randos
+					every_held_title = {
+						limit = {
+							tier = tier_county
+							NOT = {
+								title_capital_county.title_province = { geographical_region = RICE_normandy_region }
+							}
+						}
+						save_temporary_scope_as = seceding_county
+						#Create a local peasant warlord for the county.
+						create_character = {
+							location = scope:seceding_county.title_province
+							template = post_migration_minor_warlord_template
+							save_scope_as = minor_warlord
+						}
+						#Assign the seceding title to the new peasant warlord.
+						create_title_and_vassal_change = {
+							type = granted
+							save_scope_as = change
+							add_claim_on_loss = no
+						}
+						scope:seceding_county = {
+							change_title_holder = {
+								holder = scope:minor_warlord
+								change = scope:change
+								take_baronies = yes
+							}
+						}
+						resolve_title_and_vassal_change = scope:change
+						#And give the warlord their independence.
+						create_title_and_vassal_change = {
+							type = independency
+							save_scope_as = change
+							add_claim_on_loss = no
+						}
+						scope:minor_warlord = {
+							becomes_independent = { change = scope:change }
+						}
+						resolve_title_and_vassal_change = scope:change
 					}
-					scope:minor_warlord = {
-						becomes_independent = { change = scope:change }
-					}
-					resolve_title_and_vassal_change = scope:change
 				}
 			}
 		}
@@ -3889,8 +3941,8 @@ normandy.0040 = {
 		# In case Rollo isn't the vassal for some reason
 		if = {
 			limit = {
-				scope:charles = {
-					NOT = { liege = scope:rollo }
+				scope:rollo = {
+					NOT = { liege = scope:charles }
 				}
 			}
 			create_title_and_vassal_change = {
@@ -3904,6 +3956,11 @@ normandy.0040 = {
 				}
 			}
 			resolve_title_and_vassal_change = scope:change
+		}
+
+		# Just in case
+		scope:rollo = {
+			convert_whole_realm_to_feudalism_effect = yes
 		}
 
 		trigger_event = normandy.0041
@@ -4004,6 +4061,15 @@ normandy.0041 = {
 	}
 
 	after = {
+		# if = {
+		# 	limit = {
+		# 		exists = scope:original_liege
+		# 	}
+		# 	# Notify original liege
+		# 	scope:original_liege = {
+		# 		trigger_event = normandy.0042
+		# 	}
+		# }
 		if = {
 			limit = {				
 				scope:rollo = {
@@ -4017,8 +4083,70 @@ normandy.0041 = {
 		scope:rollo = {
 			trigger_event = normandy.0001
 		}
+		# Notification event rulers other than Rollo or Charles equivalents
+		every_ruler = {
+			limit = {
+				NOT = { this = scope:rollo }
+				NOT = { this = scope:charles }
+				OR = {
+					AND = {
+						exists = scope:original_liege
+						this = scope:original_liege
+					}
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							#OR = {
+								geographical_region = world_europe
+								#geographical_region = world_europe_west
+								#geographical_region = world_europe_north
+								#geographical_region = world_europe_south_italy
+							#}
+						}
+					}
+				}
+			}
+			trigger_event = normandy.0042
+		}		
 	}
 
+}
+
+# Notify people about Rollo's arrival in Normandy
+normandy.0042 = {
+	type = character_event
+	title = normandy.0042.t
+	desc = normandy.0042.desc
+	theme = RICE_theme_normandy_castle
+	override_icon = { reference = "gfx/interface/icons/event_types/type_diplomacy.dds" }
+	
+	left_portrait = {
+		character = scope:charles
+		animation = war_over_tie
+	}
+	
+	right_portrait = {
+		character = scope:rollo
+		animation = personality_callous
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_combat_3"
+	}
+	
+	option = { # Ok
+		name = normandy.0042.a
+		custom_tooltip = normandy.0042.tooltip.struggle_started
+		custom_tooltip = establish_norman_culture_decision_effect.tt
+		custom_tooltip = establish_norman_culture_decision_effect.tt.2
+		if = {
+			limit = {
+				exists = scope:original_liege
+				root = scope:original_liege
+			}
+			custom_tooltip = normandy.0042.tooltip.old_liege
+		}
+	}
 }
 
 
@@ -4773,6 +4901,14 @@ normandy.0080 = {
 	
 	immediate = {
 		save_scope_as = rollo
+		if = {
+			limit = {
+				exists = title:d_sjaelland.holder
+			}
+			title:d_sjaelland.holder = {
+				save_scope_as = sjaelland_holder
+			}
+		}
 		# scope:rollo = {
 		# 	dynasty = {
 		# 		set_dynasty_name = "dynn_RICE_rollo_placeholder"
@@ -4831,6 +4967,28 @@ normandy.0080 = {
 				modifier = RICE_normandy_rollo_modifier
 			}
 		}
+		get_title = title:c_lolland_falster
+		hidden_effect = {
+			character:186004 = {
+				get_title = title:c_trandheim
+			}
+		}
+		if = {
+			limit = {
+				exists = title:d_sjaelland.holder
+			}
+			create_title_and_vassal_change = {
+				type = swear_fealty
+				save_scope_as = change
+			}
+			scope:rollo = {
+				change_liege = {
+					liege = scope:sjaelland_holder
+					change = scope:change
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+		}
 		if = {
 			limit = {
 				has_game_rule = RICE_historical_context_on
@@ -4858,6 +5016,35 @@ normandy.0080 = {
 		show_as_tooltip = {
 			add_character_modifier = {
 				modifier = RICE_normandy_rollo_modifier
+			}
+		}
+		random_list = {
+			50 = {
+
+			}
+			50 = {
+				get_title = title:c_lolland_falster
+				hidden_effect = {
+					character:186004 = {
+						get_title = title:c_trandheim
+					}
+				}
+				if = {
+					limit = {
+						exists = title:d_sjaelland.holder
+					}
+					create_title_and_vassal_change = {
+						type = swear_fealty
+						save_scope_as = change
+					}
+					scope:rollo = {
+						change_liege = {
+							liege = scope:sjaelland_holder
+							change = scope:change
+						}
+					}
+					resolve_title_and_vassal_change = scope:change
+				}				
 			}
 		}
 		if = {
