@@ -6805,13 +6805,19 @@ normandy.0080 = {
 	theme = RICE_theme_normandy_outpost
 	override_icon = { reference = "gfx/interface/icons/event_types/type_memory_positive.dds" }
 	
-	right_portrait = {
+	left_portrait = {
 		character = scope:rollo
 		animation = throne_room_conversation_4
+	}
+
+	right_portrait = {
+		character = scope:thrall
+		animation = throne_room_bow_2
 	}
 	
 	immediate = {
 		save_scope_as = rollo
+
 		if = {
 			limit = {
 				exists = title:d_sjaelland.holder
@@ -6820,6 +6826,65 @@ normandy.0080 = {
 				save_scope_as = sjaelland_holder
 			}
 		}
+
+		# Find a random European county for the Christian thrall
+		if = {
+			limit = {
+				any_county_in_region = {
+					region = graphical_western
+					religion = religion:christianity_religion
+				}
+			}
+			every_county_in_region = {
+				region = graphical_western
+				limit = {
+					religion = religion:christianity_religion
+				}
+				add_to_list = christian_counties
+			}
+			random_in_list = {
+				list = christian_counties
+				save_scope_as = thrall_county
+			}
+			scope:thrall_county.faith = {
+				save_scope_as = thrall_faith
+			}
+			scope:thrall_county.culture = {
+				save_scope_as = thrall_culture
+			}
+		}
+		# If none exist for some reason, generate them as somewhere from the British isles 
+		else = {
+			random_list = {
+				# Anglo-Saxon
+				10 = {
+					culture:anglo_saxon = {
+						save_scope_as = thrall_culture
+					}
+					faith:catholic = {
+						save_scope_as = thrall_faith
+					}
+				}
+				# Irish
+				10 = {
+					culture:irish = {
+						save_scope_as = thrall_culture
+					}
+					faith:insular_celtic = {
+						save_scope_as = thrall_faith
+					}
+				}
+			}
+		}
+		
+		create_character = {
+			location = root.capital_province
+			template = RICE_christian_thrall_template
+			faith = scope:thrall_faith
+			culture = scope:thrall_culture
+			save_scope_as = thrall
+		}
+
 		# scope:rollo = {
 		# 	dynasty = {
 		# 		set_dynasty_name = "dynn_RICE_rollo_placeholder"
@@ -6857,7 +6922,7 @@ normandy.0080 = {
 				text = normandy.0080.a.info
 			}
 		}
-		trigger_event = normandy.0082
+		trigger_event = normandy.0081
 	}
 	
 	# af Fasge
@@ -6908,7 +6973,7 @@ normandy.0080 = {
 				text = normandy.0080.b.info
 			}
 		}
-		trigger_event = normandy.0082
+		trigger_event = normandy.0081
 	}
 	
 	# None of these
@@ -6966,7 +7031,7 @@ normandy.0080 = {
 				text = normandy.0080.c.info
 			}
 		}
-		trigger_event = normandy.0082
+		trigger_event = normandy.0081
 	}
 	
 	# Skip the boring introduction
@@ -6978,9 +7043,7 @@ normandy.0080 = {
 		custom_tooltip = normandy.0080.d.tooltip
 		custom_tooltip = normandy.0080.tooltip
 		show_as_tooltip = {
-			add_character_modifier = {
-				modifier = RICE_normandy_rollo_modifier
-			}
+			remove_character_modifier = RICE_normandy_rollo_modifier
 		}
 		if = {
 			limit = {
@@ -7003,11 +7066,584 @@ normandy.0080 = {
 	}
 
 	#after = {
-	#	trigger_event = normandy.0082
+	#	trigger_event = normandy.0081
 	#}
 
+}
+
+
+
+
+# Rollo - king of Denmark
+normandy.0081 = {
+	type = character_event
+	title = normandy.0081.t
+	desc = normandy.0081.desc
+	theme = RICE_theme_normandy_outpost
+	override_icon = { reference = "gfx/interface/icons/event_types/type_memory_martial.dds" }
+	
+	left_portrait = {
+		character = scope:rollo
+		animation = anger
+	}
+	
+	right_portrait = {
+		character = scope:king
+		animation = personality_callous
+	}
+
+	immediate = {
+		#remove_trait = arrogant # Possibly replace it with another trait
+		# Make sure Danish "king" or equivalent exists
+		if = {
+			limit = {
+				exists = title:d_sjaelland.holder
+			}
+			title:d_sjaelland.holder = {
+				save_scope_as = king
+			}
+		}
+		# Otherwise, if he doesn't exist for whatever reason, find a random Danish ruler as the equivalent
+		else = {
+			random_county = {
+				limit = {
+					any_county_province = {
+						geographical_region = custom_danish
+					}
+					NOT = { holder = root }
+				}
+				holder = {
+					save_scope_as = king
+				}
+			}
+		}
+	}
+		
+	# We bow to no king
+	option = {
+		name = normandy.0081.a
+		hidden_effect = {
+			random_list = {
+				40 = { }
+				20 = { add_trait = stubborn }
+				20 = { add_trait = just }
+				20 = { add_trait = ambitious }
+			}			
+		}
+		add_diplomacy_lifestyle_perk_points = 1
+		scope:king = {
+			add_opinion = {
+				target = root
+				modifier = RICE_opinion_political_disagreements
+			}
+			reverse_add_opinion = {
+				target = root
+				modifier = RICE_opinion_political_disagreements
+			}			
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0081.info
+			}
+		}
+		trigger_event = normandy.0082
+	}
+		
+	# Brother was murdered
+	option = {
+		name = normandy.0081.b
+		hidden_effect = {
+			random_list = {
+				40 = { }
+				20 = { add_trait = vengeful }
+				20 = { add_trait = just }
+				20 = { add_trait = wrathful }
+			}			
+		}
+		add_intrigue_lifestyle_perk_points = 1
+		scope:king = {
+			reverse_add_opinion = {
+				target = scope:murdered_close_relation_opinion
+				modifier = RICE_opinion_political_disagreements
+			}			
+		}
+		set_relation_rival = {
+			target = scope:king
+			reason = RICE_rival_rollo_danish_king_reason
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0081.info
+			}
+		}
+		trigger_event = normandy.0082
+	}
+		
+	# Neutral
+	option = {
+		name = normandy.0081.c
+		hidden_effect = {
+			random_list = {
+				40 = { }
+				20 = { add_trait = calm }
+				20 = { add_trait = forgiving }
+				20 = { add_trait = compassionate }
+			}			
+		}
+		add_stewardship_lifestyle_perk_points = 1
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0081.info
+			}
+		}
+		trigger_event = normandy.0082
+	}
+		
+	# Skip this stuff
+	option = {
+		name = normandy.0081.d
+		trigger = {
+			is_ai = no
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0081.info
+			}
+		}
+	}
 
 }
+
+
+
+# Rollo - chat with the thrall again
+normandy.0082 = {
+	type = character_event
+	title = normandy.0082.t
+	desc = normandy.0082.desc
+	theme = RICE_theme_normandy_outpost
+	override_icon = { reference = "gfx/interface/icons/event_types/type_memory_learning.dds" }
+	
+	left_portrait = {
+		character = scope:rollo
+		animation = personality_rational
+	}
+	
+	right_portrait = {
+		character = scope:thrall
+		animation = throne_room_bow_3
+	}
+		
+	# Curious about God
+	option = {
+		name = normandy.0082.a
+		add_piety = 100
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0082.info
+			}
+		}
+		# So the next dream doesn't happen right away
+		add_character_flag = {
+			flag = RICE_normandy_rollo_dream_timer
+			days = 730
+		}
+	}
+
+	# Glory? Awesome
+	option = {
+		name = normandy.0082.b
+		add_prestige = 100
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0082.info
+			}
+		}
+		# So the next dream doesn't happen right away
+		add_character_flag = {
+			flag = RICE_normandy_rollo_dream_timer
+			days = 730
+		}
+	}
+
+	# Stay by my side
+	option = {
+		name = normandy.0082.c
+		add_courtier = scope:thrall
+		scope:thrall = {
+			add_character_flag = blocked_from_leaving
+			add_character_flag = RICE_rollo_original_thrall
+		}
+		scope:thrall = {
+			add_opinion = {
+				target = root
+				modifier = friendliness_opinion
+				opinion = 30
+			}		
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0082.info
+			}
+		}
+		# So the next dream doesn't happen right away
+		add_character_flag = {
+			flag = RICE_normandy_rollo_dream_timer
+			days = 730
+		}
+	}
+		
+	# Skip this stuff
+	option = {
+		name = normandy.0082.d
+		trigger = {
+			is_ai = no
+		}
+		if = {
+			limit = {
+				has_character_modifier = RICE_normandy_rollo_modifier
+			}
+			#add_prestige = 100
+			#add_piety = 100
+			remove_character_modifier = RICE_normandy_rollo_modifier
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0082.info
+			}
+		}
+	}
+
+}
+
+
+# Rollo - have another dream?
+normandy.0083 = {
+	type = character_event
+	title = normandy.0083.t
+	desc = normandy.0083.desc
+	theme = RICE_theme_normandy_outpost
+	override_icon = { reference = "gfx/interface/icons/event_types/type_memory_positive.dds" }
+	
+	left_portrait = {
+		character = scope:rollo
+		animation = personality_rational
+	}
+
+	trigger = {
+		NOT = { has_global_variable = RICE_normandy_struggle_started }
+		is_alive = yes
+		is_landed = yes
+		has_character_modifier = RICE_normandy_rollo_modifier		
+	}
+
+	immediate = {
+		save_scope_as = rollo
+		if = {
+			limit = {
+				any_courtier = {
+					has_character_flag = RICE_rollo_original_thrall
+				}
+			}
+			random_courtier = {				
+				limit = {
+					has_character_flag = RICE_rollo_original_thrall
+				}
+				save_scope_as = interpreter
+			}
+		}
+		else_if = {
+			limit = {
+				any_vassal_or_below = {
+					has_character_flag = RICE_rollo_original_thrall
+				}
+			}
+			random_vassal_or_below = {				
+				limit = {
+					has_character_flag = RICE_rollo_original_thrall
+				}
+				save_scope_as = interpreter
+			}
+		}
+		else_if = {
+			limit = {
+				any_vassal_or_below = {
+					any_courtier = {
+						has_character_flag = RICE_rollo_original_thrall
+					}
+				}
+			}
+			random_vassal_or_below = {				
+				limit = {
+					has_character_flag = RICE_rollo_original_thrall
+				}
+				save_scope_as = interpreter
+			}
+		}
+	}	
+
+		
+	# Curious
+	option = {
+		name = normandy.0083.a
+		# trigger = {
+		# 	exists = scope:interpreter
+		# }
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0083.info
+			}
+		}
+		trigger_event = normandy.0084
+	}
+	# Skip this stuff
+	option = {
+		name = normandy.0083.b
+		trigger = {
+			is_ai = no
+		}
+		if = {
+			limit = {
+				has_character_modifier = RICE_normandy_rollo_modifier
+			}
+			#add_prestige = 100
+			#add_piety = 100
+			remove_character_modifier = RICE_normandy_rollo_modifier
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0083.info
+			}
+		}
+	}
+
+}
+
+
+# Rollo - the dream of the mountain spring
+normandy.0084 = {
+	type = character_event
+	title = normandy.0084.t
+	desc = normandy.0084.desc
+	theme = RICE_theme_normandy_meadow
+	override_icon = { reference = "gfx/interface/icons/event_types/type_memory_positive.dds" }
+	
+	left_portrait = {
+		character = scope:rollo
+		animation = happiness
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				NOT = { exists = scope:interpreter }
+			}
+			# Find a random European county for the Christian thrall
+			if = {
+				limit = {
+					any_county_in_region = {
+						region = graphical_western
+						religion = religion:christianity_religion
+					}
+				}
+				every_county_in_region = {
+					region = graphical_western
+					limit = {
+						religion = religion:christianity_religion
+					}
+					add_to_list = christian_counties
+				}
+				random_in_list = {
+					list = christian_counties
+					save_scope_as = thrall_county
+				}
+				scope:thrall_county.faith = {
+					save_scope_as = thrall_faith
+				}
+				scope:thrall_county.culture = {
+					save_scope_as = thrall_culture
+				}
+			}
+			# If none exist for some reason, generate them as somewhere from the British isles 
+			else = {
+				random_list = {
+					# Anglo-Saxon
+					10 = {
+						culture:anglo_saxon = {
+							save_scope_as = thrall_culture
+						}
+						faith:catholic = {
+							save_scope_as = thrall_faith
+						}
+					}
+					# Irish
+					10 = {
+						culture:irish = {
+							save_scope_as = thrall_culture
+						}
+						faith:insular_celtic = {
+							save_scope_as = thrall_faith
+						}
+					}
+				}
+			}
+		}				
+	}
+		
+	# Curious
+	option = {
+		name = normandy.0084.a
+		trigger = {
+			exists = scope:interpreter
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0084.info
+			}
+		}
+	}
+	# Skip this stuff
+	option = {
+		name = normandy.0084.b
+		trigger = {
+			NOT = { exists = scope:interpreter }
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0084.info
+			}
+		}
+		hidden_effect = {			
+			create_character = {
+				location = root.capital_province
+				template = RICE_christian_thrall_template
+				faith = scope:thrall_faith
+				culture = scope:thrall_culture
+				save_scope_as = interpreter
+			}
+			scope:interpreter = {
+				add_character_flag = RICE_normandy_rollo_generated_prisoner
+			}
+			imprison = {
+				target = scope:interpreter
+				type = dungeon
+			}
+		}
+	}
+
+	after = {		
+		trigger_event = normandy.0085
+	}
+
+}
+
+
+
+# Rollo - interpreting the dream and preparing for Francia
+normandy.0085 = {
+	type = character_event
+	title = normandy.0085.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:interpreter = {
+						NOT = { has_character_flag = RICE_normandy_rollo_generated_prisoner }
+					}
+				}
+				desc = normandy.0085.desc.original
+			}	
+			desc = normandy.0085.desc.not_original
+		}
+		desc = normandy.0085.desc
+	}
+	theme = RICE_theme_normandy_outpost
+	override_icon = { reference = "gfx/interface/icons/event_types/type_memory_learning.dds" }
+
+	left_portrait = {
+		character = scope:rollo
+		animation = personality_bold
+	}
+	
+	right_portrait = {
+		character = scope:interpreter
+		animation = personality_rational
+	}
+	
+	option = { # Embrace destiny
+		name = normandy.0085.a
+		add_prestige = 100
+		add_piety = 100
+		if = {
+			limit = {
+				exists = dynasty
+			}
+			dynasty = {
+				add_dynasty_prestige = 250
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0085.info
+			}
+		}
+	}
+	
+	# option = { # Ignore destiny
+	# 	name = normandy.0085.b
+	# 	if = {
+	# 		limit = {
+	# 			has_game_rule = RICE_historical_context_on
+	# 		}
+	# 		custom_description_no_bullet = {
+	# 			text = normandy.0084.info
+	# 		}
+	# 	}
+	# }
+
+}
+
+
+
 
 
 ######################################################################################
