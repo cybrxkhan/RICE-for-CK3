@@ -121,6 +121,17 @@ normandy.0001 = { # Fullscreen Intro Event
 		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
 	}
 
+	after = {
+		# If you are Rollo
+		if = {
+			limit = {
+				has_character_modifier = RICE_normandy_rollo_modifier
+				NOT = { has_character_flag = RICE_normandy_rollo_concluding_event_done }
+			}
+			trigger_event = normandy.0086
+		}
+	}
+
 }
 
 
@@ -6996,7 +7007,7 @@ normandy.0080 = {
 		}
 		random_list = {
 			50 = {
-
+				custom_tooltip = normandy.0080.c.tooltip.stay
 			}
 			50 = {
 				get_title = title:c_lolland_falster
@@ -7093,6 +7104,9 @@ normandy.0081 = {
 	}
 
 	immediate = {
+		hidden_effect = {
+			remove_trait = lustful
+		}
 		#remove_trait = arrogant # Possibly replace it with another trait
 		# Make sure Danish "king" or equivalent exists
 		if = {
@@ -7122,14 +7136,12 @@ normandy.0081 = {
 	# We bow to no king
 	option = {
 		name = normandy.0081.a
-		hidden_effect = {
-			random_list = {
-				40 = { }
-				20 = { add_trait = stubborn }
-				20 = { add_trait = just }
-				20 = { add_trait = ambitious }
-			}			
-		}
+		random_list = {
+			#40 = { }
+			20 = { add_trait = stubborn }
+			20 = { add_trait = just }
+			20 = { add_trait = ambitious }
+		}	
 		add_diplomacy_lifestyle_perk_points = 1
 		scope:king = {
 			add_opinion = {
@@ -7155,14 +7167,12 @@ normandy.0081 = {
 	# Brother was murdered
 	option = {
 		name = normandy.0081.b
-		hidden_effect = {
-			random_list = {
-				40 = { }
-				20 = { add_trait = vengeful }
-				20 = { add_trait = just }
-				20 = { add_trait = wrathful }
-			}			
-		}
+		random_list = {
+			#40 = { }
+			20 = { add_trait = vengeful }
+			20 = { add_trait = just }
+			20 = { add_trait = wrathful }
+		}	
 		add_intrigue_lifestyle_perk_points = 1
 		scope:king = {
 			reverse_add_opinion = {
@@ -7188,14 +7198,12 @@ normandy.0081 = {
 	# Neutral
 	option = {
 		name = normandy.0081.c
-		hidden_effect = {
-			random_list = {
-				40 = { }
-				20 = { add_trait = calm }
-				20 = { add_trait = forgiving }
-				20 = { add_trait = compassionate }
-			}			
-		}
+		random_list = {
+			#40 = { }
+			20 = { add_trait = calm }
+			20 = { add_trait = forgiving }
+			20 = { add_trait = compassionate }
+		}	
 		add_stewardship_lifestyle_perk_points = 1
 		if = {
 			limit = {
@@ -7214,6 +7222,7 @@ normandy.0081 = {
 		trigger = {
 			is_ai = no
 		}
+		custom_tooltip = normandy.0080.d.tooltip
 		if = {
 			limit = {
 				has_game_rule = RICE_historical_context_on
@@ -7221,6 +7230,9 @@ normandy.0081 = {
 			custom_description_no_bullet = {
 				text = normandy.0081.info
 			}
+		}
+		hidden_effect = {
+			add_trait = lustful
 		}
 	}
 
@@ -7320,12 +7332,11 @@ normandy.0082 = {
 		trigger = {
 			is_ai = no
 		}
+		custom_tooltip = normandy.0080.d.tooltip
 		if = {
 			limit = {
 				has_character_modifier = RICE_normandy_rollo_modifier
 			}
-			#add_prestige = 100
-			#add_piety = 100
 			remove_character_modifier = RICE_normandy_rollo_modifier
 		}
 		if = {
@@ -7429,12 +7440,11 @@ normandy.0083 = {
 		trigger = {
 			is_ai = no
 		}
+		custom_tooltip = normandy.0080.d.tooltip
 		if = {
 			limit = {
 				has_character_modifier = RICE_normandy_rollo_modifier
 			}
-			#add_prestige = 100
-			#add_piety = 100
 			remove_character_modifier = RICE_normandy_rollo_modifier
 		}
 		if = {
@@ -7526,29 +7536,29 @@ normandy.0084 = {
 		trigger = {
 			exists = scope:interpreter
 		}
-		if = {
-			limit = {
-				has_game_rule = RICE_historical_context_on
-			}
-			custom_description_no_bullet = {
-				text = normandy.0084.info
-			}
-		}
+		# if = {
+		# 	limit = {
+		# 		has_game_rule = RICE_historical_context_on
+		# 	}
+		# 	custom_description_no_bullet = {
+		# 		text = normandy.0084.info
+		# 	}
+		# }
 	}
-	# Skip this stuff
+	# Interesting
 	option = {
 		name = normandy.0084.b
 		trigger = {
 			NOT = { exists = scope:interpreter }
 		}
-		if = {
-			limit = {
-				has_game_rule = RICE_historical_context_on
-			}
-			custom_description_no_bullet = {
-				text = normandy.0084.info
-			}
-		}
+		# if = {
+		# 	limit = {
+		# 		has_game_rule = RICE_historical_context_on
+		# 	}
+		# 	custom_description_no_bullet = {
+		# 		text = normandy.0084.info
+		# 	}
+		# }
 		hidden_effect = {			
 			create_character = {
 				location = root.capital_province
@@ -7639,6 +7649,206 @@ normandy.0085 = {
 	# 		}
 	# 	}
 	# }
+
+}
+
+
+
+
+# Rollo - concluding event
+normandy.0086 = {
+	type = character_event
+	title = normandy.0086.t
+	desc = normandy.0086.desc
+	theme = RICE_theme_normandy_castle
+
+	right_portrait = {
+		character = scope:rollo
+		animation = war_over_win
+	}
+
+	immediate = {
+		# if = {
+		# 	limit = {
+		# 		this = character:242
+		# 	}
+		# }
+		# character:242 = {
+		# 	is_landed = yes
+		# 	has_character_modifier = RICE_normandy_rollo_modifier
+		# 	has_character_flag = RICE_normandy_rollo_big_dream
+		# }
+		add_character_flag = RICE_normandy_rollo_concluding_event_done
+	}
+	
+	option = { # Religious
+		name = normandy.0086.a
+		add_piety = 200
+		if = {
+			limit = {
+				exists = dynasty
+			}
+			dynasty = {
+				add_dynasty_prestige = 250
+			}
+		}
+		random_list = {
+			30 = { }
+			40 = {
+				if = {
+					limit = {
+						trait = cynical
+					}
+					remove_trait = cynical
+				}
+				add_trait = zealous
+			}
+			15 = {
+				if = {
+					limit = {
+						trait = impatient
+					}
+					remove_trait = impatient
+				}
+				add_trait = patient
+			}
+			15 = {
+				if = {
+					limit = {
+						trait = ambitious
+					}
+					remove_trait = ambitious
+				}
+				add_trait = content
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0086.info
+			}
+		}
+	}
+	
+	option = { # Glory
+		name = normandy.0086.b
+		add_prestige = 200
+		if = {
+			limit = {
+				exists = dynasty
+			}
+			dynasty = {
+				add_dynasty_prestige = 250
+			}
+		}
+		random_list = {
+			30 = { }
+			40 = {
+				if = {
+					limit = {
+						trait = content
+					}
+					remove_trait = content
+				}
+				add_trait = ambitious
+			}
+			15 = {
+				if = {
+					limit = {
+						trait = generous
+					}
+					remove_trait = generous
+				}
+				add_trait = greedy
+			}
+			15 = {
+				if = {
+					limit = {
+						trait = compassionate
+					}
+					remove_trait = compassionate
+				}
+				add_trait = callous
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0086.info
+			}
+		}
+	}
+	
+	option = { # People
+		name = normandy.0086.c
+		add_prestige = 100
+		add_piety = 100
+		if = {
+			limit = {
+				exists = dynasty
+			}
+			dynasty = {
+				add_dynasty_prestige = 250
+			}
+		}
+		random_list = {
+			30 = { }
+			30 = {
+				if = {
+					limit = {
+						trait = arbitrary
+					}
+					remove_trait = arbitrary
+				}
+				add_trait = just
+			}
+			15 = {
+				if = {
+					limit = {
+						trait = callous
+					}
+					remove_trait = callous
+				}
+				if = {
+					limit = {
+						trait = sadistic
+					}
+					remove_trait = sadistic
+				}
+				add_trait = compassionate
+			}
+			15 = {
+				if = {
+					limit = {
+						trait = lazy
+					}
+					remove_trait = lazy
+				}
+				add_trait = diligent
+			}
+			10 = {
+				if = {
+					limit = {
+						trait = greedy
+					}
+					remove_trait = greedy
+				}
+				add_trait = generous
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = normandy.0086.info
+			}
+		}
+	}
 
 }
 
