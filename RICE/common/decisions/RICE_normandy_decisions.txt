@@ -767,6 +767,20 @@ RICE_normandy_grant_to_norse = {
 
 	ai_potential = {
 		short_term_gold > RICE_activity_cost
+		# AI will not do this as long as Rollo is alive and controlled by a player interested in settling in Normandy
+		NOT = {
+			character:242 = {
+				is_alive = yes
+				is_ai = no
+				has_character_modifier = RICE_normandy_rollo_modifier
+			}
+		}
+		# AI will only look into doing this after some time has passed
+		current_date > 888.1.1
+		# AI won't do this on a player who owns territory in Normandy
+		title:d_normandy.holder = {
+			is_ai = no
+		}
 	}
 
 	ai_will_do = {
@@ -786,6 +800,10 @@ RICE_normandy_grant_to_norse = {
 		modifier = {
 			add = -10
 			has_trait = greedy
+		}
+		modifier = {
+			add = -25
+			current_date <= 900.1.1
 		}
 	}
 }
