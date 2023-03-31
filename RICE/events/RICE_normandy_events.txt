@@ -6,11 +6,10 @@
 # normandy.0020-normandy.0039			Invite Norse/Norman Adventurers
 # normandy.0040-normandy.0049			Settle Norse in Normandy
 # normandy.0050-normandy.0069			Mont Saint Michel
-# normandy.0070-normandy.0079			-----
+# normandy.0070-normandy.0079			Generic flavor events
 # normandy.0080-normandy.0089			Rollo narrative events
 # normandy.0090-normandy.0109			William the Conqueror/Matilda of Flanders narrative events
 # normandy.0110-normandy.0119			Historia Normannorum
-# normandy.0100-normandy.0149			Generic flavor events
 # 
 # 
 ###############################################################################
@@ -6795,6 +6794,615 @@ normandy.0068 = {
 }
 
 
+
+
+######################################################################################
+# 
+# FLAVOR EVENTS
+# 
+# normandy.0070-normandy.0079 reserved
+# 
+######################################################################################
+
+
+# Get some chausey stone?
+normandy.0070 = {
+	type = character_event
+	title = normandy.0070.t
+	desc = normandy.0070.desc
+	theme = RICE_theme_normandy_castle
+	
+	right_portrait = root
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_normandy_and_brittany_region
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	immediate = {
+		title:c_avranches = {
+			save_scope_as = avranches
+		}
+	}
+
+	option = { # Ok
+		name = normandy.0070.a
+		trigger = {
+			OR = {
+				gold >= 50
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 50
+		add_character_modifier = {
+			modifier = RICE_normandy_chausey_stone
+			years = 10
+		}
+		stress_impact = {
+			greedy = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = normandy.0070.b
+	}
+}
+
+# Donate to Mont Saint Michel?
+normandy.0071 = {
+	type = character_event
+	title = normandy.0071.t
+	desc = normandy.0071.desc
+	theme = RICE_theme_normandy_mont_saint_michel
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	trigger = {
+		religion = religion:christianity_religion
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_normandy_and_brittany_region
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	option = { # Ok
+		name = normandy.0071.a
+		trigger = {
+			OR = {
+				gold >= 25
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 25
+		add_piety = 75
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = normandy.0071.b
+		trigger = {
+			OR = {
+				gold >= 50
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 50
+		add_piety = 150
+		stress_impact = {
+			greedy = medium_stress_impact_gain
+			cynical = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = normandy.0071.c
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+	}
+}
+
+# A miracle at Mont Saint Michel
+normandy.0072 = {
+	type = character_event
+	title = normandy.0072.t
+	desc = normandy.0072.desc
+	theme = RICE_theme_normandy_mont_saint_michel
+	
+	left_portrait = {
+		character = root
+		animation = personality_cynical
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_greater_normandy_region
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	immediate = {	
+		religion:christianity_religion = { save_scope_as = christian }	
+		title:c_avranches = {
+			save_scope_as = avranches
+		}
+	}
+
+	option = { # Ok
+		name = normandy.0072.a
+		add_prestige = 25
+	}
+
+	option = { # Ok
+		name = normandy.0072.b
+		trigger = {
+			religion = religion:christianity_religion
+		}
+		add_piety = 25
+	}
+
+	option = { # Ok
+		name = normandy.0072.c
+		trigger = {
+			NOT = {
+				religion = religion:christianity_religion
+			}
+		}
+		add_piety = 25
+	}
+}
+
+
+# Norman apple orchards
+normandy.0073 = {
+	type = character_event
+	title = normandy.0073.t
+	desc = normandy.0073.desc
+	theme = RICE_theme_normandy_meadow
+	
+	left_portrait = root
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_normandy_region
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+	}
+
+	immediate = {	
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_normandy_region
+				}
+			}
+			save_scope_as = county
+		}
+	}
+
+	option = { # Ok
+		name = normandy.0073.a
+		trigger = {
+			OR = {
+				gold >= 50
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 50
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_normandy_apple_orchards
+				years = 10
+			}
+		}
+	}
+
+	option = { # Ok
+		name = normandy.0073.b
+	}
+}
+
+
+# Beef tripe / Tripes à la mode de Caen
+normandy.0074 = {
+	type = character_event
+	title = normandy.0074.t
+	desc = normandy.0074.desc
+	theme = feast_activity
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_normandy_region
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+	}
+
+	option = { # Ok
+		name = normandy.0074.a
+		add_prestige = 50
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			gluttonous = miniscule_stress_impact_loss
+			gregarious = miniscule_stress_impact_loss
+		}
+	}
+}
+
+
+
+# Norman brioche
+normandy.0075 = {
+	type = character_event
+	title = normandy.0075.t
+	desc = normandy.0075.desc
+	theme = feast_activity
+	override_background = { event_background = bp1_kitchen_western }
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_normandy_region
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	immediate = {
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_greater_normandy_region
+				}
+			}
+			save_scope_as = county
+		}
+	}
+
+	option = { # Ok
+		name = normandy.0075.a
+		add_character_modifier = {
+			modifier = RICE_normandy_brioche
+			years = 5
+		}
+	}
+}
+
+
+
+# Visiting the white cliffs of Étretat
+normandy.0076 = {
+	type = character_event
+	title = normandy.0076.t
+	desc = normandy.0076.desc
+	theme = RICE_theme_normandy_outpost
+	
+	right_portrait = {
+		character = root
+		animation = personality_forgiving
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_normandy_region
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	immediate = {
+		title:c_eu = {
+			save_scope_as = eu
+		}
+	}
+
+	option = { # Ok
+		name = normandy.0076.a
+		stress_impact = {
+			base = minor_stress_impact_loss
+			content = miniscule_stress_impact_loss
+		}
+	}
+}
+
+
+# Hearing about the legend of castle Pirou
+normandy.0077 = {
+	type = character_event
+	title = normandy.0077.t
+	desc = normandy.0077.desc
+	theme = RICE_theme_normandy_castle
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_greater_normandy_region
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	immediate = {
+		title:c_avranches = {
+			save_scope_as = avranches
+		}
+	}
+
+	option = { # Ok
+		name = normandy.0077.a
+		add_piety = 25
+		stress_impact = {
+			trusting = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = normandy.0077.b
+		add_prestige = 25
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+		}
+	}
+}
 
 
 
