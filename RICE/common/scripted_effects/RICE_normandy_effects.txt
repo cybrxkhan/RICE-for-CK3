@@ -36,17 +36,23 @@ RICE_setup_normandy_flavor_pack_effect = {
 		# 	result = white_peace
 		# }
 		character:242 = {
-			get_title = title:c_trandheim
+			if = {
+				limit = {
+					NOT = { has_game_rule = RICE_normandy_rollo_no }
+				}
+				get_title = title:c_trandheim
+				RICE_setup_new_granted_ruler_bonuses_effect = yes
+			}
 			set_sexuality = heterosexual
 			add_character_modifier = {
 				modifier = RICE_normandy_rollo_modifier
 			}
-			RICE_setup_new_granted_ruler_bonuses_effect = yes
 		}
 	}
 	# Make William and Matilda lovers
 	if = {
 		limit = {
+			game_start_date >= 1066.9.15
 			character:140 = {
 				is_alive = yes
 			}
@@ -79,6 +85,11 @@ RICE_setup_normandy_flavor_pack_effect = {
 				location = province:2174
 				origin = province:2325
 			}
+			# William the Conqueror starting events
+			trigger_event = {
+				id = normandy.0090
+				days = { 10 20 }
+			}
 		}
 		# Ensure that William and Matilda can be lovers
 		character:367 = {
@@ -101,20 +112,14 @@ RICE_setup_normandy_flavor_pack_effect = {
 			get_title = title:c_worcestershire
 			RICE_setup_new_granted_ruler_bonuses_effect = yes
 		}
+		# Mabel, wife of Roger II de Montgommery
 		character:449 = {
 			RICE_remove_personality_traits_effect = yes
 			#remove_trait = education_intrigue_2
 			#add_trait = education_learning_4
 			add_trait = ambitious
 			add_trait = deceitful
-			add_trait = cruel
-		}
-		# Trigger William/Matilda lover/friend event
-		character:140 = {
-			trigger_event = {
-				id = normandy.0090
-				days = { 5 15 }
-			}
+			add_trait = sadistic
 		}
 	}
 
@@ -240,6 +245,14 @@ RICE_normandy_struggle_conquest_ender_effect = {
 			add_culture_tradition = tradition_RICE_adventurers_and_aristocrats_military
 			remove_variable = tradition_cooldown
 		}		
+		every_culture_global = {
+			limit = {
+				has_cultural_tradition = tradition_RICE_northmen
+			}		
+			remove_culture_tradition = tradition_RICE_northmen
+			add_culture_tradition = tradition_RICE_adventurers_and_aristocrats_military
+			remove_variable = tradition_cooldown
+		}		
 	}
 }
 
@@ -268,6 +281,14 @@ RICE_normandy_struggle_assimilation_ender_effect = {
 				has_cultural_tradition = tradition_RICE_adventurers_and_aristocrats
 			}		
 			remove_culture_tradition = tradition_RICE_adventurers_and_aristocrats
+			add_culture_tradition = tradition_RICE_adventurers_and_aristocrats_culture
+			remove_variable = tradition_cooldown
+		}	
+		every_culture_global = {
+			limit = {
+				has_cultural_tradition = tradition_RICE_northmen
+			}		
+			remove_culture_tradition = tradition_RICE_northmen
 			add_culture_tradition = tradition_RICE_adventurers_and_aristocrats_culture
 			remove_variable = tradition_cooldown
 		}		
@@ -312,21 +333,21 @@ RICE_mont_saint_michel_statue_effect = {
 
 
 # Add all Involved cultures with counties to a list
-RICE_normandy_struggle_ending_culture_list_effect = {
-	every_culture_global = {		
-		limit = {
-			#TODO_CD_FP2 (JP) check if this can be more performant, every_struggle_culture would be better
-			save_temporary_scope_as = this_culture
-			struggle:RICE_normandy_struggle = { is_culture_involved_in_struggle = scope:this_culture }
-			#culture_number_of_counties > 0
-		}
-		save_scope_as = culture_scope
-		add_to_global_variable_list = {
-			name = RICE_normandy_struggle_ending_culture_list
-			target = scope:culture_scope
-		}
-	}
-}
+# RICE_normandy_struggle_ending_culture_list_effect = {
+# 	every_culture_global = {		
+# 		limit = {
+# 			#TODO_CD_FP2 (JP) check if this can be more performant, every_struggle_culture would be better
+# 			save_temporary_scope_as = this_culture
+# 			struggle:RICE_normandy_struggle = { is_culture_involved_in_struggle = scope:this_culture }
+# 			#culture_number_of_counties > 0
+# 		}
+# 		save_scope_as = culture_scope
+# 		add_to_global_variable_list = {
+# 			name = RICE_normandy_struggle_ending_culture_list
+# 			target = scope:culture_scope
+# 		}
+# 	}
+# }
 
 
 
@@ -348,7 +369,7 @@ RICE_normandy_historia_normannorum_effect = {
 RICE_norse_adventurers_spawn_effect = {
 	random_list = {
 		# 200
-		10 = {
+		20 = {
 			spawn_army = {
 				levies = 100
 				men_at_arms = {
@@ -361,7 +382,7 @@ RICE_norse_adventurers_spawn_effect = {
 			}
 		}
 		# 400
-		10 = {
+		20 = {
 			spawn_army = {
 				levies = 200
 				men_at_arms = {
@@ -378,7 +399,7 @@ RICE_norse_adventurers_spawn_effect = {
 			}
 		}
 		# 600
-		10 = {
+		15 = {
 			spawn_army = {
 				levies = 300
 				men_at_arms = {
@@ -420,7 +441,7 @@ RICE_norse_adventurers_spawn_effect = {
 			}
 		}
 		# 1000
-		10 = {
+		5 = {
 			spawn_army = {
 				levies = 500
 				men_at_arms = {
@@ -450,7 +471,7 @@ RICE_norse_adventurers_spawn_effect = {
 RICE_norman_adventurers_spawn_effect = {
 	random_list = {
 		# 200
-		10 = {
+		20 = {
 			spawn_army = {
 				levies = 100
 				men_at_arms = {
@@ -463,7 +484,7 @@ RICE_norman_adventurers_spawn_effect = {
 			}
 		}
 		# 400
-		10 = {
+		20 = {
 			spawn_army = {
 				levies = 200
 				men_at_arms = {
@@ -480,7 +501,7 @@ RICE_norman_adventurers_spawn_effect = {
 			}
 		}
 		# 600
-		10 = {
+		15 = {
 			spawn_army = {
 				levies = 300
 				men_at_arms = {
@@ -526,7 +547,7 @@ RICE_norman_adventurers_spawn_effect = {
 			}
 		}
 		# 1000
-		10 = {
+		5 = {
 			spawn_army = {
 				levies = 500
 				men_at_arms = {

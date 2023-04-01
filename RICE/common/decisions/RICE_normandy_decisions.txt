@@ -48,6 +48,8 @@ RICE_normandy_struggle_ending_conquest_decision = {
 			has_cultural_era_or_later = culture_era_high_medieval
 		}
 
+		prestige_level >= 3
+
 		OR = {
 			custom_tooltip = {
 				text = struggle_ending_decision_correct_involvement_tt
@@ -108,6 +110,8 @@ RICE_normandy_struggle_ending_conquest_decision = {
 		RICE_normandy_struggle_conquest_ending_tooltip_effect = yes
 		custom_tooltip = RICE_normandy_struggle_ending_greater_normandy_tt
 		custom_tooltip = RICE_normandy_struggle_ending_england_francia_tt
+		# Choose an ethos for your culture
+		custom_tooltip = RICE_normandy_struggle_ending_conquest_ethos_tt
 
 		# show_as_tooltip = {
 		# 	stress_impact = {
@@ -118,34 +122,7 @@ RICE_normandy_struggle_ending_conquest_decision = {
 		# }
 
 		# Trigger the ending event
-		every_ruler = {
-			limit = {
-				OR = {
-					this = scope:normandy_struggle_ender
-					is_ai = no
-				}
-				OR = {
-					any_character_struggle = {
-						involvement = involved
-						is_struggle_type = RICE_normandy_struggle
-					}					
-					any_character_struggle = {
-						involvement = interloper
-						is_struggle_type = RICE_normandy_struggle
-					}
-					any_held_title = {
-						tier = tier_county
-						any_county_province = {
-							OR = {
-								geographical_region = world_europe_west
-								geographical_region = world_europe_south_italy
-							}
-						}
-					}					
-				}
-			}
-			trigger_event = normandy.0005
-		}
+		trigger_event = normandy.0009
 	}
 
 	cost = {}
@@ -193,23 +170,51 @@ RICE_normandy_struggle_ending_assimilation_decision = {
 			}
 		}
 
-		custom_tooltip = {
-			text = struggle_ending_decision_correct_involvement_tt
-			any_character_struggle = {
-				involvement = involved
-				is_struggle_type = RICE_normandy_struggle
-			}
-		}
-
-		exists = struggle:RICE_normandy_struggle
-
-		prestige_level >= 5
-
 		has_title = title:d_normandy
 		completely_controls = title:d_normandy
 
+		prestige_level >= 3
+
+		#OR = {
+			custom_tooltip = {
+				text = struggle_ending_decision_correct_involvement_tt
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = RICE_normandy_struggle
+				}
+			}
+		# 	AND = {
+		# 		#completely_controls_region = RICE_normandy_region
+		# 		custom_description = {
+		# 			text = RICE_normandy_struggle_is_norman_req
+		# 			OR = {
+		# 				culture = culture:norman
+		# 				culture = {
+		# 					any_parent_culture_or_above = {
+		# 						this = culture:norman
+		# 					}
+		# 				}
+		# 			}
+		# 		}
+		# 		custom_description = {
+		# 			text = RICE_normandy_struggle_culture_involved_req
+		# 			struggle:RICE_normandy_struggle = { is_culture_involved_in_struggle = root.culture }
+		# 		}
+		# 		custom_description = {
+		# 			text = RICE_normandy_struggle_faith_involved_req
+		# 			struggle:RICE_normandy_struggle = { is_faith_involved_in_struggle = root.faith }
+		# 		}
+		# 	}
+		# }
+
 		culture = {
 			has_cultural_era_or_later = culture_era_high_medieval
+		}
+
+		
+		custom_tooltip = {
+			text = RICE_normandy_struggle_decision_historia_normannorum_tt
+			has_global_variable = RICE_normandy_historia_normannorum_done
 		}
 
 		custom_tooltip = {
@@ -249,6 +254,8 @@ RICE_normandy_struggle_ending_assimilation_decision = {
 			RICE_normandy_struggle_assimilation_ender_effect = yes
 		}
 		RICE_normandy_struggle_assimilation_ending_tooltip_effect = yes
+		# Choose an ethos for your culture
+		custom_tooltip = RICE_normandy_struggle_ending_assimilation_ethos_tt
 
 		# show_as_tooltip = {
 		# 	stress_impact = {
@@ -259,34 +266,7 @@ RICE_normandy_struggle_ending_assimilation_decision = {
 		# }
 
 		# Trigger the ending event
-		every_ruler = {
-			limit = {
-				OR = {
-					this = scope:normandy_struggle_ender
-					is_ai = no
-				}
-				OR = {
-					any_character_struggle = {
-						involvement = involved
-						is_struggle_type = RICE_normandy_struggle
-					}					
-					any_character_struggle = {
-						involvement = interloper
-						is_struggle_type = RICE_normandy_struggle
-					}
-					any_held_title = {
-						tier = tier_county
-						any_county_province = {
-							OR = {
-								geographical_region = world_europe_west
-								geographical_region = world_europe_south_italy
-							}
-						}
-					}					
-				}
-			}
-			trigger_event = normandy.0006
-		}
+		trigger_event = normandy.0008
 	}
 
 	cost = {}
@@ -555,10 +535,11 @@ RICE_normandy_compile_domesday_book = {
 			}
 			completely_controls_region = custom_west_francia_minus_mediterranean
 		}
-		trigger_else_if = {
-			limit = {
-				has_global_variable = RICE_normandy_ending_norman_conquest_greater_normandy
-			}
+		trigger_else = {
+			# For some reason throws errors if there isn't a trigger_else, even though this isn't a usual issue with normal if/else?
+			#limit = {
+			#	has_global_variable = RICE_normandy_ending_norman_conquest_greater_normandy
+			#}
 			completely_controls_region = RICE_greater_normandy_region
 		}
 	}
@@ -570,7 +551,10 @@ RICE_normandy_compile_domesday_book = {
 	effect = {		
 
 		#Can only happen once
-		has_global_variable = RICE_normandy_domesday_book_in_progress
+		set_global_variable = {
+			name = RICE_normandy_domesday_book_in_progress
+			value = yes
+		}
 		# add_to_global_variable_list = {
 		# 	name = unavailable_unique_decisions
 		# 	target = flag:RICE_normandy_domesday_book_in_progress
@@ -659,11 +643,13 @@ RICE_normandy_grant_to_norse = {
 			}
 		}
 		NOT = { has_global_variable = RICE_normandy_struggle_started }
+		NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
 	}
 	
 	is_valid = {
 		#completely_controls = title:d_normandy
 		highest_held_title_tier >= tier_duchy
+		#is_independent_ruler = yes
 		# Don't want you to lose your capital
 		NOT = {
 			capital_province = {
@@ -681,7 +667,6 @@ RICE_normandy_grant_to_norse = {
 			completely_controls = title:c_bayeux
 			completely_controls = title:c_avranches
 		}
-		NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
 	}
 	
 	is_valid_showing_failures_only = {
@@ -703,6 +688,19 @@ RICE_normandy_grant_to_norse = {
 		}
 
 		save_scope_as = charles
+
+		# if = {
+		# 	limit = {
+		# 		is_independent_ruler = no
+		# 	}
+		# 	top_liege = {
+		# 		save_scope_as = charles
+		# 	}
+		# }
+		# else = {
+		# 	save_scope_as = charles
+		# }
+
 
 		# culture:frankish = {
 		# 	save_scope_as = frankish
@@ -833,16 +831,37 @@ RICE_normandy_commission_historia_normannorum = {
 			}
 		}
 		OR = {
-			culture = culture:norman
-			culture = {
-				any_parent_culture_or_above = {
-					this = culture:norman
+			AND = {
+				exists = struggle:RICE_normandy_struggle
+				OR = {
+					any_character_struggle = {
+						involvement = involved
+						is_struggle_type = RICE_normandy_struggle
+					}					
+					any_character_struggle = {
+						involvement = interloper
+						is_struggle_type = RICE_normandy_struggle
+					}
 				}
 			}
-			dynasty = {
-				has_dynasty_modifier = RICE_normandy_rollo_family_equivalent
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_normandy_region	
+				}
 			}
 		}
+		# OR = {
+		# 	culture = culture:norman
+		# 	culture = {
+		# 		any_parent_culture_or_above = {
+		# 			this = culture:norman
+		# 		}
+		# 	}
+		# 	dynasty = {
+		# 		has_dynasty_modifier = RICE_normandy_rollo_family_equivalent
+		# 	}
+		# }
 	}
 	
 	is_valid = {
@@ -885,6 +904,10 @@ RICE_normandy_commission_historia_normannorum = {
 
 		culture:french = {
 			save_scope_as = french
+		}
+
+		culture:norse = {
+			save_scope_as = norse
 		}
 
 		#Can only happen once

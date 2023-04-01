@@ -13,6 +13,11 @@ RICE_normandy_border_raid = {
 
 	allowed_for_character = {
 		exists = struggle:RICE_normandy_struggle
+		# NOT = {
+		# 	struggle:RICE_normandy_struggle = {
+		# 		is_struggle_phase = struggle_RICE_normandy_phase_acculturation
+		# 	}	
+		# }
 		# OR = {
 		# 	any_character_struggle = {
 		# 		involvement = involved
@@ -47,6 +52,14 @@ RICE_normandy_border_raid = {
 	allowed_against_character = {
 		struggle:RICE_normandy_struggle = {
 			is_culture_involved_in_struggle = scope:defender.culture
+		}
+		# Defender must be bordering your realm.
+		OR = {
+			character_is_land_realm_neighbor = scope:attacker
+			AND = {
+				exists = scope:attacker.liege
+				character_is_land_realm_neighbor = scope:attacker.liege
+			}
 		}
 		# OR = {
 		# 	culture = { has_cultural_pillar = heritage_brythonic }
@@ -108,6 +121,20 @@ RICE_normandy_border_raid = {
 			}
 
 			multiply = common_cb_piety_cost_multiplier
+
+			if = {
+				limit = {					
+					exists = struggle:RICE_normandy_struggle
+					struggle:RICE_normandy_struggle = {
+						is_struggle_phase = struggle_RICE_normandy_phase_confrontation
+					}	
+				}				
+				multiply = {
+					value = 0.75
+					desc = "RICE_normandy_border_raid_cb_struggle_phase_cheaper"
+				}
+			}
+
 		}
 		prestige = {
 			value = minor_prestige_value
@@ -130,6 +157,19 @@ RICE_normandy_border_raid = {
 				}
 			}
 			multiply = common_cb_prestige_cost_multiplier
+			
+			if = {
+				limit = {					
+					exists = struggle:RICE_normandy_struggle
+					struggle:RICE_normandy_struggle = {
+						is_struggle_phase = struggle_RICE_normandy_phase_confrontation
+					}	
+				}				
+				multiply = {
+					value = 0.75
+					desc = "RICE_normandy_border_raid_cb_struggle_phase_cheaper"
+				}
+			}
 		}
 	}
 
