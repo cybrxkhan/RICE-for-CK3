@@ -325,7 +325,7 @@ RICE_normandy_struggle_ending_outsider_decision = {
 
 		exists = struggle:RICE_normandy_struggle
 
-		prestige_level >= 5
+		prestige_level >= 3
 
 		has_title = title:d_normandy
 		completely_controls = title:d_normandy
@@ -644,6 +644,7 @@ RICE_normandy_grant_to_norse = {
 		}
 		NOT = { has_global_variable = RICE_normandy_struggle_started }
 		NOT = { culture = { has_cultural_pillar = heritage_north_germanic } }
+		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
 	}
 	
 	is_valid = {
@@ -720,6 +721,13 @@ RICE_normandy_grant_to_norse = {
 		custom_tooltip = RICE_normandy_grant_to_norse_effect_tooltip_2
 		custom_tooltip = RICE_normandy_grant_to_norse_effect_tooltip_3
 		custom_tooltip = RICE_normandy_grant_to_norse_effect_tooltip_4
+
+		if = {
+			limit = {
+				NOT = { has_global_variable = RICE_normandy_struggle_started }
+			}
+			custom_tooltip = RICE_normandy_start_struggle_tooltip
+		}
 
 		show_as_tooltip = {
 			culture:norman = {
@@ -1313,6 +1321,10 @@ RICE_normandy_recruit_norse_adventurers = {
 			}
 			NOT = { geographical_region = dlc_fp1_region_core_mainland_scandinavia }
 		}	
+		OR = {			
+			NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+			current_year > 750
+		}
 		# OR = {
 		# 	NOT = { has_government = tribal_government }
 		# 	NOT = {
@@ -1505,6 +1517,11 @@ RICE_normandy_recruit_norse_adventurers = {
 					}
 				}
 				10 = {
+					trigger = {
+						any_held_county = {
+							count > 1 #Don't give away your only title
+						}
+					}
 					set_variable = {
 						name = RICE_norse_adventurer_type
 						value = flag:rulers
@@ -1621,7 +1638,11 @@ RICE_normandy_recruit_norman_adventurers = {
 				geographical_region = RICE_southern_europe_region				
 			}
 			NOT = { geographical_region = RICE_normandy_region }
-		}	
+		}		
+		OR = {			
+			NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+			current_year > 750
+		}
 		OR = {
 			any_held_title = {
 				tier = tier_county
@@ -1824,6 +1845,11 @@ RICE_normandy_recruit_norman_adventurers = {
 					}
 				}
 				10 = {
+					trigger = {
+						any_held_county = {
+							count > 1 #Don't give away your only title
+						}
+					}
 					set_variable = {
 						name = RICE_norman_adventurer_type
 						value = flag:rulers
