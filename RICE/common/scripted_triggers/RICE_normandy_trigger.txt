@@ -62,3 +62,32 @@ RICE_normandy_can_be_granted_normandy_trigger = {
 	# Should be Germanic
 	culture = { has_cultural_pillar = heritage_north_germanic }
 }
+
+
+RICE_normandy_struggle_blocks_invasion_conquest_cb_trigger = {
+	trigger_if = {
+		limit = {
+			scope:attacker = {
+				any_character_struggle = {
+					involvement = involved
+					NOT = { is_struggle_type = RICE_normandy_struggle }
+					NOT = { has_struggle_phase_parameter = invasion_conquest_war_cannot_be_declared }
+				}
+			}
+			exists = scope:defender
+		}
+		scope:defender = {
+			OR = {
+				any_character_struggle = {
+					involvement = involved
+					NOT = { has_struggle_phase_parameter = invasion_conquest_war_cannot_be_declared }
+				}
+				any_character_struggle = {
+					involvement = interloper
+					NOT = { has_struggle_phase_parameter = invasion_conquest_war_cannot_be_declared }
+				}
+			}
+		}
+	}
+	trigger_else = { always = yes }
+}
