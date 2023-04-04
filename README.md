@@ -1,14 +1,13 @@
-<img src="https://i.imgur.com/QkPidiM.jpg">
+<img src="https://i.imgur.com/Ty90hMr.jpg">
 
-## Latest Version: Version 1.8.4 "Al-Biruni" (Released 1/20/23, for vanilla patch 1.8.x)
+## Latest Version: Version 1.8.5 "William the Conqueror" (Released 4/3/23, for vanilla patch 1.8.x)
 
-**Newest Flavor Packs: *Khozestan: Land of the Sugar Cane* & *Khwarezm: The Oxus Borderlands***
+**Newest Flavor Pack: *Normandy: Adventureres and Aristocrats***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_"For what the crowd calls courage - bravely dashing into the fight of plunging into an abyss of destruction - is only a species of courage, whilst the genus, far above all species, is to scorn death, whether by word or deed."_
-
-_- Al-Biruni (973 - c.1050 CE), Khwarezmian polymath and scholar_
+_“See — I have taken England with both my hands.”_
+_– William the Conqueror, after he stepped off his ship on the coast of England and fell into the sand_
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places and peoples.
 
@@ -30,6 +29,7 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 - [Magadha: Diamond Throne of Buddhism](https://docs.google.com/document/d/e/2PACX-1vQvXP97M8x7lXYDilOlkVz-lCT0dk6Qq2R6cFyoySNv6g5mqAhIxzquf_1TeR9eEllCkA0HhpOfErnT/pub)
 - [Mordvin: Along the Volga](https://docs.google.com/document/d/e/2PACX-1vSJLf-BGou98MSCHMEVO1QWEme1kKSe8CiriXgpfEUHeySTLJOsPLQobPnu_fIt-W-GqcL3VBXFqJzZ/pub)
 - [Niger Delta: Heirs of Oduduwa](https://docs.google.com/document/d/e/2PACX-1vTgW9FFORhgNKseRIGdOXnsCLe5Nee8f8dK9yQxkvWshD3ZJf5vzXhMHQKmoy3qnMEjm2kLImgExhvt/pub)
+- [Normandy: Adventurers and Aristocrats](https://docs.google.com/document/d/e/2PACX-1vSJl5JRfLjzdzwnCo6WJVG8qJ8-5htcWQ1L1PU3tMIq1Ym4HOO6fPhQ1ovarPeb_3b3pLPRhLBvgyRT/pub)
 - [North Atlantic: From Iceland to Vinland](https://docs.google.com/document/d/e/2PACX-1vQmBr7TYKBGRMtVYj8IWAjLHHAadsxJwGZI1VIG0PRA4ZV3mru5HGv3vAqaktbnVMe1oFpTdCEPKFLd/pub)
 - [Pamir and Zunist: Roof of the World](https://docs.google.com/document/d/e/2PACX-1vQmHEFpko8WE1fnHLHyG-4t01Xyka4eTe88WuLJWRL6jk0S3ju3fA1CFyX_dDArSduFlzqUl58pjRRO/pub)
 - [Red Sea: Treasures of the Eastern Desert](https://docs.google.com/document/d/e/2PACX-1vQzLb-MR90fMQvjqZsxceuydKihTehAlpxexdhdim5pfxi_aGVBeLl1rJMmuR-89nVB7PVLfboZKBuy/pub)
@@ -58,22 +58,37 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/c1V3CtB.jpg">
+<img src="https://i.imgur.com/yU1xF7B.jpg">
 
-### 1.8.4 "Al-Biruni"
+### 1.8.5 "William the Conqueror"
 
-- Added new Al-Fir Citadel building for mods with earlier start dates (like TFE), that will becomes ruins via event in the course of the game
-- Added Purported Armenian and Breton Noble Blood house modifier to the family of the bookmarked character Fernan of Braganza
-- al-Umari now starts off with a few Nubian courtiers to represent his slave raids into/connections with Nubia
-- Bactrian culture now starts with People of the Silk Road tradition when run with TFE
-- Amazigh faiths now have polygamy
-- To reduce errors when running with CE, tweaked requirements of some Khuzi related content to require descent from Khuzi culture, rather than Elamite culture (other errors might still remain)
-- Athinganoi from TIP mod now have food purification doctrine
-- Fixed several Sami counties not becoming Sami Pagan when run with CE
-- Fixed Ibn Tulun being labeled as the Abbasid Governor in the al-Umari bookmark
-- Fixed Behafaridism not being assigned the correct Yazata doctrine when run with TIP
-- Fixed Maritime Trade dynasty legacy being available for some rulers not bordering the Indian Ocean
-- Fixed the price of the Tiraz interaction not taking into account whether you or vassals own a Tiraz Production Center or not
+- Added Normandy Flavor Pack: Adventurers and Aristocrats
+- Added 8 French Renaissance music tracks
+- Added decisions to Spread Culture/Faith Influence in Greenland, that makes your faith and/or culture involved in the Greenland struggle
+- Added Procreation as Purification doctrine option for Dualist faiths
+- Added global variable is_RICE_loaded_global_variable
+- Aksumitism renamed to Mahremism
+- Mahremism/Aksumitism now has the human sacrifice tenet instead of ritual celebrations
+- Adjusted Mahremist/Aksumitist holy sites
+- Pagan Ethiopian counties and courtiers are now Mahremist at game start
+- Added god names for Hubalists and Mahremists
+- Silk Road, Maritime Trade, and Trans-Saharan Trade dynasty legacies now only require directly owning a county in the right region, not a capital
+- Radhanite culture now starts with the People of the Silk Road tradition
+- Decision to Exhume Charlemagne’s remains now requires being in the early medieval era
+- Maghrebi and (if playing with a mod that adds in) Coptic cultures now start with the Qanat innovation
+- Replaced icons for most Semitic faiths with the versions from The Fallen Eagle
+- Fixed Ibrahim of Transoxiana not starting with any education traits in 1066
+- Fixed children being available to lead North Atlantic expeditions or to be exiled/sent to the Americas
+- Fixed random leader for expeditions not actually being paid 50 gold
+- Fixed CB names for North Atlantic variations of conquest/invasion CBs
+- Fixed Tiraz game concept not having any text
+- Fixed Tiraz Production Center localization referencing English wool
+- Fixed rulers getting duplicate North Atlantic invasion CBs in some cases
+- Fixed duplicate Hellenic syncretism tenet/doctrines for Harranism and Dusharism when playing with TFE
+- Fixed Argan Forest buildings being misplaced when running with IBL
+- Fixed Tuareg pagan distribution when running with IBL
+- Fixed code not working for adding Sami pagans to some counties when running with CE
+- Fixed Mandaean courtier spawn event not triggering
 - Miscellaneous bugfixes
 
 ## Credits
@@ -97,6 +112,7 @@ Special thanks in particular to:
 - Nix for Evenki names
 - PinkPanzer for some decision art
 - Shatzi for more Breton content
+- The Fallen Eagle for some icons and collab
 - The Not So Lonely Arrikirri and Tundragrass for suggestions and sources on the Zunbils
 - YTnuBF for Native American ethnicities from the [Amerindian Steppe Tribe](url=https://steamcommunity.com/workshop/filedetails/?id=2417123207) mod
 
