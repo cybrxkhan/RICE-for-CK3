@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/Ty90hMr.jpg">
 
-## Latest Version: Version 1.8.5 "William the Conqueror" (Released 4/3/23, for vanilla patch 1.8.x)
+## Latest Version: Version 1.8.5.a Hotfix for "William the Conqueror" (Released 4/5/23, for vanilla patch 1.8.x)
 
 **Newest Flavor Pack: *Normandy: Adventureres and Aristocrats***
 
@@ -59,6 +59,19 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 ## Latest Changelog
 
 <img src="https://i.imgur.com/yU1xF7B.jpg">
+
+### 1.8.5.a Hotfix
+
+- Music cues now play when completing the Historia Normannorum or Domesday Book
+- Slightly nerfed Norman Knights/Breton Marc’hegion MAAs
+- If the player does not start as Rollo in 867, and he gets a wife/children, they are now in the same court as he is
+- Fixed potential bug where the Domesday Book event might repeat itself
+- Fixed Adventurers and Aristocrats tradition being available before the Historia Normannorum decision is taken
+- Fixed Legacy of the Northmen tradition being available after the Historia Normannorum decision is taken
+- Fixed possible cause of CTDs with TIP Vol. 2 due to conflicts with the Breton war over Avranches
+- Fixed Sijilmasa Mint requirement loc not working
+- Fixed Mordvin not having Isolationist and Forest Warden traditions
+
 
 ### 1.8.5 "William the Conqueror"
 
