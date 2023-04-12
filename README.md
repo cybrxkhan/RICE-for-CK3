@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/Ty90hMr.jpg">
 
-## Latest Version: Version 1.8.5.a Hotfix for "William the Conqueror" (Released 4/5/23, for vanilla patch 1.8.x)
+## Latest Version: Version 1.8.5.b Hotfix for "William the Conqueror" (Released 4/11/23, for vanilla patch 1.8.x)
 
 **Newest Flavor Pack: *Normandy: Adventureres and Aristocrats***
 
@@ -59,6 +59,21 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 ## Latest Changelog
 
 <img src="https://i.imgur.com/yU1xF7B.jpg">
+
+### 1.8.5.b Hotfix
+
+- Hrolfr is now titled “Hrolfr (Rollo)” in the relevant 867 bookmark to avoid confusion for players who didn’t know Hrolfr is meant to represent Rollo
+- Buffed Norman Cavalry/Marc’hegion MAAs
+- Several decisions are now available even if you’re sick with smallpox or Bubonic plague (other requirements still apply)
+- Made the AI less likely to go on Norman invasions
+- Reduced the likelihood AI will pick the rulers option when taking the decision to invite Norse/Norman settlers
+- The Icelandic Althing decision will no longer change the culture of rulers who have territory in Iceland, but don’t have a capital there
+- Tweaked Mehremist setup when running RICE with BAP
+- The cooldown for the Breton horse interaction is now 3 years rather than 1
+- Adventurers and Aristocrats and Peurajou Libr traditions now mention that the Norman Cavalry and Marc’hegion MAAs increase in stats with each era
+- Fixed possible cause of CTDs with TIP Vol. 2 due to conflicts with TIP’s Breton war over Avranches (for real this time)
+- Fixed bug where RICE potentially conflicted with vanilla’s 10th and 16th birthday on_actions
+- Fixed being able to pick two Adventurer and Aristocrat traditions at the same time
 
 ### 1.8.5.a Hotfix
 
