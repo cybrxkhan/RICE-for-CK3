@@ -22,7 +22,7 @@ RICE_norman_adventure_cb = {
 			# Players can always use this.
 			is_ai = no
 			# The AI has some stricter requirements.
-			#AND = {
+			AND = {
 				# First up, they need a suitable personality.
 				# OR = {
 				# 	AND = {
@@ -39,27 +39,41 @@ RICE_norman_adventure_cb = {
 				# 	has_game_rule = fp1_scandi_adventurers_apocalyptic
 				# }
 				# Suitable personality
+				OR = {
+					has_trait = ambitious
+					has_trait = adventurer
+				}			
 				calc_true_if = {
 					amount >= 2
-					has_trait = ambitious
 					has_trait = greedy
 					has_trait = brave
 					has_trait = arrogant
 					has_trait = education_martial_3
 					has_trait = education_martial_4
-					has_trait = adventurer
 				}
 				# Then, they need to hold all their territories within Scandinavia.
 				# any_realm_county = {
 				# 	count = all
 				# 	title_province = { geographical_region = world_europe_north }
 				# }
-			#}
+			}
 		}
 		OR = {
 			exists = struggle:RICE_normandy_struggle
 			has_global_variable = RICE_normandy_ending_norman_conquest
 			has_global_variable = RICE_normandy_ending_norman_assimilation
+		}
+		# AI will never go if they have a decent number of titles (mainly to prevent d'Hautevilles going wacky
+		OR = {
+			is_ai = no
+			AND = {				
+				sub_realm_size <= 12
+				highest_held_title_tier < tier_duchy
+			}
+			AND = {				
+				sub_realm_size <= 5
+				highest_held_title_tier = tier_duchy
+			}
 		}
 	}
 
@@ -1198,4 +1212,6 @@ RICE_norman_adventure_cb = {
 	use_de_jure_wargoal_only = yes
 
 	attacker_wargoal_percentage = 0.8
+
+	max_ai_diplo_distance_to_title = 500
 }
