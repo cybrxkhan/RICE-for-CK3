@@ -1,0 +1,454 @@
+﻿###############################################################################
+# 
+# BOZO
+# 
+# bozo.0000-bozo.0019			Setup events, history events, miscellaneous events and decisions
+# bozo.0020-bozo.0029			Wangara Events
+# bozo.0030-bozo.0039			Moving Jenne/Tapama Djenepo events
+# bozo.0050-bozo.0099			Generic flavor events
+# 
+# 
+###############################################################################
+
+namespace = bozo
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# bozo.0000-bozo.0019
+# 
+######################################################################################
+
+namespace = bozo
+
+##################################################
+# Ghana Burials 						
+# by Cybrxkhan							
+# Suggestion by Huriale		
+# Based on Vanilla's sky burial code
+# Originally made for The Fallen Eagle/TFE
+##################################################
+
+# Ghana funeral decision - secret hidden event that marks the deceased ruler as available for the decision
+bozo.0011 = {
+	hidden = yes
+	
+	# Applicable character saved as a variable on their successor
+	trigger = {
+		# Check if TFE is also running
+		NOT = { exists = culture:soissons }
+		exists = player_heir
+		culture = { has_cultural_pillar = heritage_sahelian }
+		OR = {
+			faith.religion = { is_in_family = rf_pagan }
+			faith = {
+				OR = {					
+					has_doctrine = unreformed_faith_doctrine
+					has_doctrine = tenet_unreformed_syncretism
+				}
+			}
+		}
+	}
+
+	immediate = {
+		player_heir = {
+			if = {
+				limit = {
+					culture = { has_cultural_pillar = heritage_sahelian }
+					OR = {
+						faith.religion = { is_in_family = rf_pagan }
+						faith = {
+							OR = {					
+								has_doctrine = unreformed_faith_doctrine
+								has_doctrine = tenet_unreformed_syncretism
+							}
+						}
+					}
+					OR = {
+						is_sibling_of = root
+						is_child_of = root
+						is_grandchild_of = root
+						is_great_grandchild_of = root
+					}
+				}
+				set_variable = {
+					name = RICE_ghana_burial_ancestor
+					value = root
+					years = 5
+				}
+			}
+		}
+	}
+}
+
+# Ghana funeral decision - select a candidate for sacrifice if applicable
+bozo.0012 = {
+	type = character_event
+	title = bozo.0012.t
+	desc = {
+		desc = bozo.0012.desc
+		triggered_desc = {
+			trigger = {
+				OR = {
+					exists = scope:candidate_1
+					exists = scope:candidate_2
+					exists = scope:candidate_3
+				}
+			}
+			desc = bozo.0012.desc.sacrifice
+		}
+	}
+	theme = RICE_theme_ghana_burial
+
+	left_portrait = {
+		character = var:RICE_ghana_burial_ancestor
+	}
+	right_portrait = {
+		character = root
+	}
+	lower_left_portrait = {
+		character = scope:candidate_1
+		trigger = { exists = scope:candidate_1 }
+	}
+	lower_center_portrait = {
+		character = scope:candidate_2
+		trigger = { exists = scope:candidate_2 }
+	}
+	lower_right_portrait = {
+		character = scope:candidate_3
+		trigger = { exists = scope:candidate_3 }
+	}
+
+	immediate = {
+
+		# See scripted_trigger valid_scandinavian_adventurer just in case
+		every_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+				is_alive = yes
+				is_ruler = no
+				NOT = { is_councillor_of = root }
+				NOT = { is_extended_family_of = root }
+				NOT = { is_spouse_of = root }
+				# Will not inherit anything anytime soon
+				OR = {					
+					any_heir_title = { count = 0 }
+					AND = {
+						save_temporary_scope_as = potential
+						any_heir_title = {
+							place_in_line_of_succession = {
+								target = scope:potential
+								value >= 3
+							}
+						}
+					}
+				}
+			}
+			add_to_list = RICE_ghana_sacrifice_candidates
+		}
+
+		if = {
+			limit = {
+				any_in_list = {
+					list = RICE_ghana_sacrifice_candidates
+					count >= 1
+				}
+			}
+			random_in_list = {
+				list = RICE_ghana_sacrifice_candidates
+				weight = {
+					base = 10
+					modifier = {
+						has_trait = zealous
+						add = 5
+					}
+					modifier = {
+						has_trait = cynical
+						add = -5
+					}
+					modifier = {
+						has_trait = brave
+						add = 5
+					}
+					modifier = {
+						has_trait = craven
+						add = -5
+					}
+				}
+				save_scope_as = candidate_1
+			}
+		}
+
+		if = {
+			limit = {
+				any_in_list = {
+					list = RICE_ghana_sacrifice_candidates
+					count >= 2
+				}
+			}
+			random_in_list = {
+				list = RICE_ghana_sacrifice_candidates
+				limit = {
+					exists = scope:candidate_1
+					NOT = { this = scope:candidate_1 }
+				}
+				weight = {
+					base = 10
+					modifier = {
+						has_trait = zealous
+						add = 5
+					}
+					modifier = {
+						has_trait = cynical
+						add = -5
+					}
+					modifier = {
+						has_trait = brave
+						add = 5
+					}
+					modifier = {
+						has_trait = craven
+						add = -5
+					}
+				}
+				save_scope_as = candidate_2
+			}
+		}
+
+		if = {
+			limit = {
+				any_in_list = {
+					list = RICE_ghana_sacrifice_candidates
+					count >= 3
+				}
+			}
+			random_in_list = {
+				list = RICE_ghana_sacrifice_candidates
+				limit = {
+					exists = scope:candidate_1
+					exists = scope:candidate_2
+					NOT = { this = scope:candidate_1 }
+					NOT = { this = scope:candidate_2 }
+				}
+				weight = {
+					base = 10
+					modifier = {
+						has_trait = zealous
+						add = 5
+					}
+					modifier = {
+						has_trait = cynical
+						add = -5
+					}
+					modifier = {
+						has_trait = brave
+						add = 5
+					}
+					modifier = {
+						has_trait = craven
+						add = -5
+					}
+				}
+				save_scope_as = candidate_3
+			}
+		}
+		
+	}
+
+	option = {
+		name = bozo.0012.a
+		trigger = {
+			exists = scope:candidate_1
+			OR = {
+				is_ai = no
+				gold >= minor_gold_value
+			}
+		}
+		remove_short_term_gold = RICE_activity_cost
+		custom_tooltip = bozo.0012.sacrifice_tooltip
+		scope:candidate_1 = {
+			save_scope_as = sacrificial_victim
+			death = {
+				killer = root
+				death_reason = death_sacrificed_to_ancestor
+			}
+			add_character_flag = {
+				flag = planning_an_activity
+				days = 180
+			}
+			add_character_flag = {
+				flag = blocked_from_leaving
+				years = 1 # Little extra buffer just in case
+			}
+		}
+		set_variable = { # For use in the Story
+			name = RICE_ghana_sacrifice_choice
+			value = scope:candidate_1
+		}
+	}
+
+	option = {
+		name = bozo.0012.b
+		trigger = {
+			exists = scope:candidate_2
+			OR = {
+				is_ai = no
+				gold >= minor_gold_value
+			}
+		}
+		remove_short_term_gold = RICE_activity_cost
+		custom_tooltip = bozo.0012.sacrifice_tooltip
+		scope:candidate_2 = {
+			save_scope_as = sacrificial_victim
+			death = {
+				killer = root
+				death_reason = death_sacrificed_to_ancestor
+			}
+			add_character_flag = {
+				flag = planning_an_activity
+				days = 180
+			}
+			add_character_flag = {
+				flag = blocked_from_leaving
+				years = 1 # Little extra buffer just in case
+			}
+		}
+		set_variable = { # For use in the Story
+			name = RICE_ghana_sacrifice_choice
+			value = scope:candidate_2
+		}
+	}
+
+	option = {
+		name = bozo.0012.c
+		trigger = {
+			exists = scope:candidate_3
+			OR = {
+				is_ai = no
+				gold >= minor_gold_value
+			}
+		}
+		remove_short_term_gold = RICE_activity_cost
+		custom_tooltip = bozo.0012.sacrifice_tooltip
+		scope:candidate_3 = {
+			save_scope_as = sacrificial_victim
+			death = {
+				killer = root
+				death_reason = death_sacrificed_to_ancestor
+			}
+			add_character_flag = {
+				flag = planning_an_activity
+				days = 180
+			}
+			add_character_flag = {
+				flag = blocked_from_leaving
+				years = 1 # Little extra buffer just in case
+			}
+		}
+		set_variable = { # For use in the Story
+			name = RICE_ghana_sacrifice_choice
+			value = scope:candidate_3
+		}
+	}
+
+	option = {
+		name = bozo.0012.d
+	}
+
+	after = {
+		trigger_event = bozo.0013
+	}
+}
+
+# Ghana funeral decision - the burial happens
+bozo.0013 = {
+	type = character_event
+	title = bozo.0013.t
+	desc = {
+		desc = bozo.0013.desc
+		triggered_desc = {
+			trigger = { exists = scope:sacrificial_victim }
+			desc = bozo.0013.desc.sacrifice
+		}
+	}
+	theme = RICE_theme_ghana_burial
+
+	left_portrait = {
+		character = var:RICE_ghana_burial_ancestor
+	}
+
+	lower_center_portrait = {
+		character = scope:sacrificial_victim
+		trigger = { exists = scope:sacrificial_victim }
+	}
+
+	immediate = {
+		add_piety = major_piety_value
+		if = {
+			limit = {
+				has_variable = RICE_ghana_sacrifice_choice
+			}
+			add_piety = major_piety_value
+			show_as_tooltip = {
+				remove_short_term_gold = TFE_minor_flavor_activity_cost
+				scope:sacrificial_victim = {
+					death = {
+						killer = root
+						death_reason = death_sacrificed_to_ancestor
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				any_vassal = {
+					culture = { has_cultural_pillar = heritage_sahelian }
+					OR = {
+						faith.religion = { is_in_family = rf_pagan }
+						faith = {
+							OR = {					
+								has_doctrine = unreformed_faith_doctrine
+								has_doctrine = tenet_unreformed_syncretism
+							}
+						}
+					}
+				}
+			}
+			every_vassal = {
+				limit = {
+					culture = { has_cultural_pillar = heritage_sahelian }
+					OR = {
+						faith.religion = { is_in_family = rf_pagan }
+						faith = {
+							OR = {					
+								has_doctrine = unreformed_faith_doctrine
+								has_doctrine = tenet_unreformed_syncretism
+							}
+						}
+					}
+				}
+				custom = RICE_ghana_burial_vassals
+				add_opinion = {
+					modifier = pleased_opinion
+					target = root
+					opinion = 20
+				}
+			}
+		}
+	}
+
+	option = {
+		name = bozo.0013.a
+	}
+
+	after = {
+		remove_variable = RICE_ghana_burial_ancestor
+		if = {
+			limit = {
+				has_variable = RICE_ghana_sacrifice_choice
+			}
+			remove_variable = RICE_ghana_sacrifice_choice
+		}
+	}
+}
