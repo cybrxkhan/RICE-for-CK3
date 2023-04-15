@@ -35,6 +35,7 @@ RICE_bozo_establish_wangara_decision = {
 		# Needs to be a ruler of some level of power
 		highest_held_title_tier >= tier_duchy
 		sub_realm_size >= 10
+		prestige_level >= 3
 
 
 		# Own at least two of the Mali mines
@@ -479,7 +480,10 @@ RICE_bozo_mud_masons_decision = {
 		decision_custom_widget_container = "custom_widgets_container_step_two"
 		decision_to_second_step_button = "RICE_bozo_mud_masonry_work_type" 
 
-		item = {
+		item = {		
+			is_shown = {
+				NOT = { has_title = title:c_jenne }
+			}
 			value = RICE_bozo_mud_masons_general_option
 			current_description = RICE_bozo_mud_masons_general_option_desc
 			localization = RICE_bozo_mud_masons_general_option
@@ -490,7 +494,10 @@ RICE_bozo_mud_masons_decision = {
 			}
 		}
 
-		item = {		
+		item = {			
+			is_shown = {
+				NOT = { has_title = title:c_jenne }
+			}	
 			is_valid = {
 				any_held_title = {
 					tier = tier_county
@@ -509,7 +516,10 @@ RICE_bozo_mud_masons_decision = {
 			}
 		}
 
-		item = {		
+		item = {			
+			is_shown = {
+				NOT = { has_title = title:c_jenne }
+			}	
 			is_valid = {
 				any_held_title = {
 					tier = tier_county
@@ -528,7 +538,10 @@ RICE_bozo_mud_masons_decision = {
 			}
 		}
 
-		item = {		
+		item = {			
+			is_shown = {
+				NOT = { has_title = title:c_jenne }
+			}	
 			is_valid = {
 				any_held_title = {
 					tier = tier_county
@@ -547,14 +560,101 @@ RICE_bozo_mud_masons_decision = {
 			}
 		}
 
+		item = {			
+			is_shown = {
+				has_title = title:c_jenne
+			}	
+			value = RICE_bozo_mud_masons_general_jenne_option
+			current_description = RICE_bozo_mud_masons_general_jenne_option_desc
+			localization = RICE_bozo_mud_masons_general_jenne_option
+			icon = "gfx/interface/icons/widgets/RICE_tribal_holding.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {				
+			is_shown = {
+				has_title = title:c_jenne
+			}	
+			is_valid = {
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						has_holding_type = castle_holding
+					}
+				}
+			}
+			value = RICE_bozo_mud_masons_castle_jenne_option
+			current_description = RICE_bozo_mud_masons_castle_jenne_option_desc
+			localization = RICE_bozo_mud_masons_castle_jenne_option
+			icon = "gfx/interface/icons/widgets/RICE_castle_holding.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {				
+			is_shown = {
+				has_title = title:c_jenne
+			}	
+			is_valid = {
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						has_holding_type = city_holding
+					}
+				}
+			}
+			value = RICE_bozo_mud_masons_city_jenne_option
+			current_description = RICE_bozo_mud_masons_city_jenne_option_desc
+			localization = RICE_bozo_mud_masons_city_jenne_option
+			icon = "gfx/interface/icons/widgets/RICE_city_holding.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {				
+			is_shown = {
+				has_title = title:c_jenne
+			}	
+			is_valid = {
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						has_holding_type = church_holding
+					}
+				}
+			}
+			value = RICE_bozo_mud_masons_church_jenne_option
+			current_description = RICE_bozo_mud_masons_church_jenne_option_desc
+			localization = RICE_bozo_mud_masons_church_jenne_option
+			icon = "gfx/interface/icons/widgets/RICE_church_holding.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
 
 
 	}
 
 	effect = {
 
-		custom_tooltip = RICE_bozo_mud_masons_decision_effect_tooltip_1
+		custom_tooltip = RICE_bozo_mud_masons_decision_effect_tooltip_1				
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_bozo_mud_masons_decision_effect_tooltip_3
+		}
 		custom_tooltip = RICE_bozo_mud_masons_decision_effect_tooltip_2
+
 				
 		if = {
 			limit = {
@@ -619,7 +719,10 @@ RICE_bozo_mud_masons_decision = {
 		}
 		else_if = {
 			limit = {
-				scope:RICE_bozo_mud_masons_general_option = yes
+				OR = {
+					scope:RICE_bozo_mud_masons_general_option = yes
+					scope:RICE_bozo_mud_masons_general_jenne_option = yes
+				}
 			}
 			set_variable = {
 				name = RICE_bozo_mud_masonry_work_type
@@ -628,7 +731,10 @@ RICE_bozo_mud_masons_decision = {
 		}
 		else_if = {
 			limit = {
-				scope:RICE_bozo_mud_masons_castle_option = yes
+				OR = {
+					scope:RICE_bozo_mud_masons_castle_option = yes
+					scope:RICE_bozo_mud_masons_castle_jenne_option = yes
+				}
 			}
 			set_variable = {
 				name = RICE_bozo_mud_masonry_work_type
@@ -637,7 +743,10 @@ RICE_bozo_mud_masons_decision = {
 		}
 		else_if = {
 			limit = {
-				scope:RICE_bozo_mud_masons_city_option = yes
+				OR = {
+					scope:RICE_bozo_mud_masons_city_option = yes
+					scope:RICE_bozo_mud_masons_city_jenne_option = yes
+				}
 			}
 			set_variable = {
 				name = RICE_bozo_mud_masonry_work_type
@@ -646,7 +755,10 @@ RICE_bozo_mud_masons_decision = {
 		}
 		else_if = {
 			limit = {
-				scope:RICE_bozo_mud_masons_church_option = yes
+				OR = {
+					scope:RICE_bozo_mud_masons_church_option = yes
+					scope:RICE_bozo_mud_masons_church_jenne_option = yes
+				}
 			}
 			set_variable = {
 				name = RICE_bozo_mud_masonry_work_type
@@ -654,7 +766,7 @@ RICE_bozo_mud_masons_decision = {
 			}
 		}
 		
-		#trigger_event = normandy.0020
+		trigger_event = bozo.0010
 	}
 
 	cost = { 

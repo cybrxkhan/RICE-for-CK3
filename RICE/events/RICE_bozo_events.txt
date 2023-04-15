@@ -22,6 +22,154 @@ namespace = bozo
 
 namespace = bozo
 
+
+
+# Mud Mason decision event
+bozo.0010 = {
+	type = character_event
+	title = bozo.0010.t
+	desc = {
+		desc = bozo.0010.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					culture = { has_cultural_tradition = tradition_RICE_african_mud_masons }
+				}
+				desc = bozo.0010.desc.culture
+			}
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_bozo_mud_masonry_work_type = flag:castle
+				}
+				desc = bozo.0010.desc.castle
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_bozo_mud_masonry_work_type = flag:city
+				}
+				desc = bozo.0010.desc.city
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_bozo_mud_masonry_work_type = flag:church
+				}
+				desc = bozo.0010.desc.church
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_bozo_mud_masonry_work_type = flag:general
+				}
+				desc = bozo.0010.desc.general
+			}
+		}
+	}
+	theme = RICE_theme_bozo_mud_masons
+	
+	left_portrait = root
+
+	# immediate = {
+	# }
+
+	option = { # OK
+		name = bozo.0010.a
+		if = {
+			limit = {
+				var:RICE_bozo_mud_masonry_work_type = flag:castle
+			}
+			add_prestige = 100
+			if = {
+				limit = {
+					has_title = title:c_jenne
+				}
+				add_character_modifier = {
+					modifier = RICE_bozo_mud_masons_castle_modifier_jenne
+					years = 10
+				}
+			}
+			else = {
+				add_character_modifier = {
+					modifier = RICE_bozo_mud_masons_castle_modifier
+					years = 10
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_bozo_mud_masonry_work_type = flag:city
+			}
+			add_prestige = 50
+			add_piety = 50
+			if = {
+				limit = {
+					has_title = title:c_jenne
+				}
+				add_character_modifier = {
+					modifier = RICE_bozo_mud_masons_city_modifier_jenne
+					years = 10
+				}
+			}
+			else = {
+				add_character_modifier = {
+					modifier = RICE_bozo_mud_masons_city_modifier
+					years = 10
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_bozo_mud_masonry_work_type = flag:church
+			}
+			add_piety = 100
+			if = {
+				limit = {
+					has_title = title:c_jenne
+				}
+				add_character_modifier = {
+					modifier = RICE_bozo_mud_masons_church_modifier_jenne
+					years = 10
+				}
+			}
+			else = {
+				add_character_modifier = {
+					modifier = RICE_bozo_mud_masons_church_modifier
+					years = 10
+				}
+			}
+		}
+		# General is the failsafe
+		else = {
+			add_prestige = 50
+			add_piety = 50
+			if = {
+				limit = {
+					has_title = title:c_jenne
+				}
+				add_character_modifier = {
+					modifier = RICE_bozo_mud_masons_general_modifier_jenne
+					years = 10
+				}
+			}
+			else = {
+				add_character_modifier = {
+					modifier = RICE_bozo_mud_masons_general_modifier
+					years = 10
+				}
+			}
+		}
+	}
+
+	after = {		
+		if = {
+			limit = { has_variable = RICE_bozo_mud_masonry_work_type }
+			remove_variable = RICE_bozo_mud_masonry_work_type
+		}
+	}
+
+}
+
+
 ##################################################
 # Ghana Burials 						
 # by Cybrxkhan							
