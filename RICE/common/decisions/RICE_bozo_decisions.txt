@@ -114,7 +114,137 @@ RICE_bozo_establish_wangara_decision = {
 					}
 				}
 			}
-			trigger_event = bozo.8888
+			trigger_event = bozo.0020
+		}
+	}
+
+	ai_will_do = {
+		base = 15
+
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+		modifier = {
+			add = 10
+			has_trait = greedy
+		}
+		modifier = {
+			add = -10
+			has_trait = paranoid
+		}
+
+	}
+}
+
+RICE_bozo_bring_in_wangara = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_african_mansa.dds"
+	major = yes
+	desc = RICE_bozo_bring_in_wangara_desc
+
+	ai_check_interval = 120
+
+	is_shown = {
+		is_landed = yes
+
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_bozo_wangara_decision_done
+		}
+
+		any_held_county = {
+			any_county_province = {
+				geographical_region = world_africa_west
+			}
+		}		
+
+		custom_description = {
+			NOT = { culture = { has_innovation = innovation_RICE_wangara } }	
+		}
+		
+	}
+
+	is_valid = {
+		
+		any_held_county = {
+			any_county_province = {
+				geographical_region = world_africa_west
+			}
+		}
+
+		custom_description = {
+			text = RICE_bozo_no_wangara_yet_req
+			NOT = { culture = { has_innovation = innovation_RICE_wangara } }
+		}
+
+		OR = {
+			AND = { 
+				prestige_level >= 2				
+				NOT = { has_government = tribal_government }
+			}
+			prestige_level >= 4
+		}
+
+		OR = {
+			custom_description = {
+				text = RICE_you_are_culture_head_req
+				AND = {
+					exists = culture.culture_head
+					culture.culture_head = root
+				}
+			}
+			AND = {
+				highest_held_title_tier >= tier_kingdom
+				OR = {
+					dynasty_prestige_level >= 3
+					prestige_level >= 4
+				}
+			}
+		}
+
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		RICE_is_available_adult_even_if_sick_trigger = yes
+	}
+
+	cost = {
+		gold = {
+			value = medium_gold_value
+		}
+		prestige = {
+			value = medium_prestige_value
+		}
+	}
+
+	effect = {
+
+		save_scope_as = wangara_inviter
+
+		show_as_tooltip = {
+			RICE_bozo_gain_wangara_effect = yes
+		}
+		
+		custom_tooltip = RICE_bozo_bring_in_wangara_effect_tooltip_1
+
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_bozo_bring_in_wangara_context_tooltip
+		}
+
+		every_player = {
+			limit = {
+				culture = root.culture
+			}
+			trigger_event = bozo.0021
 		}
 	}
 
