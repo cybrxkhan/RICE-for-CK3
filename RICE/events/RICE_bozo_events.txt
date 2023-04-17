@@ -875,3 +875,231 @@ bozo.0021 = {
 
 
 }
+
+
+
+######################################################################################
+# 
+# MOVE JENNE
+# 
+# bozo.0020-bozo.0029
+# 
+######################################################################################
+
+
+# The Sacrifice to move Jenne
+bozo.0030 = {
+	type = character_event
+	title = bozo.0030.t
+	desc = {
+		desc = bozo.0030.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					faith.religion = { is_in_family = rf_pagan }
+				}
+				desc = bozo.0030.desc.pagan
+			}
+			desc = bozo.0030.desc.non_pagan
+		}
+	}
+	theme = RICE_theme_mosque_of_djenne
+	
+	left_portrait = scope:jenne_mover
+	
+	right_portrait = {
+		character = scope:tapama_djenepo
+		animation = personality_honorable
+	}
+
+	# lower_center_portrait = {
+	# 	character = scope:child_option
+	# 	trigger = { exists = scope:child_option }
+	# }
+
+	immediate = {
+		create_character = {
+			location = root.capital_province
+			template = RICE_bozo_tapama_djenepo_template
+			save_scope_as = tapama_djenepo
+		}
+		scope:tapama_djenepo = {					
+			add_to_global_variable_list = {
+				name = RICE_bozo_tapama_djenepo_equivalent
+				target = scope:tapama_djenepo
+			}	
+		}
+		# If you are not pagan, write the narrative as if she was sacrificed ages ago
+		if = {
+			limit = {
+				NOT = {
+					faith.religion = { is_in_family = rf_pagan }
+				}
+			}
+			hidden_effect = {				
+				scope:tapama_djenepo = {
+					set_character_faith = faith:west_african_bidu_pagan
+					change_first_name = tapama_djenepo
+					death = {
+						death_reason = death_sacrificed_to_gods
+					}
+				}
+			}
+		}
+	}
+
+	option = { # OK
+		name = bozo.0030.a
+		if = {
+			limit = {
+				faith.religion = { is_in_family = rf_pagan }
+			}
+			scope:tapama_djenepo = {
+				change_first_name = tapama_djenepo
+				death = {
+					death_reason = death_sacrificed_to_gods
+				}	
+			}
+		}
+
+		RICE_bozo_move_jenne_effect = yes
+
+		every_player = {
+			limit = {
+				OR = {
+					this = scope:jenne_mover	
+					any_held_county = {
+						any_county_province = {
+							geographical_region = world_africa_west
+						}
+					}
+				}
+			}
+			trigger_event = bozo.0031
+		}
+
+	}
+
+	# option = { # You have a child you can sacrifice
+	# 	name = bozo.0030.b
+	# 	if = {
+	# 		limit = {
+	# 		}
+	# 		scope:tapama_djenepo = {				
+	# 			add_to_global_variable_list = {
+	# 				name = RICE_bozo_tapama_djenepo_equivalent
+	# 				target = scope:tapama_djenepo
+	# 			}
+	# 		}
+	# 	}
+	# }
+
+	after = {
+		scope:tapama_djenepo = {
+			make_unprunable = yes
+		}
+	}
+
+
+}
+
+
+# Move Jenne notification
+bozo.0031 = {
+	type = character_event
+	title = bozo.0031.t
+	desc = {
+		desc = bozo.0031.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:jenne_mover = {
+						faith.religion = { is_in_family = rf_pagan }
+					}
+				}
+				desc = bozo.0031.desc.pagan
+			}
+			desc = bozo.0031.desc.non_pagan
+		}
+		desc = bozo.0031.desc.conclusion
+	}
+	theme = RICE_theme_mosque_of_djenne
+	
+	left_portrait = {
+		character = scope:jenne_mover
+		animation = personality_zealous
+	}
+	
+	right_portrait = {
+		character = scope:tapama_djenepo
+		animation = personality_content
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			scope:jenne_mover = {
+				RICE_bozo_move_jenne_effect = yes
+			}
+		}
+	}
+
+	option = { # OK
+		name = bozo.0031.a
+		custom_tooltip = bozo.0031.tooltip
+	}
+
+	after = {
+		scope:tapama_djenepo = {
+			make_unprunable = yes
+		}
+	}
+
+
+}
+
+
+# Tapama Djenepo veneration/tomb visit event
+bozo.0032 = {
+	type = character_event
+	title = bozo.0032.t
+	desc = bozo.0032.desc
+	theme = RICE_theme_mosque_of_djenne
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	right_portrait = {
+		character = scope:tapama_djenepo
+		animation = personality_content
+	}
+
+	immediate = {
+		ordered_in_global_list = {
+			variable = RICE_bozo_tapama_djenepo_equivalent
+			save_scope_as = tapama_djenepo
+		}
+	}
+
+	option = { # OK
+		name = bozo.0032.a
+		RICE_bozo_tapama_djenepo_visit_effect = yes
+	}
+
+	after = {
+		scope:activity = {
+			complete_activity = yes
+		}
+	}
+
+
+}
+
+
+
+
+
+
+
+
