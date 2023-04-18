@@ -42,10 +42,13 @@ RICE_bozo_establish_wangara_decision = {
 
 
 		# Own at least two of the Mali mines
-		any_culture_county = {
-			count >= 2
-			any_county_province = {
-				has_building_or_higher = mali_mines_01
+		custom_description = {
+			text = RICE_bozo_wangara_mine_req
+			any_held_county = {
+				count >= 2
+				any_county_province = {
+					has_building_or_higher = mali_mines_01
+				}
 			}
 		}
 
@@ -161,10 +164,7 @@ RICE_bozo_bring_in_wangara = {
 				geographical_region = world_africa_west
 			}
 		}		
-
-		custom_description = {
-			NOT = { culture = { has_innovation = innovation_RICE_wangara } }	
-		}
+		NOT = { culture = { has_innovation = innovation_RICE_wangara } }
 		
 	}
 
@@ -462,46 +462,27 @@ RICE_bozo_ghana_funeral_decision = {
 	effect = {
 		show_as_tooltip = {
 			add_piety = major_piety_value
-			if = {
+			every_vassal = {
 				limit = {
-					any_vassal = {
-						culture = { has_cultural_pillar = heritage_sahelian }
-						OR = {
-							custom_description = {
-								text = RICE_decision_pagan_requirement
-								faith.religion = { is_in_family = rf_pagan }
-							}
-							faith = {
-								OR = {					
-									has_doctrine = unreformed_faith_doctrine
-									has_doctrine = tenet_unreformed_syncretism
-								}
-							}
-						}
-					}
+					culture = { has_cultural_pillar = heritage_sahelian }
+					faith.religion = { is_in_family = rf_pagan }
 				}
-				every_vassal = {
-					limit = {
-						culture = { has_cultural_pillar = heritage_sahelian }
-						OR = {
-							custom_description = {
-								text = RICE_decision_pagan_requirement
-								faith.religion = { is_in_family = rf_pagan }
-							}
-							faith = {
-								OR = {					
-									has_doctrine = unreformed_faith_doctrine
-									has_doctrine = tenet_unreformed_syncretism
-								}
-							}
-						}
-					}
-					custom = RICE_ghana_burial_vassals
-					add_opinion = {
-						modifier = pleased_opinion
-						target = root
-						opinion = 20
-					}
+				custom = RICE_ghana_burial_vassals
+				add_opinion = {
+					modifier = pleased_opinion
+					target = root
+					opinion = 20
+				}
+			}
+			every_vassal = {
+				limit = {
+					NOT = { faith.religion = { is_in_family = rf_pagan } }
+				}
+				custom = RICE_ghana_burial_vassals_bad
+				add_opinion = {
+					modifier = disgusted_opinion
+					target = root
+					opinion = -20
 				}
 			}
 		}
