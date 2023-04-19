@@ -1091,3 +1091,277 @@ bozo.0032 = {
 
 
 
+
+
+
+
+######################################################################################
+# 
+# FLAVOR EVENTS
+# 
+# bozo.0050-bozo.0099 reserved
+# 
+######################################################################################
+
+
+# Maintenance for an existing mud structure
+bozo.0050 = {
+	type = character_event
+	title = bozo.0050.t
+	desc = bozo.0050.desc
+	theme = RICE_theme_bozo_mud_town
+	
+	right_portrait = root
+	
+	trigger = {
+		culture = { has_cultural_tradition = tradition_RICE_african_mud_masons }
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = paranoid
+		}
+		modifier = {
+			add = 0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = -0.2
+			has_trait = just
+		}
+	}
+
+	option = { # Ok
+		name = bozo.0050.a
+		add_prestige = 50
+	}
+}
+
+
+
+# Secrets of the mud masons?
+bozo.0051 = {
+	type = character_event
+	title = bozo.0051.t
+	desc = bozo.0051.desc
+	theme = RICE_theme_bozo_mud_masons
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	left_portrait = {
+		character = root
+		animation = personality_cynical
+	}
+	
+	trigger = {
+		culture = { has_cultural_tradition = tradition_RICE_african_mud_masons }
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	option = { # Ok
+		name = bozo.0051.a
+		add_piety = 25
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = bozo.0051.b
+		add_prestige = 25
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
+# New mason contract
+bozo.0052 = {
+	type = character_event
+	title = bozo.0052.t
+	desc = bozo.0052.desc
+	theme = RICE_theme_bozo_mud_masons
+	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+	left_portrait = root
+	
+	trigger = {
+		culture = { has_cultural_tradition = tradition_RICE_african_mud_masons }
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = sadistic
+		}
+	}
+
+	option = { # Ok
+		name = bozo.0052.a
+		add_character_modifier = {
+			modifier = RICE_bozo_new_mud_mason_contract
+			years = 10
+		}
+	}
+}
+
+
+
+
+# Extra protection for a new site or not?
+bozo.0053 = {
+	type = character_event
+	title = bozo.0053.t
+	desc = bozo.0053.desc
+	theme = RICE_theme_african_savanna_generic
+	
+	right_portrait = root
+	
+	trigger = {
+		culture = { has_cultural_tradition = tradition_RICE_african_mud_masons }
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+	}
+
+	option = { # Ok
+		name = bozo.0053.a
+		if = {
+			limit = {
+				faith.religion = { is_in_family = rf_pagan }
+			}
+			stress_impact = {
+				zealous = minor_stress_impact_gain
+				paranoid = miniscule_stress_impact_gain
+				humble = miniscule_stress_impact_gain
+			}
+		}
+		else = {
+			stress_impact = {
+				paranoid = miniscule_stress_impact_gain
+				humble = miniscule_stress_impact_gain
+			}
+		}
+	}
+
+	option = { # Ok
+		name = bozo.0053.b
+		trigger = {
+			OR = {
+				gold >= 30
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 30
+		add_character_modifier = {
+			modifier = RICE_bozo_extra_protection_mud_masons
+			years = 10
+		}
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			greedy = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = bozo.0053.c
+		trigger = {
+			NOT = { faith.religion = { is_in_family = rf_pagan } }
+		}
+		add_piety = 50
+		add_prestige = -50
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+		}
+	}
+}
+
+
