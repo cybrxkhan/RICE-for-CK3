@@ -1,13 +1,13 @@
-<img src="https://i.imgur.com/Ty90hMr.jpg">
+<img src="https://i.imgur.com/uLBmor4.jpg">
 
-## Latest Version: Version 1.8.5.b Hotfix for "William the Conqueror" (Released 4/11/23, for vanilla patch 1.8.x)
+## Latest Version: Version 1.8.6 "Jenne" (Released 4/18/23, for vanilla patch 1.8.x)
 
-**Newest Flavor Pack: *Normandy: Adventureres and Aristocrats***
+**Newest Flavor Pack: *Bozo: Masters of the River***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_“See — I have taken England with both my hands.”_
-_– William the Conqueror, after he stepped off his ship on the coast of England and fell into the sand_
+_“The city of Jenne has a prominent market place among the commerce markets of the Muslims. In its market there converge the masters of the salt mines of Taghaza and the masters of the gold mines of Bitu. The like of these blessed mines cannot be found in the entire world.”_
+_- Abd al-Sa’id, 17th century West African scholar, in his Tarikh al-Sudan (History of the Sudan)_
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places and peoples.
 
@@ -18,6 +18,7 @@ RICE is designed with compatibility in mind, and is technically compatible with 
 At the moment, the following RICE flavor packs are included in the mod (click to view the guides which cover the features included in each pack in more detail).
 
 - [Aachen: Charlemagne's Capital](https://docs.google.com/document/d/e/2PACX-1vQNflzrfD7oYcEYcMWDW07MsWCW-8cwIO8-JxSIm_WTnB1Ij0Dr-b3PRNu8mKmUFRXfHW3QDax2Z0DD/pub)
+- [Bozo: Masters of the River](https://docs.google.com/document/d/e/2PACX-1vSgpnZZbXXz3sProMU-P70vbCsYatZOqkonVQMLdtZMFWhXf8zH1RE1ubz9hQI-kTqWIIK0at1Ki5PR/pub)
 - [Brittany: The Western Duchy](https://docs.google.com/document/d/e/2PACX-1vTzGuR_ffwqfpm6rwh27hq71K4Fs35pcLZioPLbHulhHn2ZV25SD2HrGipPofvBYngi5S_O4Yino4Y7/pub)
 - [Chios: Isle of Mastic](https://docs.google.com/document/d/1Lu4cGXN7hSaDtYd_wsXKbjAeIOYMoYVuum6zfYfBc_k/pub)
 - [Galicia: The Way of Saint James](https://docs.google.com/document/d/e/2PACX-1vRZSjZ2kqKE7-do03KlArEXVylNpYqP2ptS4Eg5EWWFYMRrxN7qAEaX6gG3H0ChMT_YR1AAg7BCbb1c/pub)
@@ -58,65 +59,21 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/yU1xF7B.jpg">
+<img src="https://i.imgur.com/uMu7goJ.jpg">
 
-### 1.8.5.b Hotfix
+### 1.8.6 "Jenne"
 
-- Hrolfr is now titled “Hrolfr (Rollo)” in the relevant 867 bookmark to avoid confusion for players who didn’t know Hrolfr is meant to represent Rollo
-- Buffed Norman Cavalry/Marc’hegion MAAs
-- Several decisions are now available even if you’re sick with smallpox or Bubonic plague (other requirements still apply)
-- Made the AI less likely to go on Norman invasions
-- Reduced the likelihood AI will pick the rulers option when taking the decision to invite Norse/Norman settlers
-- The Icelandic Althing decision will no longer change the culture of rulers who have territory in Iceland, but don’t have a capital there
-- Tweaked Mehremist setup when running RICE with BAP
-- The cooldown for the Breton horse interaction is now 3 years rather than 1
-- Adventurers and Aristocrats and Peurajou Libr traditions now mention that the Norman Cavalry and Marc’hegion MAAs increase in stats with each era
-- Fixed possible cause of CTDs with TIP Vol. 2 due to conflicts with TIP’s Breton war over Avranches (for real this time)
-- Fixed bug where RICE potentially conflicted with vanilla’s 10th and 16th birthday on_actions
-- Fixed being able to pick two Adventurer and Aristocrat traditions at the same time
-
-### 1.8.5.a Hotfix
-
-- Music cues now play when completing the Historia Normannorum or Domesday Book
-- Slightly nerfed Norman Knights/Breton Marc’hegion MAAs
-- If the player does not start as Rollo in 867, and he gets a wife/children, they are now in the same court as he is
-- Fixed potential bug where the Domesday Book event might repeat itself
-- Fixed Adventurers and Aristocrats tradition being available before the Historia Normannorum decision is taken
-- Fixed Legacy of the Northmen tradition being available after the Historia Normannorum decision is taken
-- Fixed possible cause of CTDs with TIP Vol. 2 due to conflicts with the Breton war over Avranches
-- Fixed Sijilmasa Mint requirement loc not working
-- Fixed Mordvin not having Isolationist and Forest Warden traditions
-
-
-### 1.8.5 "William the Conqueror"
-
-- Added Normandy Flavor Pack: Adventurers and Aristocrats
-- Added 8 French Renaissance music tracks
-- Added decisions to Spread Culture/Faith Influence in Greenland, that makes your faith and/or culture involved in the Greenland struggle
-- Added Procreation as Purification doctrine option for Dualist faiths
-- Added global variable is_RICE_loaded_global_variable
-- Aksumitism renamed to Mahremism
-- Mahremism/Aksumitism now has the human sacrifice tenet instead of ritual celebrations
-- Adjusted Mahremist/Aksumitist holy sites
-- Pagan Ethiopian counties and courtiers are now Mahremist at game start
-- Added god names for Hubalists and Mahremists
-- Silk Road, Maritime Trade, and Trans-Saharan Trade dynasty legacies now only require directly owning a county in the right region, not a capital
-- Radhanite culture now starts with the People of the Silk Road tradition
-- Decision to Exhume Charlemagne’s remains now requires being in the early medieval era
-- Maghrebi and (if playing with a mod that adds in) Coptic cultures now start with the Qanat innovation
-- Replaced icons for most Semitic faiths with the versions from The Fallen Eagle
-- Fixed Ibrahim of Transoxiana not starting with any education traits in 1066
-- Fixed children being available to lead North Atlantic expeditions or to be exiled/sent to the Americas
-- Fixed random leader for expeditions not actually being paid 50 gold
-- Fixed CB names for North Atlantic variations of conquest/invasion CBs
-- Fixed Tiraz game concept not having any text
-- Fixed Tiraz Production Center localization referencing English wool
-- Fixed rulers getting duplicate North Atlantic invasion CBs in some cases
-- Fixed duplicate Hellenic syncretism tenet/doctrines for Harranism and Dusharism when playing with TFE
-- Fixed Argan Forest buildings being misplaced when running with IBL
-- Fixed Tuareg pagan distribution when running with IBL
-- Fixed code not working for adding Sami pagans to some counties when running with CE
-- Fixed Mandaean courtier spawn event not triggering
+- Added Bozo Flavor Pack: Masters of the River
+- Added 3 West African themed soundtracks
+- Added new Trans-Saharan trade geographical region
+- RICE intro message will no longer contain a list flavor packs added, as it was getting too long, and instead give a brief summary of what the newest flavor pack focuses on
+- Tweaked area where the Trans-Saharan trade mechanics apply
+- Decision to Network with Trans-Saharan merchants is now visible even if you already took it but can’t take it again
+- Normandy ending decisions only require going to the early medieval era if you play from a pre-1066 start date like 867
+- The Norman Conquest upgrade for the Adventurers and Aristocrats tradition now also gives a bonus to building cost/speed for Norman castle holdings (i.e. not just buildings)
+- RICE’s gift interactions make you gain or lose stress if you have the greedy or generous traits respectively
+- Increased chances the discoverer of Greenland is randomly selected as a candidate to lead the grand expedition to Vinland
+- Fixed the writer of the Historia Normannorum from potentially being pruned from the game
 - Miscellaneous bugfixes
 
 ## Credits
