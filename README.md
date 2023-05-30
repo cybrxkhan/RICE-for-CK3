@@ -1,6 +1,6 @@
 # Public Beta (Initial version 5/29/23, for vanilla patch 1.9.x)
 
-The public beta version of RICE is intended for vanilla's 1.9 patch and Tours & Tournaments update. Though it is stable, be aware that it is lacking some content and may be buggy. **Please carefully read the instructions and information below if you wish to use the beta.** Thanks for your understanding and patience!
+The public beta version of RICE is intended for vanilla's 1.9 patch and Tours & Tournaments update. Though it is stable, be aware that it is lacking some content and may be buggy. **Please carefully read the instructions and information below if you wish to use the beta.** Thanks for your understanding and patience! If you wish to leave feedback, fee
 
 
 # Manual Installation Steps
@@ -12,7 +12,8 @@ If you know how to use GitHub, you can skip this.
 <img src="https://i.imgur.com/KCaoTUE.jpg">
 
 2. Place the "RICE" folder and "RICE.mod" file in your mod folder. This is usually in Documents/Paradox Interactive/Crusader Kings III/mod
-3. Make sure RICE is selected in the launcher in your mod playlist. That should be it!
+3. If you are subscribed to the Steam version of RICE, you may want to unsubscribe from it for now while playing with the beta, just to make sure it doesn't conflict, as there are reports this will prevent the RICE beta from running.
+4. Make sure RICE is selected in the launcher in your mod playlist. That should be it!
 
 NOTE: **If you are re-installing a mod manually, delete the old version of the mod first before copy and pasting the new one! It's a good habit to do to prevent potential issues.**
 
