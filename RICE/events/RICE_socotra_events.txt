@@ -622,7 +622,7 @@ socotra.0006 = {
 	title = socotra.0006.t
 	desc = socotra.0006.desc
 	theme = stewardship_wealth_focus
-	override_background = { event_background = RICE_background_socotra_tree }
+	override_background = { reference = RICE_background_socotra_tree }
 	
 	right_portrait = root
 	
@@ -1311,7 +1311,7 @@ socotra.0013 = {
 	}
 	
 	theme = stewardship_wealth_focus
-	override_background = { event_background = throne_room }
+	override_background = { reference = throne_room }
 	
 	
 	left_portrait = {
@@ -1730,7 +1730,7 @@ socotra.0014 = {
 	}
 	
 	theme = stewardship_wealth_focus
-	override_background = { event_background = throne_room }
+	override_background = { reference = throne_room }
 	
 	
 	left_portrait = {
@@ -2150,7 +2150,7 @@ socotra.0015 = {
 	}
 	
 	theme = stewardship_wealth_focus
-	override_background = { event_background = throne_room }
+	override_background = { reference = throne_room }
 	
 	
 	left_portrait = scope:scope_RICE_socotran_traveler_spawn
@@ -2561,227 +2561,39 @@ socotra.0015 = {
 
 # Poetry contest begins
 socotra.0020 = {
-	type = character_event
+	type = activity_event
 	title = socotra.0020.t
 	desc = socotra.0020.desc
 	theme = realm
-	override_icon = {
-		reference = "gfx/interface/icons/event_types/type_diplomacy.dds"
-	}
 	
 	left_portrait = root
 	
-	immediate = {
-		capital_province = { save_scope_as = capital_province } #For loc.
-		# Stop characters from planning multiple activities at once.
-		add_character_flag = planning_an_activity
-	}
 	
 	option = { # Ok
 		name = socotra.0020.a
-		# Choose appropriate location
-		scope:capital_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_socotra_host_poetry_contest
-			}	
-		}
 	}
 }
 
-
-
-# Planning for the poetry contest - what prize?
-socotra.0021 = {
-	type = character_event
-	title = socotra.0021.t
-	desc = socotra.0021.desc
-	theme = realm
-	override_icon = {
-		reference = "gfx/interface/icons/event_types/type_diplomacy.dds"
-	}
-	
-	right_portrait = root
-	
-	option = { # No money prize
-		name = socotra.0021.a
-		custom_tooltip = socotra.0021.tooltip
-		trigger_event = {
-			id = socotra.0022
-			days = { 5 15 }
-		}
-	}	
-	option = { # Small prize
-		name = socotra.0021.b
-		trigger = {
-			OR = {
-				is_ai = no
-				gold >= 25
-			}
-		}
-		remove_short_term_gold = 25
-		custom_tooltip = socotra.0021.tooltip
-		add_character_flag = RICE_socotra_poetry_contest_small_prize
-		trigger_event = {
-			id = socotra.0022
-			days = { 5 15 }
-		}
-	}	
-	option = { # Medium prize
-		name = socotra.0021.c
-		trigger = {
-			OR = {
-				is_ai = no
-				gold >= 50
-			}
-		}
-		remove_short_term_gold = 50
-		custom_tooltip = socotra.0021.tooltip
-		add_character_flag = RICE_socotra_poetry_contest_medium_prize
-		trigger_event = {
-			id = socotra.0022
-			days = { 5 15 }
-		}
-	}
-	option = { # Large prize
-		name = socotra.0021.d
-		trigger = {
-			OR = {
-				is_ai = no
-				gold >= 100
-			}
-		}
-		remove_short_term_gold = 100
-		custom_tooltip = socotra.0021.tooltip
-		add_character_flag = RICE_socotra_poetry_contest_large_prize
-		trigger_event = {
-			id = socotra.0022
-			days = { 5 15 }
-		}
-	}
-}
 
 
 # Poetry contest begins
 socotra.0022 = {
-	type = character_event
+	type = activity_event
 	title = socotra.0022.t
 	desc = socotra.0022.desc
 	theme = RICE_theme_festival_generic
-	override_icon = {
-		reference = "gfx/interface/icons/event_types/type_diplomacy.dds"
-	}
 	
 	left_portrait = {
 		character = root
 		animation = personality_content
 	}
 	
-	immediate = {
-		capital_province = { save_scope_as = capital_province } #For loc.
-	}
 	
 	option = { # Ok
 		name = socotra.0022.a
-		#trigger = {
-		#	NOR = {
-		#		learning >= decent_skill_rating
-		#		has_trait = poet
-		#	}
-		#}
 		trigger_event = {
 			id = socotra.0023
-			days = { 5 9 }
-		}
-	}	
-	option = { # Ok
-		name = socotra.0022.b		
-		trigger = {
-			learning >= decent_skill_rating
-		}
-		skill = learning
-		custom_tooltip = socotra.0022.tooltip # STRESS
-		if = {
-			limit = {
-				has_trait = gregarious
-			}
-			stress_impact = {
-				base = minor_stress_impact_gain
-				shy = minor_stress_impact_gain
-				diligent = miniscule_stress_impact_gain
-			}
-		}
-		else = {
-			stress_impact = {
-				base = medium_stress_impact_gain
-				shy = minor_stress_impact_gain
-				diligent = miniscule_stress_impact_gain
-			}
-		}
-		add_character_flag = RICE_socotra_poetry_contest_judge
-		trigger_event = {
-			id = socotra.0023
-			days = { 5 9 }
-		}
-	}	
-	option = { # Ok
-		name = socotra.0022.c		
-		trigger = {
-			diplomacy >= decent_skill_rating
-		}
-		skill = diplomacy
-		custom_tooltip = socotra.0022.tooltip # STRESS
-		if = {
-			limit = {
-				has_trait = gregarious
-			}
-			stress_impact = {
-				base = minor_stress_impact_gain
-				shy = minor_stress_impact_gain
-				diligent = miniscule_stress_impact_gain
-			}
-		}
-		else = {
-			stress_impact = {
-				base = medium_stress_impact_gain
-				shy = minor_stress_impact_gain
-				diligent = miniscule_stress_impact_gain
-			}
-		}
-		add_character_flag = RICE_socotra_poetry_contest_judge
-		trigger_event = {
-			id = socotra.0023
-			days = { 5 9 }
-		}
-	}	
-	option = { # Ok
-		name = socotra.0022.d		
-		trigger = {
-			has_trait = poet
-		}
-		trait = poet
-		custom_tooltip = socotra.0022.tooltip # STRESS
-		if = {
-			limit = {
-				has_trait = gregarious
-			}
-			stress_impact = {
-				base = minor_stress_impact_gain
-				shy = minor_stress_impact_gain
-				diligent = miniscule_stress_impact_gain
-			}
-		}
-		else = {
-			stress_impact = {
-				base = medium_stress_impact_gain
-				shy = minor_stress_impact_gain
-				diligent = miniscule_stress_impact_gain
-			}
-		}
-		add_character_flag = RICE_socotra_poetry_contest_judge
-		trigger_event = {
-			id = socotra.0023
-			days = { 5 9 }
+			days = { 3 7 }
 		}
 	}
 }
@@ -2790,7 +2602,7 @@ socotra.0022 = {
 
 # Poetry contest - almost final round
 socotra.0023 = {
-	type = character_event
+	type = activity_event
 	title = socotra.0023.t
 	desc = socotra.0023.desc
 	theme = RICE_theme_festival_generic
@@ -2811,8 +2623,9 @@ socotra.0023 = {
 			#Determine if a courtier of yours wins
 			if = {
 				limit = {
-					any_courtier = {
+					any_courtier_or_guest = {
 						is_available_ai_adult = yes
+						NOT = { this = scope:host }
 						OR = {
 							has_trait = poet
 							learning >= medium_skill_rating
@@ -2821,13 +2634,28 @@ socotra.0023 = {
 						NOT = { learning < mediocre_skill_rating }
 						NOT = { diplomacy < mediocre_skill_rating }
 					}
+					# This doesn't work for some reason
+					# scope:activity = {
+					# 	any_attending_character = {
+					# 		is_available_ai_adult = yes
+					# 		NOT = { this = scope:host }
+					# 		OR = {
+					# 			has_trait = poet
+					# 			learning >= medium_skill_rating
+					# 			diplomacy >= medium_skill_rating
+					# 		}
+					# 		NOT = { learning < mediocre_skill_rating }
+					# 		NOT = { diplomacy < mediocre_skill_rating }
+					# 	}
+					# }
 				}
 				random = {
 					chance = 20 # 95
 					add_character_flag = RICE_socotra_poetry_contest_courtier_winner
-					random_courtier = {
+					random_courtier_or_guest = {
 						limit = {
 							is_available_ai_adult = yes
+							NOT = { this = scope:host }
 							OR = {
 								has_trait = poet
 								learning >= medium_skill_rating
@@ -2838,6 +2666,23 @@ socotra.0023 = {
 						}
 						save_scope_as = RICE_courtier_poet_winner
 					}
+					# This doesn't work for some reason
+					# scope:activity = {
+					# 	random_attending_character = {
+					# 		limit = {
+					# 			is_available_ai_adult = yes
+					# 			NOT = { this = scope:host }
+					# 			OR = {
+					# 				has_trait = poet
+					# 				learning >= medium_skill_rating
+					# 				diplomacy >= medium_skill_rating
+					# 			}
+					# 			NOT = { learning < mediocre_skill_rating }
+					# 			NOT = { diplomacy < mediocre_skill_rating }
+					# 		}
+					# 		save_scope_as = RICE_courtier_poet_winner
+					# 	}
+					# }
 				}
 			}
 		}
@@ -2852,7 +2697,7 @@ socotra.0023 = {
 
 # Poetry contest - the winner is declared, and the winning poem discussed
 socotra.0024 = {
-	type = character_event
+	type = activity_event
 	title = socotra.0024.t
 	desc = {
 		desc = socotra.0024.desc.start
@@ -3230,15 +3075,18 @@ socotra.0024 = {
 		#desc = socotra.0024.desc.end
 	}
 	theme = RICE_theme_festival_generic
-	override_icon = {
-		reference = "gfx/interface/icons/event_types/type_diplomacy.dds"
-	}
 	
 	left_portrait = {
 		character = root
-		animation = happiness
+		animation = throne_room_applaud_1
 	}
-	
+
+	right_portrait = {
+		character = scope:RICE_courtier_poet_winner
+		animation = personality_content		
+		trigger = { exists = scope:RICE_courtier_poet_winner }
+	}
+
 	immediate = {
 	
 		# Choose winner
@@ -3328,16 +3176,33 @@ socotra.0024 = {
 			}
 			if = {
 				limit = {
-					has_character_flag = RICE_socotra_poetry_contest_small_prize
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_socotra_host_poetry_contest_prize_type
+							option = RICE_socotra_host_poetry_contest_prize_type_small
+						}
+					}
 				}
-				scope:RICE_courtier_poet_winner = {
-					add_gold = 25
-					add_prestige = 150
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_socotra_host_poetry_contest_courtier_won_log
+						character = scope:RICE_courtier_poet_winner
+						show_in_conclusion = yes
+						scope:RICE_courtier_poet_winner = {
+							add_gold = 25
+							add_prestige = 150
+						}
+					}					
 				}
 			}
 			else_if = {
 				limit = {
-					has_character_flag = RICE_socotra_poetry_contest_medium_prize
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_socotra_host_poetry_contest_prize_type
+							option = RICE_socotra_host_poetry_contest_prize_type_medium
+						}
+					}
 				}
 				scope:RICE_courtier_poet_winner = {
 					add_gold = 50					
@@ -3346,7 +3211,12 @@ socotra.0024 = {
 			}
 			else_if = {
 				limit = {
-					has_character_flag = RICE_socotra_poetry_contest_large_prize
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_socotra_host_poetry_contest_prize_type
+							option = RICE_socotra_host_poetry_contest_prize_type_large
+						}
+					}
 				}
 				scope:RICE_courtier_poet_winner = {
 					add_gold = 100					
@@ -3378,13 +3248,10 @@ socotra.0024 = {
 
 # Poetry contest ends
 socotra.0025 = {
-	type = character_event
+	type = activity_event
 	title = socotra.0025.t
 	desc = socotra.0025.desc
-	theme = realm
-	override_icon = {
-		reference = "gfx/interface/icons/event_types/type_diplomacy.dds"
-	}
+	theme = RICE_theme_festival_generic
 	
 	left_portrait = {
 		character = root
@@ -3393,75 +3260,110 @@ socotra.0025 = {
 	
 	option = { # Ok
 		name = socotra.0025.a
-		if = {
-			limit = {
-				has_character_flag = RICE_socotra_poetry_contest_small_prize
-			}
-			add_character_modifier = {
-				modifier = RICE_socotra_hosted_poetry_contest_small_prize
-				years = 5
-			}
-			if = {
-				limit = {
-					has_character_flag = RICE_socotra_poetry_contest_judge
-				}
-				add_prestige = 200
-			}
-			else = {				
-				add_prestige = 100
-			}
-		}
-		else_if = {
-			limit = {
-				has_character_flag = RICE_socotra_poetry_contest_medium_prize
-			}
-			add_character_modifier = {
-				modifier = RICE_socotra_hosted_poetry_contest_medium_prize
-				years = 5
-			}
-			if = {
-				limit = {
-					has_character_flag = RICE_socotra_poetry_contest_judge
-				}
-				add_prestige = 300
-			}
-			else = {				
-				add_prestige = 150
-			}
-		}
-		else_if = {
-			limit = {
-				has_character_flag = RICE_socotra_poetry_contest_large_prize
-			}
-			add_character_modifier = {
-				modifier = RICE_socotra_hosted_poetry_contest_large_prize
-				years = 5
-			}
-			if = {
-				limit = {
-					has_character_flag = RICE_socotra_poetry_contest_judge
-				}
-				add_prestige = 400
-			}
-			else = {				
-				add_prestige = 200
-			}
-		}
-		else = { # No prize
-			add_character_modifier = {
-				modifier = RICE_socotra_hosted_poetry_contest_no_prize
-				years = 5
-			}
-			if = {
-				limit = {
-					has_character_flag = RICE_socotra_poetry_contest_judge
-				}
-				add_prestige = 100
-			}
-			else = {				
-				add_prestige = 50
-			}
-		}
+		# if = {
+		# 	limit = {
+		# 		scope:activity = {
+		# 			has_activity_option = {
+		# 				category = RICE_socotra_host_poetry_contest_prize_type
+		# 				option = RICE_socotra_host_poetry_contest_prize_type_small
+		# 			}
+		# 		}
+		# 	}
+		# 	add_character_modifier = {
+		# 		modifier = RICE_socotra_hosted_poetry_contest_small_prize
+		# 		years = 5
+		# 	}
+		# 	if = {
+		# 		limit = {
+		# 			has_activity_intent = RICE_socotra_host_poetry_contest_judge_intent
+		# 		}
+		# 		stress_impact = {
+		# 			base = minor_stress_impact_gain
+		# 			diligent = miniscule_stress_impact_gain
+		# 			lazy = minor_stress_impact_gain
+		# 		}
+		# 		add_prestige = 200
+		# 	}
+		# 	else = {				
+		# 		add_prestige = 100
+		# 	}
+		# }
+		# else_if = {
+		# 	limit = {
+		# 		scope:activity = {
+		# 			has_activity_option = {
+		# 				category = RICE_socotra_host_poetry_contest_prize_type
+		# 				option = RICE_socotra_host_poetry_contest_prize_type_medium
+		# 			}
+		# 		}
+		# 	}
+		# 	add_character_modifier = {
+		# 		modifier = RICE_socotra_hosted_poetry_contest_medium_prize
+		# 		years = 5
+		# 	}
+		# 	if = {
+		# 		limit = {
+		# 			has_activity_intent = RICE_socotra_host_poetry_contest_judge_intent
+		# 		}
+		# 		stress_impact = {
+		# 			base = minor_stress_impact_gain
+		# 			diligent = miniscule_stress_impact_gain
+		# 			lazy = minor_stress_impact_gain
+		# 		}
+		# 		add_prestige = 300
+		# 	}
+		# 	else = {				
+		# 		add_prestige = 150
+		# 	}
+		# }
+		# else_if = {
+		# 	limit = {
+		# 		scope:activity = {
+		# 			has_activity_option = {
+		# 				category = RICE_socotra_host_poetry_contest_prize_type
+		# 				option = RICE_socotra_host_poetry_contest_prize_type_large
+		# 			}
+		# 		}
+		# 	}
+		# 	add_character_modifier = {
+		# 		modifier = RICE_socotra_hosted_poetry_contest_large_prize
+		# 		years = 5
+		# 	}
+		# 	if = {
+		# 		limit = {
+		# 			has_activity_intent = RICE_socotra_host_poetry_contest_judge_intent
+		# 		}
+		# 		stress_impact = {
+		# 			base = minor_stress_impact_gain
+		# 			diligent = miniscule_stress_impact_gain
+		# 			lazy = minor_stress_impact_gain
+		# 		}
+		# 		add_prestige = 400
+		# 	}
+		# 	else = {				
+		# 		add_prestige = 200
+		# 	}
+		# }
+		# else = { # No prize
+		# 	add_character_modifier = {
+		# 		modifier = RICE_socotra_hosted_poetry_contest_no_prize
+		# 		years = 5
+		# 	}
+		# 	if = {
+		# 		limit = {
+		# 			has_activity_intent = RICE_socotra_host_poetry_contest_judge_intent
+		# 		}
+		# 		stress_impact = {
+		# 			base = minor_stress_impact_gain
+		# 			diligent = miniscule_stress_impact_gain
+		# 			lazy = minor_stress_impact_gain
+		# 		}
+		# 		add_prestige = 100
+		# 	}
+		# 	else = {				
+		# 		add_prestige = 50
+		# 	}
+		# }
 	}
 	
 	after = {
@@ -3471,33 +3373,39 @@ socotra.0025 = {
 			}
 			remove_character_flag = RICE_socotra_poetry_contest_courtier_winner
 		}
+		# if = {
+		# 	limit = {
+		# 		has_character_flag = RICE_socotra_poetry_contest_judge
+		# 	}
+		# 	remove_character_flag = RICE_socotra_poetry_contest_judge
+		# }
+		# if = {
+		# 	limit = {
+		# 		has_character_flag = RICE_socotra_poetry_contest_small_prize
+		# 	}
+		# 	remove_character_flag = RICE_socotra_poetry_contest_small_prize
+		# }
+		# if = {
+		# 	limit = {
+		# 		has_character_flag = RICE_socotra_poetry_contest_medium_prize
+		# 	}
+		# 	remove_character_flag = RICE_socotra_poetry_contest_medium_prize
+		# }
+		# if = {
+		# 	limit = {
+		# 		has_character_flag = RICE_socotra_poetry_contest_large_prize
+		# 	}
+		# 	remove_character_flag = RICE_socotra_poetry_contest_large_prize
+		# }
 		if = {
 			limit = {
-				has_character_flag = RICE_socotra_poetry_contest_judge
+				root = scope:host
 			}
-			remove_character_flag = RICE_socotra_poetry_contest_judge
-		}
-		if = {
-			limit = {
-				has_character_flag = RICE_socotra_poetry_contest_small_prize
+			add_character_flag = RICE_socotra_poetry_contest_almost_done
+			trigger_event = {
+				id = socotra.0026
+				days = 1
 			}
-			remove_character_flag = RICE_socotra_poetry_contest_small_prize
-		}
-		if = {
-			limit = {
-				has_character_flag = RICE_socotra_poetry_contest_medium_prize
-			}
-			remove_character_flag = RICE_socotra_poetry_contest_medium_prize
-		}
-		if = {
-			limit = {
-				has_character_flag = RICE_socotra_poetry_contest_large_prize
-			}
-			remove_character_flag = RICE_socotra_poetry_contest_large_prize
-		}
-		trigger_event = {
-			id = socotra.0026
-			days = 1
 		}
 	}	
 }
@@ -3506,7 +3414,7 @@ socotra.0026 = {
 	hidden = yes	
 	immediate = {
 		scope:activity = {
-			complete_activity = yes
+			hidden_effect = { skip_activity_phase = yes }
 		}
 	}
 }
@@ -3942,20 +3850,20 @@ socotra.0034 = {
 ######################################################################################
 
 
-socotra.0040 = {
-	hidden = yes	
-	immediate = {
-		# Stop characters from planning multiple activities at once.
-		add_character_flag = planning_an_activity
-		# Choose appropriate location
-		title:b_suq-socotra.title_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_socotra_moon_sacrifice
-			}	
-		}
-	}
-}
+# socotra.0040 = {
+# 	hidden = yes	
+# 	immediate = {
+# 		# Stop characters from planning multiple activities at once.
+# 		add_character_flag = planning_an_activity
+# 		# Choose appropriate location
+# 		title:b_suq-socotra.title_province = {	
+# 			spawn_activity = {
+# 				owner = root
+# 				type = activity_socotra_moon_sacrifice
+# 			}	
+# 		}
+# 	}
+# }
 
 
 
@@ -4210,9 +4118,9 @@ socotra.0042 = {
 			}
 			remove_character_flag = RICE_socotra_moon_sacrifice_great
 		}
-		scope:activity = {
-			complete_activity = yes
-		}
+		# scope:activity = {
+		# 	complete_activity = yes
+		# }
 	}
 }
 
@@ -4513,7 +4421,7 @@ socotra.0055 = {
 	title = socotra.0055.t
 	desc = socotra.0055.desc
 	theme = martial
-	override_background = { event_background = throne_room }
+	override_background = { reference = throne_room }
 	
 	left_portrait = {
 		character = root

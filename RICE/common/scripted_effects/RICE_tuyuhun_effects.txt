@@ -161,3 +161,68 @@ restore_tuyuhun_kingdom_effect = {
 		}
 	}
 }
+
+
+
+RICE_tuyuhun_nadun_festival_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_tuyuhun_nadun_festival_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				if = {
+					limit = {
+						has_activity_intent = RICE_tuyuhun_nadun_festival_joy_intent
+					}		
+					stress_impact = {
+						base = minor_stress_impact_gain
+						gluttonous = miniscule_stress_impact_gain
+						gregarious = miniscule_stress_impact_gain
+					}
+				}
+				if = {
+					limit = {
+						has_activity_intent = RICE_tuyuhun_nadun_festival_gratitude_intent
+					}		
+					add_prestige = 100
+					add_piety = 100
+					stress_impact = {
+						lazy = minor_stress_impact_gain
+					}
+				}
+				else = {		
+					add_prestige = 50
+					add_piety = 50
+				}
+				if = {
+					limit = {
+						has_activity_intent = RICE_tuyuhun_nadun_festival_coordination_intent
+					}
+					add_character_modifier = {
+						modifier = RICE_tuyuhun_assisted_organizing_nadun_festival
+						years = 5
+					}
+					stress_impact = {
+						lazy = minor_stress_impact_gain
+					}
+				}
+				else = {
+					add_character_modifier = {
+						modifier = RICE_tuyuhun_recently_went_to_nadun_festival
+						years = 5
+					}
+				}
+			}
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_prestige = 25
+				add_piety = 25
+			}
+		}
+	}
+}
+

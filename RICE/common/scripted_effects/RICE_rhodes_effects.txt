@@ -28,6 +28,9 @@ RICE_rhodes_build_hippocrates_monument_effect = {
 			modifier = RICE_rhodes_hippocrates_monument_built
 		}
 	}
+	create_character_memory = {
+		type = RICE_rhodes_hippocrates_memory
+	}
 }
 
 RICE_rhodes_renovate_kassia_tomb_effect = {
@@ -41,6 +44,109 @@ RICE_rhodes_renovate_kassia_tomb_effect = {
 			years = 30
 		}
 	}
+	create_character_memory = {
+		type = RICE_rhodes_kassia_memory
+	}
 }
 
 
+
+RICE_rhodes_visit_to_the_colossus_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_rhodes_visit_to_the_colossus_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			show_as_tooltip = {
+				scope:host = {
+					custom_tooltip = RICE_activity_result_gained_prestige
+					if = {
+						limit = {
+							OR = {
+								religion = religion:hellenism_religion
+								religion = religion:semitic_religion
+								religion = religion:kushitism_religion
+								religion = religion:amazigh_religion
+							}
+						}
+						custom_tooltip = RICE_activity_result_gained_piety
+					}
+					stress_impact = {
+						base = minor_stress_impact_loss
+					}
+				}
+				if = {
+					limit = {
+						scope:host = {
+							has_character_modifier = RICE_rhodes_inspired_colossus_diplomacy
+						}
+					}
+					scope:host = {
+						add_character_modifier = {
+							modifier = RICE_rhodes_inspired_colossus_diplomacy
+						}
+					}
+				}
+				else_if = {
+					limit = {
+						scope:host = {
+							has_character_modifier = RICE_rhodes_inspired_colossus_martial
+						}
+					}
+					scope:host = {
+						add_character_modifier = {
+							modifier = RICE_rhodes_inspired_colossus_martial
+						}
+					}
+				}
+				else_if = {
+					limit = {
+						scope:host = {
+							has_character_modifier = RICE_rhodes_inspired_colossus_stewardship
+						}
+					}
+					scope:host = {
+						add_character_modifier = {
+							modifier = RICE_rhodes_inspired_colossus_stewardship
+						}
+					}
+				}
+				else_if = {
+					limit = {
+						scope:host = {
+							has_character_modifier = RICE_rhodes_inspired_colossus_intrigue
+						}
+					}
+					scope:host = {
+						add_character_modifier = {
+							modifier = RICE_rhodes_inspired_colossus_intrigue
+						}
+					}
+				}
+				else_if = {
+					limit = {
+						scope:host = {
+							has_character_modifier = RICE_rhodes_inspired_colossus_learning
+						}
+					}
+					scope:host = {
+						add_character_modifier = {
+							modifier = RICE_rhodes_inspired_colossus_learning
+						}
+					}
+				}
+
+				every_attending_character = {
+					limit = { NOT = { this = scope:host } }
+					custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+					custom_tooltip = RICE_activity_result_gained_prestige
+					stress_impact = {
+						base = miniscule_stress_impact_loss
+					}
+				}
+			}
+		}
+	}
+}

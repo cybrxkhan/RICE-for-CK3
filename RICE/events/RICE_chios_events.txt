@@ -49,6 +49,9 @@ chios.0005 = {
 	
 	option = { # Ok
 		name = chios.0005.a
+		create_character_memory = {
+			type = RICE_chios_homer_memory
+		}
 		RICE_chios_build_homer_monument_effect = yes
 	}
 }
@@ -296,35 +299,31 @@ chios.0020 = {
 	type = character_event
 	title = chios.0020.t
 	desc = chios.0020.desc
-	theme = friendly
+	theme = travel
 	
 	right_portrait = root
-	
-	immediate = {
-		# Stop characters from planning multiple activities at once.
-		add_character_flag = planning_an_activity
+
+	trigger = {	
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity	
+		involved_activity = {
+			has_activity_type = activity_RICE_chios_mostra_of_thymiana
+		}
 	}
 	
 	option = { # Ok
 		name = chios.0020.a
-		# Choose appropriate location
-		title:b_chios.title_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_attend_mostra_of_thymiana
-			}	
-		}
 	}
 }
 
 
 # You arrive in Chios
 chios.0021 = {
-	type = character_event
+	type = activity_event
 	title = chios.0021.t
 	desc = chios.0021.desc
-	theme = realm
-	override_background = { event_background = RICE_background_chios_meadow }
+	theme = RICE_theme_ancient_greek_town
 	
 	left_portrait = {
 		character = root
@@ -344,10 +343,11 @@ chios.0021 = {
 
 # Friday evening, start of Mostra - villagers walk around in masks in an atmosphere of fun
 chios.0022 = {
-	type = character_event
+	type = activity_event
 	title = chios.0022.t
 	desc = chios.0022.desc
 	theme = RICE_theme_festival_generic
+	override_background = { reference = RICE_background_ancient_greek_town }
 	
 	left_portrait = {
 		character = root
@@ -393,7 +393,7 @@ chios.0022 = {
 
 # Sunday night - solemn visit to the graveyard to pray for the deceased
 chios.0023 = {
-	type = character_event
+	type = activity_event
 	title = chios.0023.t
 	desc = chios.0023.desc
 	theme = faith
@@ -417,11 +417,11 @@ chios.0023 = {
 
 # Recreating the battle between the pirates and the villagers, and then the feast starts!
 chios.0024 = {
-	type = character_event
+	type = activity_event
 	title = chios.0024.t
 	desc = chios.0024.desc
 	theme = battle
-	override_background = { event_background = market }
+	override_background = { reference = RICE_background_ancient_greek_town }
 	#soundeffect = feast_event
 	
 	left_portrait = {
@@ -519,11 +519,11 @@ chios.0024 = {
 
 # Mostra ends
 chios.0025 = {
-	type = character_event
+	type = activity_event
 	title = chios.0025.t
 	desc = chios.0025.desc
 	theme = friendly
-	override_background = { event_background = RICE_background_chios_meadow }
+	override_background = { reference = RICE_background_ancient_greek_town }
 	
 	left_portrait = {
 		character = root
@@ -535,36 +535,46 @@ chios.0025 = {
 		add_prestige = 100
 		add_character_modifier = {
 			modifier = RICE_chios_attended_mostra_of_thymiana
-			years = 3
+			years = 5
 		}
 	}
 	
 	after = {
-		trigger_event = {
-			id = chios.0026
-			days = 1
+		scope:activity = {
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_prestige = 25
+				stress_impact = {
+					base = miniscule_stress_impact_loss
+				}
+			}	
+			hidden_effect = { skip_activity_phase = yes }
 		}
 	}	
 }
 
 
-chios.0026 = {
-	hidden = yes	
-	immediate = {
-		scope:activity = {
-			complete_activity = yes
-		}
-	}
-}
+# chios.0026 = {
+# 	type = character_event
+# 	hidden = yes	
+# 	immediate = {
+# 		trigger_event = {
+# 			id = chios.0021
+# 			trigger_on_next_date = 3.1
+# 		}
+# 	}
+# }
 
 
 
 # Eating some cheese
 chios.0030 = {
-	type = character_event
+	type = activity_event
 	title = chios.0030.t
 	desc = chios.0030.desc
 	theme = RICE_theme_festival_generic
+	override_background = { reference = RICE_background_ancient_greek_town }
 	
 	left_portrait = {
 		character = root
@@ -586,10 +596,11 @@ chios.0030 = {
 
 # Listen to music
 chios.0031 = {
-	type = character_event
+	type = activity_event
 	title = chios.0031.t
 	desc = chios.0031.desc
 	theme = RICE_theme_festival_generic
+	override_background = { reference = RICE_background_ancient_greek_town }
 	
 	left_portrait = {
 		character = root
@@ -604,7 +615,7 @@ chios.0031 = {
 
 # Observe red and brown houses
 chios.0032 = {
-	type = character_event
+	type = activity_event
 	title = chios.0032.t
 	desc = chios.0032.desc
 	theme = RICE_theme_chios_meadow
@@ -625,11 +636,11 @@ chios.0032 = {
 
 # Dancing with the villagers?
 chios.0033 = {
-	type = character_event
+	type = activity_event
 	title = chios.0033.t
 	desc = chios.0033.desc
 	theme = friendly
-	override_background = { event_background = market }
+	override_background = { reference = RICE_background_ancient_greek_town }
 	
 	left_portrait = {
 		character = root
@@ -666,11 +677,11 @@ chios.0033 = {
 
 # Hear story about how Tymiana was attacked long ago
 chios.0034 = {
-	type = character_event
+	type = activity_event
 	title = chios.0034.t
 	desc = chios.0034.desc
 	theme = martial
-	override_background = { event_background = market }
+	override_background = { reference = RICE_background_ancient_greek_town }
 	
 	left_portrait = {
 		character = root
@@ -689,11 +700,11 @@ chios.0034 = {
 
 # Young man shows some sword moves
 chios.0035 = {
-	type = character_event
+	type = activity_event
 	title = chios.0035.t
 	desc = chios.0035.desc
 	theme = martial
-	override_background = { event_background = market }
+	override_background = { reference = RICE_background_ancient_greek_town }
 	
 	left_portrait = {
 		character = root
@@ -733,10 +744,11 @@ chios.0035 = {
 
 # What should I eat?
 chios.0036 = {
-	type = character_event
+	type = activity_event
 	title = chios.0036.t
 	desc = chios.0036.desc
 	theme = RICE_theme_festival_generic
+	override_background = { reference = RICE_background_ancient_greek_town }
 	
 	left_portrait = {
 		character = root
@@ -769,10 +781,11 @@ chios.0036 = {
 
 # Go get some wine?
 chios.0037 = {
-	type = character_event
+	type = activity_event
 	title = chios.0037.t
 	desc = chios.0037.desc
 	theme = RICE_theme_festival_generic
+	override_background = { reference = RICE_background_ancient_greek_town }
 	
 	left_portrait = {
 		character = root
@@ -797,11 +810,11 @@ chios.0037 = {
 
 # Visit the old watchtowers of Thymiana
 chios.0038 = {
-	type = character_event
+	type = activity_event
 	title = chios.0038.t
 	desc = chios.0038.desc
 	theme = martial
-	override_background = { event_background = RICE_background_chios_meadow	}
+	override_background = { reference = RICE_background_chios_meadow	}
 	
 	left_portrait = {
 		character = root
@@ -820,11 +833,11 @@ chios.0038 = {
 
 # Speaking of Masks
 chios.0039 = {
-	type = character_event
+	type = activity_event
 	title = chios.0039.t
 	desc = chios.0039.desc
 	theme = friendly
-	override_background = { event_background = RICE_background_chios_meadow	}
+	override_background = { reference = RICE_background_ancient_greek_town	}
 	
 	left_portrait = {
 		character = root
@@ -1128,7 +1141,7 @@ chios.0054 = {
 	type = character_event
 	title = chios.0054.t
 	desc = chios.0054.desc
-	theme = RICE_theme_chios_meadow
+	theme = RICE_theme_ancient_greek_town
 	
 	left_portrait = {
 		character = root
@@ -1341,7 +1354,7 @@ chios.0058 = {
 	title = chios.0058.t
 	desc = chios.0058.desc
 	theme = martial
-	override_background = { event_background = corridor_day }
+	override_background = { reference = corridor_day }
 	
 	left_portrait = {
 		character = root
@@ -1392,7 +1405,7 @@ chios.0059 = {
 	type = character_event
 	title = chios.0059.t
 	desc = chios.0059.desc
-	theme = RICE_theme_mastic_grove
+	theme = RICE_theme_ancient_greek_town
 	
 	left_portrait = {
 		character = root
@@ -1732,7 +1745,7 @@ chios.0064 = {
 	title = chios.0064.t
 	desc = chios.0064.desc
 	theme = party
-	#override_background = { event_background = market }
+	#override_background = { reference = market }
 	
 	left_portrait = root
 	
@@ -1890,7 +1903,7 @@ chios.0067 = {
 	title = chios.0067.t
 	desc = chios.0067.desc
 	theme = unfriendly
-	override_background = { event_background = market }
+	override_background = { reference = RICE_background_ancient_greek_town	}
 	
 	right_portrait = {
 		character = root
@@ -2739,7 +2752,7 @@ chios.0100 = {
 	title = chios.0100.t
 	desc = chios.0100.desc
 	theme = faith
-	override_background = { event_background = RICE_background_greek_beach }
+	override_background = { reference = RICE_background_greek_beach }
 	
 	left_portrait = {
 		character = root
@@ -2779,7 +2792,7 @@ chios.0101 = {
 	title = chios.0101.t
 	desc = chios.0101.desc
 	theme = faith
-	override_background = { event_background = RICE_background_greek_beach }
+	override_background = { reference = RICE_background_greek_beach }
 	
 	left_portrait = {
 		character = scope:patmos_repopulator
@@ -2884,7 +2897,7 @@ chios.0104 = {
 	title = chios.0104.t
 	desc = chios.0104.desc
 	theme = unfriendly
-	override_background = { event_background = fp1_ocean }
+	override_background = { reference = fp1_ocean }
 	
 	left_portrait = {
 		character = root
@@ -2917,7 +2930,7 @@ chios.0105 = {
 	title = chios.0105.t
 	desc = chios.0105.desc
 	theme = battle
-	override_background = { event_background = fp1_ocean }
+	override_background = { reference = fp1_ocean }
 	
 	left_portrait = {
 		character = root

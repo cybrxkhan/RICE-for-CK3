@@ -321,3 +321,54 @@ RICE_yorkshire_build_humber_ferries_effect = {
 	}
 }
 
+
+
+RICE_yorkshire_stamford_bull_run_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_yorkshire_stamford_bull_run_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			show_as_tooltip = {
+				scope:host = {
+					add_prestige = 50
+					add_character_modifier = {
+						modifier = RICE_yorkshire_was_at_stamford_bull_run
+					}
+					if = {
+						limit = {
+							scope:host = {
+								has_character_modifier = RICE_yorkshire_participated_in_stamford_bull_run
+							}
+						}
+						add_prestige = -100
+						add_character_modifier = {
+							modifier = RICE_yorkshire_participated_in_stamford_bull_run
+						}
+					}
+					stress_impact = {
+						base = minor_stress_impact_loss
+						gregarious = minor_stress_impact_loss
+						sadistic = minor_stress_impact_loss
+					}
+				}
+				every_attending_character = {
+					limit = { NOT = { this = scope:host } }
+					custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+					stress_impact = {
+						base = miniscule_stress_impact_loss
+						gregarious = miniscule_stress_impact_loss
+						sadistic = miniscule_stress_impact_loss
+					}
+				}	
+			}
+		}
+	}
+}
+
+
+
+
+

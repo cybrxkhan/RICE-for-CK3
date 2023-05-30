@@ -56,7 +56,7 @@ yazd.0002 = {
 	title = yazd.0002.t
 	desc = yazd.0002.desc
 	theme = martial
-	override_background = { event_background = RICE_background_khorasan_village }
+	override_background = { reference = RICE_background_khorasan_village }
 	
 	left_portrait = {
 		character = scope:tahirid_guy
@@ -169,7 +169,7 @@ yazd.0003 = {
 	title = yazd.0003.t
 	desc = yazd.0003.desc
 	theme = martial
-	override_background = { event_background = RICE_background_iranian_throne_room }
+	override_background = { reference = RICE_background_iranian_throne_room }
 	orphan = yes
 	
 	left_portrait = {
@@ -262,7 +262,7 @@ yazd.0004 = {
 	title = yazd.0004.t
 	desc = yazd.0004.desc
 	theme = faith
-	override_background = { event_background = RICE_background_iranian_desert }
+	override_background = { reference = RICE_background_iranian_desert }
 	
 	left_portrait = {
 		character = scope:bammer_guy
@@ -356,7 +356,7 @@ yazd.0005 = {
 	title = yazd.0005.t
 	desc = yazd.0005.desc
 	theme = martial
-	override_background = { event_background = RICE_background_iranian_throne_room }
+	override_background = { reference = RICE_background_iranian_throne_room }
 	
 	right_portrait = {
 		character = root
@@ -503,7 +503,7 @@ yazd.0008 = {
 	title = yazd.0008.t
 	desc = yazd.0008.desc
 	theme = martial
-	override_background = { event_background = RICE_background_iranian_throne_room }
+	override_background = { reference = RICE_background_iranian_throne_room }
 	
 	right_portrait = {
 		character = root
@@ -579,7 +579,7 @@ yazd.0009 = {
 	title = yazd.0009.t
 	desc = yazd.0009.desc
 	theme = martial
-	override_background = { event_background = RICE_background_iranian_throne_room }
+	override_background = { reference = RICE_background_iranian_throne_room }
 	
 	right_portrait = {
 		character = root
@@ -1043,7 +1043,7 @@ yazd.0027 = {
 		}
 	}
 	theme = faith
-	override_background = { event_background = RICE_background_yazd_town }
+	override_background = { reference = RICE_background_yazd_town }
 	
 	left_portrait = {
 		character = root
@@ -1073,7 +1073,7 @@ yazd.0027 = {
 
 # Prepare for Sadeh
 yazd.0030 = {
-	type = character_event
+	type = activity_event
 	title = yazd.0030.t
 	desc = {
 		desc = yazd.0030.desc
@@ -1086,6 +1086,7 @@ yazd.0030 = {
 		}
 	}
 	theme = friendly
+	override_background = { reference = RICE_background_iranian_throne_room }
 	
 	right_portrait = root
 	
@@ -1093,78 +1094,93 @@ yazd.0030 = {
 		capital_province = { save_scope_as = capital_province } #For loc.
 		if = {
 			limit = {
-				has_title = title:c_yazd
-				religion = religion:zoroastrianism_religion				
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_yazd_sadeh_festival_type_chak_chak
+					}
+				}		
 			}
 			# Chak-Chak Stuff
 			title:c_yazd = {
 				save_scope_as = yazd_county
 			}
 		}
-		# Stop characters from planning multiple activities at once.
-		add_character_flag = planning_an_activity
 	}
 	
 	option = { # Normal result
 		name = yazd.0030.a
 		trigger = {
-			OR = {
-				NOT = { has_title = title:c_yazd }
-				NOT = { religion = religion:zoroastrianism_religion	}
+			NOT = {				
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_yazd_sadeh_festival_type_chak_chak
+					}
+				}
 			}		
 		}
-		# Choose appropriate location
-		scope:capital_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_yazd_sadeh_festival
-			}	
+		if = {
+			limit = {
+				current_month >= 1
+			}
+			trigger_event = {
+				id = yazd.0031
+				days = { 15 25 }
+			}
+		}
+		else = {
+			trigger_event = {
+				id = yazd.0031
+				days = { 35 50 }
+			}
 		}
 	}	
 	option = { # Visit Chak Chak
 		name = yazd.0030.b
 		trigger = {
-			has_title = title:c_yazd
-			religion = religion:zoroastrianism_religion	
-			OR = {
-				is_ai = no
-				short_term_gold >= 25			
+			scope:activity = {
+				has_activity_option = {
+					category = special_type
+					option = RICE_yazd_sadeh_festival_type_chak_chak
+				}
 			}
 		}
-		remove_short_term_gold = 25
-		# Choose appropriate location
-		title:b_yazd.title_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_yazd_sadeh_festival_chak_chak
-			}	
+		if = {
+			limit = {
+				current_month >= 1
+			}
+			trigger_event = {
+				id = yazd.0042
+				days = { 15 25 }
+			}
 		}
-		custom_tooltip = yazd.0030.chak_chak.tooltip
+		else = {
+			trigger_event = {
+				id = yazd.0042
+				days = { 35 50 }
+			}
+		}
 	}	
-	option = { # Don't Visit Chak Chak
-		name = yazd.0030.c
-		trigger = {
-			has_title = title:c_yazd
-			religion = religion:zoroastrianism_religion	
-		}
-		# Choose appropriate location
-		scope:capital_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_yazd_sadeh_festival
-			}	
-		}
-	}
+	# option = { # Don't Visit Chak Chak
+	# 	name = yazd.0030.c
+	# 	trigger = {
+	# 		has_title = title:c_yazd
+	# 		religion = religion:zoroastrianism_religion	
+	# 	}
+	# }
+
+
 }
 
 
 # Sadeh begins (normal)
 yazd.0031 = {
-	type = character_event
+	type = activity_event
 	title = yazd.0031.t
 	desc = yazd.0031.desc
 	theme = party
-	override_background = { event_background = RICE_background_iranian_throne_room }
+	override_background = { reference = RICE_background_iranian_throne_room }
 	
 	left_portrait = {
 		character = root
@@ -1208,11 +1224,22 @@ yazd.0031 = {
 					days = { 5 22 }
 				}
 			}
-			random = {
-				chance = 25
+			if = {
+				limit = {
+					has_activity_intent = RICE_yazd_sadeh_festival_poetry_intent
+				}
 				trigger_event = {
 					id = yazd.0037
 					days = { 5 22 }
+				}
+			}
+			else = {
+				random = {
+					chance = 25
+					trigger_event = {
+						id = yazd.0037
+						days = { 5 22 }
+					}
 				}
 			}
 			random = {
@@ -1253,7 +1280,7 @@ yazd.0031 = {
 
 # Sadeh ends
 yazd.0032 = {
-	type = character_event
+	type = activity_event
 	title = yazd.0032.t	
 	desc = {
 		desc = yazd.0032.desc
@@ -1273,7 +1300,7 @@ yazd.0032 = {
 		}
 	}
 	theme = friendly
-	override_background = { event_background = RICE_background_iranian_throne_room }
+	override_background = { reference = RICE_background_iranian_throne_room }
 	
 	left_portrait = {
 		character = root
@@ -1282,29 +1309,14 @@ yazd.0032 = {
 	
 	option = { # Fun!
 		name = yazd.0032.a
-		if = {
-			limit = {
-				in_activity_type = activity_yazd_sadeh_festival
-			}
-			add_character_modifier = {
-				modifier = RICE_yazd_recently_celebrated_sadeh
-				years = 3
-			}
-		}
-		if = {
-			limit = {
-				in_activity_type = activity_yazd_sadeh_festival_chak_chak
-			}
-			add_character_modifier = {
-				modifier = RICE_yazd_recently_celebrated_sadeh_chak_chak
-				years = 3
-			}
-		}
+		RICE_yazd_sadeh_festival_completed_log_entry_effect = yes
 	}
 	
 	after = {
-		scope:activity = {
-			complete_activity = yes
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
 		}
 	}
 }
@@ -1314,7 +1326,7 @@ yazd.0032 = {
 
 # Gathering firewood
 yazd.0033 = {
-	type = character_event
+	type = activity_event
 	title = yazd.0033.t
 	desc = yazd.0033.desc
 	theme = RICE_theme_khorasan_village
@@ -1346,7 +1358,7 @@ yazd.0033 = {
 
 # Light fires near the qanats
 yazd.0034 = {
-	type = character_event
+	type = activity_event
 	title = yazd.0034.t
 	desc = yazd.0034.desc
 	theme = RICE_theme_qanat_canal
@@ -1373,7 +1385,7 @@ yazd.0034 = {
 
 # Stand near a fire
 yazd.0035 = {
-	type = character_event
+	type = activity_event
 	title = yazd.0035.t
 	desc = yazd.0035.desc
 	theme = RICE_theme_desert_night
@@ -1393,11 +1405,11 @@ yazd.0035 = {
 
 # Hearing about the legend of Hushang
 yazd.0036 = {
-	type = character_event
+	type = activity_event
 	title = yazd.0036.t
 	desc = yazd.0036.desc
 	theme = martial
-	override_background = { event_background = RICE_background_iranian_throne_room }
+	override_background = { reference = RICE_background_iranian_throne_room }
 	
 	right_portrait = {
 		character = root
@@ -1424,7 +1436,7 @@ yazd.0036 = {
 
 # Listening to Sadeh poetry
 yazd.0037 = {
-	type = character_event
+	type = activity_event
 	title = yazd.0037.t
 	desc = yazd.0037.desc
 	theme = RICE_theme_iranian_throne_room
@@ -1436,34 +1448,49 @@ yazd.0037 = {
 	
 	option = { # Nature poem
 		name = yazd.0037.a
-		add_prestige = 15
-		add_piety = 15
+		if = {
+			limit = {
+				has_activity_intent = RICE_yazd_sadeh_festival_poetry_intent
+			}
+			add_prestige = 25
+			add_piety = 25
+		}
 		add_character_modifier = {
 			modifier = RICE_yazd_sadeh_nature_poem
-			years = 3
+			years = 5
 		}
 	}	
 	option = { # Good vs Evil poem
 		name = yazd.0037.b
-		add_piety = 30
+		if = {
+			limit = {
+				has_activity_intent = RICE_yazd_sadeh_festival_poetry_intent
+			}
+			add_piety = 50
+		}
 		add_character_modifier = {
 			modifier = RICE_yazd_sadeh_good_evil_poem
-			years = 3
+			years = 5
 		}
 	}	
 	option = { # Ancient Heroes poem
 		name = yazd.0037.c
-		add_prestige = 30
+		if = {
+			limit = {
+				has_activity_intent = RICE_yazd_sadeh_festival_poetry_intent
+			}
+			add_prestige = 50
+		}
 		add_character_modifier = {
 			modifier = RICE_yazd_sadeh_hero_poem
-			years = 3
+			years = 5
 		}
 	}
 }
 
 # Eating good food during sadeh
 yazd.0038 = {
-	type = character_event
+	type = activity_event
 	title = yazd.0038.t
 	desc = yazd.0038.desc
 	theme = feast_activity
@@ -1486,7 +1513,7 @@ yazd.0038 = {
 
 # Donating to others during Sadeh
 yazd.0039 = {
-	type = character_event
+	type = activity_event
 	title = yazd.0039.t
 	desc = yazd.0039.desc
 	theme = RICE_theme_khorasan_village
@@ -1539,11 +1566,11 @@ yazd.0039 = {
 
 # Light some animals on fire or not? (Medieval Sadeh practice)
 yazd.0040 = {
-	type = character_event
+	type = activity_event
 	title = yazd.0040.t
 	desc = yazd.0040.desc
 	theme = friendly
-	override_background = { event_background = RICE_background_iranian_throne_room }
+	override_background = { reference = RICE_background_iranian_throne_room }
 	
 	left_portrait = root
 	
@@ -1627,11 +1654,11 @@ yazd.0040 = {
 
 # Dance around the bonfires
 yazd.0041 = {
-	type = character_event
+	type = activity_event
 	title = yazd.0041.t
 	desc = yazd.0041.desc
 	theme = feast_activity
-	override_background = { event_background = RICE_background_desert_night }
+	override_background = { reference = RICE_background_desert_night }
 	
 	left_portrait = root
 	
@@ -1663,7 +1690,7 @@ yazd.0041 = {
 
 # Sadeh begins (Chak Chak)
 yazd.0042 = {
-	type = character_event
+	type = activity_event
 	title = yazd.0042.t
 	desc = yazd.0042.desc
 	theme = RICE_theme_yazd_tower_of_silence
@@ -1788,7 +1815,7 @@ yazd.0042 = {
 
 # Drinking from the sacred water
 yazd.0043 = {
-	type = character_event
+	type = activity_event
 	title = yazd.0043.t
 	desc = yazd.0043.desc
 	theme = RICE_theme_desert_cave
@@ -1810,7 +1837,7 @@ yazd.0043 = {
 
 # Tree in Chak-Chak
 yazd.0044 = {
-	type = character_event
+	type = activity_event
 	title = yazd.0044.t
 	desc = yazd.0044.desc
 	theme = RICE_theme_qanat_canal
@@ -1833,7 +1860,7 @@ yazd.0044 = {
 
 # Holy fire in Chak-Chak
 yazd.0045 = {
-	type = character_event
+	type = activity_event
 	title = yazd.0045.t
 	desc = yazd.0045.desc
 	theme = faith
@@ -1852,7 +1879,7 @@ yazd.0045 = {
 
 # Thinking of good thoughts, good words, and good deeds
 yazd.0046 = {
-	type = character_event
+	type = activity_event
 	title = yazd.0046.t
 	desc = yazd.0046.desc
 	theme = faith
@@ -1872,7 +1899,7 @@ yazd.0046 = {
 
 # Donate or nah?
 yazd.0047 = {
-	type = character_event
+	type = activity_event
 	title = yazd.0047.t
 	desc = yazd.0047.desc
 	theme = faith
@@ -2102,7 +2129,7 @@ yazd.0052 = {
 	title = yazd.0052.t
 	desc = yazd.0052.desc
 	theme = learning
-	override_background = { event_background = garden }
+	override_background = { reference = garden }
 	
 	left_portrait = {
 		character = root

@@ -97,6 +97,7 @@ siberia.0001 = {
 					template = siberian_wanderer_character_template
 					save_scope_as = scope_RICE_siberian
 					culture = culture:evenk
+					faith = faith:bugaism
 				}			
 			}
 			10 = {
@@ -106,6 +107,7 @@ siberia.0001 = {
 					template = siberian_wanderer_character_template
 					save_scope_as = scope_RICE_siberian
 					culture = culture:nivkh
+					faith = faith:yzng
 				}			
 			}
 			10 = {
@@ -115,6 +117,7 @@ siberia.0001 = {
 					template = siberian_wanderer_character_template
 					save_scope_as = scope_RICE_siberian
 					culture = culture:yakut
+					faith = faith:tengri_pagan
 				}			
 			}
 			10 = {
@@ -124,6 +127,7 @@ siberia.0001 = {
 					template = siberian_wanderer_character_template
 					save_scope_as = scope_RICE_siberian
 					culture = culture:yeniseian
+					faith = faith:siberian_pagan
 				}			
 			}
 			10 = {
@@ -133,6 +137,7 @@ siberia.0001 = {
 					template = siberian_wanderer_character_template
 					save_scope_as = scope_RICE_siberian
 					culture = culture:yukaghir
+					faith = faith:siberian_pagan
 				}			
 			}
 		}
@@ -242,7 +247,7 @@ siberia.0001 = {
 # Siberian Courtier improves skills - tombola
 siberia.0002 = {
 
-	type = empty
+	scope = none
 	hidden = yes
 	
 	trigger = {
@@ -787,6 +792,22 @@ siberia.0003 = {
 		#		}
 		#	}		
 		#}
+
+		create_character_memory = {
+			type = RICE_siberia_learned_siberian_skills_learner_memory
+			participants = {
+				siberian_courtier = scope:scope_RICE_siberian_teacher
+			}
+		}
+
+		scope:scope_RICE_siberian_teacher = {
+			create_character_memory = {
+				type = RICE_siberia_learned_siberian_skills_mentor_memory
+				participants = {
+					learner = scope:scope_RICE_siberian_learner
+				}
+			}			
+		}
 	}
 	
 	after = {
@@ -1132,6 +1153,25 @@ siberia.0004 = {
 				}
 			}		
 		}
+
+		scope:scope_RICE_siberian_learner = {
+			create_character_memory = {
+				type = RICE_siberia_learned_siberian_skills_learner_memory
+				participants = {
+					siberian_courtier = scope:scope_RICE_siberian_teacher
+				}
+			}			
+		}
+
+		scope:scope_RICE_siberian_teacher = {
+			create_character_memory = {
+				type = RICE_siberia_learned_siberian_skills_mentor_memory
+				participants = {
+					learner = scope:scope_RICE_siberian_learner
+				}
+			}			
+		}
+
 	}
 	
 	after = {
@@ -1390,25 +1430,14 @@ siberia.0011 = {
 
 # Start Event - pick how to notify
 siberia.0020 = {
-	type = character_event
+	type = activity_event
 	title = siberia.0020.t
 	desc = siberia.0020.desc
 	theme = faith
-	override_background = { event_background = sitting_room }
+	override_background = { reference = throne_room }
 	
 	left_portrait = root
-	
-	immediate = {
-		# Stop characters from planning multiple activities at once.
-		add_character_flag = planning_an_activity
-		# Choose appropriate location
-		capital_province = {
-			spawn_activity = {
-				type = activity_hold_reindeer_sacrifice
-				owner = root
-			}
-		}
-	}
+
 	
 	option = { # Notches
 		name = siberia.0020.a
@@ -1418,11 +1447,19 @@ siberia.0020 = {
 		name = siberia.0020.b
 		add_prestige = 20
 	}
+
+	after = {
+		trigger_event = {
+			id = siberia.0021
+			days = { 5 15 }
+		}
+	}
+
 }
 
 # Location is chosen
 siberia.0021 = {
-	type = character_event
+	type = activity_event
 	title = siberia.0021.t
 	desc = siberia.0021.desc
 	theme = RICE_theme_pine_landscape
@@ -1436,7 +1473,7 @@ siberia.0021 = {
 		name = siberia.0021.a
 		trigger_event = {
 			id = siberia.0022
-			days = { 5 15 }
+			days = { 4 8 }
 		}
 	}
 }
@@ -1444,11 +1481,11 @@ siberia.0021 = {
 
 # Reindeer sacrifice - participate in socializing activities or not?
 siberia.0022 = {
-	type = character_event
+	type = activity_event
 	title = siberia.0022.t
 	desc = siberia.0022.desc
 	theme = friendly
-	override_background = { event_background = RICE_background_pine_landscape }
+	override_background = { reference = RICE_background_pine_landscape }
 	
 	left_portrait = root
 	
@@ -1492,7 +1529,7 @@ siberia.0022 = {
 
 # Divination rites with the chirta-ko - ask for advice on what?
 siberia.0023 = {
-	type = character_event
+	type = activity_event
 	title = siberia.0023.t
 	desc = siberia.0023.desc
 	theme = RICE_theme_northern_tribal_temple
@@ -1527,6 +1564,14 @@ siberia.0023 = {
 	
 	option = { # Healthy
 		name = siberia.0023.a
+		trigger = {
+			scope:activity = {
+				has_activity_option = {
+					category = special_type
+					option = RICE_siberia_reindeer_sacrifice_health
+				}
+			}
+		}
 		add_character_flag = RICE_siberia_reindeer_divination_health
 		trigger_event = {
 			id = siberia.0024
@@ -1535,6 +1580,14 @@ siberia.0023 = {
 	}	
 	option = { # Abundance
 		name = siberia.0023.b
+		trigger = {
+			scope:activity = {
+				has_activity_option = {
+					category = special_type
+					option = RICE_siberia_reindeer_sacrifice_realm
+				}
+			}
+		}
 		add_character_flag = RICE_siberia_reindeer_divination_abundance
 		trigger_event = {
 			id = siberia.0024
@@ -1543,6 +1596,14 @@ siberia.0023 = {
 	}	
 	option = { # Abundance
 		name = siberia.0023.c
+		trigger = {
+			scope:activity = {
+				has_activity_option = {
+					category = special_type
+					option = RICE_siberia_reindeer_sacrifice_spirits
+				}
+			}
+		}
 		add_character_flag = RICE_siberia_reindeer_divination_spirits
 		trigger_event = {
 			id = siberia.0024
@@ -1555,7 +1616,7 @@ siberia.0023 = {
 
 # Divination rites with the chirta-ko - advice is given
 siberia.0024 = {
-	type = character_event
+	type = activity_event
 	title = siberia.0024.t
 	desc = {
 		desc = siberia.0024.desc.start
@@ -1620,19 +1681,19 @@ siberia.0024 = {
 				10 = {
 					add_character_modifier = {
 						modifier = RICE_siberia_diviniation_health_advice_1
-						years = 3
+						years = 5
 					}
 				}
 				10 = {
 					add_character_modifier = {
 						modifier = RICE_siberia_diviniation_health_advice_2
-						years = 3
+						years = 5
 					}
 				}
 				10 = {
 					add_character_modifier = {
 						modifier = RICE_siberia_diviniation_health_advice_3
-						years = 3
+						years = 5
 					}
 				}
 			}
@@ -1643,19 +1704,19 @@ siberia.0024 = {
 				10 = {
 					add_character_modifier = {
 						modifier = RICE_siberia_diviniation_abundance_advice_1
-						years = 3
+						years = 5
 					}
 				}
 				10 = {
 					add_character_modifier = {
 						modifier = RICE_siberia_diviniation_abundance_advice_2
-						years = 3
+						years = 5
 					}
 				}
 				10 = {
 					add_character_modifier = {
 						modifier = RICE_siberia_diviniation_abundance_advice_3
-						years = 3
+						years = 5
 					}
 				}
 			}
@@ -1666,19 +1727,19 @@ siberia.0024 = {
 				10 = {
 					add_character_modifier = {
 						modifier = RICE_siberia_diviniation_spirits_advice_1
-						years = 3
+						years = 5
 					}
 				}
 				10 = {
 					add_character_modifier = {
 						modifier = RICE_siberia_diviniation_spirits_advice_2
-						years = 3
+						years = 5
 					}
 				}
 				10 = {
 					add_character_modifier = {
 						modifier = RICE_siberia_diviniation_spirits_advice_3
-						years = 3
+						years = 5
 					}
 				}
 			}
@@ -1709,7 +1770,7 @@ siberia.0024 = {
 
 # Arrive at the altar the next day
 siberia.0025 = {
-	type = character_event
+	type = activity_event
 	title = siberia.0025.t
 	desc = siberia.0025.desc
 	theme = RICE_theme_forest_shaman
@@ -1731,7 +1792,7 @@ siberia.0025 = {
 
 # Prayers and reindeer sacrifice
 siberia.0026 = {
-	type = character_event
+	type = activity_event
 	title = siberia.0026.t
 	desc = siberia.0026.desc
 	theme = RICE_theme_forest_shaman
@@ -1772,7 +1833,7 @@ siberia.0026 = {
 
 # One of the reindeer sacrificed is discovered to have been pregnant
 siberia.0027 = {
-	type = character_event
+	type = activity_event
 	title = siberia.0027.t
 	desc = siberia.0027.desc
 	theme = RICE_theme_forest_shaman
@@ -1792,11 +1853,11 @@ siberia.0027 = {
 
 # The formal ritual is over
 siberia.0028 = {
-	type = character_event
+	type = activity_event
 	title = siberia.0028.t
 	desc = siberia.0028.desc
 	theme = faith
-	override_background = { event_background = feast }
+	override_background = { reference = feast }
 	
 	left_portrait = {
 		character = root
@@ -1816,7 +1877,7 @@ siberia.0028 = {
 
 # Reindeer sacrifice ends
 siberia.0029 = {
-	type = character_event
+	type = activity_event
 	title = siberia.0029.t
 	desc = siberia.0029.desc
 	theme = RICE_theme_pine_landscape
@@ -1837,22 +1898,26 @@ siberia.0029 = {
 	}
 	
 	after = {
-		trigger_event = {
-			id = siberia.0030
-			days = 1
+		scope:activity = {
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_piety = 25
+			}	
+			hidden_effect = { skip_activity_phase = yes }
 		}
 	}	
 }
 
 
-siberia.0030 = {
-	hidden = yes	
-	immediate = {
-		scope:activity = {
-			complete_activity = yes
-		}
-	}
-}
+# siberia.0030 = {
+# 	hidden = yes	
+# 	immediate = {
+# 		scope:activity = {
+# 			complete_activity = yes
+# 		}
+# 	}
+# }
 
 
 ######################################################################################
@@ -2298,7 +2363,7 @@ siberia.0045 = {
 		name = siberia.0045.a
 		add_character_modifier = {
 			modifier = RICE_siberia_delicious_frozen_dumplings
-			years = 3
+			years = 5
 		}
 	}
 }
@@ -2473,7 +2538,7 @@ siberia.0048 = {
 		name = siberia.0048.a
 		add_character_modifier = {
 			modifier = RICE_siberia_reindeer_moose_fat
-			years = 3
+			years = 5
 		}
 	}
 }
@@ -2486,7 +2551,7 @@ siberia.0049 = {
 	title = siberia.0049.t
 	desc = siberia.0049.desc
 	theme = medicine
-	override_background = { event_background = sitting_room }
+	override_background = { reference = sitting_room }
 	
 	left_portrait = {
 		character = root
@@ -2531,7 +2596,7 @@ siberia.0049 = {
 		name = siberia.0049.a
 		add_character_modifier = {
 			modifier = RICE_siberia_fireweed_tea
-			years = 3
+			years = 5
 		}
 	}
 }
@@ -2586,7 +2651,7 @@ siberia.0050 = {
 		name = siberia.0050.a
 		add_character_modifier = {
 			modifier = RICE_siberia_birch_shavings
-			years = 3
+			years = 5
 		}
 	}
 }

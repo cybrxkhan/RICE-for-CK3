@@ -44,7 +44,7 @@ khuzestan.0002 = {
 	title = khuzestan.0002.t
 	desc = khuzestan.0002.desc
 	theme = faith
-	override_background = { event_background = garden }
+	override_background = { reference = RICE_background_mena_garden }
 	
 	right_portrait = {
 		character = root
@@ -53,17 +53,14 @@ khuzestan.0002 = {
 	
 	immediate = {
 		play_music_cue = mx_cue_sacredrite
+		faith = {
+			save_scope_as = gnostic_faith
+		}
 	}
 	
 	option = { # Ok
 		name = khuzestan.0002.a
 		RICE_mandaean_baptism_effect = yes
-	}
-
-	after = {
-		scope:activity = {
-			complete_activity = yes
-		}
 	}
 
 }
@@ -75,7 +72,7 @@ khuzestan.0005 = {
 	title = khuzestan.0005.t
 	desc = khuzestan.0005.desc
 	theme = diplomacy_majesty_focus
-	override_background = { event_background = RICE_background_iranian_throne_room }
+	override_background = { reference = RICE_background_iranian_throne_room }
 	
 	left_portrait = scope:khuzi_hero
 	
@@ -160,7 +157,7 @@ khuzestan.0006 = {
 		}	
 	}
 	theme = diplomacy_majesty_focus
-	override_background = { event_background = RICE_background_iranian_throne_room }
+	override_background = { reference = RICE_background_iranian_throne_room }
 	
 	left_portrait = {
 		character = scope:khuzi_hero
@@ -620,75 +617,69 @@ khuzestan.0020 = {
 	type = character_event
 	title = khuzestan.0020.t
 	desc = khuzestan.0020.desc
-	theme = friendly
-	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	theme = travel
+	override_background = { reference = RICE_background_khuzestan_nature }
 	
 	left_portrait = root
-	
-	immediate = {
-		# title:c_tustar = { #For loc.
-		# 	save_scope_as = tustar
-		# }
-		# Stop characters from planning multiple activities at once
-		add_character_flag = planning_an_activity
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_khuzestan_tomb_of_daniel_pilgrimage
+		}
 	}
-	
+
 	option = { # Ok
 		name = khuzestan.0020.a
-		# Choose appropriate location - Tustar
-		title:b_as-sus.title_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_khuzestan_tomb_of_daniel_pilgrimage
-			}	
-		}
 	}
 }
 
 # Pilgrimage begins
-khuzestan.0021 = {
-	type = character_event
-	title = khuzestan.0021.t
-	desc = khuzestan.0021.desc
-	theme = RICE_theme_khuzestan_nature
-	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+# khuzestan.0021 = {
+# 	type = character_event
+# 	title = khuzestan.0021.t
+# 	desc = khuzestan.0021.desc
+# 	theme = RICE_theme_khuzestan_nature
+# 	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
 	
-	right_portrait = {
-		character = root
-		animation = happiness
-	}
+# 	right_portrait = {
+# 		character = root
+# 		animation = happiness
+# 	}
 	
-	immediate = {
-		if = {
-			limit = {
-				is_target_in_global_variable_list = {
-					name = unavailable_unique_decisions
-					target = flag:RICE_khuzestan_daniel_reburied
-				}
-			}
-			ordered_in_global_list = {
-				variable = RICE_khuzestan_sanjar_random_list
-				save_scope_as = sanjar
-			}
-		}
-		religion:christianity_religion = { save_scope_as = christianity }
-		religion:islam_religion = { save_scope_as = islam }
-		religion:judaism_religion = { save_scope_as = judaism }
-		play_music_cue = "mx_cue_epic_sacral_moment"
-	}
+# 	immediate = {
+# 		if = {
+# 			limit = {
+# 				is_target_in_global_variable_list = {
+# 					name = unavailable_unique_decisions
+# 					target = flag:RICE_khuzestan_daniel_reburied
+# 				}
+# 			}
+# 			ordered_in_global_list = {
+# 				variable = RICE_khuzestan_sanjar_random_list
+# 				save_scope_as = sanjar
+# 			}
+# 		}
+# 		religion:christianity_religion = { save_scope_as = christianity }
+# 		religion:islam_religion = { save_scope_as = islam }
+# 		religion:judaism_religion = { save_scope_as = judaism }
+# 		play_music_cue = "mx_cue_epic_sacral_moment"
+# 	}
 	
-	option = { # Ok
-		name = khuzestan.0021.a
-		trigger_event = {
-			id = khuzestan.0022
-			days = { 10 20 }
-		}
-	}
-}
+# 	option = { # Ok
+# 		name = khuzestan.0021.a
+# 		trigger_event = {
+# 			id = khuzestan.0022
+# 			days = { 10 20 }
+# 		}
+# 	}
+# }
 
 # Arrival in Sus
 khuzestan.0022 = {
-	type = character_event
+	type = activity_event
 	title = khuzestan.0022.t
 	desc = {
 		desc = khuzestan.0022.desc
@@ -712,6 +703,24 @@ khuzestan.0022 = {
 		character = root
 		animation = personality_compassionate
 	}
+
+	immediate = {
+		religion:christianity_religion = { save_scope_as = christianity }
+		religion:islam_religion = { save_scope_as = islam }
+		religion:judaism_religion = { save_scope_as = judaism }
+		if = {
+			limit = {
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_khuzestan_daniel_reburied
+				}
+			}
+			ordered_in_global_list = {
+				variable = RICE_khuzestan_sanjar_random_list
+				save_scope_as = sanjar
+			}
+		}
+	}
 	
 	option = { # Ok
 		name = khuzestan.0022.a
@@ -724,7 +733,7 @@ khuzestan.0022 = {
 
 # Visit the tomb
 khuzestan.0023 = {
-	type = character_event
+	type = activity_event
 	title = khuzestan.0023.t
 	desc = {
 		first_valid = {
@@ -750,53 +759,49 @@ khuzestan.0023 = {
 	
 	option = { # Ok
 		name = khuzestan.0023.a
-		trigger_event = {
-			id = khuzestan.0024
-			days = { 3 6 }
-		}
-	}
-}
-
-# Return home
-khuzestan.0024 = {
-	type = character_event
-	title = khuzestan.0024.t
-	desc = khuzestan.0024.desc
-	theme = RICE_theme_khuzestan_nature
-	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
-	
-	right_portrait = {
-		character = root
-		animation = personality_content
-	}
-	
-	option = { # Ok
-		name = khuzestan.0024.a
-		if = {
-			limit = {				
-				is_target_in_global_variable_list = {
-					name = unavailable_unique_decisions
-					target = flag:RICE_khuzestan_daniel_reburied
-				}
-			}			
-			add_piety = 250
-		}
-		else = {
-			add_piety = 150
-		}
-		pilgrimage_additional_reward_effect = yes
-		add_character_modifier = {
-			modifier = RICE_khuzestan_daniel_pilgrimage_done
-			years = 10
-		}
+		RICE_khuzestan_tomb_of_daniel_pilgrimage_completed_log_entry_effect = yes
+		# trigger_event = {
+		# 	id = khuzestan.0024
+		# 	days = { 3 6 }
+		# }
 	}
 
 	after = {
-		scope:activity = {
-			complete_activity = yes
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
 		}
 	}
+
 }
+
+# Return home
+# khuzestan.0024 = {
+# 	type = activity_event
+# 	title = khuzestan.0024.t
+# 	desc = khuzestan.0024.desc
+# 	theme = RICE_theme_khuzestan_nature
+# 	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+# 	right_portrait = {
+# 		character = root
+# 		animation = personality_content
+# 	}
+	
+# 	option = { # Ok
+# 		name = khuzestan.0024.a
+# 		RICE_khuzestan_tomb_of_daniel_pilgrimage_completed_log_entry_effect = yes
+# 	}
+
+# 	after = {
+# 		hidden_effect = {
+# 			scope:activity = {
+# 				hidden_effect = { skip_activity_phase = yes }
+# 			}
+# 		}
+# 	}
+# }
 
 # Move the tomb
 khuzestan.0025 = {
@@ -896,16 +901,15 @@ khuzestan.0026 = {
 
 # Make preparations for baptism
 khuzestan.0030 = {
-	type = character_event
+	type = activity_event
 	title = khuzestan.0030.t
 	desc = khuzestan.0030.desc
-	theme = friendly
-	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	theme = faith
+	override_background = { reference = temple_mosque }
 	
 	left_portrait = root
 	
 	immediate = {
-		add_character_flag = planning_an_activity
 		faith = {
 			save_scope_as = mandean
 		}
@@ -913,12 +917,9 @@ khuzestan.0030 = {
 	
 	option = { # Ok
 		name = khuzestan.0030.a
-		# Choose appropriate location
-		capital_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_mandaean_parwanaya
-			}	
+		trigger_event = {
+			id = khuzestan.0031
+			days = { 3 6 }
 		}
 	}
 }
@@ -926,10 +927,11 @@ khuzestan.0030 = {
 
 # Parwanaya Begins
 khuzestan.0031 = {
-	type = character_event
+	type = activity_event
 	title = khuzestan.0031.t
 	desc = khuzestan.0031.desc
 	theme = faith
+	override_background = { reference = RICE_background_mena_garden }
 	
 	right_portrait = {
 		character = root
@@ -957,11 +959,11 @@ khuzestan.0031 = {
 
 # Parwanaya Day 1
 khuzestan.0032 = {
-	type = character_event
+	type = activity_event
 	title = khuzestan.0032.t
 	desc = khuzestan.0032.desc
 	theme = faith
-	override_background = { event_background = garden }
+	override_background = { reference = RICE_background_mena_garden }
 	
 	right_portrait = {
 		character = root
@@ -984,11 +986,11 @@ khuzestan.0032 = {
 
 # Parwanaya Day 2
 khuzestan.0033 = {
-	type = character_event
+	type = activity_event
 	title = khuzestan.0033.t
 	desc = khuzestan.0033.desc
 	theme = faith
-	override_background = { event_background = garden }
+	override_background = { reference = RICE_background_mena_garden }
 	
 	right_portrait = {
 		character = root
@@ -1010,11 +1012,11 @@ khuzestan.0033 = {
 
 # Parwanaya Day 3
 khuzestan.0034 = {
-	type = character_event
+	type = activity_event
 	title = khuzestan.0034.t
 	desc = khuzestan.0034.desc
 	theme = faith
-	override_background = { event_background = garden }
+	override_background = { reference = RICE_background_mena_garden }
 	
 	right_portrait = {
 		character = root
@@ -1036,11 +1038,11 @@ khuzestan.0034 = {
 
 # Parwanaya Day 4
 khuzestan.0035 = {
-	type = character_event
+	type = activity_event
 	title = khuzestan.0035.t
 	desc = khuzestan.0035.desc
 	theme = faith
-	override_background = { event_background = garden }
+	override_background = { reference = RICE_background_mena_garden }
 	
 	right_portrait = {
 		character = root
@@ -1062,11 +1064,11 @@ khuzestan.0035 = {
 
 # Parwanaya Day 5
 khuzestan.0036 = {
-	type = character_event
+	type = activity_event
 	title = khuzestan.0036.t
 	desc = khuzestan.0036.desc
 	theme = faith
-	override_background = { event_background = garden }
+	override_background = { reference = RICE_background_mena_garden }
 	
 	right_portrait = {
 		character = root
@@ -1089,11 +1091,11 @@ khuzestan.0036 = {
 
 # Parwanaya Ends
 khuzestan.0037 = {
-	type = character_event
+	type = activity_event
 	title = khuzestan.0037.t
 	desc = khuzestan.0037.desc
-	theme = friendly
-	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	theme = faith
+	override_background = { reference = temple_mosque }
 	
 	right_portrait = {
 		character = root
@@ -1106,13 +1108,18 @@ khuzestan.0037 = {
 		add_prestige = 25
 		add_character_modifier = {
 			modifier = RICE_khuzestan_celebrated_parwanaya
-			years = 10
+			years = 5
 		}
 	}
 
 	after = {
 		scope:activity = {
-			complete_activity = yes
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_piety = 25
+			}	
+			hidden_effect = { skip_activity_phase = yes }
 		}
 	}
 }
@@ -1219,7 +1226,7 @@ khuzestan.0051 = {
 	title = khuzestan.0051.t
 	desc = khuzestan.0051.desc
 	theme = friendly
-	override_background = { event_background = bp1_kitchen_western }
+	override_background = { reference = bp1_kitchen_western }
 	
 	left_portrait = {
 		character = root

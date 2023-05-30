@@ -473,30 +473,40 @@ guanche.0006 = {
 ######################################################################################
 
 
-guanche.0010 = {
-	hidden = yes	
-	immediate = {
-		capital_province = { save_scope_as = rain_ritual_province } #For loc.
-		# Stop characters from planning multiple activities at once.
-		add_character_flag = planning_an_activity
-		# Choose appropriate location
-		scope:rain_ritual_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_guanche_rain_ritual
-			}	
-		}
-	}
-}
+# guanche.0010 = {
+# 	hidden = yes	
+# 	immediate = {
+# 		capital_province = { save_scope_as = rain_ritual_province } #For loc.
+# 		# Stop characters from planning multiple activities at once.
+# 		add_character_flag = planning_an_activity
+# 		# Choose appropriate location
+# 		scope:rain_ritual_province = {	
+# 			spawn_activity = {
+# 				owner = root
+# 				type = activity_guanche_rain_ritual
+# 			}	
+# 		}
+# 	}
+# }
 
 
 
 
 # Rain rituals
 guanche.0011 = {
-	type = character_event
+	type = activity_event
 	title = guanche.0011.t
-	desc = guanche.0011.desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					religion = religion:north_african_religion
+				}
+				desc = guanche.0011.desc
+			}		
+			desc = guanche.0011.desc.culture		
+		}
+	}
 	theme = RICE_theme_guanche_shrine
 	
 	right_portrait = {
@@ -505,7 +515,10 @@ guanche.0011 = {
 	}
 	
 	immediate = {
-		capital_county = { save_scope_as = rain_ritual_county } #For loc.
+		scope:activity = {
+			activity_location = { save_scope_as = rain_ritual_county }
+		}
+		#capital_county = { save_scope_as = rain_ritual_county } #For loc.
 	}
 	
 	option = { # Normal effort
@@ -795,7 +808,7 @@ guanche.0011 = {
 
 # Conclude rain ritual
 guanche.0012 = {
-	type = character_event
+	type = activity_event
 	title = guanche.0012.t
 	desc = guanche.0012.desc
 	theme = RICE_theme_guanche_shrine
@@ -811,7 +824,7 @@ guanche.0012 = {
 				has_character_flag = RICE_guanche_rain_ritual_result_amazing
 			}
 			add_piety = 100
-			capital_county = {
+			scope:activity.activity_location.county = {
 				add_county_modifier = {
 					modifier = RICE_guanche_rain_blessing_amazing
 					years = 5
@@ -823,7 +836,7 @@ guanche.0012 = {
 				has_character_flag = RICE_guanche_rain_ritual_result_great
 			}
 			add_piety = 75
-			capital_county = {
+			scope:activity.activity_location.county = {
 				add_county_modifier = {
 					modifier = RICE_guanche_rain_blessing_great
 					years = 5
@@ -835,7 +848,7 @@ guanche.0012 = {
 				has_character_flag = RICE_guanche_rain_ritual_result_good
 			}
 			add_piety = 50
-			capital_county = {
+			scope:activity.activity_location.county = {
 				add_county_modifier = {
 					modifier = RICE_guanche_rain_blessing_good
 					years = 5
@@ -853,60 +866,25 @@ guanche.0012 = {
 	}
 	
 	after = {
-		trigger_event = {
-			id = guanche.0013
-			days = 1
-		}
-	
-	}
-}
-
-
-
-guanche.0013 = {
-	hidden = yes	
-	immediate = {	
-		if = {
-			limit = {
-				has_character_flag = RICE_guanche_rain_ritual_result_amazing
-			}
-			remove_character_flag = RICE_guanche_rain_ritual_result_amazing
-		}
-		if = {
-			limit = {
-				has_character_flag = RICE_guanche_rain_ritual_result_great
-			}
-			remove_character_flag = RICE_guanche_rain_ritual_result_great
-		}
-		if = {
-			limit = {
-				has_character_flag = RICE_guanche_rain_ritual_result_good
-			}
-			remove_character_flag = RICE_guanche_rain_ritual_result_good
-		}
-		# if = {
-		# 	limit = {
-		# 		has_character_flag = RICE_guanche_rain_ritual_normal
-		# 	}
-		# 	remove_character_flag = RICE_guanche_rain_ritual_normal
-		# }
-		if = {
-			limit = {
-				has_character_flag = RICE_guanche_rain_ritual_large
-			}
-			remove_character_flag = RICE_guanche_rain_ritual_large
-		}
-		if = {
-			limit = {
-				has_character_flag = RICE_guanche_rain_ritual_huge
-			}
-			remove_character_flag = RICE_guanche_rain_ritual_huge
-		}
 		scope:activity = {
-			complete_activity = yes
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_piety = 25
+			}	
+			hidden_effect = { skip_activity_phase = yes }
 		}
 	}
 }
+
+
+
+# guanche.0013 = {
+# 	hidden = yes	
+# 	immediate = {	
+#
+# 	}
+# }
 
 
 
@@ -923,27 +901,18 @@ guanche.0013 = {
 
 # Prepare for Benesmen
 guanche.0030 = {
-	type = character_event
+	type = activity_event
 	title = guanche.0030.t
 	desc = guanche.0030.desc
-	theme = friendly
+	theme = RICE_theme_guanche_shrine
 	
 	right_portrait = root
 	
-	immediate = {
-		capital_province = { save_scope_as = capital_province } #For loc.
-		# Stop characters from planning multiple activities at once.
-		add_character_flag = planning_an_activity
-	}
-	
 	option = { # Ok
 		name = guanche.0030.a
-		# Choose appropriate location
-		scope:capital_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_guanche_benesmen_festival
-			}	
+		trigger_event = {
+			id = guanche.0031
+			days = { 5 10 }
 		}
 	}
 }
@@ -951,7 +920,7 @@ guanche.0030 = {
 
 # Benesmen begins
 guanche.0031 = {
-	type = character_event
+	type = activity_event
 	title = guanche.0031.t
 	desc = guanche.0031.desc
 	theme = RICE_theme_guanche_shrine
@@ -1055,7 +1024,7 @@ guanche.0031 = {
 
 # Benesmen ends
 guanche.0032 = {
-	type = character_event
+	type = activity_event
 	title = guanche.0032.t
 	desc = guanche.0032.desc
 	theme = RICE_theme_guanche_shrine
@@ -1067,33 +1036,39 @@ guanche.0032 = {
 	
 	option = { # Fun!
 		name = guanche.0032.a
+		add_piety = 25
+		add_prestige = 25
 		add_character_modifier = {
 			modifier = RICE_guanche_recently_celebrated_benesmen
-			years = 3
+			years = 5
 		}
 	}
 	
 	after = {
-		trigger_event = {
-			id = guanche.0033
-			days = 1
+		scope:activity = {
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_piety = 25
+			}	
+			hidden_effect = { skip_activity_phase = yes }
 		}
 	}	
 }
 
 # Misc cleanup
-guanche.0033 = {
-	hidden = yes	
-	immediate = {
-		scope:activity = {
-			complete_activity = yes
-		}
-	}
-}
+# guanche.0033 = {
+# 	hidden = yes	
+# 	immediate = {
+# 		scope:activity = {
+# 			complete_activity = yes
+# 		}
+# 	}
+# }
 
 # Assigning Tasks
 guanche.0034 = {
-	type = character_event
+	type = activity_event
 	title = guanche.0034.t
 	desc = guanche.0034.desc
 	theme = RICE_theme_guanche_shrine
@@ -1109,7 +1084,7 @@ guanche.0034 = {
 
 # Prayer to the fertility deity
 guanche.0035 = {
-	type = character_event
+	type = activity_event
 	title = guanche.0035.t
 	desc = guanche.0035.desc
 	theme = RICE_theme_guanche_shrine
@@ -1141,7 +1116,7 @@ guanche.0035 = {
 
 # Watching the mountains and hills with awe
 guanche.0036 = {
-	type = character_event
+	type = activity_event
 	title = guanche.0036.t
 	desc = guanche.0036.desc
 	theme = RICE_theme_guanche_coast #RICE_theme_guanche_madeira
@@ -1163,7 +1138,7 @@ guanche.0036 = {
 
 # Offering skulls of goats and sheep
 guanche.0037 = {
-	type = character_event
+	type = activity_event
 	title = guanche.0037.t
 	desc = guanche.0037.desc
 	theme = RICE_theme_guanche_shrine
@@ -1181,7 +1156,7 @@ guanche.0037 = {
 
 # Lithophones
 guanche.0038 = {
-	type = character_event
+	type = activity_event
 	title = guanche.0038.t
 	desc = guanche.0038.desc
 	theme = RICE_theme_guanche_shrine
@@ -1205,7 +1180,7 @@ guanche.0038 = {
 
 # Food
 guanche.0039 = {
-	type = character_event
+	type = activity_event
 	title = guanche.0039.t
 	desc = guanche.0039.desc
 	theme = RICE_theme_guanche_shrine
@@ -1230,7 +1205,7 @@ guanche.0039 = {
 
 # Juniper
 guanche.0040 = {
-	type = character_event
+	type = activity_event
 	title = guanche.0040.t
 	desc = guanche.0040.desc
 	theme = RICE_theme_guanche_shrine
@@ -1248,7 +1223,7 @@ guanche.0040 = {
 
 # Dancing fun!
 guanche.0041 = {
-	type = character_event
+	type = activity_event
 	title = guanche.0041.t
 	desc = guanche.0041.desc
 	theme = RICE_theme_guanche_madeira
@@ -1271,7 +1246,7 @@ guanche.0041 = {
 
 # What songs to sing?
 guanche.0042 = {
-	type = character_event
+	type = activity_event
 	title = guanche.0042.t
 	desc = guanche.0042.desc
 	theme = RICE_theme_guanche_madeira
@@ -1293,7 +1268,7 @@ guanche.0042 = {
 
 # Spectacle of sport
 guanche.0043 = {
-	type = character_event
+	type = activity_event
 	title = guanche.0043.t
 	desc = guanche.0043.desc
 	theme = RICE_theme_guanche_coast
@@ -1311,7 +1286,7 @@ guanche.0043 = {
 
 # Resolving disputes
 guanche.0044 = {
-	type = character_event
+	type = activity_event
 	title = guanche.0044.t
 	desc = guanche.0044.desc
 	theme = RICE_theme_guanche_shrine
@@ -1590,7 +1565,7 @@ guanche.0060 = {
 	title = guanche.0060.t
 	desc = guanche.0060.desc
 	theme = secret
-	override_background = { event_background = RICE_background_guanche_coast }
+	override_background = { reference = RICE_background_guanche_coast }
 	
 	right_portrait = {
 		character = root
@@ -1817,7 +1792,7 @@ guanche.0063 = {
 	title = guanche.0063.t
 	desc = guanche.0063.desc
 	theme = martial
-	override_background = { event_background = RICE_background_guanche_coast }	
+	override_background = { reference = RICE_background_guanche_coast }	
 	
 	left_portrait = {
 		character = root
@@ -1900,7 +1875,7 @@ guanche.0064 = {
 	title = guanche.0064.t
 	desc = guanche.0064.desc
 	theme = friendly
-	override_background = { event_background = RICE_background_guanche_madeira }	
+	override_background = { reference = RICE_background_guanche_madeira }	
 	
 	left_portrait = {
 		character = root

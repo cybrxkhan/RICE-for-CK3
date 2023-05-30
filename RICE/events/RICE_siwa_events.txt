@@ -21,79 +21,46 @@ namespace = siwa
 
 # Choose whether this will be a private or public event
 siwa.0010 = {
-	type = character_event
+	type = activity_event
 	title = siwa.0010.t
 	desc = siwa.0010.desc
-	#desc = {
-	#	first_valid = {
-	#		triggered_desc = {
-	#			trigger = { has_character_flag = RICE_springs_visiting_siwa }
-	#			desc = siwa.0010.desc.a
-	#		}
-	#		triggered_desc = {
-	#			trigger = { has_character_flag = RICE_springs_visiting_local_oasis }
-	#			desc = siwa.0010.desc.b
-	#		}
-	#	}
-	#	desc = siwa.0010.desc.ending
-	#}
 	theme = RICE_theme_egypt_village
 	
 	right_portrait = root
 	
-	immediate = {
-		# Stop characters from planning multiple activities at once.
-		add_character_flag = {
-			flag = planning_an_activity
-			#days = 15
-		}
-	}
-	
-	option = { # Private
+	option = { # ok
 		name = siwa.0010.a
-		add_character_flag = RICE_siwa_springs_private
-		# Choose appropriate location
-		title:b_siwa.title_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_siwa_spring_visit
-			}	
-		}
-		stress_impact = {
-			gregarious = minor_stress_impact_gain
-		}
-		custom_tooltip = siwa.0010.a.tooltip
-	}	
-	option = { # Public
-		name = siwa.0010.b
-		add_character_flag = RICE_siwa_springs_public
-		# Choose appropriate location
-		title:b_siwa.title_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_siwa_spring_visit
-			}	
-		}
-		stress_impact = {
-			shy = minor_stress_impact_gain
-		}
-		custom_tooltip = siwa.0010.b.tooltip
+		trigger_event = siwa.0011
 	}
 }
 
 
 # Day of the Springs visit
 siwa.0011 = {
-	type = character_event
+	type = activity_event
 	title = siwa.0011.t
 	desc = {
 		first_valid = {
 			triggered_desc = {
-				trigger = { has_character_flag = RICE_siwa_springs_public }
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_hot_springs_visit_type_public
+						}
+					}
+				}
 				desc = siwa.0011.desc.public
 			}
 			triggered_desc = {
-				trigger = { has_character_flag = RICE_siwa_springs_private }
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_hot_springs_visit_type_private
+						}
+					}
+				}
 				desc = siwa.0011.desc.private
 			}
 		}
@@ -105,10 +72,17 @@ siwa.0011 = {
 		animation = personality_content
 	}
 
+	trigger = {
+
+	}
+
 	immediate = {
-		if = {
-			limit = { has_character_flag = RICE_siwa_springs_private } # Doesn't make sense for a public visit
+		#if = {
+		#	limit = { has_character_flag = RICE_siwa_springs_private } # Doesn't make sense for a public visit
 			add_character_flag = is_naked
+		#}
+		scope:activity = {
+			activity_location = { save_scope_as = location }
 		}
 	}
 	
@@ -116,64 +90,97 @@ siwa.0011 = {
 		name = siwa.0011.a
 		if = {
 			limit = {
-				has_character_flag = RICE_siwa_springs_private
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_private
+					}
+				}
 			}
 			add_character_modifier = {
 				modifier = RICE_siwa_visited_fountain_of_the_sun_private
-				years = 3
+				years = 5
 			}
 			stress_impact = {
-				base = major_stress_impact_loss
-				lazy = minor_stress_impact_loss
-				calm = minor_stress_impact_loss
+				base = medium_stress_impact_loss
+				lazy = miniscule_stress_impact_loss
+				calm = miniscule_stress_impact_loss
 			}	
 		}
-		if = {
+		else_if = {
 			limit = {
-				has_character_flag = RICE_siwa_springs_public
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_public
+					}
+				}
 			}
 			add_character_modifier = {
 				modifier = RICE_siwa_visited_fountain_of_the_sun_public
-				years = 3
+				years = 5
 			}
-			add_prestige = 25
+			add_prestige = 50
 			stress_impact = {
-				base = medium_stress_impact_loss
-				lazy = minor_stress_impact_loss
-				calm = minor_stress_impact_loss
+				base = minor_stress_impact_loss
+				lazy = miniscule_stress_impact_loss
+				calm = miniscule_stress_impact_loss
 			}
 		}	
 	}
 	
 	after = {
-		if = {
-			limit = { has_character_flag = is_naked }
-			remove_character_flag = is_naked
-		}
-		if = {
-			limit = { has_character_flag = RICE_siwa_springs_private }
-			remove_character_flag = RICE_siwa_springs_private
-		}
-		if = {
-			limit = { has_character_flag = RICE_siwa_springs_public }
-			remove_character_flag = RICE_siwa_springs_public
-		}
-		trigger_event = {
-			id = siwa.0012
+		RICE_hot_springs_memory_effect = yes
+		set_variable = {
+			name = RICE_hot_springs_visit_special_location
+			value = flag:siwa
 			days = 1
 		}
-	}	
-}
-
-
-siwa.0012 = {
-	hidden = yes	
-	immediate = {
+		# Just check for the modifier lol
+		# if = {
+		# 	limit = {
+		# 		scope:activity = {
+		# 			has_activity_option = {
+		# 				category = special_type
+		# 				option = RICE_hot_springs_visit_type_public
+		# 			}
+		# 		}
+		# 	}
+		# 	set_variable = {
+		# 		name = RICE_hot_springs_visit_special_type
+		# 		value = flag:public
+		# 		days = 1
+		# 	}
+		# }
+		# else = {			
+		# 	set_variable = {
+		# 		name = RICE_hot_springs_visit_special_type
+		# 		value = flag:private
+		# 		days = 1
+		# 	}
+		# }
 		scope:activity = {
-			complete_activity = yes
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				stress_impact = {
+					base = minor_stress_impact_loss
+				}
+			}	
+			hidden_effect = { skip_activity_phase = yes }
 		}
-	}
+	}		
 }
+
+
+# siwa.0012 = {
+# 	hidden = yes	
+# 	immediate = {
+# 		scope:activity = {
+# 			complete_activity = yes
+# 		}
+# 	}
+# }
 
 
 
@@ -243,8 +250,8 @@ siwa.0020 = {
 	#	#	desc = siwa.0020.desc.siwa.ending
 	#	#}
 	#}
-	theme = faith
-	#override_background = { event_background = sitting_room }
+	theme = RICE_theme_egypt_temple_exterior
+	#override_background = { reference = sitting_room }
 	
 	right_portrait = root
 	
@@ -327,7 +334,7 @@ siwa.0021 = {
 		#	desc = siwa.0021.desc.siwa.ending
 		#}
 	}
-	theme = faith
+	theme = RICE_theme_egypt_temple_interior
 	
 	left_portrait = {
 		character = root
@@ -672,18 +679,14 @@ siwa.0021 = {
 
 # Oracle of Amun
 siwa.0022 = {
-	type = character_event
+	type = activity_event
 	title = siwa.0022.t
 	desc = siwa.0022.desc
-	theme = faith
+	theme = RICE_theme_egypt_temple_interior
 	
 	left_portrait = {
 		character = root
 		animation = personality_zealous
-	}
-	
-	immediate = {
-		add_piety = 200
 	}
 	
 	option = { # Family and friends
@@ -701,6 +704,10 @@ siwa.0022 = {
 					}
 				}
 				10 = {
+					modifier = {
+						add = 15
+						has_activity_intent = RICE_siwa_oracle_of_amun_devotion_intent
+					}
 					send_interface_toast = {
 						left_icon = ROOT
 						title = siwa.0022.oracle_speaks
@@ -711,6 +718,10 @@ siwa.0022 = {
 					}
 				}
 				10 = {
+					modifier = {
+						add = 15
+						has_activity_intent = RICE_siwa_oracle_of_amun_devotion_intent
+					}
 					send_interface_toast = {
 						left_icon = ROOT
 						title = siwa.0022.oracle_speaks
@@ -739,6 +750,10 @@ siwa.0022 = {
 					}
 				}
 				10 = {
+					modifier = {
+						add = 15
+						has_activity_intent = RICE_siwa_oracle_of_amun_devotion_intent
+					}
 					send_interface_toast = {
 						left_icon = ROOT
 						title = siwa.0022.oracle_speaks
@@ -749,6 +764,10 @@ siwa.0022 = {
 					}
 				}
 				10 = {
+					modifier = {
+						add = 15
+						has_activity_intent = RICE_siwa_oracle_of_amun_devotion_intent
+					}
 					send_interface_toast = {
 						left_icon = ROOT
 						title = siwa.0022.oracle_speaks
@@ -777,6 +796,10 @@ siwa.0022 = {
 					}
 				}
 				10 = {
+					modifier = {
+						add = 15
+						has_activity_intent = RICE_siwa_oracle_of_amun_devotion_intent
+					}
 					send_interface_toast = {
 						left_icon = ROOT
 						title = siwa.0022.oracle_speaks
@@ -787,6 +810,10 @@ siwa.0022 = {
 					}
 				}
 				10 = {
+					modifier = {
+						add = 15
+						has_activity_intent = RICE_siwa_oracle_of_amun_devotion_intent
+					}
 					send_interface_toast = {
 						left_icon = ROOT
 						title = siwa.0022.oracle_speaks
@@ -815,6 +842,10 @@ siwa.0022 = {
 					}
 				}
 				10 = {
+					modifier = {
+						add = 15
+						has_activity_intent = RICE_siwa_oracle_of_amun_devotion_intent
+					}
 					send_interface_toast = {
 						left_icon = ROOT
 						title = siwa.0022.oracle_speaks
@@ -825,6 +856,10 @@ siwa.0022 = {
 					}
 				}
 				10 = {
+					modifier = {
+						add = 15
+						has_activity_intent = RICE_siwa_oracle_of_amun_devotion_intent
+					}
 					send_interface_toast = {
 						left_icon = ROOT
 						title = siwa.0022.oracle_speaks
@@ -853,6 +888,10 @@ siwa.0022 = {
 					}
 				}
 				10 = {
+					modifier = {
+						add = 15
+						has_activity_intent = RICE_siwa_oracle_of_amun_devotion_intent
+					}
 					send_interface_toast = {
 						left_icon = ROOT
 						title = siwa.0022.oracle_speaks
@@ -863,6 +902,10 @@ siwa.0022 = {
 					}
 				}
 				10 = {
+					modifier = {
+						add = 15
+						has_activity_intent = RICE_siwa_oracle_of_amun_devotion_intent
+					}
 					send_interface_toast = {
 						left_icon = ROOT
 						title = siwa.0022.oracle_speaks
@@ -877,28 +920,35 @@ siwa.0022 = {
 	}
 	
 	after = {
-		# if = {
-		# 	limit = {
-		# 		NOT = { has_character_flag = RICE_picked_oracle_of_amun_proper }
-		# 	}
-		# }
-		remove_character_flag = RICE_visiting_hibis_temple
-		#remove_character_flag = RICE_visiting_siwa_oracle
-		#remove_character_flag = RICE_picked_oracle_of_amun_proper
-		trigger_event = {
-			id = siwa.0023
-			days = 1
+		RICE_siwa_oracle_of_amun_completed_log_entry_effect = yes
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
 		}
-	}	
+	}
 }
 
-
+# Travel event for Oracle of Amun
 siwa.0023 = {
-	hidden = yes	
-	immediate = {
-		scope:activity = {
-			complete_activity = yes
+	type = character_event
+	title = siwa.0023.t
+	desc = siwa.0023.desc
+	theme = travel
+	
+	left_portrait = root
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity	
+		involved_activity = {
+			has_activity_type = activity_RICE_siwa_oracle_of_amun
 		}
+	}
+	
+	option = { # Ok
+		name = siwa.0023.a
 	}
 }
 
@@ -906,57 +956,22 @@ siwa.0023 = {
 
 # Temple visit start
 siwa.0024 = {
-	type = character_event
+	type = activity_event
 	title = siwa.0024.t
 	desc = siwa.0024.desc
-	theme = faith
-	#override_background = { event_background = sitting_room }
+	theme = RICE_theme_egypt_temple_exterior
+	#override_background = { reference = sitting_room }
 	
 	right_portrait = root
-	
-	immediate = {
-		# Stop characters from planning multiple activities at once.
-		add_character_flag = {
-			flag = planning_an_activity
-			#days = 15
-		}
-		# Choose appropriate location
-		title:b_siwa.title_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_oracle_amun_visit
-			}	
-		}
-	}
 
 	option = { # Oracle of Amun
 		name = siwa.0024.a
-		if = {
-			limit = {
-				has_title = title:c_siwa
-			}
-			remove_short_term_gold = 50
-		}
-		else_if = {
-			limit = {
-				OR = {
-					has_title = title:c_bahriya
-					has_title = title:c_farafra
-					has_title = title:c_dakhla
-					has_title = title:c_kharga
-				}
-			}
-			remove_short_term_gold = 75
-		}
-		else = {
-			remove_short_term_gold = 100
-		}
 	}
 	
 	after = {
 		trigger_event = {
-			id = siwa.0023
-			days = 1
+			id = siwa.0022
+			days = { 5 10 }
 		}
 	}	
 	
@@ -979,7 +994,7 @@ siwa.0050 = {
 	title = siwa.0050.t
 	desc = siwa.0050.desc
 	theme = realm # RICE_theme_egypt_desert
-	override_background = { event_background = RICE_background_egypt_desert }
+	override_background = { reference = RICE_background_egypt_desert }
 	
 	left_portrait = {
 		character = root
@@ -1123,7 +1138,7 @@ siwa.0052 = {
 	title = siwa.0052.t
 	desc = siwa.0052.desc
 	theme = realm # RICE_theme_egypt_desert
-	override_background = { event_background = RICE_background_egypt_village }
+	override_background = { reference = RICE_background_egypt_village }
 	
 	left_portrait = {
 		character = root
@@ -1236,7 +1251,7 @@ siwa.0053 = {
 	title = siwa.0053.t
 	desc = siwa.0053.desc
 	theme = realm # RICE_theme_egypt_desert
-	override_background = { event_background = RICE_background_egypt_village }
+	override_background = { reference = RICE_background_egypt_village }
 	
 	left_portrait = {
 		character = root
@@ -1488,7 +1503,7 @@ siwa.0056 = {
 		}
 	}
 	theme = faith
-	override_background = { event_background = RICE_background_egypt_desert }
+	override_background = { reference = RICE_background_egypt_desert }
 	
 	right_portrait = root
 	

@@ -1,4 +1,34 @@
 ﻿RICE_setup_granada_flavor_pack_effect = {
+
+	#########################################################################
+	#
+	# CULTURE AND RELIGION STUFF
+	#
+	#########################################################################
+
+	# Only remove if player has the relevant DLCs, to prevent Andalusians from having too few traditions
+	if = {
+		limit = {
+			# Has Royal Court
+			has_dlc_feature = hybridize_culture
+			# Has Fate of Iberia
+			has_dlc_feature = the_fate_of_iberia
+		}
+		culture:andalusian = {
+			remove_culture_tradition = tradition_hit_and_run
+			remove_variable = tradition_cooldown
+		}
+	}
+	culture:andalusian = {
+		add_culture_tradition = tradition_RICE_munya_estates
+		remove_variable = tradition_cooldown
+	}	
+
+	#########################################################################
+	#
+	# HISTORY STUFF
+	#
+	#########################################################################
 	# 1066 start date shenanigans
 	if = {
 		limit = {
@@ -301,9 +331,6 @@ RICE_granada_transfer_to_granada_effect = {
 }
 
 
-
-
-
 RICE_granada_tensions_resolved_peacefully_effect = {
 	add_prestige = 100
 	add_piety = -100
@@ -331,8 +358,6 @@ RICE_granada_tensions_resolved_peacefully_effect = {
 		}
 	}
 }
-
-
 
 RICE_granada_tensions_resolved_with_force_effect = {
 	add_prestige = -300
@@ -591,5 +616,999 @@ RICE_granada_cadiz_demolish_idol_effect = {
 				}
 			}
 		}		
+	}
+}
+
+
+
+
+RICE_granada_munya_vacation_private_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_granada_munya_vacation_private_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = special_type
+								option = RICE_granada_munya_vacation_private_type_leisure
+							}
+						}
+					}
+					if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_private_length
+									option = RICE_granada_munya_vacation_private_length_short
+								}
+							}
+						}
+						stress_impact = {
+							base = minor_stress_impact_loss
+						}
+					}
+					else_if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_private_length
+									option = RICE_granada_munya_vacation_private_length_medium
+								}
+							}
+						}
+						stress_impact = {
+							base = medium_stress_impact_loss
+						}
+					}
+					else_if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_private_length
+									option = RICE_granada_munya_vacation_private_length_long
+								}
+							}
+						}
+						stress_impact = {
+							base = major_stress_impact_loss
+						}
+					}
+				}
+				else = {
+					if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_private_length
+									option = RICE_granada_munya_vacation_private_length_short
+								}
+							}
+						}
+						stress_impact = {
+							base = miniscule_stress_impact_loss
+						}
+					}
+					else_if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_private_length
+									option = RICE_granada_munya_vacation_private_length_medium
+								}
+							}
+						}
+						stress_impact = {
+							base = minor_stress_impact_loss
+						}
+					}
+					else_if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_private_length
+									option = RICE_granada_munya_vacation_private_length_long
+								}
+							}
+						}
+						stress_impact = {
+							base = medium_stress_impact_loss
+						}
+					}
+				}
+				if = {
+					limit = {
+						scope:activity.activity_location = {
+							has_holding = no
+						}
+					}
+					stress_impact = {
+						base = medium_stress_impact_loss
+					}
+				}
+				if = {
+					limit = {
+						has_activity_intent = RICE_granada_munya_vacation_private_relaxation_intent
+					}
+					stress_impact = {
+						base = minor_stress_impact_loss
+						shy = miniscule_stress_impact_loss
+						lazy = miniscule_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_granada_munya_vacation_private_reflection_intent
+					}
+					RICE_major_lifestyle_experience_gain_effect = yes
+					stress_impact = {
+						diligent = miniscule_stress_impact_loss
+					}
+					random_list = {
+						75 = { }
+						5 = { add_diplomacy_skill = 1 }
+						5 = { add_martial_skill = 1 }
+						5 = { add_stewardship_skill = 1 }
+						5 = { add_intrigue_skill = 1 }
+						5 = { add_learning_skill = 1 }					
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_granada_munya_vacation_private_exploration_intent
+					}
+					add_prestige = 100
+					stress_impact = {
+						brave = miniscule_stress_impact_loss
+					}
+					add_character_modifier = {
+						modifier = RICE_granada_explored_munya
+						years = 10
+					}
+				}
+				add_character_modifier = {
+					modifier = RICE_granada_vacationed_at_a_munya
+					years = 5
+				}
+			}
+		}
+	}
+}
+
+
+RICE_granada_munya_vacation_private_farms_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_granada_munya_vacation_private_farms_log
+			tags = { good }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {			
+				random_list = {
+					15 = { add_stewardship_lifestyle_xp = minor_lifestyle_xp }
+					30 = { add_stewardship_lifestyle_xp = medium_lifestyle_xp }
+					15 = { add_stewardship_lifestyle_xp = major_lifestyle_xp }
+					15 = { add_learning_lifestyle_xp = minor_lifestyle_xp }
+					30 = { add_learning_lifestyle_xp = medium_lifestyle_xp }
+					15 = { add_learning_lifestyle_xp = major_lifestyle_xp }
+				}
+				random = {
+					chance = 20
+					modifier = {
+						stewardship >= mediocre_skill_rating
+						add = 4
+					}
+					modifier = {
+						stewardship >= medium_skill_rating
+						add = 4
+					}
+					modifier = {
+						stewardship >= decent_skill_rating
+						add = 4
+					}
+					modifier = {
+						stewardship >= high_skill_rating
+						add = 4
+					}
+					modifier = {
+						learning >= mediocre_skill_rating
+						add = 4
+					}
+					modifier = {
+						learning >= medium_skill_rating
+						add = 4
+					}
+					modifier = {
+						learning >= decent_skill_rating
+						add = 4
+					}
+					modifier = {
+						learning >= high_skill_rating
+						add = 4
+					}
+					send_interface_toast = {
+						left_icon = ROOT
+						title = granada.0062.a.title
+						every_held_title = {
+							limit = {
+								tier = tier_county
+							}
+							add_county_modifier = {
+								modifier = RICE_granada_munya_insights_farmland
+								years = 10
+							}	
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+RICE_granada_munya_vacation_private_food_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_granada_munya_vacation_private_food_log
+			tags = { good }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				random_list = {
+					15 = { add_stewardship_lifestyle_xp = minor_lifestyle_xp }
+					30 = { add_stewardship_lifestyle_xp = medium_lifestyle_xp }
+					15 = { add_stewardship_lifestyle_xp = major_lifestyle_xp }
+					15 = { add_learning_lifestyle_xp = minor_lifestyle_xp }
+					30 = { add_learning_lifestyle_xp = medium_lifestyle_xp }
+					15 = { add_learning_lifestyle_xp = major_lifestyle_xp }
+				}
+				random = {
+					chance = 20
+					modifier = {
+						stewardship >= mediocre_skill_rating
+						add = 4
+					}
+					modifier = {
+						stewardship >= medium_skill_rating
+						add = 4
+					}
+					modifier = {
+						stewardship >= decent_skill_rating
+						add = 4
+					}
+					modifier = {
+						stewardship >= high_skill_rating
+						add = 4
+					}
+					modifier = {
+						learning >= mediocre_skill_rating
+						add = 4
+					}
+					modifier = {
+						learning >= medium_skill_rating
+						add = 4
+					}
+					modifier = {
+						learning >= decent_skill_rating
+						add = 4
+					}
+					modifier = {
+						learning >= high_skill_rating
+						add = 4
+					}
+					send_interface_toast = {
+						left_icon = ROOT
+						title = granada.0062.b.title
+						add_character_modifier = {
+							modifier = RICE_granada_munya_insights_foodstuffs
+							years = 10
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+RICE_granada_munya_vacation_private_plants_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_granada_munya_vacation_private_plants_log
+			tags = { good }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				random_list = {
+					15 = { add_diplomacy_lifestyle_xp = minor_lifestyle_xp }
+					30 = { add_diplomacy_lifestyle_xp = medium_lifestyle_xp }
+					15 = { add_diplomacy_lifestyle_xp = major_lifestyle_xp }
+					15 = { add_intrigue_lifestyle_xp = minor_lifestyle_xp }
+					30 = { add_intrigue_lifestyle_xp = medium_lifestyle_xp }
+					15 = { add_intrigue_lifestyle_xp = major_lifestyle_xp }
+				}
+				random = {
+					chance = 20
+					modifier = {
+						intrigue >= mediocre_skill_rating
+						add = 4
+					}
+					modifier = {
+						intrigue >= medium_skill_rating
+						add = 4
+					}
+					modifier = {
+						intrigue >= decent_skill_rating
+						add = 4
+					}
+					modifier = {
+						intrigue >= high_skill_rating
+						add = 4
+					}
+					modifier = {
+						diplomacy >= mediocre_skill_rating
+						add = 4
+					}
+					modifier = {
+						diplomacy >= medium_skill_rating
+						add = 4
+					}
+					modifier = {
+						diplomacy >= decent_skill_rating
+						add = 4
+					}
+					modifier = {
+						diplomacy >= high_skill_rating
+						add = 4
+					}
+					send_interface_toast = {
+						left_icon = ROOT
+						title = granada.0063.a.title
+						add_character_modifier = {
+							modifier = RICE_granada_munya_insights_ornamental_plants
+							years = 10
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+RICE_granada_munya_vacation_private_medicine_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_granada_munya_vacation_private_medicine_log
+			tags = { good }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				random_list = {
+					15 = { add_diplomacy_lifestyle_xp = minor_lifestyle_xp }
+					30 = { add_diplomacy_lifestyle_xp = medium_lifestyle_xp }
+					15 = { add_diplomacy_lifestyle_xp = major_lifestyle_xp }
+					15 = { add_intrigue_lifestyle_xp = minor_lifestyle_xp }
+					30 = { add_intrigue_lifestyle_xp = medium_lifestyle_xp }
+					15 = { add_intrigue_lifestyle_xp = major_lifestyle_xp }
+				}
+				random = {
+					chance = 20
+					modifier = {
+						intrigue >= mediocre_skill_rating
+						add = 4
+					}
+					modifier = {
+						intrigue >= medium_skill_rating
+						add = 4
+					}
+					modifier = {
+						intrigue >= decent_skill_rating
+						add = 4
+					}
+					modifier = {
+						intrigue >= high_skill_rating
+						add = 4
+					}
+					modifier = {
+						diplomacy >= mediocre_skill_rating
+						add = 4
+					}
+					modifier = {
+						diplomacy >= medium_skill_rating
+						add = 4
+					}
+					modifier = {
+						diplomacy >= decent_skill_rating
+						add = 4
+					}
+					modifier = {
+						diplomacy >= high_skill_rating
+						add = 4
+					}
+					send_interface_toast = {
+						left_icon = ROOT
+						title = granada.0063.b.title
+						add_character_modifier = {
+							modifier = RICE_granada_munya_insights_medicine
+							years = 10
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+RICE_granada_munya_vacation_private_chill_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_granada_munya_vacation_private_chill_log
+			tags = { good }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				random = {
+					chance = 20
+					modifier = {
+						has_trait = shy
+						add = 5
+					}
+					modifier = {
+						has_trait = content
+						add = 5
+					}
+					modifier = {
+						has_trait = lazy
+						add = 5
+					}
+					modifier = {
+						has_trait = patient
+						add = 5
+					}
+					modifier = {
+						has_trait = calm
+						add = 5
+					}
+					send_interface_toast = {
+						left_icon = ROOT
+						title = granada.0064.a.title
+						add_character_modifier = {
+							modifier = RICE_granada_munya_well_rested
+							years = 10
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
+RICE_granada_munya_vacation_group_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_granada_munya_vacation_group_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				if = {
+					limit = {						
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_granada_munya_vacation_group_length
+								option = RICE_granada_munya_vacation_group_length_short
+							}
+						}
+					}
+					if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_group_type
+									option = RICE_granada_munya_vacation_group_type_party
+								}
+							}
+						}
+						add_prestige = 80
+					}
+					else_if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_group_type
+									option = RICE_granada_munya_vacation_group_type_gardens
+								}
+							}
+						}
+						add_prestige = 40
+						add_piety = 40
+					}
+					else_if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_group_type
+									option = RICE_granada_munya_vacation_group_type_poetry
+								}
+							}
+						}
+						add_piety = 80
+					}
+					stress_impact = {
+						base = miniscule_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {						
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_granada_munya_vacation_group_length
+								option = RICE_granada_munya_vacation_group_length_medium
+							}
+						}
+					}
+					
+					if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_group_type
+									option = RICE_granada_munya_vacation_group_type_party
+								}
+							}
+						}
+						add_prestige = 160
+					}
+					else_if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_group_type
+									option = RICE_granada_munya_vacation_group_type_gardens
+								}
+							}
+						}
+						add_prestige = 80
+						add_piety = 80
+					}
+					else_if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_group_type
+									option = RICE_granada_munya_vacation_group_type_poetry
+								}
+							}
+						}
+						add_piety = 160
+					}
+					stress_impact = {
+						base = minor_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {						
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_granada_munya_vacation_group_length
+								option = RICE_granada_munya_vacation_group_length_long
+							}
+						}
+					}
+					
+					if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_group_type
+									option = RICE_granada_munya_vacation_group_type_party
+								}
+							}
+						}
+						add_prestige = 240
+					}
+					else_if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_group_type
+									option = RICE_granada_munya_vacation_group_type_gardens
+								}
+							}
+						}
+						add_prestige = 120
+						add_piety = 120
+					}
+					else_if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_group_type
+									option = RICE_granada_munya_vacation_group_type_poetry
+								}
+							}
+						}
+						add_piety = 240
+					}
+					stress_impact = {
+						base = medium_stress_impact_loss
+					}
+				}
+				add_character_modifier = {
+					modifier = RICE_granada_vacationed_at_a_munya
+					years = 5
+				}
+			}
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				if = {
+					limit = {						
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_granada_munya_vacation_group_length
+								option = RICE_granada_munya_vacation_group_length_short
+							}
+						}
+					}					
+					if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_group_type
+									option = RICE_granada_munya_vacation_group_type_party
+								}
+							}
+						}
+						add_prestige = 40
+					}
+					else_if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_group_type
+									option = RICE_granada_munya_vacation_group_type_gardens
+								}
+							}
+						}
+						add_prestige = 20
+						add_piety = 20
+					}
+					else_if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_group_type
+									option = RICE_granada_munya_vacation_group_type_poetry
+								}
+							}
+						}
+						add_piety = 40
+					}
+					stress_impact = {
+						base = miniscule_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {						
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_granada_munya_vacation_group_length
+								option = RICE_granada_munya_vacation_group_length_medium
+							}
+						}
+					}
+					
+					if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_group_type
+									option = RICE_granada_munya_vacation_group_type_party
+								}
+							}
+						}
+						add_prestige = 80
+					}
+					else_if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_group_type
+									option = RICE_granada_munya_vacation_group_type_gardens
+								}
+							}
+						}
+						add_prestige = 40
+						add_piety = 40
+					}
+					else_if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_group_type
+									option = RICE_granada_munya_vacation_group_type_poetry
+								}
+							}
+						}
+						add_piety = 80
+					}
+					stress_impact = {
+						base = minor_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {						
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_granada_munya_vacation_group_length
+								option = RICE_granada_munya_vacation_group_length_long
+							}
+						}
+					}
+					
+					if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_group_type
+									option = RICE_granada_munya_vacation_group_type_party
+								}
+							}
+						}
+						add_prestige = 120
+					}
+					else_if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_group_type
+									option = RICE_granada_munya_vacation_group_type_gardens
+								}
+							}
+						}
+						add_prestige = 60
+						add_piety = 60
+					}
+					else_if = {
+						limit = {						
+							scope:activity = {
+								has_activity_option = {
+									category = RICE_granada_munya_vacation_group_type
+									option = RICE_granada_munya_vacation_group_type_poetry
+								}
+							}
+						}
+						add_piety = 120
+					}
+					stress_impact = {
+						base = medium_stress_impact_loss
+					}
+				}
+				add_character_modifier = {
+					modifier = RICE_granada_vacationed_at_a_munya
+					years = 5
+				}
+			}
+			every_attending_character = {
+				#limit = { NOT = { this = scope:host } }
+				custom = RICE_every_munya_group_vacation_merriment
+				stress_impact = {
+					base = miniscule_stress_impact_loss
+					gluttonous = miniscule_stress_impact_loss
+					lustful = miniscule_stress_impact_loss
+				}
+			}
+			if = {
+				limit = {
+					scope:activity.activity_location = {
+						has_holding = no
+					}
+				}
+				stress_impact = {
+					base = minor_stress_impact_loss
+				}
+			}
+			every_attending_character = {
+				#limit = { NOT = { this = scope:host } }
+				custom = RICE_every_munya_group_vacation_reputation
+				if = {
+					limit = {						
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_granada_munya_vacation_group_length
+								option = RICE_granada_munya_vacation_group_length_short
+							}
+						}
+					}
+					add_prestige = 25
+				}
+				if = {
+					limit = {						
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_granada_munya_vacation_group_length
+								option = RICE_granada_munya_vacation_group_length_medium
+							}
+						}
+					}
+					add_prestige = 50
+				}
+				if = {
+					limit = {						
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_granada_munya_vacation_group_length
+								option = RICE_granada_munya_vacation_group_length_medium
+							}
+						}
+					}
+					add_prestige = 75
+				}
+				stress_impact = {
+					ambitious = miniscule_stress_impact_loss
+					arrogant = miniscule_stress_impact_loss
+					diligent = miniscule_stress_impact_loss
+				}
+			}
+			if = {
+				limit = {
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_granada_munya_vacation_group_type
+							option = RICE_granada_munya_vacation_group_type_party
+						}
+					}
+				}
+				scope:activity = {
+					every_attending_character = {
+						limit = {
+							NOT = { this = scope:host }
+							OR = {
+								has_trait = lustful
+								has_trait = gregarious
+								has_trait = lazy
+								has_trait = gluttonous
+								has_trait = greedy
+							}
+						}
+						custom = RICE_every_guest_who_really_enjoyed_munya_vacation
+						add_opinion = {
+							target = root
+							modifier = RICE_granada_enjoyed_munya_vacation_great
+						}
+					}
+					every_attending_character = {
+						limit = {
+							NOT = { this = scope:host }
+							NOR = {
+								has_trait = lustful
+								has_trait = gregarious
+								has_trait = lazy
+								has_trait = gluttonous
+								has_trait = greedy
+							}
+						}
+						custom = RICE_every_other_guest
+						add_opinion = {
+							target = root
+							modifier = RICE_granada_enjoyed_munya_vacation
+						}
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_granada_munya_vacation_group_type
+							option = RICE_granada_munya_vacation_group_type_gardens
+						}
+					}
+				}
+				scope:activity = {
+					every_attending_character = {
+						limit = {
+							NOT = { this = scope:host }
+							OR = {
+								has_trait = shy
+								has_trait = content
+								has_trait = calm
+								has_trait = zealous
+								has_trait = patient
+								has_trait = humble
+								has_trait = lifestyle_gardener
+							}
+						}
+						custom = RICE_every_guest_who_really_enjoyed_munya_vacation
+						add_opinion = {
+							target = root
+							modifier = RICE_granada_enjoyed_munya_vacation_great
+						}
+					}
+					every_attending_character = {
+						limit = {
+							NOT = { this = scope:host }
+							NOR = {
+								has_trait = shy
+								has_trait = content
+								has_trait = calm
+								has_trait = zealous
+								has_trait = patient
+								has_trait = humble
+								has_trait = lifestyle_gardener
+							}
+						}
+						custom = RICE_every_other_guest
+						add_opinion = {
+							target = root
+							modifier = RICE_granada_enjoyed_munya_vacation
+						}
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_granada_munya_vacation_group_type
+							option = RICE_granada_munya_vacation_group_type_poetry
+						}
+					}
+				}
+				scope:activity = {
+					every_attending_character = {
+						limit = {
+							NOT = { this = scope:host }
+							OR = {
+								has_trait = diligent
+								has_trait = scholar
+								has_trait = theologian
+								has_trait = education_learning_1
+								has_trait = education_learning_2
+								has_trait = education_learning_3
+								has_trait = education_learning_4
+								has_trait = gregarious
+							}
+						}
+						custom = RICE_every_guest_who_really_enjoyed_munya_vacation
+						add_opinion = {
+							target = root
+							modifier = RICE_granada_enjoyed_munya_vacation_great
+						}
+					}
+					every_attending_character = {
+						limit = {
+							NOT = { this = scope:host }
+							NOR = {
+								has_trait = diligent
+								has_trait = scholar
+								has_trait = theologian
+								has_trait = education_learning_1
+								has_trait = education_learning_2
+								has_trait = education_learning_3
+								has_trait = education_learning_4
+								has_trait = gregarious
+							}
+						}
+						custom = RICE_every_other_guest
+						add_opinion = {
+							target = root
+							modifier = RICE_granada_enjoyed_munya_vacation
+						}
+					}
+				}
+			}
+		}
 	}
 }

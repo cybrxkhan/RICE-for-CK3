@@ -760,7 +760,7 @@ niger_delta.0022 = {
 
 # Character dies before receiving artifact
 niger_delta.0023 = {
-	type = empty
+	scope = none
 	hidden = yes
 	
 	trigger = {
@@ -882,7 +882,7 @@ niger_delta.0023 = {
 
 # Choose a date for the Yam festival
 niger_delta.0030 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0030.t
 	desc = niger_delta.0030.desc
 	theme = realm
@@ -890,12 +890,6 @@ niger_delta.0030 = {
 	right_portrait = {
 		character = root
 		animation = personality_rational
-	}
-	
-	immediate = {
-		capital_province = { save_scope_as = capital_province } #For loc.
-		# Stop characters from planning multiple activities at once.
-		add_character_flag = planning_an_activity
 	}
 	
 	option = { # The ruler should choose
@@ -973,7 +967,7 @@ niger_delta.0030 = {
 
 # Now that you're done choosing, the festival will start
 niger_delta.0031 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0031.t
 	desc = niger_delta.0031.desc
 	theme = realm
@@ -985,20 +979,60 @@ niger_delta.0031 = {
 	
 	option = { # Ok
 		name = niger_delta.0031.a
-		# Choose appropriate location
-		scope:capital_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_niger_delta_new_yam_festival
+	}
+
+	after = {		
+		hidden_effect = {
+			# Sacrifice a prisoner?
+			trigger_event = {
+				id = niger_delta.0034
+				days = { 5 20 }
+			}
+			if = {
+				limit = {
+					any_courtier = {
+						is_available_ai_adult = yes
+						OR = {
+							has_trait = greedy
+							has_trait = cynical
+							has_trait = gluttonous
+							has_trait = impatient
+							has_trait = lunatic
+							has_trait = possessed
+						}
+					}
+				}
+				random = {
+					chance = 25
+					# Someone gets caught eating yams
+					trigger_event = {
+						id = niger_delta.0035
+						days = { 5 20 }
+					}
+				}
+	
+			}
+			random = {
+				chance = 25
+				# You are tempted to eat yams
+				trigger_event = {
+					id = niger_delta.0036
+					days = { 5 20 }
+				}
 			}	
+			trigger_event = { # Festival starts
+				id = niger_delta.0032
+				days = { 25 40 }
+			}		
 		}
 	}
+
 }
 
 
 # The festival is starting!
 niger_delta.0032 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0032.t
 	desc = niger_delta.0032.desc
 	theme = RICE_theme_yoruba_shrine
@@ -1114,7 +1148,7 @@ niger_delta.0032 = {
 
 # The festival ends
 niger_delta.0033 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0033.t
 	desc = niger_delta.0033.desc
 	theme = RICE_theme_yoruba_shrine
@@ -1126,6 +1160,26 @@ niger_delta.0033 = {
 	
 	option = { # Ok
 		name = niger_delta.0033.a
+		if = {
+			limit = {
+				has_activity_intent = RICE_niger_delta_new_yam_festival_celebration_intent
+			}
+			stress_impact = {
+				base = minor_stress_impact_loss
+				gregarious = miniscule_stress_impact_loss
+				gluttonous = miniscule_stress_impact_loss
+				content = miniscule_stress_impact_loss
+			}
+		}
+		else_if = {
+			limit = {
+				has_activity_intent = RICE_niger_delta_new_yam_festival_generosity_intent
+			}
+			stress_impact = {
+				just = miniscule_stress_impact_loss
+				generous = miniscule_stress_impact_loss
+			}
+		}
 		every_sub_realm_county = {
 			limit = {
 				tier = tier_county
@@ -1133,6 +1187,12 @@ niger_delta.0033 = {
 			custom = RICE_niger_delta_every_county
 			random = {
 				chance = 40
+				modifier = {
+					root = {
+						has_activity_intent = RICE_niger_delta_new_yam_festival_generosity_intent
+					}
+					add = 20
+				}
 				modifier = {
 					root = { has_character_flag = RICE_niger_delta_yam_festival_sacrificed_prisoner }
 					add = 10
@@ -1264,10 +1324,15 @@ niger_delta.0033 = {
 			}
 			remove_character_flag = RICE_niger_delta_yam_extra_sacrifice
 		}
-		hidden_effect = {
-			scope:activity = {
-				complete_activity = yes
-			}
+
+
+		scope:activity = {
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_piety = 25
+			}	
+			hidden_effect = { skip_activity_phase = yes }
 		}
 	}
 
@@ -1276,11 +1341,11 @@ niger_delta.0033 = {
 
 # Ritual purification through human sacrifice
 niger_delta.0034 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0034.t
 	desc = niger_delta.0034.desc
 	theme = prison
-	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" } 
+	#override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" } 
 	
 	left_portrait = {
 		character = root
@@ -1293,21 +1358,8 @@ niger_delta.0034 = {
 
 	trigger = {
 		# has_prisoners = yes
-		any_prisoner = {
-			is_adult = yes
-			is_landed = no
-			#root = { has_execute_reason = prev }
-			NOT = {
-				any_close_family_member = {
-					is_landed = yes
-				}
-			}
-		}
-	}
-
-	immediate = {
-		random_prisoner = {			
-			limit = {
+		OR = {
+			any_prisoner = {
 				is_adult = yes
 				is_landed = no
 				#root = { has_execute_reason = prev }
@@ -1317,7 +1369,56 @@ niger_delta.0034 = {
 					}
 				}
 			}
-			save_scope_as = prisoner
+			has_activity_intent = RICE_niger_delta_new_yam_festival_purification_intent
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				NOT = {				
+					any_prisoner = {
+						is_adult = yes
+						is_landed = no
+						#root = { has_execute_reason = prev }
+						NOT = {
+							any_close_family_member = {
+								is_landed = yes
+							}
+						}
+					}
+				}
+				has_activity_intent = RICE_niger_delta_new_yam_festival_purification_intent
+			}
+			create_character = {
+				template = RICE_niger_delta_yam_prisoner
+				employer = root
+				save_scope_as = prisoner
+			}
+			# Showing errors for some reason, so commented out since it doesn't really matter if they're imprisoned or not since they die immediately
+			# hidden_effect = {
+			# 	#root = {
+			# 		rightfully_imprison_character_effect = {
+			# 			TARGET = scope:prisoner
+			# 			IMPRISONER = root
+			# 		}
+			# 	#}				
+			# }
+		}
+		else = {
+			random_prisoner = {			
+				limit = {
+					is_adult = yes
+					is_landed = no
+					#root = { has_execute_reason = prev }
+					NOT = {
+						any_close_family_member = {
+							is_landed = yes
+						}
+					}
+				}
+				save_scope_as = prisoner
+			}
 		}
 
 	}
@@ -1345,6 +1446,23 @@ niger_delta.0034 = {
 			forgiving = minor_stress_impact_gain
 			cynical = miniscule_stress_impact_gain
 		}
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_niger_delta_new_yam_festival_sacrifice_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:prisoner
+				scope:host = {
+					if = {
+						limit = {
+							has_activity_intent = RICE_niger_delta_new_yam_festival_purification_intent
+						}
+						add_prestige = 100
+					}
+				}
+			}
+		}
 		ai_chance = {
 			base = 30
 			modifier = {
@@ -1364,6 +1482,11 @@ niger_delta.0034 = {
 	
 	option = { # No need
 		name = niger_delta.0034.b
+		trigger = {
+			NOT = {
+				has_activity_intent = RICE_niger_delta_new_yam_festival_purification_intent
+			}
+		}
 		add_piety = -50
 		scope:prisoner = {
 			add_opinion = {
@@ -1386,7 +1509,7 @@ niger_delta.0034 = {
 
 # Courtier gets caught eating yams - what to do?
 niger_delta.0035 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0035.t
 	desc = niger_delta.0035.desc
 	theme = corruption
@@ -1427,12 +1550,26 @@ niger_delta.0035 = {
 					has_trait = possessed
 				}
 			}
-			add_piety = -100
-			add_character_modifier = {
-				modifier = RICE_niger_delta_ate_yams_early
-				years = 10
-			}
 			save_scope_as = yam_eater
+			create_character_memory = {
+				type = RICE_niger_delta_got_caught_eating_yams_memory
+			}
+		}
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_niger_delta_new_yam_festival_caught_eating_log
+				tags = { bad }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:yam_eater
+				scope:yam_eater = {
+					add_piety = -100
+					add_character_modifier = {
+						modifier = RICE_niger_delta_ate_yams_early
+						years = 10
+					}
+				}
+			}
 		}
 
 	}
@@ -1604,11 +1741,11 @@ niger_delta.0035 = {
 
 # Tempted to eat yams - will you do it or not?
 niger_delta.0036 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0036.t
 	desc = niger_delta.0036.desc
 	theme = corruption
-	override_background = { event_background = RICE_background_benin_village }
+	override_background = { reference = RICE_background_benin_village }
 	
 	left_portrait = {
 		character = root
@@ -1667,7 +1804,7 @@ niger_delta.0036 = {
 
 # Tempted to eat yams - result
 niger_delta.0037 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0037.t
 	desc = {
 		desc = niger_delta.0037.desc.intro
@@ -1687,7 +1824,7 @@ niger_delta.0037 = {
 		}
 	}
 	theme = corruption
-	override_background = { event_background = RICE_background_benin_village }
+	override_background = { reference = RICE_background_benin_village }
 
 	right_portrait = {
 		character = root
@@ -1718,9 +1855,24 @@ niger_delta.0037 = {
 			limit = {
 				has_character_flag = RICE_niger_delta_yam_taboo_got_caught
 			}
-			add_character_modifier = {
-				modifier = RICE_niger_delta_ate_yams_early
-				years = 10
+			create_character_memory = {
+				type = RICE_niger_delta_got_caught_eating_yams_memory
+			}
+			scope:activity = {
+				add_activity_log_entry = {
+					key = RICE_niger_delta_new_yam_festival_caught_eating_self_log
+					tags = { bad }
+					# this line below adds the entry to the Effects section of the conclusion UI
+					show_in_conclusion = yes
+					character = scope:yam_taboo_breaker
+					scope:yam_taboo_breaker = {
+						add_piety = -50
+						add_character_modifier = {
+							modifier = RICE_niger_delta_ate_yams_early
+							years = 10
+						}
+					}
+				}
 			}
 		}
 
@@ -1774,8 +1926,6 @@ niger_delta.0037 = {
 			has_character_flag = RICE_niger_delta_yam_taboo_got_caught
 			#is_independent_ruler = yes
 		}
-
-		add_piety = -50
 
 		stress_impact = {
 			wrathful = miniscule_stress_impact_gain
@@ -1849,11 +1999,11 @@ niger_delta.0037 = {
 
 # Liege reacts to vassal eating yams
 # niger_delta.0038 = {
-# 	type = character_event
+# 	type = activity_event
 # 	title = niger_delta.0038.t
 # 	desc = niger_delta.0038.desc
 # 	theme = corruption
-# 	override_background = { event_background = RICE_background_benin_village }
+# 	override_background = { reference = RICE_background_benin_village }
 
 # 	left_portrait = {
 # 		character = scope:yam_taboo_breaker
@@ -1953,11 +2103,11 @@ niger_delta.0037 = {
 
 # Should people be allowed to have fun and be a little loose?
 niger_delta.0040 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0040.t
 	desc = niger_delta.0040.desc
 	theme = feast_activity
-	override_background = { event_background = RICE_background_benin_village }
+	override_background = { reference = RICE_background_benin_village }
 	
 	right_portrait = {
 		character = root
@@ -2003,11 +2153,11 @@ niger_delta.0040 = {
 
 # Magical herbs distributed to everyone
 niger_delta.0041 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0041.t
 	desc = niger_delta.0041.desc
 	theme = medicine
-	override_background = { event_background = RICE_background_yoruba_shrine }
+	override_background = { reference = RICE_background_yoruba_shrine }
 	
 	right_portrait = {
 		character = root
@@ -2032,7 +2182,7 @@ niger_delta.0041 = {
 
 # Visiting ancestral shrines
 niger_delta.0042 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0042.t
 	desc = niger_delta.0042.desc
 	theme = RICE_theme_yoruba_shrine
@@ -2065,7 +2215,7 @@ niger_delta.0042 = {
 
 # Yam king competition
 niger_delta.0043 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0043.t
 	desc = {
 		desc = niger_delta.0043.desc.intro
@@ -2207,7 +2357,7 @@ niger_delta.0043 = {
 
 # Displaying abnormally large yams
 niger_delta.0044 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0044.t
 	desc = niger_delta.0044.desc
 	theme = RICE_theme_benin_village
@@ -2236,7 +2386,7 @@ niger_delta.0044 = {
 
 # What to do with the largest yam
 niger_delta.0045 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0045.t
 	desc = niger_delta.0045.desc
 	theme = RICE_theme_benin_village
@@ -2275,11 +2425,11 @@ niger_delta.0045 = {
 
 # A traveler accidentally arrives with strange yams
 niger_delta.0046 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0046.t
 	desc = niger_delta.0046.desc
 	theme = corruption
-	override_background = { event_background = RICE_background_yoruba_shrine }
+	override_background = { reference = RICE_background_yoruba_shrine }
 	
 	right_portrait = {
 		character = root
@@ -2328,11 +2478,11 @@ niger_delta.0046 = {
 
 # Join in the merriment or not?
 niger_delta.0047 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0047.t
 	desc = niger_delta.0047.desc
 	theme = feast_activity
-	override_background = { event_background = RICE_background_benin_village }
+	override_background = { reference = RICE_background_benin_village }
 	
 	right_portrait = {
 		character = root
@@ -2625,12 +2775,12 @@ niger_delta.0050 = {
 			}
 		}
 		# It happens in Ife
-		title:b_ile-ife.title_province = {	
-			spawn_activity = {
-				owner = scope:scoped_ruler
-				type = activity_niger_delta_beaded_crown
-			}	
-		}
+		# title:b_ile-ife.title_province = {	
+		# 	spawn_activity = {
+		# 		owner = scope:scoped_ruler
+		# 		type = activity_niger_delta_beaded_crown
+		# 	}	
+		# }
 		scope:scoped_ruler = {			
 			if = {
 				limit = {
@@ -2638,7 +2788,16 @@ niger_delta.0050 = {
 				}
 				remove_character_modifier = RICE_niger_delta_uncrowned
 			}
+			# Should only take a month at most
+			add_character_flag = {
+				flag = planning_an_activity
+				days = 30				
+			}
 			trigger_event = niger_delta.0051
+			trigger_event = {
+				id = niger_delta.0052
+				days = { 10 20 }
+			}
 		}
 		ai_chance = {
 			base = 80
@@ -2672,12 +2831,12 @@ niger_delta.0050 = {
 			modifier = RICE_niger_delta_opinion_bad_ooni_gift
 		}
 		# It happens in Ife
-		title:b_ile-ife.title_province = {	
-			spawn_activity = {
-				owner = scope:scoped_ruler
-				type = activity_niger_delta_beaded_crown
-			}	
-		}
+		# title:b_ile-ife.title_province = {	
+		# 	spawn_activity = {
+		# 		owner = scope:scoped_ruler
+		# 		type = activity_niger_delta_beaded_crown
+		# 	}	
+		# }
 		stress_impact = {
 			humble = minor_stress_impact_gain
 			greedy = minor_stress_impact_gain
@@ -2694,7 +2853,16 @@ niger_delta.0050 = {
 				modifier = RICE_niger_delta_ooni_scorn
 				years = 10
 			}
+			# Should only take a month at most
+			add_character_flag = {
+				flag = planning_an_activity
+				days = 30				
+			}
 			trigger_event = niger_delta.0051
+			trigger_event = {
+				id = niger_delta.0052
+				days = { 10 20 }
+			}
 		}
 		if = {
 			limit = {
@@ -2797,12 +2965,12 @@ niger_delta.0050 = {
 			}
 		}
 		# It happens in Ife
-		title:b_ile-ife.title_province = {	
-			spawn_activity = {
-				owner = scope:scoped_ruler
-				type = activity_niger_delta_beaded_crown
-			}	
-		}
+		# title:b_ile-ife.title_province = {	
+		# 	spawn_activity = {
+		# 		owner = scope:scoped_ruler
+		# 		type = activity_niger_delta_beaded_crown
+		# 	}	
+		# }
 		stress_impact = {
 			base = medium_stress_impact_gain
 			arrogant = minor_stress_impact_gain
@@ -2812,7 +2980,16 @@ niger_delta.0050 = {
 			ambitious = minor_stress_impact_gain
 		}	
 		scope:scoped_ruler = {	
-		 	trigger_event = niger_delta.0051
+			# Should only take a month at most
+			add_character_flag = {
+				flag = planning_an_activity
+				days = 30				
+			}
+			trigger_event = niger_delta.0051
+			trigger_event = {
+				id = niger_delta.0052
+				days = { 10 20 }
+			}
 		}
 		ai_chance = {
 			base = 50
@@ -3004,12 +3181,12 @@ niger_delta.0051 = {
 		show_as_tooltip = {
 
 			# It happens in Ife
-			title:b_ile-ife.title_province = {	
-				spawn_activity = {
-					owner = scope:scoped_ruler
-					type = activity_niger_delta_beaded_crown
-				}	
-			}
+			# title:b_ile-ife.title_province = {	
+			# 	spawn_activity = {
+			# 		owner = scope:scoped_ruler
+			# 		type = activity_niger_delta_beaded_crown
+			# 	}	
+			# }
 
 			remove_character_modifier = RICE_niger_delta_uncrowned
 
@@ -3181,9 +3358,7 @@ niger_delta.0052 = {
 	}
 
 	after = {		
-		scope:activity = {
-			complete_activity = yes
-		}
+		RICE_remove_planned_activity_flag_effect = yes
 	}
 
 }
@@ -3271,7 +3446,7 @@ niger_delta.0053 = {
 
 # Olojo festival start
 niger_delta.0070 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0070.t
 	desc = {
 		desc = niger_delta.0070.desc.intro
@@ -3285,7 +3460,7 @@ niger_delta.0070 = {
 			desc = niger_delta.0070.desc.not_ooni
 		}
 	}
-	theme = realm
+	theme = RICE_theme_yoruba_shrine
 	
 	right_portrait = {
 		character = root
@@ -3299,24 +3474,25 @@ niger_delta.0070 = {
 		title:d_ooni_of_ife = {
 			save_scope_as = ooniship_of_ife
 		}
+		title:d_ooni_of_ife.holder = {
+			save_scope_as = ooni
+			add_character_flag = RICE_is_ooni
+		}
 		religion:west_african_orisha_religion = { save_scope_as = yoruba } 
 	}
 	
 	option = { # Ok
 		name = niger_delta.0070.a
-		# It happens in Ife
-		title:b_ile-ife.title_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_niger_delta_olojo_festival
-			}	
-		}
+		trigger_event = {
+			id = niger_delta.0071
+			days = 7
+		} 
 	}
 }
 
 # Ooni does purification ceremonies
 niger_delta.0071 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0071.t
 	desc = {
 		desc = niger_delta.0071.desc.intro
@@ -3360,7 +3536,7 @@ niger_delta.0071 = {
 
 # Osogun finds the dog and arrives at Ooni's palace
 niger_delta.0072 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0072.t
 	desc = {
 		desc = niger_delta.0072.desc.intro
@@ -3401,7 +3577,7 @@ niger_delta.0072 = {
 
 # Osogun sacrifices the dog
 niger_delta.0073 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0073.t
 	desc = niger_delta.0073.desc
 	theme = RICE_theme_yoruba_shrine
@@ -3427,7 +3603,7 @@ niger_delta.0073 = {
 
 # Second day of Olojo
 niger_delta.0074 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0074.t
 	desc = niger_delta.0074.desc
 	theme = RICE_theme_yoruba_shrine
@@ -3448,7 +3624,7 @@ niger_delta.0074 = {
 
 # Ooni emerges from the palace
 niger_delta.0075 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0075.t
 	desc = {
 		desc = niger_delta.0075.desc.intro
@@ -3505,9 +3681,20 @@ niger_delta.0075 = {
 			send_interface_toast = {
 				left_icon = ROOT
 				title = niger_delta.0075.health
-				add_character_modifier = {
-					modifier = RICE_niger_delta_olojo_good_health
-					years = 5
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_niger_delta_new_yam_festival_ooni_blessing_log
+						tags = { good }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = scope:host
+						scope:host = {
+							add_character_modifier = {
+								modifier = RICE_niger_delta_olojo_good_health
+								years = 5
+							}
+						}
+					}
 				}
 			}
 		}
@@ -3526,9 +3713,20 @@ niger_delta.0075 = {
 			send_interface_toast = {
 				left_icon = ROOT
 				title = niger_delta.0075.fortune
-				add_character_modifier = {
-					modifier = RICE_niger_delta_olojo_good_fortune
-					years = 5
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_niger_delta_new_yam_festival_ooni_blessing_log
+						tags = { good }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = scope:host
+						scope:host = {
+							add_character_modifier = {
+								modifier = RICE_niger_delta_olojo_good_fortune
+								years = 5
+							}
+						}
+					}
 				}
 			}
 		}
@@ -3548,9 +3746,20 @@ niger_delta.0075 = {
 			send_interface_toast = {
 				left_icon = ROOT
 				title = niger_delta.0075.enemies
-				add_character_modifier = {
-					modifier = RICE_niger_delta_olojo_good_enemies
-					years = 5
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_niger_delta_new_yam_festival_ooni_blessing_log
+						tags = { good }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = scope:host
+						scope:host = {
+							add_character_modifier = {
+								modifier = RICE_niger_delta_olojo_good_enemies
+								years = 5
+							}
+						}
+					}
 				}
 			}
 		}
@@ -3581,7 +3790,7 @@ niger_delta.0075 = {
 
 # Ooni visits various shrines in town
 niger_delta.0076 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0076.t
 	desc = {
 		first_valid = {
@@ -3622,7 +3831,7 @@ niger_delta.0076 = {
 
 # Last part of the Olojo - Ooni is approached by people bearing gifts
 niger_delta.0077 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0077.t
 	desc = {
 		first_valid = {
@@ -3661,8 +3870,8 @@ niger_delta.0077 = {
 		trigger = {
 			has_character_flag = RICE_is_ooni
 		}
-		add_piety = { 1 25 }
-		add_prestige = { 1 25 }
+		#add_piety = { 1 25 }
+		#add_prestige = { 1 25 }
 		add_gold = { 1 100 }
 	}
 	
@@ -3716,6 +3925,7 @@ niger_delta.0077 = {
 	}
 
 	after = {
+		RICE_niger_delta_olojo_festival_ooni_received_gifts_log_entry_effect = yes
 		trigger_event = {
 			id = niger_delta.0078
 			days = { 3 6 }
@@ -3726,7 +3936,7 @@ niger_delta.0077 = {
 
 # Olojo concludes
 niger_delta.0078 = {
-	type = character_event
+	type = activity_event
 	title = niger_delta.0078.t
 	#desc = {
 		desc = niger_delta.0078.desc
@@ -3737,7 +3947,7 @@ niger_delta.0078 = {
 	#		desc = niger_delta.0078.desc.ooni
 	#	}
 	#}
-	theme = realm
+	theme = RICE_theme_yoruba_shrine
 
 	left_portrait = {
 		character = root
@@ -3750,8 +3960,8 @@ niger_delta.0078 = {
 			limit = {
 				has_character_flag = RICE_is_ooni
 			}
-			add_piety = 50
-			add_prestige = 50
+			add_piety = 100
+			add_prestige = 100
 			random_list = {
 				desc = niger_delta.0078.ooni.tooltip
 				55 = {
@@ -3787,13 +3997,35 @@ niger_delta.0078 = {
 				years = 5
 			}
 		}
+		hidden_effect = {
+			scope:activity = {
+				every_attending_character = {
+					limit = { NOT = { this = scope:host } }
+					custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+					add_piety = 25			
+					add_character_modifier = {
+						modifier = RICE_niger_delta_attended_olojo_festival
+						years = 5
+					}
+				}
+			}			
+		}
 	}
 
 	after = {
-		hidden_effect = {
-			scope:activity = {
-				complete_activity = yes
+		if = {
+			limit = {
+				title:d_ooni_of_ife.holder = {
+					has_character_flag = RICE_is_ooni
+				}
 			}
+			title:d_ooni_of_ife.holder = {
+				remove_character_flag = RICE_is_ooni
+			}
+		}
+		RICE_niger_delta_olojo_festival_completed_log_entry_effect = yes
+		scope:activity = {
+			hidden_effect = { skip_activity_phase = yes }
 		}
 	}
 
@@ -4215,7 +4447,7 @@ niger_delta.0105 = {
 	title = niger_delta.0105.t
 	desc = niger_delta.0105.desc
 	theme = stewardship_domain_focus
-	override_background = { event_background = RICE_background_yoruba_shrine }
+	override_background = { reference = RICE_background_yoruba_shrine }
 	
 	right_portrait = {
 		character = root

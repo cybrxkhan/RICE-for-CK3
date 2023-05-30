@@ -1735,12 +1735,20 @@ make_icelandic_culture_effect = {
 RICE_become_erik_the_red_effect = {
 	make_unprunable = yes
 	add_trait = RICE_explorer
+	# add_trait_xp = { 
+	# 	trait = RICE_explorer 
+	# 	value = 100
+	# }
 	add_prestige_level = 1
 }
 
 RICE_become_leif_erikson_effect = {
 	make_unprunable = yes
 	add_trait = RICE_explorer
+	# add_trait_xp = { 
+	# 	trait = RICE_explorer 
+	# 	value = 100
+	# }
 	add_prestige_level = 1
 }
 
@@ -2704,7 +2712,7 @@ RICE_iceland_decision_effect = {
 
 
 RICE_create_arctic_artifact_effect = {
-	hidden_effect_new_artifact = {
+	hidden_effect_new_object = {
 		create_artifact = {
 			name = RICE_north_atlantic_arctic_artifact_name
 			description = RICE_north_atlantic_arctic_artifact_desc
@@ -2757,7 +2765,7 @@ RICE_create_arctic_artifact_effect = {
 
 
 RICE_create_native_american_artifact_effect = {
-	hidden_effect_new_artifact = {
+	hidden_effect_new_object = {
 		create_artifact = {
 			name = RICE_north_atlantic_native_american_artifact_name
 			description = RICE_north_atlantic_native_american_artifact_desc
@@ -2812,7 +2820,7 @@ RICE_create_native_american_artifact_effect = {
 
 
 RICE_create_nordsetur_polar_bear_artifact_effect = {
-	hidden_effect_new_artifact = {
+	hidden_effect_new_object = {
 		create_artifact = {
 			name = RICE_north_atlantic_polar_bear_pelt_name
 			description = RICE_north_atlantic_polar_bear_pelt_desc
@@ -2854,7 +2862,7 @@ RICE_create_nordsetur_polar_bear_artifact_effect = {
 
 
 RICE_create_nordsetur_narwhal_artifact_effect = {
-	hidden_effect_new_artifact = {
+	hidden_effect_new_object = {
 		create_artifact = {
 			name = RICE_north_atlantic_narwhal_horn_name
 			description = RICE_north_atlantic_narwhal_horn_desc
@@ -2897,7 +2905,7 @@ RICE_create_nordsetur_narwhal_artifact_effect = {
 
 
 RICE_create_nordsetur_walrus_ivory_artifact_effect = {
-	hidden_effect_new_artifact = {
+	hidden_effect_new_object = {
 		create_artifact = {
 			name = RICE_north_atlantic_walrus_ivory_name
 			description = RICE_north_atlantic_walrus_ivory_desc
@@ -3282,4 +3290,57 @@ RICE_expedition_high_risk_accident_effect = {
 	}
 }
 
-
+RICE_north_atlantic_explorer_trait_or_experience_effect = {
+	if = {
+		limit = {
+			NOT = { has_trait = RICE_explorer }
+		}
+		add_trait = RICE_explorer
+	}
+	else_if = {
+		limit = {
+			OR = {				
+				has_trait_xp = {
+					trait = RICE_explorer
+					track = RICE_explorer_discoverer
+					value < 100 #TODO_CD_EP2 standardize MAX
+				}
+				has_trait_xp = {
+					trait = RICE_explorer
+					track = RICE_explorer_envoy
+					value < 100 #TODO_CD_EP2 standardize MAX
+				}
+			}
+		}
+		random_list = {
+			10 = {
+				trigger = {
+					has_trait_xp = {
+						trait = RICE_explorer
+						track = RICE_explorer_discoverer
+						value < 100 #TODO_CD_EP2 standardize MAX
+					}
+				}
+				add_trait_xp = { 
+					trait = RICE_explorer
+					track = RICE_explorer_discoverer
+					value = 25
+				}
+			}
+			10 = {
+				trigger = {
+					has_trait_xp = {
+						trait = RICE_explorer
+						track = RICE_explorer_envoy
+						value < 100 #TODO_CD_EP2 standardize MAX
+					}
+				}
+				add_trait_xp = { 
+					trait = RICE_explorer
+					track = RICE_explorer_envoy
+					value = 25
+				}
+			}
+		}
+	}
+}

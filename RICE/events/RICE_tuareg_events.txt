@@ -1,0 +1,236 @@
+﻿###############################################################################
+# 
+# Tuareg
+# 
+# tuareg.0000-tuareg.0019			Setup events, history events, miscellaneous events and decisions
+# tuareg.0020-tuareg.0029			Wangara Events
+# tuareg.0030-tuareg.0039			Moving Jenne/Tapama Djenepo events
+# tuareg.0050-tuareg.0099			Generic flavor events
+# 
+# 
+###############################################################################
+
+namespace = tuareg
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# tuareg.0000-tuareg.0019
+# 
+######################################################################################
+
+# Create/establish the Tuareg culture
+tuareg.0010 = {
+	type = character_event
+	title = tuareg.0010.t
+	desc = tuareg.0010.desc
+	theme = realm
+	
+	left_portrait = {
+		character = scope:tuareg_founder
+		animation = personality_bold
+	}
+
+	immediate = {
+		culture:tuareg = {
+			save_scope_as = tuareg
+		}
+		if = {
+			limit = {
+				root = scope:tuareg_founder
+			}
+			RICE_tuareg_emergence_effect = yes
+		}
+		else = {
+			show_as_tooltip = {
+				scope:tuareg_founder = {
+					RICE_tuareg_emergence_effect = yes					
+				}
+			}
+		}
+		custom_tooltip = tuareg.0010.tooltip
+	}
+
+	option = { # OK
+		name = tuareg.0010.a
+	}
+
+}
+
+# Establish the Empire of Air
+tuareg.0011 = {
+	type = character_event
+	title = tuareg.0011.t
+	desc = tuareg.0011.desc
+	theme = realm
+	
+	right_portrait = {
+		character = scope:tuareg_unifier
+		animation = war_over_win
+	}
+
+	immediate = {
+		culture:tuareg = {
+			save_scope_as = old_tuareg
+		}
+		# In case it is not the same
+		scope:tuareg_unifier.culture = {
+			save_scope_as = tuareg
+		}
+		if = {
+			limit = {
+				root = scope:tuareg_unifier
+			}
+			RICE_tuareg_air_empire_effect = yes
+		}
+		else = {
+			show_as_tooltip = {
+				scope:tuareg_unifier = {
+					RICE_tuareg_air_empire_effect = yes					
+				}
+			}
+		}
+	}
+
+	option = { # OK
+		name = tuareg.0011.a
+	}
+
+}
+
+
+# Start travel - Tafadek Hot Springs
+tuareg.0012 = {
+	type = character_event
+	title = tuareg.0012.t
+	desc = tuareg.0012.desc
+	theme = travel
+	override_background = { reference = RICE_background_tuareg_ahaggar_mountains }
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_hot_springs_visit
+			activity_location.barony = title:b_air
+		}
+	}
+	
+	option = { # Ok
+		name = tuareg.0012.a
+	}	
+}
+
+
+
+
+# Arrive at the hot springs
+tuareg.0013 = {
+	type = activity_event
+	title = tuareg.0013.t
+	desc = tuareg.0013.desc
+	theme = RICE_theme_sahel_manor
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	immediate = {
+		add_character_flag = is_naked
+		scope:activity = {
+			activity_location = { save_scope_as = location }
+		}
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_public
+					}
+				}
+			}
+			set_variable = {
+				name = RICE_hot_springs_visit_special_type
+				value = flag:public
+				days = 1
+			}
+		}
+		else = {			
+			set_variable = {
+				name = RICE_hot_springs_visit_special_type
+				value = flag:private
+				days = 1
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = tuareg.0013.a
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_private
+					}
+				}
+			}
+			stress_impact = {
+				base = medium_stress_impact_loss
+				lazy = minor_stress_impact_loss
+				calm = minor_stress_impact_loss
+			}	
+		}
+		else_if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_public
+					}
+				}
+			}
+			stress_impact = {
+				base = minor_stress_impact_loss
+				lazy = minor_stress_impact_loss
+				calm = minor_stress_impact_loss
+			}
+			add_prestige = 50
+		}
+		add_character_modifier = {
+			modifier = RICE_tuareg_tafadek_springs_modifier
+			years = 5
+		}
+	}
+	
+	after = {
+		RICE_hot_springs_memory_effect = yes
+		set_variable = {
+			name = RICE_hot_springs_visit_special_location
+			value = flag:tafadek
+			days = 1
+		}
+		if = {
+			limit = { has_character_flag = is_naked }
+			remove_character_flag = is_naked
+		}
+		scope:activity = {
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				stress_impact = {
+					base = minor_stress_impact_loss
+				}
+			}
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}	
+}

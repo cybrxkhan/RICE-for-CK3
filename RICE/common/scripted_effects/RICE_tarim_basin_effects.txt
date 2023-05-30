@@ -1185,6 +1185,107 @@ RICE_tarim_basin_khotan_procession_eight_guardian_blessings_effect = {
 	}
 }
 
+RICE_tarim_basin_khotan_procession_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_tarim_basin_khotan_procession_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = special_type
+								option = RICE_tarim_basin_khotan_procession_monastery_type_other
+							}
+						}
+					}
+					add_prestige = 50
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = special_type
+								option = RICE_tarim_basin_khotan_procession_monastery_type_mashe
+							}
+						}
+					}
+					add_prestige = 100
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = special_type
+								option = RICE_tarim_basin_khotan_procession_monastery_type_gomati
+							}
+						}
+					}
+					add_prestige = 50
+					if = {
+						limit = {
+							exists = dynasty
+						}
+						dynasty = {
+							add_dynasty_prestige = 25
+						}
+					}
+				}
+				if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_tarim_basin_khotan_procession_donation_type
+								option = RICE_tarim_basin_khotan_procession_donation_type_small
+							}
+						}
+					}
+					add_piety = 50
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_tarim_basin_khotan_procession_donation_type
+								option = RICE_tarim_basin_khotan_procession_donation_type_medium
+							}
+						}
+					}
+					add_piety = 100
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_tarim_basin_khotan_procession_donation_type
+								option = RICE_tarim_basin_khotan_procession_donation_type_large
+							}
+						}
+					}
+					add_piety = 150
+				}
+				RICE_tarim_basin_khotan_procession_eight_guardian_blessings_effect = yes
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_participated_in_khotan_procession
+					years = 5
+				}
+			}
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_participated_in_khotan_procession
+					years = 5
+				}
+			}
+		}
+	}
+}
+
 
 RICE_tarim_basin_eight_protectors_abandoned_effect = {
 	set_global_variable = {
@@ -1685,3 +1786,437 @@ RICE_tarim_basin_construct_ordam_mazar_effect = {
 	}
 }
 
+
+RICE_tarim_basin_crescent_lake_visit_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_tarim_basin_crescent_lake_visit_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				if = {
+					limit = {
+						scope:host = {
+							var:RICE_tarim_basin_crescent_lake_visit_event = flag:dunes
+						}
+					}
+					add_prestige = 30
+					stress_impact = {
+						base = minor_stress_impact_loss
+						brave = miniscule_stress_impact_loss
+						diligent = miniscule_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						scope:host = {
+							var:RICE_tarim_basin_crescent_lake_visit_event = flag:temple
+						}
+					}
+					add_piety = 30
+					stress_impact = {
+						base = minor_stress_impact_loss
+						zealous = minor_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						scope:host = {
+							var:RICE_tarim_basin_crescent_lake_visit_event = flag:lake
+						}
+					}
+					add_prestige = 15
+					add_piety = 15
+					stress_impact = {
+						base = minor_stress_impact_loss
+						gregarious = miniscule_stress_impact_loss
+						lazy = miniscule_stress_impact_loss
+						gluttonous = miniscule_stress_impact_loss
+					}
+				}
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_dunhuang_crescent_lake_visit
+					years = 5
+				}	
+			}
+            every_attending_character = {
+                limit = { NOT = { this = root } }
+                custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT			
+				stress_impact = {
+					base = minor_stress_impact_loss
+				}
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_dunhuang_crescent_lake_visit
+					years = 5
+				}	
+            }	
+		}
+	}
+}
+
+# RICE_tarim_basin_crescent_lake_visit_completed_log_entry_effect = {
+# 	scope:activity = {
+# 		add_activity_log_entry = {
+# 			key = RICE_tarim_basin_crescent_lake_visit_completed_log
+# 			tags = { completed }
+# 			# this line below adds the entry to the Effects section of the conclusion UI
+# 			show_in_conclusion = yes
+# 			character = root
+# 			show_as_tooltip = {
+# 				every_attending_character = {
+# 					limit = { NOT = { this = root } }
+# 					custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT			
+# 					stress_impact = {
+# 						base = minor_stress_impact_loss
+# 					}
+# 					add_character_modifier = {
+# 						modifier = RICE_tarim_basin_dunhuang_crescent_lake_visit
+# 						years = 5
+# 					}	
+# 				}					
+# 			}
+# 		}
+# 	}
+# }
+
+RICE_tocharian_animal_fight_completed_log_entry_effect = {	
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_tocharian_animal_fight_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				custom_tooltip = RICE_activity_result_gained_prestige
+				show_as_tooltip = {
+					if = {
+						limit = {
+							has_character_modifier = RICE_tarim_basin_fight_cattle_good_character
+						}
+						add_character_modifier = {
+							modifier = RICE_tarim_basin_fight_cattle_good_character
+							years = 7
+						}
+					}
+					else_if = {
+						limit = {
+							has_character_modifier = RICE_tarim_basin_fight_horses_good_character
+						}
+						add_character_modifier = {
+							modifier = RICE_tarim_basin_fight_horses_good_character
+							years = 7
+						}
+					}
+					else_if = {
+						limit = {
+							has_character_modifier = RICE_tarim_basin_fight_camels_good_character
+						}
+						add_character_modifier = {
+							modifier = RICE_tarim_basin_fight_camels_good_character
+							years = 7
+						}
+					}
+					else_if = {
+						limit = {
+							has_character_modifier = RICE_tarim_basin_fight_goats_good_character
+						}
+						add_character_modifier = {
+							modifier = RICE_tarim_basin_fight_goats_good_character
+							years = 7
+						}
+					}
+					else_if = {
+						limit = {
+							has_character_modifier = RICE_tarim_basin_fight_cattle_great_character
+						}
+						add_character_modifier = {
+							modifier = RICE_tarim_basin_fight_cattle_great_character
+							years = 7
+						}
+					}
+					else_if = {
+						limit = {
+							has_character_modifier = RICE_tarim_basin_fight_horses_great_character
+						}
+						add_character_modifier = {
+							modifier = RICE_tarim_basin_fight_horses_great_character
+							years = 7
+						}
+					}
+					else_if = {
+						limit = {
+							has_character_modifier = RICE_tarim_basin_fight_camels_great_character
+						}
+						add_character_modifier = {
+							modifier = RICE_tarim_basin_fight_camels_great_character
+							years = 7
+						}
+					}
+					else_if = {
+						limit = {
+							has_character_modifier = RICE_tarim_basin_fight_goats_great_character
+						}
+						add_character_modifier = {
+							modifier = RICE_tarim_basin_fight_goats_great_character
+							years = 7
+						}
+					}
+					else_if = {
+						limit = {
+							capital_county = {
+								has_county_modifier = RICE_tarim_basin_fight_cattle_good_county
+							}
+						}
+						capital_county = {
+							add_county_modifier = {
+								modifier = RICE_tarim_basin_fight_cattle_good_county
+								years = 7
+							}			
+						} 
+					}
+					else_if = {
+						limit = {
+							capital_county = {
+								has_county_modifier = RICE_tarim_basin_fight_horses_good_county
+							}
+						}
+						capital_county = {
+							add_county_modifier = {
+								modifier = RICE_tarim_basin_fight_horses_good_county
+								years = 7
+							}			
+						} 
+					}
+					else_if = {
+						limit = {
+							capital_county = {
+								has_county_modifier = RICE_tarim_basin_fight_camels_good_county
+							}
+						}
+						capital_county = {
+							add_county_modifier = {
+								modifier = RICE_tarim_basin_fight_camels_good_county
+								years = 7
+							}			
+						} 
+					}
+					else_if = {
+						limit = {
+							capital_county = {
+								has_county_modifier = RICE_tarim_basin_fight_goats_good_county
+							}
+						}
+						capital_county = {
+							add_county_modifier = {
+								modifier = RICE_tarim_basin_fight_goats_good_county
+								years = 7
+							}			
+						} 
+					}
+					else_if = {
+						limit = {
+							capital_county = {
+								has_county_modifier = RICE_tarim_basin_fight_cattle_great_county
+							}
+						}
+						capital_county = {
+							add_county_modifier = {
+								modifier = RICE_tarim_basin_fight_cattle_great_county
+								years = 7
+							}			
+						} 
+					}
+					else_if = {
+						limit = {
+							capital_county = {
+								has_county_modifier = RICE_tarim_basin_fight_horses_great_county
+							}
+						}
+						capital_county = {
+							add_county_modifier = {
+								modifier = RICE_tarim_basin_fight_horses_great_county
+								years = 7
+							}			
+						} 
+					}
+					else_if = {
+						limit = {
+							capital_county = {
+								has_county_modifier = RICE_tarim_basin_fight_camels_great_county
+							}
+						}
+						capital_county = {
+							add_county_modifier = {
+								modifier = RICE_tarim_basin_fight_camels_great_county
+								years = 7
+							}			
+						} 
+					}
+					else_if = {
+						limit = {
+							capital_county = {
+								has_county_modifier = RICE_tarim_basin_fight_goats_great_county
+							}
+						}
+						capital_county = {
+							add_county_modifier = {
+								modifier = RICE_tarim_basin_fight_goats_great_county
+								years = 7
+							}			
+						} 
+					}
+				}
+			}					
+			every_attending_character = {
+				limit = { NOT = { this = root } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT			
+				add_prestige = 25
+			}	
+		}
+	}
+}
+
+
+
+RICE_tarim_basin_ordam_mazar_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_tarim_basin_ordam_mazar_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_tarim_basin_ordam_mazar_golden_bowl_type
+								option = RICE_tarim_basin_ordam_mazar_golden_bowl_type_small
+							}
+						}
+					}
+					add_prestige = 50
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_tarim_basin_ordam_mazar_golden_bowl_type
+								option = RICE_tarim_basin_ordam_mazar_golden_bowl_type_medium
+							}
+						}
+					}
+					add_prestige = 100
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_tarim_basin_ordam_mazar_golden_bowl_type
+								option = RICE_tarim_basin_ordam_mazar_golden_bowl_type_large
+							}
+						}
+					}
+					add_prestige = 150
+				}
+				if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_tarim_basin_ordam_mazar_tomb_upkeep_type
+								option = RICE_tarim_basin_ordam_mazar_tomb_upkeep_none
+							}
+						}
+					}
+					add_piety = 50
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_tarim_basin_ordam_mazar_tomb_upkeep_type
+								option = RICE_tarim_basin_ordam_mazar_tomb_upkeep_type_modest
+							}
+						}
+					}
+					add_piety = 100
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_tarim_basin_ordam_mazar_tomb_upkeep_type
+								option = RICE_tarim_basin_ordam_mazar_tomb_upkeep_type_substantial
+							}
+						}
+					}
+					add_piety = 150
+				}
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_attended_ordam_mazar
+					years = 5
+				}
+				if = {
+					limit = {
+						has_activity_intent = RICE_tarim_basin_ordam_mazar_remembrance_intent
+					}
+					stress_impact = {
+						zealous = miniscule_stress_impact_loss
+						calm = miniscule_stress_impact_loss
+						humble = miniscule_stress_impact_loss
+						just = miniscule_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_tarim_basin_ordam_mazar_socialization_intent
+					}
+					stress_impact = {
+						gregarious = miniscule_stress_impact_loss
+						ambitious = miniscule_stress_impact_loss
+						gluttonous = miniscule_stress_impact_loss
+						lustful = miniscule_stress_impact_loss
+					}
+				}
+			}				
+			every_attending_character = {
+				limit = { NOT = { this = root } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT			
+				add_piety = 25
+				add_prestige = 25
+				add_character_modifier = {
+					modifier = RICE_tarim_basin_attended_ordam_mazar
+					years = 5
+				}
+				hidden_effect = {
+					if = {
+						limit = {
+							has_activity_intent = RICE_tarim_basin_ordam_mazar_remembrance_intent
+						}
+						stress_impact = {
+							zealous = miniscule_stress_impact_loss
+							calm = miniscule_stress_impact_loss
+							humble = miniscule_stress_impact_loss
+							just = miniscule_stress_impact_loss
+						}
+					}
+					else_if = {
+						limit = {
+							has_activity_intent = RICE_tarim_basin_ordam_mazar_socialization_intent
+						}
+						stress_impact = {
+							gregarious = miniscule_stress_impact_loss
+							ambitious = miniscule_stress_impact_loss
+							gluttonous = miniscule_stress_impact_loss
+							lustful = miniscule_stress_impact_loss
+						}
+					}					
+				}
+			}
+		}
+	}
+}

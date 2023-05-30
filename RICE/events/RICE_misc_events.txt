@@ -5,11 +5,11 @@
 # 
 ###############################################################################
 
-namespace = RICE_misc
+namespace = RICEmisc
 
 # Make certain characters unprunable so they can be referenced to after their deaths
-RICE_misc.0001 = {
-	type = empty
+RICEmisc.0001 = {
+	scope = none
 	hidden = yes
 	
 	trigger = {
@@ -25,4 +25,191 @@ RICE_misc.0001 = {
 		make_unprunable = yes
 	}
 
+}
+
+
+
+
+
+
+
+
+
+#Generic placeholder start
+RICEmisc.0011 = {
+	type = character_event
+	title = RICEmisc.0011.t
+	desc = RICEmisc.0011.desc
+	theme = travel
+
+	left_portrait = root
+
+	
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		NOR = {
+			involved_activity = {
+				OR = {
+					has_activity_type = activity_RICE_chios_mostra_of_thymiana
+					has_activity_type = activity_RICE_normandy_saint_aubert_procession
+					#has_activity_type = activity_RICE_tarim_basin_khotan_procession
+					has_activity_type = activity_RICE_tarim_basin_ordam_mazar
+					has_activity_type = activity_RICE_siwa_oracle_of_amun
+					has_activity_type = activity_RICE_magadha_bodhi_tree_bathing_ceremony
+					has_activity_type = activity_RICE_granada_munya_vacation_private
+					has_activity_type = activity_RICE_granada_munya_vacation_group
+					has_activity_type = activity_RICE_chios_patmos_pilgrimage
+					has_activity_type = activity_RICE_khuzestan_tomb_of_daniel_pilgrimage
+				}
+			}
+			AND = {
+				involved_activity = {
+					has_activity_type = activity_RICE_hot_springs_visit
+					OR = {					
+						#activity_location.barony = title:b_siwa
+						#activity_location.barony = title:b_aachen
+						activity_location.barony = title:b_wakhan
+						activity_location.barony = title:b_rajagrha
+						activity_location.barony = title:b_air
+					}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_travel_start
+	}
+
+	# Ok
+	option = { 
+		name = RICEmisc.0011.a
+	}
+}
+
+
+
+
+
+# Generic hot springs visit
+RICEmisc.0012 = {
+	type = activity_event
+	title =  RICEmisc.0012.t
+	desc = {
+		desc = RICEmisc.0012.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_hot_springs_visit_type_public
+						}
+					}
+				}
+				desc =  RICEmisc.0012.desc.public
+			}
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_hot_springs_visit_type_private
+						}
+					}
+				}
+				desc =  RICEmisc.0012.desc.private
+			}
+		}
+		desc = RICEmisc.0012.desc.conclusion
+	}
+	theme = friendly
+	override_background  = { reference = relaxing_room }
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	immediate = {
+		#if = {
+		#	limit = { has_character_flag = RICE_siwa_springs_private } # Doesn't make sense for a public visit
+			add_character_flag = is_naked
+		#}
+
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_public
+					}
+				}
+			}
+			set_variable = {
+				name = RICE_hot_springs_visit_special_type
+				value = flag:public
+				days = 1
+			}
+		}
+		else = {			
+			set_variable = {
+				name = RICE_hot_springs_visit_special_type
+				value = flag:private
+				days = 1
+			}
+		}
+
+	}
+	
+	option = { # Ok
+		name =  RICEmisc.0012.a
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_private
+					}
+				}
+			}
+			stress_impact = {
+				base = minor_stress_impact_loss
+				lazy = miniscule_stress_impact_loss
+				calm = miniscule_stress_impact_loss
+			}	
+		}
+		else_if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_public
+					}
+				}
+			}
+			add_prestige = 25
+			stress_impact = {
+				base = miniscule_stress_impact_loss
+				lazy = miniscule_stress_impact_loss
+				calm = miniscule_stress_impact_loss
+			}
+		}	
+	}
+	
+	after = {
+		RICE_hot_springs_memory_effect = yes
+		scope:activity = {
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				stress_impact = {
+					base = minor_stress_impact_loss
+				}
+			}	
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}		
 }

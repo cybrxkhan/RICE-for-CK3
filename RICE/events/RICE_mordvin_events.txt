@@ -23,26 +23,50 @@ namespace = mordvin
 
 # Horse sacrifice start
 mordvin.0010 = {
-	type = character_event
+	type = activity_event
 	title = mordvin.0010.t
 	desc = {
 		desc = mordvin.0010.desc.intro
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					var:RICE_horse_sacrifice_type = flag:minor
+					root = scope:host
+				}
+				desc = mordvin.0010.desc.host
+			}
+			desc = mordvin.0010.desc.not_host
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_horse_sacrifice_number_of_horses_type
+							option = RICE_horse_sacrifice_number_of_horses_type_small
+						}
+					}
 				}
 				desc = mordvin.0010.desc.minor
 			}
 			triggered_desc = {
 				trigger = {
-					var:RICE_horse_sacrifice_type = flag:major
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_horse_sacrifice_number_of_horses_type
+							option = RICE_horse_sacrifice_number_of_horses_type_medium
+						}
+					}
 				}
 				desc = mordvin.0010.desc.major
 			}
 			triggered_desc = {
 				trigger = {
-					var:RICE_horse_sacrifice_type = flag:great
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_horse_sacrifice_number_of_horses_type
+							option = RICE_horse_sacrifice_number_of_horses_type_large
+						}
+					}
 				}
 				desc = mordvin.0010.desc.great
 			}
@@ -50,54 +74,60 @@ mordvin.0010 = {
 		desc = mordvin.0010.desc.conclusion
 	}
 	theme = faith
-	override_background = { event_background = sitting_room }
+	override_background = { reference = RICE_fp1_runestone_circle }
 	
 	left_portrait = root
 	
 	immediate = {
-		capital_province = { save_scope_as = capital_province } #For loc.
-		# Stop characters from planning multiple activities at once.
-		add_character_flag = planning_an_activity
-		if = {
-			limit = {
-				var:RICE_horse_sacrifice_type = flag:minor
-			}
-			remove_short_term_gold = RICE_misc_horse_sacrifice_cost_minor
-		}
-		else_if = {
-			limit = {
-				var:RICE_horse_sacrifice_type = flag:major
-			}
-			remove_short_term_gold = RICE_misc_horse_sacrifice_cost_major
-		}
-		else_if = {
-			limit = {
-				var:RICE_horse_sacrifice_type = flag:great
-			}
-			remove_short_term_gold = RICE_misc_horse_sacrifice_cost_great
-		}
+		scope:activity = { activity_location = { save_scope_as = location } }
+	# 	if = {
+	# 		limit = {
+	# 			scope:activity = {
+	# 				has_activity_option = {
+	# 					category = RICE_horse_sacrifice_number_of_horses_type
+	# 					option = RICE_horse_sacrifice_number_of_horses_type_small
+	# 				}
+	# 			}
+	# 		}
+	# 		remove_short_term_gold = RICE_misc_horse_sacrifice_cost_minor
+	# 	}
+	# 	else_if = {
+	# 		limit = {
+	# 			scope:activity = {
+	# 				has_activity_option = {
+	# 					category = RICE_horse_sacrifice_number_of_horses_type
+	# 					option = RICE_horse_sacrifice_number_of_horses_type_medium
+	# 				}
+	# 			}
+	# 		}
+	# 		remove_short_term_gold = RICE_misc_horse_sacrifice_cost_major
+	# 	}
+	# 	else_if = {
+	# 		limit = {
+	# 			scope:activity = {
+	# 				has_activity_option = {
+	# 					category = RICE_horse_sacrifice_number_of_horses_type
+	# 					option = RICE_horse_sacrifice_number_of_horses_type_large
+	# 				}
+	# 			}
+	# 		}
+	# 		remove_short_term_gold = RICE_misc_horse_sacrifice_cost_great
+	# 	}
 	}
 	
 	option = { # Ok
 		name = mordvin.0010.a
-		# Choose appropriate location
-		scope:capital_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_horse_sacrifice
-			}	
-		}	
 	}
 }
 
 
 # Horse sacrifice done
 mordvin.0011 = {
-	type = character_event
+	type = activity_event
 	title = mordvin.0011.t
 	desc = mordvin.0011.desc
 	theme = faith
-	override_background = { event_background = RICE_fp1_runestone_circle }
+	override_background = { reference = RICE_fp1_runestone_circle }
 	
 	right_portrait = {
 		character = root
@@ -106,218 +136,286 @@ mordvin.0011 = {
 	
 	immediate = {
 		play_music_cue = mx_cue_sacredrite
+
 		if = {
 			limit = {
-				var:RICE_horse_sacrifice_type = flag:minor
+				root = scope:host
 			}
-			add_piety = { 0 50 }
-			add_prestige = { 0 50 }
-			random_list = {
-				10 = {
-					add_character_modifier = {
-						modifier = RICE_horse_sacrifice_boon_minor_war
-						years = 10
+			if = {
+				limit = {
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_horse_sacrifice_number_of_horses_type
+							option = RICE_horse_sacrifice_number_of_horses_type_small
+						}
 					}
 				}
-				10 = {
-					add_character_modifier = {
-						modifier = RICE_horse_sacrifice_boon_minor_political
-						years = 10
+				add_piety = { 0 50 }
+				add_prestige = { 0 50 }
+				random_list = {
+					10 = {
+						add_character_modifier = {
+							modifier = RICE_horse_sacrifice_boon_minor_war
+							years = 10
+						}
+					}
+					10 = {
+						add_character_modifier = {
+							modifier = RICE_horse_sacrifice_boon_minor_political
+							years = 10
+						}
+					}
+					10 = {
+						add_character_modifier = {
+							modifier = RICE_horse_sacrifice_boon_minor_ritual
+							years = 10
+						}
+					}
+					10 = {
+						add_character_modifier = {
+							modifier = RICE_horse_sacrifice_boon_minor_material
+							years = 10
+						}
 					}
 				}
-				10 = {
-					add_character_modifier = {
-						modifier = RICE_horse_sacrifice_boon_minor_ritual
-						years = 10
+			}
+			else_if = {
+				limit = {
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_horse_sacrifice_number_of_horses_type
+							option = RICE_horse_sacrifice_number_of_horses_type_medium
+						}
 					}
 				}
-				10 = {
-					add_character_modifier = {
-						modifier = RICE_horse_sacrifice_boon_minor_material
-						years = 10
+				add_piety = { 25 100 }
+				add_prestige = { 25 100 }
+				random_list = {
+					10 = {
+						random_list = {
+							10 = {
+								add_character_modifier = {
+									modifier = RICE_horse_sacrifice_boon_minor_war
+									years = 10
+								}
+							}
+							10 = {
+								add_character_modifier = {
+									modifier = RICE_horse_sacrifice_boon_minor_political
+									years = 10
+								}
+							}
+							10 = {
+								add_character_modifier = {
+									modifier = RICE_horse_sacrifice_boon_minor_ritual
+									years = 10
+								}
+							}
+							10 = {
+								add_character_modifier = {
+									modifier = RICE_horse_sacrifice_boon_minor_material
+									years = 10
+								}
+							}
+						}
+					}
+					10 = {	
+						random_list = {
+							10 = {
+								add_character_modifier = {
+									modifier = RICE_horse_sacrifice_boon_major_war
+									years = 10
+								}
+							}
+							10 = {
+								add_character_modifier = {
+									modifier = RICE_horse_sacrifice_boon_major_political
+									years = 10
+								}
+							}
+							10 = {
+								add_character_modifier = {
+									modifier = RICE_horse_sacrifice_boon_major_ritual
+									years = 10
+								}
+							}
+							10 = {
+								add_character_modifier = {
+									modifier = RICE_horse_sacrifice_boon_major_material
+									years = 10
+								}
+							}
+						}
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_horse_sacrifice_number_of_horses_type
+							option = RICE_horse_sacrifice_number_of_horses_type_large
+						}
+					}
+				}
+				add_piety = { 50 200 }
+				add_prestige = { 50 200 }
+				random_list = {
+					10 = {
+						random_list = {
+							10 = {
+								add_character_modifier = {
+									modifier = RICE_horse_sacrifice_boon_minor_war
+									years = 10
+								}
+							}
+							10 = {
+								add_character_modifier = {
+									modifier = RICE_horse_sacrifice_boon_minor_political
+									years = 10
+								}
+							}
+							10 = {
+								add_character_modifier = {
+									modifier = RICE_horse_sacrifice_boon_minor_ritual
+									years = 10
+								}
+							}
+							10 = {
+								add_character_modifier = {
+									modifier = RICE_horse_sacrifice_boon_minor_material
+									years = 10
+								}
+							}
+						}
+					}
+					10 = {
+						random_list = {
+							10 = {
+								add_character_modifier = {
+									modifier = RICE_horse_sacrifice_boon_major_war
+									years = 10
+								}
+							}
+							10 = {
+								add_character_modifier = {
+									modifier = RICE_horse_sacrifice_boon_major_political
+									years = 10
+								}
+							}
+							10 = {
+								add_character_modifier = {
+									modifier = RICE_horse_sacrifice_boon_major_ritual
+									years = 10
+								}
+							}
+							10 = {
+								add_character_modifier = {
+									modifier = RICE_horse_sacrifice_boon_major_material
+									years = 10
+								}
+							}
+						}
+					}
+					10 = {	
+						random_list = {
+							10 = {
+								add_character_modifier = {
+									modifier = RICE_horse_sacrifice_boon_great_war
+									years = 10
+								}
+							}
+							10 = {
+								add_character_modifier = {
+									modifier = RICE_horse_sacrifice_boon_great_political
+									years = 10
+								}
+							}
+							10 = {
+								add_character_modifier = {
+									modifier = RICE_horse_sacrifice_boon_great_ritual
+									years = 10
+								}
+							}
+							10 = {
+								add_character_modifier = {
+									modifier = RICE_horse_sacrifice_boon_great_material
+									years = 10
+								}
+							}
+						}
 					}
 				}
 			}
 		}
-		else_if = {
-			limit = {
-				var:RICE_horse_sacrifice_type = flag:major
-			}
-			add_piety = { 25 100 }
-			add_prestige = { 25 100 }
-			random_list = {
-				10 = {
-					random_list = {
-						10 = {
-							add_character_modifier = {
-								modifier = RICE_horse_sacrifice_boon_minor_war
-								years = 10
-							}
-						}
-						10 = {
-							add_character_modifier = {
-								modifier = RICE_horse_sacrifice_boon_minor_political
-								years = 10
-							}
-						}
-						10 = {
-							add_character_modifier = {
-								modifier = RICE_horse_sacrifice_boon_minor_ritual
-								years = 10
-							}
-						}
-						10 = {
-							add_character_modifier = {
-								modifier = RICE_horse_sacrifice_boon_minor_material
-								years = 10
-							}
+		else = {
+			if = {
+				limit = {
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_horse_sacrifice_number_of_horses_type
+							option = RICE_horse_sacrifice_number_of_horses_type_small
 						}
 					}
 				}
-				10 = {	
-					random_list = {
-						10 = {
-							add_character_modifier = {
-								modifier = RICE_horse_sacrifice_boon_major_war
-								years = 10
-							}
-						}
-						10 = {
-							add_character_modifier = {
-								modifier = RICE_horse_sacrifice_boon_major_political
-								years = 10
-							}
-						}
-						10 = {
-							add_character_modifier = {
-								modifier = RICE_horse_sacrifice_boon_major_ritual
-								years = 10
-							}
-						}
-						10 = {
-							add_character_modifier = {
-								modifier = RICE_horse_sacrifice_boon_major_material
-								years = 10
-							}
+				add_piety = { 0 20 }
+				add_prestige = { 0 20 }
+			}
+			else_if = {
+				limit = {
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_horse_sacrifice_number_of_horses_type
+							option = RICE_horse_sacrifice_number_of_horses_type_medium
 						}
 					}
 				}
+				add_piety = { 10 40 }
+				add_prestige = { 10 40 }
 			}
+			else_if = {
+				limit = {
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_horse_sacrifice_number_of_horses_type
+							option = RICE_horse_sacrifice_number_of_horses_type_large
+						}
+					}
+				}
+				add_piety = { 20 80 }
+				add_prestige = { 20 80 }
+			}		
 		}
-		else_if = {
-			limit = {
-				var:RICE_horse_sacrifice_type = flag:great
-			}
-			add_piety = { 50 200 }
-			add_prestige = { 50 200 }
-			random_list = {
-				10 = {
-					random_list = {
-						10 = {
-							add_character_modifier = {
-								modifier = RICE_horse_sacrifice_boon_minor_war
-								years = 10
-							}
-						}
-						10 = {
-							add_character_modifier = {
-								modifier = RICE_horse_sacrifice_boon_minor_political
-								years = 10
-							}
-						}
-						10 = {
-							add_character_modifier = {
-								modifier = RICE_horse_sacrifice_boon_minor_ritual
-								years = 10
-							}
-						}
-						10 = {
-							add_character_modifier = {
-								modifier = RICE_horse_sacrifice_boon_minor_material
-								years = 10
-							}
-						}
-					}
-				}
-				10 = {
-					random_list = {
-						10 = {
-							add_character_modifier = {
-								modifier = RICE_horse_sacrifice_boon_major_war
-								years = 10
-							}
-						}
-						10 = {
-							add_character_modifier = {
-								modifier = RICE_horse_sacrifice_boon_major_political
-								years = 10
-							}
-						}
-						10 = {
-							add_character_modifier = {
-								modifier = RICE_horse_sacrifice_boon_major_ritual
-								years = 10
-							}
-						}
-						10 = {
-							add_character_modifier = {
-								modifier = RICE_horse_sacrifice_boon_major_material
-								years = 10
-							}
-						}
-					}
-				}
-				10 = {	
-					random_list = {
-						10 = {
-							add_character_modifier = {
-								modifier = RICE_horse_sacrifice_boon_great_war
-								years = 10
-							}
-						}
-						10 = {
-							add_character_modifier = {
-								modifier = RICE_horse_sacrifice_boon_great_political
-								years = 10
-							}
-						}
-						10 = {
-							add_character_modifier = {
-								modifier = RICE_horse_sacrifice_boon_great_ritual
-								years = 10
-							}
-						}
-						10 = {
-							add_character_modifier = {
-								modifier = RICE_horse_sacrifice_boon_great_material
-								years = 10
-							}
-						}
-					}
-				}
-			}
-		}
+
+
 	}
 	
 	option = { # Ok
 		name = mordvin.0011.a		
-		# scope:activity = {
-		# 	complete_activity = yes
-		# }
 	}
 
 	
 	after = {		
 		if = {
-			limit = { has_variable = RICE_horse_sacrifice_type }
-			remove_variable = RICE_horse_sacrifice_type
-		}	
-		scope:activity = {
-			complete_activity = yes
+			limit = {
+				root = scope:host
+			}
+			trigger_event = {
+				id = mordvin.0012
+				days = 1
+			}
 		}
 	}
 }
 
+mordvin.0012 = {
+	hidden = yes	
+	immediate = {
+		scope:activity = {
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}
+}
 
 
 
@@ -365,7 +463,7 @@ mordvin.0020 = {
 		}
 	}
 	theme = diplomacy_foreign_affairs_focus
-	override_background = { event_background = RICE_background_mordvin_countryside }
+	override_background = { reference = RICE_background_mordvin_countryside }
 	
 	left_portrait = scope:actor
 	right_portrait = scope:recipient
@@ -709,7 +807,7 @@ mordvin.0023 = {
 
 # Prepare for Ozks Prayer
 mordvin.0030 = {
-	type = character_event
+	type = activity_event
 	title = mordvin.0030.t
 	desc = mordvin.0030.desc
 	theme = RICE_theme_northern_tribal_temple
@@ -719,20 +817,11 @@ mordvin.0030 = {
 		animation = personality_zealous
 	}
 	
-	immediate = {
-		capital_province = { save_scope_as = capital_province } #For loc.
-		# Stop characters from planning multiple activities at once.
-		add_character_flag = planning_an_activity
-	}
-	
 	option = { # Ok
 		name = mordvin.0030.a
-		# Choose appropriate location
-		scope:capital_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_mordvin_ine_ozks
-			}	
+		trigger_event = {
+			id = mordvin.0031
+			days = { 10 20 }
 		}
 	}
 }
@@ -740,11 +829,11 @@ mordvin.0030 = {
 
 # Ine Ozks begins
 mordvin.0031 = {
-	type = character_event
+	type = activity_event
 	title = mordvin.0031.t
 	desc = mordvin.0031.desc
 	theme = faith
-	override_background = { event_background = RICE_fp1_runestone_circle }
+	override_background = { reference = RICE_fp1_runestone_circle }
 	
 	left_portrait = {
 		character = root
@@ -853,11 +942,11 @@ mordvin.0031 = {
 
 # Ine Ozks ends
 mordvin.0032 = {
-	type = character_event
+	type = activity_event
 	title = mordvin.0032.t
 	desc = mordvin.0032.desc
 	theme = faith
-	override_background = { event_background = RICE_background_mordvin_countryside }
+	override_background = { reference = RICE_background_mordvin_countryside }
 	
 	left_portrait = {
 		character = root
@@ -866,42 +955,24 @@ mordvin.0032 = {
 	
 	option = { # Fun!
 		name = mordvin.0032.a
-		add_character_modifier = {
-			modifier = RICE_mordvin_recently_celebrated_ine_ozks
-			years = 5
-		}
-		if = {
-			limit = {
-				scope:capital_province = {
-					religion = religion:mordvin_religion
-				}
-			}
-			scope:capital_province = {
-				county = {
-					add_county_modifier = {
-						modifier = RICE_mordvin_ine_ozks_recently_held
-						years = 5
-					}
-				}
-			}
-		}
+		RICE_mordvin_ine_ozks_completed_log_entry_effect = yes
 	}
 	
 	after = {
-		scope:activity = {
-			complete_activity = yes
+		scope:activity = {	
+			hidden_effect = { skip_activity_phase = yes }
 		}
-	}	
+	}
 }
 
 
 # Thinking of the ancestors
 mordvin.0033 = {
-	type = character_event
+	type = activity_event
 	title = mordvin.0033.t
 	desc = mordvin.0033.desc
 	theme = dynasty
-	override_background = { event_background = RICE_background_mordvin_countryside }
+	override_background = { reference = RICE_background_mordvin_countryside }
 	
 	left_portrait = {
 		character = root
@@ -928,15 +999,15 @@ mordvin.0033 = {
 
 # Spending time with the family
 mordvin.0034 = {
-	type = character_event
+	type = activity_event
 	title = mordvin.0034.t
 	desc = mordvin.0034.desc
 	theme = dynasty
-	override_background = { event_background = RICE_background_mordvin_countryside }
+	override_background = { reference = RICE_background_mordvin_countryside }
 	
 	left_portrait = {
 		character = root
-		animation = personality_happiness
+		animation = happiness
 	}
 	
 	option = { # Fun!
@@ -953,11 +1024,11 @@ mordvin.0034 = {
 
 # Harvest prayers
 mordvin.0035 = {
-	type = character_event
+	type = activity_event
 	title = mordvin.0035.t
 	desc = mordvin.0035.desc
 	theme = faith
-	override_background = { event_background = RICE_fp1_runestone_circle }
+	override_background = { reference = RICE_fp1_runestone_circle }
 	
 	right_portrait = {
 		character = root
@@ -994,11 +1065,11 @@ mordvin.0035 = {
 
 # Divine Protection
 mordvin.0036 = {
-	type = character_event
+	type = activity_event
 	title = mordvin.0036.t
 	desc = mordvin.0036.desc
 	theme = faith
-	override_background = { event_background = RICE_fp1_runestone_circle }
+	override_background = { reference = RICE_fp1_runestone_circle }
 	
 	right_portrait = {
 		character = root
@@ -1024,7 +1095,7 @@ mordvin.0036 = {
 
 # Resolving problems
 mordvin.0037 = {
-	type = character_event
+	type = activity_event
 	title = mordvin.0037.t
 	desc = mordvin.0037.desc
 	theme = feast_activity
@@ -1064,11 +1135,11 @@ mordvin.0037 = {
 
 # Sports activity
 mordvin.0038 = {
-	type = character_event
+	type = activity_event
 	title = mordvin.0038.t
 	desc = mordvin.0038.desc
 	theme = martial_strategy_focus
-	override_background = { event_background = RICE_background_mordvin_countryside }
+	override_background = { reference = RICE_background_mordvin_countryside }
 	
 	right_portrait = {
 		character = root
@@ -1087,7 +1158,7 @@ mordvin.0038 = {
 
 # Sports activity - with a winner
 mordvin.0039 = {
-	type = character_event
+	type = activity_event
 	title = mordvin.0039.t
 	desc = {
 		desc = mordvin.0039.desc
@@ -1102,7 +1173,7 @@ mordvin.0039 = {
 		}
 	}
 	theme = martial_strategy_focus
-	override_background = { event_background = RICE_background_mordvin_countryside }
+	override_background = { reference = RICE_background_mordvin_countryside }
 	
 	left_portrait = {
 		character = root
@@ -1151,11 +1222,11 @@ mordvin.0039 = {
 
 # Dancing
 mordvin.0040 = {
-	type = character_event
+	type = activity_event
 	title = mordvin.0040.t
 	desc = mordvin.0040.desc
 	theme = friendly
-	override_background = { event_background = RICE_fp1_runestone_circle }
+	override_background = { reference = RICE_fp1_runestone_circle }
 	
 	left_portrait = {
 		character = root
@@ -1173,11 +1244,11 @@ mordvin.0040 = {
 
 # Prayers for the household
 mordvin.0041 = {
-	type = character_event
+	type = activity_event
 	title = mordvin.0041.t
 	desc = mordvin.0041.desc
 	theme = faith
-	override_background = { event_background = RICE_fp1_runestone_circle }
+	override_background = { reference = RICE_fp1_runestone_circle }
 	
 	right_portrait = {
 		character = root
@@ -1192,7 +1263,7 @@ mordvin.0041 = {
 
 # Great feast
 mordvin.0042 = {
-	type = character_event
+	type = activity_event
 	title = mordvin.0042.t
 	desc = mordvin.0042.desc
 	theme = feast_activity
@@ -1224,11 +1295,11 @@ mordvin.0042 = {
 
 # Great Shtatol Candle
 mordvin.0043 = {
-	type = character_event
+	type = activity_event
 	title = mordvin.0043.t
 	desc = mordvin.0043.desc
 	theme = stewardship_duty_focus
-	override_background = { event_background = RICE_fp1_runestone_circle }
+	override_background = { reference = RICE_fp1_runestone_circle }
 	
 	right_portrait = {
 		character = root
@@ -1243,7 +1314,7 @@ mordvin.0043 = {
 
 # Bull Meat Soup
 mordvin.0044 = {
-	type = character_event
+	type = activity_event
 	title = mordvin.0044.t
 	desc = mordvin.0044.desc
 	theme = feast_activity
@@ -1334,7 +1405,7 @@ mordvin.0051 = {
 	title = mordvin.0051.t
 	desc = mordvin.0051.desc
 	theme = marriage
-	override_background = { event_background = RICE_background_volga_river }
+	override_background = { reference = RICE_background_volga_river }
 	
 	right_portrait = {
 		character = root
@@ -1386,7 +1457,7 @@ mordvin.0052 = {
 	title = mordvin.0052.t
 	desc = mordvin.0052.desc
 	theme = faith
-	override_background = { event_background = RICE_background_volga_river }
+	override_background = { reference = RICE_background_volga_river }
 	
 	right_portrait = {
 		character = root
@@ -1441,7 +1512,7 @@ mordvin.0053 = {
 	title = mordvin.0053.t
 	desc = mordvin.0053.desc
 	theme = faith
-	override_background = { event_background = RICE_background_mordvin_countryside }
+	override_background = { reference = RICE_background_mordvin_countryside }
 	
 	right_portrait = {
 		character = root
@@ -1496,7 +1567,7 @@ mordvin.0054 = {
 	title = mordvin.0054.t
 	desc = mordvin.0054.desc
 	theme = martial
-	override_background = { event_background = RICE_background_mordvin_countryside }
+	override_background = { reference = RICE_background_mordvin_countryside }
 	
 	left_portrait = {
 		character = root

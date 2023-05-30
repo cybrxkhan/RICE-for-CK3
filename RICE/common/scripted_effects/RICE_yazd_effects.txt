@@ -76,6 +76,9 @@
 	culture:maghrebi = {
 		add_innovation = innovation_RICE_qanats		
 	}
+	culture:tuareg = {
+		add_innovation = innovation_RICE_qanats		
+	}
 
 	if = {
 		limit = {
@@ -275,7 +278,7 @@
 			add_trait = lazy
 			add_trait = arbitrary
 			add_trait = gluttonous
-			add_trait = reveler_1
+			add_trait = lifestyle_reveler
 			add_trait = education_stewardship_1
 			#add_character_modifier = {
 			#	modifier = RICE_yazd_tahirid_muhammad
@@ -519,3 +522,135 @@ RICE_yazd_construct_shrine_of_the_twelve_imams_effect = {
 	}
 	
 }
+
+
+
+RICE_yazd_sadeh_festival_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_yazd_sadeh_festival_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = special_type
+								option = RICE_yazd_sadeh_festival_type_grand
+							}
+						}
+					}
+					add_prestige = 150					
+					add_character_modifier = {
+						modifier = RICE_yazd_recently_celebrated_sadeh
+						years = 5
+					}
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = special_type
+								option = RICE_yazd_sadeh_festival_type_modest
+							}
+						}
+					}
+					add_prestige = 50					
+					add_character_modifier = {
+						modifier = RICE_yazd_recently_celebrated_sadeh
+						years = 5
+					}
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = special_type
+								option = RICE_yazd_sadeh_festival_type_chak_chak
+							}
+						}
+					}
+					add_piety = 150
+					add_character_modifier = {
+						modifier = RICE_yazd_recently_celebrated_sadeh_chak_chak
+						years = 5
+					}
+				}
+				stress_impact = {
+					base = minor_stress_impact_loss
+				}
+				if = {
+					limit = {
+						has_activity_intent = RICE_yazd_sadeh_festival_zoroastrian_intent
+					}
+					add_piety = 25
+					stress_impact = {
+						zealous = miniscule_stress_impact_loss
+						honest = miniscule_stress_impact_loss
+						just = miniscule_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_yazd_sadeh_festival_fun_intent
+					}
+					stress_impact = {
+						base = minor_stress_impact_loss
+						gregarious = miniscule_stress_impact_loss
+						gluttonous = miniscule_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_yazd_sadeh_festival_spectacle_intent
+					}
+					stress_impact = {
+						ambitious = miniscule_stress_impact_loss
+						diligent = miniscule_stress_impact_loss
+						arrogant = miniscule_stress_impact_loss
+					}
+					if = {
+						limit = {
+							has_royal_court = yes
+						}
+						change_current_court_grandeur = miniscule_court_grandeur_gain
+					}
+				}
+			}
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = special_type
+								option = RICE_yazd_sadeh_festival_type_chak_chak
+							}
+						}
+					}
+					add_prestige = 25	
+					add_piety = 25
+					add_character_modifier = {
+						modifier = RICE_yazd_recently_celebrated_sadeh_chak_chak
+						years = 5
+					}
+				}
+				else = {
+					add_prestige = 25					
+					add_character_modifier = {
+						modifier = RICE_yazd_recently_celebrated_sadeh
+						years = 5
+					}
+				}
+				stress_impact = {
+					base = miniscule_stress_impact_loss
+				}
+			}
+		}
+	}
+}
+

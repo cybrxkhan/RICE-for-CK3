@@ -1,0 +1,412 @@
+﻿
+
+RICE_setup_tuareg_flavor_pack_effect = {
+
+
+
+	#########################################################################
+	#
+	# CULTURE AND RELIGION STUFF
+	#
+	#########################################################################
+
+	culture:tuareg = {
+		if = {
+			limit = { has_cultural_tradition = tradition_monogamous }
+			remove_culture_tradition = tradition_monogamous
+		}
+		if = {
+			limit = { has_cultural_tradition = tradition_equal_inheritance }
+			remove_culture_tradition = tradition_equal_inheritance
+		}
+		add_culture_tradition = tradition_forbearing
+		add_culture_tradition = tradition_RICE_gold_dust_traders
+		add_culture_tradition = tradition_RICE_tuareg
+		remove_variable = tradition_cooldown
+	}
+
+	# Moved to a separate scripted effect for convenience
+	#RICE_tuareg_culture_game_set_up_effect = yes
+
+}
+
+# Moved to a separate scripted effect for convenience
+RICE_tuareg_culture_game_set_up_effect = {
+	# If Tuaregs do exist on the map
+	if = {
+		limit = {
+			any_county = {
+				culture = culture:tuareg
+			}
+		}
+		# And the override rules are on, remove Tuaregs
+		if = {
+			limit = {
+				NOR = {
+					has_game_rule = RICE_tuareg_emergence_default
+					has_game_rule = RICE_tuareg_emergence_already
+				}
+			}
+			every_county = {
+				limit = {
+					culture = culture:tuareg
+				}
+				set_county_culture = culture:butr
+			}
+			every_ruler = {
+				limit = {
+					OR = {
+						culture = culture:tuareg
+						any_vassal = {
+							culture = culture:tuareg
+						}
+						any_courtier_or_guest = {
+							culture = culture:tuareg
+						}
+					}
+				}
+				set_culture = culture:butr
+				every_vassal = {
+					limit = {
+						culture = culture:tuareg
+					}
+					set_culture = culture:butr
+				}
+				every_courtier_or_guest = {
+					limit = {
+						culture = culture:tuareg
+					}
+					set_culture = culture:butr
+				}
+			}
+		}
+		# Otherwise, disable the Tuareg emergence since they already exist
+		else = {
+			# Disable the Tuareg emergence decision
+			add_to_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_tuareg_emergence_done
+			}
+		}
+	}
+	# If they do not exist on the map, but there is a game rule for them to be there, add them in
+	else_if = {
+		limit = {
+			has_game_rule = RICE_tuareg_emergence_already
+		}
+		title:c_arawan = {
+			set_county_culture = culture:tuareg
+		}
+		title:c_djanet = {
+			set_county_culture = culture:tuareg
+		}
+		title:c_tessalit = {
+			set_county_culture = culture:tuareg
+		}
+		title:c_tadmekka = {
+			set_county_culture = culture:tuareg
+		}
+		title:c_air = {
+			set_county_culture = culture:tuareg
+		}
+		title:c_takkeda = {
+			set_county_culture = culture:tuareg
+		}
+		every_ruler = {
+			limit = {
+				culture = {
+					has_cultural_pillar = heritage_berber
+				}
+				OR = {
+					has_title = title:c_arawan
+					has_title = title:c_djanet
+					has_title = title:c_tessalit
+					has_title = title:c_tadmekka
+					has_title = title:c_air
+					has_title = title:c_takkeda
+				}
+			}
+			set_culture = culture:tuareg
+			every_vassal = {
+				limit = {
+					culture = {
+						has_cultural_pillar = heritage_berber
+					}
+				}
+				set_culture = culture:tuareg
+			}
+			every_courtier_or_guest = {
+				limit = {
+					culture = {
+						has_cultural_pillar = heritage_berber
+					}
+				}
+				set_culture = culture:tuareg
+			}
+		}
+		# Disable the Tuareg emergence decision
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_tuareg_emergence_done
+		}
+	}
+}
+
+RICE_tuareg_emergence_effect = {
+	add_prestige = 1000
+	if = {
+		limit = {
+			exists = dynasty
+		}
+		dynasty = {
+			add_dynasty_prestige = 250
+		}
+	}
+	culture:tuareg = {
+		get_all_innovations_from = root.culture
+		reset_culture_creation_date = yes
+	}
+	RICE_make_tuareg_effect = yes
+	every_realm_county = {
+		custom = RICE_every_berber_county
+		limit = {
+			OR = {
+				culture = { has_cultural_pillar = heritage_berber }
+				this = capital_province.county
+			}
+		}
+		set_county_culture = culture:tuareg
+	}
+}
+
+RICE_make_tuareg_effect = {
+	set_culture = culture:tuareg
+	if = {
+		limit = {
+			any_spouse = {
+				is_landed = no				
+				culture = { has_cultural_pillar = heritage_berber }
+			}
+		}
+		every_spouse = {
+			limit = {
+				is_landed = no				
+				culture = { has_cultural_pillar = heritage_berber }
+			}
+			set_culture = culture:tuareg
+		}
+	}
+	if = {
+		limit = {
+			any_close_family_member = {
+				is_landed = no				
+				culture = { has_cultural_pillar = heritage_berber }
+			}
+		}
+		every_close_family_member = {
+			custom = all_family_members
+			limit = {
+				is_landed = no				
+				culture = { has_cultural_pillar = heritage_berber }
+			}
+			set_culture = culture:tuareg
+		}
+	}
+
+	#Convert appropriate vassals, and their family
+	if = {
+		limit = {
+			any_vassal = {			
+				culture = { has_cultural_pillar = heritage_berber }
+			}
+		}
+		every_vassal = {
+			custom = RICE_every_berber_vassal
+			limit = {
+				culture = { has_cultural_pillar = heritage_berber }
+			}
+			set_culture = culture:tuareg
+			hidden_effect = {
+				if = {
+					limit = {
+						any_spouse = {
+							is_landed = no				
+							culture = { has_cultural_pillar = heritage_berber }
+						}
+					}
+					every_spouse = {
+						limit = {
+							is_landed = no				
+							culture = { has_cultural_pillar = heritage_berber }
+						}
+						set_culture = culture:tuareg
+					}
+				}
+				if = {
+					limit = {
+						any_close_family_member = {
+							is_landed = no				
+							culture = { has_cultural_pillar = heritage_berber }
+						}
+					}
+					every_close_family_member = {
+						custom = all_family_members
+						limit = {
+							is_landed = no				
+							culture = { has_cultural_pillar = heritage_berber }
+						}
+						set_culture = culture:tuareg
+					}
+				}
+			}
+		}
+	}
+
+	#Convert appropriate courtiers
+	if = {
+		limit = {
+			any_courtier_or_guest = {			
+				culture = { has_cultural_pillar = heritage_berber }
+			}
+		}
+		every_courtier_or_guest = {
+			custom = RICE_every_berber_courtier
+			limit = {
+				culture = { has_cultural_pillar = heritage_berber }
+			}
+			set_culture = culture:tuareg
+			hidden_effect = {
+				if = {
+					limit = {
+						any_spouse = {
+							is_landed = no				
+							culture = { has_cultural_pillar = heritage_berber }
+						}
+					}
+					every_spouse = {
+						limit = {
+							is_landed = no				
+							culture = { has_cultural_pillar = heritage_berber }
+						}
+						set_culture = culture:tuareg
+					}
+				}
+				if = {
+					limit = {
+						any_close_family_member = {
+							is_landed = no				
+							culture = { has_cultural_pillar = heritage_berber }
+						}
+					}
+					every_close_family_member = {
+						custom = all_family_members
+						limit = {
+							is_landed = no				
+							culture = { has_cultural_pillar = heritage_berber }
+						}
+						set_culture = culture:tuareg
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+RICE_tuareg_air_empire_effect = {
+	add_prestige = 500
+	dynasty = { add_dynasty_prestige = 500 }
+	#Create the title and make it primary
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = title_change
+		add_claim_on_loss = no
+	}
+	title:e_air = {
+		change_title_holder = {
+			holder = root
+			change = scope:title_change
+		}
+	}
+	resolve_title_and_vassal_change = scope:title_change
+	set_primary_title_to = title:e_air
+
+
+	hidden_effect = {
+		every_held_title = {
+			limit = {
+				tier = tier_empire
+				NOT = { this = title:e_air }
+			}
+			every_in_de_jure_hierarchy = {
+				continue = {
+					tier >= tier_kingdom
+				}
+				limit = {
+					tier = tier_kingdom
+					OR = {
+						holder = root
+						holder = { target_is_liege_or_above = root }
+					}
+					NOT = { is_in_list = new_de_jure_kingdoms }
+				}
+				add_to_list = new_de_jure_kingdoms
+			}
+			add_to_list = empire_for_destruction
+		}
+
+		every_held_title = {
+			limit = {
+				tier = tier_kingdom
+				NOT = { is_in_list = new_de_jure_kingdoms }
+			}
+			add_to_list = new_de_jure_kingdoms
+		}
+
+		title:k_sahara = {
+			if = {
+				limit = {
+					NOT = { is_in_list = new_de_jure_kingdoms }
+				}
+				add_to_list = new_de_jure_kingdoms
+			}
+		}
+		every_in_list = {
+			list = new_de_jure_kingdoms
+			limit = {
+				trigger_if = {
+					limit = {
+						exists = this
+						root = { is_ai = yes }
+						exists = holder
+					}
+					NOR = {
+						holder.top_liege = { is_ai = no }
+						holder = { is_ai = no }
+					}
+				}
+			}
+			set_de_jure_liege_title = title:e_air
+		}
+		every_in_list = {
+			list = empire_for_destruction
+			limit = {
+				NOT = { this = title:e_air } #Just a little safeguarding
+			}
+			root = {
+				destroy_title = prev
+			}
+		}
+
+	}
+}
+
+
+
+
+

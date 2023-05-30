@@ -25,7 +25,7 @@ namespace = rhodes
 
 # Kassia of Kasos dies
 rhodes.0010 = {
-	type = empty
+	scope = none
 	hidden = yes
 	
 	trigger = {
@@ -224,10 +224,10 @@ rhodes.0015 = {
 
 # Setup activity
 rhodes.0020 = {
-	type = character_event
+	type = activity_event
 	title = rhodes.0020.t
 	desc = rhodes.0020.desc
-	theme = friendly
+	theme = RICE_theme_greek_beach
 	
 	left_portrait = {
 		character = root
@@ -238,18 +238,13 @@ rhodes.0020 = {
 		title:b_rhodos = { #For loc.
 			save_scope_as = rhodes_barony
 		}
-		# Stop characters from planning multiple activities at once
-		add_character_flag = planning_an_activity
 	}
 	
 	option = { # Ok
 		name = rhodes.0020.a
-		# Choose appropriate location
-		title:b_rhodos.title_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_rhodes_visit_colossus
-			}	
+		trigger_event = {
+			id = rhodes.0021
+			days = { 5 10 }
 		}
 	}	
 }
@@ -257,7 +252,7 @@ rhodes.0020 = {
 
 # Day of the visit
 rhodes.0021 = {
-	type = character_event
+	type = activity_event
 	title = rhodes.0021.t
 	desc = rhodes.0021.desc
 	theme = RICE_theme_rhodes_castle
@@ -269,9 +264,6 @@ rhodes.0021 = {
 
 	immediate = {
 		play_music_cue = mx_cue_epic_sacral_moment
-		title:b_rhodos = { #For loc.
-			save_scope_as = rhodes_barony
-		}
 		random_list = {
 			50 = { add_prestige = 20 }
 			40 = { add_prestige = 40 }
@@ -284,6 +276,8 @@ rhodes.0021 = {
 				OR = {
 					religion = religion:hellenism_religion
 					religion = religion:semitic_religion
+					religion = religion:kushitism_religion
+					religion = religion:amazigh_religion
 				}
 			}
 			random_list = {
@@ -539,7 +533,7 @@ rhodes.0021 = {
 
 # Leaving the Colossus
 rhodes.0022 = {
-	type = character_event
+	type = activity_event
 	title = rhodes.0022.t
 	desc = {
 		first_valid = {
@@ -567,13 +561,25 @@ rhodes.0022 = {
 	
 	option = { # Ok
 		name = rhodes.0022.a
+		stress_impact = {
+			base = minor_stress_impact_loss
+		}
 	}
 	
 	after = {
 		scope:activity = {
-			complete_activity = yes
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_prestige = 25
+				stress_impact = {
+					base = miniscule_stress_impact_loss
+				}
+			}	
+			hidden_effect = { skip_activity_phase = yes }
 		}
 	}	
+
 }
 
 
@@ -738,7 +744,7 @@ rhodes.0052 = {
 	title = rhodes.0052.t
 	desc = rhodes.0052.desc
 	theme = martial
-	override_background = { event_background = RICE_background_chios_meadow	}
+	override_background = { reference = RICE_background_chios_meadow	}
 	
 	left_portrait = root
 	

@@ -25,7 +25,7 @@ aachen.0001 = {
 	title = aachen.0001.t
 	desc = aachen.0001.desc
 	theme = diplomacy_majesty_focus
-	override_background = { event_background = temple }
+	override_background = { reference = temple }
 	
 	left_portrait = {
 		character = scope:aachen_charlemagne_buster
@@ -43,6 +43,9 @@ aachen.0001 = {
 
 	option = {
 		name = aachen.0001.a
+		create_character_memory = {
+			type = RICE_aachen_charlemagne_bust_memory
+		}
 		every_player = {
 			limit = {
 				#NOT = { this = scope:aachen_charlemagne_buster }
@@ -59,7 +62,7 @@ aachen.0002 = {
 	title = aachen.0002.t
 	desc = aachen.0002.desc
 	theme = diplomacy_majesty_focus
-	override_background = { event_background = temple }
+	override_background = { reference = temple }
 	
 	left_portrait = {
 		character = scope:aachen_charlemagne_buster
@@ -100,6 +103,9 @@ aachen.0003 = {
 
 	option = {
 		name = aachen.0003.a
+		create_character_memory = {
+			type = RICE_aachen_reburied_charlemagne_memory
+		}
 		every_player = {
 			limit = {
 				#NOT = { this = scope:aachen_charlemagne_mover }
@@ -277,7 +283,7 @@ aachen.0008 = {
 
 # Additional prayers at the Shrine of Grannus
 aachen.0009 = {
-	type = character_event
+	type = activity_event
 	title = aachen.0009.t
 	desc = aachen.0009.desc
 	theme = RICE_theme_aachen_forest
@@ -344,30 +350,53 @@ aachen.0009 = {
 			add_piety = 25
 		}
 	}	
-}
 
-
-
-# Setup activity
-aachen.0010 = {
-	hidden = yes	
-	immediate = {
-		# Stop characters from planning multiple activities at once
-		add_character_flag = planning_an_activity
-		# Choose appropriate location
-		title:b_aachen.title_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_aachen_hot_springs_visit
+	after = {
+		if = {
+			limit = { has_character_flag = is_naked }
+			remove_character_flag = is_naked
+		}
+		RICE_hot_springs_memory_effect = yes
+		set_variable = {
+			name = RICE_hot_springs_visit_special_location
+			value = flag:aachen
+			days = 1
+		}
+		scope:activity = {
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				stress_impact = {
+					base = minor_stress_impact_loss
+				}
 			}	
+			hidden_effect = { skip_activity_phase = yes }
 		}
 	}
 }
 
 
+
+# Setup activity
+# aachen.0010 = {
+# 	hidden = yes	
+# 	immediate = {
+# 		# Stop characters from planning multiple activities at once
+# 		add_character_flag = planning_an_activity
+# 		# Choose appropriate location
+# 		title:b_aachen.title_province = {	
+# 			spawn_activity = {
+# 				owner = root
+# 				type = activity_aachen_hot_springs_visit
+# 			}	
+# 		}
+# 	}
+# }
+
+
 # Day of the Springs visit
 aachen.0011 = {
-	type = character_event
+	type = activity_event
 	title = aachen.0011.t
 	desc = aachen.0011.desc
 	theme = RICE_theme_aachen_forest
@@ -379,15 +408,69 @@ aachen.0011 = {
 
 	immediate = {
 		add_character_flag = is_naked
+		scope:activity = {
+			activity_location = { save_scope_as = location }
+		}
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_public
+					}
+				}
+			}
+			set_variable = {
+				name = RICE_hot_springs_visit_special_type
+				value = flag:public
+				days = 1
+			}
+		}
+		else = {			
+			set_variable = {
+				name = RICE_hot_springs_visit_special_type
+				value = flag:private
+				days = 1
+			}
+		}
 	}
 	
 	option = { # Ok
 		name = aachen.0011.a
-		stress_impact = {
-			base = major_stress_impact_loss
-			lazy = minor_stress_impact_loss
-			calm = minor_stress_impact_loss
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_private
+					}
+				}
+			}
+			stress_impact = {
+				base = major_stress_impact_loss
+				lazy = minor_stress_impact_loss
+				calm = minor_stress_impact_loss
+			}	
 		}
+		else_if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_public
+					}
+				}
+			}
+			stress_impact = {
+				base = medium_stress_impact_loss
+				lazy = minor_stress_impact_loss
+				calm = minor_stress_impact_loss
+			}
+			add_prestige = 50
+		}
+	}
+	
+	after = {
 		if = {
 			limit = {
 				RICE_grannus_shrine_allowed_trigger = yes
@@ -398,29 +481,40 @@ aachen.0011 = {
 			}
 			trigger_event = aachen.0009
 		}
-	}
-	
-	after = {
-		if = {
-			limit = { has_character_flag = is_naked }
-			remove_character_flag = is_naked
-		}
-		trigger_event = {
-			id = aachen.0012
-			days = 1
+		else = {
+			RICE_hot_springs_memory_effect = yes
+			set_variable = {
+				name = RICE_hot_springs_visit_special_location
+				value = flag:aachen
+				days = 1
+			}
+			if = {
+				limit = { has_character_flag = is_naked }
+				remove_character_flag = is_naked
+			}
+			scope:activity = {
+				every_attending_character = {
+					limit = { NOT = { this = scope:host } }
+					custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+					stress_impact = {
+						base = minor_stress_impact_loss
+					}
+				}
+				hidden_effect = { skip_activity_phase = yes }
+			}
 		}
 	}	
 }
 
 
-aachen.0012 = {
-	hidden = yes	
-	immediate = {
-		scope:activity = {
-			complete_activity = yes
-		}
-	}
-}
+# aachen.0012 = {
+# 	hidden = yes	
+# 	immediate = {
+# 		scope:activity = {
+# 			complete_activity = yes
+# 		}
+# 	}
+# }
 
 
 # Shrine to Grannus built
@@ -441,7 +535,10 @@ aachen.0013 = {
 	}
 
 	option = { # OK
-		name = aachen.0013.a
+		name = aachen.0013.a		
+		create_character_memory = {
+			type = RICE_aachen_grannus_memory
+		}
 	}
 }
 
@@ -765,7 +862,7 @@ aachen.0025 = {
 	title = aachen.0025.t
 	desc = aachen.0025.desc
 	theme = friendly
-	override_background = { event_background = alley_day }
+	override_background = { reference = alley_day }
 	
 	right_portrait = root
 	
@@ -976,7 +1073,7 @@ aachen.0032 = {
 	title = aachen.0032.t
 	desc = aachen.0032.desc
 	theme = friendly
-	override_background = { event_background = throne_room }
+	override_background = { reference = throne_room }
 	
 	left_portrait = { 	
 		character = scope:RICE_aachen_spa_goer
@@ -1253,7 +1350,7 @@ aachen.0036 = {
 	title = aachen.0036.t
 	desc = aachen.0036.desc
 	theme = unfriendly
-	override_background = { event_background = throne_room }
+	override_background = { reference = throne_room }
 	
 	left_portrait = { 	
 		character = scope:RICE_aachen_spa_goer_bad
@@ -1357,7 +1454,7 @@ aachen.0037 = {
 	title = aachen.0037.t
 	desc = aachen.0037.desc
 	theme = faith
-	override_background = { event_background = RICE_background_aachen_gatehouse }
+	override_background = { reference = RICE_background_aachen_gatehouse }
 	
 	left_portrait = root	
 

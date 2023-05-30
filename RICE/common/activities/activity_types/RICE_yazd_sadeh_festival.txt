@@ -1,0 +1,545 @@
+﻿activity_RICE_yazd_sadeh_festival = {
+	is_shown = {
+		highest_held_title_tier > tier_barony
+		is_landed = yes
+		OR = {
+			culture = { has_cultural_pillar = heritage_iranian }
+			religion = religion:zoroastrianism_religion
+			capital_county = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_iranian }
+					religion = religion:zoroastrianism_religion
+				}
+			}		
+		}
+		trigger_if = {
+			limit = {
+				is_ai = yes
+			}
+			is_at_war = no
+			short_term_gold >= RICE_activity_cost
+		}	
+	}
+
+	can_start = {
+		OR = {
+			culture = { has_cultural_pillar = heritage_iranian }
+			religion = religion:zoroastrianism_religion
+			capital_county = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_iranian }
+					religion = religion:zoroastrianism_religion
+				}
+			}		
+		}
+		custom_description = {
+			text = RICE_decision_yazd_sadeh_month_req
+			OR = {
+				current_month >= 11
+				current_month <= 1			
+			}
+		}
+	}
+
+	can_start_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	is_valid = {
+		NOT = {
+			has_variable = activity_invalidated
+		}
+		scope:host = {
+			is_landed = yes
+			NOT = { is_incapable = yes }
+		}
+		# If no one shows up
+		# trigger_if = {
+		# 	limit = {
+		# 		is_current_phase_active = yes
+		# 	}
+		# 	has_attending_activity_guests = yes
+		# }
+	}
+
+	on_invalidated = {
+		# Host becomes unlanded
+		if = {
+			limit = {
+				scope:host = { is_landed = no }
+			}
+			scope:activity = {
+				activity_type = { save_scope_as = activity_type }
+			}
+			every_attending_character = {
+				trigger_event = activity_system.0320
+			}
+		}
+		if = {
+			limit = {
+				scope:host = { is_incapable = yes }
+			}
+			scope:activity = {
+				activity_type = { save_scope_as = activity_type }
+			}
+			scope:host = {
+				trigger_event = activity_system.0330
+			}
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				trigger_event = activity_system.0331
+			}
+		}
+		# if = { # No one shows up
+		# 	limit = {
+		# 		has_attending_activity_guests = no
+		# 	}
+		# 	scope:activity = {
+		# 		activity_type = { save_scope_as = activity_type }
+		# 		activity_location = { save_scope_as = location }
+		# 	}
+		# 	scope:host = { trigger_event = activity_system.0100 }
+		# }
+	}
+
+	on_host_death = {
+		scope:activity = {
+			set_variable = {
+				name = activity_invalidated
+			}
+		}
+	}
+
+	province_filter = capital
+	ai_province_filter = capital
+	wait_time_before_start = { days = 15 }
+
+	###################
+	# OPTIONS
+	###################
+
+	special_option_category = special_type
+
+	options = {
+		#########
+		# TYPE OF ANIMAL OPTION
+		#########
+		special_type = {
+			RICE_yazd_sadeh_festival_type_modest = {	
+				default = yes		
+				ai_will_do = {
+					value = 10
+				}				
+			}
+			RICE_yazd_sadeh_festival_type_grand = {
+				cost = { 
+					gold = {
+						add = {
+							value = 0
+							desc = RICE_yazd_sadeh_festival_grand_cost_amount
+							add = {
+								value = 50
+								desc = RICE_yazd_sadeh_festival_grand_cost_amount
+							}
+						}
+					}
+				}			
+				ai_will_do = {
+					value = 5
+					if = {
+						limit = {
+							short_term_gold <= 50
+						}
+						subtract = {
+							value = 15
+						}
+					}
+				}
+			}
+			RICE_yazd_sadeh_festival_type_chak_chak = {
+				is_valid = {
+					has_title = title:c_yazd
+					religion = religion:zoroastrianism_religion
+				}
+				cost = { 
+					gold = {
+						add = {
+							value = 0
+							desc = RICE_yazd_sadeh_festival_chak_chak_cost_amount
+							add = {
+								value = 50
+								desc = RICE_yazd_sadeh_festival_chak_chak_cost_amount
+							}
+						}
+					}
+				}			
+				ai_will_do = {
+					value = 5
+					if = {
+						limit = {
+							short_term_gold <= 50
+						}
+						subtract = {
+							value = 10
+						}
+					}
+				}
+			}
+		}
+	}
+
+	###################
+	# PHASES
+	###################
+
+	phases = {
+		RICE_yazd_sadeh_festival_festival_phase = {
+			is_predefined = yes
+			
+			on_phase_active = {
+				if = {
+					limit = {
+						this = scope:host
+					}
+					trigger_event = yazd.0030
+				}		
+			}
+			on_end = {
+				# Run conclusion stuff here
+				# if = {
+				# 	limit = { this = scope:host }
+				# 	scope:activity = { progress_activity_phase_after = { weeks = 2 } }
+				# }
+			}
+		}
+	}
+
+	max_guest_arrival_delay_time = { days = 15 }
+
+	# desc is only shown in debug AI watch window
+	ai_will_do = {
+		value = 50
+		
+		if = {
+			limit = {
+				has_trait = shy
+			}
+			add = -25
+		}
+		if = {
+			limit = {
+				has_trait = gregarious
+			}
+			add = 25
+		}
+		
+		#Can you actually afford this?
+		if = {
+			limit = {
+				NOT = { can_make_expensive_purchase_trigger = { PRICE = RICE_activity_cost } }
+			}
+			add = -50
+		}
+	}
+
+	ai_check_interval = 48
+
+	ai_will_select_province = {
+		value = 10
+		# if = {
+		# 	limit = {
+		# 		this = scope:host.capital_province
+		# 	}
+		# 	add = {
+		# 		value = 30
+		# 		desc = "Capital Province preferred"
+		# 	}
+		# }
+	}
+	
+	is_location_valid = {
+
+	}
+
+	max_province_icons = 1
+	
+	cost = {
+		gold = {
+			add = {
+				value = 0
+				add = {
+					value = RICE_activity_cost
+					desc = hunt_base_cost
+				}
+			}
+		}
+	}
+
+	ui_predicted_cost = {
+		gold = {
+			value = RICE_activity_cost
+
+			add = { # Special Sadeh Festival choices
+				value = 0
+				add = 50
+				# Divide by 2 to get the average option cost, since the 2nd and 3rd options are identical
+				divide = 2
+			}
+
+			# Make it a multiple of 5 (rounded up)
+			divide = 5 
+			ceiling = yes 
+			multiply = 5
+		}
+	}
+	cooldown = { days = RICE_standard_festival_cooldown_time }
+	
+	###################
+	# ACTIVITY-SPECIFIC PULSES
+	###################
+	
+	pulse_actions = {
+
+	}
+
+	on_start = {
+
+	}
+
+	on_enter_passive_state = {
+		
+	}
+
+	###################
+	# GUEST HANDLING
+	###################
+
+	max_guests = 30
+
+	guest_invite_rules = {
+		rules = {
+			# Relations.
+			2 = activity_invite_rule_lovers
+			2 = activity_invite_rule_rivals_if_appropriate
+
+			# Family.
+			3 = activity_invite_rule_extended_family
+
+			# Misc landless.
+			5 = activity_invite_rule_knights
+
+			# MP 
+			6 = activity_invite_mp
+		}
+		defaults = {
+			1 = activity_invite_rule_friends
+			1 = activity_invite_rule_close_family
+			3 = activity_invite_rule_courtiers
+			4 = activity_invite_rule_guests
+			1 = activity_invite_spouses
+		}
+	}
+
+	can_be_activity_guest = {
+		is_adult = yes
+		is_available = yes
+		in_diplomatic_range = scope:host
+		is_landed = no
+	}
+
+	host_intents = {
+		intents = { RICE_yazd_sadeh_festival_fun_intent RICE_yazd_sadeh_festival_spectacle_intent RICE_yazd_sadeh_festival_poetry_intent RICE_yazd_sadeh_festival_zoroastrian_intent }
+		default = RICE_yazd_sadeh_festival_fun_intent
+	}
+
+	guest_intents = {
+		intents = { RICE_yazd_sadeh_festival_fun_intent RICE_yazd_sadeh_festival_poetry_intent RICE_yazd_sadeh_festival_zoroastrian_intent }
+		default = RICE_yazd_sadeh_festival_fun_intent
+	}
+
+	guest_join_chance = {
+		base = 10
+		base_activity_modifier = yes
+
+		# Scripted Modifiers
+		activity_guest_shared_ai_accept_modifier = yes
+	}
+	
+	on_complete = {
+		if = {
+			limit = { this = scope:host }
+			create_character_memory = {
+				type = RICE_yazd_sadeh_festival_host_memory
+			}
+			# scope:host = {
+			# 	RICE_yazd_sadeh_festival_completed_log_entry_effect = yes
+			# }
+		}
+		else = {			
+			create_character_memory = {
+				type = RICE_yazd_sadeh_festival_guest_memory
+				participants = {
+					host = scope:host
+				}
+			}
+		}
+	}
+
+	### Graphics
+	# map_entity = {
+	# 	trigger = {
+	# 		activity_location.culture = {
+	# 			OR = {
+	# 				has_graphical_mena_culture_group_trigger = yes
+	# 				has_graphical_steppe_culture_group_trigger = yes
+	# 				has_graphical_african_culture_group_trigger = yes
+	# 			}
+	# 		}
+	# 	}
+	# 	reference = "building_mena_feast_01_entity"
+	# }
+
+	# map_entity = {
+	# 	trigger = {
+	# 		activity_location.culture = {
+	# 			has_graphical_india_culture_group_trigger = yes
+	# 		}
+	# 	}
+	# 	reference = "building_indian_feast_01_entity"
+	# }
+	
+	# map_entity = "building_western_feast_01_entity"
+
+	# Travel
+
+	background = {
+		trigger = {
+			activity_location.county = title:c_yazd
+			scope:host = {
+				religion = religion:zoroastrianism_religion
+			}
+		}
+		texture = "gfx/interface/illustrations/event_scenes/RICE_yazd_tower_of_silence.dds"
+		environment = "environment_event_desert"
+		ambience = "event:/SFX/Events/Backgrounds/desert_day"
+	}	
+
+	#Fallback
+	background = {
+		texture = "gfx/interface/illustrations/event_scenes/RICE_iranian_throne_room.dds"
+		environment = "environment_frontend_east_main"
+		ambience = "event:/SFX/Events/Backgrounds/throneroom_middleeastern_african"
+	}
+
+
+	window_characters = {
+
+		guest = {
+			camera = camera_body
+			
+			effect = {
+				every_attending_character = {
+					limit = {
+						scope:host.location = scope:activity.activity_location
+					}
+					add_to_list = characters
+				}
+			}
+
+			scripted_animation = {
+				animation = happiness
+			}
+		}
+
+		guest = {
+			camera = camera_body
+			
+			effect = {
+				every_attending_character = {
+					limit = {
+						scope:host.location = scope:activity.activity_location
+					}
+					add_to_list = characters
+				}
+			}
+
+			scripted_animation = {
+				animation = personality_greedy
+			}
+		}
+		
+		host = {
+			camera = camera_body
+			
+			effect = {
+				if = {
+					limit = {
+						scope:host.location = scope:activity.activity_location
+					}
+					scope:host = {
+						add_to_list = characters
+					}
+				}
+			}
+
+			scripted_animation = {
+				animation = personality_content
+			}
+		}
+		
+		travel_host = {
+			camera = camera_body
+			
+			effect = {
+				if = {
+					limit = {
+						NOT = {
+							scope:host.location = scope:activity.activity_location
+						}
+					}
+					scope:host = {
+						add_to_list = characters
+					}
+				}
+			}
+
+			scripted_animation = {
+				animation = jockey_walk
+			}
+		}
+
+		guest = {
+			camera = camera_body
+			
+			effect = {
+				every_attending_character = {
+					limit = {
+						scope:host.location = scope:activity.activity_location
+					}
+					add_to_list = characters
+				}
+			}
+
+			scripted_animation = {
+				animation = jockey_walk
+			}
+		}
+
+		guest = {
+			camera = camera_body
+			
+			effect = {
+				every_attending_character = {
+					limit = {
+						scope:host.location = scope:activity.activity_location
+					}
+					add_to_list = characters
+				}
+			}
+
+			scripted_animation = {
+				animation = jockey_walk
+			}
+		}
+	}
+}

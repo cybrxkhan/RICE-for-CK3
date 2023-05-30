@@ -38,6 +38,9 @@ tuyuhun.0001 = {
 
 	option = {
 		name = tuyuhun.0001.a
+		create_character_memory = {
+			type = RICE_tuyuhun_restored_tuyuhun_kingdom_memory
+		}
 		every_player = {
 			limit = {
 				NOT = { this = scope:tuyuhun_ruler }
@@ -123,6 +126,12 @@ tuyuhun.0010 = {
 
 	option = { # OK
 		name = tuyuhun.0010.a
+		create_character_memory = {
+			type = RICE_tuyuhun_gave_qinghaicong_horses_memory
+			participants = {
+				recipient = scope:recipient
+			}
+		}
 	}
 }
 
@@ -151,6 +160,12 @@ tuyuhun.0011 = {
 
 	option = {
 		name = tuyuhun.0011.a
+		create_character_memory = {
+			type = RICE_tuyuhun_received_qinghaicong_horses_memory
+			participants = {
+				actor = scope:actor
+			}
+		}
 	}
 }
 
@@ -167,27 +182,18 @@ tuyuhun.0011 = {
 
 # Prepare for Nadun
 tuyuhun.0020 = {
-	type = character_event
+	type = activity_event
 	title = tuyuhun.0020.t
 	desc = tuyuhun.0020.desc
 	theme = friendly
 	
 	right_portrait = root
 	
-	immediate = {
-		capital_province = { save_scope_as = capital_province } #For loc.
-		# Stop characters from planning multiple activities at once.
-		add_character_flag = planning_an_activity
-	}
-	
 	option = { # Ok
 		name = tuyuhun.0020.a
-		# Choose appropriate location
-		scope:capital_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_tuyuhun_nadun_festival
-			}	
+		trigger_event = {
+			id = tuyuhun.0021
+			days = { 10 20 }
 		}
 	}
 }
@@ -195,7 +201,7 @@ tuyuhun.0020 = {
 
 # Nadun begins
 tuyuhun.0021 = {
-	type = character_event
+	type = activity_event
 	title = tuyuhun.0021.t
 	desc = tuyuhun.0021.desc
 	theme = RICE_theme_tibet_outer_altar
@@ -213,70 +219,70 @@ tuyuhun.0021 = {
 		name = tuyuhun.0021.a
 		hidden_effect = {
 			random = {
-				chance = 20
+				chance = 25
 				trigger_event = {
 					id = tuyuhun.0024
 					days = { 5 32 }
 				}
 			}
 			random = {
-				chance = 20
+				chance = 25
 				trigger_event = {
 					id = tuyuhun.0025
 					days = { 5 32 }
 				}
 			}
 			random = {
-				chance = 20
+				chance = 25
 				trigger_event = {
 					id = tuyuhun.0026
 					days = { 5 32 }
 				}
 			}
 			random = {
-				chance = 20
+				chance = 25
 				trigger_event = {
 					id = tuyuhun.0027
 					days = { 5 32 }
 				}
 			}
 			random = {
-				chance = 20
+				chance = 25
 				trigger_event = {
 					id = tuyuhun.0028
 					days = { 5 32 }
 				}
 			}
 			random = {
-				chance = 20
+				chance = 25
 				trigger_event = {
 					id = tuyuhun.0029
 					days = { 5 32 }
 				}
 			}
 			random = {
-				chance = 20
+				chance = 25
 				trigger_event = {
 					id = tuyuhun.0030
 					days = { 5 32 }
 				}
 			}
 			random = {
-				chance = 20
+				chance = 25
 				trigger_event = {
 					id = tuyuhun.0031
 					days = { 5 32 }
 				}
 			}
 			random = {
-				chance = 20
+				chance = 25
 				trigger_event = {
 					id = tuyuhun.0032
 					days = { 5 32 }
 				}
 			}
 			random = {
-				chance = 20
+				chance = 25
 				trigger_event = {
 					id = tuyuhun.0033
 					days = { 5 32 }
@@ -292,7 +298,7 @@ tuyuhun.0021 = {
 
 # Nadun ends
 tuyuhun.0022 = {
-	type = character_event
+	type = activity_event
 	title = tuyuhun.0022.t
 	desc = tuyuhun.0022.desc
 	theme = RICE_theme_tibet_outer_altar
@@ -304,36 +310,32 @@ tuyuhun.0022 = {
 	
 	option = { # Fun!
 		name = tuyuhun.0022.a
-		add_character_modifier = {
-			modifier = RICE_tuyuhun_recently_went_to_nadun_festival
-			years = 3
-		}
+		RICE_tuyuhun_nadun_festival_completed_log_entry_effect = yes
 	}
 	
 	after = {
-		trigger_event = {
-			id = tuyuhun.0023
-			days = 1
+		scope:activity = {
+			hidden_effect = { skip_activity_phase = yes }
 		}
-	}	
+	}		
 }
 
 # Misc cleanup
-tuyuhun.0023 = {
-	hidden = yes	
-	immediate = {
-		scope:activity = {
-			complete_activity = yes
-		}
-	}
-}
+# tuyuhun.0023 = {
+# 	hidden = yes	
+# 	immediate = {
+# 		scope:activity = {
+# 			complete_activity = yes
+# 		}
+# 	}
+# }
 
 
 
 
 # Nadun flavor - sharing good news
 tuyuhun.0024 = {
-	type = character_event
+	type = activity_event
 	title = tuyuhun.0024.t
 	desc = tuyuhun.0024.desc
 	theme = RICE_theme_tibet_outer_altar
@@ -364,7 +366,7 @@ tuyuhun.0024 = {
 
 # Nadun flavor - dancing in honor of heaven
 tuyuhun.0025 = {
-	type = character_event
+	type = activity_event
 	title = tuyuhun.0025.t
 	desc = tuyuhun.0025.desc
 	theme = RICE_theme_tibet_outer_altar
@@ -383,7 +385,7 @@ tuyuhun.0025 = {
 
 # Nadun flavor - eating Supan cake
 tuyuhun.0026 = {
-	type = character_event
+	type = activity_event
 	title = tuyuhun.0026.t
 	desc = tuyuhun.0026.desc
 	theme = RICE_theme_tibet_inner_altar
@@ -414,7 +416,7 @@ tuyuhun.0026 = {
 
 # Nadun flavor - toasting the dancers
 tuyuhun.0027 = {
-	type = character_event
+	type = activity_event
 	title = tuyuhun.0027.t
 	desc = tuyuhun.0027.desc
 	theme = RICE_theme_tibet_outer_altar
@@ -445,7 +447,7 @@ tuyuhun.0027 = {
 
 # Nadun flavor - theatre story about farmers
 tuyuhun.0028 = {
-	type = character_event
+	type = activity_event
 	title = tuyuhun.0028.t
 	desc = tuyuhun.0028.desc
 	theme = RICE_theme_tibet_outer_altar
@@ -464,7 +466,7 @@ tuyuhun.0028 = {
 
 # Nadun flavor - theatre story about the Three Kingdoms
 tuyuhun.0029 = {
-	type = character_event
+	type = activity_event
 	title = tuyuhun.0029.t
 	desc = tuyuhun.0029.desc
 	theme = RICE_theme_tibet_outer_altar
@@ -521,7 +523,7 @@ tuyuhun.0029 = {
 
 # Nadun flavor - visit friends in village?
 tuyuhun.0030 = {
-	type = character_event
+	type = activity_event
 	title = tuyuhun.0030.t
 	desc = tuyuhun.0030.desc
 	theme = RICE_theme_tibet_inner_altar
@@ -549,7 +551,7 @@ tuyuhun.0030 = {
 	}	
 	option = { # Meet new friends
 		name = tuyuhun.0030.c
-		add_piety = 25
+		add_prestige = 25
 		stress_impact = {
 			gregarious = miniscule_stress_impact_loss
 			trusting = miniscule_stress_impact_loss
@@ -560,7 +562,7 @@ tuyuhun.0030 = {
 
 # Nadun flavor - food at feast
 tuyuhun.0031 = {
-	type = character_event
+	type = activity_event
 	title = tuyuhun.0031.t
 	desc = tuyuhun.0031.desc
 	theme = RICE_theme_tibet_inner_altar
@@ -599,7 +601,7 @@ tuyuhun.0031 = {
 
 # Nadun flavor - traditional songs
 tuyuhun.0032 = {
-	type = character_event
+	type = activity_event
 	title = tuyuhun.0032.t
 	desc = tuyuhun.0032.desc
 	theme = RICE_theme_tibet_outer_altar
@@ -618,7 +620,7 @@ tuyuhun.0032 = {
 
 # Nadun flavor - love is blossoming
 tuyuhun.0033 = {
-	type = character_event
+	type = activity_event
 	title = tuyuhun.0033.t
 	desc = tuyuhun.0033.desc
 	theme = RICE_theme_tibet_outer_altar
@@ -999,9 +1001,7 @@ tuyuhun.0054 = {
 		}		
 		stress_impact = {
 			gregarious = miniscule_stress_impact_gain
-			reveler_1 = minor_stress_impact_gain
-			reveler_2 = minor_stress_impact_gain
-			reveler_3 = minor_stress_impact_gain
+			lifestyle_reveler = minor_stress_impact_gain
 			drunkard = medium_stress_impact_loss
 		}
 	}

@@ -1,0 +1,86 @@
+﻿# Arrival in any province during travel
+on_travel_plan_movement = {
+	on_actions = {
+		delay = { days = { 2 28 } }
+		RICE_travel_event_tombola		
+	}
+
+}
+
+
+RICE_travel_event_tombola = {
+	effect = {
+		current_travel_plan = {
+			if = {
+				limit = {
+					has_travel_option = RICE_silk_road_merchants_option
+					any_entourage_character = {
+						count >= 1 
+						NOT = { this = root }
+						has_trait = RICE_silk_road_merchant
+					}
+					current_location = { is_sea_province = no }
+				}
+			}
+			root = {				
+				random = {
+					chance = RICE_merchant_travel_option_event_chance
+					trigger_event = tarim_basin.0011
+				}
+			}
+		}
+	}
+}
+
+on_travel_plan_start = {
+	trigger = { is_ruler = yes }
+	on_actions = {
+		on_travel_plan_start_RICE
+	}
+}
+
+
+on_travel_plan_start_RICE = {
+	effect = {
+		if = {
+			limit = {
+				current_travel_plan = {
+					any_entourage_character = {
+						exists = var:RICE_merchant_temp
+						is_courtier_of = root
+					}
+				}
+			}
+			current_travel_plan = {
+				every_entourage_character = {
+					limit = {
+						exists = var:RICE_merchant_temp
+						is_courtier_of = root
+					}
+					move_to_pool = yes
+				}
+			}
+		}
+	}
+	events = {
+		# Generic
+		RICEmisc.0011					# Generic placeholder start
+		RICE_ancestor_worship.0004		# Ancestor Worship start
+
+		# Hot Springs
+		pamir.0030						# Bibi Fatima
+		magadha.0015					# Rajgir
+		tuareg.0012						# Tafadek
+
+		# Local Pilgrimages
+		khuzestan.0020 					# Tomb of Daniel
+
+		# Specific
+		siwa.0023						# Oracle of Amun
+		chios.0020						# Mostra of Thymiana
+		magadha.0030					# Bodhi Tree Bathing Ceremony in Bodh Gaya
+		tarim_basin.0210				# Ordam Mazar/Ordam Festival
+		granada.0050 					# Private Munya Vacation
+		normandy.0060					# Procession of Saint Aubert
+	}
+}

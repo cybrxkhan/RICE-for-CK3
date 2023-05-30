@@ -2,34 +2,185 @@
 
 RICE_explorer = {
 	
-	fame = yes
+	category = fame
 
-	diplomacy_per_prestige_level = 1
+	diplomacy = 1
 	learning = 1
 	prowess = 1
-	monthly_prestige = 0.1
-	diplomatic_range_mult = 0.1
-	naval_movement_speed_mult = 0.1
-	learn_language_scheme_power_mult = 0.1
+	monthly_prestige = 0.05
 
-	#ignore_negative_culture_opinion = yes
-	#ignore_negative_opinion_of_culture = yes
-
-	#same_opinion = 5
+	tracks = {
+		RICE_explorer_discoverer = {
+			trait_second_level = {
+				prowess = 1
+				monthly_prestige = 0.05
+				diplomatic_range_mult = 0.05
+				learn_language_scheme_power_mult = 0.05
+			}
+			trait_third_level = {
+				prowess = 1
+				monthly_prestige = 0.05
+				diplomatic_range_mult = 0.05
+				learn_language_scheme_power_mult = 0.05
+			}		
+		}
+		RICE_explorer_envoy = {
+			trait_second_level = {
+				diplomacy = 1
+				learning = 1
+				character_travel_speed = 5
+				character_travel_safety = 5
+			}
+			trait_third_level = {
+				diplomacy = 1
+				learning = 1
+				character_travel_speed = 5
+				character_travel_safety = 5
+			}
+		}
+	}
 	
 	ruler_designer_cost = 100
 
-	desc = {
+	# Loc
+	# name = {
+	# 	first_valid = {
+	# 		# Prolific Explorer
+	# 		triggered_desc = {
+	# 			trigger = {
+	# 				exists = this
+	# 				has_trait_xp = {
+	# 					trait = RICE_explorer
+	# 					value >= 100
+	# 				}
+	# 			}
+	# 			desc = trait_RICE_explorer_3
+	# 		}
+	# 		# Experienced Explorer
+	# 		triggered_desc = {
+	# 			trigger = { 
+	# 				exists = this
+	# 				has_trait_xp = {
+	# 					trait = RICE_explorer
+	# 					value >= 50
+	# 				}
+	# 			}
+	# 			desc = trait_RICE_explorer_2
+	# 		}
+	# 		# Explorer
+	# 		desc = trait_RICE_explorer
+	# 	}
+	# }
+
+	# desc = {
+	# 	first_valid = {
+	# 		triggered_desc = {
+	# 			trigger = {
+	# 				NOT = { exists = this }
+	# 			}
+	# 			desc = trait_RICE_explorer_desc
+	# 		}
+	# 		desc = trait_RICE_explorer_character_desc
+	# 	}
+	# }
+
+	name = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					NOT = { exists = this }
+					trigger_if = {
+						limit = {
+							NOT = { exists = this }
+						}
+					}
+					trigger_else_if = {
+						limit = { has_trait = RICE_explorer }
+						has_trait_xp = {
+							trait = RICE_explorer
+							track = RICE_explorer_discoverer
+							value < 50
+						}
+						has_trait_xp = {
+							trait = RICE_explorer
+							track = RICE_explorer_envoy
+							value < 50
+						}
+					}
+					trigger_else = {
+						NOT = { has_trait = RICE_explorer }
+					}
 				}
-				desc = trait_RICE_explorer_desc
+				desc = trait_RICE_explorer
 			}
-			desc = trait_RICE_explorer_character_desc
+			triggered_desc = {
+				trigger = {
+					has_trait = RICE_explorer
+					OR = {
+						has_trait_xp = {
+							trait = RICE_explorer
+							track = RICE_explorer_discoverer
+							value = 100
+						}
+						has_trait_xp = {
+							trait = RICE_explorer
+							track = RICE_explorer_envoy
+							value = 100
+						}
+					}
+				}
+				desc = trait_RICE_explorer_3
+			}
+			desc = trait_RICE_explorer_2
 		}
 	}
+
+	# desc = {
+	# 	first_valid = {
+	# 		triggered_desc = {
+	# 			trigger = {
+	# 				NOT = { exists = this }
+	# 			}
+	# 			desc = trait_RICE_explorer_desc
+	# 		}
+	# 		triggered_desc = {
+	# 			trigger = {
+	# 				trigger_if = {
+	# 					limit = { has_trait = RICE_explorer }
+	# 					has_trait_xp = {
+	# 						trait = RICE_explorer
+	# 						track = RICE_explorer_discoverer
+	# 						value < 50
+	# 					}
+	# 					has_trait_xp = {
+	# 						trait = RICE_explorer
+	# 						track = RICE_explorer_envoy
+	# 						value < 50
+	# 					}
+	# 				}
+	# 			}
+	# 			desc = trait_RICE_explorer_character_desc
+	# 		}
+	# 		triggered_desc = {
+	# 			trigger = {
+	# 				has_trait = RICE_explorer
+	# 				OR = {
+	# 					has_trait_xp = {
+	# 						trait = RICE_explorer
+	# 						track = RICE_explorer_discoverer
+	# 						value = 100
+	# 					}
+	# 					has_trait_xp = {
+	# 						trait = RICE_explorer
+	# 						track = RICE_explorer_envoy
+	# 						value = 100
+	# 					}
+	# 				}
+	# 			}
+	# 			desc = trait_RICE_explorer_3_character_desc
+	# 		}
+	# 		desc = trait_RICE_explorer_2_character_desc
+	# 	}
+	# }
 
 	ai_energy = low_positive_ai_value
 	ai_boldness = low_positive_ai_value
@@ -42,6 +193,8 @@ RICE_explorer = {
 
 
 RICE_exploring_western_seas = {
+
+	category = fame
 
 	flag = can_not_marry
 	can_have_children = no

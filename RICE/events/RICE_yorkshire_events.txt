@@ -268,7 +268,7 @@ yorkshire.0024 = {
 
 # Maintenance event if character dies while borrowing Saint John's Banner
 yorkshire.0025 = {
-	type = empty
+	scope = none
 	hidden = yes
 	
 	trigger = {
@@ -282,7 +282,7 @@ yorkshire.0025 = {
 
 # Maintenance event to remove Saint John's Banner once character has held it for 10 years
 yorkshire.0026 = {
-	type = empty
+	scope = none
 	hidden = yes
 
 	trigger = {
@@ -296,7 +296,7 @@ yorkshire.0026 = {
 
 # Maintenance event to remove Saint John's Banner if character doesn't have anymore titles
 yorkshire.0027 = {
-	type = empty
+	scope = none
 	hidden = yes
 
 	trigger = {
@@ -526,7 +526,7 @@ yorkshire.0050 = {
 	title = yorkshire.0050.t
 	desc = yorkshire.0050.desc
 	theme = battle
-	override_background = { event_background = RICE_background_england_scarborough_fair }
+	override_background = { reference = RICE_background_england_scarborough_fair }
 	
 	left_portrait = {
 		character = root
@@ -537,7 +537,8 @@ yorkshire.0050 = {
 		has_title = title:c_lincolnshire
 		# According to legend, started c. 1200 with William de Warenne, 5th Earl of Surrey
 		current_date > 950.1.1
-		has_global_variable = RICE_yorkshire_first_stamford_bull_run_happened	
+		NOT = { has_global_variable = RICE_yorkshire_first_stamford_bull_run_happened }
+		
 	}
 	
 	weight_multiplier = {
@@ -598,7 +599,7 @@ yorkshire.0051 = {
 	title = yorkshire.0051.t
 	desc = yorkshire.0051.desc
 	theme = friendly
-	override_background = { event_background = market }
+	override_background = { reference = market }
 	
 	left_portrait = {
 		character = root
@@ -644,7 +645,7 @@ yorkshire.0052 = {
 	title = yorkshire.0052.t
 	desc = yorkshire.0052.desc
 	theme = battle
-	override_background = { event_background = RICE_background_england_scarborough_fair }
+	override_background = { reference = RICE_background_england_scarborough_fair }
 	
 	right_portrait = {
 		character = scope:bull_runner
@@ -671,7 +672,7 @@ yorkshire.0052 = {
 
 # Make preparations to go to Stamford
 yorkshire.0053 = {
-	type = character_event
+	type = activity_event
 	title = yorkshire.0053.t
 	desc = {
 		first_valid = {
@@ -689,7 +690,7 @@ yorkshire.0053 = {
 			}
 		}
 	}
-	theme = friendly
+	theme = RICE_theme_england_scarborough_fair
 	
 	right_portrait = root
 	
@@ -701,25 +702,20 @@ yorkshire.0053 = {
 		title:b_stamford = { #For loc.
 			save_scope_as = stamford_barony
 		}
-		# Stop characters from planning multiple activities at once
-		add_character_flag = planning_an_activity
 	}
 	
 	option = { # Ok
 		name = yorkshire.0053.a
-		# Choose appropriate location - Cottingham which is the closest to the IRL location of Beverley
-		title:b_stamford.title_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_yorkshire_spectating_of_the_stamford_bull_run
-			}	
+		trigger_event = {
+			id = yorkshire.0054
+			days = { 4 8 }
 		}
 	}
 }
 
 # Arrive in Stamford
 yorkshire.0054 = {
-	type = character_event
+	type = activity_event
 	title = yorkshire.0054.t
 	desc = yorkshire.0054.desc
 	theme = RICE_theme_england_scarborough_fair
@@ -745,8 +741,9 @@ yorkshire.0054 = {
 			days = { 4 8 }
 		}
 		stress_impact = {
-			shy = medium_stress_impact_gain
-			arrogant = major_stress_impact_gain
+			shy = minor_stress_impact_gain
+			arrogant = medium_stress_impact_gain
+			compassionate = major_stress_impact_gain
 		}
 	}	
 	option = { # Don't participate
@@ -763,11 +760,11 @@ yorkshire.0054 = {
 
 # The bull run begins!
 yorkshire.0055 = {
-	type = character_event
+	type = activity_event
 	title = yorkshire.0055.t
 	desc = yorkshire.0055.desc
 	theme = feast_activity
-	override_background = { event_background = market }
+	override_background = { reference = market }
 	
 	left_portrait = root
 	
@@ -783,7 +780,7 @@ yorkshire.0055 = {
 
 # The bull run
 yorkshire.0056 = {
-	type = character_event
+	type = activity_event
 	title = yorkshire.0056.t
 	desc = {
 		first_valid = {
@@ -802,7 +799,7 @@ yorkshire.0056 = {
 		}
 	}
 	theme = feast_activity
-	override_background = { event_background = market }
+	override_background = { reference = market }
 	
 	left_portrait = {
 		character = root
@@ -826,11 +823,11 @@ yorkshire.0056 = {
 
 # The bull run
 yorkshire.0057 = {
-	type = character_event
+	type = activity_event
 	title = yorkshire.0057.t
 	desc = yorkshire.0057.desc
 	theme = feast_activity
-	override_background = { event_background = RICE_background_england_scarborough_fair }
+	override_background = { reference = RICE_background_england_scarborough_fair }
 	
 	left_portrait = {
 		character = root
@@ -850,11 +847,11 @@ yorkshire.0057 = {
 
 # Bull run aftermath/feast
 yorkshire.0058 = {
-	type = character_event
+	type = activity_event
 	title = yorkshire.0058.t
 	desc = yorkshire.0058.desc
 	theme = feast_activity
-	override_background = { event_background = RICE_background_england_scarborough_fair }
+	override_background = { reference = RICE_background_england_scarborough_fair }
 	
 	right_portrait = {
 		character = root
@@ -868,23 +865,40 @@ yorkshire.0058 = {
 			modifier = RICE_yorkshire_was_at_stamford_bull_run
 			years = 8
 		}
-		trigger_event = {
-			id = yorkshire.0059
-			days = 1
+		stress_impact = {
+			base = minor_stress_impact_loss
+			gregarious = minor_stress_impact_loss
+			sadistic = minor_stress_impact_loss
 		}
 	}
+
+	after = {
+		scope:activity = {
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				stress_impact = {
+					base = miniscule_stress_impact_loss
+					gregarious = miniscule_stress_impact_loss
+					sadistic = miniscule_stress_impact_loss
+				}
+			}	
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}
+
 }
 
 
 # Misc cleanup
-yorkshire.0059 = {
-	hidden = yes	
-	immediate = {
-		scope:activity = {
-			complete_activity = yes
-		}
-	}
-}
+# yorkshire.0059 = {
+# 	hidden = yes	
+# 	immediate = {
+# 		scope:activity = {
+# 			complete_activity = yes
+# 		}
+# 	}
+# }
 
 
 
@@ -910,7 +924,7 @@ yorkshire.0070 = {
 	title = yorkshire.0070.t
 	desc = yorkshire.0070.desc
 	theme = stewardship_domain_focus
-	override_background = { event_background = market }
+	override_background = { reference = market }
 	
 	left_portrait = {
 		character = root
@@ -968,7 +982,7 @@ yorkshire.0072 = {
 	title = yorkshire.0072.t
 	desc = yorkshire.0072.desc
 	theme = stewardship_domain_focus
-	override_background = { event_background = market }
+	override_background = { reference = market }
 	
 	left_portrait = {
 		character = root
@@ -1066,7 +1080,7 @@ yorkshire.0075 = {
 	title = yorkshire.0075.t
 	desc = yorkshire.0075.desc
 	theme = stewardship_domain_focus
-	override_background = { event_background = market }
+	override_background = { reference = market }
 	
 	left_portrait = {
 		character = root
@@ -1124,7 +1138,7 @@ yorkshire.0077 = {
 	title = yorkshire.0077.t
 	desc = yorkshire.0077.desc
 	theme = stewardship_domain_focus
-	override_background = { event_background = market }
+	override_background = { reference = market }
 	
 	left_portrait = {
 		character = root
@@ -1221,7 +1235,7 @@ yorkshire.0080 = {
 	title = yorkshire.0080.t
 	desc = yorkshire.0080.desc
 	theme = stewardship_domain_focus
-	override_background = { event_background = market }
+	override_background = { reference = market }
 	
 	left_portrait = {
 		character = root
@@ -1279,7 +1293,7 @@ yorkshire.0082 = {
 	title = yorkshire.0082.t
 	desc = yorkshire.0082.desc
 	theme = stewardship_domain_focus
-	override_background = { event_background = market }
+	override_background = { reference = market }
 	
 	left_portrait = {
 		character = root
@@ -1375,7 +1389,7 @@ yorkshire.0085 = {
 	title = yorkshire.0085.t
 	desc = yorkshire.0085.desc
 	theme = stewardship_domain_focus
-	override_background = { event_background = market }
+	override_background = { reference = market }
 	
 	left_portrait = {
 		character = root
@@ -1433,7 +1447,7 @@ yorkshire.0087 = {
 	title = yorkshire.0087.t
 	desc = yorkshire.0087.desc
 	theme = stewardship_domain_focus
-	override_background = { event_background = market }
+	override_background = { reference = market }
 	
 	left_portrait = {
 		character = root
@@ -1525,7 +1539,7 @@ yorkshire.0089 = {
 
 # Charter fairs get updated once all four decisions are taken
 yorkshire.0090 = {
-	type = empty
+	scope = none
 	hidden = yes
 	
 	trigger = {
@@ -1593,7 +1607,7 @@ yorkshire.0100 = {
 	title = yorkshire.0100.t
 	desc = yorkshire.0100.desc
 	theme = friendly
-	override_background = { event_background = market }
+	override_background = { reference = market }
 	
 	right_portrait = root
 	
@@ -1665,7 +1679,7 @@ yorkshire.0101 = {
 	title = yorkshire.0101.t
 	desc = yorkshire.0101.desc
 	theme = friendly
-	override_background = { event_background = market }
+	override_background = { reference = market }
 	
 	right_portrait = root
 	
@@ -1920,7 +1934,7 @@ yorkshire.0104 = {
 	title = yorkshire.0104.t
 	desc = yorkshire.0104.desc
 	theme = party
-	override_background = { event_background = tavern }
+	override_background = { reference = tavern }
 	
 	left_portrait = {
 		character = root

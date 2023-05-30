@@ -1,0 +1,778 @@
+﻿activity_RICE_hot_springs_visit = {
+	is_shown = {
+		highest_held_title_tier > tier_barony
+		is_landed = yes
+		# any_realm_county = {
+		# 	title_province = {
+		# 		geographical_region = RICE_hot_springs_region
+		# 	}
+		# }
+		trigger_if = {
+			limit = {
+				is_ai = yes
+			}
+			is_at_war = no
+			short_term_gold >= RICE_activity_cost
+		}
+	}
+
+	can_start = {
+		# custom_description = {
+		# 	text = RICE_hot_springs_county_req
+		# 	any_realm_county = {
+		# 		title_province = {
+		# 			geographical_region = RICE_hot_springs_region
+		# 		}
+		# 	}
+		# }
+	}
+
+	can_start_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	is_valid = {
+		NOT = {
+			has_variable = activity_invalidated
+		}
+		scope:host = {
+			is_landed = yes
+			NOT = { is_incapable = yes }
+		}
+		# If no one shows up
+		# trigger_if = {
+		# 	limit = {
+		# 		is_current_phase_active = yes
+		# 	}
+		# 	has_attending_activity_guests = yes
+		# }
+	}
+
+	on_invalidated = {
+		# Host becomes unlanded
+		if = {
+			limit = {
+				scope:host = { is_landed = no }
+			}
+			scope:activity = {
+				activity_type = { save_scope_as = activity_type }
+			}
+			every_attending_character = {
+				trigger_event = activity_system.0320
+			}
+		}
+		if = {
+			limit = {
+				scope:host = { is_incapable = yes }
+			}
+			scope:activity = {
+				activity_type = { save_scope_as = activity_type }
+			}
+			scope:host = {
+				trigger_event = activity_system.0330
+			}
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				trigger_event = activity_system.0331
+			}
+		}
+		# if = { # No one shows up
+		# 	limit = {
+		# 		has_attending_activity_guests = no
+		# 	}
+		# 	scope:activity = {
+		# 		activity_type = { save_scope_as = activity_type }
+		# 		activity_location = { save_scope_as = location }
+		# 	}
+		# 	scope:host = { trigger_event = activity_system.0100 }
+		# }
+	}
+
+	on_host_death = {
+		scope:activity = {
+			set_variable = {
+				name = activity_invalidated
+			}
+		}
+	}
+
+	province_filter = top_realm
+	ai_province_filter = realm
+
+	province_description = {
+		#Is it a unique hot springs?
+		triggered_desc = {
+			trigger = {
+				RICE_hot_springs_baronies_trigger = no
+			}
+			desc = activity_RICE_hot_springs_visit_province_desc
+		}
+		triggered_desc = {
+			trigger = {
+				barony = title:b_siwa
+			}
+			desc = activity_RICE_hot_springs_visit_siwa_province_desc
+		}
+		triggered_desc = {
+			trigger = {
+				barony = title:b_aachen
+			}
+			desc = activity_RICE_hot_springs_visit_aachen_province_desc
+		}
+		triggered_desc = {
+			trigger = {
+				barony = title:b_wakhan
+			}
+			desc = activity_RICE_hot_springs_visit_bibi_fatima_province_desc
+		}
+		triggered_desc = {
+			trigger = {
+				barony = title:b_rajagrha
+			}
+			desc = activity_RICE_hot_springs_visit_rajgir_province_desc
+		}
+		triggered_desc = {
+			trigger = {
+				barony = title:b_air
+			}
+			desc = activity_RICE_hot_springs_visit_tafadek_province_desc
+		}
+	}
+
+	
+	wait_time_before_start = { days = 7 }
+
+	###################
+	# OPTIONS
+	###################
+
+	special_option_category = special_type
+
+	options = {
+		#########
+		# TYPE OF VISIT
+		#########
+		special_type = {
+			RICE_hot_springs_visit_type_private = {
+				default = yes	
+				ai_will_do = {
+					value = 10
+					if = {
+						limit = {
+							has_trait = lazy
+						}
+						add = 10
+					}
+					if = {
+						limit = {
+							has_trait = shy
+						}
+						add = 20
+					}
+					if = {
+						limit = {
+							has_trait = paranoid
+						}
+						add = 10
+					}
+				}
+			}
+			RICE_hot_springs_visit_type_public = {		
+				ai_will_do = {
+					value = 10
+					if = {
+						limit = {
+							has_trait = ambitious
+						}
+						add = 10
+					}
+					if = {
+						limit = {
+							has_trait = gregarious
+						}
+						add = 20
+					}
+					if = {
+						limit = {
+							has_trait = trusting
+						}
+						add = 10
+					}
+				}
+			}
+		}
+
+	}
+
+	###################
+	# PHASES
+	###################
+
+	phases = {
+		RICE_hot_springs_visit_leisure_phase = {
+			is_predefined = yes
+			
+			on_phase_active = {
+
+				###########################################################
+				#
+				# Trigger the appropriate hot springs intro event
+				#
+				###########################################################
+
+				if = {
+					limit = {
+						this = scope:host
+					}
+					# Siwa Oasis	
+					if = {
+						limit = {
+							involved_activity.activity_location.barony = title:b_siwa
+						}
+						scope:host = { trigger_event = siwa.0010 }
+					}
+					# Thermal Spas of Aachen
+					else_if = {
+						limit = {
+							involved_activity.activity_location.barony = title:b_aachen
+						}
+						scope:host = { trigger_event = aachen.0011 }
+					}
+					# Bibi Fatima Springs
+					else_if = {
+						limit = {
+							involved_activity.activity_location.barony = title:b_wakhan
+						}
+						scope:host = { trigger_event = pamir.0031 }
+					}
+					# Rajgir hot Springs
+					else_if = {
+						limit = {
+							involved_activity.activity_location.barony = title:b_rajagrha
+						}
+						scope:host = { trigger_event = magadha.0016 }
+					}
+					# Tafadek hot Springs
+					else_if = {
+						limit = {
+							involved_activity.activity_location.barony = title:b_air
+						}
+						scope:host = { trigger_event = tuareg.0013 }
+					}
+					# Default / fallback option
+					else = {
+						trigger_event = RICEmisc.0012
+					}
+				}
+
+			}
+
+			on_end = {
+				# Run conclusion stuff here
+				# if = {
+				# 	limit = { this = scope:host }
+				# 	scope:activity = { progress_activity_phase_after = { weeks = 2 } }
+				# }
+			}
+		}
+	}
+
+	max_guest_arrival_delay_time = { days = 3 }
+
+	# desc is only shown in debug AI watch window
+	ai_will_do = {
+		value = 50
+		
+		# How much do you care about your faith not liking this?
+		if = {
+			limit = {
+				has_trait = diligent
+			}
+			add = -25
+		}
+		if = {
+			limit = {
+				has_trait = lazy
+			}
+			add = 25
+		}
+		
+		#Can you actually afford this?
+		if = {
+			limit = {
+				NOT = { can_make_expensive_purchase_trigger = { PRICE = RICE_activity_cost } }
+			}
+			add = -50
+		}
+	}
+
+	ai_check_interval = 60
+
+	ai_will_select_province = {
+		value = 10
+		add = {
+			value = scope:score # Derived from province_score
+			multiply = 5
+		}
+		if = {
+			limit = {
+				this = scope:host.capital_province
+			}
+			add = {
+				value = 20
+				desc = "Capital Province preferred"
+			}
+		}
+	}
+	
+	# Anywhere
+	is_location_valid = {
+
+	}
+
+	max_province_icons = 3
+
+	province_score = {
+		add = 0
+		# add = {
+		# 	value = county.development_level
+		# 	divide = 2
+		# }
+		# if = {
+		# 	limit = {
+		# 		county.development_level <= 5
+		# 	}
+		# 	add = -5
+		# }
+		if = {
+			limit = {
+				RICE_hot_springs_baronies_trigger = yes
+			}
+			add = 100
+		}
+		# Capital
+		if = {
+			limit = {
+				this = scope:host.capital_province
+			}
+			add = 25
+		}
+	}
+	
+	cost = {
+		gold = {
+			add = {
+				value = 0
+				add = {
+					value = RICE_activity_cost
+					desc = hunt_base_cost
+				}
+			}
+		}
+	}
+
+	ui_predicted_cost = {
+		gold = {
+			value = RICE_activity_cost
+			# Make it a multiple of 5 (rounded up)
+			divide = 5 
+			ceiling = yes 
+			multiply = 5
+		}
+	}
+	cooldown = { days = 3650 }
+	
+	###################
+	# ACTIVITY-SPECIFIC PULSES
+	###################
+	
+	pulse_actions = {
+
+	}
+
+	on_start = {		
+		# if = {
+		# 	limit = {
+		# 		this = scope:host
+		# 	}
+		# 	# Trigger the appropriate hot springs event
+		# 	if = {
+		# 		limit = {
+		# 			has_trait = shy
+		# 		}
+		# 		trigger_event = RICEmisc.8888
+		# 	}
+		# 	else = {
+		# 		trigger_event = RICEmisc.8888
+		# 	}
+		# }
+	}
+
+	# Once you arrive at the springs, trigger the relevant event(s)
+	on_leave_travel_state = {
+	}
+
+	on_enter_passive_state = {
+
+	}
+
+	###################
+	# GUEST HANDLING
+	###################
+	
+	allow_zero_guest_invites = yes
+
+	max_guests = 10
+
+	#allow_zero_guest_invites = yes
+
+	guest_invite_rules = {
+		rules = {
+			# Relations.
+			2 = activity_invite_rule_lovers
+			2 = activity_invite_rule_rivals_if_appropriate
+
+			# Family.
+			3 = activity_invite_rule_extended_family
+
+			# Magnates.
+			#4 = activity_invite_neighbouring_rulers
+
+			# Misc landless.
+			5 = activity_invite_rule_knights
+
+			# MP 
+			6 = activity_invite_mp
+		}
+		defaults = {
+			1 = activity_invite_rule_friends
+			1 = activity_invite_rule_close_family
+			#1 = activity_invite_rule_liege
+			#1 = activity_invite_rule_vassals
+			#2 = activity_invite_rule_fellow_vassals
+			3 = activity_invite_rule_courtiers
+			4 = activity_invite_rule_guests
+			1 = activity_invite_spouses
+		}
+	}
+
+	can_be_activity_guest = {
+		is_adult = yes
+		is_available = yes
+		in_diplomatic_range = scope:host
+		is_landed = no
+		# NOT = {
+		# 	is_primary_heir_of = scope:actor
+		# }
+	}
+
+	host_intents = {
+		intents = { RICE_hot_springs_visit_relaxation_intent }
+		default = RICE_hot_springs_visit_relaxation_intent
+	}
+
+	guest_intents = {
+		intents = { RICE_hot_springs_visit_relaxation_intent }
+		default = RICE_hot_springs_visit_relaxation_intent
+	}
+
+	guest_join_chance = {
+		base = 0
+		base_activity_modifier = yes
+
+		# Scripted Modifiers
+		activity_guest_shared_ai_accept_modifier = yes
+	}
+	
+	on_complete = {
+		# If they were naked, make them not naked anymore
+		if = {
+			limit = {
+				has_character_flag = is_naked
+			}
+			remove_character_flag = is_naked
+		}
+		if = {
+			limit = { this = scope:host }
+			create_character_memory = {
+				type = RICE_hot_springs_visit_host_memory
+			}
+			scope:host = {
+				RICE_hot_springs_visit_completed_log_entry_effect = yes
+			}
+		}
+		else = {
+			create_character_memory = {
+				type = RICE_hot_springs_visit_guest_memory
+				participants = {
+					host = scope:host
+				}
+			}
+		}
+	}
+
+	### Graphics
+	# map_entity = {
+	# 	trigger = {
+	# 		activity_location.culture = {
+	# 			OR = {
+	# 				has_graphical_mena_culture_group_trigger = yes
+	# 				has_graphical_steppe_culture_group_trigger = yes
+	# 				has_graphical_african_culture_group_trigger = yes
+	# 			}
+	# 		}
+	# 	}
+	# 	reference = "building_mena_feast_01_entity"
+	# }
+
+	# map_entity = {
+	# 	trigger = {
+	# 		activity_location.culture = {
+	# 			has_graphical_india_culture_group_trigger = yes
+	# 		}
+	# 	}
+	# 	reference = "building_indian_feast_01_entity"
+	# }
+	
+	# map_entity = "building_western_feast_01_entity"
+
+	#################
+	#
+	# TRAVEL
+	#
+	#################
+
+	# Siwa
+	background = {
+		trigger = {
+			NOT = { scope:host.location = scope:activity.activity_location }
+			activity_location.barony = title:b_siwa
+		}
+		texture = "gfx/interface/illustrations/event_scenes/RICE_egypt_desert.dds"
+		environment = "environment_event_desert"
+		ambience = "event:/SFX/Events/Backgrounds/desert_day"
+	}
+
+	# Aachen - no need since it's identical
+	# background = {
+	# 	trigger = {
+	# 		NOT = { scope:host.location = scope:activity.activity_location }
+	# 		activity_location.barony = title:b_aachen
+	# 	}
+	# 	texture = "gfx/interface/illustrations/event_scenes/RICE_aachen_forest.dds"
+	# 	environment = "environment_event_forest"
+	# 	ambience = "event:/SFX/Events/Backgrounds/deciduous_forest_day"
+	# }
+
+	# Pamir Bibi Fatima
+	background = {
+		trigger = {
+			NOT = { scope:host.location = scope:activity.activity_location }
+			activity_location.barony = title:b_wakhan
+		}
+		texture = "gfx/interface/illustrations/event_scenes/RICE_pamir_road.dds"
+		environment = "environment_event_desert"
+		ambience = "event:/SFX/Events/Backgrounds/steppe_day"
+	}
+
+	# Rajgir
+	background = {
+		trigger = {
+			NOT = { scope:host.location = scope:activity.activity_location }
+			activity_location.barony = title:b_rajagrha
+		}
+		texture = "gfx/interface/illustrations/event_scenes/RICE_magadha_landscape.dds"
+		environment = "environment_event_desert"
+		ambience = "event:/SFX/Events/Backgrounds/deciduous_forest_day"
+	}
+
+	# Tafadek
+	background = {
+		trigger = {
+			NOT = { scope:host.location = scope:activity.activity_location }
+			activity_location.barony = title:b_air
+		}
+		texture = "gfx/interface/illustrations/event_scenes/RICE_tuareg_ahaggar_mountains.dds"
+		environment = "environment_event_desert"
+		ambience = "event:/SFX/Events/Backgrounds/desert_day"
+	}
+
+	#################
+	#
+	# ARRIVED
+	#
+	#################
+
+	#Siwa
+	background = {
+		trigger = {
+			activity_location.barony = title:b_siwa
+		}
+		texture = "gfx/interface/illustrations/event_scenes/RICE_siwa_spring.dds"
+		environment = "environment_event_desert"
+		ambience = "event:/SFX/Events/Backgrounds/castle_garden_day"
+	}
+
+	# Aachen
+	background = {
+		trigger = {
+			activity_location.barony = title:b_aachen
+		}
+		texture = "gfx/interface/illustrations/event_scenes/RICE_aachen_forest.dds"
+		environment = "environment_event_forest"
+		ambience = "event:/SFX/Events/Backgrounds/deciduous_forest_day"
+	}
+
+	# Pamir Bibi Fatima
+	background = {
+		trigger = {
+			activity_location.barony = title:b_wakhan
+		}
+		texture = "gfx/interface/illustrations/event_scenes/RICE_pamir_valley.dds"
+		environment = "environment_event_desert"
+		ambience = "event:/SFX/Events/Backgrounds/mountains_day"
+	}
+
+	# Rajgir
+	background = {
+		trigger = {
+			activity_location.barony = title:b_rajagrha
+		}
+		texture = "gfx/interface/illustrations/event_scenes/RICE_jungle.dds"
+		environment = "environment_event_forest_pine"
+		ambience = "event:/SFX/Events/Backgrounds/deciduous_forest_day"
+	}
+
+	# Tafadek
+	background = {
+		trigger = {
+			activity_location.barony = title:b_air
+		}
+		texture = "gfx/interface/illustrations/event_scenes/RICE_sahel_manor.dds"
+		environment = "environment_event_desert"
+		ambience = "event:/SFX/Events/Backgrounds/fields_farms_day"
+	}
+
+	#Fallback
+	background = {
+		texture = "gfx/interface/illustrations/event_scenes/RICE_oblivion_pastoral_dream.dds"
+		environment = "environment_event_garden"
+		ambience = "event:/SFX/Events/Backgrounds/castle_garden_day"
+	}
+
+
+	window_characters = {
+
+		guest = {
+			camera = camera_body
+			
+			effect = {
+				every_attending_character = {
+					limit = {
+						scope:host.location = scope:activity.activity_location
+					}
+					add_to_list = characters
+				}
+			}
+
+			scripted_animation = {
+				animation = idle
+			}
+		}
+
+		guest = {
+			camera = camera_body
+			
+			effect = {
+				every_attending_character = {
+					limit = {
+						scope:host.location = scope:activity.activity_location
+					}
+					add_to_list = characters
+				}
+			}
+
+			scripted_animation = {
+				animation = happiness
+			}
+		}
+		
+		host = {
+			camera = camera_body
+			
+			effect = {
+				if = {
+					limit = {
+						scope:host.location = scope:activity.activity_location
+					}
+					scope:host = {
+						add_to_list = characters
+					}
+				}
+			}
+
+			scripted_animation = {
+				animation = idle
+			}
+		}
+		
+		travel_host = {
+			camera = camera_body
+			
+			effect = {
+				if = {
+					limit = {
+						NOT = {
+							scope:host.location = scope:activity.activity_location
+						}
+					}
+					scope:host = {
+						add_to_list = characters
+					}
+				}
+			}
+
+			scripted_animation = {
+				animation = jockey_walk
+			}
+		}
+
+		guest = {
+			camera = camera_body
+			
+			effect = {
+				every_attending_character = {
+					limit = {
+						NOT = {
+							scope:host.location = scope:activity.activity_location
+						}
+					}
+					add_to_list = characters
+				}
+			}
+
+			scripted_animation = {
+				animation = jockey_walk
+			}
+		}
+
+		guest = {
+			camera = camera_body
+			
+			effect = {
+				every_attending_character = {
+					limit = {
+						NOT = {
+							scope:host.location = scope:activity.activity_location
+						}
+					}
+					add_to_list = characters
+				}
+			}
+
+			scripted_animation = {
+				animation = jockey_walk
+			}
+		}
+	}
+}

@@ -407,3 +407,636 @@ RICE_no_conversion_contract_at_start_effect = {
 	}
 }
 
+RICE_remove_planned_activity_flag_effect = {
+	if = {
+		limit = {
+			has_character_flag = planning_an_activity
+		}
+		remove_character_flag = planning_an_activity
+	}
+}
+
+# RICE_hot_springs_memory_effect = {
+# 	if = {
+# 		limit = {
+# 			root = scope:host
+# 		}
+# 		create_character_memory = {
+# 			type = RICE_hot_springs_visit_host_memory
+# 		}
+# 		scope:new_memory = {
+# 			save_scope_as = hot_springs_memory
+# 		}
+# 		scope:hot_springs_memory = {
+# 			set_variable = {
+# 				name = springs_location
+# 				value = scope:location
+# 			}
+# 		}
+# 	}
+# 	else = {
+# 		create_character_memory = {
+# 			type = RICE_hot_springs_visit_guest_memory
+# 			participants = {
+# 				host = scope:host
+# 			}
+# 		}
+# 		scope:new_memory = {
+# 			save_scope_as = hot_springs_memory
+# 		}
+# 		scope:hot_springs_memory = {
+# 			set_variable = {
+# 				name = springs_location
+# 				value = scope:location
+# 			}
+# 		}
+# 	}
+# }
+
+
+
+
+
+
+RICE_hot_springs_visit_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_hot_springs_visit_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			show_as_tooltip = {
+				if = {
+					limit = {
+						scope:host = {
+							exists = var:RICE_hot_springs_visit_special_location
+							var:RICE_hot_springs_visit_special_location = flag:siwa
+						}
+					}
+					if = {
+						limit = {
+							scope:host = {
+								has_character_modifier = RICE_siwa_visited_fountain_of_the_sun_private
+							}
+						}
+						scope:host = {
+							add_character_modifier = {
+								modifier = RICE_siwa_visited_fountain_of_the_sun_private
+								years = 5
+							}
+							stress_impact = {
+								base = medium_stress_impact_loss
+								lazy = miniscule_stress_impact_loss
+								calm = miniscule_stress_impact_loss
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							scope:host = {
+								has_character_modifier = RICE_siwa_visited_fountain_of_the_sun_public
+							}
+						}
+						scope:host = {
+							add_character_modifier = {
+								modifier = RICE_siwa_visited_fountain_of_the_sun_public
+								years = 5
+							}
+							add_prestige = 50
+							stress_impact = {
+								base = minor_stress_impact_loss
+								lazy = miniscule_stress_impact_loss
+								calm = miniscule_stress_impact_loss
+							}
+						}
+					}
+				}
+				else_if = {
+					limit = {
+						scope:host = {
+							exists = var:RICE_hot_springs_visit_special_location
+							var:RICE_hot_springs_visit_special_location = flag:aachen
+						}
+					}
+					if = {
+						limit = {
+							scope:host = {
+								exists = var:RICE_hot_springs_visit_special_type
+								var:RICE_hot_springs_visit_special_type = flag:private
+							}
+						}
+						scope:host = {
+							stress_impact = {
+								base = major_stress_impact_loss
+								lazy = minor_stress_impact_loss
+								calm = minor_stress_impact_loss
+							}	
+						}
+					}
+					else_if = {
+						limit = {
+							scope:host = {
+								exists = var:RICE_hot_springs_visit_special_type
+								var:RICE_hot_springs_visit_special_type = flag:public
+							}
+						}
+						scope:host = {
+							stress_impact = {
+								base = medium_stress_impact_loss
+								lazy = minor_stress_impact_loss
+								calm = minor_stress_impact_loss
+							}
+							add_prestige = 50
+						}
+					}
+					if = {
+						limit = {
+							scope:host = {								
+								RICE_grannus_shrine_allowed_trigger = yes
+							}
+							is_target_in_global_variable_list = {
+								name = unavailable_unique_decisions
+								target = flag:RICE_aachen_grannus_shrine_dedicated
+							}
+						}
+						if = {
+							limit = {
+								scope:host = {
+									faith.religion = faith:hellenic_pagan.religion
+								}
+							}
+							scope:host = {
+								add_piety = 50
+							}
+						}
+						else = {
+							scope:host = {
+								add_piety = 25
+							}
+						}
+						if = {
+							limit = {
+								scope:host = {
+									has_character_modifier = RICE_aachen_visited_grannus_shrine
+								}
+							}
+							add_piety = 25
+							add_character_modifier = {
+								modifier = RICE_aachen_visited_grannus_shrine
+								years = 3
+							}
+						}
+					}			
+				}
+				else_if = {
+					limit = {
+						scope:host = {
+							exists = var:RICE_hot_springs_visit_special_location
+							var:RICE_hot_springs_visit_special_location = flag:wakhan
+						}
+					}
+					if = {
+						limit = {
+							scope:host = {
+								exists = var:RICE_hot_springs_visit_special_type
+								var:RICE_hot_springs_visit_special_type = flag:private
+							}
+						}
+						scope:host = {
+							stress_impact = {
+								base = medium_stress_impact_loss
+								lazy = miniscule_stress_impact_loss
+								calm = miniscule_stress_impact_loss
+							}	
+						}
+					}
+					else_if = {
+						limit = {
+							scope:host = {
+								exists = var:RICE_hot_springs_visit_special_type
+								var:RICE_hot_springs_visit_special_type = flag:public
+							}
+						}
+						scope:host = {
+							stress_impact = {
+								base = minor_stress_impact_loss
+								lazy = miniscule_stress_impact_loss
+								calm = miniscule_stress_impact_loss
+							}
+							add_prestige = 50
+						}
+					}			
+					if = {
+						limit = {
+							scope:host = {								
+								religion = religion:islam_religion
+							}
+						}
+						scope:host = {
+							add_piety = 50
+						}
+					}	
+					if = {
+						limit = {
+							scope:host = {							
+								scope:host = {
+									has_character_modifier = RICE_pamir_visited_bibi_fatima_fertility_muslim
+								}
+							}
+						}
+						scope:host = {							
+							add_character_modifier = {
+								modifier = RICE_pamir_visited_bibi_fatima_fertility_muslim
+								years = 5
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							scope:host = {							
+								scope:host = {
+									has_character_modifier = RICE_pamir_visited_bibi_fatima_fertility
+								}
+							}
+						}
+						scope:host = {							
+							add_character_modifier = {
+								modifier = RICE_pamir_visited_bibi_fatima_fertility
+								years = 5
+							}
+						}
+					}		
+				}
+				else_if = {
+					limit = {
+						scope:host = {
+							exists = var:RICE_hot_springs_visit_special_location
+							var:RICE_hot_springs_visit_special_location = flag:rajgir
+						}
+					}
+					if = {
+						limit = {
+							scope:host = {
+								exists = var:RICE_hot_springs_visit_special_type
+								var:RICE_hot_springs_visit_special_type = flag:private
+							}
+						}
+						scope:host = {
+							stress_impact = {
+								base = medium_stress_impact_loss
+								lazy = miniscule_stress_impact_loss
+								calm = miniscule_stress_impact_loss
+								zealous = miniscule_stress_impact_loss
+							}	
+						}
+					}
+					else_if = {
+						limit = {
+							scope:host = {
+								exists = var:RICE_hot_springs_visit_special_type
+								var:RICE_hot_springs_visit_special_type = flag:public
+							}
+						}
+						scope:host = {
+							stress_impact = {
+								base = minor_stress_impact_loss
+								lazy = miniscule_stress_impact_loss
+								calm = miniscule_stress_impact_loss
+								zealous = miniscule_stress_impact_loss
+							}
+							add_prestige = 50
+						}
+					}	
+					scope:host = {
+						add_piety = 50
+					}
+					if = {
+						limit = {
+							scope:host = {
+								has_character_modifier = RICE_magadha_rajgir_hot_springs_buddhist
+							}
+						}
+						scope:host = {							
+							add_character_modifier = {
+								modifier = RICE_magadha_rajgir_bonus_buddhist
+								years = 6
+							}
+						}
+					}	
+					else_if = {
+						limit = {
+							scope:host = {
+								has_character_modifier = RICE_magadha_rajgir_hot_springs_hindu
+							}
+						}
+						scope:host = {							
+							add_character_modifier = {
+								modifier = RICE_magadha_rajgir_bonus_hindu
+								years = 6
+							}
+						}
+					}	
+					else_if = {
+						limit = {
+							scope:host = {
+								has_character_modifier = RICE_magadha_rajgir_hot_springs_jain
+							}
+						}
+						scope:host = {							
+							add_character_modifier = {
+								modifier = RICE_magadha_rajgir_bonus_jain
+								years = 6
+							}
+						}
+					}	
+				}
+				else_if = {
+					limit = {
+						scope:host = {
+							exists = var:RICE_hot_springs_visit_special_location
+							var:RICE_hot_springs_visit_special_location = flag:tafadek
+						}
+					}
+					if = {
+						limit = {
+							scope:host = {
+								exists = var:RICE_hot_springs_visit_special_type
+								var:RICE_hot_springs_visit_special_type = flag:private
+							}
+						}
+						scope:host = {
+							stress_impact = {
+								base = medium_stress_impact_loss
+								lazy = miniscule_stress_impact_loss
+								calm = miniscule_stress_impact_loss
+							}	
+						}
+					}
+					else_if = {
+						limit = {
+							scope:host = {
+								exists = var:RICE_hot_springs_visit_special_type
+								var:RICE_hot_springs_visit_special_type = flag:public
+							}
+						}
+						scope:host = {
+							stress_impact = {
+								base = minor_stress_impact_loss
+								lazy = miniscule_stress_impact_loss
+								calm = miniscule_stress_impact_loss
+							}
+							add_prestige = 50
+						}
+					}
+					scope:host = {						
+						add_character_modifier = {
+							modifier = RICE_tuareg_tafadek_springs_modifier
+							years = 5
+						}
+					}
+				}
+				# Generic hot springs effects as a fallback
+				else = {
+					if = {
+						limit = {
+							scope:host = {
+								exists = var:RICE_hot_springs_visit_special_type
+								var:RICE_hot_springs_visit_special_type = flag:private
+							}
+						}
+						scope:host = {
+							stress_impact = {
+								base = minor_stress_impact_loss
+								lazy = miniscule_stress_impact_loss
+								calm = miniscule_stress_impact_loss
+							}
+						}	
+					}
+					else_if = {
+						limit = {
+							scope:host = {
+								exists = var:RICE_hot_springs_visit_special_type
+								var:RICE_hot_springs_visit_special_type = flag:public
+							}
+						}
+						scope:host = {
+							add_prestige = 25
+							stress_impact = {
+								base = miniscule_stress_impact_loss
+								lazy = miniscule_stress_impact_loss
+								calm = miniscule_stress_impact_loss
+							}
+						}
+					}						
+				}				
+				every_attending_character = {
+					limit = { NOT = { this = scope:host } }
+					custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+					stress_impact = {
+						base = minor_stress_impact_loss
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+RICE_major_lifestyle_experience_gain_effect = {
+	if = {
+		limit = { has_lifestyle = diplomacy_lifestyle }
+		add_diplomacy_lifestyle_xp = major_lifestyle_xp
+	}
+	else_if = {
+		limit = { has_lifestyle = martial_lifestyle }
+		add_martial_lifestyle_xp = major_lifestyle_xp
+	}
+	else_if = {
+		limit = { has_lifestyle = stewardship_lifestyle }
+		add_stewardship_lifestyle_xp = major_lifestyle_xp
+	}
+	else_if = {
+		limit = { has_lifestyle = intrigue_lifestyle }
+		add_intrigue_lifestyle_xp = major_lifestyle_xp
+	}
+	else_if = {
+		limit = { has_lifestyle = learning_lifestyle }
+		add_learning_lifestyle_xp = major_lifestyle_xp
+	}
+}
+
+RICE_minor_lifestyle_experience_gain_effect = {
+	if = {
+		limit = { has_lifestyle = diplomacy_lifestyle }
+		add_diplomacy_lifestyle_xp = minor_lifestyle_xp
+	}
+	else_if = {
+		limit = { has_lifestyle = martial_lifestyle }
+		add_martial_lifestyle_xp = minor_lifestyle_xp
+	}
+	else_if = {
+		limit = { has_lifestyle = stewardship_lifestyle }
+		add_stewardship_lifestyle_xp = minor_lifestyle_xp
+	}
+	else_if = {
+		limit = { has_lifestyle = intrigue_lifestyle }
+		add_intrigue_lifestyle_xp = minor_lifestyle_xp
+	}
+	else_if = {
+		limit = { has_lifestyle = learning_lifestyle }
+		add_learning_lifestyle_xp = minor_lifestyle_xp
+	}
+}
+
+
+RICE_local_pilgrimage_generic_host_effect = {
+	if = {
+		limit = {
+			has_activity_intent = RICE_local_pilgrimage_worship_intent
+		}
+		add_piety = 150
+		stress_impact = {
+			zealous = miniscule_stress_impact_loss
+			humble = miniscule_stress_impact_loss
+		}
+	}
+	else_if = {
+		limit = {
+			has_activity_intent = RICE_local_pilgrimage_model_intent
+		}
+		add_piety = 75
+		add_prestige = 75
+		stress_impact = {
+			ambitious = miniscule_stress_impact_loss
+			diligent = miniscule_stress_impact_loss
+		}
+	}
+	else_if = {
+		limit = {
+			has_activity_intent = RICE_local_pilgrimage_model_intent
+		}
+		add_piety = 75
+		RICE_minor_lifestyle_experience_gain_effect = yes
+		stress_impact = {
+			humble = miniscule_stress_impact_loss
+			just = miniscule_stress_impact_loss
+		}
+	}
+	if = {
+		limit = {
+			scope:activity = {
+				has_activity_option = {
+					category = special_type
+					option = RICE_local_pilgrimage_type_devotion
+				}
+			}
+		}
+		add_piety = 100
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+		if = {
+			limit = {
+				NOT = { has_trait = pilgrim }
+			}
+			add_trait = pilgrim
+		}
+		else_if = {
+			limit = {
+				has_trait_xp = { 
+					trait = pilgrim 
+					value < 100  #TODO_CD_EP2 standardize less than MAX
+				}
+			}
+			add_trait_xp = { 
+				trait = pilgrim 
+				value = 10
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			scope:activity = {
+				has_activity_option = {
+					category = special_type
+					option = RICE_local_pilgrimage_type_observance
+				}
+			}
+		}
+		add_prestige = 100
+		add_character_modifier = {
+			modifier = RICE_misc_engaged_with_local_religious_practicecs
+			years = 10
+		}
+		# if = {
+		# 	limit = {
+		# 		scope:activity.activity_location.county = {
+		# 			county_control < full_county_control
+		# 		}
+		# 	}
+		# 	scope:activity.activity_location.county = {
+		# 		change_county_control = miniscule_county_control_gain
+		# 	}
+		# }
+		# else = {
+		# 	scope:activity.activity_location.county = {
+		# 		change_development_progress_with_overflow = 10
+		# 	}
+		# }
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+		if = {
+			limit = {
+				NOT = { has_trait = pilgrim }
+			}
+			add_trait = pilgrim
+		}
+		else_if = {
+			limit = {
+				has_trait_xp = { 
+					trait = pilgrim 
+					value < 100  #TODO_CD_EP2 standardize less than MAX
+				}
+			}
+			add_trait_xp = { 
+				trait = pilgrim 
+				value = 5
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			scope:activity = {
+				has_activity_option = {
+					category = special_type
+					option = RICE_local_pilgrimage_type_vacation
+				}
+			}
+		}
+		stress_impact = {
+			base = medium_stress_impact_loss
+		}
+		if = {
+			limit = {
+				NOT = { has_trait = pilgrim }
+			}
+			add_trait = pilgrim
+		}
+		else_if = {
+			limit = {
+				has_trait_xp = { 
+					trait = pilgrim 
+					value < 100  #TODO_CD_EP2 standardize less than MAX
+				}
+			}
+			add_trait_xp = { 
+				trait = pilgrim 
+				value = 5
+			}
+		}
+	}
+}
+

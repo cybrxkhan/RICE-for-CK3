@@ -34,7 +34,7 @@ magadha.0010 = {
 	title = magadha.0010.t
 	desc = magadha.0010.desc
 	theme = faith
-	override_background = { event_background = throne_room }
+	override_background = { reference = throne_room }
 	
 	left_portrait = root
 
@@ -112,7 +112,7 @@ magadha.0011 = {
 		desc = magadha.0011.desc.conclusion
 	}
 	theme = faith
-	override_background = { event_background = throne_room }
+	override_background = { reference = throne_room }
 	
 	left_portrait = root
 	
@@ -395,37 +395,39 @@ magadha.0015 = {
 	type = character_event
 	title = magadha.0015.t
 	desc = magadha.0015.desc
-	theme = friendly
+	theme = travel
+	override_background = { reference = RICE_background_magadha_landscape }
 	
 	left_portrait = {
 		character = root
 		animation = personality_content
 	}
-	
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_hot_springs_visit
+			activity_location.barony = title:b_rajagrha
+		}
+	}
+
 	immediate = {
 		title:b_rajagrha = { #For loc.
 			save_scope_as = rajgir_barony
 		}
-		# Stop characters from planning multiple activities at once
-		add_character_flag = planning_an_activity
 	}
 	
 	option = { # Ok
 		name = magadha.0015.a
-		# Choose appropriate location
-		title:b_rajagrha.title_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_magadha_rajgir_hot_springs_visit
-			}	
-		}
 	}	
 }
 
 
 # Day of the Springs visit
 magadha.0016 = {
-	type = character_event
+	type = activity_event
 	title = magadha.0016.t
 	desc = magadha.0016.desc
 	theme = RICE_theme_jungle_generic
@@ -439,6 +441,31 @@ magadha.0016 = {
 		add_character_flag = is_naked
 		title:b_rajagrha = { #For loc.
 			save_scope_as = rajgir_barony
+		}		
+		scope:activity = {
+			activity_location = { save_scope_as = location }
+		}
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_public
+					}
+				}
+			}
+			set_variable = {
+				name = RICE_hot_springs_visit_special_type
+				value = flag:public
+				days = 1
+			}
+		}
+		else = {			
+			set_variable = {
+				name = RICE_hot_springs_visit_special_type
+				value = flag:private
+				days = 1
+			}
 		}
 	}
 	
@@ -452,8 +479,21 @@ magadha.0016 = {
 			limit = { has_character_flag = is_naked }
 			remove_character_flag = is_naked
 		}
+		RICE_hot_springs_memory_effect = yes
+		set_variable = {
+			name = RICE_hot_springs_visit_special_location
+			value = flag:rajgir
+			days = 1
+		}
 		scope:activity = {
-			complete_activity = yes
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				stress_impact = {
+					base = minor_stress_impact_loss
+				}
+			}	
+			hidden_effect = { skip_activity_phase = yes }
 		}
 	}	
 }
@@ -649,32 +689,31 @@ magadha.0030 = {
 	type = character_event
 	title = magadha.0030.t
 	desc = magadha.0030.desc
-	theme = faith
-	override_background = { event_background = sitting_room }
+	theme = travel
 	
 	right_portrait = root
+
+	trigger = {	
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity	
+		involved_activity = {
+			has_activity_type = activity_RICE_magadha_bodhi_tree_bathing_ceremony
+		}
+	}
 	
 	immediate = {
 		title:c_gaya = { save_scope_as = gaya_county }
-		# Stop characters from planning multiple activities at once.
-		add_character_flag = planning_an_activity
 	}
 	
 	option = { # Ok
 		name = magadha.0030.a
-		# Choose appropriate location
-		title:b_bodh_gaya.title_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_magadha_wash_bodhi_tree
-			}	
-		}
 	}
 }
 
 # Wash the Bodhi Tree
 magadha.0031 = {
-	type = character_event
+	type = activity_event
 	title = magadha.0031.t
 	desc = magadha.0031.desc
 	theme = RICE_theme_mahabodhi
@@ -684,30 +723,49 @@ magadha.0031 = {
 		animation = personality_zealous
 	}
 
-	trigger = {
-		religion = religion:buddhism_religion
-	}
+	# trigger = {
+	# 	religion = religion:buddhism_religion
+	# }
 
 	immediate = {
 		play_music_cue = mx_cue_sacredrite
 		title:c_gaya = { save_scope_as = gaya_county }
-		random_list = {
-			15 = { add_piety = 20 }
-			15 = { add_piety = 30 }
-			15 = { add_piety = 40 }
-			20 = { add_piety = 50 }
-			20 = { add_piety = 60 }
-			15 = { add_piety = 70 }
-			10 = { add_piety = 80 }
-			10 = { add_piety = 90 }
-			10 = { add_piety = 100 }
-		}
 	}
 	
 	
 	option = { # Ok
 		name = magadha.0031.a
 		custom_tooltip = magadha.0031.tooltip
+		if = {
+			limit = {
+				has_activity_intent = RICE_magadha_bodhi_tree_bathing_ceremony_devotion_intent
+			}
+			add_piety = { 75 200 }
+			stress_impact = {
+				zealous = miniscule_stress_impact_loss
+			}
+		}
+		else_if = {
+			limit = {
+				has_activity_intent = RICE_magadha_bodhi_tree_bathing_ceremony_contemplation_intent
+			}
+			add_piety = { 25 100 }
+			stress_impact = {
+				humble = miniscule_stress_impact_loss
+				patient = miniscule_stress_impact_loss
+			}
+		}
+		else_if = {
+			limit = {
+				has_activity_intent = RICE_magadha_bodhi_tree_bathing_ceremony_serenity_intent
+			}
+			add_piety = { 25 100 }
+			stress_impact = {
+				base = minor_stress_impact_loss
+				calm = minor_stress_impact_loss
+				content = minor_stress_impact_loss
+			}
+		}
 		hidden_effect = {
 			random = {
 				chance = 25
@@ -727,6 +785,10 @@ magadha.0031 = {
 					num_virtuous_traits >= 1
 					add = 10
 				}
+				modifier = {
+					has_activity_intent = RICE_magadha_bodhi_tree_bathing_ceremony_contemplation_intent
+					add = 40
+				}
 				send_interface_toast = {
 					type = event_toast_effect_good
 					left_icon = ROOT
@@ -735,37 +797,37 @@ magadha.0031 = {
 						10 = {
 							add_character_modifier = {
 								modifier = RICE_magadha_inspired_bodhi_tree_ashoka
-								years = 4
+								years = 5
 							}
 						}
 						10 = {
 							add_character_modifier = {
 								modifier = RICE_magadha_inspired_bodhi_tree_mara
-								years = 4
+								years = 5
 							}
 						}
 						10 = {
 							add_character_modifier = {
 								modifier = RICE_magadha_inspired_bodhi_tree_sujata
-								years = 4
+								years = 5
 							}
 						}
 						10 = {
 							add_character_modifier = {
 								modifier = RICE_magadha_inspired_bodhi_tree_pushyamitra
-								years = 4
+								years = 5
 							}
 						}
 						10 = {
 							add_character_modifier = {
 								modifier = RICE_magadha_inspired_bodhi_tree_jaya_sri_maha_bodhi
-								years = 4
+								years = 5
 							}
 						}
 						10 = {
 							add_character_modifier = {
 								modifier = RICE_magadha_inspired_bodhi_tree_navel_of_the_earth
-								years = 4
+								years = 5
 							}
 						}
 					}		
@@ -776,7 +838,12 @@ magadha.0031 = {
 
 	after = {
 		scope:activity = {
-			complete_activity = yes
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_piety = 25	
+			}	
+			hidden_effect = { skip_activity_phase = yes }
 		}
 	}
 
@@ -1112,461 +1179,544 @@ magadha.0041 = {
 
 # Prepare for the life release
 magadha.0050 = {
-	type = character_event
+	type = activity_event
 	title = magadha.0050.t
-	desc = magadha.0050.desc
+	desc = {
+		desc = magadha.0050.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					root = scope:host
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_magadha_life_liberation_animal_type
+							option = RICE_magadha_life_liberation_animal_type_birds
+						}
+					}
+				}
+				desc = magadha.0050.desc.birds
+			}
+			triggered_desc = {
+				trigger = {
+					root = scope:host
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_magadha_life_liberation_animal_type
+							option = RICE_magadha_life_liberation_animal_type_turtles
+						}
+					}
+				}
+				desc = magadha.0050.desc.turtles
+			}
+			triggered_desc = {
+				trigger = {
+					root = scope:host
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_magadha_life_liberation_animal_type
+							option = RICE_magadha_life_liberation_animal_type_fish
+						}
+					}
+				}
+				desc = magadha.0050.desc.fish
+			}
+			triggered_desc = {
+				trigger = {
+					root = scope:host
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_magadha_life_liberation_animal_type
+							option = RICE_magadha_life_liberation_animal_type_insects
+						}
+					}
+				}
+				desc = magadha.0050.desc.insects
+			}
+		}
+	}
 	theme = faith
-	override_background = { event_background = sitting_room }
+	override_background = { reference = sitting_room }
 	
 	right_portrait = {
 		character = root
-		animation = personality_rational
+		animation = personality_compassionate
 	}
 	
 	immediate = {
-		capital_province = { save_scope_as = capital_province } #For loc.
-		# Stop characters from planning multiple activities at once.
-		add_character_flag = planning_an_activity
+		#capital_province = { save_scope_as = capital_province } #For loc.
 	}
 	
-	option = { # Birds
+	option = { # Ok
 		name = magadha.0050.a
-		add_character_flag = RICE_magadha_liberating_birds
-		custom_tooltip = magadha.0050.tooltip.birds
-		# Choose appropriate location
-		scope:capital_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_magadha_life_release
-			}	
-		}
-	}
-	option = { # Turtles
-		name = magadha.0050.b
-		add_character_flag = RICE_magadha_liberating_turtles
-		custom_tooltip = magadha.0050.tooltip.turtles
-		# Choose appropriate location
-		scope:capital_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_magadha_life_release
-			}	
-		}
-	}
-	option = { # Fish
-		name = magadha.0050.c
-		add_character_flag = RICE_magadha_liberating_fish
-		custom_tooltip = magadha.0050.tooltip.fish
-		# Choose appropriate location
-		scope:capital_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_magadha_life_release
-			}	
-		}
-	}
-	option = { # Insects
-		name = magadha.0050.d
-		add_character_flag = RICE_magadha_liberating_insects
-		custom_tooltip = magadha.0050.tooltip.insects
-		# Choose appropriate location
-		scope:capital_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_magadha_life_release
-			}	
-		}
 	}
 }
 
 
 
-# Invitation to the life release
-magadha.0051 = {
-	type = letter_event
-	opening = {
-		desc = magadha.0051.opening
-	}
-	desc = magadha.0051.desc
-	sender = scope:sender
+# # Invitation to the life release
+# magadha.0051 = {
+# 	type = letter_event
+# 	opening = {
+# 		desc = magadha.0051.opening
+# 	}
+# 	desc = magadha.0051.desc
+# 	sender = scope:sender
 
-	trigger = {
-		is_available_for_activity_trigger = yes
-		NOT = { exists = var:is_handling_life_release_invitation }
-	}
+# 	trigger = {
+# 		is_available_for_activity_trigger = yes
+# 		NOT = { exists = var:is_handling_life_release_invitation }
+# 	}
 
-	on_trigger_fail = { #Trigger invitation again if it was blocked because the character was handling another invitation
-		if = {
-			limit = {
-				is_available_for_activity_trigger = yes
-				exists = var:is_handling_life_release_invitation
-			}
-			trigger_event = {
-				id = magadha.0051
-				days = 1
-			}
-		}
-	}
+# 	on_trigger_fail = { #Trigger invitation again if it was blocked because the character was handling another invitation
+# 		if = {
+# 			limit = {
+# 				is_available_for_activity_trigger = yes
+# 				exists = var:is_handling_life_release_invitation
+# 			}
+# 			trigger_event = {
+# 				id = magadha.0051
+# 				days = 1
+# 			}
+# 		}
+# 	}
 
-	immediate = {
-		add_character_flag = planning_an_activity # Just in case
-		scope:activity.activity_owner = {
-			save_scope_as = sender
-		}
-		scope:activity.activity_province = {
-			barony = {
-				save_scope_as = barony
-			}
-		}
-		set_variable = {
-			name = is_handling_life_release_invitation
-			value = scope:sender
-			days = 20
-		}
-	}
+# 	immediate = {
+# 		add_character_flag = planning_an_activity # Just in case
+# 		scope:activity.activity_owner = {
+# 			save_scope_as = sender
+# 		}
+# 		scope:activity.activity_province = {
+# 			barony = {
+# 				save_scope_as = barony
+# 			}
+# 		}
+# 		set_variable = {
+# 			name = is_handling_life_release_invitation
+# 			value = scope:sender
+# 			days = 20
+# 		}
+# 	}
 
-	option = {
-		name = magadha.0051.a
-		scope:activity = {
-			accept_invitation_for_character = prev
-		}
-		set_variable = {
-			name = booked_for_a_party
-			value = scope:sender
-			days = 20
-		}
-		stress_impact = {
-			compassionate = minor_stress_loss
-			callous = minor_stress_impact_gain
-			sadistic = minor_stress_impact_gain
-		}
-		ai_chance = {
-			base = 100
-			opinion_modifier = {
-				opinion_target = scope:sender
-			}
-			modifier = {
-				add = 15
-				has_trait = compassionate
-			}
-			modifier = {
-				add = -25
-				has_trait = callous
-			}
-			modifier = {
-				add = -25
-				has_trait = sadistic
-			}
-			modifier = {
-				add = -25
-				has_trait = cynical
-			}
-			modifier = {
-				add = -25
-				NOT = { religion = religion:buddhism_religion }
-			}
-			modifier = {
-				add = 15
-				faith = { has_doctrine_parameter = RICE_life_liberation_active }
-			}
-		}
-	}
+# 	option = {
+# 		name = magadha.0051.a
+# 		scope:activity = {
+# 			accept_invitation_for_character = prev
+# 		}
+# 		set_variable = {
+# 			name = booked_for_a_party
+# 			value = scope:sender
+# 			days = 20
+# 		}
+# 		stress_impact = {
+# 			compassionate = minor_stress_loss
+# 			callous = minor_stress_impact_gain
+# 			sadistic = minor_stress_impact_gain
+# 		}
+# 		ai_chance = {
+# 			base = 100
+# 			opinion_modifier = {
+# 				opinion_target = scope:sender
+# 			}
+# 			modifier = {
+# 				add = 15
+# 				has_trait = compassionate
+# 			}
+# 			modifier = {
+# 				add = -25
+# 				has_trait = callous
+# 			}
+# 			modifier = {
+# 				add = -25
+# 				has_trait = sadistic
+# 			}
+# 			modifier = {
+# 				add = -25
+# 				has_trait = cynical
+# 			}
+# 			modifier = {
+# 				add = -25
+# 				NOT = { religion = religion:buddhism_religion }
+# 			}
+# 			modifier = {
+# 				add = 15
+# 				faith = { has_doctrine_parameter = RICE_life_liberation_active }
+# 			}
+# 		}
+# 	}
 
-	option = {
-		name = magadha.0051.b
-		scope:activity = {
-			decline_invitation_for_character = prev
-		}
-		stress_impact = {
-			compassionate = minor_stress_impact_gain
-			just = miniscule_stress_impact_gain
-		}
-		remove_character_flag = planning_an_activity
-		ai_chance = {
-			base = 25
-			modifier = {
-				add = 15
-				scope:sender = {
-					target_is_liege_or_above = scope:sender
-				}
-			}
-			ai_value_modifier = {
-				ai_boldness = 0.2
-			}
-		}
-	}
+# 	option = {
+# 		name = magadha.0051.b
+# 		scope:activity = {
+# 			decline_invitation_for_character = prev
+# 		}
+# 		stress_impact = {
+# 			compassionate = minor_stress_impact_gain
+# 			just = miniscule_stress_impact_gain
+# 		}
+# 		remove_character_flag = planning_an_activity
+# 		ai_chance = {
+# 			base = 25
+# 			modifier = {
+# 				add = 15
+# 				scope:sender = {
+# 					target_is_liege_or_above = scope:sender
+# 				}
+# 			}
+# 			ai_value_modifier = {
+# 				ai_boldness = 0.2
+# 			}
+# 		}
+# 	}
 
-	# Reject it vehemently
-	option = {
-		name = magadha.0051.c
-		trigger = {
-			NOR = {
-				has_trait = compassionate
-				AND = {
-					has_trait = zealous
-					religion = religion:buddhism_religion
-				}
-			}
-		}
-		remove_character_flag = planning_an_activity
-		add_prestige = 50
-		custom_tooltip = magadha.0051.c.tooltip
-		save_scope_as = life_release_rejector
-		scope:activity.activity_owner = {
-			add_opinion = {
-				target = root
-				modifier = RICE_magadha_criticized_life_release
-			}
-			reverse_add_opinion = {
-				target = root
-				modifier = RICE_magadha_disapproves_of_life_release
-			}			
-		}
-		scope:activity = {
-			decline_invitation_for_character = prev
-		}
-		scope:activity.activity_owner = {
-			trigger_event = magadha.0052
-		}
-		if = {
-			limit = {
-				NOR = {
-					has_trait = callous
-					has_trait = sadistic
-				}
-			}
-			stress_impact = {
-				just = minor_stress_impact_gain
-				calm = miniscule_stress_impact_gain
-				content = miniscule_stress_impact_gain
-				generous = miniscule_stress_impact_gain
-				temperate = miniscule_stress_impact_gain
-			}
-		}
-		else = {
-			stress_impact = {
-				callous = minor_stress_loss
-				sadistic = minor_stress_loss
-			}
-		}
-		ai_chance = {
-			base = 5
-			modifier = {
-				add = 10
-				has_trait = sadistic
-			}
-			modifier = {
-				add = 10
-				has_trait = callous
-			}
-			modifier = {
-				add = 5
-				has_trait = gluttonous
-			}
-			modifier = {
-				add = 15
-				NOT = { religion = religion:buddhism_religion }
-				has_trait = zealous
-			}
-			modifier = {
-				add = 15
-				scope:sender = {
-					target_is_liege_or_above = scope:sender
-				}
-			}
-			ai_value_modifier = {
-				ai_boldness = 0.2
-			}
-		}
-	}
+# 	# Reject it vehemently
+# 	option = {
+# 		name = magadha.0051.c
+# 		trigger = {
+# 			NOR = {
+# 				has_trait = compassionate
+# 				AND = {
+# 					has_trait = zealous
+# 					religion = religion:buddhism_religion
+# 				}
+# 			}
+# 		}
+# 		remove_character_flag = planning_an_activity
+# 		add_prestige = 50
+# 		custom_tooltip = magadha.0051.c.tooltip
+# 		save_scope_as = life_release_rejector
+# 		scope:activity.activity_owner = {
+# 			add_opinion = {
+# 				target = root
+# 				modifier = RICE_magadha_criticized_life_release
+# 			}
+# 			reverse_add_opinion = {
+# 				target = root
+# 				modifier = RICE_magadha_disapproves_of_life_release
+# 			}			
+# 		}
+# 		scope:activity = {
+# 			decline_invitation_for_character = prev
+# 		}
+# 		scope:activity.activity_owner = {
+# 			trigger_event = magadha.0052
+# 		}
+# 		if = {
+# 			limit = {
+# 				NOR = {
+# 					has_trait = callous
+# 					has_trait = sadistic
+# 				}
+# 			}
+# 			stress_impact = {
+# 				just = minor_stress_impact_gain
+# 				calm = miniscule_stress_impact_gain
+# 				content = miniscule_stress_impact_gain
+# 				generous = miniscule_stress_impact_gain
+# 				temperate = miniscule_stress_impact_gain
+# 			}
+# 		}
+# 		else = {
+# 			stress_impact = {
+# 				callous = minor_stress_loss
+# 				sadistic = minor_stress_loss
+# 			}
+# 		}
+# 		ai_chance = {
+# 			base = 5
+# 			modifier = {
+# 				add = 10
+# 				has_trait = sadistic
+# 			}
+# 			modifier = {
+# 				add = 10
+# 				has_trait = callous
+# 			}
+# 			modifier = {
+# 				add = 5
+# 				has_trait = gluttonous
+# 			}
+# 			modifier = {
+# 				add = 15
+# 				NOT = { religion = religion:buddhism_religion }
+# 				has_trait = zealous
+# 			}
+# 			modifier = {
+# 				add = 15
+# 				scope:sender = {
+# 					target_is_liege_or_above = scope:sender
+# 				}
+# 			}
+# 			ai_value_modifier = {
+# 				ai_boldness = 0.2
+# 			}
+# 		}
+# 	}
 
-	after = {
-		remove_variable = is_handling_life_release_invitation
-	}
-}
-
-
+# 	after = {
+# 		remove_variable = is_handling_life_release_invitation
+# 	}
+# }
 
 
 
-# Letter or rejection
-magadha.0052 = {
-	type = letter_event
-	opening = {
-		desc = magadha.0052.opening
-	}
-	desc = magadha.0052.desc
-	sender = scope:life_release_rejector
+
+
+# # Letter or rejection
+# magadha.0052 = {
+# 	type = letter_event
+# 	opening = {
+# 		desc = magadha.0052.opening
+# 	}
+# 	desc = magadha.0052.desc
+# 	sender = scope:life_release_rejector
 	
-	immediate = {
-		save_scope_as = host
-		show_as_tooltip = {
-			scope:activity.activity_owner = {
-				add_opinion = {
-					target = scope:life_release_rejector
-					modifier = RICE_magadha_criticized_life_release
-				}
-				reverse_add_opinion = {
-					target = scope:life_release_rejector
-					modifier = RICE_magadha_disapproves_of_life_release
-				}			
-			}
-		}
-	}
+# 	immediate = {
+# 		save_scope_as = host
+# 		show_as_tooltip = {
+# 			scope:activity.activity_owner = {
+# 				add_opinion = {
+# 					target = scope:life_release_rejector
+# 					modifier = RICE_magadha_criticized_life_release
+# 				}
+# 				reverse_add_opinion = {
+# 					target = scope:life_release_rejector
+# 					modifier = RICE_magadha_disapproves_of_life_release
+# 				}			
+# 			}
+# 		}
+# 	}
 	
-	option = { # React calmly
-		name = magadha.0052.a
-		add_piety = 5
-		stress_impact = {
-			wrathful = miniscule_stress_impact_gain
-			arrogant = miniscule_stress_impact_gain
-			ambitious = miniscule_stress_impact_gain
-			stubborn = miniscule_stress_impact_gain
-		}
-	}
-	option = { # React angrily
-		name = magadha.0052.b
-		add_prestige = 5
-		stress_impact = {
-			calm = miniscule_stress_impact_gain
-			humble = miniscule_stress_impact_gain
-			forgiving = miniscule_stress_impact_gain
-			content = miniscule_stress_impact_gain
-		}
-	}
+# 	option = { # React calmly
+# 		name = magadha.0052.a
+# 		add_piety = 5
+# 		stress_impact = {
+# 			wrathful = miniscule_stress_impact_gain
+# 			arrogant = miniscule_stress_impact_gain
+# 			ambitious = miniscule_stress_impact_gain
+# 			stubborn = miniscule_stress_impact_gain
+# 		}
+# 	}
+# 	option = { # React angrily
+# 		name = magadha.0052.b
+# 		add_prestige = 5
+# 		stress_impact = {
+# 			calm = miniscule_stress_impact_gain
+# 			humble = miniscule_stress_impact_gain
+# 			forgiving = miniscule_stress_impact_gain
+# 			content = miniscule_stress_impact_gain
+# 		}
+# 	}
 
-	after = {
-		clear_saved_scope = life_release_rejector
-	}
-}
+# 	after = {
+# 		clear_saved_scope = life_release_rejector
+# 	}
+# }
 
 
 
-# Host died
-magadha.0053 = {
-	type = character_event
-	title = magadha.0053.t
-	desc = magadha.0053.desc
-	theme = faith
-	override_icon = {
-		reference = "gfx/interface/icons/event_types/type_illness.dds"
-	}
-	left_portrait = scope:host
+# # Host died
+# magadha.0053 = {
+# 	type = character_event
+# 	title = magadha.0053.t
+# 	desc = magadha.0053.desc
+# 	theme = faith
+# 	override_icon = {
+# 		reference = "gfx/interface/icons/event_types/type_illness.dds"
+# 	}
+# 	left_portrait = scope:host
 	
-	option = {
-		name = magadha.0053.a
-	}
+# 	option = {
+# 		name = magadha.0053.a
+# 	}
 
-}
+# }
 
-# Host imprisoned - for guests
-magadha.0054 = {
-	type = character_event
-	title = magadha.0054.t
-	desc = magadha.0054.desc
-	theme = faith
-	override_icon = {
-		reference = "gfx/interface/icons/event_types/type_prison.dds"
-	}
-	left_portrait = {
-		character = scope:host
-		animation = prison_dungeon
-	}
+# # Host imprisoned - for guests
+# magadha.0054 = {
+# 	type = character_event
+# 	title = magadha.0054.t
+# 	desc = magadha.0054.desc
+# 	theme = faith
+# 	override_icon = {
+# 		reference = "gfx/interface/icons/event_types/type_prison.dds"
+# 	}
+# 	left_portrait = {
+# 		character = scope:host
+# 		animation = prison_dungeon
+# 	}
 	
-	option = {
-		name = magadha.0054.a
-	}
+# 	option = {
+# 		name = magadha.0054.a
+# 	}
 
-}
+# }
 
 
 
-# Host imprisoned - for host
-magadha.0055 = {
-	type = character_event
-	title = magadha.0055.t
-	desc = magadha.0055.desc
-	theme = faith
-	override_icon = {
-		reference = "gfx/interface/icons/event_types/type_prison.dds"
-	}
-	left_portrait = {
-		character = scope:host
-		animation = prison_dungeon
-	}
+# # Host imprisoned - for host
+# magadha.0055 = {
+# 	type = character_event
+# 	title = magadha.0055.t
+# 	desc = magadha.0055.desc
+# 	theme = faith
+# 	override_icon = {
+# 		reference = "gfx/interface/icons/event_types/type_prison.dds"
+# 	}
+# 	left_portrait = {
+# 		character = scope:host
+# 		animation = prison_dungeon
+# 	}
 	
-	option = {
-		name = magadha.0055.a
-	}
+# 	option = {
+# 		name = magadha.0055.a
+# 	}
 
-}
+# }
 
 
 
 
 # Life release for host's POV
 magadha.0060 = {
-	type = character_event
+	type = activity_event
 	title = magadha.0060.t
 	desc = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					has_character_flag = RICE_magadha_liberating_birds
+					root = scope:host
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_magadha_life_liberation_animal_type
+							option = RICE_magadha_life_liberation_animal_type_birds
+						}
+					}
 				}
 				desc = magadha.0060.desc.birds
 			}
 			triggered_desc = {
 				trigger = {
-					has_character_flag = RICE_magadha_liberating_turtles
+					root = scope:host
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_magadha_life_liberation_animal_type
+							option = RICE_magadha_life_liberation_animal_type_turtles
+						}
+					}
 				}
 				desc = magadha.0060.desc.turtles
 			}
 			triggered_desc = {
 				trigger = {
-					has_character_flag = RICE_magadha_liberating_fish
+					root = scope:host
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_magadha_life_liberation_animal_type
+							option = RICE_magadha_life_liberation_animal_type_fish
+						}
+					}
 				}
 				desc = magadha.0060.desc.fish
 			}
 			triggered_desc = {
 				trigger = {
-					has_character_flag = RICE_magadha_liberating_insects
+					root = scope:host
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_magadha_life_liberation_animal_type
+							option = RICE_magadha_life_liberation_animal_type_insects
+						}
+					}
 				}
 				desc = magadha.0060.desc.insects
+			}
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { root = scope:host }
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_magadha_life_liberation_animal_type
+							option = RICE_magadha_life_liberation_animal_type_birds
+						}
+					}
+				}
+				desc = magadha.0061.desc.birds
+			}
+			triggered_desc = {
+				trigger = {
+					NOT = { root = scope:host }
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_magadha_life_liberation_animal_type
+							option = RICE_magadha_life_liberation_animal_type_turtles
+						}
+					}
+				}
+				desc = magadha.0061.desc.turtles
+			}
+			triggered_desc = {
+				trigger = {
+					NOT = { root = scope:host }
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_magadha_life_liberation_animal_type
+							option = RICE_magadha_life_liberation_animal_type_fish
+						}
+					}
+				}
+				desc = magadha.0061.desc.fish
+			}
+			triggered_desc = {
+				trigger = {
+					NOT = { root = scope:host }
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_magadha_life_liberation_animal_type
+							option = RICE_magadha_life_liberation_animal_type_insects
+						}
+					}
+				}
+				desc = magadha.0061.desc.insects
 			}
 		}
 		desc = magadha.0060.desc
 	}
 	theme = faith
-	override_background = { event_background = garden }
+	override_background = { reference = garden }
 	left_portrait = {
 		character = root
 		animation = personality_zealous
 	}
-
-	trigger = {
-		this = scope:activity.activity_owner
+	right_portrait = {
+		character = scope:host
+		trigger = {
+			NOT = {
+				this = root
+			}
+		}
+		animation = personality_zealous
 	}
 
 	immediate = {
 		play_music_cue = mx_cue_touching_moment
-		RICE_magadha_life_release_finished = yes
-		scope:activity = {
-			every_participant = {
-				limit = { NOT = { this = root } }
-				custom = every_guest_scope_tt
-				add_opinion = {
-					target = root
-					modifier = RICE_magadha_invited_me_to_life_release
-				}
-				show_as_tooltip = {
-					add_character_modifier = {
-						modifier = RICE_magadha_participated_in_life_release
-						years = 5
-					}
-				}
-			}
-		}
+		# scope:activity = {
+		# 	every_participant = {
+		# 		limit = { NOT = { this = root } }
+		# 		custom = every_guest_scope_tt
+		# 		add_opinion = {
+		# 			target = root
+		# 			modifier = RICE_magadha_invited_me_to_life_release
+		# 		}
+		# 		show_as_tooltip = {
+		# 			add_character_modifier = {
+		# 				modifier = RICE_magadha_participated_in_life_release
+		# 				years = 5
+		# 			}
+		# 		}
+		# 	}
+		# }
 	}
 
 	option = {
@@ -1574,102 +1724,118 @@ magadha.0060 = {
 	}
 
 	after = {
-		scope:activity = {
-			complete_activity = yes
-		}
-		RICE_magadha_life_release_cleanup = yes
+		if = {
+			limit = {
+				root = scope:host
+			}
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
 	}
+
 }
+
+# End the activity because it never ends otherwise for some weird reason
+# magadha.0061 = {
+# 	scope = none
+# 	hidden = yes
+	
+# 	immediate = {
+# 		scope:activity = {
+# 			hidden_effect = { skip_activity_phase = yes }
+# 		}
+# 	}
+# }
 
 
 # Life release for guests POV
-magadha.0061 = {
-	type = character_event
-	title = magadha.0061.t
-	desc = {
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					scope:host = {
-						has_character_flag = RICE_magadha_liberating_birds
-					}
-				}
-				desc = magadha.0061.desc.birds
-			}
-			triggered_desc = {
-				trigger = {
-					scope:host = {
-						has_character_flag = RICE_magadha_liberating_turtles
-					}
-				}
-				desc = magadha.0061.desc.turtles
-			}
-			triggered_desc = {
-				trigger = {
-					scope:host = {
-						has_character_flag = RICE_magadha_liberating_fish
-					}
-				}
-				desc = magadha.0061.desc.fish
-			}
-			triggered_desc = {
-				trigger = {
-					scope:host = {
-						has_character_flag = RICE_magadha_liberating_insects
-					}
-				}
-				desc = magadha.0061.desc.insects
-			}
-		}
-		desc = magadha.0061.desc
-	}
-	theme = faith
-	override_background = { event_background = garden }
+# magadha.0061 = {
+# 	type = character_event
+# 	title = magadha.0061.t
+# 	desc = {
+# 		first_valid = {
+# 			triggered_desc = {
+# 				trigger = {
+# 					scope:host = {
+# 						has_character_flag = RICE_magadha_liberating_birds
+# 					}
+# 				}
+# 				desc = magadha.0061.desc.birds
+# 			}
+# 			triggered_desc = {
+# 				trigger = {
+# 					scope:host = {
+# 						has_character_flag = RICE_magadha_liberating_turtles
+# 					}
+# 				}
+# 				desc = magadha.0061.desc.turtles
+# 			}
+# 			triggered_desc = {
+# 				trigger = {
+# 					scope:host = {
+# 						has_character_flag = RICE_magadha_liberating_fish
+# 					}
+# 				}
+# 				desc = magadha.0061.desc.fish
+# 			}
+# 			triggered_desc = {
+# 				trigger = {
+# 					scope:host = {
+# 						has_character_flag = RICE_magadha_liberating_insects
+# 					}
+# 				}
+# 				desc = magadha.0061.desc.insects
+# 			}
+# 		}
+# 		desc = magadha.0061.desc
+# 	}
+# 	theme = faith
+# 	override_background = { reference = garden }
 
-	left_portrait = {
-		character = scope:host
-		animation = personality_zealous
-	}
-	right_portrait = root
+# 	left_portrait = {
+# 		character = scope:host
+# 		animation = personality_zealous
+# 	}
+# 	right_portrait = root
 
-	trigger = {
-		# Guests only.
-		NOT = { this = scope:activity.activity_owner }
-	}
+# 	trigger = {
+# 		# Guests only.
+# 		NOT = { this = scope:activity.activity_owner }
+# 	}
 
-	immediate = {
-		play_music_cue = mx_cue_touching_moment
-		scope:activity.activity_owner = {
-			save_scope_as = host
-		}
-		add_character_modifier = {
-			modifier = RICE_magadha_participated_in_life_release
-			years = 5
-		}
-	}
+# 	immediate = {
+# 		play_music_cue = mx_cue_touching_moment
+# 		scope:activity.activity_owner = {
+# 			save_scope_as = host
+# 		}
+# 		add_character_modifier = {
+# 			modifier = RICE_magadha_participated_in_life_release
+# 			years = 5
+# 		}
+# 	}
 
-	option = {
-		name = magadha.0061.a
-		add_piety = 25
-		stress_impact = {
-			callous = miniscule_stress_impact_gain
-			sadistic = miniscule_stress_impact_gain
-			cynical = miniscule_stress_impact_gain
-		}
-	}
-	option = {
-		name = magadha.0061.b
-		add_prestige = 25
-		stress_impact = {
-			compassionate = miniscule_stress_impact_gain
-			zealous = miniscule_stress_impact_gain
-		}
-	}
+# 	option = {
+# 		name = magadha.0061.a
+# 		add_piety = 25
+# 		stress_impact = {
+# 			callous = miniscule_stress_impact_gain
+# 			sadistic = miniscule_stress_impact_gain
+# 			cynical = miniscule_stress_impact_gain
+# 		}
+# 	}
+# 	option = {
+# 		name = magadha.0061.b
+# 		add_prestige = 25
+# 		stress_impact = {
+# 			compassionate = miniscule_stress_impact_gain
+# 			zealous = miniscule_stress_impact_gain
+# 		}
+# 	}
 
-	after = {
-		remove_character_flag = planning_an_activity
-	}
-}
+# 	after = {
+# 		remove_character_flag = planning_an_activity
+# 	}
+# }
 
 
 
@@ -1690,25 +1856,23 @@ magadha.0070 = {
 	title = magadha.0070.t
 	desc = magadha.0070.desc
 	theme = faith
-	override_background = { event_background = sitting_room }
+	override_background = { reference = sitting_room }
 	
 	right_portrait = root
 	
 	immediate = {
-		capital_province = { save_scope_as = capital_province } #For loc.
-		# Stop characters from planning multiple activities at once.
-		add_character_flag = planning_an_activity
+		add_character_flag = {
+			flag = planning_an_activity
+			days = 365 # Should be over in a few months, this is just in case
+		}
 	}
 	
 	option = { # Ok
 		name = magadha.0070.a
-		# Choose appropriate location
-		scope:capital_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_magadha_vassa_retreat
-			}	
-		}
+		trigger_event = { # Approximate
+			id = magadha.0071
+			trigger_on_next_date = 7.20
+		}	
 	}
 }
 
@@ -1724,6 +1888,11 @@ magadha.0071 = {
 
 	trigger = {
 		religion = religion:buddhism_religion
+	}	
+
+	#Trigger if converted to another faith
+	on_trigger_fail = { 
+		trigger_event = magadha.0089
 	}
 	
 	immediate = {
@@ -1868,6 +2037,11 @@ magadha.0072 = {
 		religion = religion:buddhism_religion
 	}
 
+	#Trigger if converted to another faith
+	on_trigger_fail = { 
+		trigger_event = magadha.0089
+	}
+
 	immediate = {
 		remove_character_modifier = RICE_magadha_currently_abstaining_vassa
 	}
@@ -1908,9 +2082,7 @@ magadha.0072 = {
 	}
 
 	after = {
-		scope:activity = {
-			complete_activity = yes
-		}
+		RICE_remove_planned_activity_flag_effect = yes
 	}
 
 }
@@ -1980,7 +2152,7 @@ magadha.0073 = {
 		desc = magadha.0073.desc.conclusion
 	}
 	theme = faith
-	override_background = { event_background = sitting_room }
+	override_background = { reference = sitting_room }
 	
 	left_portrait = {
 		character = root
@@ -2364,6 +2536,7 @@ magadha.0073 = {
 			limit = { has_character_flag = RICE_magadha_vassa_impatient_ruler }
 			remove_character_flag = RICE_magadha_vassa_impatient_ruler
 		}
+		RICE_remove_planned_activity_flag_effect = yes
 	}
 
 }
@@ -2375,7 +2548,7 @@ magadha.0074 = {
 	title = magadha.0074.t
 	desc = magadha.0074.desc
 	theme = faith
-	override_background = { event_background = study }
+	override_background = { reference = study }
 	
 	left_portrait = {
 		character = root
@@ -2451,7 +2624,7 @@ magadha.0076 = {
 	title = magadha.0076.t
 	desc = magadha.0076.desc
 	theme = faith
-	override_background = { event_background = throne_room }
+	override_background = { reference = throne_room }
 	
 	right_portrait = {
 		character = root
@@ -2486,7 +2659,7 @@ magadha.0077 = {
 	title = magadha.0077.t
 	desc = magadha.0077.desc
 	theme = faith
-	override_background = { event_background = throne_room }
+	override_background = { reference = throne_room }
 	
 	right_portrait = {
 		character = root
@@ -2513,7 +2686,7 @@ magadha.0078 = {
 	title = magadha.0078.t
 	desc = magadha.0078.desc
 	theme = faith
-	override_background = { event_background = throne_room }
+	override_background = { reference = throne_room }
 	
 	right_portrait = {
 		character = root
@@ -2739,6 +2912,10 @@ magadha.0089 = {
 	
 	option = {
 		name = magadha.0089.a
+	}
+
+	after = {
+		RICE_remove_planned_activity_flag_effect = yes
 	}
 
 }
