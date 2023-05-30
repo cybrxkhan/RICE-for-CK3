@@ -554,63 +554,62 @@ aachen.0013 = {
 # Make preparations to begin the pilgrimage
 aachen.0020 = {
 	type = character_event
-	title = aachen.0020.t
+	title = aachen.0021.t
 	desc = aachen.0020.desc
-	theme = friendly
-	override_icon = {
-		reference = "gfx/interface/icons/event_types/type_faith.dds"
-	}
+	theme = travel_pilgrimage
+	override_background = { reference = RICE_background_aachen_forest }
 	
 	right_portrait = root
-	
-	immediate = {
-		# Stop characters from planning multiple activities at once
-		add_character_flag = planning_an_activity
-	}
-	
-	option = { # Ok
-		name = aachen.0020.a
-		# Choose appropriate location - Aachen, duh
-		title:b_aachen.title_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_aachen_pilgrimage
-			}	
-		}
-	}
-}
 
-# Pilgrimage begins
-aachen.0021 = {
-	type = character_event
-	title = aachen.0021.t
-	desc = aachen.0021.desc
-	theme = RICE_theme_aachen_forest
-	override_icon = {
-		reference = "gfx/interface/icons/event_types/type_faith.dds"
-	}
-	
-	left_portrait = {
-		character = root
-		animation = happiness
-	}
-	
-	option = { # Ok
-		name = aachen.0021.a
-		trigger_event = {
-			id = aachen.0022
-			days = { 10 20 }
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_aachen_pilgrimage
 		}
 	}
 	
 	immediate = {
 		play_music_cue = "mx_cue_epic_sacral_moment"
 	}
+	
+	option = { # Ok
+		name = aachen.0021.a
+	}
 }
+
+# Pilgrimage begins
+# aachen.0021 = {
+# 	type = character_event
+# 	title = aachen.0021.t
+# 	desc = aachen.0021.desc
+# 	theme = RICE_theme_aachen_forest
+# 	override_icon = {
+# 		reference = "gfx/interface/icons/event_types/type_faith.dds"
+# 	}
+	
+# 	left_portrait = {
+# 		character = root
+# 		animation = happiness
+# 	}
+	
+# 	option = { # Ok
+# 		name = aachen.0021.a
+# 		trigger_event = {
+# 			id = aachen.0022
+# 			days = { 10 20 }
+# 		}
+# 	}
+	
+# 	immediate = {
+# 		play_music_cue = "mx_cue_epic_sacral_moment"
+# 	}
+# }
 
 # Arrive in Aachen
 aachen.0022 = {
-	type = character_event
+	type = activity_event
 	title = aachen.0022.t
 	desc = aachen.0022.desc
 	theme = RICE_theme_aachen_gatehouse
@@ -632,7 +631,7 @@ aachen.0022 = {
 
 # Sitting in Aachen Cathedral
 aachen.0023 = {
-	type = character_event
+	type = activity_event
 	title = aachen.0023.t
 	desc = {
 		desc = aachen.0023.desc
@@ -666,7 +665,7 @@ aachen.0023 = {
 
 # Being inspired by something in Aachen Cathedral treasury
 aachen.0024 = {
-	type = character_event
+	type = activity_event
 	title = aachen.0024.t
 	desc = {
 		desc = aachen.0024.desc.start
@@ -740,9 +739,20 @@ aachen.0024 = {
 					add = 5
 					has_trait = ambitious
 				}
-				add_character_modifier = {
-					modifier = RICE_aachen_inspired_lothair_cross
-					years = 10
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_aachen_pilgrimage_inspired_log
+						tags = { good }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = root
+						scope:host = {
+							add_character_modifier = {
+								modifier = RICE_aachen_inspired_lothair_cross
+								years = 10
+							}
+						}
+					}
 				}
 			}
 			20 = {
@@ -754,9 +764,20 @@ aachen.0024 = {
 					add = 5
 					has_trait = vengeful
 				}
-				add_character_modifier = {
-					modifier = RICE_aachen_inspired_sabre_of_charlemagne
-					years = 10
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_aachen_pilgrimage_inspired_log
+						tags = { good }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = root
+						scope:host = {
+							add_character_modifier = {
+								modifier = RICE_aachen_inspired_sabre_of_charlemagne
+								years = 10
+							}
+						}
+					}
 				}
 			}
 			20 = {
@@ -768,9 +789,20 @@ aachen.0024 = {
 					add = 5
 					has_trait = gluttonous
 				}
-				add_character_modifier = {
-					modifier = RICE_aachen_inspired_st_stephens_purse
-					years = 10
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_aachen_pilgrimage_inspired_log
+						tags = { good }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = root
+						scope:host = {
+							add_character_modifier = {
+								modifier = RICE_aachen_inspired_st_stephens_purse
+								years = 10
+							}
+						}
+					}
 				}
 			}
 			20 = {
@@ -782,9 +814,20 @@ aachen.0024 = {
 					add = 5
 					has_trait = temperate
 				}
-				add_character_modifier = {
-					modifier = RICE_aachen_inspired_ivory_situla
-					years = 10
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_aachen_pilgrimage_inspired_log
+						tags = { good }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = root
+						scope:host = {
+							add_character_modifier = {
+								modifier = RICE_aachen_inspired_ivory_situla
+								years = 10
+							}
+						}
+					}
 				}
 			}
 			20 = {
@@ -796,9 +839,20 @@ aachen.0024 = {
 					add = 5
 					has_trait = humble
 				}
-				add_character_modifier = {
-					modifier = RICE_aachen_inspired_aachen_gospel
-					years = 10
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_aachen_pilgrimage_inspired_log
+						tags = { good }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = root
+						scope:host = {
+							add_character_modifier = {
+								modifier = RICE_aachen_inspired_aachen_gospel
+								years = 10
+							}
+						}
+					}
 				}
 			}
 			20 = {
@@ -810,9 +864,20 @@ aachen.0024 = {
 					add = 5
 					has_trait = stubborn
 				}
-				add_character_modifier = {
-					modifier = RICE_aachen_inspired_olifant_hunting_knife
-					years = 10
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_aachen_pilgrimage_inspired_log
+						tags = { good }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = root
+						scope:host = {
+							add_character_modifier = {
+								modifier = RICE_aachen_inspired_olifant_hunting_knife
+								years = 10
+							}
+						}
+					}
 				}
 			}
 			20 = {
@@ -824,12 +889,29 @@ aachen.0024 = {
 					add = 5
 					has_trait = zealous
 				}
-				add_character_modifier = {
-					modifier = RICE_aachen_inspired_coronation_gospel
-					years = 10
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_aachen_pilgrimage_inspired_log
+						tags = { good }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = root
+						scope:host = {
+							add_character_modifier = {
+								modifier = RICE_aachen_inspired_coronation_gospel
+								years = 10
+							}
+						}
+					}
 				}
 			}
 			20 = { ####################################### SHOULDNT HAPPEN
+				trigger = {					
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:RICE_aachen_commission_charlemagne_bust
+					}
+				}
 				modifier = {
 					add = 5
 					has_trait = just
@@ -838,9 +920,20 @@ aachen.0024 = {
 					add = 5
 					has_trait = zealous
 				}
-				add_character_modifier = {
-					modifier = RICE_aachen_inspired_bust_of_charlemagne
-					years = 10
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_aachen_pilgrimage_inspired_log
+						tags = { good }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = root
+						scope:host = {
+							add_character_modifier = {
+								modifier = RICE_aachen_inspired_bust_of_charlemagne
+								years = 10
+							}
+						}
+					}
 				}
 			}
 		}
@@ -858,71 +951,81 @@ aachen.0024 = {
 
 # Preparing to return home
 aachen.0025 = {
-	type = character_event
+	type = activity_event
 	title = aachen.0025.t
 	desc = aachen.0025.desc
 	theme = friendly
-	override_background = { reference = alley_day }
+	override_background = { reference = RICE_background_aachen_gatehouse }
 	
-	right_portrait = root
-	
-	option = { # Ok
-		name = aachen.0025.a
-		trigger_event = {
-			id = aachen.0026
-			days = { 10 25 }
-		}
-	}
-}
-
-
-# Return home
-aachen.0026 = {
-	type = character_event
-	title = aachen.0026.t
-	desc = aachen.0026.desc
-	theme = friendly
-	
-	left_portrait = {
+	right_portrait = {
 		character = root
 		animation = happiness
 	}
 	
 	option = { # Ok
-		name = aachen.0026.a
-		if = {
-			limit = {
-				is_target_in_global_variable_list = {
-					name = unavailable_unique_decisions
-					target = flag:RICE_aachen_charlemagne_remains_transferred
-				}
-			}
-			add_piety = 300
-		}
-		else = {
-			add_piety = 200
-		}
-		pilgrimage_additional_reward_effect = yes
-		add_trait = pilgrim
+		name = aachen.0025.a
+		RICE_aachen_pilgrimage_completed_log_entry_effect = yes
 	}
-	
+
+
 	after = {
-		trigger_event = {
-			id = aachen.0027
-			days = 1
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
 		}
-	}	
+	}
+
 }
 
-aachen.0027 = {
-	hidden = yes	
-	immediate = {
-		remove_character_flag = RICE_aachen_aachen_pilgrimage
-		scope:activity = {
-			complete_activity = yes
-		}
-	}
-}
+
+# Return home
+# aachen.0026 = {
+# 	type = character_event
+# 	title = aachen.0026.t
+# 	desc = aachen.0026.desc
+# 	theme = friendly
+	
+# 	left_portrait = {
+# 		character = root
+# 		animation = happiness
+# 	}
+	
+# 	option = { # Ok
+# 		name = aachen.0026.a
+# 		if = {
+# 			limit = {
+# 				is_target_in_global_variable_list = {
+# 					name = unavailable_unique_decisions
+# 					target = flag:RICE_aachen_charlemagne_remains_transferred
+# 				}
+# 			}
+# 			add_piety = 300
+# 		}
+# 		else = {
+# 			add_piety = 200
+# 		}
+# 		pilgrimage_additional_reward_effect = yes
+# 		add_trait = pilgrim
+# 	}
+	
+# 	after = {
+# 		trigger_event = {
+# 			id = aachen.0027
+# 			days = 1
+# 		}
+# 	}	
+# }
+
+# aachen.0027 = {
+# 	hidden = yes	
+# 	immediate = {
+# 		remove_character_flag = RICE_aachen_aachen_pilgrimage
+# 		scope:activity = {
+# 			complete_activity = yes
+# 		}
+# 	}
+# }
 
 
 #####################################################################
