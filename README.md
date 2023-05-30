@@ -1,11 +1,9 @@
-<img src="https://i.imgur.com/uLBmor4.jpg">
-
-## Public Beta (Initial version 5/29/23, for vanilla patch 1.9.x)
+# Public Beta (Initial version 5/29/23, for vanilla patch 1.9.x)
 
 The public beta version of RICE is intended for vanilla's 1.9 patch and Tours & Tournaments update. Though it is stable, be aware that it is lacking some content and may be buggy. **Please carefully read the instructions and information below if you wish to use the beta.** Thanks for your understanding and patience!
 
 
-## Manual Installation Steps
+# Manual Installation Steps
 
 If you know how to use GitHub, you can skip this.
 
@@ -18,7 +16,7 @@ If you know how to use GitHub, you can skip this.
 
 NOTE: **If you are re-installing a mod manually, delete the old version of the mod first before copy and pasting the new one! It's a good habit to do to prevent potential issues.**
 
-## Important Information
+# Important Information
 
 1. The "beta" is available only through GitHub. You will need to know how to manually install mods and/or read instructions.
 2. I do not advise you start long-term playthroughs with the beta - the WIP version is constantly changing, as code is added, removed, or changed, so this could mess with saves. The beta is meant for short playthroughs, messing around, and, if you are inclined, to provide feedback.
