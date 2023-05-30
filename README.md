@@ -11,7 +11,7 @@ If you know how to use GitHub, you can skip this.
 
 <img src="https://i.imgur.com/KCaoTUE.jpg">
 
-2. Place the "RICE" folder and "RICE.mod" file in your mod folder. This is usually in Documents/Paradox Interactive/mod
+2. Place the "RICE" folder and "RICE.mod" file in your mod folder. This is usually in Documents/Crusader Kings III/Paradox Interactive/mod
 3. Make sure RICE is selected in the launcher in your mod playlist. That should be it!
 
 NOTE: **If you are re-installing a mod manually, delete the old version of the mod first before copy and pasting the new one! It's a good habit to do to prevent potential issues.**
