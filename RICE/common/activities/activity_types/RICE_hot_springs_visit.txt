@@ -100,13 +100,6 @@
 	ai_province_filter = realm
 
 	province_description = {
-		#Is it a unique hot springs?
-		triggered_desc = {
-			trigger = {
-				RICE_hot_springs_baronies_trigger = no
-			}
-			desc = activity_RICE_hot_springs_visit_province_desc
-		}
 		triggered_desc = {
 			trigger = {
 				barony = title:b_siwa
@@ -136,6 +129,20 @@
 				barony = title:b_air
 			}
 			desc = activity_RICE_hot_springs_visit_tafadek_province_desc
+		}
+		triggered_desc = {
+			trigger = {
+				duchy = title:d_iceland
+			}
+			desc = activity_RICE_hot_springs_visit_iceland_province_desc
+		}
+		#Is it a unique hot springs?
+		triggered_desc = {
+			trigger = {
+				RICE_hot_springs_baronies_trigger = no
+				NOT = { duchy = title:d_iceland }
+			}
+			desc = activity_RICE_hot_springs_visit_province_desc
 		}
 	}
 
@@ -259,6 +266,13 @@
 						}
 						scope:host = { trigger_event = tuareg.0013 }
 					}
+					# Icelandic hot Springs
+					else_if = {
+						limit = {
+							involved_activity.activity_location = { geographical_region = custom_iceland }
+						}
+						scope:host = { trigger_event = north_atlantic.0018 }
+					}
 					# Default / fallback option
 					else = {
 						trigger_event = RICEmisc.0012
@@ -356,6 +370,16 @@
 				this = scope:host.capital_province
 			}
 			add = 25
+		}
+		# Icelandic non-capital
+		if = {
+			limit = {
+				NOT = {
+					this = scope:host.capital_province
+				}
+				duchy = title:d_iceland
+			}
+			add = 50
 		}
 	}
 	
@@ -651,6 +675,16 @@
 		texture = "gfx/interface/illustrations/event_scenes/RICE_sahel_manor.dds"
 		environment = "environment_event_desert"
 		ambience = "event:/SFX/Events/Backgrounds/fields_farms_day"
+	}
+
+	# Iceland
+	background = {
+		trigger = {
+			activity_location = { geographical_region = custom_iceland }
+		}
+		texture = "gfx/interface/illustrations/event_scenes/RICE_north_atlantic_iceland.dds"
+		environment = "environment_event_mountains"
+		ambience = "event:/SFX/Events/Backgrounds/mountains_day"
 	}
 
 	#Fallback

@@ -1120,90 +1120,149 @@ north_atlantic.0017 = {
 
 
 
-# # Test
-# north_atlantic.9999 = {
-# 	type = character_event
-# 	title = north_atlantic.9999.t
-# 	desc = north_atlantic.9999.desc
-# 	theme = RICE_theme_north_atlantic_disko_bay
+# Arrive at the Icelandic hot springs
+north_atlantic.0018 = {
+	type = activity_event
+	title = north_atlantic.0018.t
+	desc = north_atlantic.0018.desc
+	theme = RICE_theme_north_atlantic_iceland
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
 
-# 	left_portrait = root
-# 	right_portrait = scope:doomed
+	immediate = {
+		add_character_flag = is_naked
+		scope:activity = {
+			activity_location = { save_scope_as = location }
+		}
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_public
+					}
+				}
+			}
+			set_variable = {
+				name = RICE_hot_springs_visit_special_type
+				value = flag:public
+				days = 1
+			}
+		}
+		else = {			
+			set_variable = {
+				name = RICE_hot_springs_visit_special_type
+				value = flag:private
+				days = 1
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = north_atlantic.0018.a
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_private
+					}
+				}
+			}
+			stress_impact = {
+				base = medium_stress_impact_loss
+				lazy = minor_stress_impact_loss
+				calm = minor_stress_impact_loss
+			}	
+		}
+		else_if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_public
+					}
+				}
+			}
+			stress_impact = {
+				base = minor_stress_impact_loss
+				lazy = minor_stress_impact_loss
+				calm = minor_stress_impact_loss
+			}
+			add_prestige = 50
+		}
+		if = {
+			limit = {
+				NOT = {
+					scope:activity.activity_location = root.capital_province
+				}
+			}
+			set_variable = {
+				name = RICE_hot_springs_visit_iceland_non_capital
+				days = 1
+			}
+			add_prestige = 50
+		}
+	}
+	
+	after = {
+		RICE_hot_springs_memory_effect = yes
+		set_variable = {
+			name = RICE_hot_springs_visit_special_location
+			value = flag:iceland
+			days = 1
+		}
+		if = {
+			limit = { has_character_flag = is_naked }
+			remove_character_flag = is_naked
+		}
+		scope:activity = {
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				stress_impact = {
+					base = minor_stress_impact_loss
+				}
+			}
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}	
+}
 
-# 	trigger = {
-# 		any_courtier_or_guest = {
-# 			is_available_ai_adult = yes
-# 		}
-# 	}
-
-# 	immediate = {
-# 		random_courtier_or_guest = {
-# 			limit = {
-# 				is_available_ai_adult = yes
-# 			}
-# 			save_scope_as = doomed
-# 		}
-# 	}
-
-# 	option = {
-# 		name = north_atlantic.9999.a
-# 		scope:doomed = {
-# 			death = {
-# 				death_reason = death_RICE_north_atlantic_greenland
-# 			}
-# 		}
-# 	}
-
-# 	option = {
-# 		name = north_atlantic.9999.b
-# 		scope:doomed = {
-# 			death = {
-# 				death_reason = death_RICE_north_atlantic_vinland
-# 			}
-# 		}
-# 	}
-
-# 	option = {
-# 		name = north_atlantic.9999.c
-# 		scope:doomed = {
-# 			death = {
-# 				death_reason = death_RICE_north_atlantic_greenland_death
-# 			}
-# 		}
-# 	}
-
-# 	option = {
-# 		name = north_atlantic.9999.d
-# 		scope:doomed = {
-# 			death = {
-# 				death_reason = death_RICE_north_atlantic_helluland_death
-# 			}
-# 		}
-# 	}
-
-# 	option = {
-# 		name = north_atlantic.9999.e
-# 		scope:doomed = {
-# 			death = {
-# 				death_reason = death_RICE_north_atlantic_markland_death
-# 			}
-# 		}
-# 	}
-
-# 	option = {
-# 		name = north_atlantic.9999.f
-# 		scope:doomed = {
-# 			death = {
-# 				death_reason = death_RICE_north_atlantic_vinland_death
-# 			}
-# 		}
-# 	}
-
-# }
 
 
 
 
+# Start travel - Icelandic Hot Springs
+north_atlantic.0019 = {
+	type = character_event
+	title = north_atlantic.0019.t
+	desc = north_atlantic.0019.desc
+	theme = travel
+	override_background = { reference = RICE_background_north_atlantic_iceland }
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_hot_springs_visit
+			activity_location = { geographical_region = custom_iceland }
+		}
+	}
+	
+	option = { # Ok
+		name = north_atlantic.0019.a
+	}	
+}
 
 
 
