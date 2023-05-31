@@ -1,6 +1,6 @@
 # Public Beta (Initial version 5/29/23, for vanilla patch 1.9.x)
 
-The public beta version of RICE is intended for vanilla's 1.9 patch and Tours & Tournaments update. Though it is stable, be aware that it is lacking some content and may be buggy. **Please carefully read the instructions and information below if you wish to use the beta.** Thanks for your understanding and patience! If you wish to leave feedback, fee
+The public beta version of RICE is intended for vanilla's 1.9 patch and Tours & Tournaments update. Though it is stable, be aware that it is lacking some content and may be buggy, and it is constantly being updated. **Please carefully read the instructions and information below if you wish to use the beta.** Thanks for your understanding and patience, and feel free to leave feedback and bug reports!
 
 
 # Manual Installation Steps
