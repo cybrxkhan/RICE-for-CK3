@@ -4233,6 +4233,9 @@ pamir.0102 = {
 		title:c_badakhshan = { #For loc.
 			save_scope_as = badakhshan_county
 		}
+		title:c_badakhshan.holder = {
+			save_scope_as = badakhshan_ruler
+		}
 		RICE_pamir_nasir_khusraw_shrine_effect = yes
 	}
 
@@ -4781,10 +4784,19 @@ pamir.0130 = {
 	type = character_event
 	title = pamir.0130.t
 	desc = pamir.0130.desc
-	theme = friendly
-	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	theme = travel_pilgrimage
+	override_background = { reference = RICE_background_pamir_valley }
 	
 	right_portrait = root
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_pamir_nasir_khusraw_pilgrimage
+		}
+	}
 	
 	immediate = {
 		title:c_badakhshan = { #For loc.
@@ -4807,35 +4819,72 @@ pamir.0130 = {
 				save_scope_as = nasir_khusraw
 			}		
 		}
-		# Stop characters from planning multiple activities at once
-		#add_character_flag = planning_an_activity
 	}
 	
 	option = { # Ok
 		name = pamir.0130.a
-		# Choose appropriate location - Badakhshan
-		title:b_jerm.title_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_pamir_nasir_khusraw_pilgrimage
-			}	
-		}
 	}
 }
 
 # Pilgrimage begins
-pamir.0131 = {
-	type = character_event
-	title = pamir.0131.t
-	desc = pamir.0131.desc
-	theme = RICE_theme_pamir_valley
+# pamir.0131 = {
+# 	type = character_event
+# 	title = pamir.0131.t
+# 	desc = pamir.0131.desc
+# 	theme = RICE_theme_pamir_valley
+# 	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+# 	left_portrait = {
+# 		character = root
+# 		animation = happiness
+# 	}
+	
+# 	immediate = {
+# 		title:c_badakhshan = { #For loc.
+# 			save_scope_as = badakhshan_county
+# 		}
+# 		if = {
+# 			limit = {
+# 				has_global_variable = RICE_pamir_nasir_khusraw_was_randomly_generated
+# 			}
+# 			ordered_in_global_list = {
+# 				variable = RICE_pamir_nasir_khusraw_random_list
+# 				save_scope_as = nasir_khusraw
+# 			}
+# 		}
+# 		else_if = {
+# 			limit = {
+# 				has_global_variable = RICE_pamir_nasir_khusraw_born_1066_start
+# 			}
+# 			character:248022 = {
+# 				save_scope_as = nasir_khusraw
+# 			}		
+# 		}
+# 		play_music_cue = "mx_cue_epic_sacral_moment"
+# 	}
+	
+# 	option = { # Ok
+# 		name = pamir.0131.a
+# 		trigger_event = {
+# 			id = pamir.0132
+# 			days = { 15 30 }
+# 		}
+# 	}
+# }
+
+# Arrive at the shrine
+pamir.0132 = {
+	type = activity_event
+	title = pamir.0132.t
+	desc = pamir.0132.desc
+	theme = RICE_theme_pamir_road
 	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
 	
 	left_portrait = {
 		character = root
-		animation = happiness
+		animation = personality_honorable
 	}
-	
+
 	immediate = {
 		title:c_badakhshan = { #For loc.
 			save_scope_as = badakhshan_county
@@ -4861,28 +4910,6 @@ pamir.0131 = {
 	}
 	
 	option = { # Ok
-		name = pamir.0131.a
-		trigger_event = {
-			id = pamir.0132
-			days = { 15 30 }
-		}
-	}
-}
-
-# Arrive at the shrine
-pamir.0132 = {
-	type = character_event
-	title = pamir.0132.t
-	desc = pamir.0132.desc
-	theme = RICE_theme_pamir_road
-	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
-	
-	left_portrait = {
-		character = root
-		animation = personality_honorable
-	}
-	
-	option = { # Ok
 		name = pamir.0132.a
 		trigger_event = {
 			id = pamir.0133
@@ -4893,7 +4920,7 @@ pamir.0132 = {
 
 # Enter the shrine
 pamir.0133 = {
-	type = character_event
+	type = activity_event
 	title = pamir.0133.t
 	desc = pamir.0133.desc
 	theme = RICE_theme_tibet_inner_altar
@@ -4911,7 +4938,7 @@ pamir.0133 = {
 
 # Reflections
 pamir.0134 = {
-	type = character_event
+	type = activity_event
 	title = pamir.0134.t
 	desc = pamir.0134.desc
 	theme = RICE_theme_tibet_inner_altar
@@ -4930,7 +4957,7 @@ pamir.0134 = {
 
 # Leave grafitti or not?
 pamir.0135 = {
-	type = character_event
+	type = activity_event
 	title = pamir.0135.t
 	desc = pamir.0135.desc
 	theme = RICE_theme_tibet_inner_altar
@@ -5009,6 +5036,9 @@ pamir.0135 = {
 					years = 5
 				}
 			}
+			hidden_effect = {
+				RICE_pamir_nasir_khusraw_pilgrimage_inspiration_diplo_log_entry_effect = yes
+			}
 		}
 		trigger_event = {
 			id = pamir.0136
@@ -5084,6 +5114,9 @@ pamir.0135 = {
 					modifier = RICE_pamir_nasir_khusraw_inspiration_martial
 					years = 5
 				}
+			}
+			hidden_effect = {
+				RICE_pamir_nasir_khusraw_pilgrimage_inspiration_martial_log_entry_effect = yes
 			}
 		}
 		trigger_event = {
@@ -5161,6 +5194,9 @@ pamir.0135 = {
 					years = 5
 				}
 			}
+			hidden_effect = {
+				RICE_pamir_nasir_khusraw_pilgrimage_inspiration_stewardship_log_entry_effect = yes
+			}
 		}
 		trigger_event = {
 			id = pamir.0136
@@ -5236,6 +5272,9 @@ pamir.0135 = {
 					modifier = RICE_pamir_nasir_khusraw_inspiration_intrigue
 					years = 5
 				}
+			}
+			hidden_effect = {
+				RICE_pamir_nasir_khusraw_pilgrimage_inspiration_intrigue_log_entry_effect = yes
 			}
 		}
 		trigger_event = {
@@ -5313,6 +5352,9 @@ pamir.0135 = {
 					years = 5
 				}
 			}
+			hidden_effect = {
+				RICE_pamir_nasir_khusraw_pilgrimage_inspiration_learning_log_entry_effect = yes
+			}
 		}
 		trigger_event = {
 			id = pamir.0136
@@ -5323,7 +5365,7 @@ pamir.0135 = {
 
 # Give charity or not?
 pamir.0136 = {
-	type = character_event
+	type = activity_event
 	title = pamir.0136.t
 	desc = pamir.0136.desc
 	theme = RICE_theme_pamir_road
@@ -5385,10 +5427,10 @@ pamir.0136 = {
 }
 # Return home
 pamir.0137 = {
-	type = character_event
+	type = activity_event
 	title = pamir.0137.t
 	desc = pamir.0137.desc
-	theme = friendly
+	theme = RICE_theme_pamir_valley
 	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
 	
 	right_portrait = {
@@ -5398,30 +5440,27 @@ pamir.0137 = {
 	
 	option = { # Ok
 		name = pamir.0137.a
-		add_piety = 200
-		pilgrimage_additional_reward_effect = yes
-		add_character_modifier = {
-			modifier = RICE_pamir_nasir_khusraw_pilgrimage_done
-			years = 10
+		RICE_pamir_nasir_khusraw_pilgrimage_completed_log_entry_effect = yes
+	}
+
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
 		}
 	}
-	
-	after = {
-		trigger_event = {
-			id = pamir.0138
-			days = 1
-		}
-	}	
+
 }
 
-pamir.0138 = {
-	hidden = yes	
-	immediate = {
-		scope:activity = {
-			complete_activity = yes
-		}
-	}
-}
+# pamir.0138 = {
+# 	hidden = yes	
+# 	immediate = {
+# 		scope:activity = {
+# 			complete_activity = yes
+# 		}
+# 	}
+# }
 
 
 
