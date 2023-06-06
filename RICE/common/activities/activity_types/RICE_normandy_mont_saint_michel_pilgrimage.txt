@@ -1,18 +1,20 @@
-﻿activity_RICE_tarim_basin_khotan_procession = {
+﻿activity_RICE_normandy_mont_saint_michel_pilgrimage = {
 	is_shown = {
 		highest_held_title_tier > tier_barony
 		is_landed = yes
+		religion = religion:christianity_religion
 		OR = {
-			any_held_title = {
-				tier = tier_county
-				any_county_province = {
-					geographical_region = RICE_greater_khotan_area				
+			has_title = title:c_avranches
+			title:b_avranches = {
+				squared_distance = {
+					target = root.capital_province
+					value <= squared_distance_medium
 				}
 			}
-			completely_controls = title:c_khotan
+			capital_province = {
+				geographical_region = world_europe_west_francia
+			}	
 		}
-		religion = religion:buddhism_religion
-		NOT = { has_global_variable = RICE_tarim_basin_khotan_eight_protectors_abandoned }
 		trigger_if = {
 			limit = {
 				is_ai = yes
@@ -23,32 +25,23 @@
 	}
 
 	can_start = {
-		religion = religion:buddhism_religion
-		custom_description = {
-			text = RICE_decision_khotan_procession_month_req
-			current_month <= 4
-		}
-		custom_description = {
-			text = RICE_decision_khotan_ruler_buddhist_req
-			title:c_khotan.holder = {
-				religion = religion:buddhism_religion
-			}
-		}
+		religion = religion:christianity_religion
 		OR = {
+			has_title = title:c_avranches
 			custom_description = {
-				text = RICE_greater_khotan_area_geographical_req
-				any_held_title = {
-					tier = tier_county
-					any_county_province = {
-						geographical_region = RICE_greater_khotan_area				
+				text = RICE_normandy_avranches_distance_req
+				OR = {
+					title:b_avranches = {
+						squared_distance = {
+							target = root.capital_province
+							value <= squared_distance_medium
+						}
+					}
+					capital_province = {
+						geographical_region = world_europe_west_francia
 					}
 				}
-			}
-			completely_controls = title:c_khotan
-		}
-		# Duh
-		NOT = {
-			is_at_war_with = title:c_khotan.holder
+			}	
 		}
 	}
 
@@ -144,8 +137,8 @@
 	}
 
 	province_filter = all
-	ai_province_filter = top_realm
-	wait_time_before_start = { days = 20 }
+	ai_province_filter = realm
+	wait_time_before_start = { days = 14 }
 
 	###################
 	# OPTIONS
@@ -155,114 +148,60 @@
 
 	options = {
 		#########
-		# [SPECIAL TYPE] OPTION
+		# TYPE OF VISIT
 		#########
 		special_type = {
-			RICE_tarim_basin_khotan_procession_monastery_type_none = {
-				default = yes
-				ai_will_do = {
-					value = 10
-				}
-			}
-			RICE_tarim_basin_khotan_procession_monastery_type_other = {
-				cost = {
-					gold = {
-						add = {
-							value = RICE_tarim_basin_khotan_basic_donation_cost
-							desc = RICE_tarim_basin_khotan_procession_donation_other_monasteries
-						}
-					}
-				}				
+			RICE_local_pilgrimage_type_devotion = {
+				default = yes	
 				ai_will_do = {
 					value = 10
 					if = {
 						limit = {
-							short_term_gold <= RICE_tarim_basin_khotan_basic_donation_cost
+							has_trait = zealous
 						}
-						subtract = {
-							value = 10
-						}
+						add = 5
 					}
-				}
-			}
-			RICE_tarim_basin_khotan_procession_monastery_type_mashe = {
-				cost = {
-					gold = {
-						add = {
-							value = RICE_tarim_basin_khotan_mashe_donation_cost
-							desc = RICE_tarim_basin_khotan_procession_donation_mashe_monasteries
-						}
-					}
-				}				
-				ai_will_do = {
-					value = 5
 					if = {
 						limit = {
-							short_term_gold <= RICE_tarim_basin_khotan_mashe_donation_cost
+							has_trait = diligent
 						}
-						subtract = {
-							value = 5
-						}
+						add = 5
 					}
 				}
 			}
-			RICE_tarim_basin_khotan_procession_monastery_type_gomati = {
-				cost = {
-					gold = {
-						add = {
-							value = RICE_tarim_basin_khotan_gomati_donation_cost
-							desc = RICE_tarim_basin_khotan_procession_donation_gomati_monasteries
-						}
-					}
-				}				
+			RICE_local_pilgrimage_type_observance = {		
 				ai_will_do = {
-					value = 5
+					value = 10
 					if = {
 						limit = {
-							short_term_gold <= RICE_tarim_basin_khotan_gomati_donation_cost
+							has_trait = ambitious
 						}
-						subtract = {
-							value = 5
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = humble
 						}
+						add = 5
 					}
 				}
 			}
-		}
-		#########
-		# DONATION OPTION
-		#########
-		RICE_tarim_basin_khotan_procession_donation_type = {
-			RICE_tarim_basin_khotan_procession_donation_type_small = {
-				default = yes
+			RICE_local_pilgrimage_type_vacation = {		
 				ai_will_do = {
 					value = 10
-				}
-			}
-			RICE_tarim_basin_khotan_procession_donation_type_medium = {
-				ai_will_do = {
-					value = 10
-				}
-				cost = {
-					gold = {
-						add = {
-							value = RICE_tarim_basin_khotan_basic_donation_cost
-							desc = RICE_tarim_basin_khotan_procession_donation_amount
+					if = {
+						limit = {
+							has_trait = lazy
 						}
+						add = 5
 					}
-				}	
-			}
-			RICE_tarim_basin_khotan_procession_donation_type_large = {
-				ai_will_do = {
-					value = 10
-				}
-				cost = {
-					gold = {
-						add = {
-							value = RICE_tarim_basin_khotan_mashe_donation_cost
-							desc = RICE_tarim_basin_khotan_procession_donation_amount
+					if = {
+						limit = {
+							has_trait = gregarious
 						}
+						add = 5
 					}
-				}	
+				}
 			}
 		}
 
@@ -273,7 +212,7 @@
 	###################
 
 	phases = {
-		RICE_tarim_basin_khotan_procession_procession_phase = {
+		RICE_local_pilgrimage_pilgrimage_phase = {
 			is_predefined = yes
 			
 			on_phase_active = {
@@ -281,25 +220,16 @@
 					limit = {
 						this = scope:host
 					}
-					# Typically happens during springtime
-					# May date given to ensure about a month from latest starting date
-					trigger_event = {
-						id = tarim_basin.0150
-						trigger_on_next_date = 5.15
-					}
+					scope:host = { trigger_event = normandy.0052 }
 				}		
 			}
 			on_end = {
-				# Run conclusion stuff here
-				# if = {
-				# 	limit = { this = scope:host }
-				# 	scope:activity = { progress_activity_phase_after = { weeks = 2 } }
-				# }
+
 			}
 		}
 	}
 
-	max_guest_arrival_delay_time = { days = 20 }
+	max_guest_arrival_delay_time = { months = 1 }
 
 	# desc is only shown in debug AI watch window
 	ai_will_do = {
@@ -318,19 +248,6 @@
 			add = 25
 		}
 		
-		if = {
-			limit = {
-				has_trait = lazy
-			}
-			add = -25
-		}
-		if = {
-			limit = {
-				has_trait = ambitious
-			}
-			add = 25
-		}
-		
 		#Can you actually afford this?
 		if = {
 			limit = {
@@ -338,6 +255,7 @@
 			}
 			add = -50
 		}
+
 	}
 
 	ai_check_interval = 60
@@ -360,7 +278,7 @@
 			limit = {
 				exists = barony
 			}
-			barony = title:b_khotan
+			barony = title:b_avranches
 		}
 	}
 
@@ -382,30 +300,13 @@
 		gold = {
 			value = RICE_activity_cost
 
-			add = { # Monastery donation
-				value = 0
-				add = RICE_tarim_basin_khotan_basic_donation_cost
-				add = RICE_tarim_basin_khotan_mashe_donation_cost
-				add = RICE_tarim_basin_khotan_gomati_donation_cost
-				# Divide by 4 to get the average option cost
-				divide = 4
-			}
-
-			add = { # Monastery donation size
-				value = 0
-				add = RICE_tarim_basin_khotan_basic_donation_cost
-				add = RICE_tarim_basin_khotan_mashe_donation_cost
-				# Divide by 3 to get the average option cost
-				divide = 3
-			}
-
 			# Make it a multiple of 5 (rounded up)
 			divide = 5 
 			ceiling = yes 
 			multiply = 5
 		}
 	}
-	cooldown = { days = RICE_standard_festival_cooldown_time }
+	cooldown = { days = 3650 }
 	
 	###################
 	# ACTIVITY-SPECIFIC PULSES
@@ -426,7 +327,7 @@
 	# GUEST HANDLING
 	###################
 
-	max_guests = 30
+	max_guests = 10
 
 	guest_invite_rules = {
 		rules = {
@@ -461,13 +362,13 @@
 	}
 
 	host_intents = {
-		intents = { RICE_tarim_basin_khotan_procession_veneration_intent }
-		default = RICE_tarim_basin_khotan_procession_veneration_intent
+		intents = { RICE_local_pilgrimage_worship_intent RICE_local_pilgrimage_model_intent RICE_local_pilgrimage_curiosity_intent }
+		default = RICE_local_pilgrimage_worship_intent
 	}
 
 	guest_intents = {
-		intents = { RICE_tarim_basin_khotan_procession_veneration_intent }
-		default = RICE_tarim_basin_khotan_procession_veneration_intent
+		intents = { RICE_local_pilgrimage_worship_intent RICE_local_pilgrimage_model_intent RICE_local_pilgrimage_curiosity_intent }
+		default = RICE_local_pilgrimage_worship_intent
 	}
 
 	guest_join_chance = {
@@ -482,15 +383,15 @@
 		if = {
 			limit = { this = scope:host }
 			create_character_memory = {
-				type = RICE_tarim_basin_khotan_procession_host_memory
+				type = RICE_normandy_mont_saint_michel_pilgrimage_host_memory
 			}
 			#scope:host = {
-			#	RICE_tarim_basin_khotan_procession_completed_log_entry_effect = yes
+			#	RICE_normandy_mont_saint_michel_pilgrimage_completed_log_entry_effect = yes
 			#}
 		}
 		else = {			
 			create_character_memory = {
-				type = RICE_tarim_basin_khotan_procession_guest_memory
+				type = RICE_normandy_mont_saint_michel_pilgrimage_guest_memory
 				participants = {
 					host = scope:host
 				}
@@ -535,49 +436,44 @@
 	# 	ambience = "event:/SFX/Events/Backgrounds/town_market_middleeastern_day"
 	# }
 
-	# Travel
+	#################
+	#
+	# TRAVEL
+	#
+	#################
+
 	background = {
 		trigger = {
 			NOT = { scope:host.location = scope:activity.activity_location }
-			scope:host.location = {
-				NOR = {
-					geographical_region = RICE_dunhuang_region
-					geographical_region = world_steppe_tarim
-				}
-				OR = {					
-					terrain = mountains
-					terrain = desert_mountains
-				}
-			}
+			# scope:host.location = {
+			# 	NOT = { exists = province_owner }
+			# }
 		}
-		texture = "gfx/interface/illustrations/event_scenes/RICE_wakhan_fortress.dds"
-		environment = "environment_event_desert"
-		ambience = "event:/SFX/Events/Backgrounds/mountains_day"
+		texture = "gfx/interface/illustrations/event_scenes/RICE_normandy_meadow.dds"
+		environment = "environment_event_bp1_plains"
+		ambience = "event:/SFX/Events/Backgrounds/fields_farms_day"
 	}
-	background = {
-		trigger = {
-			NOT = { scope:host.location = scope:activity.activity_location }
-			scope:host.location = {
-				NOR = {
-					geographical_region = RICE_dunhuang_region
-					geographical_region = world_steppe_tarim
-				}
-				OR = {
-					terrain = hills
-					graphical_wilderness_desert_trigger = yes
-				}
-			}
-		}
-		texture = "gfx/interface/illustrations/event_scenes/RICE_pamir_road.dds"
-		environment = "environment_event_desert"
-		ambience = "event:/SFX/Events/Backgrounds/steppe_day"
-	}
+
+	# background = {
+	# 	trigger = {
+	# 		NOT = { scope:host.location = scope:activity.activity_location }
+	# 	}
+	# 	texture = "gfx/interface/illustrations/event_scenes/RICE_northern_outpost.dds"
+	# 	environment = "environment_event_forest"
+	# 	ambience = "event:/SFX/Events/Backgrounds/castle_courtyard_western"
+	# }
+
+	#################
+	#
+	# ARRIVED
+	#
+	#################
 
 	#Fallback
 	background = {
-		texture = "gfx/interface/illustrations/event_scenes/RICE_tarim_basin_landscape.dds"
-		environment = "environment_event_desert"
-		ambience = "event:/SFX/Events/Backgrounds/desert_day"
+		texture = "gfx/interface/illustrations/event_scenes/RICE_normandy_mont_saint_michel.dds"
+		environment = "environment_event_bp1_plains"
+		ambience = "event:/SFX/Events/Backgrounds/fields_farms_day"
 	}
 
 
@@ -596,7 +492,26 @@
 			}
 
 			scripted_animation = {
-				animation = throne_room_bow_1
+				triggered_animation = {
+					trigger = {
+						scope:character = {
+							has_trait = zealous
+						}
+					}
+					animation = { personality_zealous personality_honorable }
+				}
+				triggered_animation = {
+					trigger = {
+						scope:character = {
+							OR = {
+								has_trait = cynical
+								has_trait = lazy
+							}
+						}
+					}
+					animation = { boredom eyeroll }
+				}
+				animation = personality_content
 			}
 		}
 
@@ -613,7 +528,26 @@
 			}
 
 			scripted_animation = {
-				animation = throne_room_bow_2
+				triggered_animation = {
+					trigger = {
+						scope:character = {
+							has_trait = zealous
+						}
+					}
+					animation = { personality_zealous personality_honorable }
+				}
+				triggered_animation = {
+					trigger = {
+						scope:character = {
+							OR = {
+								has_trait = cynical
+								has_trait = lazy
+							}
+						}
+					}
+					animation = { boredom eyeroll }
+				}
+				animation = personality_compassionate
 			}
 		}
 		
@@ -632,6 +566,17 @@
 			}
 
 			scripted_animation = {
+				triggered_animation = {
+					trigger = {
+						scope:character = {
+							OR = {
+								has_trait = cynical
+								has_trait = lazy
+							}
+						}
+					}
+					animation = { boredom eyeroll }
+				}
 				animation = personality_zealous
 			}
 		}

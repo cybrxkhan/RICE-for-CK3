@@ -6869,10 +6869,19 @@ normandy.0050 = {
 			desc = normandy.0050.desc.late
 		}
 	}
-	theme = friendly
-	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	theme = travel_pilgrimage
+	override_background = { reference = RICE_background_normandy_meadow }
 	
 	right_portrait = root
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_normandy_mont_saint_michel_pilgrimage
+		}
+	}
 	
 	immediate = {
 		title:b_avranches = {
@@ -6882,67 +6891,59 @@ normandy.0050 = {
 			save_scope_as = faith
 		}
 		religion:christianity_religion = { save_scope_as = christian }
-		# Stop characters from planning multiple activities at once
-		#add_character_flag = planning_an_activity
-	}
-	
-	option = { # Ok
-		name = normandy.0050.a
-		# Choose appropriate location
-		title:b_avranches.title_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_mont_saint_michel_pilgrimage
-			}	
-		}
-	}
-}
-
-# Pilgrimage begins
-normandy.0051 = {
-	type = character_event
-	title = normandy.0051.t
-	desc = {
-		desc = normandy.0051.desc
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					NOT = {
-						is_target_in_global_variable_list = {
-							name = unavailable_unique_decisions
-							target = flag:RICE_normandy_michael_statue_dedicated
-						}
-					}
-				}
-				desc = normandy.0051.desc.early
-			}
-			desc = normandy.0051.desc.late
-		}
-	}
-	theme = RICE_theme_normandy_meadow
-	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
-	
-	left_portrait = {
-		character = root
-		animation = happiness
+		play_music_cue = "mx_cue_epic_sacral_moment"
 	}
 	
 	option = { # Ok
 		name = normandy.0051.a
-		trigger_event = {
-			id = normandy.0052
-			days = { 10 20 }
-		}
-	}
-	
-	immediate = {
-		play_music_cue = "mx_cue_epic_sacral_moment"
 	}
 }
 
+# Pilgrimage begins
+# normandy.0051 = {
+# 	type = character_event
+# 	title = normandy.0051.t
+# 	desc = {
+# 		desc = normandy.0051.desc
+# 		first_valid = {
+# 			triggered_desc = {
+# 				trigger = {
+# 					NOT = {
+# 						is_target_in_global_variable_list = {
+# 							name = unavailable_unique_decisions
+# 							target = flag:RICE_normandy_michael_statue_dedicated
+# 						}
+# 					}
+# 				}
+# 				desc = normandy.0051.desc.early
+# 			}
+# 			desc = normandy.0051.desc.late
+# 		}
+# 	}
+# 	theme = RICE_theme_normandy_meadow
+# 	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+# 	left_portrait = {
+# 		character = root
+# 		animation = happiness
+# 	}
+	
+# 	option = { # Ok
+# 		name = normandy.0051.a
+# 		trigger_event = {
+# 			id = normandy.0052
+# 			days = { 10 20 }
+# 		}
+# 	}
+	
+# 	immediate = {
+# 		play_music_cue = "mx_cue_epic_sacral_moment"
+# 	}
+# }
+
 # Arrive in Mont Saint Michel
 normandy.0052 = {
-	type = character_event
+	type = activity_event
 	title = normandy.0052.t
 	desc = normandy.0052.desc
 	theme = RICE_theme_normandy_mont_saint_michel
@@ -6950,6 +6951,16 @@ normandy.0052 = {
 	right_portrait = {
 		character = root
 		animation = personality_zealous
+	}
+
+	immediate = {
+		title:b_avranches = {
+			save_scope_as = avranches
+		}
+		faith = {
+			save_scope_as = faith
+		}
+		religion:christianity_religion = { save_scope_as = christian }
 	}
 	
 	option = { # Ok
@@ -6963,7 +6974,7 @@ normandy.0052 = {
 
 # Choose what to focus on
 normandy.0053 = {
-	type = character_event
+	type = activity_event
 	title = normandy.0053.t
 	desc = {
 		desc = normandy.0053.desc
@@ -7011,6 +7022,23 @@ normandy.0053 = {
 					years = 10
 				}
 			}
+			hidden_effect = {
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_normandy_mont_saint_michel_pilgrimage_blessing_log
+						tags = { good }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = root
+						scope:host = {
+							add_character_modifier = {
+								modifier = RICE_normandy_mont_saint_michael_pilgrimage_aubert_modifier
+								years = 10
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 	
@@ -7035,6 +7063,23 @@ normandy.0053 = {
 					years = 10
 				}
 			}
+			hidden_effect = {
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_normandy_mont_saint_michel_pilgrimage_blessing_log
+						tags = { good }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = root
+						scope:host = {
+							add_character_modifier = {
+								modifier = RICE_normandy_mont_saint_michael_pilgrimage_michael_early_modifier
+								years = 10
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 	
@@ -7055,6 +7100,23 @@ normandy.0053 = {
 				add_character_modifier = {
 					modifier = RICE_normandy_mont_saint_michael_pilgrimage_virgin_mary_modifier
 					years = 10
+				}
+			}
+			hidden_effect = {
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_normandy_mont_saint_michel_pilgrimage_blessing_log
+						tags = { good }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = root
+						scope:host = {
+							add_character_modifier = {
+								modifier = RICE_normandy_mont_saint_michael_pilgrimage_virgin_mary_modifier
+								years = 10
+							}
+						}
+					}
 				}
 			}
 		}
@@ -7078,6 +7140,23 @@ normandy.0053 = {
 					years = 10
 				}
 			}
+			hidden_effect = {
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_normandy_mont_saint_michel_pilgrimage_blessing_log
+						tags = { good }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = root
+						scope:host = {
+							add_character_modifier = {
+								modifier = RICE_normandy_mont_saint_michael_pilgrimage_michael_later_modifier
+								years = 10
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -7092,7 +7171,7 @@ normandy.0053 = {
 
 # Preparing to go home
 normandy.0054 = {
-	type = character_event
+	type = activity_event
 	title = normandy.0054.t
 	desc = normandy.0054.desc
 	theme = RICE_theme_normandy_mont_saint_michel
@@ -7104,40 +7183,45 @@ normandy.0054 = {
 	
 	option = { # ok
 		name = normandy.0054.a
-		trigger_event = {
-			id = normandy.0055
-			days = { 4 12 }
+		RICE_normandy_mont_saint_michel_pilgrimage_completed_log_entry_effect = yes
+	}
+
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
 		}
 	}
 
 }
 
 # Going home
-normandy.0055 = {
-	type = character_event
-	title = normandy.0055.t
-	desc = normandy.0055.desc
-	theme = friendly
+# normandy.0055 = {
+# 	type = activity_event
+# 	title = normandy.0055.t
+# 	desc = normandy.0055.desc
+# 	theme = friendly
 	
-	right_portrait = {
-		character = root
-		animation = personality_zealous
-	}
+# 	right_portrait = {
+# 		character = root
+# 		animation = personality_zealous
+# 	}
 	
-	option = { # ok
-		name = normandy.0055.a
-		add_piety = 200
-		pilgrimage_additional_reward_effect = yes
-		add_trait = pilgrim
-	}
+# 	option = { # ok
+# 		name = normandy.0055.a
+# 		add_piety = 200
+# 		pilgrimage_additional_reward_effect = yes
+# 		add_trait = pilgrim
+# 	}
 
-	after = {
-		scope:activity = {
-			complete_activity = yes
-		}
-	}
+# 	after = {
+# 		scope:activity = {
+# 			complete_activity = yes
+# 		}
+# 	}
 
-}
+# }
 
 
 
