@@ -217,132 +217,38 @@ siwa.0013 = {
 
 # Temple visit start
 siwa.0020 = {
-	type = character_event
+	type = activity_event
 	title = siwa.0020.t
-	#title = {
-	#	first_valid = {
-	#		triggered_desc = {
-	#			trigger = { has_character_flag = RICE_visiting_hibis_temple }
-	#			desc = siwa.0020.t.hibis
-	#		}
-	#		triggered_desc = {
-	#			trigger = { has_character_flag = RICE_visiting_siwa_oracle }
-	#			desc = siwa.0020.t.siwa
-	#		}
-	#		desc = siwa.0020.t
-	#	}
-	#}
 	desc = siwa.0020.desc
-	#desc = {
-	#	first_valid = {
-	#		triggered_desc = {
-	#			trigger = { has_character_flag = RICE_visiting_hibis_temple }
-	#			desc = siwa.0020.desc.hibis
-	#		}
-	#		triggered_desc = {
-	#			trigger = { has_character_flag = RICE_visiting_siwa_oracle }
-	#			desc = siwa.0020.desc.siwa
-	#		}
-	#	}
-	#	desc = siwa.0020.desc
-	#	#triggered_desc = {
-	#	#	trigger = { has_character_flag = RICE_visiting_siwa_oracle }
-	#	#	desc = siwa.0020.desc.siwa.ending
-	#	#}
-	#}
 	theme = RICE_theme_egypt_temple_exterior
-	#override_background = { reference = sitting_room }
 	
 	right_portrait = root
 	
-	immediate = {
-		# Stop characters from planning multiple activities at once.
-		add_character_flag = {
-			flag = planning_an_activity
-			#days = 15
-		}
-		#if = {
-		#	limit = {
-		#		has_character_flag = RICE_visiting_siwa_oracle
-		#	}
-		#	# Choose appropriate location
-		#	title:b_siwa.title_province = {	
-		#		spawn_activity = {
-		#			owner = root
-		#			type = activity_oracle_amun_visit
-		#		}	
-		#	}
-		#}
-		#if = {
-		#	limit = {
-		#		has_character_flag = RICE_visiting_hibis_temple
-		#	}
-			# Choose appropriate location
-			title:b_kharga.title_province = {	
-				spawn_activity = {
-					owner = root
-					type = activity_temple_hibis_visit
-				}	
-			}
-		#}
-	}
-	
 	option = { # Temple of Hibis
 		name = siwa.0020.a
-		if = {
-			limit = {
-				has_title = title:c_kharga
-			}
-			remove_short_term_gold = 25
-		}
-		else_if = {
-			limit = {
-				OR = {
-					has_title = title:c_bahriya
-					has_title = title:c_farafra
-					has_title = title:c_dakhla
-					has_title = title:c_siwa
-				}
-			}
-			remove_short_term_gold = 50
-		}
-		else = {
-			remove_short_term_gold = 75
-		}
-		#trigger = {
-		#	has_character_flag = RICE_visiting_hibis_temple
-		#}
 	}	
-	#option = { # Oracle of Amun
-	#	name = siwa.0020.b
-	#	trigger = {
-	#		has_character_flag = RICE_visiting_siwa_oracle
-	#	}
-	#}
+
+
+	after = {		
+		trigger_event = {
+			id = siwa.0021
+			days = { 3 6 }
+		}
+	}
+	
 }
 
 
 # Choose deity to pray to
 siwa.0021 = {
-	type = character_event
+	type = activity_event
 	title = siwa.0021.t
-	#desc = siwa.0021.desc
-	desc = {
-		desc = siwa.0021.desc
-		#triggered_desc = {
-		#	trigger = { has_character_flag = RICE_visiting_siwa_oracle }
-		#	desc = siwa.0021.desc.siwa.ending
-		#}
-	}
+	desc = siwa.0021.desc
 	theme = RICE_theme_egypt_temple_interior
 	
 	left_portrait = {
 		character = root
 		animation = personality_zealous
-	}
-	
-	immediate = {
-		add_piety = 100
 	}
 
 	option = { # Amun
@@ -645,34 +551,15 @@ siwa.0021 = {
 		}
 	}
 	
-	#option = { # Oracle of Amun
-	#	name = siwa.0021.e
-	#	trigger = {
-	#		has_character_flag = RICE_visiting_siwa_oracle
-	#	}
-	#	add_character_flag = RICE_picked_oracle_of_amun_proper
-	#	add_character_flag = RICE_got_siwa_oracle_advice
-	#	custom_tooltip = siwa.0021.e.tooltip
-	#	trigger_event = siwa.0022
-	#}
-	
 	after = {
-		#if = {
-		#	limit = {
-		#		NOT = { has_character_flag = RICE_picked_oracle_of_amun_proper }
-		#	}
-		#	add_character_modifier = {
-		#		modifier = RICE_siwa_hibis_timer
-		#		years = 10
-		#	}
-		#}
-		remove_character_flag = RICE_visiting_hibis_temple
-		#remove_character_flag = RICE_visiting_siwa_oracle
-		trigger_event = {
-			id = siwa.0023
-			days = 1
+		hidden_effect = {
+			RICE_siwa_visit_hibis_completed_log_entry_effect = yes
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
 		}
-	}	
+	}
+	
 }
 
 
@@ -975,6 +862,36 @@ siwa.0024 = {
 		}
 	}	
 	
+}
+
+
+
+# Leaving for the Temple of Hibis
+siwa.0025 = {
+	type = character_event
+	title = siwa.0025.t
+	desc = siwa.0025.desc
+	theme = travel_pilgrimage
+	override_background = { reference = RICE_background_egypt_village }
+	
+	right_portrait = root
+	
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_siwa_visit_hibis
+		}
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+	
+	option = { # Ok
+		name = siwa.0025.a
+	}
 }
 
 

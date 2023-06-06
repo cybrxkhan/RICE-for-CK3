@@ -1,22 +1,13 @@
-﻿activity_RICE_chios_patmos_pilgrimage = {
+﻿activity_RICE_siwa_visit_hibis = {
 	is_shown = {
 		highest_held_title_tier > tier_barony
 		is_landed = yes
-		religion = religion:christianity_religion
-		has_global_variable = RICE_chios_patmos_pilgrimage_available
-		NOT = { has_character_flag = RICE_chios_patmos_pilgrimage }
-		OR = {
-			title:c_chios = {
-				squared_distance = {
-					target = root.capital_province
-					value <= squared_distance_medium
-				}
+		faith.religion = { is_in_family = rf_pagan }
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_greater_egypt	
 			}
-			has_title = title:c_chios
-			capital_county = title:c_rhodos
-			capital_county = title:c_caria
-			capital_county = title:c_chandax
-			capital_county = title:c_chania		
 		}
 		trigger_if = {
 			limit = {
@@ -28,23 +19,18 @@
 	}
 
 	can_start = {
-		OR = {
-			custom_description = {
-				text = "RICE_chios_near_chios_req"
-				OR = {
-					title:c_chios = {
-						squared_distance = {
-							target = root.capital_province
-							value <= squared_distance_medium
-						}
-					}
-					capital_county = title:c_rhodos
-					capital_county = title:c_caria
-					capital_county = title:c_chandax
-					capital_county = title:c_chania				
+		custom_description = {
+			text = RICE_decision_pagan_requirement
+			faith.religion = { is_in_family = rf_pagan }
+		}
+		custom_description = {
+			text = RICE_greater_egypt_geographical_req
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_greater_egypt	
 				}
 			}
-			has_title = title:c_chios
 		}
 	}
 
@@ -223,15 +209,11 @@
 					limit = {
 						this = scope:host
 					}
-					scope:host = { trigger_event = chios.0106 }
+					scope:host = { trigger_event = siwa.0020 }
 				}		
 			}
 			on_end = {
-				# Run conclusion stuff here
-				# if = {
-				# 	limit = { this = scope:host }
-				# 	scope:activity = { progress_activity_phase_after = { weeks = 2 } }
-				# }
+
 			}
 		}
 	}
@@ -285,11 +267,22 @@
 			limit = {
 				exists = barony
 			}
-			barony = title:b_samos
+			barony = title:b_kharga
 		}
 	}
 
 	max_province_icons = 1
+
+	province_score = {
+		add = 0
+		# Actual location
+		if = {
+			limit = {
+				this = title:b_kharga
+			}
+			add = 100
+		}
+	}
 	
 	cost = {
 		gold = {
@@ -390,15 +383,15 @@
 		if = {
 			limit = { this = scope:host }
 			create_character_memory = {
-				type = RICE_chios_patmos_pilgrimage_host_memory
+				type = RICE_siwa_visit_hibis_host_memory
 			}
 			#scope:host = {
-			#	RICE_chios_patmos_pilgrimage_completed_log_entry_effect = yes
+			#	RICE_siwa_visit_hibis_completed_log_entry_effect = yes
 			#}
 		}
 		else = {			
 			create_character_memory = {
-				type = RICE_chios_patmos_pilgrimage_guest_memory
+				type = RICE_siwa_visit_hibis_guest_memory
 				participants = {
 					host = scope:host
 				}
@@ -449,26 +442,25 @@
 	#
 	#################
 
-	# Patmos (sea)
 	background = {
 		trigger = {
 			NOT = { scope:host.location = scope:activity.activity_location }
 			scope:host.location = {
-				is_sea_province = yes
+				geographical_region = RICE_nile_river_valley
 			}
 		}
-		texture = "gfx/interface/illustrations/event_scenes/RICE_greek_beach.dds"
-		environment = "environment_event_desert"
-		ambience = "event:/DLC/FP1/SFX/Events/event_beached_longships"
+		texture = "gfx/interface/illustrations/event_scenes/RICE_nile_valley.dds"
+		environment = "environment_event_farms"
+		ambience = "event:/SFX/Events/Backgrounds/castle_garden_day"
 	}
-	# Patmos
+	
 	background = {
 		trigger = {
 			NOT = { scope:host.location = scope:activity.activity_location }
 		}
-		texture = "gfx/interface/illustrations/event_scenes/RICE_greek_beach.dds"
+		texture = "gfx/interface/illustrations/event_scenes/RICE_egypt_desert.dds"
 		environment = "environment_event_desert"
-		ambience = "event:/DLC/FP1/SFX/Events/event_beached_longships"
+		ambience = "event:/SFX/Events/Backgrounds/desert_day"
 	}
 
 	#################
@@ -479,9 +471,9 @@
 
 	#Fallback
 	background = {
-		texture = "gfx/interface/illustrations/event_scenes/RICE_greek_beach.dds"
-		environment = "environment_event_desert"
-		ambience = "event:/DLC/FP1/SFX/Events/event_beached_longships"
+		texture = "gfx/interface/illustrations/event_scenes/RICE_egypt_temple_exterior.dds"
+		environment = "environment_event_market_east"
+		ambience = "event:/SFX/Events/Backgrounds/town_market_middleeastern_day"
 	}
 
 
