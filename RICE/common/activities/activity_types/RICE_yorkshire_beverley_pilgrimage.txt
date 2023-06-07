@@ -1,13 +1,44 @@
-﻿activity_RICE_siwa_visit_hibis = {
+﻿activity_RICE_yorkshire_beverley_pilgrimage = {
 	is_shown = {
 		highest_held_title_tier > tier_barony
 		is_landed = yes
-		faith.religion = { is_in_family = rf_pagan }
-		any_held_title = {
-			tier = tier_county
-			any_county_province = {
-				geographical_region = RICE_greater_egypt	
+		religion = religion:christianity_religion
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_yorkshire_john_of_beverley_canonized
+		}
+		OR = {
+			has_title = title:c_lincolnshire
+			has_title = title:c_west_riding
+			has_title = title:c_east_riding
+			has_title = title:c_north_riding
+			title:c_east_riding = {
+				squared_distance = {
+					target = root.capital_province
+					value <= squared_distance_small
+				}
 			}
+			AND = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_west_germanic }
+					culture = culture:norman
+					custom_description = {
+						text = RICE_decision_norman_culture_requirement
+						culture = {
+							any_parent_culture_or_above = {
+								this = culture:norman
+							}
+						}
+					}
+				}
+				capital_province = {
+					OR = {
+						geographical_region = world_europe_west_britannia
+						geographical_region = world_europe_west_francia
+						geographical_region = custom_frisia	
+					}
+				}			
+			}		
 		}
 		trigger_if = {
 			limit = {
@@ -19,18 +50,45 @@
 	}
 
 	can_start = {
-		custom_description = {
-			text = RICE_decision_pagan_requirement
-			faith.religion = { is_in_family = rf_pagan }
-		}
-		custom_description = {
-			text = RICE_greater_egypt_geographical_req
-			any_held_title = {
-				tier = tier_county
-				any_county_province = {
-					geographical_region = RICE_greater_egypt	
+		religion = religion:christianity_religion
+		OR = {
+			custom_description = {
+				text = RICE_yorkshire_beverley_pilgrimage_distance_req
+				title:c_east_riding = {
+					squared_distance = {
+						target = root.capital_province
+						value <= squared_distance_small
+					}
 				}
 			}
+			AND = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_west_germanic }
+					culture = culture:norman
+					custom_description = {
+						text = RICE_decision_norman_culture_requirement
+						culture = {
+							any_parent_culture_or_above = {
+								this = culture:norman
+							}
+						}
+					}
+				}
+				custom_description = {
+					text = RICE_yorkshire_beverley_pilgrimage_english_culture_req
+					capital_province = {
+						OR = {
+							geographical_region = world_europe_west_britannia
+							geographical_region = world_europe_west_francia
+							geographical_region = custom_frisia	
+						}
+					}	
+				}			
+			}
+			has_title = title:c_lincolnshire
+			has_title = title:c_west_riding
+			has_title = title:c_east_riding
+			has_title = title:c_north_riding	
 		}
 	}
 
@@ -209,7 +267,7 @@
 					limit = {
 						this = scope:host
 					}
-					scope:host = { trigger_event = siwa.0020 }
+					scope:host = { trigger_event = yorkshire.0032 }
 				}		
 			}
 			on_end = {
@@ -251,15 +309,6 @@
 
 	ai_will_select_province = {
 		value = 10
-		# if = {
-		# 	limit = {
-		# 		this = scope:host.capital_province
-		# 	}
-		# 	add = {
-		# 		value = 30
-		# 		desc = "Capital Province preferred"
-		# 	}
-		# }
 	}
 	
 	is_location_valid = {
@@ -267,7 +316,7 @@
 			limit = {
 				exists = barony
 			}
-			barony = title:b_kharga
+			barony = title:b_cottingham
 		}
 	}
 
@@ -278,9 +327,9 @@
 		# Actual location
 		if = {
 			limit = {
-				county = title:c_kharga
+				county = title:c_east_riding
 			}
-			add = 50
+			add = 100
 		}
 	}
 	
@@ -383,15 +432,15 @@
 		if = {
 			limit = { this = scope:host }
 			create_character_memory = {
-				type = RICE_siwa_visit_hibis_host_memory
+				type = RICE_yorkshire_beverley_pilgrimage_host_memory
 			}
 			#scope:host = {
-			#	RICE_siwa_visit_hibis_completed_log_entry_effect = yes
+			#	RICE_yorkshire_beverley_pilgrimage_completed_log_entry_effect = yes
 			#}
 		}
 		else = {			
 			create_character_memory = {
-				type = RICE_siwa_visit_hibis_guest_memory
+				type = RICE_yorkshire_beverley_pilgrimage_guest_memory
 				participants = {
 					host = scope:host
 				}
@@ -445,22 +494,10 @@
 	background = {
 		trigger = {
 			NOT = { scope:host.location = scope:activity.activity_location }
-			scope:host.location = {
-				geographical_region = RICE_nile_river_valley
-			}
 		}
-		texture = "gfx/interface/illustrations/event_scenes/RICE_nile_valley.dds"
-		environment = "environment_event_farms"
-		ambience = "event:/SFX/Events/Backgrounds/castle_garden_day"
-	}
-	
-	background = {
-		trigger = {
-			NOT = { scope:host.location = scope:activity.activity_location }
-		}
-		texture = "gfx/interface/illustrations/event_scenes/RICE_egypt_desert.dds"
-		environment = "environment_event_desert"
-		ambience = "event:/SFX/Events/Backgrounds/desert_day"
+		texture = "gfx/interface/illustrations/event_scenes/RICE_england_scarborough_fair.dds"
+		environment = "environment_event_garden"
+		ambience = "event:/SFX/Events/Backgrounds/mountains_day"
 	}
 
 	#################
@@ -471,9 +508,9 @@
 
 	#Fallback
 	background = {
-		texture = "gfx/interface/illustrations/event_scenes/RICE_egypt_temple_exterior.dds"
-		environment = "environment_event_market_east"
-		ambience = "event:/SFX/Events/Backgrounds/town_market_middleeastern_day"
+		texture = "gfx/interface/illustrations/event_scenes/RICE_england_small_church.dds"
+		environment = "environment_event_market_west"
+		ambience = "event:/SFX/Events/Backgrounds/townmarket_western_day"
 	}
 
 

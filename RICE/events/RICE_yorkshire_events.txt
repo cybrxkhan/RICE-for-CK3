@@ -317,42 +317,18 @@ yorkshire.0030 = {
 	type = character_event
 	title = yorkshire.0030.t
 	desc = yorkshire.0030.desc
-	theme = friendly
-	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	theme = travel_pilgrimage
+	override_background = { event_background = RICE_background_england_scarborough_fair }
 	
 	right_portrait = root
-	
-	immediate = {
-		title:c_east_riding = { #For loc.
-			save_scope_as = beverley_location
-		}
-		# Stop characters from planning multiple activities at once
-		#add_character_flag = planning_an_activity
-	}
-	
-	option = { # Ok
-		name = yorkshire.0030.a
-		# Choose appropriate location - Cottingham which is the closest to the IRL location of Beverley
-		title:b_cottingham.title_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_yorkshire_pilgrimage_to_beverley
-			}	
-		}
-	}
-}
 
-# Pilgrimage begins
-yorkshire.0031 = {
-	type = character_event
-	title = yorkshire.0031.t
-	desc = yorkshire.0031.desc
-	theme = RICE_theme_england_scarborough_fair
-	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
-	
-	left_portrait = {
-		character = root
-		animation = happiness
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_yorkshire_beverley_pilgrimage
+		}
 	}
 	
 	immediate = {
@@ -364,17 +340,42 @@ yorkshire.0031 = {
 	
 	option = { # Ok
 		name = yorkshire.0031.a
-		trigger_event = {
-			id = yorkshire.0032
-			days = { 15 30 }
-		}
 	}
 }
+
+# Pilgrimage begins
+# yorkshire.0031 = {
+# 	type = character_event
+# 	title = yorkshire.0031.t
+# 	desc = yorkshire.0031.desc
+# 	theme = RICE_theme_england_scarborough_fair
+# 	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+	
+# 	left_portrait = {
+# 		character = root
+# 		animation = happiness
+# 	}
+	
+# 	immediate = {
+# 		title:c_east_riding = { #For loc.
+# 			save_scope_as = beverley_location
+# 		}
+# 		play_music_cue = "mx_cue_epic_sacral_moment"
+# 	}
+	
+# 	option = { # Ok
+# 		name = yorkshire.0031.a
+# 		trigger_event = {
+# 			id = yorkshire.0032
+# 			days = { 15 30 }
+# 		}
+# 	}
+# }
 
 
 # Arriving in Beverley
 yorkshire.0032 = {
-	type = character_event
+	type = activity_event
 	title = yorkshire.0032.t
 	desc = yorkshire.0032.desc
 	theme = RICE_theme_england_church_outside
@@ -397,7 +398,7 @@ yorkshire.0032 = {
 
 # Visiting Saint John's tomb
 yorkshire.0033 = {
-	type = character_event
+	type = activity_event
 	title = yorkshire.0033.t
 	desc = {
 		desc = yorkshire.0033.desc
@@ -440,9 +441,28 @@ yorkshire.0033 = {
 					title = yorkshire.0033.toast
 					add_character_modifier = {
 						modifier = RICE_yorkshire_saint_john_banner_inspired
-						years = 3
+						years = 5
 					}		
-				}					
+				}
+				hidden_effect = {
+					scope:activity = {
+						add_activity_log_entry = {
+							key = RICE_yorkshire_beverley_pilgrimage_banner_inspiration_log
+							tags = { good }
+							# this line below adds the entry to the Effects section of the conclusion UI
+							show_in_conclusion = yes
+							character = root
+							scope:host = {
+								show_as_tooltip = {									
+									add_character_modifier = {
+										modifier = RICE_yorkshire_saint_john_banner_inspired
+										years = 5
+									}		
+								}
+							}
+						}
+					}
+				}				
 			}
 		}
 		trigger_event = {
@@ -455,7 +475,7 @@ yorkshire.0033 = {
 
 # Visiting Saint John's tomb
 yorkshire.0034 = {
-	type = character_event
+	type = activity_event
 	title = yorkshire.0034.t
 	desc = yorkshire.0034.desc
 	theme = RICE_theme_england_church_outside
@@ -467,48 +487,67 @@ yorkshire.0034 = {
 	
 	option = { # Ok
 		name = yorkshire.0034.a
-		trigger_event = {
-			id = yorkshire.0035
-			days = { 15 30 }
+		RICE_yorkshire_beverley_pilgrimage_completed_log_entry_effect = yes
+	}
+
+	after = {
+		if = {
+			limit = { NOT = { exists = var:RICE_yorkshire_beverley_pilgrimage_count } }
+			set_variable = {
+				name = RICE_yorkshire_beverley_pilgrimage_count
+				value = 1
+			}
+		}
+		else = {
+			change_variable = {
+				name = RICE_yorkshire_beverley_pilgrimage_count
+				add = 1
+			}		
+		}
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
 		}
 	}
+
 }
 
 # Pilgrimage concludes
-yorkshire.0035 = {
-	type = character_event
-	title = yorkshire.0035.t
-	desc = yorkshire.0035.desc
-	theme = RICE_theme_england_scarborough_fair
-	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
+# yorkshire.0035 = {
+# 	type = activity_event
+# 	title = yorkshire.0035.t
+# 	desc = yorkshire.0035.desc
+# 	theme = RICE_theme_england_scarborough_fair
+# 	override_icon = { reference = "gfx/interface/icons/event_types/type_faith.dds" }
 	
-	left_portrait = {
-		character = root
-		animation = ecstasy
-	}
+# 	left_portrait = {
+# 		character = root
+# 		animation = ecstasy
+# 	}
 	
-	option = { # Ok
-		name = yorkshire.0035.a
-		add_piety = 150
-		pilgrimage_additional_reward_effect = yes
-		add_trait = pilgrim
-		trigger_event = {
-			id = yorkshire.0036
-			days = 1
-		}
-	}
-}
+# 	option = { # Ok
+# 		name = yorkshire.0035.a
+# 		add_piety = 150
+# 		pilgrimage_additional_reward_effect = yes
+# 		add_trait = pilgrim
+# 		trigger_event = {
+# 			id = yorkshire.0036
+# 			days = 1
+# 		}
+# 	}
+# }
 
 
-# Misc cleanup
-yorkshire.0036 = {
-	hidden = yes	
-	immediate = {
-		scope:activity = {
-			complete_activity = yes
-		}
-	}
-}
+# # Misc cleanup
+# yorkshire.0036 = {
+# 	hidden = yes	
+# 	immediate = {
+# 		scope:activity = {
+# 			complete_activity = yes
+# 		}
+# 	}
+# }
 
 
 ######################################################################################
@@ -863,7 +902,7 @@ yorkshire.0058 = {
 		add_prestige = 50
 		add_character_modifier = {
 			modifier = RICE_yorkshire_was_at_stamford_bull_run
-			years = 8
+			years = 5
 		}
 		stress_impact = {
 			base = minor_stress_impact_loss
