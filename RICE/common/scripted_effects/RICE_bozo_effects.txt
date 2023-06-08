@@ -111,10 +111,213 @@ RICE_bozo_move_jenne_effect = {
 	}
 }
 
-RICE_bozo_tapama_djenepo_visit_effect = {
+# RICE_bozo_tapama_djenepo_visit_effect = {
+# 	add_piety = 50
+# 	add_character_modifier = {
+# 		modifier = RICE_bozo_visited_tapama_djenepo_tomb
+# 		years = 10
+# 	}
+# }
+
+
+RICE_bozo_tapama_djenepo_tomb_generic_host_effect = {
+	if = {
+		limit = {
+			has_activity_intent = RICE_bozo_tapama_djenepo_tomb_worship_intent
+		}
+		add_piety = 150
+		stress_impact = {
+			zealous = miniscule_stress_impact_loss
+			humble = miniscule_stress_impact_loss
+		}
+	}
+	else_if = {
+		limit = {
+			has_activity_intent = RICE_bozo_tapama_djenepo_tomb_model_intent
+		}
+		add_piety = 75
+		add_prestige = 75
+		stress_impact = {
+			ambitious = miniscule_stress_impact_loss
+			diligent = miniscule_stress_impact_loss
+		}
+	}
+	else_if = {
+		limit = {
+			has_activity_intent = RICE_bozo_tapama_djenepo_tomb_model_intent
+		}
+		add_piety = 75
+		if = {
+			limit = { has_lifestyle = diplomacy_lifestyle }
+			add_diplomacy_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = martial_lifestyle }
+			add_martial_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = stewardship_lifestyle }
+			add_stewardship_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = intrigue_lifestyle }
+			add_intrigue_lifestyle_xp = minor_lifestyle_xp
+		}
+		else_if = {
+			limit = { has_lifestyle = learning_lifestyle }
+			add_learning_lifestyle_xp = minor_lifestyle_xp
+		}
+		stress_impact = {
+			humble = miniscule_stress_impact_loss
+			just = miniscule_stress_impact_loss
+		}
+	}
+	if = {
+		limit = {
+			scope:activity = {
+				has_activity_option = {
+					category = special_type
+					option = RICE_bozo_tapama_djenepo_tomb_type_devotion
+				}
+			}
+		}
+		add_piety = 100
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+		if = {
+			limit = {
+				NOT = { has_trait = pilgrim }
+			}
+			add_trait = pilgrim
+		}
+		else_if = {
+			limit = {
+				has_trait_xp = { 
+					trait = pilgrim 
+					value < 100  #TODO_CD_EP2 standardize less than MAX
+				}
+			}
+			add_trait_xp = { 
+				trait = pilgrim 
+				value = 10
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			scope:activity = {
+				has_activity_option = {
+					category = special_type
+					option = RICE_bozo_tapama_djenepo_tomb_type_observance
+				}
+			}
+		}
+		add_prestige = 100
+		add_character_modifier = {
+			modifier = RICE_misc_engaged_with_local_religious_practicecs
+			years = 10
+		}
+		# if = {
+		# 	limit = {
+		# 		scope:activity.activity_location.county = {
+		# 			county_control < full_county_control
+		# 		}
+		# 	}
+		# 	scope:activity.activity_location.county = {
+		# 		change_county_control = miniscule_county_control_gain
+		# 	}
+		# }
+		# else = {
+		# 	scope:activity.activity_location.county = {
+		# 		change_development_progress_with_overflow = 10
+		# 	}
+		# }
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+		if = {
+			limit = {
+				NOT = { has_trait = pilgrim }
+			}
+			add_trait = pilgrim
+		}
+		else_if = {
+			limit = {
+				has_trait_xp = { 
+					trait = pilgrim 
+					value < 100  #TODO_CD_EP2 standardize less than MAX
+				}
+			}
+			add_trait_xp = { 
+				trait = pilgrim 
+				value = 5
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			scope:activity = {
+				has_activity_option = {
+					category = special_type
+					option = RICE_bozo_tapama_djenepo_tomb_type_vacation
+				}
+			}
+		}
+		stress_impact = {
+			base = medium_stress_impact_loss
+		}
+		if = {
+			limit = {
+				NOT = { has_trait = pilgrim }
+			}
+			add_trait = pilgrim
+		}
+		else_if = {
+			limit = {
+				has_trait_xp = { 
+					trait = pilgrim 
+					value < 100  #TODO_CD_EP2 standardize less than MAX
+				}
+			}
+			add_trait_xp = { 
+				trait = pilgrim 
+				value = 5
+			}
+		}
+	}
+}
+
+RICE_bozo_tapama_djenepo_tomb_generic_guest_effect = {
 	add_piety = 50
-	add_character_modifier = {
-		modifier = RICE_bozo_visited_tapama_djenepo_tomb
-		years = 10
+}
+
+
+
+RICE_bozo_tapama_djenepo_tomb_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_bozo_tapama_djenepo_tomb_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				RICE_bozo_tapama_djenepo_tomb_generic_host_effect = yes
+				add_character_modifier = {
+					modifier = RICE_bozo_visited_tapama_djenepo_tomb
+					years = 10
+				}
+			}
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				RICE_bozo_tapama_djenepo_tomb_generic_guest_effect = yes
+				add_character_modifier = {
+					modifier = RICE_bozo_visited_tapama_djenepo_tomb
+					years = 10
+				}
+			}	
+		}
 	}
 }
