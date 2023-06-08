@@ -89,37 +89,36 @@ breton.0020 = {
 	type = character_event
 	title = breton.0020.t
 	desc = breton.0020.desc
-	theme = friendly
-	override_icon = {
-		reference = "gfx/interface/icons/event_types/type_diplomacy.dds"
-	}
+	theme = travel_pilgrimage
+	override_background = { event_background = RICE_background_breton_woods }
 	
 	right_portrait = root
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_breton_tro_breizh
+		}
+	}
 	
-	# immediate = {
-	# 	# Stop characters from planning multiple activities at once
-	# 	add_character_flag = planning_an_activity
-	# }
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
 	
 	option = { # Ok
 		name = breton.0020.a
-		# Choose appropriate location - Quimper, where the pilgrimage begins
-		title:b_quimper.title_province = {	
-			spawn_activity = {
-				owner = root
-				type = activity_tro_breizh
-			}	
-		}
 	}
 }
 
 # Tro Breizh Begins
 breton.0021 = {
-	type = character_event
+	type = activity_event
 	title = breton.0021.t
 	desc = breton.0021.desc
-	theme = realm
-	#override_background = { reference = RICE_theme_breton_castle }
+	theme = travel_pilgrimage
+	override_background = { reference = RICE_theme_breton_castle }
 	
 	left_portrait = {
 		character = root
@@ -133,15 +132,11 @@ breton.0021 = {
 			days = { 4 12 }
 		}
 	}
-	
-	immediate = {
-		play_music_cue = "mx_cue_epic_sacral_moment"
-	}
 }
 
 # Quimper
 breton.0022 = {
-	type = character_event
+	type = activity_event
 	title = breton.0022.t
 	desc = breton.0022.desc
 	theme = faith
@@ -163,7 +158,7 @@ breton.0022 = {
 
 # Saint-Pol-de-Léon
 breton.0023 = {
-	type = character_event
+	type = activity_event
 	title = breton.0023.t
 	desc = breton.0023.desc
 	theme = feast_activity
@@ -207,11 +202,11 @@ breton.0023 = {
 
 # Tréguier
 breton.0024 = {
-	type = character_event
+	type = activity_event
 	title = breton.0024.t
 	desc = breton.0024.desc
 	theme = realm
-	override_background = { reference = market }
+	override_background = { reference = docks }
 	
 	left_portrait = {
 		character = root
@@ -259,7 +254,7 @@ breton.0024 = {
 
 # Saint-Brieuc
 breton.0025 = {
-	type = character_event
+	type = activity_event
 	title = breton.0025.t
 	desc = breton.0025.desc
 	theme = faith
@@ -281,11 +276,11 @@ breton.0025 = {
 
 # Saint-Malo
 breton.0026 = {
-	type = character_event
+	type = activity_event
 	title = breton.0026.t
 	desc = breton.0026.desc
 	theme = intrigue
-	override_background = { reference = alley_day }
+	override_background = { reference = docks }
 	
 	right_portrait = {
 		character = root
@@ -314,7 +309,7 @@ breton.0026 = {
 
 # Dol
 breton.0027 = {
-	type = character_event
+	type = activity_event
 	title = breton.0027.t
 	desc = breton.0027.desc
 	theme = RICE_theme_breton_woods
@@ -355,7 +350,7 @@ breton.0027 = {
 
 # Vannes
 breton.0028 = {
-	type = character_event
+	type = activity_event
 	title = breton.0028.t
 	desc = breton.0028.desc
 	theme = RICE_theme_france_carnac_stones
@@ -376,7 +371,7 @@ breton.0028 = {
 
 # Tro Breizh is completed
 breton.0029 = {
-	type = character_event
+	type = activity_event
 	title = breton.0029.t
 	desc = breton.0029.desc
 	theme = faith
@@ -389,32 +384,27 @@ breton.0029 = {
 	
 	option = { # Ok
 		name = chios.0025.a
-		add_piety = 200
-		add_character_modifier = {
-			modifier = RICE_breton_recent_tro_breizh
-			years = 5
-		}
-		pilgrimage_additional_reward_effect = yes
-		add_trait = pilgrim
+		RICE_breton_tro_breizh_completed_log_entry_effect = yes
 	}
 	
 	after = {
-		trigger_event = {
-			id = breton.0030
-			days = 1
-		}
-	}	
-}
-
-breton.0030 = {
-	hidden = yes	
-	immediate = {
-		remove_character_flag = RICE_breton_doing_tro_breizh
-		scope:activity = {
-			complete_activity = yes
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
 		}
 	}
 }
+
+# breton.0030 = {
+# 	hidden = yes	
+# 	immediate = {
+# 		remove_character_flag = RICE_breton_doing_tro_breizh
+# 		scope:activity = {
+# 			complete_activity = yes
+# 		}
+# 	}
+# }
 
 ######################################################################################
 # 
