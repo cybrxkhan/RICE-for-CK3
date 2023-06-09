@@ -3,8 +3,7 @@
 # Tuareg
 # 
 # tuareg.0000-tuareg.0019			Setup events, history events, miscellaneous events and decisions
-# tuareg.0020-tuareg.0029			Wangara Events
-# tuareg.0030-tuareg.0039			Moving Jenne/Tapama Djenepo events
+# tuareg.0020-tuareg.0029			Dream Incubation/Divination
 # tuareg.0050-tuareg.0099			Generic flavor events
 # 
 # 
@@ -212,7 +211,7 @@ tuareg.0013 = {
 	}
 	
 	after = {
-		RICE_hot_springs_memory_effect = yes
+		# RICE_hot_springs_memory_effect = yes
 		set_variable = {
 			name = RICE_hot_springs_visit_special_location
 			value = flag:tafadek
@@ -234,3 +233,286 @@ tuareg.0013 = {
 		}
 	}	
 }
+
+
+
+
+######################################################################################
+# 
+# DREAM INCUBATION/DIVINATION
+# 
+# tuareg.0020-tuareg.0029
+# 
+######################################################################################
+
+
+
+
+# Prepare for the dream incubation
+tuareg.0020 = {
+	type = activity_event
+	title = tuareg.0020.t
+	desc = {
+		desc = tuareg.0020.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					culture = {
+						has_cultural_pillar = heritage_berber
+					}
+				}
+				desc = tuareg.0020.desc.culture
+			}
+			desc = tuareg.0020.desc.faith
+		}
+		desc = tuareg.0020.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_tuareg_dream_incubation_tomb_type
+							option = RICE_tuareg_dream_incubation_tomb_type_random
+						}
+					}
+				}
+				desc = tuareg.0020.desc.notable
+			}
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_tuareg_dream_incubation_tomb_type
+							option = RICE_tuareg_dream_incubation_tomb_type_ancestor
+						}
+					}
+				}
+				desc = tuareg.0020.desc.ancestor
+			}
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_tuareg_dream_incubation_tomb_type
+							option = RICE_tuareg_dream_incubation_tomb_type_saint
+						}
+					}
+				}
+				desc = tuareg.0020.desc.saint
+			}
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_tuareg_dream_incubation_type_personal
+						}
+					}
+				}
+				desc = tuareg.0020.desc.personal
+			}
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_tuareg_dream_incubation_type_political
+						}
+					}
+				}
+				desc = tuareg.0020.desc.political
+			}
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_tuareg_dream_incubation_type_communal
+						}
+					}
+				}
+				desc = tuareg.0020.desc.communal
+			}
+		}
+	}
+	theme = travel_learning
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Ok
+		name = tuareg.0020.a
+	}
+	
+	after = {		
+		trigger_event = {
+			id = tuareg.0021
+			days = { 10 20 }
+		}		
+	}
+}
+
+# Prepare for the dream incubation
+tuareg.0021 = {
+	type = activity_event
+	title = tuareg.0021.t
+	desc = tuareg.0021.desc
+	theme = faith
+	override_background = { reference = RICE_background_tuareg_desert_night }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = tuareg.0021.a
+	}
+	
+	after = {		
+		if = {
+			limit = {
+				scope:activity = {
+					OR = {
+						has_activity_option = {
+							category = RICE_tuareg_dream_incubation_tomb_type
+							option = RICE_tuareg_dream_incubation_tomb_type_ancestor
+						}
+						has_activity_option = {
+							category = RICE_tuareg_dream_incubation_tomb_type
+							option = RICE_tuareg_dream_incubation_tomb_type_saint
+						}
+					}
+				}
+			}
+			add_character_flag = {
+				flag = RICE_tuareg_dream_basic_location_bonus
+				days = 2
+			}
+		}
+		if = {
+			limit = {
+				scope:activity = {
+					activity_location = {
+						has_holding_type = city_holding
+					}					
+					has_activity_option = {
+						category = RICE_tuareg_dream_incubation_tomb_type
+						option = RICE_tuareg_dream_incubation_tomb_type_ancestor
+					}
+				}
+			}
+			add_character_flag = {
+				flag = RICE_tuareg_location_holding_bonus
+				days = 2
+			}
+		}
+		else_if = {
+			limit = {
+				scope:activity = {
+					activity_location = {
+						has_holding_type = church_holding
+					}					
+					has_activity_option = {
+						category = RICE_tuareg_dream_incubation_tomb_type
+						option = RICE_tuareg_dream_incubation_tomb_type_saint
+					}
+				}
+			}
+			add_character_flag = {
+				flag = RICE_tuareg_location_holding_bonus
+				days = 2
+			}
+		}
+		trigger_event = {
+			id = tuareg.0022
+			days = 1
+		}		
+	}
+}
+
+# Dream incubation proper
+tuareg.0022 = {
+	type = activity_event
+	title = tuareg.0022.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_tuareg_dream_success
+				}
+				desc = tuareg.0022.desc.success
+			}
+			desc = tuareg.0022.desc.failure
+		}
+	}
+	theme = travel_learning
+	
+	left_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = {
+				NOT = { has_character_flag = RICE_tuareg_dream_success }
+			}
+			animation = sadness
+		}
+		animation = personality_content
+	}
+
+	immediate = {
+		random = {
+			chance = RICE_tuareg_dream_chance_value
+			add_character_flag = {
+				flag = RICE_tuareg_dream_success
+				days = 1
+			}
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_tuareg_dream_success
+			}
+			RICE_tuareg_give_dream_modifier_effect = yes
+		}
+	}
+	
+	option = { # Ok
+		name = tuareg.0022.a
+	}
+	
+	after = {	
+		RICE_tuareg_dream_incubation_completed_log_entry_effect = yes
+		if = {
+			limit = {
+				has_character_flag = RICE_tuareg_dream_basic_location_bonus
+			}
+			remove_character_flag = RICE_tuareg_dream_basic_location_bonus
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_tuareg_location_holding_bonus
+			}
+			remove_character_flag = RICE_tuareg_location_holding_bonus
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_tuareg_dream_success
+			}
+			remove_character_flag = RICE_tuareg_dream_success
+		}
+		scope:activity = {
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}
+}
+
+
+
+
+
+
+
+

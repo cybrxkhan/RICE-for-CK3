@@ -3,20 +3,27 @@
 		highest_held_title_tier > tier_barony
 		is_landed = yes
 		OR = {
-			culture = {			
+			religion = religion:amazigh_religion
+			culture = {
 				has_cultural_pillar = heritage_berber
 			}
-			religion = religion:amazigh_religion
+		}	
+		trigger_if = {
+			limit = {
+				is_ai = yes
+			}
+			is_at_war = no
+			short_term_gold >= RICE_tuareg_dream_incubation_cost
 		}
 	}
 
 	can_start = {
 		OR = {
-			culture = {			
+			religion = religion:amazigh_religion
+			culture = {
 				has_cultural_pillar = heritage_berber
 			}
-			religion = religion:amazigh_religion
-		}
+		}	
 	}
 
 	can_start_showing_failures_only = {
@@ -68,16 +75,16 @@
 				trigger_event = activity_system.0331
 			}
 		}
-		if = { # No one shows up
-			limit = {
-				has_attending_activity_guests = no
-			}
-			scope:activity = {
-				activity_type = { save_scope_as = activity_type }
-				activity_location = { save_scope_as = location }
-			}
-			scope:host = { trigger_event = activity_system.0100 }
-		}
+		# if = { # No one shows up
+		# 	limit = {
+		# 		has_attending_activity_guests = no
+		# 	}
+		# 	scope:activity = {
+		# 		activity_type = { save_scope_as = activity_type }
+		# 		activity_location = { save_scope_as = location }
+		# 	}
+		# 	scope:host = { trigger_event = activity_system.0100 }
+		# }
 	}
 
 	on_host_death = {
@@ -88,9 +95,35 @@
 		}
 	}
 
-	province_filter = domain
-	ai_province_filter = domain
-	wait_time_before_start = { months = 1 }
+	province_filter = realm
+	ai_province_filter = realm
+
+	province_description = {
+		#Does this have an empty holding?
+		triggered_desc = {
+			trigger = {
+				has_holding = no
+			}
+			desc = activity_RICE_tuareg_dream_incubation_wilderness_province_desc
+		}
+		#Does this have a temple holding?
+		triggered_desc = {
+			trigger = {
+				has_holding_type = church_holding
+			}
+			desc = activity_RICE_tuareg_dream_incubation_temple_province_desc
+		}
+		#Does this have a city holding?
+		triggered_desc = {
+			trigger = {
+				has_holding_type = city_holding
+			}
+			desc = activity_RICE_tuareg_dream_incubation_city_province_desc
+		}
+	}
+
+	
+	wait_time_before_start = { days = 7 }
 
 	###################
 	# OPTIONS
@@ -100,46 +133,162 @@
 
 	options = {
 		#########
-		# TYPE OF DREAM INCUBATION [SPECIAL TYPE] OPTION
+		# TYPE OF VACATION
 		#########
 		special_type = {
 			RICE_tuareg_dream_incubation_type_personal = {
-				default = yes
+				default = yes	
+				ai_will_do = {
+					value = 10
+					if = {
+						limit = {
+							has_trait = gregarious
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = shy
+						}
+						add = -5
+					}
+					if = {
+						limit = {
+							has_trait = vengeful
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = forgiving
+						}
+						add = -5
+					}
+				}
 			}
 			RICE_tuareg_dream_incubation_type_political = {
+				ai_will_do = {
+					value = 10
+					if = {
+						limit = {
+							has_trait = ambitious
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = content
+						}
+						add = -5
+					}
+					if = {
+						limit = {
+							has_trait = paranoid
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = trusting
+						}
+						add = -5
+					}
+				}
 			}
-			# RICE_tuareg_dream_incubation_type_medicinal = {
-			# }
-			RICE_tuareg_dream_incubation_type_communal = {
+			RICE_tuareg_dream_incubation_type_communal = {	
+				ai_will_do = {
+					value = 10
+					if = {
+						limit = {
+							has_trait = compassionate
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = callous
+						}
+						add = -5
+					}
+					if = {
+						limit = {
+							has_trait = just
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = arbitrary
+						}
+						add = -5
+					}
+				}
 			}
 		}
 		#########
-		# TYPE OF TOMB OPTION
+		# LENGTH
 		#########
 		RICE_tuareg_dream_incubation_tomb_type = {
 			RICE_tuareg_dream_incubation_tomb_type_random = {
-				default = yes
-				# Entourage option grabbing suitable bodyguards & maybe someone from court who really likes you, + randos.
-				travel_entourage_selection = { 
-					weight = pilgrimage_entourage_base_set_weighting_value
-					max = 1
-					invite_rule_order = 1
+				default = yes	
+				ai_will_do = {
+					value = 10
+					if = {
+						limit = {
+							has_trait = diligent
+						}
+						add = 10
+					}
 				}
 			}
-			RICE_tuareg_dream_incubation_tomb_type_ancestor = {
-				# Entourage option grabbing suitable bodyguards & maybe someone from court who really likes you, + randos.
-				travel_entourage_selection = { 
-					weight = pilgrimage_entourage_base_set_weighting_value
-					max = 3
-					invite_rule_order = 1
+			RICE_tuareg_dream_incubation_tomb_type_ancestor = {	
+				cost = { 
+					gold = {
+						add = {
+							value = 0
+							desc = RICE_tuareg_dream_ancestor_tomb_desc
+							add = {
+								value = 25
+								desc = RICE_tuareg_dream_ancestor_tomb_desc
+							}
+						}
+					}
+				}	
+				ai_will_do = {
+					value = 10
+					if = {
+						limit = {
+							short_term_gold <= 25
+						}
+						subtract = {
+							value = 10
+						}
+					}
 				}
 			}
-			RICE_tuareg_dream_incubation_tomb_type_saint = {
-				# Entourage option grabbing suitable bodyguards & maybe someone from court who really likes you, + randos.
-				travel_entourage_selection = { 
-					weight = pilgrimage_entourage_base_set_weighting_value
-					max = 3
-					invite_rule_order = 1
+			RICE_tuareg_dream_incubation_tomb_type_saint = {	
+				cost = { 
+					gold = {
+						add = {
+							value = 0
+							desc = RICE_tuareg_dream_saint_tomb_desc
+							add = {
+								value = 25
+								desc = RRICE_tuareg_dream_saint_tomb_desc
+							}
+						}
+					}
+				}	
+				ai_will_do = {
+					value = 10				
+					if = {
+						limit = {
+							short_term_gold <= 25
+						}
+						subtract = {
+							value = 10
+						}
+					}
 				}
 			}
 		}
@@ -155,15 +304,33 @@
 			is_predefined = yes
 			
 			on_phase_active = {
+
+				###########################################################
+				#
+				# Trigger the appropriate intro event
+				#
+				###########################################################
+
+				if = {
+					limit = {
+						this = scope:host
+					}
+					trigger_event = tuareg.0020
+				}
+
 			}
 
 			on_end = {
 				# Run conclusion stuff here
+				# if = {
+				# 	limit = { this = scope:host }
+				# 	scope:activity = { progress_activity_phase_after = { weeks = 2 } }
+				# }
 			}
 		}
 	}
 
-	max_guest_arrival_delay_time = { months = 1 }
+	max_guest_arrival_delay_time = { days = 3 }
 
 	# desc is only shown in debug AI watch window
 	ai_will_do = {
@@ -172,7 +339,13 @@
 		# How much do you care about your faith not liking this?
 		if = {
 			limit = {
-				has_trait = cynical
+				has_trait = diligent
+			}
+			add = 25
+		}
+		if = {
+			limit = {
+				has_trait = lazy
 			}
 			add = -25
 		}
@@ -182,11 +355,17 @@
 			}
 			add = 25
 		}
+		if = {
+			limit = {
+				has_trait = cynical
+			}
+			add = -25
+		}
 		
 		#Can you actually afford this?
 		if = {
 			limit = {
-				NOT = { can_make_expensive_purchase_trigger = { PRICE = activity_minor_gold_value } }
+				NOT = { can_make_expensive_purchase_trigger = { PRICE = RICE_tuareg_dream_incubation_cost } }
 			}
 			add = -50
 		}
@@ -196,32 +375,63 @@
 
 	ai_will_select_province = {
 		value = 10
-		if = {
-			limit = {
-				this = scope:host.capital_province
-			}
-			add = {
-				value = 30
-				desc = "Capital Province preferred"
-			}
+		add = {
+			value = scope:score # Derived from province_score
+			multiply = 5
 		}
+		# if = {
+		# 	limit = {
+		# 		this = scope:host.capital_province
+		# 	}
+		# 	add = {
+		# 		value = 20
+		# 		desc = "Capital Province preferred"
+		# 	}
+		# }
 	}
 	
+	# Anywhere
 	is_location_valid = {
-		has_holding = yes
+
 	}
 
-	province_filter = domain
-	ai_province_filter = domain
-
 	max_province_icons = 3
+
+	province_score = {
+		add = 0
+		if = {
+			limit = {
+				has_holding = no
+			}
+			add = 25
+		}
+		if = {
+			limit = {
+				has_holding_type = church_holding
+			}
+			add = 50
+		}
+		if = {
+			limit = {
+				has_holding_type = city_holding
+			}
+			add = 50
+		}
+		# Capital
+		# if = {
+		# 	limit = {
+		# 		this = scope:host.capital_province
+		# 	}
+		# 	add = 25
+		# }
+	}
 	
 	cost = {
 		gold = {
 			add = {
 				value = 0
 				add = {
-					value = activity_minor_gold_value
+					value = RICE_tuareg_dream_incubation_cost
 					desc = hunt_base_cost
 				}
 			}
@@ -230,12 +440,20 @@
 
 	ui_predicted_cost = {
 		gold = {
-			# Base Cost
-			value = activity_minor_gold_value
+			value = RICE_tuareg_dream_incubation_cost
+
+			add = { # Option to do at a tomb of a saint/ancestor
+				value = 0
+				add = 25
+				# Divide by 2 to get the average option cost
+				divide = 2
+			}
+
 			# Make it a multiple of 5 (rounded up)
 			divide = 5 
 			ceiling = yes 
 			multiply = 5
+
 		}
 	}
 	cooldown = { days = 3650 }
@@ -248,29 +466,82 @@
 
 	}
 
+	on_start = {		
+		# if = {
+		# 	limit = {
+		# 		this = scope:host
+		# 	}
+		# 	# Trigger the appropriate hot springs event
+		# 	if = {
+		# 		limit = {
+		# 			has_trait = shy
+		# 		}
+		# 		trigger_event = RICEmisc.8888
+		# 	}
+		# 	else = {
+		# 		trigger_event = RICEmisc.8888
+		# 	}
+		# }
+	}
+
+	# Once you arrive, trigger the relevant event(s)
+	on_leave_travel_state = {
+	}
+
+	on_enter_passive_state = {
+
+	}
+
 	###################
 	# GUEST HANDLING
 	###################
+	
+	allow_zero_guest_invites = yes
 
-	max_guests = 3
+	max_guests = 1
 
-	guest_invite_rules = {
-		defaults = {
-			1 = activity_invite_rule_courtiers
-			1 = activity_invite_rule_vassals
-			2 = activity_invite_rule_guests
-			
-			# MP 
-			6 = activity_invite_mp
-		}
-	}
+	#allow_zero_guest_invites = yes
 
-	can_be_activity_guest = {
-		faith.religion = scope:host.faith.religion
-		is_adult = yes
-		is_available = yes
-		in_diplomatic_range = scope:host
-	}
+	# guest_invite_rules = {
+	# 	rules = {
+	# 		# Relations.
+	# 		2 = activity_invite_rule_lovers
+	# 		2 = activity_invite_rule_rivals_if_appropriate
+
+	# 		# Family.
+	# 		3 = activity_invite_rule_extended_family
+
+	# 		# Magnates.
+	# 		#4 = activity_invite_neighbouring_rulers
+
+	# 		# Misc landless.
+	# 		5 = activity_invite_rule_knights
+
+	# 		# MP 
+	# 		6 = activity_invite_mp
+	# 	}
+	# 	defaults = {
+	# 		1 = activity_invite_rule_friends
+	# 		1 = activity_invite_rule_close_family
+	# 		#1 = activity_invite_rule_liege
+	# 		#1 = activity_invite_rule_vassals
+	# 		#2 = activity_invite_rule_fellow_vassals
+	# 		3 = activity_invite_rule_courtiers
+	# 		4 = activity_invite_rule_guests
+	# 		1 = activity_invite_spouses
+	# 	}
+	# }
+
+	# can_be_activity_guest = {
+	# 	is_adult = yes
+	# 	is_available = yes
+	# 	in_diplomatic_range = scope:host
+	# 	is_landed = no
+	# 	# NOT = {
+	# 	# 	is_primary_heir_of = scope:actor
+	# 	# }
+	# }
+
 
 	host_intents = {
 		intents = { RICE_insight_understanding RICE_ritual_intent RICE_curiosity_intent }
@@ -282,20 +553,23 @@
 		default = RICE_insight_understanding
 	}
 
-	guest_join_chance = {
-		base = 10
-		base_activity_modifier = yes
+	# guest_join_chance = {
+	# 	base = 0
+	# 	base_activity_modifier = yes
 
-		# Scripted Modifiers
-		activity_guest_shared_ai_accept_modifier = yes
-	}
+	# 	# Scripted Modifiers
+	# 	activity_guest_shared_ai_accept_modifier = yes
+	# }
 	
 	on_complete = {
 		if = {
 			limit = { this = scope:host }
-			scope:host = {
-				add_piety = 100
+			create_character_memory = {
+				type = RICE_tuareg_dream_incubation_host_memory
 			}
+			#scope:host = {
+			#	RICE_tuareg_dream_incubation_completed_log_entry_effect = yes
+			#}
 		}
 	}
 
@@ -327,10 +601,18 @@
 	# Travel
 	background = {
 		trigger = {
+			NOT = { scope:host.location = scope:activity.activity_location }
+			scope:host.location = {
+				NOT = { exists = province_owner }
+			}
 			activity_location = {
 				OR = {
 					geographical_region = world_middle_east
 					geographical_region = world_africa
+					geographical_region = world_europe_west_iberia
+					geographical_region = world_asia_minor
+					geographical_region = world_india
+					geographical_region = world_steppe
 				}
 			}
 		}
@@ -340,10 +622,18 @@
 	}
 	background = {
 		trigger = {
+			NOT = { scope:host.location = scope:activity.activity_location }
+			scope:host.location = {
+				exists = province_owner
+			}
 			activity_location = {
 				OR = {
 					geographical_region = world_middle_east
 					geographical_region = world_africa
+					geographical_region = world_europe_west_iberia
+					geographical_region = world_asia_minor
+					geographical_region = world_india
+					geographical_region = world_steppe
 				}
 			}
 		}
@@ -357,19 +647,23 @@
 				OR = {
 					geographical_region = world_middle_east
 					geographical_region = world_africa
+					geographical_region = world_europe_west_iberia
+					geographical_region = world_asia_minor
+					geographical_region = world_india
+					geographical_region = world_steppe
 				}
 			}
 		}
-		texture = "gfx/interface/illustrations/event_scenes/RICE_desert_night.dds"
-		environment = "environment_event_alley"
-		ambience = "event:/SFX/Events/Backgrounds/desert_day"
+		texture = "gfx/interface/illustrations/event_scenes/RICE_sahel_manor.dds"
+		environment = "environment_event_desert"
+		ambience = "event:/SFX/Events/Backgrounds/fields_farms_day"
 	}
 
 	#Fallback
 	background = {
-		texture = "gfx/interface/illustrations/event_scenes/temple.dds"
-		environment = "environment_event_temple"
-		ambience = "event:/SFX/Events/Backgrounds/temple_generic"
+		texture = "gfx/interface/illustrations/event_scenes/RICE_desert_night.dds"
+		environment = "environment_event_alley"
+		ambience = "event:/SFX/Events/Backgrounds/desert_day"
 	}
 
 
@@ -388,7 +682,7 @@
 			}
 
 			scripted_animation = {
-				animation = idle
+				animation = personality_bold
 			}
 		}
 
@@ -405,7 +699,7 @@
 			}
 
 			scripted_animation = {
-				animation = idle
+				animation = personality_honorable
 			}
 		}
 		
@@ -424,7 +718,7 @@
 			}
 
 			scripted_animation = {
-				animation = idle
+				animation = personality_zealous
 			}
 		}
 		
@@ -445,7 +739,7 @@
 			}
 
 			scripted_animation = {
-				animation = idle
+				animation = jockey_walk
 			}
 		}
 
@@ -455,14 +749,16 @@
 			effect = {
 				every_attending_character = {
 					limit = {
-						scope:host.location = scope:activity.activity_location
+						NOT = {
+							scope:host.location = scope:activity.activity_location
+						}
 					}
 					add_to_list = characters
 				}
 			}
 
 			scripted_animation = {
-				animation = idle
+				animation = jockey_walk
 			}
 		}
 
@@ -472,14 +768,16 @@
 			effect = {
 				every_attending_character = {
 					limit = {
-						scope:host.location = scope:activity.activity_location
+						NOT = {
+							scope:host.location = scope:activity.activity_location
+						}
 					}
 					add_to_list = characters
 				}
 			}
 
 			scripted_animation = {
-				animation = idle
+				animation = jockey_walk
 			}
 		}
 	}
