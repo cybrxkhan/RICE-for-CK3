@@ -1,0 +1,154 @@
+﻿
+
+RICE_trans_saharan_merchants_option = {
+	is_shown = {
+		is_ruler = yes
+	}
+
+	is_valid = {
+		# Putting these here so the player knows why this option is available to them
+		custom_description = {
+			text = RICE_trans_saharan_geographical_req
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_trans_saharan_trade_region		
+				}
+			}
+		}
+	}
+
+	cost = {
+		gold = {
+			add = {
+				value = high_travel_option_cost
+				desc = RICE_trans_saharan_merchants_option
+			}
+		}
+	}
+
+	travel_modifier = {
+		travel_speed = -10
+		travel_safety = 10
+	}
+
+	
+	on_applied_effect = {
+		hidden_effect = {
+			if = { # No reason to steal too many Mercenaries away for travels; players and AI kings+ only
+				limit = {
+					OR = {
+						is_ai = no
+						highest_held_title_tier >= tier_kingdom
+					}
+				}
+				# Try to find a pool character who is already a Silk Road merchant
+				if = {
+					limit = {
+						exists = root.capital_province
+						any_pool_character = {
+							province = root.capital_province
+							is_available_ai_adult = yes
+							has_no_particular_noble_roots_trigger = yes
+							age >= 20
+							age <= 60
+							is_married = no
+							has_trait = RICE_trans_saharan_merchant
+						}
+					}
+					random_pool_character = {
+						province = root.capital_province
+						limit = {
+							is_available_ai_adult = yes
+							has_no_particular_noble_roots_trigger = yes
+							age >= 20
+							age <= 60
+							is_married = no
+							has_trait = RICE_trans_saharan_merchant
+						}
+						save_scope_as = RICE_merchant
+					}
+				}
+				# Try to find a pool character with high enough stewardship
+				else_if = {
+					limit = {
+						exists = root.capital_province
+						any_pool_character = {
+							province = root.capital_province
+							is_available_ai_adult = yes
+							has_no_particular_noble_roots_trigger = yes
+							age >= 20
+							age <= 60
+							is_married = no
+							stewardship >= decent_skill_rating
+						}
+					}
+					random_pool_character = {
+						province = root.capital_province
+						limit = {
+							is_available_ai_adult = yes
+							has_no_particular_noble_roots_trigger = yes
+							age >= 20
+							age <= 60
+							is_married = no
+							stewardship >= decent_skill_rating
+						}
+						save_scope_as = RICE_merchant
+					}
+				}
+				# else create a character
+				else = {
+					create_character = {
+						location = root.location
+						template = RICE_trans_saharan_merchant_template
+						save_scope_as = RICE_merchant
+					}
+				}
+				if = {
+					limit = {
+						exists = scope:RICE_merchant
+					}
+					scope:RICE_merchant = {
+						add_gold = root.high_travel_option_cost
+						set_variable = {
+							name = RICE_african_merchant_temp
+							value = current_date
+							days = 1
+						}
+						move_to_pool = yes
+					}
+					if = {
+						limit = {
+							scope:RICE_merchant = {
+								NOT = { has_trait = RICE_trans_saharan_merchant }
+							}
+						}
+						scope:RICE_merchant = {
+							add_trait = RICE_trans_saharan_merchant
+						}
+					}
+					send_interface_toast = {
+						title = RICE_trans_saharan_merchant_recruited_tt
+						left_icon = scope:RICE_merchant
+						root.current_travel_plan ?= {
+							add_companion = scope:RICE_merchant
+						}
+					}
+				}
+			}
+		}
+		custom_tooltip = RICE_african_merchants_option_effect_1
+	}
+
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				travel_plan_owner.gold >= travel_plan_owner.minor_gold_value
+			}
+			add = {
+				value = 50
+			}
+		}
+	}
+}

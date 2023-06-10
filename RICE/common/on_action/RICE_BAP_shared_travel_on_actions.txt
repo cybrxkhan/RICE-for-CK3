@@ -1,0 +1,67 @@
+﻿# Arrival in any province during travel
+on_travel_plan_movement = {
+	on_actions = {
+		delay = { days = { 2 28 } }
+		RICE_BAP_shared_travel_event_tombola		
+	}
+
+}
+
+
+RICE_BAP_shared_travel_event_tombola = {
+	effect = {
+		current_travel_plan = {
+			if = {
+				limit = {
+					has_travel_option = RICE_trans_saharan_merchants_option
+					any_entourage_character = {
+						count >= 1 
+						NOT = { this = root }
+						has_trait = RICE_trans_saharan_merchant
+					}
+					current_location = { is_sea_province = no }
+				}
+				root = {				
+					random = {
+						chance = RICE_african_merchant_travel_option_event_chance
+						trigger_event = sus.0001
+					}
+				}
+			}
+		}
+	}
+}
+
+on_travel_plan_start = {
+	trigger = { is_ruler = yes }
+	on_actions = {
+		on_travel_plan_start_RICE_BAP_shared
+	}
+}
+
+
+on_travel_plan_start_RICE = {
+	effect = {
+		if = {
+			limit = {
+				current_travel_plan = {
+					any_entourage_character = {
+						exists = var:RICE_african_merchant_temp
+						is_courtier_of = root
+					}
+				}
+			}
+			current_travel_plan = {
+				every_entourage_character = {
+					limit = {
+						exists = var:RICE_african_merchant_temp
+						is_courtier_of = root
+					}
+					move_to_pool = yes
+				}
+			}
+		}
+	}
+	# events = {
+	# }
+}

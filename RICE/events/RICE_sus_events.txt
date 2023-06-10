@@ -20,6 +20,91 @@ namespace = sus
 ######################################################################################
 
 
+# Encounter Trans-Saharan merchants
+sus.0001 = {
+	type = character_event
+	title = sus.0001.t
+	desc = sus.0001.desc
+	theme = travel_stewardship
+	
+	left_portrait = root
+	right_portrait = scope:merchant
+
+	trigger = {
+		current_travel_plan = {
+			any_entourage_character = {
+				count >= 1 
+				NOT = { this = root }
+				has_trait = RICE_trans_saharan_merchant
+			}
+		}
+	}
+
+	immediate = {
+		current_travel_plan = {
+			random_entourage_character = {
+				limit = {
+					NOT = { this = root }
+					has_trait = RICE_trans_saharan_merchant
+				}
+				save_scope_as = merchant
+			}
+		}		
+	}
+
+	option = { # OK
+		name = sus.0001.a
+		add_gold = { 10 50 }
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+		}
+	}
+
+	option = { # OK
+		name = sus.0001.b
+		duel = {
+			skills = { diplomacy stewardship }
+			value = decent_skill_rating
+			# Success.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 2.5
+					min = -49
+				}
+				custom_tooltip = sus.0001.b.success
+				hidden_effect = {
+					send_interface_toast = {
+						type = event_toast_effect_good
+						title = sus.0001.b.success
+						left_icon = root
+						add_gold = { 50 150 }
+					}					
+				}
+			}
+			# Failure.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -2.5
+					min = -49
+				}
+				custom_tooltip = sus.0001.b.failure
+				hidden_effect = {
+					send_interface_toast = {
+						type = event_toast_effect_bad
+						title = sus.0001.b.failure
+						left_icon = root
+						add_prestige = -50
+					}					
+				}
+			}
+		}
+		
+	}
+
+}
+
 
 
 ######################################################################################
@@ -500,7 +585,7 @@ sus.0030 = {
 			}
 			create_character = {
 				location = root.location
-				template = trans_saharan_merchant_template
+				template = RICE_trans_saharan_merchant_template
 				save_scope_as = RICE_trans_saharan_merchant_spawn
 				culture = scope:home_county.culture
 				faith = scope:home_county.faith
@@ -519,7 +604,7 @@ sus.0030 = {
 					10 = {
 						create_character = {
 							location = root.location
-							template = trans_saharan_merchant_template
+							template = RICE_trans_saharan_merchant_template
 							save_scope_as = RICE_trans_saharan_merchant_spawn
 							culture = culture:kemitic
 							faith = faith:nicene
@@ -528,7 +613,7 @@ sus.0030 = {
 					10 = {
 						create_character = {
 							location = root.location
-							template = trans_saharan_merchant_template
+							template = RICE_trans_saharan_merchant_template
 							save_scope_as = RICE_trans_saharan_merchant_spawn
 							culture = culture:aegyptian
 							faith = faith:nicene
@@ -537,7 +622,7 @@ sus.0030 = {
 					10 = {
 						create_character = {
 							location = root.location
-							template = trans_saharan_merchant_template
+							template = RICE_trans_saharan_merchant_template
 							save_scope_as = RICE_trans_saharan_merchant_spawn
 							culture = culture:bedouin
 							faith = faith:arabic_pagan
@@ -546,7 +631,7 @@ sus.0030 = {
 					10 = {
 						create_character = {
 							location = root.location
-							template = trans_saharan_merchant_template
+							template = RICE_trans_saharan_merchant_template
 							save_scope_as = RICE_trans_saharan_merchant_spawn
 							culture = culture:aramean
 							faith = faith:nicene
@@ -565,7 +650,7 @@ sus.0030 = {
 					15 = {
 						create_character = {
 							location = root.location
-							template = trans_saharan_merchant_template
+							template = RICE_trans_saharan_merchant_template
 							save_scope_as = RICE_trans_saharan_merchant_spawn
 							culture = culture:maghrebi
 							faith = faith:ashari
@@ -574,7 +659,7 @@ sus.0030 = {
 					5 = {
 						create_character = {
 							location = root.location
-							template = trans_saharan_merchant_template
+							template = RICE_trans_saharan_merchant_template
 							save_scope_as = RICE_trans_saharan_merchant_spawn
 							culture = culture:maghrebi
 							faith = faith:ibadi
@@ -583,7 +668,7 @@ sus.0030 = {
 					20 = {
 						create_character = {
 							location = root.location
-							template = trans_saharan_merchant_template
+							template = RICE_trans_saharan_merchant_template
 							save_scope_as = RICE_trans_saharan_merchant_spawn
 							culture = culture:andalusian
 							faith = faith:muwalladi
@@ -592,7 +677,7 @@ sus.0030 = {
 					5 = {
 						create_character = {
 							location = root.location
-							template = trans_saharan_merchant_template
+							template = RICE_trans_saharan_merchant_template
 							save_scope_as = RICE_trans_saharan_merchant_spawn
 							culture = culture:egyptian
 							faith = faith:coptic
@@ -601,7 +686,7 @@ sus.0030 = {
 					15 = {
 						create_character = {
 							location = root.location
-							template = trans_saharan_merchant_template
+							template = RICE_trans_saharan_merchant_template
 							save_scope_as = RICE_trans_saharan_merchant_spawn
 							culture = culture:egyptian
 							faith = faith:ismaili
@@ -610,7 +695,7 @@ sus.0030 = {
 					20 = {
 						create_character = {
 							location = root.location
-							template = trans_saharan_merchant_template
+							template = RICE_trans_saharan_merchant_template
 							save_scope_as = RICE_trans_saharan_merchant_spawn
 							culture = culture:levantine
 							faith = faith:ashari
@@ -619,7 +704,7 @@ sus.0030 = {
 					20 = {
 						create_character = {
 							location = root.location
-							template = trans_saharan_merchant_template
+							template = RICE_trans_saharan_merchant_template
 							save_scope_as = RICE_trans_saharan_merchant_spawn
 							culture = culture:bedouin
 							faith = faith:ashari
@@ -628,7 +713,7 @@ sus.0030 = {
 					20 = {
 						create_character = {
 							location = root.location
-							template = trans_saharan_merchant_template
+							template = RICE_trans_saharan_merchant_template
 							save_scope_as = RICE_trans_saharan_merchant_spawn
 							culture = culture:yemeni
 							faith = faith:ashari
@@ -863,7 +948,7 @@ sus.0031 = {
 			}
 			create_character = {
 				location = root.location
-				template = trans_saharan_merchant_template
+				template = RICE_trans_saharan_merchant_template
 				save_scope_as = RICE_trans_saharan_merchant_spawn
 				culture = scope:home_county.culture
 				faith = scope:home_county.faith
@@ -882,7 +967,7 @@ sus.0031 = {
 				10 = {
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:malinke
 						faith = faith:west_african_pagan
@@ -894,7 +979,7 @@ sus.0031 = {
 					}
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:malinke
 						faith = faith:ashari
@@ -903,7 +988,7 @@ sus.0031 = {
 				10 = {
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:soninke
 						faith = faith:west_african_bidu_pagan
@@ -915,7 +1000,7 @@ sus.0031 = {
 					}
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:soninke
 						faith = faith:ashari
@@ -924,7 +1009,7 @@ sus.0031 = {
 				20 = {
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:serer
 						faith = faith:west_african_roog_pagan
@@ -933,7 +1018,7 @@ sus.0031 = {
 				20 = {
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:wolof
 						faith = faith:west_african_roog_pagan
@@ -942,7 +1027,7 @@ sus.0031 = {
 				15 = {
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:hausa
 						faith = faith:west_african_bori_pagan
@@ -954,7 +1039,7 @@ sus.0031 = {
 					}
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:hausa
 						faith = faith:ashari
@@ -963,7 +1048,7 @@ sus.0031 = {
 				15 = {
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:kanuri
 						faith = faith:west_african_bori_pagan
@@ -975,7 +1060,7 @@ sus.0031 = {
 					}
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:kanuri
 						faith = faith:ashari
@@ -1207,7 +1292,7 @@ sus.0032 = {
 			}
 			create_character = {
 				location = root.location
-				template = trans_saharan_merchant_template
+				template = RICE_trans_saharan_merchant_template
 				save_scope_as = RICE_trans_saharan_merchant_spawn
 				culture = scope:home_county.culture
 				faith = scope:home_county.faith
@@ -1225,7 +1310,7 @@ sus.0032 = {
 					}
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:butr
 						faith = faith:ashari
@@ -1237,7 +1322,7 @@ sus.0032 = {
 					}
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:butr
 						faith = faith:ibadi
@@ -1249,7 +1334,7 @@ sus.0032 = {
 					}
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:baranis
 						faith = faith:ashari
@@ -1261,7 +1346,7 @@ sus.0032 = {
 					}
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:baranis
 						faith = faith:ibadi
@@ -1273,7 +1358,7 @@ sus.0032 = {
 					}
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:garamantian
 						faith = faith:amazigh_pagan
@@ -1285,7 +1370,7 @@ sus.0032 = {
 					}
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:maurian
 						faith = faith:amazigh_pagan
@@ -1297,7 +1382,7 @@ sus.0032 = {
 					}
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:gaetulian
 						faith = faith:amazigh_pagan
@@ -1526,7 +1611,7 @@ sus.0033 = {
 			}
 			create_character = {
 				location = root.location
-				template = trans_saharan_merchant_template
+				template = RICE_trans_saharan_merchant_template
 				save_scope_as = RICE_trans_saharan_merchant_spawn
 				culture = scope:home_county.culture
 				faith = scope:home_county.faith
@@ -1542,7 +1627,7 @@ sus.0033 = {
 				15 = {
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:ashkenazi
 						faith = faith:rabbinism
@@ -1551,7 +1636,7 @@ sus.0033 = {
 				5 = {
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:ashkenazi
 						faith = faith:karaism
@@ -1560,7 +1645,7 @@ sus.0033 = {
 				15 = {
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:sephardi
 						faith = faith:rabbinism
@@ -1569,7 +1654,7 @@ sus.0033 = {
 				5 = {
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:sephardi
 						faith = faith:karaism
@@ -1578,7 +1663,7 @@ sus.0033 = {
 				45 = {
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:mustaarabi
 						faith = faith:rabbinism
@@ -1587,7 +1672,7 @@ sus.0033 = {
 				15 = {
 					create_character = {
 						location = root.location
-						template = trans_saharan_merchant_template
+						template = RICE_trans_saharan_merchant_template
 						save_scope_as = RICE_trans_saharan_merchant_spawn
 						culture = culture:mustaarabi
 						faith = faith:karaism
