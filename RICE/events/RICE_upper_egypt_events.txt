@@ -979,98 +979,29 @@ upper_egypt.0025 = {
 upper_egypt.0040 = {
 	type = character_event
 	title = upper_egypt.0040.t
-	desc = {
-		desc = upper_egypt.0040.desc.intro
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					var:RICE_upper_egypt_aswan_temple_type = flag:philae
-				}
-				desc = upper_egypt.0040.desc.philae
-			}		
-			triggered_desc = {
-				trigger = {
-					var:RICE_upper_egypt_aswan_temple_type = flag:elephantine
-				}
-				desc = upper_egypt.0040.desc.elephantine
-			}		
-			triggered_desc = {
-				trigger = {
-					var:RICE_upper_egypt_aswan_temple_type = flag:kalabsha
-				}
-				desc = upper_egypt.0040.desc.kalabsha
-			}		
-		}
-	}
-	theme = RICE_theme_egypt_temple_exterior
+	desc = upper_egypt.0040.desc.intro
+	theme = travel_pilgrimage
+	override_background = { reference = RICE_background_egypt_village }
 	
-	left_portrait = {
-		character = root
-		animation = personality_zealous
+	left_portrait = root
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity	
+		involved_activity = {
+			has_activity_type = activity_RICE_upper_egypt_visit_aswan_temples
+		}
 	}
 	
 	option = { # Ok
 		name = upper_egypt.0040.a
-		if = {
-			limit = {
-				var:RICE_upper_egypt_aswan_temple_type = flag:philae
-			}
-			# Choose appropriate location
-			title:b_aswan.title_province = {	
-				spawn_activity = {
-					owner = root
-					type = activity_upper_egypt_pray_at_philae
-				}	
-			}
-			if = {
-				limit = {
-					has_game_rule = RICE_historical_context_on
-				}
-				custom_tooltip = RICE_upper_egypt_temple_of_philae_context_tooltip
-			}
-		}
-		if = {
-			limit = {
-				var:RICE_upper_egypt_aswan_temple_type = flag:elephantine
-			}
-			# Choose appropriate location
-			title:b_aswan.title_province = {	
-				spawn_activity = {
-					owner = root
-					type = activity_upper_egypt_pray_at_elephantine
-				}	
-			}
-			if = {
-				limit = {
-					has_game_rule = RICE_historical_context_on
-				}
-				custom_tooltip = RICE_upper_egypt_temple_of_elephantine_context_tooltip
-			}
-		}
-		if = {
-			limit = {
-				var:RICE_upper_egypt_aswan_temple_type = flag:kalabsha
-			}
-			# Choose appropriate location
-			title:b_kalabsha.title_province = {	
-				spawn_activity = {
-					owner = root
-					type = activity_upper_egypt_pray_at_kalabsha
-				}	
-			}
-			if = {
-				limit = {
-					has_game_rule = RICE_historical_context_on
-				}
-				custom_tooltip = RICE_upper_egypt_temple_of_kalabsha_context_tooltip
-			}
-		}
 	}
 }
 
 # Worship at Philae
 upper_egypt.0041 = {
-	type = character_event
+	type = activity_event
 	title = upper_egypt.0041.t
 	desc = upper_egypt.0041.desc
 	theme = RICE_theme_egypt_temple_interior
@@ -1082,7 +1013,7 @@ upper_egypt.0041 = {
 
 	immediate = {
 		title:c_aswan = { save_scope_as = aswan_county }
-		RICE_upper_egypt_aswan_temple_visit_effect = yes
+		# RICE_upper_egypt_aswan_temple_visit_effect = yes
 	}
 	
 	option = { # Isis
@@ -1362,8 +1293,11 @@ upper_egypt.0041 = {
 	}
 
 	after = {
-		scope:activity = {
-			complete_activity = yes
+		RICE_upper_egypt_visit_aswan_temples_completed_log_entry_effect = yes
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
 		}
 	}	
 
@@ -1371,7 +1305,7 @@ upper_egypt.0041 = {
 
 # Worship at Elephantine
 upper_egypt.0042 = {
-	type = character_event
+	type = activity_event
 	title = upper_egypt.0042.t
 	desc = upper_egypt.0042.desc
 	theme = RICE_theme_egypt_temple_interior
@@ -1383,7 +1317,7 @@ upper_egypt.0042 = {
 
 	immediate = {
 		title:c_aswan = { save_scope_as = aswan_county }
-		RICE_upper_egypt_aswan_temple_visit_effect = yes
+		# RICE_upper_egypt_aswan_temple_visit_effect = yes
 	}
 	
 	option = { # Khnum
@@ -1663,8 +1597,11 @@ upper_egypt.0042 = {
 	}
 
 	after = {
-		scope:activity = {
-			complete_activity = yes
+		RICE_upper_egypt_visit_aswan_temples_completed_log_entry_effect = yes
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
 		}
 	}	
 
@@ -1672,7 +1609,7 @@ upper_egypt.0042 = {
 
 # Worship at Kalabsha
 upper_egypt.0043 = {
-	type = character_event
+	type = activity_event
 	title = upper_egypt.0043.t
 	desc = upper_egypt.0043.desc
 	theme = RICE_theme_egypt_temple_interior
@@ -1685,7 +1622,7 @@ upper_egypt.0043 = {
 	immediate = {
 		title:c_kalabsha = { save_scope_as = kalabsha_county }
 		title:c_aswan = { save_scope_as = aswan_county }
-		RICE_upper_egypt_aswan_temple_visit_effect = yes
+		# RICE_upper_egypt_aswan_temple_visit_effect = yes
 	}
 	
 	option = { # Mandulis
@@ -1965,10 +1902,13 @@ upper_egypt.0043 = {
 	}
 
 	after = {
-		scope:activity = {
-			complete_activity = yes
+		RICE_upper_egypt_visit_aswan_temples_completed_log_entry_effect = yes
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
 		}
-	}	
+	}		
 
 }
 
@@ -2018,7 +1958,7 @@ upper_egypt.0044 = {
 					any_held_title = {
 						tier = tier_county
 						any_county_province = {
-							geographical_region = RICE_southern_egypt_and_northern_nubia		
+							geographical_region = RICE_greater_egypt		
 						}
 					}
 				}	
@@ -2104,7 +2044,7 @@ upper_egypt.0046 = {
 					any_held_title = {
 						tier = tier_county
 						any_county_province = {
-							geographical_region = RICE_southern_egypt_and_northern_nubia		
+							geographical_region = RICE_greater_egypt		
 						}
 					}
 				}	
@@ -2191,7 +2131,7 @@ upper_egypt.0048 = {
 					any_held_title = {
 						tier = tier_county
 						any_county_province = {
-							geographical_region = RICE_southern_egypt_and_northern_nubia		
+							geographical_region = RICE_greater_egypt		
 						}
 					}
 				}	
@@ -2276,7 +2216,7 @@ upper_egypt.0050 = {
 					any_held_title = {
 						tier = tier_county
 						any_county_province = {
-							geographical_region = RICE_southern_egypt_and_northern_nubia		
+							geographical_region = RICE_greater_egypt		
 						}
 					}
 				}	
@@ -2360,7 +2300,7 @@ upper_egypt.0052 = {
 					any_held_title = {
 						tier = tier_county
 						any_county_province = {
-							geographical_region = RICE_southern_egypt_and_northern_nubia		
+							geographical_region = RICE_greater_egypt		
 						}
 					}
 				}	
@@ -2445,7 +2385,7 @@ upper_egypt.0054 = {
 					any_held_title = {
 						tier = tier_county
 						any_county_province = {
-							geographical_region = RICE_southern_egypt_and_northern_nubia		
+							geographical_region = RICE_greater_egypt		
 						}
 					}
 				}	
@@ -2485,6 +2425,108 @@ upper_egypt.0055 = {
 
 
 
+# Choose which temple to go to
+upper_egypt.0056 = {
+	type = activity_event
+	title = upper_egypt.0056.t
+	desc = {
+		desc = upper_egypt.0056.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					OR = {
+						AND = {
+							has_global_variable = RICE_upper_egypt_elephantine_closed
+							has_global_variable = RICE_upper_egypt_kalabsha_closed							
+						}
+						AND = {
+							has_global_variable = RICE_upper_egypt_elephantine_closed
+							has_global_variable = RICE_upper_egypt_philae_closed							
+						}
+						AND = {
+							has_global_variable = RICE_upper_egypt_kalabsha_closed
+							has_global_variable = RICE_upper_egypt_philae_closed							
+						}
+					}
+				}
+				desc = upper_egypt.0056.desc.one
+			}	
+			desc = upper_egypt.0056.desc.multiple
+		}
+		triggered_desc = {
+		    trigger = {
+				NOT = { has_global_variable = RICE_upper_egypt_philae_closed }
+		    }
+		    desc = upper_egypt.0056.desc.philae
+		}
+		triggered_desc = {
+		    trigger = {
+				NOT = { has_global_variable = RICE_upper_egypt_elephantine_closed }
+		    }
+		    desc = upper_egypt.0056.desc.elephantine
+		}
+		triggered_desc = {
+		    trigger = {
+				NOT = { has_global_variable = RICE_upper_egypt_kalabsha_closed }
+		    }
+		    desc = upper_egypt.0056.desc.kalabsha
+		}
+	}
+	theme = RICE_theme_egypt_temple_exterior
+	
+	right_portrait = root
+
+	immediate = {
+		title:c_aswan = { save_scope_as = aswan_county }
+		# RICE_upper_egypt_aswan_temple_visit_effect = yes
+	}
+	
+	option = { # Philae
+		name = upper_egypt.0056.a
+		trigger = {
+			NOT = { has_global_variable = RICE_upper_egypt_philae_closed }
+		}
+		trigger_event = {
+			id = upper_egypt.0041
+			days = { 3 7 }
+		}
+	}
+	
+	option = { # Elephantine
+		name = upper_egypt.0056.b
+		trigger = {
+			NOT = { has_global_variable = RICE_upper_egypt_elephantine_closed }
+		}
+		trigger_event = {
+			id = upper_egypt.0042
+			days = { 3 7 }
+		}
+	}
+	
+	option = { # Kalabsha
+		name = upper_egypt.0056.c
+		trigger = {
+			NOT = { has_global_variable = RICE_upper_egypt_kalabsha_closed }
+		}
+		trigger_event = {
+			id = upper_egypt.0043
+			days = { 3 7 }
+		}
+	}
+	
+	option = { # Backup option in case all the temples are closed
+		name = upper_egypt.0056.d
+		trigger = {
+			has_global_variable = RICE_upper_egypt_elephantine_closed
+			has_global_variable = RICE_upper_egypt_kalabsha_closed
+			has_global_variable = RICE_upper_egypt_philae_closed
+		}
+		trigger_event = {
+			id = upper_egypt.0041
+			days = { 3 7 }
+		}
+	}
+}
 
 
 ######################################################################################
