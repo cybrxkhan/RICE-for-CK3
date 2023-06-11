@@ -1,0 +1,112 @@
+﻿
+
+
+tradition_RICE_tuareg = {
+	category = regional
+
+	layers = {
+		0 = diplo
+		1 = mena
+		4 = RICE_tuareg_turban.dds
+	}
+
+	is_shown = {
+		OR = {
+			this = culture:tuareg
+			any_parent_culture_or_above = {
+				this = culture:tuareg
+			}
+		}
+		any_culture_county = {
+			any_county_province = {
+				geographical_region = world_africa
+			}
+		}
+	}
+
+	can_pick = {
+		OR = {
+			this = culture:tuareg
+			any_parent_culture_or_above = {
+				this = culture:tuareg
+			}
+		}		
+		custom_tooltip = {
+			text = RICE_culture_along_the_nile_desc
+			any_culture_county = {
+				count >= 5
+				any_county_province = {
+					geographical_region = world_africa
+				}
+			}
+		}
+	}
+	
+	parameters = {
+		unlock_rice_tuareg_decision = yes
+		unlock_rice_cheaper_dream_divination = yes
+		number_of_spouses = 1
+		gender_equal_inheritance = yes
+	}
+
+	#culture_modifier = {
+	#	cultural_acceptance_gain_mult = 0.05
+	#}
+
+	character_modifier = {
+		# Already represented by the Desert Ribats tradition and Saharan Nomads tradition
+		# desert_travel_danger = desert_low_danger_reduction
+		# drylands_travel_danger = drylands_low_danger_reduction
+		# desert_mountains_travel_danger = desert_mountains_low_danger_reduction	
+		monthly_prestige_gain_per_happy_powerful_vassal_mult = 0.03
+		#different_culture_opinion = 5
+		#opinion_of_different_culture = 5
+		#monthly_martial_lifestyle_xp_gain_mult = 0.1
+	}	
+
+	county_modifier = {
+		
+	}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_egalitarian = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_communal_egalitarian_or_stoic_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = { # AI should avoid stacking traditions that do similar things
+				any_in_list = { list = traits this = flag:tradition_monogamous }
+			}
+			multiply = 0.25
+		}
+		if = {
+			limit = { # AI should avoid stacking traditions that do similar things
+				any_in_list = { list = traits this = flag:tradition_equal_inheritance }
+			}
+			multiply = 0.25
+		}
+	}
+}
