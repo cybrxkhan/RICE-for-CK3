@@ -59,7 +59,7 @@ NOTE: **If you are re-installing a mod manually, delete the old version of the m
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/uMu7goJ.jpg">
+<img src="https://i.imgur.com/tdrNe91.jpg">
 
 ### 1.9.0 "Tagelmust"
 
