@@ -12,6 +12,23 @@ RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersio
 
 RICE is designed with compatibility in mind, and is technically compatible with most mods; I avoid editing vanilla files to prevent conflicts with other mods. For example, new cultures are added via hidden events at game start instead of directly through province history. If you are a mod author or user and concerned about compatibiliy with RICE, don't hesitate to contact me on the forums or Discord! Also feel free to use my work in your mods - all I ask is that I am credited and (if possible) to give me a heads up.
 
+
+## Manual Installation Steps
+
+DO NOT manually download the master branch unless you know what you're doing as it is a WIP version and not necessarily stable!
+
+1. Go to https://github.com/cybrxkhan/RICE-for-CK3/releases and find the latest version you wish to download.
+2. Extract the "RICE" folder and "RICE.mod" file from the .zip file to Documents\Paradox Interactive\Crusader Kings III\mod
+3. Launch CKIII and select RICE in the launcher.
+4. Enjoy and play!
+
+The mod folder should look something like this:
+
+<img src="https://i.imgur.com/UMv7AZ5.png">
+
+**NOTE**: If you are re-installing a mod, delete the old version of the mod first before copy and pasting the new one! While it's not always necessary, it's a good habit to do to prevent any potential issues.
+
+
 ## Current Flavor Packs
 
 At the moment, the following RICE flavor packs are included in the mod (click to view the guides which cover the features included in each pack in more detail).
@@ -45,21 +62,6 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 - [Yazd: Abode of Worship](https://docs.google.com/document/d/e/2PACX-1vSPDkkP1PqCoPsi_HM29C5MM5L-as_SyKkmx_jNtOEqoW2mQx2APneBmbHNhi5hNePLHAxqm9QTm8y3/pub)
 - [Yorkshire: To Scarborough Fair](https://docs.google.com/document/d/e/2PACX-1vQpl_JscDm-mK927vAdVA3-EUVdZ6A_htNKej7_cAKC1NcnYxHz8uvOT-bidmyLCNrfrYAsPun1QW3X/pub)
 
-
-## Manual Installation Steps
-
-DO NOT manually download the master branch unless you know what you're doing as it is a WIP version and not necessarily stable!
-
-1. Go to https://github.com/cybrxkhan/RICE-for-CK3/releases and find the latest version you wish to download.
-2. Extract the "RICE" folder and "RICE.mod" file from the .zip file to Documents\Paradox Interactive\Crusader Kings III\mod
-3. Launch CKIII and select RICE in the launcher.
-4. Enjoy and play!
-
-The mod folder should look something like this:
-
-<img src="https://i.imgur.com/UMv7AZ5.png">
-
-**NOTE**: If you are re-installing a mod, delete the old version of the mod first before copy and pasting the new one! While it's not always necessary, it's a good habit to do to prevent any potential issues.
 
 ## Latest Changelog
 
