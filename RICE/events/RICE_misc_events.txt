@@ -264,3 +264,145 @@ RICEmisc.0012 = {
 		}
 	}		
 }
+
+
+
+
+# Formerly tuareg.0012 but moved here for compatibility with BAP
+# Start travel - Tafadek Hot Springs
+RICEmisc.0020 = {
+	type = character_event
+	title = tuareg.0012.t
+	desc = tuareg.0012.desc
+	theme = travel
+	override_background = { reference = RICE_background_tuareg_ahaggar_mountains }
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_hot_springs_visit
+			activity_location.barony = title:b_air
+		}
+	}
+	
+	option = { # Ok
+		name = tuareg.0012.a
+	}	
+}
+
+
+
+
+# Arrive at the hot springs
+# Formerly tuareg.0013 but moved here for compatibility with BAP
+RICEmisc.0021 = {
+	type = activity_event
+	title = tuareg.0013.t
+	desc = tuareg.0013.desc
+	theme = RICE_theme_sahel_manor
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	immediate = {
+		add_character_flag = is_naked
+		scope:activity = {
+			activity_location = { save_scope_as = location }
+		}
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_public
+					}
+				}
+			}
+			set_variable = {
+				name = RICE_hot_springs_visit_special_type
+				value = flag:public
+				days = 1
+			}
+		}
+		else = {			
+			set_variable = {
+				name = RICE_hot_springs_visit_special_type
+				value = flag:private
+				days = 1
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = tuareg.0013.a
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_private
+					}
+				}
+			}
+			stress_impact = {
+				base = medium_stress_impact_loss
+				lazy = minor_stress_impact_loss
+				calm = minor_stress_impact_loss
+			}	
+		}
+		else_if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_public
+					}
+				}
+			}
+			stress_impact = {
+				base = minor_stress_impact_loss
+				lazy = minor_stress_impact_loss
+				calm = minor_stress_impact_loss
+			}
+			add_prestige = 50
+		}
+		add_character_modifier = {
+			modifier = RICE_tuareg_tafadek_springs_modifier
+			years = 5
+		}
+	}
+	
+	after = {
+		# RICE_hot_springs_memory_effect = yes
+		set_variable = {
+			name = RICE_hot_springs_visit_special_location
+			value = flag:tafadek
+			days = 1
+		}
+		if = {
+			limit = { has_character_flag = is_naked }
+			remove_character_flag = is_naked
+		}
+		scope:activity = {
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				stress_impact = {
+					base = minor_stress_impact_loss
+				}
+			}
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}	
+}
+
+
