@@ -1,12 +1,12 @@
 <img src="https://i.imgur.com/iDXfYdv.jpg">
 
-## Latest Version: Version 1.9.0 "Tagelmust" (Released 6/12/23, for vanilla patch 1.9.x)
+## Latest Version: Version 1.9.1 "Agadez" (Released 6/20/23, for vanilla patch 1.9.x)
 
 **Newest Flavor Pack: *Tuareg: People of the Veil***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_The tagelmust is a turban and veil, typically indigo in color, worn by Tuareg men. As such, the Tuareg sometimes call themselves Kel Tagelmust, or People of the Veil. Traditionally, Tuareg men rarely take their veil off in public once they become adults._
+_Agadez is a major city in the Aïr Mountains in the modern-day country of Niger. For centuries, it was a major Tuareg settlement located along lucrative Trans-Saharan trade routes, and it served as the capital of the Sultanate of Aïr._
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places and peoples.
 
@@ -48,51 +48,43 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 
 ## Manual Installation Steps
 
-Do NOT manually download the master branch unless you know what you're doing as it is a WIP version and not necessarily stable!
+DO NOT manually download the master branch unless you know what you're doing as it is a WIP version and not necessarily stable!
 
 1. Go to https://github.com/cybrxkhan/RICE-for-CK3/releases and find the latest version you wish to download.
-2. Extract the .zip file to Documents\Paradox Interactive\Crusader Kings III\mod
+2. Extract the "RICE" folder and "RICE.mod" file from the .zip file to Documents\Paradox Interactive\Crusader Kings III\mod
 3. Launch CKIII and select RICE in the launcher.
 4. Enjoy and play!
 
-NOTE: **If you are re-installing a mod manually, delete the old version of the mod first before copy and pasting the new one! It's a good habit to do to prevent potential issues.**
+The mod folder should look something like this:
+
+<img src="https://i.imgur.com/UMv7AZ5.png">
+
+**NOTE**: If you are re-installing a mod, delete the old version of the mod first before copy and pasting the new one! While it's not always necessary, it's a good habit to do to prevent any potential issues.
 
 ## Latest Changelog
 
 <img src="https://i.imgur.com/tdrNe91.jpg">
 
-### 1.9.0 "Tagelmust"
+### 1.9.1 "Agadez"
 
-- Added Tuareg Flavor Pack: People of the Veil
-- Added 2 Mideast/North African themed soundtracks
-- Reworked many decisions into activities for a total of 44 activities
-- Added memories for many older decisions and activities
-- Added new unique hot springs locations: Tafadek (Air), Iceland (the whole duchy, yes) 
-- Added many new travel options
-- Added new traditions: Munya Estates
-- Adapted several Siberian faiths from Rajas of India
-- RICE now supports the Gamerule Gadget mod
-- Many RICE traditions now give bonuses to travel speed and/or safety
-- Several Americas-related decisions are now available to Native American heritages
-- It is now possible to seek advice from the Oracle of Amun more than once in a lifetime
-- When taking the Goat Sacrifice decision (for Zunists and Dezawists), you now get a notification for what the result was
-- Network with Trans-Saharan Merchants is no longer a major decision 
-- Some content that requires or effects Hellenic or Semitic paganism now effects Amazigh and Egyptian paganism or has these as an alternative requirements
-- Qanat innovation now has a regional requirement, rather than culture/heritage
-- Normal Nile floods now give a slight tax and development boost
-- Renamed Laurentian culture to Kwedech (it is still Laurentian in the code, however)
-- Persian Jewish is now Parsim in the code, to be consistent with Rajas of Asia
-- Reduced the piety level required to expand Nasir Khusraw’s shrine
-- Nerfed renown gain from several Normandy struggle modifiers
-- Revised how Odinala faith is assigned at game start to be more compatibility friendly
-- Integrated a few revamped versions of artwork in RICE, courtesy of DrStein(Dupont)
-- Expedition failure event now has more appropriate animations
-- Bumped up the date for the Brahui emergence event
-- Interaction to gift Tiraz now has a cooldown
-- Nerfed the build speed/cost bonus of the Mud Mason modifiers
-- Fixed Stamford Bull Run not being possible since the event that enables it never triggers (somehow this escaped my notice for 1.5 years)
-- Fixed Bust of Charlemagne inspiring pilgrims even before it exists
-- Miscellaneous Bugfixes
+- Added missing Goat Sacrifice activity
+- Many of RICE’s special buildings now act as Points of Interest
+- Various buildings will now reduce the cost of Munya vacations if they are held in that location
+- There is now a 5 year cooldown for starting Munya vacations that applies to both private and group vacation simultaneously
+- Reduced cooldown for the Bodhi tree bathing activity to 10 years
+- Sacred Ceremony option for the Ancestor Worship activity is now available to everyone
+- Added new catalysts for the Normandy struggle, to make it easier to go into Acculturation phase:
+    - Travel for an Activity
+    - Go on a Pilgrimage to Mont-Saint-Michel
+    - Tweaked Breton buildings’ MAA bonuses to be in line with vanilla’s MAA bonus changes
+- Tweaked a few bookmarked characters’ portraits in the RICE+EPE compatch
+- Fixed Greenlandic courtiers not spawning during the North Atlantic struggle
+- Fixed courtiers not getting any stress loss when visiting Rajgir hot springs themselves
+- Fixed Horse Sacrifice activity potentially ending early
+- Fixed Tarim Basin’s old animal fight and crescent lake decisions still existing when they shouldn’t since they’ve been adapted to activities
+- Fixed Gamerule Gadget not working with RICE
+- Fixed Coptic culture not getting Children of the Nile in CE
+- Miscellaneous bugfixes
 
 ## Credits
 
