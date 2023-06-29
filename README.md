@@ -1,12 +1,12 @@
 <img src="https://i.imgur.com/iDXfYdv.jpg">
 
-## Latest Version: Version 1.9.1 "Agadez" (Released 6/20/23, for vanilla patch 1.9.x)
+## Latest Version: Version 1.9.2 "Rouen" (Released 6/28/23, for vanilla patch 1.9.x)
 
 **Newest Flavor Pack: *Tuareg: People of the Veil***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_Agadez is a major city in the Aïr Mountains in the modern-day country of Niger. For centuries, it was a major Tuareg settlement located along lucrative Trans-Saharan trade routes, and it served as the capital of the Sultanate of Aïr._
+_The city of Rouen, which lies along the Seine river that also flows through Paris, has been a major urban center in Normandy for centuries. It served as the capital of the Dukes of Normandy for many years._
 
 RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places and peoples.
 
@@ -67,25 +67,19 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 
 <img src="https://i.imgur.com/tdrNe91.jpg">
 
-### 1.9.1 "Agadez"
+### 1.9.2 "Rouen"
 
-- Added missing Goat Sacrifice activity
-- Many of RICE’s special buildings now act as Points of Interest
-- Various buildings will now reduce the cost of Munya vacations if they are held in that location
-- There is now a 5 year cooldown for starting Munya vacations that applies to both private and group vacation simultaneously
-- Reduced cooldown for the Bodhi tree bathing activity to 10 years
-- Sacred Ceremony option for the Ancestor Worship activity is now available to everyone
-- Added new catalysts for the Normandy struggle, to make it easier to go into Acculturation phase:
-    - Travel for an Activity
-    - Go on a Pilgrimage to Mont-Saint-Michel
-    - Tweaked Breton buildings’ MAA bonuses to be in line with vanilla’s MAA bonus changes
-- Tweaked a few bookmarked characters’ portraits in the RICE+EPE compatch
-- Fixed Greenlandic courtiers not spawning during the North Atlantic struggle
-- Fixed courtiers not getting any stress loss when visiting Rajgir hot springs themselves
-- Fixed Horse Sacrifice activity potentially ending early
-- Fixed Tarim Basin’s old animal fight and crescent lake decisions still existing when they shouldn’t since they’ve been adapted to activities
-- Fixed Gamerule Gadget not working with RICE
-- Fixed Coptic culture not getting Children of the Nile in CE
+- Norman adventurer CB can now be taken even when you’re a vassal/not independent
+- Added an alternative requirement to end the Normandy struggle where instead of being in a specific phase, you need to have gone through the Adventure and Acculturation phases at least once (New requirement might not work properly on old games; for 1066, this requirement is considered to have already “happened”)
+- Added new catalyst for the Normandy struggle to go to Adventure phase: Travel for a Hunt
+- Added compatibility for Extended Marriage Doctrines
+- Greatly reduced the impact of the Normandy struggle catalyst effect for traveling for an activity
+- Northern Sorcerers tradition is now given to all cultures of Balto-Finnic heritage at game start
+- Any culture descended from Saka, Tocharian, or Sogdian is given the Silk Road tradition at game start
+- Fixed accolades not being affected by victory in RICE’s CBs
+- Fixed Acculturation phase of Normandy struggle not accounting for catalysts to constructing Christian religious buildings
+- Fixed Norman/Norse mercenaries tooltip being inaccurate (by having it not show a number)
+- Fixed catalysts for the Mont-Saint-Michel activities not showing up in the message feed
 - Miscellaneous bugfixes
 
 ## Credits
