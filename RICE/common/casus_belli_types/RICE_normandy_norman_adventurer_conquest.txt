@@ -79,7 +79,7 @@ RICE_norman_adventure_cb = {
 
 	allowed_for_character_display_regardless = {
 		# Ensure that this is only done every now and then.
-		is_independent_ruler = yes
+		#is_independent_ruler = yes
 		highest_held_title_tier <= tier_duchy
 		OR = {
 			custom_tooltip = {
@@ -180,7 +180,7 @@ RICE_norman_adventure_cb = {
 			}
 			scope:attacker = {
 				OR = {
-					is_independent_ruler = no
+					#is_independent_ruler = no
 					highest_held_title_tier >= tier_kingdom
 				}
 			}
@@ -501,8 +501,22 @@ RICE_norman_adventure_cb = {
 	}
 
 	on_victory = {
+		#EP2 accolade glory gain for winning against higher ranked enemy
+		scope:attacker = { accolade_attacker_war_end_glory_gain_med_effect = yes }
+		#EP2 accolade glory gain for winning against higher ranked enemy
+		scope:attacker = { accolade_attacker_war_end_glory_gain_med_effect = yes }
+
 		# Organise general results for the attacker.
 		scope:attacker = {
+			# First save old liege if they exist
+			if = {
+				limit = {
+					is_independent_ruler = no
+				}
+				liege = {
+					save_scope_as = original_liege
+				}
+			}
 			# Set up titles in the new colony.
 			## First up, hand over counties in the target duchy to scope:attacker.
 			create_title_and_vassal_change = {
@@ -716,7 +730,7 @@ RICE_norman_adventure_cb = {
 			### Otherwise, tribals go by pure levy count.
 			else_if = {
 				limit = {
-					scope:attacker = { has_government = tribal_government }
+					scope:attacker = { government_has_flag = government_is_tribal }
 				}
 				ordered_in_list = {
 					list = target_titles
@@ -862,23 +876,41 @@ RICE_norman_adventure_cb = {
 				}
 				resolve_title_and_vassal_change = scope:change
 				# And give them their independence.
-				create_title_and_vassal_change = {
-					type = independency
-					save_scope_as = change
-					add_claim_on_loss = no
-				}
-				hidden_effect = {
-					scope:local_warlord = {
-						becomes_independent = { change = scope:change }
-						save_scope_as = truce_loc
-						add_truce_both_ways = {
-							character = scope:attacker
-							days = 14600
-							name = FP1_VARANGIAN_ADVENTURER_INDEPENDENCE_TRUCE_NAME
+				if = {
+					limit = {
+						scope:attacker = {
+							is_independent_ruler = no
 						}
 					}
+					create_title_and_vassal_change = {
+						type = swear_fealty
+						save_scope_as = change
+					}
+					change_liege = {
+						liege = scope:original_liege
+						change = scope:change
+					}
+					resolve_title_and_vassal_change = scope:change
 				}
-				resolve_title_and_vassal_change = scope:change
+				else = {
+					create_title_and_vassal_change = {
+						type = independency
+						save_scope_as = change
+						add_claim_on_loss = no
+					}
+					hidden_effect = {
+						scope:local_warlord = {
+							becomes_independent = { change = scope:change }
+							save_scope_as = truce_loc
+							add_truce_both_ways = {
+								character = scope:attacker
+								days = 14600
+								name = FP1_VARANGIAN_ADVENTURER_INDEPENDENCE_TRUCE_NAME
+							}
+						}
+					}
+					resolve_title_and_vassal_change = scope:change
+				}
 			}
 			## Distribute landed family's domains outside of the colony to peasant vassals of the local culture/faith.
 			custom_tooltip = fp1_varangian_adventurer_conquest.summaries.landed_family_old_domains
@@ -915,50 +947,94 @@ RICE_norman_adventure_cb = {
 						}
 					}
 					resolve_title_and_vassal_change = scope:change
-					# And give them their independence.
+					if = {
+						limit = {
+							scope:attacker = {
+								is_independent_ruler = no
+							}
+						}
+						create_title_and_vassal_change = {
+							type = swear_fealty
+							save_scope_as = change
+						}
+						change_liege = {
+							liege = scope:original_liege
+							change = scope:change
+						}
+						resolve_title_and_vassal_change = scope:change
+					}
+					else = {
+						# And give them their independence.
+						create_title_and_vassal_change = {
+							type = independency
+							save_scope_as = change
+							add_claim_on_loss = no
+						}
+						hidden_effect = {
+							scope:local_warlord = {
+								becomes_independent = { change = scope:change }
+								save_scope_as = truce_loc
+								add_truce_both_ways = {
+									character = scope:attacker
+									days = 14600
+									name = FP1_VARANGIAN_ADVENTURER_INDEPENDENCE_TRUCE_NAME
+								}
+							}
+						}
+						resolve_title_and_vassal_change = scope:change
+					}
+				}
+			}
+			## Give all old vassals outside of the target_titles independence IF they are independent
+			if = {
+				limit = {
+					scope:attacker = {
+						is_independent_ruler = no
+					}
+				}
+				every_vassal = {
+					limit = {
+						NOT = {
+							any_held_title = { duchy = scope:target_duchy }
+						}
+					}
+					create_title_and_vassal_change = {
+						type = swear_fealty
+						save_scope_as = change
+					}
+					change_liege = {
+						liege = scope:original_liege
+						change = scope:change
+					}
+					resolve_title_and_vassal_change = scope:change
+				}
+			}
+			else = {				
+				custom_tooltip = fp1_varangian_adventurer_conquest.summaries.old_vassals
+				every_vassal = {
+					limit = {
+						NOT = {
+							any_held_title = { duchy = scope:target_duchy }
+						}
+					}
 					create_title_and_vassal_change = {
 						type = independency
 						save_scope_as = change
 						add_claim_on_loss = no
 					}
 					hidden_effect = {
-						scope:local_warlord = {
-							becomes_independent = { change = scope:change }
-							save_scope_as = truce_loc
-							add_truce_both_ways = {
-								character = scope:attacker
-								days = 14600
-								name = FP1_VARANGIAN_ADVENTURER_INDEPENDENCE_TRUCE_NAME
-							}
+						becomes_independent = { change = scope:change }
+						save_scope_as = truce_loc
+						add_truce_both_ways = {
+							character = scope:attacker
+							days = 14600
+							name = FP1_VARANGIAN_ADVENTURER_INDEPENDENCE_TRUCE_NAME
 						}
 					}
 					resolve_title_and_vassal_change = scope:change
 				}
 			}
-			## Give all old vassals outside of the target_titles independence.
-			custom_tooltip = fp1_varangian_adventurer_conquest.summaries.old_vassals
-			every_vassal = {
-				limit = {
-					NOT = {
-						any_held_title = { duchy = scope:target_duchy }
-					}
-				}
-				create_title_and_vassal_change = {
-					type = independency
-					save_scope_as = change
-					add_claim_on_loss = no
-				}
-				hidden_effect = {
-					becomes_independent = { change = scope:change }
-					save_scope_as = truce_loc
-					add_truce_both_ways = {
-						character = scope:attacker
-						days = 14600
-						name = FP1_VARANGIAN_ADVENTURER_INDEPENDENCE_TRUCE_NAME
-					}
-				}
-				resolve_title_and_vassal_change = scope:change
-			}
+
 			# Sort the governance of the colony.
 			## Adjusting the government type as appropriate.
 			# Conquering tribes makes you tribal.
@@ -996,38 +1072,39 @@ RICE_norman_adventure_cb = {
 				scope:attacker = { add_courtier = scope:landless_family }
 			}
 			## If scope:attacker wasn't the house head, they found a new house. We ignore their probable-tribalism.
-			if = {
-				limit = {
-					NOT = { this = house.house_head }
-				}
-				found_cadet_house_decision_effect = {
-					CHARACTER = this
-					PRESTIGE = 0
-				}
-			}
+			## Was causing errors for some reason so disabled this for now
+			# if = {
+			# 	limit = {
+			# 		NOT = { this = house.house_head }
+			# 	}
+			# 	found_cadet_house_decision_effect = {
+			# 		CHARACTER = this
+			# 		PRESTIGE = 0
+			# 	}
+			# }
 			## If scope:attacker *was* the house head, then all landed members of their house not in their new realm found new houses.
-			else = {
-				house = {
-					ordered_house_member = {
-						limit = {
-							is_ruler = yes
-							NOR = {
-								# Exempt scope:attacker.
-								this = scope:attacker
-								# And anyone who made the trip with them.
-								any_liege_or_above = { this = scope:attacker }
-							}
-						}
-						order_by = age
-						max = 100	# Basically, all of them.
-						check_range_bounds = no
-						found_cadet_house_decision_effect = {
-							CHARACTER = this
-							PRESTIGE = 0
-						}
-					}
-				}
-			}
+			# else = {
+			# 	house = {
+			# 		ordered_house_member = {
+			# 			limit = {
+			# 				is_ruler = yes
+			# 				NOR = {
+			# 					# Exempt scope:attacker.
+			# 					this = scope:attacker
+			# 					# And anyone who made the trip with them.
+			# 					any_liege_or_above = { this = scope:attacker }
+			# 				}
+			# 			}
+			# 			order_by = age
+			# 			max = 100	# Basically, all of them.
+			# 			check_range_bounds = no
+			# 			found_cadet_house_decision_effect = {
+			# 				CHARACTER = this
+			# 				PRESTIGE = 0
+			# 			}
+			# 		}
+			# 	}
+			# }
 			## If scope:attacker wasn't an adventurer before, make them one.
 			if = {
 				limit = {
@@ -1052,6 +1129,7 @@ RICE_norman_adventure_cb = {
 					add = 1
 				}
 			}
+
 		}
 
 		# Prestige Progress for the Attacker
@@ -1095,6 +1173,25 @@ RICE_norman_adventure_cb = {
 
 		# FP1: note the victory for future memorialisation via stele (if applicable).
 		scope:attacker = { fp1_remember_recent_conquest_victory_effect = yes }
+
+		# Become independent
+		if = {
+			limit = {
+				scope:attacker = {
+					is_independent_ruler = no
+				}
+			}
+			scope:attacker = {
+				create_title_and_vassal_change = {
+					type = independency
+					save_scope_as = change
+					add_claim_on_loss = no
+				}
+				becomes_independent = { change = scope:change }
+				resolve_title_and_vassal_change = scope:change	
+			}
+		}
+
 	}
 
 	on_white_peace_desc = {
@@ -1108,6 +1205,9 @@ RICE_norman_adventure_cb = {
 	}
 
 	on_white_peace = {
+		#EP2 accolade glory gain for winning against higher ranked enemy
+		scope:defender = { accolade_defender_war_end_glory_gain_low_effect = yes }
+
 		# Prestige loss for the attacker
 		scope:attacker = {
 			add_prestige = {
@@ -1158,6 +1258,10 @@ RICE_norman_adventure_cb = {
 	}
 
 	on_defeat = {
+		#EP2 accolade glory gain for winning against higher ranked enemy
+		scope:defender = { accolade_defender_war_end_glory_gain_med_effect = yes }
+		#EP2 accolade glory gain for winning against higher ranked enemy
+		scope:defender = { accolade_defender_war_end_glory_gain_med_effect = yes }
 
 		# Prestige loss for the attacker
 		scope:attacker = {
@@ -1177,7 +1281,7 @@ RICE_norman_adventure_cb = {
 			}
 		}
 
-# Allies on both sides get full prestige value for helping in the war, based on their war participation.
+	# Allies on both sides get full prestige value for helping in the war, based on their war participation.
 		modify_allies_of_participants_fame_values = {
 			WINNER = scope:defender
 			FAME_BASE = medium_prestige_value
@@ -1212,6 +1316,7 @@ RICE_norman_adventure_cb = {
 	use_de_jure_wargoal_only = yes
 
 	attacker_wargoal_percentage = 0.8
-
-	max_ai_diplo_distance_to_title = 500
+	
+	max_defender_score_from_occupation = 150
+	max_attacker_score_from_occupation = 150
 }
