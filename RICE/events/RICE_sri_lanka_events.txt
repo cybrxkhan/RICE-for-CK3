@@ -1,0 +1,813 @@
+﻿###############################################################################
+# 
+# Sri Lanka
+# 
+# sri_lanka.0000-sri_lanka.0019			Setup events, history events, miscellaneous events and decisions
+# sri_lanka.0020-sri_lanka.0039			Sri Lanka Monasteries basic decisions
+# sri_lanka.0050-sri_lanka.0099			Generic flavor events
+# 
+# 
+###############################################################################
+
+namespace = sri_lanka
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# sri_lanka.0000-sri_lanka.0019
+# 
+######################################################################################
+
+
+
+# SRI LANKA INTRO 
+sri_lanka.0001 = { # Fullscreen Intro Event
+	type = character_event
+	window = fullscreen_event
+	title = sri_lanka.0001.t
+	desc = {
+		desc = sri_lanka.0001.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					religion = religion:buddhism_religion
+				}
+				desc = sri_lanka.0001.desc.buddhist
+			}
+			triggered_desc = {
+				trigger = {
+					NOT = { religion = religion:buddhism_religion }
+				}
+				desc = sri_lanka.0001.desc.non_buddhist
+			}
+		}
+	}
+	theme = diplomacy_foreign_affairs_focus
+	trigger = { # we need to prevent this from firing for all players when a new player joins in MP
+		is_ai = no
+		NOT = { has_character_flag = RICE_sri_lanka_struggle_intro_event_flag }
+		OR = {
+			any_character_struggle = {
+				involvement = involved
+				is_struggle_type = RICE_sri_lanka_struggle
+			}
+			any_character_struggle = {
+				involvement = interloper
+				is_struggle_type = RICE_sri_lanka_struggle
+			}
+		}
+ 	}
+	override_background = { reference = RICE_sri_lanka_struggle_start }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	widgets = {
+		widget = {
+ 			gui = "event_window_widget_struggle_info"
+ 			container = "dynamic_content_widget"
+ 			controller = struggle_info
+ 			setup_scope = { struggle:RICE_sri_lanka_struggle = { save_scope_as = struggle } }
+		}
+		# widget = {
+		# 	gui = "event_window_widget_RICE_sri_lanka_struggle_resources_info"
+		# 	container = "dynamic_content_widget"
+		# }
+	}
+	immediate = {
+		play_music_cue = "mx_Struggle_Opening"
+		add_character_flag = RICE_sri_lanka_struggle_intro_event_flag
+		save_scope_value_as = {
+			name = start
+			value = yes
+		}
+		religion:buddhism_religion = {
+			save_scope_as = buddhism
+		}
+	}
+
+	option = {
+		name = sri_lanka.0001.a
+		trigger = {
+			OR = {
+				religion = religion:buddhism_religion
+				religion = religion:jainism_religion
+				religion = religion:hinduism_religion
+			}
+		}
+		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
+	}
+
+	option = {
+		name = sri_lanka.0001.b
+		trigger = {
+			NOR = {
+				religion = religion:buddhism_religion
+				religion = religion:jainism_religion
+				religion = religion:hinduism_religion
+			}			
+		}
+		custom_tooltip = sri_lanka.0001.b.tooltip
+		#clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
+	}
+
+}
+
+
+# Land granted to Buddhist/Hindu/Jain monasteries/temples
+sri_lanka.0010 = {
+	type = character_event
+	title = sri_lanka.0010.t
+	desc = sri_lanka.0010.desc
+	theme = faith
+	override_background = { reference = ep2_holy_site_indian }
+	
+	right_portrait = root
+
+	immediate = {
+
+
+		hidden_effect = {
+			every_held_title = {
+				limit = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = world_india
+					}
+				}
+				random_list = {
+					# Nothing happens
+					95 = {
+	
+					}
+					# Conversion
+					5 = {
+						add_to_list = RICE_land_grant_counties_conversion
+					}
+					# Small minority
+					# 10 = {
+					#	add_to_list = RICE_land_grant_counties_small_minority
+					# }
+					# # Large minority
+					# 10 = {
+					#	add_to_list = RICE_land_grant_counties_large_minority
+					# }
+				}				
+			}				
+		}	
+
+		if = {
+			limit = {
+				var:RICE_india_land_grant_type = flag:buddhism
+			}
+			religion:buddhism_religion = {
+				save_scope_as = religion
+			}
+			if = {
+				limit = {					
+					any_county_in_region = {
+						region = world_india
+						religion = religion:buddhism_religion
+					}
+				}
+				random_county_in_region = {
+					region = world_india
+					limit = {
+						religion = religion:buddhism_religion
+					}
+					save_scope_as = indian_county
+				}
+				scope:indian_county.faith = {
+					save_scope_as = indian_faith
+				}
+			}
+			else = {
+				random_list = {
+					10 = {
+						faith:mahayana = {
+							save_scope_as = indian_faith
+						}
+					}
+					10 = {
+						faith:theravada = {
+							save_scope_as = indian_faith
+						}
+					}
+					10 = {
+						faith:vajrayana = {
+							save_scope_as = indian_faith
+						}
+					}
+				}
+			}
+			add_character_modifier = {
+				modifier = RICE_india_land_grant_buddhist_character_modifier
+				years = 10
+			}
+			if = {
+				limit = {
+					religion = religion:buddhism_religion
+				}
+				every_held_title = {
+					custom = RICE_all_held_counties_india_no_church
+					limit = {
+						tier = tier_county
+						NOT = {
+							any_county_province = {
+								has_holding_type = church_holding
+							}
+						}
+						any_county_province = {
+							geographical_region = world_india
+						}
+					}
+					add_county_modifier = {
+						modifier = RICE_india_land_grant_buddhist_county_same_modifier
+						years = 10
+					}				
+				}
+				every_held_title = {
+					custom = RICE_all_held_counties_india_church
+					limit = {
+						tier = tier_county
+						any_county_province = {
+							has_holding_type = church_holding
+						}
+						any_county_province = {
+							geographical_region = world_india
+						}
+					}	
+					add_county_modifier = {
+						modifier = RICE_india_land_grant_buddhist_county_strong_same_modifier
+						years = 10
+					}				
+				}
+			}
+			else = {
+				every_held_title = {
+					custom = RICE_all_held_counties_india_no_church
+					limit = {
+						tier = tier_county
+						NOT = {
+							any_county_province = {
+								has_holding_type = church_holding
+							}
+						}
+						any_county_province = {
+							geographical_region = world_india
+						}
+					}
+					add_county_modifier = {
+						modifier = RICE_india_land_grant_buddhist_county_different_modifier
+						years = 10
+					}				
+				}
+				every_held_title = {
+					custom = RICE_all_held_counties_india_church
+					limit = {
+						tier = tier_county
+						any_county_province = {
+							has_holding_type = church_holding
+						}
+						any_county_province = {
+							geographical_region = world_india
+						}
+					}	
+					add_county_modifier = {
+						modifier = RICE_india_land_grant_buddhist_county_strong_different_modifier
+						years = 10
+					}				
+				}
+			}
+			if = {
+				limit = {
+					religion = religion:buddhism_religion
+				}
+				add_prestige = RICE_india_grant_prestige_same_religion_value
+				add_piety = RICE_india_grant_piety_same_religion_value
+				stress_impact = {
+					zealous = minor_stress_impact_loss
+				}
+			}
+			else = {
+				add_prestige = RICE_india_grant_prestige_different_religion_value
+				add_piety = RICE_india_grant_piety_different_religion_value
+				stress_impact = {
+					zealous = minor_stress_impact_gain
+				}
+			}
+			every_in_list = {
+				list = RICE_land_grant_counties_conversion
+				limit = {
+					NOT = { religion = religion:buddhism_religion }
+				}
+				set_county_faith = scope:indian_faith
+			}
+			# DO NOT REMOVE, THIS IS FOR COMPATIBILITY WITH RICE!!!
+			RICE_sri_lanka_struggle_land_grant_buddhist_effect = yes
+			RICE_TFE_struggle_land_grant_buddhist_effect = yes
+		}
+
+		else_if = {
+			limit = {
+				var:RICE_india_land_grant_type = flag:hinduism
+			}
+			religion:hinduism_religion = {
+				save_scope_as = religion
+			}
+			if = {
+				limit = {					
+					any_county_in_region = {
+						region = world_india
+						religion = religion:hinduism_religion
+					}
+				}
+				random_county_in_region = {
+					region = world_india
+					limit = {
+						religion = religion:hinduism_religion
+					}
+					save_scope_as = indian_county
+				}
+				scope:indian_county.faith = {
+					save_scope_as = indian_faith
+				}
+			}
+			else = {
+				random_list = {
+					10 = {
+						faith:vaishnavism = {
+							save_scope_as = indian_faith
+						}
+					}
+					10 = {
+						faith:advaitism = {
+							save_scope_as = indian_faith
+						}
+					}
+					10 = {
+						faith:shaivism = {
+							save_scope_as = indian_faith
+						}
+					}
+					10 = {
+						faith:srikula_shaktism = {
+							save_scope_as = indian_faith
+						}
+					}
+					10 = {
+						faith:kalikula_shaktism = {
+							save_scope_as = indian_faith
+						}
+					}
+					10 = {
+						faith:smartism = {
+							save_scope_as = indian_faith
+						}
+					}
+					10 = {
+						faith:krishnaism = {
+							save_scope_as = indian_faith
+						}
+					}
+				}
+			}
+			add_character_modifier = {
+				modifier = RICE_india_land_grant_hindu_character_modifier
+				years = 10
+			}
+			if = {
+				limit = {
+					religion = religion:hinduism_religion
+				}
+				every_held_title = {
+					custom = RICE_all_held_counties_india_no_church
+					limit = {
+						tier = tier_county
+						NOT = {
+							any_county_province = {
+								has_holding_type = church_holding
+							}
+						}
+						any_county_province = {
+							geographical_region = world_india
+						}
+					}
+					add_county_modifier = {
+						modifier = RICE_india_land_grant_hindu_county_same_modifier
+						years = 10
+					}				
+				}
+				every_held_title = {
+					custom = RICE_all_held_counties_india_church
+					limit = {
+						tier = tier_county
+						any_county_province = {
+							has_holding_type = church_holding
+						}
+						any_county_province = {
+							geographical_region = world_india
+						}
+					}	
+					add_county_modifier = {
+						modifier = RICE_india_land_grant_hindu_county_strong_same_modifier
+						years = 10
+					}				
+				}
+			}
+			else = {
+				every_held_title = {
+					custom = RICE_all_held_counties_india_no_church
+					limit = {
+						tier = tier_county
+						NOT = {
+							any_county_province = {
+								has_holding_type = church_holding
+							}
+						}
+						any_county_province = {
+							geographical_region = world_india
+						}
+					}
+					add_county_modifier = {
+						modifier = RICE_india_land_grant_hindu_county_different_modifier
+						years = 10
+					}				
+				}
+				every_held_title = {
+					custom = RICE_all_held_counties_india_church
+					limit = {
+						tier = tier_county
+						any_county_province = {
+							has_holding_type = church_holding
+						}
+						any_county_province = {
+							geographical_region = world_india
+						}
+					}	
+					add_county_modifier = {
+						modifier = RICE_india_land_grant_hindu_county_strong_different_modifier
+						years = 10
+					}				
+				}
+			}
+			if = {
+				limit = {
+					religion = religion:hinduism_religion
+				}
+				add_prestige = RICE_india_grant_prestige_same_religion_value
+				add_piety = RICE_india_grant_piety_same_religion_value
+				stress_impact = {
+					zealous = minor_stress_impact_loss
+				}
+			}
+			else = {
+				add_prestige = RICE_india_grant_prestige_different_religion_value
+				add_piety = RICE_india_grant_piety_different_religion_value
+				stress_impact = {
+					zealous = minor_stress_impact_gain
+				}
+			}
+			every_in_list = {
+				list = RICE_land_grant_counties_conversion
+				limit = {
+					NOT = { religion = religion:hinduism_religion }
+				}
+				set_county_faith = scope:indian_faith
+			}
+			# DO NOT REMOVE, THIS IS FOR COMPATIBILITY WITH RICE!!!
+			RICE_sri_lanka_struggle_land_grant_non_buddhist_effect = yes
+			RICE_TFE_struggle_land_grant_hindu_effect = yes
+		}
+
+		else_if = {
+			limit = {
+				var:RICE_india_land_grant_type = flag:jainism
+			}
+			religion:jainism_religion = {
+				save_scope_as = religion
+			}
+			add_character_modifier = {
+				modifier = RICE_india_land_grant_jain_character_modifier
+				years = 10
+			}
+			if = {
+				limit = {					
+					any_county_in_region = {
+						region = world_india
+						religion = religion:jainism_religion
+					}
+				}
+				random_county_in_region = {
+					region = world_india
+					limit = {
+						religion = religion:jainism_religion
+					}
+					save_scope_as = indian_county
+				}
+				scope:indian_county.faith = {
+					save_scope_as = indian_faith
+				}
+			}
+			else = {
+				random_list = {
+					10 = {
+						faith:yapaniya = {
+							save_scope_as = indian_faith
+						}
+					}
+					10 = {
+						faith:svetambara = {
+							save_scope_as = indian_faith
+						}
+					}
+					10 = {
+						faith:digambara = {
+							save_scope_as = indian_faith
+						}
+					}
+				}
+			}
+			if = {
+				limit = {
+					religion = religion:jainism_religion
+				}
+				every_held_title = {
+					custom = RICE_all_held_counties_india_no_church
+					limit = {
+						tier = tier_county
+						NOT = {
+							any_county_province = {
+								has_holding_type = church_holding
+							}
+						}
+						any_county_province = {
+							geographical_region = world_india
+						}
+					}
+					add_county_modifier = {
+						modifier = RICE_india_land_grant_jain_county_same_modifier
+						years = 10
+					}				
+				}
+				every_held_title = {
+					custom = RICE_all_held_counties_india_church
+					limit = {
+						tier = tier_county
+						any_county_province = {
+							has_holding_type = church_holding
+						}
+						any_county_province = {
+							geographical_region = world_india
+						}
+					}	
+					add_county_modifier = {
+						modifier = RICE_india_land_grant_jain_county_strong_same_modifier
+						years = 10
+					}				
+				}
+			}
+			else = {
+				every_held_title = {
+					custom = RICE_all_held_counties_india_no_church
+					limit = {
+						tier = tier_county
+						NOT = {
+							any_county_province = {
+								has_holding_type = church_holding
+							}
+						}
+						any_county_province = {
+							geographical_region = world_india
+						}
+					}
+					add_county_modifier = {
+						modifier = RICE_india_land_grant_jain_county_different_modifier
+						years = 10
+					}				
+				}
+				every_held_title = {
+					custom = RICE_all_held_counties_india_church
+					limit = {
+						tier = tier_county
+						any_county_province = {
+							has_holding_type = church_holding
+						}
+						any_county_province = {
+							geographical_region = world_india
+						}
+					}	
+					add_county_modifier = {
+						modifier = RICE_india_land_grant_jain_county_strong_different_modifier
+						years = 10
+					}				
+				}
+			}
+			if = {
+				limit = {
+					religion = religion:jainism_religion
+				}
+				add_prestige = RICE_india_grant_prestige_same_religion_value
+				add_piety = RICE_india_grant_piety_same_religion_value
+				stress_impact = {
+					zealous = minor_stress_impact_loss
+				}
+			}
+			else = {
+				add_prestige = RICE_india_grant_prestige_different_religion_value
+				add_piety = RICE_india_grant_piety_different_religion_value
+				stress_impact = {
+					zealous = minor_stress_impact_gain
+				}
+			}
+			every_in_list = {
+				list = RICE_land_grant_counties_conversion
+				limit = {
+					NOT = { religion = religion:jainism_religion }
+				}
+				set_county_faith = scope:indian_faith
+			}
+			# DO NOT REMOVE, THIS IS FOR COMPATIBILITY WITH RICE!!!
+			RICE_sri_lanka_struggle_land_grant_buddhist_effect = yes
+			RICE_TFE_struggle_land_grant_jain_effect = yes
+		}
+
+
+
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			greedy = minor_stress_impact_gain
+		}
+
+	}
+
+	option = { # OK
+		name = sri_lanka.0010.a
+	}
+
+	after = {	
+		if = {
+			limit = { has_variable = RICE_india_land_grant_type }
+			remove_variable = RICE_india_land_grant_type
+		}
+	}
+
+}
+
+
+
+
+
+
+
+######################################################################################
+# 
+# SRI LANKA MONASTERIES BASIC DECISIONS AND EVENTS
+# 
+# sri_lanka.0020-sri_lanka.0039
+# 
+######################################################################################
+
+
+# Choose a school
+sri_lanka.0020 = {
+	type = character_event
+	title = sri_lanka.0020.t
+	desc = sri_lanka.0020.desc
+	theme = RICE_theme_sri_lanka_stupa
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	immediate = {
+		religion:buddhism_religion = {
+			save_scope_as = buddhism
+		}
+		faith:theravada = {
+			save_scope_as = theravada
+		}
+	}
+
+	widget = {
+		gui = "event_window_widget_RICE_sri_lanka_progressbars_all"
+		container = "custom_widgets_container"
+	}
+
+	option = { # Ok
+		name = sri_lanka.0020.a
+		add_trait = RICE_mahavihara_trait
+		custom_tooltip = sri_lanka.0020.a.tooltip
+	}
+
+	option = { # Ok
+		name = sri_lanka.0020.b
+		add_trait = RICE_abhayagiri_trait
+		custom_tooltip = sri_lanka.0020.b.tooltip
+	}
+
+	option = { # Ok
+		name = sri_lanka.0020.c
+		add_trait = RICE_jetavana_trait
+		custom_tooltip = sri_lanka.0020.c.tooltip
+	}
+
+}
+
+
+# Choose a new school
+sri_lanka.0021 = {
+	type = character_event
+	title = sri_lanka.0021.t
+	desc = sri_lanka.0021.desc
+	theme = RICE_theme_sri_lanka_stupa
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	immediate = {
+		religion:buddhism_religion = {
+			save_scope_as = buddhism
+		}
+		faith:theravada = {
+			save_scope_as = theravada
+		}
+	}
+
+	widget = {
+		gui = "event_window_widget_RICE_sri_lanka_progressbars_all"
+		container = "custom_widgets_container"
+	}
+
+	option = { # Ok
+		name = sri_lanka.0021.a
+		trigger = {
+			NOT = { has_trait = RICE_mahavihara_trait }
+		}
+		if = {
+			limit = {
+				has_trait = RICE_abhayagiri_trait
+			}
+			remove_trait = RICE_abhayagiri_trait
+			custom_tooltip = sri_lanka.0021.abhayagiri.tooltip
+		}
+		else_if = {
+			limit = {
+				has_trait = RICE_jetavana_trait
+			}
+			remove_trait = RICE_jetavana_trait
+			custom_tooltip = sri_lanka.0021.jetavana.tooltip
+		}
+		add_trait_force_tooltip = RICE_mahavihara_trait
+		custom_tooltip = sri_lanka.0020.a.tooltip
+	}
+
+	option = { # Ok
+		name = sri_lanka.0021.b
+		trigger = {
+			NOT = { has_trait = RICE_abhayagiri_trait }
+		}
+		if = {
+			limit = {
+				has_trait = RICE_mahavihara_trait
+			}
+			remove_trait = RICE_mahavihara_trait
+			custom_tooltip = sri_lanka.0021.mahavihara.tooltip
+		}
+		else_if = {
+			limit = {
+				has_trait = RICE_jetavana_trait
+			}
+			remove_trait = RICE_jetavana_trait
+			custom_tooltip = sri_lanka.0021.jetavana.tooltip
+		}
+		add_trait_force_tooltip = RICE_abhayagiri_trait
+		custom_tooltip = sri_lanka.0020.b.tooltip
+	}
+
+	option = { # Ok
+		name = sri_lanka.0021.c
+		trigger = {
+			NOT = { has_trait = RICE_jetavana_trait }
+		}
+		if = {
+			limit = {
+				has_trait = RICE_abhayagiri_trait
+			}
+			remove_trait = RICE_abhayagiri_trait
+			custom_tooltip = sri_lanka.0021.abhayagiri.tooltip
+		}
+		else_if = {
+			limit = {
+				has_trait = RICE_mahavihara_trait
+			}
+			remove_trait = RICE_mahavihara_trait
+			custom_tooltip = sri_lanka.0021.mahavihara.tooltip
+		}
+		add_trait_force_tooltip = RICE_jetavana_trait
+		custom_tooltip = sri_lanka.0020.c.tooltip
+	}
+
+}

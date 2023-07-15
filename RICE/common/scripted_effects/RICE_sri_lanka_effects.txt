@@ -1,0 +1,255 @@
+﻿
+
+RICE_setup_sri_lanka_flavor_pack_effect = {
+
+
+
+	#########################################################################
+	#
+	# CULTURE AND RELIGION STUFF
+	#
+	#########################################################################
+
+	culture:vedda = {
+		add_culture_tradition = tradition_RICE_cave_dwellers
+		remove_variable = tradition_cooldown
+	}
+
+	culture:sinhala = {
+		remove_culture_tradition = tradition_ruling_caste
+		remove_culture_tradition = tradition_fervent_temple_builders
+		remove_culture_tradition = tradition_city_keepers
+		add_culture_tradition = tradition_religious_patronage
+		add_culture_tradition = tradition_stalwart_defenders
+		add_culture_tradition = tradition_maritime_mercantilism
+		add_culture_tradition = tradition_RICE_wewas
+		remove_variable = tradition_cooldown
+	}
+
+	culture:gujarati = {
+		add_culture_tradition = tradition_RICE_stepwells
+		remove_variable = tradition_cooldown
+	}
+
+	culture:rajput = {
+		add_culture_tradition = tradition_RICE_stepwells
+		remove_variable = tradition_cooldown
+	}
+
+	culture:shona = {
+		remove_culture_tradition = tradition_RICE_swahili_contacts
+		add_culture_tradition = tradition_RICE_zimbabwe
+		add_culture_tradition = tradition_RICE_bantu_migrators
+		remove_variable = tradition_cooldown
+	}
+
+	culture:makua = {
+		add_culture_tradition = tradition_RICE_bantu_migrators
+		remove_variable = tradition_cooldown
+	}
+
+	culture:makonde = {
+		add_culture_tradition = tradition_RICE_bantu_migrators
+		remove_variable = tradition_cooldown
+	}
+
+	culture:mijikenda = {
+		add_culture_tradition = tradition_RICE_bantu_migrators
+		remove_variable = tradition_cooldown
+	}
+
+	culture:pokomo = {
+		add_culture_tradition = tradition_RICE_bantu_migrators
+		remove_variable = tradition_cooldown
+	}
+
+	culture:seuta = {
+		add_culture_tradition = tradition_RICE_bantu_migrators
+		remove_variable = tradition_cooldown
+	}
+
+	culture:sabaki = {
+		add_culture_tradition = tradition_RICE_bantu_migrators
+		remove_variable = tradition_cooldown
+	}
+
+	culture:ruvu = {
+		add_culture_tradition = tradition_RICE_bantu_migrators
+		remove_variable = tradition_cooldown
+	}
+
+	culture:tsonga = {
+		add_culture_tradition = tradition_RICE_bantu_migrators
+		add_culture_tradition = tradition_RICE_cattle_kraals
+		remove_variable = tradition_cooldown
+	}
+
+	culture:nguni = {
+		add_culture_tradition = tradition_RICE_bantu_migrators
+		add_culture_tradition = tradition_RICE_cattle_kraals
+		remove_variable = tradition_cooldown
+	}
+
+	culture:sotho_tswana = {
+		add_culture_tradition = tradition_RICE_bantu_migrators
+		add_culture_tradition = tradition_RICE_zimbabwe
+		add_culture_tradition = tradition_RICE_cattle_kraals
+		remove_variable = tradition_cooldown
+	}
+
+	every_culture_global = {
+		limit = {
+			OR = {
+				has_cultural_pillar = heritage_indo_aryan
+				has_cultural_pillar = heritage_dravidian
+			}
+		}
+		add_innovation = innovation_RICE_irrigation_tanks
+	}
+
+	every_county = {
+		limit = {
+			culture = culture:welayta
+		}
+		set_county_faith = faith:welayta_pagan
+		holder = {
+			if = {
+				limit = {
+					culture = culture:welayta
+				}
+				set_character_faith = faith:welayta_pagan
+			}
+			every_courtier_or_guest = {
+				limit = {
+					culture = culture:welayta
+				}
+				set_character_faith = faith:welayta_pagan
+			}
+		}
+	}	
+
+
+	#########################################################################
+	#
+	# TITLE HISTORY
+	#
+	#########################################################################
+
+	# For 867 bookmark
+	if = {
+		limit = {
+			game_start_date = 867.1.1
+		}
+		# Give some territory to Udaya
+		character:189014 = {
+			get_title = title:c_kandy
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+		}
+		# Give some territory to Udaya
+		character:RICE_sri_lanka_001 = {
+			get_title = title:c_trincomalee
+			get_title = title:c_batticaloa
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+		}
+	}
+
+	#########################################################################
+	#
+	# MISC STUFF
+	#
+	#########################################################################
+
+	start_struggle = {
+		struggle_type = RICE_sri_lanka_struggle
+		start_phase = struggle_RICE_sri_lanka_phase_degeneration
+	}
+
+	set_global_variable = {
+		name = RICE_mahavihara_prominence
+		value = 100
+	}
+
+	set_global_variable = {
+		name = RICE_abhayagiri_prominence
+		value = 100
+	}
+
+	set_global_variable = {
+		name = RICE_jetavana_prominence
+		value = 100
+	}
+
+}
+
+
+RICE_setup_sri_lanka_display_values = {
+	if = {
+		limit = {
+			exists = struggle:RICE_sri_lanka_struggle
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_sri_lanka_struggle_region
+				}
+			}
+		}
+		send_interface_message = {
+			type = event_generic_neutral
+			title = RICE_sri_lanka_values_notification.title
+			custom_tooltip = RICE_sri_lanka_values_notification.mahavihara_tooltip
+			custom_tooltip = RICE_sri_lanka_values_notification.abhayagiri_tooltip
+			custom_tooltip = RICE_sri_lanka_values_notification.jetavana_tooltip
+		}
+	}
+}
+
+
+RICE_sri_lanka_struggle_land_grant_buddhist_effect = {
+	if = {
+		limit = {
+			exists = struggle:RICE_sri_lanka_struggle
+			OR = {
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = RICE_sri_lanka_struggle
+				}
+				any_character_struggle = {
+					involvement = interloper
+					is_struggle_type = RICE_sri_lanka_struggle
+				}
+			}
+		}
+		struggle:RICE_sri_lanka_struggle = {
+			activate_struggle_catalyst = {
+				catalyst = catalyst_RICE_sri_lanka_land_grants_buddhist
+				character = root
+			}
+		}
+	}
+}
+
+RICE_sri_lanka_struggle_land_grant_non_buddhist_effect = {
+	if = {
+		limit = {
+			exists = struggle:RICE_sri_lanka_struggle
+			OR = {
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = RICE_sri_lanka_struggle
+				}
+				any_character_struggle = {
+					involvement = interloper
+					is_struggle_type = RICE_sri_lanka_struggle
+				}
+			}
+		}
+		struggle:RICE_sri_lanka_struggle = {
+			activate_struggle_catalyst = {
+				catalyst = catalyst_RICE_sri_lanka_land_grants_non_buddhist
+				character = root
+			}
+		}
+	}
+}
+
+
