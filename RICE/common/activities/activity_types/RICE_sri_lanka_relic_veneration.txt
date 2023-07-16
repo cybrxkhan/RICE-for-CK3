@@ -1,19 +1,24 @@
-﻿activity_RICE_sri_lanka_ramasetu_pilgrimage = {
+﻿activity_RICE_sri_lanka_relic_veneration = {
 	is_shown = {
 		highest_held_title_tier > tier_barony
 		is_landed = yes
 		OR = {
-			title:c_madurai = {
-				squared_distance = {
-					target = root.capital_province
-					value <= squared_distance_medium
+			AND = {						
+				exists = struggle:RICE_sri_lanka_struggle
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = RICE_sri_lanka_struggle
+				}	
+			}		
+			AND = {
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_sri_lanka_struggle_region		
+					}
 				}
+				has_global_variable = RICE_sri_lanka_ending_united_sangha
 			}
-			has_title = title:c_madurai
-			# Already accounted for above
-			#capital_province = {
-			#	geographical_region = RICE_sri_lanka_struggle_region
-			#}
 		}
 		OR = {
 			faith.religion = { is_in_family = rf_eastern }
@@ -29,21 +34,28 @@
 	}
 
 	can_start = {
-		# OR = {
-		# 	custom_description = {
-		# 		text = "RICE_chios_near_chios_req"
-		# 		title:c_madurai = {
-		# 			squared_distance = {
-		# 				target = root.capital_province
-		# 				value <= squared_distance_medium
-		# 			}
-		# 		}
-		# 	}
-		# 	has_title = title:c_madurai
-		# }
 		OR = {
-			faith.religion = { is_in_family = rf_eastern }
-			faith.religion = { is_in_family = rf_abrahamic }
+			AND = {						
+				exists = struggle:RICE_sri_lanka_struggle
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = RICE_sri_lanka_struggle
+				}	
+			}		
+			AND = {
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_sri_lanka_struggle_region		
+					}
+				}
+				has_global_variable = RICE_sri_lanka_ending_united_sangha
+			}
+		}
+		OR = {
+			has_trait = RICE_mahavihara_trait
+			has_trait = RICE_abhayagiri_trait
+			has_trait = RICE_jetavana_trait
 		}
 	}
 
@@ -138,8 +150,8 @@
 		}
 	}
 
-	province_filter = all
-	ai_province_filter = realm
+	province_filter = top_realm
+	ai_province_filter = top_realm
 	wait_time_before_start = { days = 14 }
 
 	###################
@@ -153,57 +165,23 @@
 		# TYPE OF VISIT
 		#########
 		special_type = {
-			RICE_local_pilgrimage_type_devotion = {
-				default = yes	
-				ai_will_do = {
-					value = 10
-					if = {
-						limit = {
-							has_trait = zealous
-						}
-						add = 5
-					}
-					if = {
-						limit = {
-							has_trait = diligent
-						}
-						add = 5
-					}
-				}
+			RICE_sri_lanka_relic_veneration_type_bodhi = {
+				# Normally, default = yes will make one option the default
+				default = {
+					has_trait = RICE_mahavihara_trait
+				}	
 			}
-			RICE_local_pilgrimage_type_observance = {		
-				ai_will_do = {
-					value = 10
-					if = {
-						limit = {
-							has_trait = ambitious
-						}
-						add = 5
-					}
-					if = {
-						limit = {
-							has_trait = humble
-						}
-						add = 5
-					}
-				}
+			RICE_sri_lanka_relic_veneration_type_tooth = {
+				# Normally, default = yes will make one option the default
+				default = {
+					has_trait = RICE_abhayagiri_trait
+				}	
 			}
-			RICE_local_pilgrimage_type_vacation = {		
-				ai_will_do = {
-					value = 10
-					if = {
-						limit = {
-							has_trait = lazy
-						}
-						add = 5
-					}
-					if = {
-						limit = {
-							has_trait = gregarious
-						}
-						add = 5
-					}
-				}
+			RICE_sri_lanka_relic_veneration_type_sash = {	
+				# Normally, default = yes will make one option the default
+				default = {
+					has_trait = RICE_jetavana_trait
+				}	
 			}
 		}
 
@@ -214,7 +192,7 @@
 	###################
 
 	phases = {
-		RICE_local_pilgrimage_pilgrimage_phase = {
+		RICE_sri_lanka_relic_veneration_veneration_phase = {
 			is_predefined = yes
 			
 			on_phase_active = {
@@ -284,7 +262,7 @@
 			limit = {
 				exists = barony
 			}
-			barony = title:b_rameshvaram
+			barony = title:b_anuradhapura
 		}
 	}
 
@@ -295,7 +273,7 @@
 		# Actual location
 		if = {
 			limit = {
-				county ?= title:c_madurai
+				county ?= title:c_phiti
 			}
 			add = 100
 		}
@@ -379,13 +357,13 @@
 	}
 
 	host_intents = {
-		intents = { RICE_local_pilgrimage_worship_intent RICE_local_pilgrimage_model_intent RICE_local_pilgrimage_curiosity_intent }
-		default = RICE_local_pilgrimage_worship_intent
+		intents = { RICE_sri_lanka_relic_veneration_worship_intent }
+		default = RICE_sri_lanka_relic_veneration_worship_intent
 	}
 
 	guest_intents = {
-		intents = { RICE_local_pilgrimage_worship_intent RICE_local_pilgrimage_model_intent RICE_local_pilgrimage_curiosity_intent }
-		default = RICE_local_pilgrimage_worship_intent
+		intents = { RICE_sri_lanka_relic_veneration_worship_intent }
+		default = RICE_sri_lanka_relic_veneration_worship_intent
 	}
 
 	guest_join_chance = {
@@ -400,15 +378,15 @@
 		if = {
 			limit = { this = scope:host }
 			create_character_memory = {
-				type = RICE_sri_lanka_ramasetu_pilgrimage_host_memory
+				type = RICE_sri_lanka_relic_veneration_host_memory
 			}
 			#scope:host = {
-			#	RICE_sri_lanka_ramasetu_pilgrimage_completed_log_entry_effect = yes
+			#	RICE_sri_lanka_relic_veneration_completed_log_entry_effect = yes
 			#}
 		}
 		else = {			
 			create_character_memory = {
-				type = RICE_sri_lanka_ramasetu_pilgrimage_guest_memory
+				type = RICE_sri_lanka_relic_veneration_guest_memory
 				participants = {
 					host = scope:host
 				}
@@ -459,26 +437,14 @@
 	#
 	#################
 
-	# Patmos (sea)
-	background = {
-		trigger = {
-			NOT = { scope:host.location = scope:activity.activity_location }
-			scope:host.location = {
-				is_sea_province = yes
-			}
-		}
-		texture = "gfx/interface/illustrations/event_scenes/RICE_greek_beach.dds"
-		environment = "environment_event_desert"
-		ambience = "event:/DLC/FP1/SFX/Events/event_beached_longships"
-	}
 	# Patmos
 	background = {
 		trigger = {
 			NOT = { scope:host.location = scope:activity.activity_location }
 		}
-		texture = "gfx/interface/illustrations/event_scenes/RICE_greek_beach.dds"
-		environment = "environment_event_desert"
-		ambience = "event:/DLC/FP1/SFX/Events/event_beached_longships"
+		texture = "gfx/interface/illustrations/event_scenes/RICE_sri_lanka_landscape.dds"
+		environment = "environment_travel_farmlands"
+		ambience = "event:/SFX/Events/Backgrounds/fields_farms_day"
 	}
 
 	#################
@@ -489,9 +455,9 @@
 
 	#Fallback
 	background = {
-		texture = "gfx/interface/illustrations/event_scenes/RICE_greek_beach.dds"
-		environment = "environment_event_desert"
-		ambience = "event:/DLC/FP1/SFX/Events/event_beached_longships"
+		texture = "gfx/interface/illustrations/event_scenes/RICE_sri_lanka_stupa.dds"
+		environment = "environment_indian_holy_site"	
+		ambience = "event:/DLC/EP2/SFX/Events/Backgrounds/evn_background_jungle"
 	}
 
 
