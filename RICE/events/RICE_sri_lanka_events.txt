@@ -113,6 +113,162 @@ sri_lanka.0001 = { # Fullscreen Intro Event
 }
 
 
+# Sangha unified ending
+sri_lanka.0005 = { 
+	type = character_event
+	window = fullscreen_event
+	title = sri_lanka.0005.t
+	desc = sri_lanka.0005.desc
+	theme = faith
+	override_background = { reference = RICE_indian_holy_site }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_end_animate" }
+
+	immediate = {
+		play_music_cue = "mx_cue_peace_ensues"
+		show_as_tooltip = {		
+			scope:sri_lanka_struggle_ender = {
+				RICE_sri_lanka_struggle_ending_uniter_effect = yes
+			}	
+		}
+	}
+
+	# Ok
+	option = {
+		name = sri_lanka.0005.a
+	}
+
+	after = {
+	}
+}
+
+
+
+# Choose a relic to enshrine as the cool relic
+sri_lanka.0007 = {
+	type = character_event
+	title = sri_lanka.0007.t
+	desc = sri_lanka.0007.desc
+	theme = RICE_theme_sri_lanka_stupa
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	immediate = {
+		religion:buddhism_religion = {
+			save_scope_as = buddhism
+		}
+		faith:theravada = {
+			save_scope_as = theravada
+		}
+	}
+
+	option = { # Bodhi
+		name = sri_lanka.0007.a
+		if = {
+			limit = {
+				has_trait = RICE_mahavihara_trait
+			}
+			add_piety = 200
+		}
+		title:c_phiti = {
+			add_county_modifier = {
+				modifier = RICE_sri_lanka_relic_bodhi_shrine_modifier
+			}
+		}
+		set_global_variable = {
+			name = RICE_sri_lanka_ending_united_sangha_bodhi
+			value = yes
+		}
+	}
+
+	option = { # Tooth
+		name = sri_lanka.0007.b
+		if = {
+			limit = {
+				has_trait = RICE_abhayagiri_trait
+			}
+			add_piety = 200
+		}
+		title:c_phiti = {
+			add_county_modifier = {
+				modifier = RICE_sri_lanka_relic_tooth_shrine_modifier
+			}
+		}
+		set_global_variable = {
+			name = RICE_sri_lanka_ending_united_sangha_tooth
+			value = yes
+		}
+	}
+
+	option = { # Dharmadhatu
+		name = sri_lanka.0007.c
+		if = {
+			limit = {
+				has_trait = RICE_jetavana_trait
+			}
+			add_piety = 200
+		}
+		title:c_phiti = {
+			add_county_modifier = {
+				modifier = RICE_sri_lanka_relic_dharmadhatu_shrine_modifier
+			}
+		}
+		set_global_variable = {
+			name = RICE_sri_lanka_ending_united_sangha_dharmadhatu
+			value = yes
+		}
+	}
+
+	after = {
+		hidden_effect = {
+			RICE_sri_lanka_struggle_ending_uniter_effect = yes
+		}
+		# End Struggle
+		if = {
+			limit = {
+				root = scope:sri_lanka_struggle_ender
+			}
+			struggle:RICE_sri_lanka_struggle = {
+				end_struggle = RICE_sri_lanka_struggle_ending_unite_sangha_decision
+			}
+		}
+		every_ruler = {
+			limit = {
+				is_ai = no
+				OR = {
+					any_character_struggle = {
+						involvement = involved
+						is_struggle_type = RICE_sri_lanka_struggle
+					}					
+					any_character_struggle = {
+						involvement = interloper
+						is_struggle_type = RICE_sri_lanka_struggle
+					}
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							OR = {
+								geographical_region = world_india
+								geographical_region = world_burma
+								geographical_region = world_tibet
+							}
+						}
+					}
+					faith = {
+						has_doctrine = rice_theravada_canon_doctrine
+					}				
+				}
+			}
+			trigger_event = sri_lanka.0005
+		}
+	}
+
+}
+
+
+
 # Land granted to Buddhist/Hindu/Jain monasteries/temples
 sri_lanka.0010 = {
 	type = character_event
