@@ -21,116 +21,94 @@ RICE_sri_lanka_struggle_ending_unite_sangha_decision = {
 	is_valid = {
 		is_independent_ruler = yes
 
-		OR = {
-			custom_tooltip = {
-				text = RICE_normandy_struggle_conquest_decision_correct_phase_tt
-				struggle:RICE_normandy_struggle = {
-					is_struggle_phase = struggle_RICE_normandy_phase_adventure
-				}
-			}
-			AND = {
-				custom_tooltip = {
-					text = RICE_normandy_struggle_experienced_acculturation_phase_tt
-					has_global_variable = RICE_normandy_acculturation_phase_once				
-				}
-				custom_tooltip = {
-					text = RICE_normandy_struggle_experienced_adventure_phase_tt
-					has_global_variable = RICE_normandy_adventure_phase_once				
-				}				
-			}
-		}
-
-
-		has_title = title:d_normandy
-		completely_controls = title:d_normandy
-
-		# Different era and prestige requirements depending on when the game started
-		trigger_if = {
-			limit = {
-				game_start_date > 1050.1.1
-			}
-			culture = {
-				has_cultural_era_or_later = culture_era_high_medieval
-			}
-		}
-		trigger_else = {
-			culture = {
-				has_cultural_era_or_later = culture_era_early_medieval
-			}
-		}
-
-		prestige_level >= 3
-
-		OR = {
-			custom_tooltip = {
-				text = struggle_ending_decision_correct_involvement_tt
-				any_character_struggle = {
-					involvement = involved
-					is_struggle_type = RICE_normandy_struggle
-				}
-			}
-			AND = {
-				#completely_controls_region = RICE_normandy_region
-				custom_description = {
-					text = RICE_normandy_struggle_is_norman_req
-					OR = {
-						culture = culture:norman
-						culture = {
-							any_parent_culture_or_above = {
-								this = culture:norman
-							}
-						}
-					}
-				}
-				custom_description = {
-					text = RICE_normandy_struggle_culture_involved_req
-					struggle:RICE_normandy_struggle = { is_culture_involved_in_struggle = root.culture }
-				}
-				custom_description = {
-					text = RICE_normandy_struggle_faith_involved_req
-					struggle:RICE_normandy_struggle = { is_faith_involved_in_struggle = root.faith }
-				}
-			}
-		}
+		exists = struggle:RICE_sri_lanka_struggle
 
 		custom_tooltip = {
-			text = RICE_normandy_struggle_decision_historia_normannorum_tt
-			has_global_variable = RICE_normandy_historia_normannorum_done
+			text = struggle_ending_decision_correct_involvement_tt
+			any_character_struggle = {
+				involvement = involved
+				is_struggle_type = RICE_sri_lanka_struggle
+			}
 		}
 
-		exists = struggle:RICE_normandy_struggle
-
-		# Completely control at least 2 of the important North Atlantic duchies
-		calc_true_if = {
-			amount >= 1
-			completely_controls_region = custom_england
-			completely_controls_region = custom_west_francia_minus_mediterranean
-			completely_controls_region = RICE_greater_normandy_region
+		OR = {
+			religion = religion:buddhism_religion
+			faith = { has_doctrine = doctrine_pluralism_pluralistic }
 		}
+
+		OR = {
+			AND = {
+				custom_tooltip = {
+					text = RICE_sri_lanka_struggle_ending_unite_decision_mahavihara_tt
+					global_var:RICE_mahavihara_prominence >= 900
+				}
+				has_trait_xp = {
+					trait = RICE_mahavihara_trait
+					value >= 40
+				}
+				#has_trait = RICE_mahavihara_trait
+			}
+			AND = {
+				custom_tooltip = {
+					text = RICE_sri_lanka_struggle_ending_unite_decision_abhayagiri_tt
+					global_var:RICE_abhayagiri_prominence >= 900
+				}
+				has_trait_xp = {
+					trait = RICE_abhayagiri_trait
+					value >= 40
+				}
+				#has_trait = RICE_abhayagiri_trait
+			}
+			AND = {
+				custom_tooltip = {
+					text = RICE_sri_lanka_struggle_ending_unite_decision_jetavana_tt
+					global_var:RICE_jetavana_prominence >= 900
+				}
+				has_trait_xp = {
+					trait = RICE_jetavana_trait
+					value >= 40
+				}
+				#has_trait = RICE_jetavana_trait
+			}
+		}
+
+		OR = {
+			AND = {			
+				has_title = title:k_lanka
+				completely_controls = title:k_lanka
+				piety_level >= 2
+			}
+			AND = {
+				# Completely control at least 2 of 3 Sri Lankan duchies
+				calc_true_if = {
+					amount >= 2
+					completely_controls = title:d_dakhina_desa
+					completely_controls = title:d_ruhunu
+					completely_controls = title:d_sinhala
+				}
+				piety_level >= 3
+			}
+			piety_level >= 4
+		}
+
+		
 
 	}
 
 	effect = {
 
-		save_scope_as = normandy_struggle_ender
+		save_scope_as = sri_lanka_struggle_ender
 
 		##### Major Effects #####
 		show_as_tooltip = {
-			RICE_normandy_struggle_conquest_ender_effect = yes
+			RICE_sri_lanka_struggle_ending_uniter_effect = yes
 		}
-		RICE_normandy_struggle_conquest_ending_tooltip_effect = yes
-		custom_tooltip = RICE_normandy_struggle_ending_greater_normandy_tt
-		custom_tooltip = RICE_normandy_struggle_ending_england_francia_tt
-		# Choose an ethos for your culture
-		custom_tooltip = RICE_normandy_struggle_ending_conquest_ethos_tt
-
-		# show_as_tooltip = {
-		# 	stress_impact = {
-		# 		lazy = minor_stress_impact_gain
-		# 		content = minor_stress_impact_gain
-		# 		craven = minor_stress_impact_gain
-		# 	}
-		# }
+		# Pali Canon doctrine
+		custom_tooltip = RICE_sri_lanka_struggle_ending_uniter_pali_canon_doctrine_effect
+		# Phase doctrine
+		custom_tooltip = RICE_sri_lanka_struggle_ending_uniter_phase_doctrine_effect
+		# Relic effect
+		custom_tooltip = RICE_sri_lanka_struggle_ending_uniter_relic_effect
 
 		# Trigger the ending event
 		trigger_event = sri_lanka.8888
@@ -161,116 +139,58 @@ RICE_sri_lanka_struggle_ending_destroy_sangha_decision = {
 	is_valid = {
 		is_independent_ruler = yes
 
-		OR = {
-			custom_tooltip = {
-				text = RICE_normandy_struggle_conquest_decision_correct_phase_tt
-				struggle:RICE_normandy_struggle = {
-					is_struggle_phase = struggle_RICE_normandy_phase_adventure
-				}
-			}
-			AND = {
-				custom_tooltip = {
-					text = RICE_normandy_struggle_experienced_acculturation_phase_tt
-					has_global_variable = RICE_normandy_acculturation_phase_once				
-				}
-				custom_tooltip = {
-					text = RICE_normandy_struggle_experienced_adventure_phase_tt
-					has_global_variable = RICE_normandy_adventure_phase_once				
-				}				
+		exists = struggle:RICE_sri_lanka_struggle
+
+		custom_tooltip = {
+			text = struggle_ending_decision_correct_involvement_tt
+			any_character_struggle = {
+				involvement = involved
+				is_struggle_type = RICE_sri_lanka_struggle
 			}
 		}
 
+		NOT = { religion = religion:buddhism_religion }
 
-		has_title = title:d_normandy
-		completely_controls = title:d_normandy
 
-		# Different era and prestige requirements depending on when the game started
-		trigger_if = {
-			limit = {
-				game_start_date > 1050.1.1
-			}
-			culture = {
-				has_cultural_era_or_later = culture_era_high_medieval
-			}
-		}
-		trigger_else = {
-			culture = {
-				has_cultural_era_or_later = culture_era_early_medieval
-			}
-		}
-
-		prestige_level >= 3
-
-		OR = {
-			custom_tooltip = {
-				text = struggle_ending_decision_correct_involvement_tt
-				any_character_struggle = {
-					involvement = involved
-					is_struggle_type = RICE_normandy_struggle
-				}
-			}
-			AND = {
-				#completely_controls_region = RICE_normandy_region
-				custom_description = {
-					text = RICE_normandy_struggle_is_norman_req
-					OR = {
-						culture = culture:norman
-						culture = {
-							any_parent_culture_or_above = {
-								this = culture:norman
-							}
-						}
-					}
-				}
-				custom_description = {
-					text = RICE_normandy_struggle_culture_involved_req
-					struggle:RICE_normandy_struggle = { is_culture_involved_in_struggle = root.culture }
-				}
-				custom_description = {
-					text = RICE_normandy_struggle_faith_involved_req
-					struggle:RICE_normandy_struggle = { is_faith_involved_in_struggle = root.faith }
-				}
-			}
+		custom_tooltip = {
+			text = RICE_sri_lanka_struggle_ending_destroy_decision_mahavihara_tt
+			global_var:RICE_mahavihara_prominence < 100
 		}
 
 		custom_tooltip = {
-			text = RICE_normandy_struggle_decision_historia_normannorum_tt
-			has_global_variable = RICE_normandy_historia_normannorum_done
+			text = RICE_sri_lanka_struggle_ending_destroy_decision_abhayagiri_tt
+			global_var:RICE_abhayagiri_prominence < 100
 		}
 
-		exists = struggle:RICE_normandy_struggle
-
-		# Completely control at least 2 of the important North Atlantic duchies
-		calc_true_if = {
-			amount >= 1
-			completely_controls_region = custom_england
-			completely_controls_region = custom_west_francia_minus_mediterranean
-			completely_controls_region = RICE_greater_normandy_region
+		custom_tooltip = {
+			text = RICE_sri_lanka_struggle_ending_destroy_decision_jetavana_tt
+			global_var:RICE_jetavana_prominence < 100
 		}
+
+		NOR = {
+			has_trait = RICE_mahavihara_trait
+			has_trait = RICE_abhayagiri_trait
+			has_trait = RICE_jetavana_trait
+		}
+
+		has_title = title:k_lanka
+		completely_controls = title:k_lanka
+
+		
+		prestige_level >= 2
 
 	}
 
 	effect = {
 
-		save_scope_as = normandy_struggle_ender
+		save_scope_as = sri_lanka_struggle_destroyer
 
 		##### Major Effects #####
 		show_as_tooltip = {
-			RICE_normandy_struggle_conquest_ender_effect = yes
+			RICE_sri_lanka_struggle_ending_destroyer_effect = yes
 		}
-		RICE_normandy_struggle_conquest_ending_tooltip_effect = yes
-		custom_tooltip = RICE_normandy_struggle_ending_greater_normandy_tt
-		custom_tooltip = RICE_normandy_struggle_ending_england_francia_tt
-		# Choose an ethos for your culture
-		custom_tooltip = RICE_normandy_struggle_ending_conquest_ethos_tt
-
-		# show_as_tooltip = {
-		# 	stress_impact = {
-		# 		lazy = minor_stress_impact_gain
-		# 		content = minor_stress_impact_gain
-		# 		craven = minor_stress_impact_gain
-		# 	}
-		# }
+		# Doctrine
+		custom_tooltip = RICE_sri_lanka_struggle_ending_uniter_destroyer_doctrine_effect
 
 		# Trigger the ending event
 		trigger_event = sri_lanka.8888
@@ -870,17 +790,6 @@ RICE_sri_lanka_support_monastery = {
 		}
 
 		item = {	
-			value = RICE_sri_lanka_support_monastery_pali_literature_option
-			current_description = RICE_sri_lanka_support_monastery_pali_literature_option_desc
-			localization = RICE_sri_lanka_support_monastery_pali_literature_option
-			icon = "gfx/interface/icons/widgets/RICE_sri_lanka_pali_literature.dds"
-
-			ai_chance = {
-				value = 10
-			}
-		}
-
-		item = {	
 			value = RICE_sri_lanka_support_monastery_ordination_ceremonies_option
 			current_description = RICE_sri_lanka_support_monastery_ordination_ceremonies_option_desc
 			localization = RICE_sri_lanka_support_monastery_ordination_ceremonies_option
@@ -892,10 +801,32 @@ RICE_sri_lanka_support_monastery = {
 		}
 
 		item = {	
+			value = RICE_sri_lanka_support_monastery_pali_literature_option
+			current_description = RICE_sri_lanka_support_monastery_pali_literature_option_desc
+			localization = RICE_sri_lanka_support_monastery_pali_literature_option
+			icon = "gfx/interface/icons/widgets/RICE_sri_lanka_pali_literature.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {	
 			value = RICE_sri_lanka_support_monastery_frontier_monks_option
 			current_description = RICE_sri_lanka_support_monastery_frontier_monks_option_desc
 			localization = RICE_sri_lanka_support_monastery_frontier_monks_option
 			icon = "gfx/interface/icons/widgets/RICE_sri_lanka_frontier_monks.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {	
+			value = RICE_sri_lanka_support_monastery_parivena_schools_option
+			current_description = RICE_sri_lanka_support_monastery_parivena_schools_option_desc
+			localization = RICE_sri_lanka_support_monastery_parivena_schools_option
+			icon = "gfx/interface/icons/widgets/RICE_sri_lanka_parivena_schools.dds"
 
 			ai_chance = {
 				value = 10
