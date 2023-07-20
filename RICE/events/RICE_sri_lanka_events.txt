@@ -1137,7 +1137,52 @@ sri_lanka.0021 = {
 sri_lanka.0030 = {
 	type = character_event
 	title = sri_lanka.0030.t
-	desc = sri_lanka.0030.desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					religion = religion:buddhism_religion
+					OR = {
+						any_character_struggle = {
+							involvement = involved
+							is_struggle_type = RICE_sri_lanka_struggle
+						}
+						any_character_struggle = {
+							involvement = interloper
+							is_struggle_type = RICE_sri_lanka_struggle
+						}
+					}
+				}
+				desc = sri_lanka.0030.desc.buddhist
+			}
+			triggered_desc = {
+				trigger = {
+					NOT = { religion = religion:buddhism_religion }
+					OR = {
+						any_character_struggle = {
+							involvement = involved
+							is_struggle_type = RICE_sri_lanka_struggle
+						}
+						any_character_struggle = {
+							involvement = interloper
+							is_struggle_type = RICE_sri_lanka_struggle
+						}
+					}
+				}
+				desc = sri_lanka.0030.desc.non_buddhist
+			}
+			desc = sri_lanka.0030.desc.foreign
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_sri_lanka_support_monastery_type = flag:ambalamas
+				}
+				desc = sri_lanka.0030.desc.ambalamas
+			}
+			desc = sri_lanka.0030.desc.foreign
+		}
+	}
 	theme = RICE_theme_sri_lanka_stupa
 	
 	right_portrait = {
@@ -1152,6 +1197,12 @@ sri_lanka.0030 = {
 		faith:theravada = {
 			save_scope_as = theravada
 		}
+		if = {
+			limit = {
+				var:RICE_sri_lanka_support_monastery_type = flag:ambalamas
+			}
+			RICE_sri_lanka_monastery_prominence_gain_medium_effect = yes
+		}
 	}
 
 	widget = {
@@ -1161,6 +1212,34 @@ sri_lanka.0030 = {
 
 	option = { # Ok
 		name = sri_lanka.0030.a
+		if = {
+			limit = {
+				var:RICE_sri_lanka_support_monastery_type = flag:ambalamas
+			}
+			add_piety = 50
+			add_prestige = 150
+			custom_tooltip = RICE_sri_lanka_prominence_increase_medium_tooltip
+			every_held_title = {
+				custom = RICE_every_sri_lanka_county
+				limit = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_sri_lanka_struggle_region
+					}
+				}	
+				add_county_modifier = {
+					modifier = RICE_sri_lanka_ambalamas
+					years = 10
+				}				
+			}
+		}
+	}
+
+	after = {		
+		if = {
+			limit = { has_variable = RICE_sri_lanka_support_monastery_type }
+			remove_variable = RICE_sri_lanka_support_monastery_type
+		}
 	}
 
 }
