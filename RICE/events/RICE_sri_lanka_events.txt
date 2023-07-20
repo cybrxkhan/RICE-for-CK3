@@ -3,8 +3,13 @@
 # Sri Lanka
 # 
 # sri_lanka.0000-sri_lanka.0019			Setup events, history events, miscellaneous events and decisions
-# sri_lanka.0020-sri_lanka.0039			Sri Lanka Monasteries basic decisions
-# sri_lanka.0050-sri_lanka.0099			Generic flavor events
+# sri_lanka.0020-sri_lanka.0039			Sri Lanka Monasteries basic decisions and events
+# sri_lanka.0040-sri_lanka.0049			Sri Lanka minor flavor decisions
+# sri_lanka.0050-sri_lanka.0069			Pilgrimage to Ramasetu
+# sri_lanka.0070-sri_lanka.0089			Pilgrimage to Sri Pada
+# sri_lanka.0090-sri_lanka.0099			Indian Ocean rework
+# sri_lanka.0100-sri_lanka.0119			Sri Lanka Relic Veneration
+# sri_lanka.0150-sri_lanka.0199			Generic Flavor Events
 # 
 # 
 ###############################################################################
@@ -812,6 +817,112 @@ sri_lanka.0010 = {
 
 
 
+# Mahavihara disappears
+sri_lanka.0011 = {
+	type = character_event
+	title = sri_lanka.0011.t
+	desc = sri_lanka.0011.desc
+	theme = RICE_theme_sri_lanka_stupa
+	
+	right_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = {
+				has_trait = RICE_mahavihara_trait
+			}
+			animation = sadness
+		}
+		animation = thinking
+	}
+
+	immediate = {
+		every_ruler = {
+			limit = {
+				has_trait = RICE_mahavihara_trait
+			}
+			custom = RICE_every_mahavihara_ruler
+			remove_trait = RICE_mahavihara_trait
+		}
+	}
+
+	option = { # Ok
+		name = sri_lanka.0011.a
+		custom_tooltip = sri_lanka.0011.a.tooltip
+	}
+
+}
+
+
+# Abhayagiri disappears
+sri_lanka.0012 = {
+	type = character_event
+	title = sri_lanka.0012.t
+	desc = sri_lanka.0012.desc
+	theme = RICE_theme_sri_lanka_stupa
+	
+	right_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = {
+				has_trait = RICE_abhayagiri_trait
+			}
+			animation = sadness
+		}
+		animation = thinking
+	}
+
+	immediate = {
+		every_ruler = {
+			limit = {
+				has_trait = RICE_abhayagiri_trait
+			}
+			custom = RICE_every_abhayagiri_ruler
+			remove_trait = RICE_abhayagiri_trait
+		}
+	}
+
+	option = { # Ok
+		name = sri_lanka.0012.a
+		custom_tooltip = sri_lanka.0012.a.tooltip
+	}
+
+}
+
+# Jetavana disappears
+sri_lanka.0013 = {
+	type = character_event
+	title = sri_lanka.0013.t
+	desc = sri_lanka.0013.desc
+	theme = RICE_theme_sri_lanka_stupa
+	
+	right_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = {
+				has_trait = RICE_jetavana_trait
+			}
+			animation = sadness
+		}
+		animation = thinking
+	}
+
+	immediate = {
+		every_ruler = {
+			limit = {
+				has_trait = RICE_jetavana_trait
+			}
+			custom = RICE_every_jetavana_ruler
+			remove_trait = RICE_jetavana_trait
+		}
+	}
+
+	option = { # Ok
+		name = sri_lanka.0013.a
+		custom_tooltip = sri_lanka.0013.a.tooltip
+	}
+
+}
+
 
 
 
@@ -828,7 +939,27 @@ sri_lanka.0010 = {
 sri_lanka.0020 = {
 	type = character_event
 	title = sri_lanka.0020.t
-	desc = sri_lanka.0020.desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOR = {
+						any_character_struggle = {
+							involvement = involved
+							is_struggle_type = RICE_sri_lanka_struggle
+						}
+						any_character_struggle = {
+							involvement = interloper
+							is_struggle_type = RICE_sri_lanka_struggle
+						}
+					}
+				}
+				desc = sri_lanka.0020.desc.non_sri_lankan
+			}
+			desc = sri_lanka.0020.desc.sri_lankan
+		}
+		desc = sri_lanka.0020.desc
+	}
 	theme = RICE_theme_sri_lanka_stupa
 	
 	right_portrait = {
@@ -866,6 +997,26 @@ sri_lanka.0020 = {
 		name = sri_lanka.0020.c
 		add_trait = RICE_jetavana_trait
 		custom_tooltip = sri_lanka.0020.c.tooltip
+	}
+
+	after = {
+		if = {
+			limit = {
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = RICE_sri_lanka_struggle
+				}
+			}
+			struggle:RICE_sri_lanka_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_sri_lanka_align_with_monastery
+					character = root
+				}
+			}
+		}
+		else = {
+			custom_tooltip = sri_lanka.0020.non_sri_lankan.tooltip
+		}
 	}
 
 }
@@ -966,4 +1117,136 @@ sri_lanka.0021 = {
 		custom_tooltip = sri_lanka.0020.c.tooltip
 	}
 
+	after = {
+		if = {
+			limit = {
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = RICE_sri_lanka_struggle
+				}
+			}
+			struggle:RICE_sri_lanka_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_sri_lanka_change_monastery
+					character = root
+				}
+			}
+		}
+		else = {
+			custom_tooltip = sri_lanka.0020.non_sri_lankan.tooltip
+		}
+	}
+
+
 }
+
+
+
+
+# Support
+sri_lanka.0030 = {
+	type = character_event
+	title = sri_lanka.0030.t
+	desc = sri_lanka.0030.desc
+	theme = RICE_theme_sri_lanka_stupa
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	immediate = {
+		religion:buddhism_religion = {
+			save_scope_as = buddhism
+		}
+		faith:theravada = {
+			save_scope_as = theravada
+		}
+	}
+
+	widget = {
+		gui = "event_window_widget_RICE_sri_lanka_progressbars_all"
+		container = "custom_widgets_container"
+	}
+
+	option = { # Ok
+		name = sri_lanka.0030.a
+	}
+
+}
+
+
+
+
+######################################################################################
+# 
+# SRI LANKA RELIC VENERATION
+# 
+# sri_lanka.0100-sri_lanka.0119
+# 
+######################################################################################
+
+
+# Relic veneration travel event
+sri_lanka.0100 = {
+	type = character_event
+	title = sri_lanka.0100.t
+	desc = {
+		desc = sri_lanka.0100.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					involved_activity = {
+						has_activity_option = { category = special_type option = RICE_sri_lanka_relic_veneration_type_bodhi }
+					}
+				}
+				desc = sri_lanka.0100.desc.bodhi
+			}
+			triggered_desc = {
+				trigger = {
+					involved_activity = {
+						has_activity_option = { category = special_type option = RICE_sri_lanka_relic_veneration_type_tooth }
+					}
+				}
+				desc = sri_lanka.0100.desc.tooth
+			}
+			triggered_desc = {
+				trigger = {
+					involved_activity = {
+						has_activity_option = { category = special_type option = RICE_sri_lanka_relic_veneration_type_dharmadhatu }
+					}
+				}
+				desc = sri_lanka.0100.desc.dharmadhatu
+			}
+		}
+	}
+	theme = travel_pilgrimage
+	override_background = { reference = RICE_background_sri_lanka_landscape }
+	
+	right_portrait = root
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_sri_lanka_relic_veneration
+		}
+	}
+
+	immediate = {
+		religion:buddhism_religion = {
+			save_scope_as = buddhism
+		}
+		faith = {
+			save_scope_as = faith
+		}
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+
+	option = { # Ok
+		name = sri_lanka.0100.a
+	}
+
+}
+
