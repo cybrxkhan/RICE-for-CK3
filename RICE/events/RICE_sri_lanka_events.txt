@@ -1248,43 +1248,18 @@ sri_lanka.0030 = {
 # Persecute/Purify
 sri_lanka.0031 = {
 	type = character_event
-	title = sri_lanka.0031.t
-	desc = {
+	title = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
 					religion = religion:buddhism_religion
-					OR = {
-						any_character_struggle = {
-							involvement = involved
-							is_struggle_type = RICE_sri_lanka_struggle
-						}
-						any_character_struggle = {
-							involvement = interloper
-							is_struggle_type = RICE_sri_lanka_struggle
-						}
-					}
 				}
-				desc = sri_lanka.0031.desc.buddhist
+				desc = sri_lanka.0031.t.buddhist
 			}
-			triggered_desc = {
-				trigger = {
-					NOT = { religion = religion:buddhism_religion }
-					OR = {
-						any_character_struggle = {
-							involvement = involved
-							is_struggle_type = RICE_sri_lanka_struggle
-						}
-						any_character_struggle = {
-							involvement = interloper
-							is_struggle_type = RICE_sri_lanka_struggle
-						}
-					}
-				}
-				desc = sri_lanka.0031.desc.non_buddhist
-			}
-			desc = sri_lanka.0031.desc.foreign
+			desc = sri_lanka.0031.t.non_buddhist
 		}
+	}
+	desc = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
@@ -1293,6 +1268,20 @@ sri_lanka.0031 = {
 				desc = sri_lanka.0031.desc.ransack_monastery
 			}
 			desc = sri_lanka.0031.desc.foreign
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					religion = religion:buddhism_religion
+				}
+				desc = sri_lanka.0031.desc.buddhist
+			}
+			triggered_desc = {
+				trigger = {
+					NOT = { religion = religion:buddhism_religion }
+				}
+				desc = sri_lanka.0031.desc.non_buddhist
+			}
 		}
 	}
 	theme = dread
@@ -1312,9 +1301,29 @@ sri_lanka.0031 = {
 		}
 		if = {
 			limit = {
-				var:RICE_sri_lanka_persecute_monastery_type = flag:ransack_monastery
+				OR = {
+					var:RICE_sri_lanka_persecute_monastery_type = flag:burn_books
+					var:RICE_sri_lanka_persecute_monastery_type = flag:defrock_heretics
+				}
 			}
-			RICE_sri_lanka_monastery_prominence_loss_major_effect = yes
+			RICE_sri_lanka_monastery_prominence_all_loss_minor_effect = yes
+		}
+		else_if = {
+			limit = {
+				OR = {
+					var:RICE_sri_lanka_persecute_monastery_type = flag:plunder_wealth
+				}
+			}
+			RICE_sri_lanka_monastery_prominence_all_loss_medium_effect = yes
+		}
+		else_if = {
+			limit = {
+				OR = {
+					var:RICE_sri_lanka_persecute_monastery_type = flag:seize_land
+					var:RICE_sri_lanka_persecute_monastery_type = flag:ransack_monastery
+				}
+			}
+			RICE_sri_lanka_monastery_prominence_all_loss_major_effect = yes
 		}
 	}
 
@@ -1338,10 +1347,12 @@ sri_lanka.0031 = {
 							is_struggle_phase = struggle_RICE_sri_lanka_phase_purification
 						}
 					}
+					religion = religion:buddhism_religion
 				}
 				add_piety = -1000
 			}
-			RICE_sri_lanka_all_monasteries_prominence_loss_major_effect_tooltip = yes
+			add_gold = { 250 400 }
+			RICE_sri_lanka_all_monasteries_prominence_all_loss_major_effect_tooltip = yes
 		}
 	}
 
