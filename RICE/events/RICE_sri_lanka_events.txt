@@ -1245,6 +1245,116 @@ sri_lanka.0030 = {
 }
 
 
+# Persecute/Purify
+sri_lanka.0031 = {
+	type = character_event
+	title = sri_lanka.0031.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					religion = religion:buddhism_religion
+					OR = {
+						any_character_struggle = {
+							involvement = involved
+							is_struggle_type = RICE_sri_lanka_struggle
+						}
+						any_character_struggle = {
+							involvement = interloper
+							is_struggle_type = RICE_sri_lanka_struggle
+						}
+					}
+				}
+				desc = sri_lanka.0031.desc.buddhist
+			}
+			triggered_desc = {
+				trigger = {
+					NOT = { religion = religion:buddhism_religion }
+					OR = {
+						any_character_struggle = {
+							involvement = involved
+							is_struggle_type = RICE_sri_lanka_struggle
+						}
+						any_character_struggle = {
+							involvement = interloper
+							is_struggle_type = RICE_sri_lanka_struggle
+						}
+					}
+				}
+				desc = sri_lanka.0031.desc.non_buddhist
+			}
+			desc = sri_lanka.0031.desc.foreign
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_sri_lanka_persecute_monastery_type = flag:ransack_monastery
+				}
+				desc = sri_lanka.0031.desc.ransack_monastery
+			}
+			desc = sri_lanka.0031.desc.foreign
+		}
+	}
+	theme = dread
+	override_background = { reference = burning_building }
+	
+	right_portrait = {
+		character = root
+		animation = war_over_win
+	}
+
+	immediate = {
+		religion:buddhism_religion = {
+			save_scope_as = buddhism
+		}
+		faith:theravada = {
+			save_scope_as = theravada
+		}
+		if = {
+			limit = {
+				var:RICE_sri_lanka_persecute_monastery_type = flag:ransack_monastery
+			}
+			RICE_sri_lanka_monastery_prominence_loss_major_effect = yes
+		}
+	}
+
+	widget = {
+		gui = "event_window_widget_RICE_sri_lanka_progressbars_all"
+		container = "custom_widgets_container"
+	}
+
+	option = { # Ok
+		name = sri_lanka.0031.a
+		if = {
+			limit = {
+				var:RICE_sri_lanka_persecute_monastery_type = flag:ransack_monastery
+			}
+			add_prestige = -300
+			if = {
+				limit = {
+					exists = struggle:RICE_sri_lanka_struggle
+					NOT = {
+						struggle:RICE_sri_lanka_struggle = {
+							is_struggle_phase = struggle_RICE_sri_lanka_phase_purification
+						}
+					}
+				}
+				add_piety = -1000
+			}
+			RICE_sri_lanka_all_monasteries_prominence_loss_major_effect_tooltip = yes
+		}
+	}
+
+	after = {		
+		if = {
+			limit = { has_variable = RICE_sri_lanka_persecute_monastery_type }
+			remove_variable = RICE_sri_lanka_persecute_monastery_type
+		}
+	}
+
+}
+
+
 
 
 ######################################################################################
