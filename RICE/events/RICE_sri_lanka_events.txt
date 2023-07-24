@@ -915,6 +915,120 @@ sri_lanka.0013 = {
 
 
 
+# Give Budal privileges as Vijayabahu
+sri_lanka.0014 = {
+	type = character_event
+	title = sri_lanka.0014.t
+	desc = {
+		first_valid = {
+			# Is giving out privileges and is Vijayabahu
+			triggered_desc = {
+				trigger = {
+					character:189029 = {
+						root = this
+					}
+				}
+				desc = sri_lanka.0014.desc.vijayabahu
+			}
+			# Is giving out privileges but is not Vijayabahu
+			triggered_desc = {
+				trigger = {
+					scope:vijayabahu = {
+						root = this
+					}
+				}
+				desc = sri_lanka.0014.desc.vijayabahu_equivalent
+			}
+			# Budal
+			triggered_desc = {
+				trigger = {
+					scope:budal = {
+						root = this
+					}
+				}
+				desc = sri_lanka.0014.desc.budal
+			}
+			# Other
+			desc = sri_lanka.0014.desc.other
+		}
+	}
+	theme = vassal
+	
+	left_portrait = {
+		character = scope:budal
+		animation = throne_room_bow_3
+	}
+	
+	right_portrait = {
+		character = scope:vijayabahu
+		animation = personality_compassionate
+	}
+
+	immediate = {
+		character:189029 = {
+			save_scope_as = vijayabahu
+		}
+		character:RICE_sri_lanka_002 = {
+			save_scope_as = budal
+		}
+		# Effect should only apply once
+		if = {
+			limit = {
+				completely_controls = title:k_lanka
+			}
+			RICE_sri_lanka_vijayabahu_reward_budal_effect = yes
+		}
+		else = {
+			show_as_tooltip = {
+				RICE_sri_lanka_vijayabahu_reward_budal_effect = yes
+			}
+		}
+		
+	}
+
+	option = { # Ok
+		name = sri_lanka.0014.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				completely_controls = title:k_lanka
+			}		
+			every_ruler = {
+				limit = {
+					is_ai = no
+					OR = {
+						any_held_title = {
+							tier = tier_county
+							any_county_province = {
+								geographical_region = RICE_sri_lanka_struggle_region
+							}
+						}
+						AND = {
+							exists = struggle:RICE_sri_lanka_struggle
+							OR = {
+								any_character_struggle = {
+									involvement = involved
+									is_struggle_type = RICE_sri_lanka_struggle
+								}
+								any_character_struggle = {
+									involvement = interloper
+									is_struggle_type = RICE_sri_lanka_struggle
+								}
+							}
+						}
+					}
+				}
+				trigger_event = sri_lanka.0014
+			}
+		}
+	}
+
+}
+
+
+
 
 ######################################################################################
 # 
