@@ -1572,7 +1572,16 @@ sri_lanka.0030 = {
 		}
 	}
 
-	after = {		
+	after = {
+		if = {
+			limit = {
+				var:RICE_sri_lanka_support_monastery_type = flag:pali_literature
+			}
+			random = {
+				chance = 20
+				trigger_event = sri_lanka.0032
+			}
+		}	
 		if = {
 			limit = { has_variable = RICE_sri_lanka_support_monastery_type }
 			remove_variable = RICE_sri_lanka_support_monastery_type
@@ -2147,6 +2156,125 @@ sri_lanka.0031 = {
 		if = {
 			limit = { has_variable = RICE_sri_lanka_persecute_monastery_type }
 			remove_variable = RICE_sri_lanka_persecute_monastery_type
+		}
+	}
+
+}
+
+
+
+
+# Receive Pali literature
+
+# Kavya about devotion/enlightenment/religious
+# Kavya about Buddhist legends/hagioraphies of Boddhisattvas
+# Pali grammatical aids
+# Theological treatise
+# Histories
+# Tika/Tikas - sub-commentaries
+
+sri_lanka.0032 = {
+	type = character_event
+	title = sri_lanka.0032.t
+	desc = {
+		desc = sri_lanka.0032.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_sri_lanka_pali_literature_type = flag:kavya_legends
+				}
+				desc = sri_lanka.0032.desc.kavya_legends
+			}
+		}
+	}
+	theme = culture_change
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:pali_literature
+		position = lower_center_portrait
+	}
+
+	trigger = {
+		is_ruler = yes
+		religion = religion:buddhism_religion
+	}
+
+	immediate = {
+		religion:buddhism_religion = {
+			save_scope_as = buddhism
+		}
+		#random_list = {
+			#10 = {
+				set_variable = {
+					name = RICE_sri_lanka_pali_literature_type
+					value = flag:kavya_legends
+				}
+				hidden_effect_new_object = {
+					create_artifact = {
+						name = RICE_sri_lanka_pali_literature_kavya_legends_name
+						description = RICE_sri_lanka_pali_literature_kavya_legends_desc
+						type = miscellaneous
+						visuals = RICE_leaf_booklet_placeholder					
+						quality = 50
+						wealth = 50
+						modifier = artifact_monthly_piety_2_modifier
+						save_scope_as = pali_literature
+					}
+					scope:pali_literature = {
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_monthly_minor_prestige_5_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_learning_1_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_monthly_learning_lifestyle_xp_1_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_monthly_diplomacy_lifestyle_xp_1_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_stress_gain_2_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_personal_scheme_power_add_2_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_zealot_vassal_opinion_2_modifier
+						}
+					}
+				}
+			#}
+		#}
+	}
+
+	option = { # Ok
+		name = sri_lanka.0032.a
+		show_as_tooltip = {
+			scope:pali_literature = {
+				set_owner = {
+					target = root
+				}
+			}
+		}
+	}
+
+	after = {		
+		if = {
+			limit = { has_variable = RICE_sri_lanka_pali_literature_type }
+			remove_variable = RICE_sri_lanka_pali_literature_type
 		}
 	}
 
