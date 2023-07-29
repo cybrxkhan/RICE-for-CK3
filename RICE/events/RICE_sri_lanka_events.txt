@@ -1182,6 +1182,168 @@ sri_lanka.0015 = {
 }
 
 
+# Move capital to Polonnaruwa - change name or not?
+sri_lanka.0016 = {
+	type = character_event
+	title = sri_lanka.0016.t
+	desc = sri_lanka.0016.desc
+	theme = new_royal_court
+	override_background = { reference = RICE_background_sri_lanka_stupa }
+	
+	
+	left_portrait = scope:polonnaruwa_ruler
+	
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		title:c_trincomalee.holder = {
+			save_scope_as = polonnaruwa_ruler
+		}
+		if = {
+			limit = {
+				has_title = title:c_trincomalee
+			}
+			RICE_sri_lanka_polonnaruwa_capital_effect = yes
+		}
+		else = {
+			show_as_tooltip = {
+				title:c_trincomalee.holder = {
+					RICE_sri_lanka_polonnaruwa_capital_effect = yes
+				}
+				if = {
+					limit = {
+						exists = global_var:RICE_sri_lanka_polonnaruwa_changed_name
+					}
+					title:c_trincomalee.holder = {
+						add_prestige = 500
+					}
+				}
+				else_if = {
+					limit = {
+						exists = global_var:RICE_sri_lanka_polonnaruwa_kept_name
+					}
+					title:c_trincomalee.holder = {
+						add_piety = 500
+					}
+				}
+				else = {
+					title:c_trincomalee.holder = {
+						add_prestige = 250
+						add_piety = 250
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Change
+		name = sri_lanka.0016.a
+		trigger = {
+			has_title = title:c_trincomalee
+			OR = {
+				character:189029 = {
+					root = this
+				}
+				root.dynasty = {
+					this = dynasty:1029172
+				}
+			}
+		}
+		add_prestige = 500
+		title:c_trincomalee = {
+			set_title_name = Vijayarajapura
+		}
+		title:b_polonnaruwa = {
+			set_title_name = Vijayarajapura
+		}
+		set_global_variable = {
+			name = RICE_sri_lanka_polonnaruwa_changed_name
+			value = yes
+			days = 1
+		}
+	}
+	
+	option = { # No change
+		name = sri_lanka.0016.b
+		trigger = {
+			has_title = title:c_trincomalee
+			OR = {
+				character:189029 = {
+					root = this
+				}
+				root.dynasty = {
+					this = dynasty:1029172
+				}
+			}
+		}
+		add_piety = 500
+		set_global_variable = {
+			name = RICE_sri_lanka_polonnaruwa_kept_name
+			value = yes
+			days = 1
+		}
+	}
+	
+	option = { # No change
+		name = sri_lanka.0016.c
+		trigger = {
+			has_title = title:c_trincomalee
+			NOR = {
+				character:189029 = {
+					root = this
+				}
+				root.dynasty = {
+					this = dynasty:1029172
+				}
+			}
+		}
+		add_prestige = 250
+		add_piety = 250
+	}
+	
+	option = { # No change
+		name = sri_lanka.0016.d
+		trigger = {
+			NOT = { has_title = title:c_trincomalee }
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_title = title:c_trincomalee
+			}		
+			every_ruler = {
+				limit = {
+					is_ai = no
+					NOT = { has_title = title:c_trincomalee }
+					OR = {
+						any_held_title = {
+							tier = tier_county
+							any_county_province = {
+								geographical_region = world_india_deccan # RICE_sri_lanka_struggle_region
+							}
+						}
+						AND = {
+							exists = struggle:RICE_sri_lanka_struggle
+							OR = {
+								any_character_struggle = {
+									involvement = involved
+									is_struggle_type = RICE_sri_lanka_struggle
+								}
+								any_character_struggle = {
+									involvement = interloper
+									is_struggle_type = RICE_sri_lanka_struggle
+								}
+							}
+						}
+					}
+				}
+				trigger_event = sri_lanka.0016
+			}
+		}
+	}
+
+}
 
 
 ######################################################################################
