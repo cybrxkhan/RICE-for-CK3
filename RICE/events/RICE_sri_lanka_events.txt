@@ -959,16 +959,22 @@ sri_lanka.0014 = {
 	theme = vassal
 	
 	left_portrait = {
-		character = scope:budal
-		animation = throne_room_bow_3
-	}
-	
-	right_portrait = {
 		character = scope:vijayabahu
 		animation = personality_compassionate
 	}
+	
+	right_portrait = {
+		character = scope:budal
+		animation = throne_room_bow_3
+	}
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:copper_plate
+		position = lower_center_portrait
+	}
 
 	immediate = {
+		save_scope_as = vijayabahu_equivalent # In case it's someone different than Vijayabahu
 		character:189029 = {
 			save_scope_as = vijayabahu
 		}
@@ -981,10 +987,55 @@ sri_lanka.0014 = {
 				completely_controls = title:k_lanka
 			}
 			RICE_sri_lanka_vijayabahu_reward_budal_effect = yes
+			if = {
+				limit = {
+					character:RICE_sri_lanka_002 = {
+						can_add_hook = {
+							target = scope:vijayabahu_equivalent
+							type = RICE_sri_lanka_vijayabahu_budal_hook
+						}
+					}
+				}
+				character:RICE_sri_lanka_002 = {
+					add_hook = {
+						target = scope:vijayabahu_equivalent
+						type = RICE_sri_lanka_vijayabahu_budal_hook
+					}
+				}
+			}
+			hidden_effect_new_object = {
+				create_artifact = {
+					name = RICE_sri_lanka_panakaduwa_copper_plate_name
+					description = RICE_sri_lanka_panakaduwa_copper_plate_desc
+					type = miscellaneous
+					visuals = RICE_copper_plate_artifact					
+					quality = 75
+					wealth = 75
+					modifier = RICE_panakaduwa_copper_plate_modifier
+					save_scope_as = copper_plate
+					decaying = no
+				}
+			}
 		}
 		else = {
 			show_as_tooltip = {
 				RICE_sri_lanka_vijayabahu_reward_budal_effect = yes
+				if = {
+					limit = {
+						character:RICE_sri_lanka_002 = {
+							can_add_hook = {
+								target = scope:vijayabahu_equivalent
+								type = RICE_sri_lanka_vijayabahu_budal_hook
+							}
+						}
+					}
+					character:RICE_sri_lanka_002 = {
+						add_hook = {
+							target = scope:vijayabahu_equivalent
+							type = RICE_sri_lanka_vijayabahu_budal_hook
+						}
+					}
+				}
 			}
 		}
 		
@@ -992,6 +1043,25 @@ sri_lanka.0014 = {
 
 	option = { # Ok
 		name = sri_lanka.0014.a
+		if = {
+			limit = {
+				completely_controls = title:k_lanka
+			}
+			scope:copper_plate = {
+				set_owner = {
+					target = scope:budal
+				}
+			}
+		}
+		else = {
+			show_as_tooltip = {
+				scope:copper_plate = {
+					set_owner = {
+						target = scope:budal
+					}
+				}
+			}
+		}
 	}
 
 	after = {
