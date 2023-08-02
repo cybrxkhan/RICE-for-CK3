@@ -240,39 +240,117 @@ RICE_setup_sri_lanka_flavor_pack_effect = {
 	#
 	#########################################################################
 
+	
+	# Start the Sri Lanka struggle
+	# Won't start on any other phase but the predefined starting phase
+	# start_struggle = {
+	# 	struggle_type = RICE_sri_lanka_struggle
+	# 	start_phase = struggle_RICE_sri_lanka_phase_degeneration
+	# }
+
+}
+
+
+
+RICE_setup_sri_lanka_after_game_start_effect = {
+
+
+	# Starting Sri Lankan struggle phase based on game rule
 	if = {
 		limit = {
-			game_start_date >= 1150.1.1
+			has_game_rule = RICE_sri_lanka_starting_phase_accumulation
 		}
 		start_struggle = {
 			struggle_type = RICE_sri_lanka_struggle
-			start_phase = struggle_RICE_sri_lanka_phase_purification
+			start_phase = struggle_RICE_sri_lanka_phase_degeneration
+		}
+		# Won't start on any other phase but the predefined starting phase
+		struggle:RICE_sri_lanka_struggle = {
+			change_struggle_phase = struggle_RICE_sri_lanka_phase_accumulation
 		}
 	}
 	else_if = {
 		limit = {
-			game_start_date >= 990.1.1
+			has_game_rule = RICE_sri_lanka_starting_phase_purification
+		}
+		start_struggle = {
+			struggle_type = RICE_sri_lanka_struggle
+			start_phase = struggle_RICE_sri_lanka_phase_degeneration
+		}
+		# Won't start on any other phase but the predefined starting phase
+		struggle:RICE_sri_lanka_struggle = {
+			change_struggle_phase = struggle_RICE_sri_lanka_phase_purification
+		}
+	}
+	else_if = {
+		limit = {
+			has_game_rule = RICE_sri_lanka_starting_phase_degeneration
 		}
 		start_struggle = {
 			struggle_type = RICE_sri_lanka_struggle
 			start_phase = struggle_RICE_sri_lanka_phase_degeneration
 		}
 	}
-	else = {		
+	else_if = {
+		limit = {
+			has_game_rule = RICE_sri_lanka_starting_phase_random
+		}
 		start_struggle = {
 			struggle_type = RICE_sri_lanka_struggle
-			start_phase = struggle_RICE_sri_lanka_phase_accumulation
+			start_phase = struggle_RICE_sri_lanka_phase_degeneration
+		}
+		random_list = {
+			10 = {
+				# Stay in Degeneration, you degenerates
+			}
+			10 = {
+				# Won't start on any other phase but the predefined starting phase
+				struggle:RICE_sri_lanka_struggle = {
+					change_struggle_phase = struggle_RICE_sri_lanka_phase_purification
+				}
+			}
+			10 = {
+				# Won't start on any other phase but the predefined starting phase
+				struggle:RICE_sri_lanka_struggle = {
+					change_struggle_phase = struggle_RICE_sri_lanka_phase_accumulation
+				}
+			}
 		}
 	}
-
-
-
-}
-
-
-
-
-RICE_setup_sri_lanka_after_game_start_effect = {
+	else = {
+		if = {
+			limit = {
+				game_start_date >= 1150.1.1
+			}
+			start_struggle = {
+				struggle_type = RICE_sri_lanka_struggle
+				start_phase = struggle_RICE_sri_lanka_phase_degeneration
+			}
+			# Won't start on any other phase but the predefined starting phase
+			struggle:RICE_sri_lanka_struggle = {
+				change_struggle_phase = struggle_RICE_sri_lanka_phase_purification
+			}
+		}
+		else_if = {
+			limit = {
+				game_start_date >= 990.1.1
+			}
+			start_struggle = {
+				struggle_type = RICE_sri_lanka_struggle
+				start_phase = struggle_RICE_sri_lanka_phase_degeneration
+			}
+		}
+		else = {
+			start_struggle = {
+				struggle_type = RICE_sri_lanka_struggle
+				start_phase = struggle_RICE_sri_lanka_phase_degeneration
+			}
+			# Won't start on any other phase but the predefined starting phase
+			struggle:RICE_sri_lanka_struggle = {
+				change_struggle_phase = struggle_RICE_sri_lanka_phase_accumulation
+			}
+		}
+	}
 
 	# Starting Sri Lankan Monastery Prominence based on game rule
 	if = {
@@ -344,7 +422,7 @@ RICE_setup_sri_lanka_after_game_start_effect = {
 				add = {
 					integer_range = {
 						min = 1
-						max = 300
+						max = 200
 					}
 				}
 			}
@@ -357,7 +435,7 @@ RICE_setup_sri_lanka_after_game_start_effect = {
 				add = {
 					integer_range = {
 						min = 1
-						max = 300
+						max = 200
 					}
 				}
 			}
@@ -370,7 +448,52 @@ RICE_setup_sri_lanka_after_game_start_effect = {
 				add = {
 					integer_range = {
 						min = 1
-						max = 300
+						max = 200
+					}
+				}
+			}
+		}
+
+	}
+	else_if = {
+		limit = {
+			has_game_rule = RICE_sri_lanka_starting_prominence_random_high
+		}
+		
+		set_global_variable = {
+			name = RICE_mahavihara_prominence
+			value = {
+				value = 0
+				add = {
+					integer_range = {
+						min = 1
+						max = 400
+					}
+				}
+			}
+		}
+		
+		set_global_variable = {
+			name = RICE_abhayagiri_prominence
+			value = {
+				value = 0
+				add = {
+					integer_range = {
+						min = 1
+						max = 400
+					}
+				}
+			}
+		}
+		
+		set_global_variable = {
+			name = RICE_jetavana_prominence
+			value = {
+				value = 0
+				add = {
+					integer_range = {
+						min = 1
+						max = 400
 					}
 				}
 			}
