@@ -150,9 +150,35 @@
 		}
 	}
 
-	province_filter = top_realm
+	province_filter = all
 	ai_province_filter = top_realm
 	wait_time_before_start = { days = 14 }
+
+	province_description = {
+		desc = activity_RICE_sri_lanka_relic_veneration_province_desc
+		# +++ / triple plus good
+		triggered_desc = {
+			trigger = {
+				scope:special_option ?= flag:RICE_sri_lanka_relic_veneration_type_bodhi
+				county ?= { has_county_modifier = RICE_sri_lanka_relic_bodhi_shrine_modifier }
+			}
+			desc = RICE_sri_lanka_relic_veneration_bodhi_shrine_province
+		}
+		triggered_desc = {
+			trigger = {
+				scope:special_option ?= flag:RICE_sri_lanka_relic_veneration_type_tooth
+				county ?= { has_county_modifier = RICE_sri_lanka_relic_tooth_shrine_modifier }
+			}
+			desc = RICE_sri_lanka_relic_veneration_tooth_shrine_province
+		}
+		triggered_desc = {
+			trigger = {
+				scope:special_option ?= flag:RICE_sri_lanka_relic_veneration_type_dharmadhatu
+				county ?= { has_county_modifier = RICE_sri_lanka_relic_dharmadhatu_shrine_modifier }
+			}
+			desc = RICE_sri_lanka_relic_veneration_dharmadhatu_shrine_province
+		}
+	}
 
 	###################
 	# OPTIONS
@@ -170,18 +196,63 @@
 				default = {
 					has_trait = RICE_mahavihara_trait
 				}	
+				ai_will_do = {
+					value = 10
+					if = {
+						limit = {
+							has_trait = RICE_mahavihara_trait
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_global_variable = RICE_sri_lanka_ending_united_sangha_bodhi
+						}
+						add = 5
+					}
+				}
 			}
 			RICE_sri_lanka_relic_veneration_type_tooth = {
 				# Normally, default = yes will make one option the default
 				default = {
 					has_trait = RICE_abhayagiri_trait
-				}	
+				}		
+				ai_will_do = {
+					value = 10
+					if = {
+						limit = {
+							has_trait = RICE_abhayagiri_trait
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_global_variable = RICE_sri_lanka_relic_veneration_type_tooth
+						}
+						add = 5
+					}
+				}
 			}
 			RICE_sri_lanka_relic_veneration_type_dharmadhatu = {	
 				# Normally, default = yes will make one option the default
 				default = {
 					has_trait = RICE_jetavana_trait
 				}	
+				ai_will_do = {
+					value = 10
+					if = {
+						limit = {
+							has_trait = RICE_jetavana_trait
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_global_variable = RICE_sri_lanka_ending_united_sangha_dharmadhatu
+						}
+						add = 5
+					}
+				}
 			}
 		}
 
@@ -200,7 +271,7 @@
 					limit = {
 						this = scope:host
 					}
-					scope:host = { trigger_event = sri_lanka.8888 }
+					scope:host = { trigger_event = sri_lanka.0101 }
 				}		
 			}
 			on_end = {
@@ -258,11 +329,40 @@
 	}
 	
 	is_location_valid = {
-		trigger_if = {
-			limit = {
-				exists = barony
+		OR = {
+			trigger_if = {
+				limit = {
+					exists = barony
+				}
+				barony = title:b_anuradhapura
 			}
-			barony = title:b_anuradhapura
+			trigger_if = {
+				limit = {
+					scope:special_option = flag:RICE_sri_lanka_relic_veneration_type_bodhi
+				}
+				custom_tooltip = {
+					text = RICE_sri_lanka_relic_veneration_bodhi_shrine_province
+					county ?= { has_county_modifier = RICE_sri_lanka_relic_bodhi_shrine_modifier }
+				}
+			}
+			trigger_if = {
+				limit = {
+					scope:special_option = flag:RICE_sri_lanka_relic_veneration_type_tooth
+				}
+				custom_tooltip = {
+					text = RICE_sri_lanka_relic_veneration_tooth_shrine_province
+					county ?= { has_county_modifier = RICE_sri_lanka_relic_tooth_shrine_modifier }
+				}
+			}
+			trigger_if = {
+				limit = {
+					scope:special_option = flag:RICE_sri_lanka_relic_veneration_type_dharmadhatu
+				}
+				custom_tooltip = {
+					text = RICE_sri_lanka_relic_veneration_dharmadhatu_shrine_province
+					county ?= { has_county_modifier = RICE_sri_lanka_relic_dharmadhatu_shrine_modifier }
+				}
+			}
 		}
 	}
 
@@ -270,12 +370,22 @@
 
 	province_score = {
 		add = 0
-		# Actual location
 		if = {
 			limit = {
-				county ?= title:c_phiti
+				# Actual location
+					county ?= title:c_phiti
 			}
-			add = 100
+			add = 50
+		}
+		if = {
+			limit = {
+				OR = {
+					county ?= { has_county_modifier = RICE_sri_lanka_relic_bodhi_shrine_modifier }
+					county ?= { has_county_modifier = RICE_sri_lanka_relic_tooth_shrine_modifier }
+					county ?= { has_county_modifier = RICE_sri_lanka_relic_dharmadhatu_shrine_modifier }
+				}
+			}
+			add = 50
 		}
 	}
 	

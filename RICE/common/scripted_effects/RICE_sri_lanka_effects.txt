@@ -1454,9 +1454,153 @@ RICE_sri_lanka_ramasetu_pilgrimage_completed_log_entry_effect = {
 
 
 
+RICE_sri_lanka_relic_veneration_effect = {
+	if = {
+		limit = {			
+			involved_activity = {
+				has_activity_option = { category = special_type option = RICE_sri_lanka_relic_veneration_type_bodhi }
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_trait = RICE_mahavihara_trait
+					has_global_variable = RICE_sri_lanka_ending_united_sangha_bodhi
+				}
+			}
+			RICE_sri_lanka_monastery_prominence_gain_medium_effect = yes
+			add_character_modifier = {
+				modifier = RICE_sri_lanka_relic_bodhi_great_modifier
+				years = 10
+			}
+		}
+		else = {
+			change_global_variable = {
+				name = RICE_mahavihara_prominence
+				add = RICE_sri_lanka_prominence_gain_minor
+			}
+			add_character_modifier = {
+				modifier = RICE_sri_lanka_relic_bodhi_modifier
+				years = 10
+			}
+		}
+		change_global_variable = {
+			name = RICE_abhayagiri_prominence
+			subtract = RICE_sri_lanka_prominence_gain_minor
+		}
+		change_global_variable = {
+			name = RICE_jetavana_prominence
+			subtract = RICE_sri_lanka_prominence_gain_minor
+		}
+	}
+	else_if = {
+		limit = {
+			involved_activity = {
+				has_activity_option = { category = special_type option = RICE_sri_lanka_relic_veneration_type_tooth }
+			}			
+		}
+		if = {
+			limit = {
+				OR = {
+					has_trait = RICE_abhayagiri_trait
+					has_global_variable = RICE_sri_lanka_ending_united_sangha_tooth
+				}
+			}
+			RICE_sri_lanka_monastery_prominence_gain_medium_effect = yes
+			add_character_modifier = {
+				modifier = RICE_sri_lanka_relic_tooth_great_modifier
+				years = 10
+			}
+		}
+		else = {
+			change_global_variable = {
+				name = RICE_abhayagiri_prominence
+				add = RICE_sri_lanka_prominence_gain_minor
+			}
+			add_character_modifier = {
+				modifier = RICE_sri_lanka_relic_tooth_modifier
+				years = 10
+			}
+		}
+		change_global_variable = {
+			name = RICE_mahavihara_prominence
+			subtract = RICE_sri_lanka_prominence_gain_minor
+		}
+		change_global_variable = {
+			name = RICE_jetavana_prominence
+			subtract = RICE_sri_lanka_prominence_gain_minor
+		}
+	}
+	else_if = {
+		limit = {
+			involved_activity = {
+				has_activity_option = { category = special_type option = RICE_sri_lanka_relic_veneration_type_dharmadhatu }
+			}			
+		}
+		if = {
+			limit = {
+				OR = {
+					has_trait = RICE_jetavana_trait
+					has_global_variable = RICE_sri_lanka_ending_united_sangha_dharmadhatu
+				}
+			}
+			RICE_sri_lanka_monastery_prominence_gain_medium_effect = yes
+			add_character_modifier = {
+				modifier = RICE_sri_lanka_relic_dharmadhatu_great_modifier
+				years = 10
+			}
+		}
+		else = {
+			change_global_variable = {
+				name = RICE_jetavana_prominence
+				add = RICE_sri_lanka_prominence_gain_minor
+			}
+			add_character_modifier = {
+				modifier = RICE_sri_lanka_relic_dharmadhatu_modifier
+				years = 10
+			}
+		}
+		change_global_variable = {
+			name = RICE_mahavihara_prominence
+			subtract = RICE_sri_lanka_prominence_gain_minor
+		}
+		change_global_variable = {
+			name = RICE_abhayagiri_prominence
+			subtract = RICE_sri_lanka_prominence_gain_minor
+		}
+	}
+	add_piety = 100
+	add_prestige = 50
+	stress_impact = {
+		base = miniscule_stress_impact_loss
+		zealous = minor_stress_impact_loss
+	}
+}
 
 
 
+
+RICE_sri_lanka_relic_veneration_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_sri_lanka_relic_veneration_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				show_as_tooltip = {
+					RICE_sri_lanka_relic_veneration_effect = yes					
+				}
+			}
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_piety = 50
+			}	
+		}
+	}
+}
 
 
 
