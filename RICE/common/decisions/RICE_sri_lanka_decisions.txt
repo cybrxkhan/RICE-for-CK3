@@ -100,9 +100,24 @@ RICE_sri_lanka_struggle_ending_unite_sangha_decision = {
 		save_scope_as = sri_lanka_struggle_ender
 
 		##### Major Effects #####
-		#show_as_tooltip = {
-		#	RICE_sri_lanka_struggle_ending_uniter_effect = yes
-		#}
+		show_as_tooltip = {
+			give_nickname = nick_the_great
+			if = {
+				limit = {
+					religion = religion:buddhism
+				}
+				add_piety = 1000
+			}
+			else = {
+				add_prestige = 1000
+			}
+			dynasty = {
+				add_dynasty_prestige = 1000
+				add_dynasty_modifier = {
+					modifier = RICE_sri_lanka_sangha_uniter_modifier
+				}
+			}
+		}
 		# Pali Canon doctrine
 		custom_tooltip = RICE_sri_lanka_struggle_ending_uniter_pali_canon_doctrine_effect_tt
 		# Phase doctrine
@@ -111,7 +126,7 @@ RICE_sri_lanka_struggle_ending_unite_sangha_decision = {
 		custom_tooltip = RICE_sri_lanka_struggle_ending_uniter_relic_effect_tt
 
 		# Trigger the ending event
-		trigger_event = sri_lanka.0007
+		trigger_event = sri_lanka.0006
 	}
 
 	cost = {}
@@ -214,9 +229,21 @@ RICE_sri_lanka_struggle_ending_foreign_sangha_decision = {
 	desc = RICE_sri_lanka_struggle_ending_foreign_sangha_decision_desc
 	selection_tooltip = RICE_sri_lanka_struggle_ending_foreign_sangha_decision_tooltip
 	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
-	is_invisible = yes
+	#is_invisible = yes
 
 	sort_order = 80
+
+	is_shown = {
+		exists = struggle:RICE_sri_lanka_struggle
+		# NOT = {
+		# 	any_character_struggle = {
+		# 		involvement = involved
+		# 		is_struggle_type = RICE_sri_lanka_struggle
+		# 	}
+		# }
+		# religion = religion:buddhism_religion
+		# faith = { has_doctrine = rice_theravada_canon_doctrine }
+	}
 
 	is_valid = {
 		is_independent_ruler = yes
@@ -317,9 +344,17 @@ RICE_sri_lanka_struggle_ending_foreign_sangha_decision = {
 		save_scope_as = sri_lanka_struggle_ender
 
 		##### Major Effects #####
-		#show_as_tooltip = {
-		#	RICE_sri_lanka_struggle_ending_uniter_effect = yes
-		#}
+		show_as_tooltip = {
+			give_nickname = nick_the_great
+			add_piety = 500
+			add_prestige = 500
+			dynasty = {
+				add_dynasty_prestige = 1000
+				add_dynasty_modifier = {
+					modifier = RICE_sri_lanka_sangha_uniter_modifier
+				}
+			}
+		}
 		# Pali Canon doctrine
 		custom_tooltip = RICE_sri_lanka_struggle_ending_uniter_pali_canon_doctrine_effect_tt
 		# Outsider doctrine
@@ -330,7 +365,23 @@ RICE_sri_lanka_struggle_ending_foreign_sangha_decision = {
 		custom_tooltip = RICE_sri_lanka_struggle_ending_county_bonus_effect
 
 		# Trigger the ending event
-		trigger_event = sri_lanka.0007
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:sri_lanka_struggle_ender
+					faith = { has_doctrine = rice_theravada_canon_doctrine }	
+					any_held_county = {
+						any_county_province = {
+							OR = {
+								geographical_region = world_india
+								geographical_region = world_burma
+							}
+						}
+					}
+				}
+			}
+			trigger_event = sri_lanka.0007
+		}
 	}
 
 	cost = {}
