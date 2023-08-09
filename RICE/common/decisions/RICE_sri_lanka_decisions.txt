@@ -205,6 +205,142 @@ RICE_sri_lanka_struggle_ending_destroy_sangha_decision = {
 	ai_will_do = { base = 100 }
 }
 
+# Revive the Sangha (Foreign) Ending
+RICE_sri_lanka_struggle_ending_foreign_sangha_decision = {
+	major = yes
+	title = RICE_sri_lanka_struggle_ending_foreign_sangha_decision
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_borobudur.dds"
+	extra_picture = "gfx/interface/illustrations/struggle_decisions_buttons/decision_RICE_borobudur_small.dds"
+	desc = RICE_sri_lanka_struggle_ending_foreign_sangha_decision_desc
+	selection_tooltip = RICE_sri_lanka_struggle_ending_foreign_sangha_decision_tooltip
+	confirm_click_sound = "event:/DLC/FP2/SFX/UI/fp2_struggle_ending_decision_confirm"
+	is_invisible = yes
+
+	sort_order = 80
+
+	is_valid = {
+		is_independent_ruler = yes
+
+		exists = struggle:RICE_sri_lanka_struggle
+
+		custom_tooltip = {
+			text = RICE_sri_lanka_struggle_not_involved
+			NOT = {
+				any_character_struggle = {
+					involvement = involved
+					is_struggle_type = RICE_sri_lanka_struggle
+				}
+			}
+		}
+
+		religion = religion:buddhism_religion
+		faith = { has_doctrine = rice_theravada_canon_doctrine }
+
+		OR = {
+			AND = {
+				custom_tooltip = {
+					text = RICE_sri_lanka_struggle_ending_unite_decision_mahavihara_tt
+					global_var:RICE_mahavihara_prominence >= 900
+				}
+				has_trait_xp = {
+					trait = RICE_mahavihara_trait
+					value >= 40
+				}
+				#has_trait = RICE_mahavihara_trait
+			}
+			AND = {
+				custom_tooltip = {
+					text = RICE_sri_lanka_struggle_ending_unite_decision_abhayagiri_tt
+					global_var:RICE_abhayagiri_prominence >= 900
+				}
+				has_trait_xp = {
+					trait = RICE_abhayagiri_trait
+					value >= 40
+				}
+				#has_trait = RICE_abhayagiri_trait
+			}
+			AND = {
+				custom_tooltip = {
+					text = RICE_sri_lanka_struggle_ending_unite_decision_jetavana_tt
+					global_var:RICE_jetavana_prominence >= 900
+				}
+				has_trait_xp = {
+					trait = RICE_jetavana_trait
+					value >= 40
+				}
+				#has_trait = RICE_jetavana_trait
+			}
+		}
+
+		NOT = { has_title = title:k_lanka }
+
+		# No territory in Sri Lanka
+		custom_tooltip = {
+			text = RICE_sri_lanka_not_in_sri_lanka_req
+			NOT = {
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_sri_lanka_struggle_region
+					}
+				}
+			}
+		}
+
+		# No other independent ruler in Sri Lanka is a king or above
+		custom_tooltip = {
+			text = RICE_sri_lanka_struggle_no_kings_req
+			struggle:RICE_sri_lanka_struggle = {
+				NOT = {
+					any_involved_ruler = {
+						NOT = { this = root }
+						primary_title = { is_mercenary_company = no }
+						primary_title.tier >= tier_kingdom
+					}
+				}
+				NOT = {
+					any_interloper_ruler = {
+						NOT = { this = root }
+						primary_title = { is_mercenary_company = no }
+						primary_title.tier >= tier_kingdom
+					}
+				}
+			}
+		}
+
+		
+
+	}
+
+	effect = {
+
+		save_scope_as = sri_lanka_struggle_ender
+
+		##### Major Effects #####
+		#show_as_tooltip = {
+		#	RICE_sri_lanka_struggle_ending_uniter_effect = yes
+		#}
+		# Pali Canon doctrine
+		custom_tooltip = RICE_sri_lanka_struggle_ending_uniter_pali_canon_doctrine_effect_tt
+		# Outsider doctrine
+		custom_tooltip = RICE_sri_lanka_struggle_ending_uniter_outsider_doctrine_effect_tt
+		# Unlock everything everywhere effect
+		custom_tooltip = RICE_sri_lanka_struggle_ending_everywhere_unlock_effect
+		# County bonus effect
+		custom_tooltip = RICE_sri_lanka_struggle_ending_county_bonus_effect
+
+		# Trigger the ending event
+		trigger_event = sri_lanka.0007
+	}
+
+	cost = {}
+
+	ai_check_interval = 120
+
+	ai_potential = { always = yes }
+
+	ai_will_do = { base = 100 }
+}
 
 
 
