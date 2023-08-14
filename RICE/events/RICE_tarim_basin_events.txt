@@ -236,6 +236,36 @@ tarim_basin.0011 = {
 		stress_impact = {
 			greedy = minor_stress_impact_gain
 		}
+
+		if = {
+			limit = {
+				var:RICE_silk_road_merchant_success_count >= 10
+			}
+			random = {
+				chance = RICE_tarim_basin_silk_road_merchant_trait_chance
+				add_trait = RICE_silk_road_merchant
+				custom_tooltip = RICE_silk_road_merchant_trait_gain_tooltip
+			}
+		}
+
+		hidden_effect = {
+			if = {
+				limit = {
+					NOT = { exists = var:RICE_silk_road_merchant_success_count }
+				}
+				set_variable = {
+					name = RICE_silk_road_merchant_success_count
+					value = 1
+				}
+			}
+			else = {
+				change_variable = {
+					name = RICE_silk_road_merchant_success_count
+					add = 1
+				}		
+			}
+		}
+
 	}
 
 	option = { # OK
@@ -251,12 +281,48 @@ tarim_basin.0011 = {
 					min = -49
 				}
 				custom_tooltip = tarim_basin.0011.b.success
+				if = {
+					limit = {
+						var:RICE_silk_road_merchant_success_count >= 10
+					}
+					show_as_tooltip = {
+						random = {
+							chance = RICE_tarim_basin_silk_road_merchant_trait_chance
+							add_trait = RICE_silk_road_merchant
+							custom_tooltip = RICE_silk_road_merchant_trait_gain_tooltip	
+						}
+					}
+				}
 				hidden_effect = {
 					send_interface_toast = {
 						type = event_toast_effect_good
 						title = tarim_basin.0011.b.success
 						left_icon = root
 						add_gold = { 50 150 }
+						if = {
+							limit = {
+								var:RICE_silk_road_merchant_success_count >= 10
+							}
+							random = {
+								chance = RICE_tarim_basin_silk_road_merchant_trait_chance
+								add_trait = RICE_silk_road_merchant
+							}
+						}
+					}
+					if = {
+						limit = {
+							NOT = { exists = var:RICE_silk_road_merchant_success_count }
+						}
+						set_variable = {
+							name = RICE_silk_road_merchant_success_count
+							value = 1
+						}
+					}
+					else = {
+						change_variable = {
+							name = RICE_silk_road_merchant_success_count
+							add = 1
+						}		
 					}					
 				}
 			}

@@ -2964,6 +2964,172 @@ sri_lanka.0032 = {
 
 ######################################################################################
 # 
+# MISC FLAVOR DECISIONS
+# 
+# sri_lanka.0040-sri_lanka.0049
+# 
+######################################################################################
+
+
+
+# Sri Lanka guardian deity decision event
+sri_lanka.0040 = {
+	type = character_event
+	title = sri_lanka.0040.t
+	desc = {
+		desc = sri_lanka.0040.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_sri_lanka_deity_type = flag:upulvan
+				}
+				desc = sri_lanka.0040.desc.upulvan
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_sri_lanka_deity_type = flag:kataragama
+				}
+				desc = sri_lanka.0040.desc.kataragama
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_sri_lanka_deity_type = flag:saman
+				}
+				desc = sri_lanka.0040.desc.saman
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_sri_lanka_deity_type = flag:pattini
+				}
+				desc = sri_lanka.0040.desc.pattini
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_sri_lanka_deity_type = flag:natha
+				}
+				desc = sri_lanka.0040.desc.natha
+			}
+		}
+	}
+
+	theme = faith
+	override_background = { reference = ep2_holy_site_indian }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	immediate = {
+
+		RICE_sri_lanka_local_deities_misc_effect = yes
+		if = {
+			limit = {
+				var:RICE_sri_lanka_deity_type = flag:upulvan
+			}
+			add_character_modifier = {
+				modifier = RICE_sri_lanka_upulvan
+				years = 10
+			}
+			if = {
+				limit = {
+					has_game_rule = RICE_historical_context_on
+				}
+				custom_description_no_bullet = {
+					text = sri_lanka.0040.upulvan.tooltip
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_sri_lanka_deity_type = flag:kataragama
+			}
+			add_character_modifier = {
+				modifier = RICE_sri_lanka_kataragama
+				years = 10
+			}
+			if = {
+				limit = {
+					has_game_rule = RICE_historical_context_on
+				}
+				custom_description_no_bullet = {
+					text = sri_lanka.0040.kataragama.tooltip
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_sri_lanka_deity_type = flag:saman
+			}
+			add_character_modifier = {
+				modifier = RICE_sri_lanka_saman
+				years = 10
+			}
+			if = {
+				limit = {
+					has_game_rule = RICE_historical_context_on
+				}
+				custom_description_no_bullet = {
+					text = sri_lanka.0040.saman.tooltip
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_sri_lanka_deity_type = flag:pattini
+			}
+			add_character_modifier = {
+				modifier = RICE_sri_lanka_pattini
+				years = 10
+			}
+			if = {
+				limit = {
+					has_game_rule = RICE_historical_context_on
+				}
+				custom_description_no_bullet = {
+					text = sri_lanka.0040.pattini.tooltip
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_sri_lanka_deity_type = flag:natha
+			}
+			add_character_modifier = {
+				modifier = RICE_sri_lanka_natha
+				years = 10
+			}
+			if = {
+				limit = {
+					has_game_rule = RICE_historical_context_on
+				}
+				custom_description_no_bullet = {
+					text = sri_lanka.0040.natha.tooltip
+				}
+			}
+		}
+
+
+	}
+
+	option = { # OK
+		name = sri_lanka.0040.a
+
+	}
+
+	after = {		
+		if = {
+			limit = { has_variable = RICE_sri_lanka_deity_type }
+			remove_variable = RICE_sri_lanka_deity_type
+		}
+	}
+
+}
+
+
+
+######################################################################################
+# 
 # RAMASETU PILGRIMAGE
 # 
 # sri_lanka.0050-sri_lanka.0069
@@ -3141,6 +3307,133 @@ sri_lanka.0053 = {
 	}
 
 }
+
+
+
+
+
+######################################################################################
+# 
+# SRI PADA PILGRIMAGE
+# 
+# sri_lanka.0070-sri_lanka.0089
+# 
+######################################################################################
+
+
+
+# Set off for Sri Pada
+sri_lanka.0070 = {
+	type = activity_event
+	title = sri_lanka.0070.t
+	desc = sri_lanka.0070.desc
+	theme = travel_pilgrimage
+	override_background = { reference = RICE_background_sri_lanka_landscape }
+	
+	right_portrait = root
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_sri_lanka_sri_pada_pilgrimage
+		}
+	}
+
+	immediate = {
+		faith = {
+			save_scope_as = faith
+		}
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+	
+	option = { # Ok
+		name = sri_lanka.0070.a
+	}
+}
+
+
+# Arrive in Sri Pada
+sri_lanka.0071 = {
+	type = activity_event
+	title = sri_lanka.0071.t
+	desc = sri_lanka.0071.desc
+	theme = RICE_theme_sri_lanka_sri_pada
+	
+	right_portrait = root
+	
+	option = { # Ok
+		name = sri_lanka.0071.a
+		trigger_event = {
+			id = sri_lanka.0072
+			days = { 4 12 }
+		}
+	}
+
+}
+
+# Hiking up Sri Pada
+sri_lanka.0072 = {
+	type = activity_event
+	title = sri_lanka.0072.t
+	desc = sri_lanka.0072.desc
+	theme = RICE_theme_sri_lanka_sri_pada
+	
+	right_portrait = root
+	
+	# Take it easy
+	option = { # Ok
+		name = sri_lanka.0072.a
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_sri_pada_easy_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					stress_impact = {
+						base = miniscule_stress_impact_loss
+						lazy = miniscule_stress_impact_loss
+						patient = miniscule_stress_impact_loss
+					}
+				}
+			}
+		}
+	}
+	
+	# Don't take it easy
+	option = { # Ok
+		name = sri_lanka.0072.b
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_sri_pada_easy_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					add_prestige = 50
+					stress_impact = {
+						base = minor_stress_impact_gain
+						lazy = minor_stress_impact_gain
+						cynical = miniscule_stress_impact_gain
+					}
+				}
+			}
+		}
+	}
+
+	after = {		
+		trigger_event = {
+			id = sri_lanka.0073
+			days = { 4 12 }
+		}
+	}
+
+}
+
 
 
 ######################################################################################
