@@ -3365,11 +3365,30 @@ sri_lanka.0071 = {
 	
 	option = { # Ok
 		name = sri_lanka.0071.a
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = custom_tooltip = sri_lanka.0071.info
+			}
+		}
 		trigger_event = {
 			id = sri_lanka.0072
-			days = { 4 12 }
+			days = { 7 10 }
 		}
 	}
+
+	hidden_effect = {
+		# Event about eating vegetarian
+		random = {
+			chance = 25
+			trigger_event = {
+				id = sri_lanka.0081
+				days = { 3 5 }
+			}				
+		}
+	}	
 
 }
 
@@ -3378,7 +3397,7 @@ sri_lanka.0072 = {
 	type = activity_event
 	title = sri_lanka.0072.t
 	desc = sri_lanka.0072.desc
-	theme = RICE_theme_sri_lanka_sri_pada
+	theme = RICE_theme_sri_lanka_sri_pada_stairs
 	
 	right_portrait = root
 	
@@ -3387,7 +3406,7 @@ sri_lanka.0072 = {
 		name = sri_lanka.0072.a
 		scope:activity = {
 			add_activity_log_entry = {
-				key = RICE_sri_pada_easy_log
+				key = RICE_sri_pada_hard_log
 				tags = { good }
 				# this line below adds the entry to the Effects section of the conclusion UI
 				show_in_conclusion = yes
@@ -3425,14 +3444,231 @@ sri_lanka.0072 = {
 		}
 	}
 
-	after = {		
+	after = {	
+		hidden_effect = {
+			# Event about diversity
+			random = {
+				chance = 25
+				trigger_event = {
+					id = sri_lanka.0081
+					days = { 3 6 }
+				}				
+			}
+		}	
 		trigger_event = {
 			id = sri_lanka.0073
-			days = { 4 12 }
+			days = { 8 12 }
 		}
 	}
 
 }
+
+# Reaching the summit
+sri_lanka.0073 = {
+	type = activity_event
+	title = sri_lanka.0073.t
+	desc = sri_lanka.0073.desc
+	theme = RICE_theme_sri_lanka_sri_pada_stairs
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	
+	option = { # Spend some money
+		name = sri_lanka.0073.a
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 25
+			}
+		}
+		if = {
+			limit = {
+				religion = { is_in_family = rf_abrahamic }
+			}
+			scope:activity = {
+				add_activity_log_entry = {
+					key = RICE_sri_pada_donation_abrahamic_log
+					tags = { good }
+					# this line below adds the entry to the Effects section of the conclusion UI
+					show_in_conclusion = yes
+					character = scope:host
+					scope:host = {
+						add_prestige = 50
+						remove_short_term_gold = 25
+						stress_impact = {
+							cynical = miniscule_stress_impact_gain
+							greedy = minor_stress_impact_gain
+						}
+					}
+				}
+			}
+		}
+		else = {
+			scope:activity = {
+				add_activity_log_entry = {
+					key = RICE_sri_pada_donation_non_abrahamic_log
+					tags = { good }
+					# this line below adds the entry to the Effects section of the conclusion UI
+					show_in_conclusion = yes
+					character = scope:host
+					scope:host = {
+						add_piety = 50
+						remove_short_term_gold = 25
+						stress_impact = {
+							cynical = miniscule_stress_impact_gain
+							greedy = minor_stress_impact_gain
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Spent no money
+		name = sri_lanka.0073.b
+	}
+
+	after = {		
+		trigger_event = {
+			id = sri_lanka.0074
+			days = { 6 10 }
+		}
+	}
+
+}
+
+# Going down to the summit and seeing the special tree
+sri_lanka.0074 = {
+	type = activity_event
+	title = sri_lanka.0074.t
+	desc = sri_lanka.0074.desc
+	theme = RICE_theme_sri_lanka_sri_pada
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	
+	option = { # Ok
+		name = sri_lanka.0074.a
+		RICE_sri_lanka_sri_pada_pilgrimage_completed_log_entry_effect = yes
+	}
+
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
+		}
+	}
+
+}
+
+
+# Seeing people of other faiths around
+sri_lanka.0080 = {
+	type = activity_event
+	title = sri_lanka.0080.t
+	desc = sri_lanka.0080.desc
+	theme = RICE_theme_sri_lanka_sri_pada_stairs
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	
+	option = { # Ok
+		name = sri_lanka.0080.a
+		add_character_modifier = {
+			modifier = RICE_sri_pada_different_faiths_respect
+			years = 10
+		}
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+	}
+
+}
+
+# Vegetarian
+sri_lanka.0081 = {
+	type = activity_event
+	title = sri_lanka.0081.t
+	desc = sri_lanka.0081.desc
+	theme = RICE_theme_sri_lanka_sri_pada_stairs
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	immediate = {
+		religion:buddhism_religion = {
+			save_scope_as = buddhism
+		}	
+		religion:hinduism_religion = {
+			save_scope_as = hinduism
+		}	
+	}
+	
+	
+	option = { # Don't eat meat
+		name = sri_lanka.0081.a
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_sri_pada_avoided_meat_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					add_piety = 50
+					add_character_modifier = {
+						modifier = RICE_sri_pada_avoided_meat
+						years = 10
+					}
+					stress_impact = {
+						base = miniscule_stress_impact_gain
+					}
+				}
+			}
+		}
+
+	}
+	
+	option = { # Eat meat
+		name = sri_lanka.0081.b
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_sri_pada_didnt_avoid_meat_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					if = {
+						limit = {
+							religion = { is_in_family = rf_eastern }
+						}
+						add_piety = -50
+						stress_impact = {
+							zealous = minor_stress_impact_gain
+						}
+					}
+					add_prestige = 100
+				}
+			}
+		}
+
+	}
+
+}
+
 
 
 
