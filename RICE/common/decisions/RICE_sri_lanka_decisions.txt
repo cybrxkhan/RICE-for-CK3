@@ -497,6 +497,7 @@ RICE_sri_lanka_choose_monastic_sect = {
 	cooldown = { days = 3650 }
 
 	is_shown = {
+		NOT = { has_global_variable = RICE_sri_lanka_ending_destroyed_sangha }
 		RICE_sri_lanka_struggle_decisions_light_trigger = yes
 		NOR = {
 			has_trait = RICE_mahavihara_trait
@@ -524,7 +525,31 @@ RICE_sri_lanka_choose_monastic_sect = {
 
 	effect = {
 		
-		custom_tooltip = RICE_sri_lanka_choose_monastic_sect_effect_tooltip_1
+		if = {
+			limit = {
+				NOT = { has_global_variable = RICE_sri_lanka_ending_united_sangha }
+			}
+			custom_tooltip = RICE_sri_lanka_choose_monastic_sect_effect_tooltip_1
+			trigger_event = sri_lanka.0020
+		}
+		else_if = {
+			limit = {
+				has_global_variable = RICE_sri_lanka_ending_united_sangha_mahavihara
+			}
+			add_trait = RICE_mahavihara_trait
+		}	
+		else_if = {
+			limit = {
+				has_global_variable = RICE_sri_lanka_ending_united_sangha_abhayagiri
+			}
+			add_trait = RICE_abhayagiri_trait
+		}	
+		else_if = {
+			limit = {
+				has_global_variable = RICE_sri_lanka_ending_united_sangha_jetavana
+			}
+			add_trait = RICE_jetavana_trait
+		}	
 		custom_tooltip = RICE_sri_lanka_choose_monastic_sect_effect_tooltip_2
 
 		
@@ -535,7 +560,6 @@ RICE_sri_lanka_choose_monastic_sect = {
 			custom_tooltip = RICE_sri_lanka_choose_monastic_sect_context_tooltip
 		}
 
-		trigger_event = sri_lanka.0020
 	}
 
 	ai_will_do = {
@@ -571,14 +595,32 @@ RICE_sri_lanka_change_monastic_sect = {
 	cooldown = { days = 3650 }
 
 	is_shown = {
+		NOT = { has_global_variable = RICE_sri_lanka_ending_destroyed_sangha }
 		RICE_sri_lanka_struggle_decisions_light_trigger = yes
 		OR = {
 			has_trait = RICE_mahavihara_trait
 			has_trait = RICE_abhayagiri_trait
 			has_trait = RICE_jetavana_trait
 		}
-		#NOT = { has_character_flag = RICE_picking_sri_lankan_monastery }
+		
+		OR = {
+			NOT = { has_global_variable = RICE_sri_lanka_ending_united_sangha }
+			AND = {
+				has_global_variable = RICE_sri_lanka_ending_united_sangha_mahavihara
+				NOT = { has_trait = RICE_mahavihara_trait }
+			}
+			AND = {
+				has_global_variable = RICE_sri_lanka_ending_united_sangha_abhayagiri
+				NOT = { has_trait = RICE_abhayagiri_trait }
+			}
+			AND = {
+				has_global_variable = RICE_sri_lanka_ending_united_sangha_jetavana
+				NOT = { has_trait = RICE_jetavana_trait }
+			}
+		}
+
 	}
+
 	is_valid = {
 
 		OR = {
@@ -606,31 +648,59 @@ RICE_sri_lanka_change_monastic_sect = {
 
 		if = {
 			limit = {
-				has_trait = RICE_mahavihara_trait
+				NOT = { has_global_variable = RICE_sri_lanka_ending_united_sangha }
 			}
-			show_as_tooltip = {
-				remove_trait = RICE_mahavihara_trait
+			custom_tooltip = RICE_sri_lanka_choose_monastic_sect_effect_tooltip_1
+			if = {
+				limit = {
+					has_trait = RICE_mahavihara_trait
+				}
+				show_as_tooltip = {
+					remove_trait = RICE_mahavihara_trait
+				}
+				custom_tooltip = RICE_sri_lanka_change_monastic_sect_effect_tooltip_1
 			}
-			custom_tooltip = RICE_sri_lanka_change_monastic_sect_effect_tooltip_1
+			else_if = {
+				limit = {
+					has_trait = RICE_abhayagiri_trait
+				}
+				show_as_tooltip = {
+					remove_trait = RICE_abhayagiri_trait
+				}
+				custom_tooltip = RICE_sri_lanka_change_monastic_sect_effect_tooltip_2
+			}
+			else_if = {
+				limit = {
+					has_trait = RICE_jetavana_trait
+				}
+				show_as_tooltip = {
+					remove_trait = RICE_jetavana_trait
+				}
+				custom_tooltip = RICE_sri_lanka_change_monastic_sect_effect_tooltip_3
+			}
+			trigger_event = sri_lanka.0020
 		}
 		else_if = {
 			limit = {
-				has_trait = RICE_abhayagiri_trait
+				has_global_variable = RICE_sri_lanka_ending_united_sangha_mahavihara
 			}
-			show_as_tooltip = {
-				remove_trait = RICE_abhayagiri_trait
-			}
-			custom_tooltip = RICE_sri_lanka_change_monastic_sect_effect_tooltip_2
-		}
+			add_trait = RICE_mahavihara_trait
+		}	
 		else_if = {
 			limit = {
-				has_trait = RICE_jetavana_trait
+				has_global_variable = RICE_sri_lanka_ending_united_sangha_abhayagiri
 			}
-			show_as_tooltip = {
-				remove_trait = RICE_jetavana_trait
+			add_trait = RICE_abhayagiri_trait
+		}	
+		else_if = {
+			limit = {
+				has_global_variable = RICE_sri_lanka_ending_united_sangha_jetavana
 			}
-			custom_tooltip = RICE_sri_lanka_change_monastic_sect_effect_tooltip_3
-		}
+			add_trait = RICE_jetavana_trait
+		}	
+
+
+
 
 		custom_tooltip = RICE_sri_lanka_change_monastic_sect_effect_tooltip_4
 		custom_tooltip = RICE_sri_lanka_change_monastic_sect_effect_tooltip_5
@@ -904,6 +974,7 @@ RICE_sri_lanka_support_monastery = {
 	selection_tooltip = RICE_sri_lanka_support_monastery_tooltip
 
 	is_shown = {
+		NOT = { has_global_variable = RICE_sri_lanka_ending_destroyed_sangha }
 		highest_held_title_tier > tier_barony
 		is_landed = yes
 		RICE_sri_lanka_struggle_decisions_light_trigger = yes
@@ -1304,6 +1375,7 @@ RICE_sri_lanka_persecute_monastery = {
 	selection_tooltip = RICE_sri_lanka_persecute_monastery_tooltip
 
 	is_shown = {
+		NOT = { has_global_variable = RICE_sri_lanka_ending_destroyed_sangha }
 		highest_held_title_tier > tier_barony
 		is_landed = yes
 		any_held_county = {

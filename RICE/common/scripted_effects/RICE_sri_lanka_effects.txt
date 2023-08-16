@@ -719,6 +719,10 @@ RICE_sri_lanka_struggle_ending_uniter_effect = {
 			modifier = RICE_sri_lanka_sangha_uniter_modifier
 		}
 	}
+	set_global_variable = {
+		name = RICE_sri_lanka_ending_united_sangha
+		value = yes
+	}
 	RICE_sri_lanka_struggle_ending_doctrine_effect = yes
 	RICE_sri_lanka_struggle_ending_phase_effect = yes
 }
@@ -726,11 +730,15 @@ RICE_sri_lanka_struggle_ending_uniter_effect = {
 RICE_sri_lanka_struggle_ending_destroyer_effect = {
 	give_nickname = nick_the_sangha_destroyer
 	add_prestige = 500
-	add_gold = 1000
+	add_gold = 3000
 	dynasty = {
 		add_dynasty_modifier = {
 			modifier = RICE_sri_lanka_sangha_destroyer_modifier
 		}
+	}
+	set_global_variable = {
+		name = RICE_sri_lanka_ending_destroyed_sangha
+		value = yes
 	}
 	religion:buddhism_religion = {
 		every_faith = {
@@ -752,6 +760,14 @@ RICE_sri_lanka_struggle_ending_foreigner_effect = {
 		add_dynasty_modifier = {
 			modifier = RICE_sri_lanka_sangha_reviver_modifier
 		}
+	}
+	set_global_variable = {
+		name = RICE_sri_lanka_ending_united_sangha
+		value = yes
+	}
+	set_global_variable = {
+		name = RICE_sri_lanka_ending_revived_sangha
+		value = yes
 	}
 	RICE_sri_lanka_struggle_ending_doctrine_effect = yes
 	religion:buddhism_religion = {
@@ -2279,4 +2295,457 @@ RICE_sri_lanka_monastery_prominence_all_loss_monumental_effect = {
 	}
 
 }
+
+# In case prominence goes above 1000 or below 0
+RICE_sri_lanka_prominence_reset_effect = {
+	if = {
+		limit = {
+			global_var:RICE_mahavihara_prominence > 1000
+		}
+		set_global_variable = {
+			name = RICE_mahavihara_prominence
+			value = 1000
+		}		
+	}
+	else_if = {
+		limit = {
+			global_var:RICE_mahavihara_prominence < 0
+		}
+		set_global_variable = {
+			name = RICE_mahavihara_prominence
+			value = 0
+		}		
+	}
+	if = {
+		limit = {
+			global_var:RICE_abhayagiri_prominence > 1000
+		}
+		set_global_variable = {
+			name = RICE_abhayagiri_prominence
+			value = 1000
+		}		
+	}
+	else_if = {
+		limit = {
+			global_var:RICE_abhayagiri_prominence < 0
+		}
+		set_global_variable = {
+			name = RICE_abhayagiri_prominence
+			value = 0
+		}		
+	}
+	if = {
+		limit = {
+			global_var:RICE_jetavana_prominence > 1000
+		}
+		set_global_variable = {
+			name = RICE_jetavana_prominence
+			value = 1000
+		}		
+	}
+	else_if = {
+		limit = {
+			global_var:RICE_jetavana_prominence < 0
+		}
+		set_global_variable = {
+			name = RICE_jetavana_prominence
+			value = 0
+		}		
+	}
+}
+
+
+# If the Prominence values don't exist for some reason, set it to a random number
+RICE_sri_lanka_prominence_values_restart_calculator_effect = {
+	if = {
+		limit = {
+			NOT = { exists = global_var:RICE_mahavihara_prominence }
+		}
+		if = {
+			limit = {
+				exists = struggle:RICE_sri_lanka_struggle
+			}
+			set_global_variable = {
+				name = RICE_mahavihara_prominence
+				value = {
+					value = 0
+					add = {
+						integer_range = {
+							min = 1
+							max = 150
+						}
+					}
+				}
+			}
+		}
+		else = {
+			set_global_variable = {
+				name = RICE_mahavihara_prominence
+				value = {
+					value = 0
+					add = {
+						integer_range = {
+							min = 1
+							max = 50
+						}
+					}
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			NOT = { exists = global_var:RICE_abhayagiri_prominence }
+		}
+		if = {
+			limit = {
+				exists = struggle:RICE_sri_lanka_struggle
+			}
+			set_global_variable = {
+				name = RICE_abhayagiri_prominence
+				value = {
+					value = 0
+					add = {
+						integer_range = {
+							min = 1
+							max = 150
+						}
+					}
+				}
+			}
+		}
+		else = {
+			set_global_variable = {
+				name = RICE_abhayagiri_prominence
+				value = {
+					value = 0
+					add = {
+						integer_range = {
+							min = 1
+							max = 50
+						}
+					}
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			NOT = { exists = global_var:RICE_jetavana_prominence }
+		}
+		if = {
+			limit = {
+				exists = struggle:RICE_sri_lanka_struggle
+			}
+			set_global_variable = {
+				name = RICE_jetavana_prominence
+				value = {
+					value = 0
+					add = {
+						integer_range = {
+							min = 1
+							max = 150
+						}
+					}
+				}
+			}
+		}
+		else = {
+			set_global_variable = {
+				name = RICE_jetavana_prominence
+				value = {
+					value = 0
+					add = {
+						integer_range = {
+							min = 1
+							max = 50
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+RICE_sri_lanka_annual_prominence_values_change_effect = {
+
+	if = {
+		limit = {
+			exists = struggle:RICE_sri_lanka_struggle
+			struggle:RICE_sri_lanka_struggle = {
+				is_struggle_phase = struggle_RICE_sri_lanka_phase_purification
+			}
+		}
+		change_global_variable = {
+			name = RICE_mahavihara_prominence
+			add = {
+				value = {
+					integer_range = {
+						min = RICE_sri_lanka_prominence_change_purification_min
+						max = RICE_sri_lanka_prominence_change_purification_max
+					}
+				}
+			}
+		}
+		change_global_variable = {
+			name = RICE_abhayagiri_prominence
+			add = {
+				value = {
+					integer_range = {
+						min = RICE_sri_lanka_prominence_change_purification_min
+						max = RICE_sri_lanka_prominence_change_purification_max
+					}
+				}
+			}
+		}
+		change_global_variable = {
+			name = RICE_jetavana_prominence
+			add = {
+				value = {
+					integer_range = {
+						min = RICE_sri_lanka_prominence_change_purification_min
+						max = RICE_sri_lanka_prominence_change_purification_max
+					}
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			exists = struggle:RICE_sri_lanka_struggle
+			struggle:RICE_sri_lanka_struggle = {
+				is_struggle_phase = struggle_RICE_sri_lanka_phase_accumulation
+			}
+		}
+		change_global_variable = {
+			name = RICE_mahavihara_prominence
+			add = {
+				value = {
+					integer_range = {
+						min = RICE_sri_lanka_prominence_change_accumulation_min
+						max = RICE_sri_lanka_prominence_change_accumulation_max
+					}
+				}
+			}
+		}
+		change_global_variable = {
+			name = RICE_abhayagiri_prominence
+			add = {
+				value = {
+					integer_range = {
+						min = RICE_sri_lanka_prominence_change_accumulation_min
+						max = RICE_sri_lanka_prominence_change_accumulation_max
+					}
+				}
+			}
+		}
+		change_global_variable = {
+			name = RICE_jetavana_prominence
+			add = {
+				value = {
+					integer_range = {
+						min = RICE_sri_lanka_prominence_change_accumulation_min
+						max = RICE_sri_lanka_prominence_change_accumulation_max
+					}
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			exists = struggle:RICE_sri_lanka_struggle
+			struggle:RICE_sri_lanka_struggle = {
+				is_struggle_phase = struggle_RICE_sri_lanka_phase_degeneration
+			}
+		}
+		change_global_variable = {
+			name = RICE_mahavihara_prominence
+			add = {
+				value = {
+					integer_range = {
+						min = RICE_sri_lanka_prominence_change_degeneration_min
+						max = RICE_sri_lanka_prominence_change_degeneration_max
+					}
+				}
+			}
+		}
+		change_global_variable = {
+			name = RICE_abhayagiri_prominence
+			add = {
+				value = {
+					integer_range = {
+						min = RICE_sri_lanka_prominence_change_degeneration_min
+						max = RICE_sri_lanka_prominence_change_degeneration_max
+					}
+				}
+			}
+		}
+		change_global_variable = {
+			name = RICE_jetavana_prominence
+			add = {
+				value = {
+					integer_range = {
+						min = RICE_sri_lanka_prominence_change_degeneration_min
+						max = RICE_sri_lanka_prominence_change_degeneration_max
+					}
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_global_variable = RICE_sri_lanka_ending_united_sangha_mahavihara
+		}
+		change_global_variable = {
+			name = RICE_mahavihara_prominence
+			add = {
+				value = {
+					integer_range = {
+						min = RICE_sri_lanka_prominence_change_winner_min
+						max = RICE_sri_lanka_prominence_change_winner_max
+					}
+				}
+			}
+		}
+		# No need to make it worse if it's already low
+		if = {
+			limit = {
+				global_var:RICE_abhayagiri_prominence > 100
+			}
+			change_global_variable = {
+				name = RICE_abhayagiri_prominence
+				add = {
+					value = {
+						integer_range = {
+							min = RICE_sri_lanka_prominence_change_loser_min
+							max = RICE_sri_lanka_prominence_change_loser_max
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				global_var:RICE_jetavana_prominence > 100
+			}
+			change_global_variable = {
+				name = RICE_jetavana_prominence
+				add = {
+					value = {
+						integer_range = {
+							min = RICE_sri_lanka_prominence_change_loser_min
+							max = RICE_sri_lanka_prominence_change_loser_max
+						}
+					}
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_global_variable = RICE_sri_lanka_ending_united_sangha_abhayagiri
+		}
+		change_global_variable = {
+			name = RICE_abhayagiri_prominence
+			add = {
+				value = {
+					integer_range = {
+						min = RICE_sri_lanka_prominence_change_winner_min
+						max = RICE_sri_lanka_prominence_change_winner_max
+					}
+				}
+			}
+		}
+		# No need to make it worse if it's already low
+		if = {
+			limit = {
+				global_var:RICE_mahavihara_prominence > 100
+			}
+			change_global_variable = {
+				name = RICE_mahavihara_prominence
+				add = {
+					value = {
+						integer_range = {
+							min = RICE_sri_lanka_prominence_change_loser_min
+							max = RICE_sri_lanka_prominence_change_loser_max
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				global_var:RICE_jetavana_prominence > 100
+			}
+			change_global_variable = {
+				name = RICE_jetavana_prominence
+				add = {
+					value = {
+						integer_range = {
+							min = RICE_sri_lanka_prominence_change_loser_min
+							max = RICE_sri_lanka_prominence_change_loser_max
+						}
+					}
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_global_variable = RICE_sri_lanka_ending_united_sangha_jetavana
+		}
+		change_global_variable = {
+			name = RICE_jetavana_prominence
+			add = {
+				value = {
+					integer_range = {
+						min = RICE_sri_lanka_prominence_change_winner_min
+						max = RICE_sri_lanka_prominence_change_winner_max
+					}
+				}
+			}
+		}
+		# No need to make it worse if it's already low
+		if = {
+			limit = {
+				global_var:RICE_mahavihara_prominence > 100
+			}
+			change_global_variable = {
+				name = RICE_mahavihara_prominence
+				add = {
+					value = {
+						integer_range = {
+							min = RICE_sri_lanka_prominence_change_loser_min
+							max = RICE_sri_lanka_prominence_change_loser_max
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = {
+				global_var:RICE_abhayagiri_prominence > 100
+			}
+			change_global_variable = {
+				name = RICE_abhayagiri_prominence
+				add = {
+					value = {
+						integer_range = {
+							min = RICE_sri_lanka_prominence_change_loser_min
+							max = RICE_sri_lanka_prominence_change_loser_max
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+}
+
+
+
+
 
