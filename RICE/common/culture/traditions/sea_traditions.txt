@@ -199,3 +199,86 @@ tradition_warrior_caste = {
 		}
 	}
 }
+
+tradition_tiger_sons = {
+	category = societal
+
+	layers = {
+		0 = martial
+		1 = indian
+		4 = knight.dds
+	}
+
+	is_shown = {
+		has_cultural_pillar = heritage_loloish
+	}
+	can_pick = {
+		culture_not_pacifistic_trigger = yes
+	}
+
+	parameters = {
+		#unlock_maa_luojuzi = yes
+		martial_education_more_valued = yes
+		prowess_traits_more_valued = yes
+		blademaster_trait_bonuses = yes
+		craven_and_content_traits_looked_down_upon = yes
+		knights_slightly_more_prone_to_injury = yes
+		can_duel_rivals = yes
+	}
+
+	character_modifier = {
+		knight_limit = 2
+		negate_prowess_penalty_add = 5 # Wounded knights fight better!
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_bellicose = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_or_stoic_desc
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						scope:character = {
+							any_knight = {
+								count >= 6
+								prowess >= 12
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = knights_with_prowess_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				NOT = {
+					culture_pillar:ethos_bellicose = { is_in_list = traits }
+				}
+			}
+			multiply = 0.25
+		}
+	}
+}
