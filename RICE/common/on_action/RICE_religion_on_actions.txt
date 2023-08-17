@@ -1,9 +1,53 @@
 ﻿#On actions about religions for RICE
 
+# Code on-action: character creates a faith
+# Root is the creator
+# scope:old_faith is the faith they used to have
+on_faith_created = {
+	on_actions = { RICE_on_faith_created }
+}
+
+RICE_on_faith_created = {
+	effect = {
+		faith = {
+			if = {
+				limit = {
+					religion = religion:buddhism_religion
+					has_doctrine = rice_theravada_canon_doctrine
+				}
+			}
+			# Check if there are any doctrines to pass onto the new one
+			if = {
+				limit = {
+					has_global_variable = RICE_sri_lanka_ending_united_sangha_mahavihara
+				}
+				add_doctrine = rice_theravada_canon_mahavihara_doctrine
+			}
+			else_if = {
+				limit = {
+					has_global_variable = RICE_sri_lanka_ending_united_sangha_abhayagiri
+				}
+				add_doctrine = rice_theravada_canon_abhayagiri_doctrine
+			}
+			else_if = {
+				limit = {
+					has_global_variable = RICE_sri_lanka_ending_united_sangha_jetavana
+				}
+				add_doctrine = rice_theravada_canon_jetavana_doctrine
+			}
+		}
+	}
+}
+
 # Code on-action: character converts faith. Only fired when using the convert window, or the script effect that uses the same logic
 # Root is the converter
 # scope:old_faith is the faith they used to have
+
 on_faith_conversion = {
+	on_actions = { RICE_on_faith_conversion }
+}
+
+RICE_on_faith_conversion = {
 	events = {
 		magadha.0023 			# Change Magadha Pithipati modifier
 		tarim_basin.0171	 	# Change Khotan Eight Protectors modifier
@@ -14,7 +58,13 @@ on_faith_conversion = {
 # Code on-action: character changes faith. Not called when a character gets a faith on birth, creation, and similar
 # Root is the character
 # scope:old_faith is the faith they used to have
+
+
 on_character_faith_change = {
+	on_actions = { RICE_on_character_faith_change }
+}
+
+RICE_on_character_faith_change = {
 	events = {
 		magadha.0023 			# Change Magadha Pithipati modifier
 		tarim_basin.0171	 	# Change Khotan Eight Protectors modifier
