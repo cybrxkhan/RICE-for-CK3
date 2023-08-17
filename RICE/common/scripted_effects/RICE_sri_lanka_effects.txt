@@ -336,6 +336,26 @@ RICE_setup_sri_lanka_flavor_pack_effect = {
 		# }
 	}
 
+	# Purge Theravadins from Bengal, since Vajrayana and Mahayana were more prominent here during the CK3 period
+	every_county_in_region = {
+		region = world_india_bengal
+		limit = {
+			OR = {
+				faith = faith:theravada
+				holder = { faith = faith:theravada }
+			}
+		}
+		set_county_faith = faith:vajrayana
+		holder = {
+			every_courtier_or_guest = {
+				limit = {
+					faith = faith:theravada
+				}
+				set_character_faith = faith:vajrayana
+			}
+		}
+	}
+
 	#########################################################################
 	#
 	# MISC STUFF
@@ -628,7 +648,14 @@ RICE_setup_sri_lanka_after_game_start_effect = {
 				is_ai = yes
 			}
 			random_list = {
-				20 = { }
+				20 = {
+					# Non-Buddhists less likely to care
+					modifier = {
+						add = 10
+						NOT = { religion = religion:buddhism_religion }
+					}
+
+				}
 				10 = { add_trait = RICE_mahavihara_trait }
 				10 = { add_trait = RICE_abhayagiri_trait }
 				10 = { add_trait = RICE_jetavana_trait }
