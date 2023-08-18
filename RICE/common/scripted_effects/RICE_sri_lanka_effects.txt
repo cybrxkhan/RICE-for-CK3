@@ -375,22 +375,100 @@ RICE_setup_sri_lanka_flavor_pack_effect = {
 	}
 
 	# Purge Theravadins from Bengal, since Vajrayana and Mahayana were more prominent here during the CK3 period
-	every_county_in_region = {
-		region = world_india_bengal
+	every_county = {
 		limit = {
-			OR = {
-				faith = faith:theravada
-				holder = { faith = faith:theravada }
+			culture = culture:bengali
+			faith = faith:theravada
+			title_province = {	
+				OR = {
+					duchy = title:d_suhma
+					duchy = title:d_nadia
+					duchy = title:d_gauda
+				}		
+			}
+		}
+		set_county_faith = faith:mahayana
+		holder = {
+			every_courtier_or_guest = {
+				limit = {
+					culture = culture:bengali
+					faith = faith:theravada
+					is_lowborn = yes
+				}
+				random_list = {
+					50 = {
+						set_character_faith = faith:mahayana
+					}
+					50 = {
+						set_character_faith = faith:vajrayana
+					}
+				}
+			}
+		}
+	}
+	every_county = {
+		limit = {
+			culture = culture:bengali
+			faith = faith:theravada
+			title_province = {	
+				kingdom = title:k_bengal
+				NOR = {
+					duchy = title:d_suhma
+					duchy = title:d_nadia
+					duchy = title:d_gauda
+				}		
 			}
 		}
 		set_county_faith = faith:vajrayana
 		holder = {
-			set_character_faith = faith:vajrayana
 			every_courtier_or_guest = {
 				limit = {
+					culture = culture:bengali
 					faith = faith:theravada
+					is_lowborn = yes
 				}
-				set_character_faith = faith:vajrayana
+				random_list = {
+					50 = {
+						set_character_faith = faith:mahayana
+					}
+					50 = {
+						set_character_faith = faith:vajrayana
+					}
+				}
+			}
+		}
+	}
+
+	# every_county_in_region = {
+	# 	region = world_india_bengal
+	# 	limit = {
+	# 		faith = faith:theravada
+	# 	}
+	# 	set_county_faith = faith:vajrayana
+	# 	holder = {
+	# 		every_courtier_or_guest = {
+	# 			limit = {
+	# 				faith = faith:theravada
+	# 			}
+	# 			set_character_faith = faith:vajrayana
+	# 		}
+	# 	}
+	# }
+
+	# There were more Tamil Buddhists historically, but it's not possible to split the Tamils on Sri Lanka
+	title:c_jaffna = {
+		set_county_faith = faith:srikula_shaktism
+		holder = {
+			every_courtier_or_guest = {
+				limit = {
+					culture = culture:tamil
+					NOT = { religion = religion:hinduism_religion }
+					is_lowborn = yes
+				}
+				random = {
+					chance = 60
+					set_character_faith = faith:srikula_shaktism
+				}
 			}
 		}
 	}
@@ -1658,6 +1736,142 @@ RICE_sri_lanka_all_monasteries_prominence_all_loss_monumental_effect_tooltip = {
 	}
 }
 
+RICE_sri_lanka_all_monasteries_prominence_all_loss_minor_effect_short_tooltip = {
+	custom_tooltip = RICE_sri_lanka_mahavihara_prominence_decrease_minor_short_tooltip
+	custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_decrease_minor_short_tooltip
+	custom_tooltip = RICE_sri_lanka_jetavana_prominence_decrease_minor_short_tooltip
+}
+
+RICE_sri_lanka_all_monasteries_prominence_all_loss_medium_effect_short_tooltip = {
+	if = {
+		limit = {
+			has_trait = RICE_mahavihara_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_decrease_minor_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_decrease_medium_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_decrease_medium_short_tooltip
+	}
+	else_if = {
+		limit = {
+			has_trait = RICE_abhayagiri_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_decrease_medium_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_decrease_minor_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_decrease_medium_short_tooltip
+	}
+	else_if = {
+		limit = {
+			has_trait = RICE_jetavana_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_decrease_medium_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_decrease_medium_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_decrease_minor_short_tooltip
+	}
+	else = {
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_decrease_medium_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_decrease_medium_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_decrease_medium_short_tooltip
+	}
+}
+
+
+RICE_sri_lanka_all_monasteries_prominence_all_loss_major_effect_short_tooltip = {
+	if = {
+		limit = {
+			has_trait = RICE_mahavihara_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_decrease_medium_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_decrease_major_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_decrease_major_short_tooltip
+	}
+	else_if = {
+		limit = {
+			has_trait = RICE_abhayagiri_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_decrease_major_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_decrease_medium_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_decrease_major_short_tooltip
+	}
+	else_if = {
+		limit = {
+			has_trait = RICE_jetavana_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_decrease_major_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_decrease_major_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_decrease_medium_short_tooltip
+	}
+	else = {
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_decrease_major_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_decrease_major_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_decrease_major_short_tooltip
+	}
+}
+
+
+RICE_sri_lanka_all_monasteries_prominence_all_loss_massive_effect_short_tooltip = {
+	if = {
+		limit = {
+			has_trait = RICE_mahavihara_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_decrease_major_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_decrease_massive_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_decrease_massive_short_tooltip
+	}
+	else_if = {
+		limit = {
+			has_trait = RICE_abhayagiri_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_decrease_massive_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_decrease_major_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_decrease_massive_short_tooltip
+	}
+	else_if = {
+		limit = {
+			has_trait = RICE_jetavana_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_decrease_massive_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_decrease_massive_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_decrease_major_short_tooltip
+	}
+	else = {
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_decrease_massive_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_decrease_massive_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_decrease_massive_short_tooltip
+	}
+}
+
+RICE_sri_lanka_all_monasteries_prominence_all_loss_monumental_effect_short_tooltip = {
+	if = {
+		limit = {
+			has_trait = RICE_mahavihara_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_decrease_massive_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_decrease_monumental_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_decrease_monumental_short_tooltip
+	}
+	else_if = {
+		limit = {
+			has_trait = RICE_abhayagiri_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_decrease_monumental_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_decrease_massive_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_decrease_monumental_short_tooltip
+	}
+	else_if = {
+		limit = {
+			has_trait = RICE_jetavana_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_decrease_monumental_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_decrease_monumental_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_decrease_massive_short_tooltip
+	}
+	else = {
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_decrease_monumental_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_decrease_monumental_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_decrease_monumental_short_tooltip
+	}
+}
+
 
 RICE_sri_lanka_all_monasteries_prominence_gain_minor_effect = {
 	if = {
@@ -1708,15 +1922,15 @@ RICE_sri_lanka_monastery_prominence_all_gain_medium_effect = {
 		}
 		change_global_variable = {
 			name = RICE_mahavihara_prominence
-			add = RICE_sri_lanka_prominence_gain_minor
+			add = RICE_sri_lanka_prominence_gain_medium
 		}
 		change_global_variable = {
 			name = RICE_abhayagiri_prominence
-			add = RICE_sri_lanka_prominence_gain_medium
+			add = RICE_sri_lanka_prominence_gain_minor
 		}
 		change_global_variable = {
 			name = RICE_jetavana_prominence
-			add = RICE_sri_lanka_prominence_gain_medium
+			add = RICE_sri_lanka_prominence_gain_minor
 		}
 		add_trait_xp = {
 			trait = RICE_mahavihara_trait
@@ -1729,15 +1943,15 @@ RICE_sri_lanka_monastery_prominence_all_gain_medium_effect = {
 		}
 		change_global_variable = {
 			name = RICE_mahavihara_prominence
-			add = RICE_sri_lanka_prominence_gain_medium
-		}
-		change_global_variable = {
-			name = RICE_abhayagiri_prominence
 			add = RICE_sri_lanka_prominence_gain_minor
 		}
 		change_global_variable = {
-			name = RICE_jetavana_prominence
+			name = RICE_abhayagiri_prominence
 			add = RICE_sri_lanka_prominence_gain_medium
+		}
+		change_global_variable = {
+			name = RICE_jetavana_prominence
+			add = RICE_sri_lanka_prominence_gain_minor
 		}
 		add_trait_xp = {
 			trait = RICE_abhayagiri_trait
@@ -1750,15 +1964,15 @@ RICE_sri_lanka_monastery_prominence_all_gain_medium_effect = {
 		}
 		change_global_variable = {
 			name = RICE_mahavihara_prominence
-			add = RICE_sri_lanka_prominence_gain_medium
+			add = RICE_sri_lanka_prominence_gain_minor
 		}
 		change_global_variable = {
 			name = RICE_abhayagiri_prominence
-			add = RICE_sri_lanka_prominence_gain_medium
+			add = RICE_sri_lanka_prominence_gain_minor
 		}
 		change_global_variable = {
 			name = RICE_jetavana_prominence
-			add = RICE_sri_lanka_prominence_gain_minor
+			add = RICE_sri_lanka_prominence_gain_medium
 		}
 		add_trait_xp = {
 			trait = RICE_jetavana_trait
@@ -1768,15 +1982,15 @@ RICE_sri_lanka_monastery_prominence_all_gain_medium_effect = {
 	else = {
 		change_global_variable = {
 			name = RICE_mahavihara_prominence
-			add = RICE_sri_lanka_prominence_gain_medium
+			add = RICE_sri_lanka_prominence_gain_minor
 		}
 		change_global_variable = {
 			name = RICE_abhayagiri_prominence
-			add = RICE_sri_lanka_prominence_gain_medium
+			add = RICE_sri_lanka_prominence_gain_minor
 		}
 		change_global_variable = {
 			name = RICE_jetavana_prominence
-			add = RICE_sri_lanka_prominence_gain_medium
+			add = RICE_sri_lanka_prominence_gain_minor
 		}
 	}
 }
@@ -1788,15 +2002,15 @@ RICE_sri_lanka_monastery_prominence_all_gain_major_effect = {
 		}
 		change_global_variable = {
 			name = RICE_mahavihara_prominence
-			add = RICE_sri_lanka_prominence_gain_medium
+			add = RICE_sri_lanka_prominence_gain_major
 		}
 		change_global_variable = {
 			name = RICE_abhayagiri_prominence
-			add = RICE_sri_lanka_prominence_gain_major
+			add = RICE_sri_lanka_prominence_gain_medium
 		}
 		change_global_variable = {
 			name = RICE_jetavana_prominence
-			add = RICE_sri_lanka_prominence_gain_major
+			add = RICE_sri_lanka_prominence_gain_medium
 		}
 		add_trait_xp = {
 			trait = RICE_mahavihara_trait
@@ -1809,15 +2023,15 @@ RICE_sri_lanka_monastery_prominence_all_gain_major_effect = {
 		}
 		change_global_variable = {
 			name = RICE_mahavihara_prominence
-			add = RICE_sri_lanka_prominence_gain_major
-		}
-		change_global_variable = {
-			name = RICE_abhayagiri_prominence
 			add = RICE_sri_lanka_prominence_gain_medium
 		}
 		change_global_variable = {
-			name = RICE_jetavana_prominence
+			name = RICE_abhayagiri_prominence
 			add = RICE_sri_lanka_prominence_gain_major
+		}
+		change_global_variable = {
+			name = RICE_jetavana_prominence
+			add = RICE_sri_lanka_prominence_gain_medium
 		}
 		add_trait_xp = {
 			trait = RICE_abhayagiri_trait
@@ -1830,15 +2044,15 @@ RICE_sri_lanka_monastery_prominence_all_gain_major_effect = {
 		}
 		change_global_variable = {
 			name = RICE_mahavihara_prominence
-			add = RICE_sri_lanka_prominence_gain_major
+			add = RICE_sri_lanka_prominence_gain_medium
 		}
 		change_global_variable = {
 			name = RICE_abhayagiri_prominence
-			add = RICE_sri_lanka_prominence_gain_major
+			add = RICE_sri_lanka_prominence_gain_medium
 		}
 		change_global_variable = {
 			name = RICE_jetavana_prominence
-			add = RICE_sri_lanka_prominence_gain_medium
+			add = RICE_sri_lanka_prominence_gain_major
 		}
 		add_trait_xp = {
 			trait = RICE_jetavana_trait
@@ -1848,15 +2062,15 @@ RICE_sri_lanka_monastery_prominence_all_gain_major_effect = {
 	else = {
 		change_global_variable = {
 			name = RICE_mahavihara_prominence
-			add = RICE_sri_lanka_prominence_gain_major
+			add = RICE_sri_lanka_prominence_gain_medium
 		}
 		change_global_variable = {
 			name = RICE_abhayagiri_prominence
-			add = RICE_sri_lanka_prominence_gain_major
+			add = RICE_sri_lanka_prominence_gain_medium
 		}
 		change_global_variable = {
 			name = RICE_jetavana_prominence
-			add = RICE_sri_lanka_prominence_gain_major
+			add = RICE_sri_lanka_prominence_gain_medium
 		}
 	}
 }
@@ -1868,15 +2082,15 @@ RICE_sri_lanka_monastery_prominence_all_gain_massive_effect = {
 		}
 		change_global_variable = {
 			name = RICE_mahavihara_prominence
-			add = RICE_sri_lanka_prominence_gain_major
+			add = RICE_sri_lanka_prominence_gain_massive
 		}
 		change_global_variable = {
 			name = RICE_abhayagiri_prominence
-			add = RICE_sri_lanka_prominence_gain_massive
+			add = RICE_sri_lanka_prominence_gain_major
 		}
 		change_global_variable = {
 			name = RICE_jetavana_prominence
-			add = RICE_sri_lanka_prominence_gain_massive
+			add = RICE_sri_lanka_prominence_gain_major
 		}
 		add_trait_xp = {
 			trait = RICE_mahavihara_trait
@@ -1889,15 +2103,15 @@ RICE_sri_lanka_monastery_prominence_all_gain_massive_effect = {
 		}
 		change_global_variable = {
 			name = RICE_mahavihara_prominence
-			add = RICE_sri_lanka_prominence_gain_massive
-		}
-		change_global_variable = {
-			name = RICE_abhayagiri_prominence
 			add = RICE_sri_lanka_prominence_gain_major
 		}
 		change_global_variable = {
-			name = RICE_jetavana_prominence
+			name = RICE_abhayagiri_prominence
 			add = RICE_sri_lanka_prominence_gain_massive
+		}
+		change_global_variable = {
+			name = RICE_jetavana_prominence
+			add = RICE_sri_lanka_prominence_gain_major
 		}
 		add_trait_xp = {
 			trait = RICE_abhayagiri_trait
@@ -1910,15 +2124,15 @@ RICE_sri_lanka_monastery_prominence_all_gain_massive_effect = {
 		}
 		change_global_variable = {
 			name = RICE_mahavihara_prominence
-			add = RICE_sri_lanka_prominence_gain_massive
+			add = RICE_sri_lanka_prominence_gain_major
 		}
 		change_global_variable = {
 			name = RICE_abhayagiri_prominence
-			add = RICE_sri_lanka_prominence_gain_massive
+			add = RICE_sri_lanka_prominence_gain_major
 		}
 		change_global_variable = {
 			name = RICE_jetavana_prominence
-			add = RICE_sri_lanka_prominence_gain_major
+			add = RICE_sri_lanka_prominence_gain_massive
 		}
 		add_trait_xp = {
 			trait = RICE_jetavana_trait
@@ -1928,15 +2142,15 @@ RICE_sri_lanka_monastery_prominence_all_gain_massive_effect = {
 	else = {
 		change_global_variable = {
 			name = RICE_mahavihara_prominence
-			add = RICE_sri_lanka_prominence_gain_massive
+			add = RICE_sri_lanka_prominence_gain_major
 		}
 		change_global_variable = {
 			name = RICE_abhayagiri_prominence
-			add = RICE_sri_lanka_prominence_gain_massive
+			add = RICE_sri_lanka_prominence_gain_major
 		}
 		change_global_variable = {
 			name = RICE_jetavana_prominence
-			add = RICE_sri_lanka_prominence_gain_massive
+			add = RICE_sri_lanka_prominence_gain_major
 		}
 	}
 }
@@ -1948,15 +2162,15 @@ RICE_sri_lanka_monastery_prominence_all_gain_monumental_effect = {
 		}
 		change_global_variable = {
 			name = RICE_mahavihara_prominence
-			add = RICE_sri_lanka_prominence_gain_massive
+			add = RICE_sri_lanka_prominence_gain_monumental
 		}
 		change_global_variable = {
 			name = RICE_abhayagiri_prominence
-			add = RICE_sri_lanka_prominence_gain_monumental
+			add = RICE_sri_lanka_prominence_gain_massive
 		}
 		change_global_variable = {
 			name = RICE_jetavana_prominence
-			add = RICE_sri_lanka_prominence_gain_monumental
+			add = RICE_sri_lanka_prominence_gain_massive
 		}
 		add_trait_xp = {
 			trait = RICE_mahavihara_trait
@@ -1969,15 +2183,15 @@ RICE_sri_lanka_monastery_prominence_all_gain_monumental_effect = {
 		}
 		change_global_variable = {
 			name = RICE_mahavihara_prominence
-			add = RICE_sri_lanka_prominence_gain_monumental
-		}
-		change_global_variable = {
-			name = RICE_abhayagiri_prominence
 			add = RICE_sri_lanka_prominence_gain_massive
 		}
 		change_global_variable = {
-			name = RICE_jetavana_prominence
+			name = RICE_abhayagiri_prominence
 			add = RICE_sri_lanka_prominence_gain_monumental
+		}
+		change_global_variable = {
+			name = RICE_jetavana_prominence
+			add = RICE_sri_lanka_prominence_gain_massive
 		}
 		add_trait_xp = {
 			trait = RICE_abhayagiri_trait
@@ -1990,15 +2204,15 @@ RICE_sri_lanka_monastery_prominence_all_gain_monumental_effect = {
 		}
 		change_global_variable = {
 			name = RICE_mahavihara_prominence
-			add = RICE_sri_lanka_prominence_gain_monumental
+			add = RICE_sri_lanka_prominence_gain_massive
 		}
 		change_global_variable = {
 			name = RICE_abhayagiri_prominence
-			add = RICE_sri_lanka_prominence_gain_monumental
+			add = RICE_sri_lanka_prominence_gain_massive
 		}
 		change_global_variable = {
 			name = RICE_jetavana_prominence
-			add = RICE_sri_lanka_prominence_gain_massive
+			add = RICE_sri_lanka_prominence_gain_monumental
 		}
 		add_trait_xp = {
 			trait = RICE_jetavana_trait
@@ -2008,15 +2222,15 @@ RICE_sri_lanka_monastery_prominence_all_gain_monumental_effect = {
 	else = {
 		change_global_variable = {
 			name = RICE_mahavihara_prominence
-			add = RICE_sri_lanka_prominence_gain_monumental
+			add = RICE_sri_lanka_prominence_gain_massive
 		}
 		change_global_variable = {
 			name = RICE_abhayagiri_prominence
-			add = RICE_sri_lanka_prominence_gain_monumental
+			add = RICE_sri_lanka_prominence_gain_massive
 		}
 		change_global_variable = {
 			name = RICE_jetavana_prominence
-			add = RICE_sri_lanka_prominence_gain_monumental
+			add = RICE_sri_lanka_prominence_gain_massive
 		}
 	}
 }
@@ -2036,30 +2250,30 @@ RICE_sri_lanka_all_monasteries_prominence_all_gain_medium_effect_tooltip = {
 		limit = {
 			has_trait = RICE_mahavihara_trait
 		}
-		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_minor_tooltip
-		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_medium_tooltip
-		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_medium_tooltip
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_medium_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_minor_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_minor_tooltip
 	}
 	else_if = {
 		limit = {
 			has_trait = RICE_abhayagiri_trait
 		}
-		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_medium_tooltip
-		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_minor_tooltip
-		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_medium_tooltip
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_minor_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_medium_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_minor_tooltip
 	}
 	else_if = {
 		limit = {
 			has_trait = RICE_jetavana_trait
 		}
-		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_medium_tooltip
-		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_medium_tooltip
-		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_minor_tooltip
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_minor_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_minor_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_medium_tooltip
 	}
 	else = {
-		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_medium_tooltip
-		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_medium_tooltip
-		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_medium_tooltip
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_minor_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_minor_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_minor_tooltip
 	}
 }
 
@@ -2069,30 +2283,30 @@ RICE_sri_lanka_all_monasteries_prominence_all_gain_major_effect_tooltip = {
 		limit = {
 			has_trait = RICE_mahavihara_trait
 		}
-		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_medium_tooltip
-		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_major_tooltip
-		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_major_tooltip
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_major_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_medium_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_medium_tooltip
 	}
 	else_if = {
 		limit = {
 			has_trait = RICE_abhayagiri_trait
 		}
-		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_major_tooltip
-		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_medium_tooltip
-		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_major_tooltip
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_medium_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_major_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_medium_tooltip
 	}
 	else_if = {
 		limit = {
 			has_trait = RICE_jetavana_trait
 		}
-		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_major_tooltip
-		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_major_tooltip
-		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_medium_tooltip
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_medium_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_medium_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_major_tooltip
 	}
 	else = {
-		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_major_tooltip
-		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_major_tooltip
-		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_major_tooltip
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_medium_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_medium_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_medium_tooltip
 	}
 }
 
@@ -2102,30 +2316,30 @@ RICE_sri_lanka_all_monasteries_prominence_all_gain_massive_effect_tooltip = {
 		limit = {
 			has_trait = RICE_mahavihara_trait
 		}
-		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_major_tooltip
-		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_massive_tooltip
-		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_massive_tooltip
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_massive_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_major_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_major_tooltip
 	}
 	else_if = {
 		limit = {
 			has_trait = RICE_abhayagiri_trait
 		}
-		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_massive_tooltip
-		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_major_tooltip
-		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_massive_tooltip
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_major_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_massive_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_major_tooltip
 	}
 	else_if = {
 		limit = {
 			has_trait = RICE_jetavana_trait
 		}
-		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_massive_tooltip
-		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_massive_tooltip
-		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_major_tooltip
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_major_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_major_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_massive_tooltip
 	}
 	else = {
-		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_massive_tooltip
-		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_massive_tooltip
-		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_massive_tooltip
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_major_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_major_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_major_tooltip
 	}
 }
 
@@ -2134,34 +2348,168 @@ RICE_sri_lanka_all_monasteries_prominence_all_gain_monumental_effect_tooltip = {
 		limit = {
 			has_trait = RICE_mahavihara_trait
 		}
-		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_massive_tooltip
-		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_monumental_tooltip
-		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_monumental_tooltip
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_monumental_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_massive_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_massive_tooltip
 	}
 	else_if = {
 		limit = {
 			has_trait = RICE_abhayagiri_trait
 		}
-		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_monumental_tooltip
-		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_massive_tooltip
-		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_monumental_tooltip
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_massive_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_monumental_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_massive_tooltip
 	}
 	else_if = {
 		limit = {
 			has_trait = RICE_jetavana_trait
 		}
-		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_monumental_tooltip
-		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_monumental_tooltip
-		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_massive_tooltip
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_massive_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_massive_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_monumental_tooltip
 	}
 	else = {
-		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_monumental_tooltip
-		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_monumental_tooltip
-		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_monumental_tooltip
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_massive_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_massive_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_massive_tooltip
+	}
+}
+
+RICE_sri_lanka_all_monasteries_prominence_all_gain_minor_effect_short_tooltip = {
+	custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_minor_short_tooltip
+	custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_minor_short_tooltip
+	custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_minor_short_tooltip
+}
+
+RICE_sri_lanka_all_monasteries_prominence_all_gain_medium_effect_short_tooltip = {
+	if = {
+		limit = {
+			has_trait = RICE_mahavihara_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_medium_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_minor_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_minor_short_tooltip
+	}
+	else_if = {
+		limit = {
+			has_trait = RICE_abhayagiri_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_minor_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_medium_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_minor_short_tooltip
+	}
+	else_if = {
+		limit = {
+			has_trait = RICE_jetavana_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_minor_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_minor_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_medium_short_tooltip
+	}
+	else = {
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_minor_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_minor_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_minor_short_tooltip
 	}
 }
 
 
+RICE_sri_lanka_all_monasteries_prominence_all_gain_major_effect_short_tooltip = {
+	if = {
+		limit = {
+			has_trait = RICE_mahavihara_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_major_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_medium_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_medium_short_tooltip
+	}
+	else_if = {
+		limit = {
+			has_trait = RICE_abhayagiri_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_medium_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_major_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_medium_short_tooltip
+	}
+	else_if = {
+		limit = {
+			has_trait = RICE_jetavana_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_medium_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_medium_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_major_short_tooltip
+	}
+	else = {
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_medium_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_medium_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_medium_short_tooltip
+	}
+}
+
+
+RICE_sri_lanka_all_monasteries_prominence_all_gain_massive_effect_short_tooltip = {
+	if = {
+		limit = {
+			has_trait = RICE_mahavihara_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_massive_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_major_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_major_short_tooltip
+	}
+	else_if = {
+		limit = {
+			has_trait = RICE_abhayagiri_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_major_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_massive_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_major_short_tooltip
+	}
+	else_if = {
+		limit = {
+			has_trait = RICE_jetavana_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_major_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_major_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_massive_short_tooltip
+	}
+	else = {
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_major_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_major_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_major_short_tooltip
+	}
+}
+
+RICE_sri_lanka_all_monasteries_prominence_all_gain_monumental_effect_short_tooltip = {
+	if = {
+		limit = {
+			has_trait = RICE_mahavihara_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_monumental_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_massive_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_massive_short_tooltip
+	}
+	else_if = {
+		limit = {
+			has_trait = RICE_abhayagiri_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_massive_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_monumental_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_massive_short_tooltip
+	}
+	else_if = {
+		limit = {
+			has_trait = RICE_jetavana_trait
+		}
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_massive_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_massive_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_monumental_short_tooltip
+	}
+	else = {
+		custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_massive_short_tooltip
+		custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_massive_short_tooltip
+		custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_massive_short_tooltip
+	}
+}
 
 
 
@@ -2227,7 +2575,7 @@ RICE_sri_lanka_struggle_irrigation_tank_small_effect = {
 
 		}		
 		RICE_sri_lanka_monastery_prominence_all_gain_medium_effect = yes
-		RICE_sri_lanka_all_monasteries_prominence_all_gain_medium_effect_tooltip = yes
+		RICE_sri_lanka_all_monasteries_prominence_all_gain_medium_effect_short_tooltip = yes
 	}
 }
 
@@ -2253,7 +2601,7 @@ RICE_sri_lanka_struggle_irrigation_tank_medium_effect = {
 
 		}		
 		RICE_sri_lanka_monastery_prominence_all_gain_major_effect = yes
-		RICE_sri_lanka_all_monasteries_prominence_all_gain_major_effect_tooltip = yes
+		RICE_sri_lanka_all_monasteries_prominence_all_gain_major_effect_short_tooltip = yes
 	}
 }
 
@@ -2279,7 +2627,7 @@ RICE_sri_lanka_struggle_irrigation_tank_large_effect = {
 
 		}		
 		RICE_sri_lanka_monastery_prominence_all_gain_massive_effect = yes
-		RICE_sri_lanka_all_monasteries_prominence_all_gain_massive_effect_tooltip = yes
+		RICE_sri_lanka_all_monasteries_prominence_all_gain_massive_effect_short_tooltip = yes
 	}
 }
 
@@ -2304,7 +2652,7 @@ RICE_sri_lanka_struggle_irrigation_tank_huge_effect = {
 			RICE_sri_lanka_can_access_most_sangha_mechanics_trigger = yes
 		}		
 		RICE_sri_lanka_monastery_prominence_all_gain_monumental_effect = yes
-		RICE_sri_lanka_all_monasteries_prominence_all_gain_monumental_effect_tooltip = yes
+		RICE_sri_lanka_all_monasteries_prominence_all_gain_monumental_effect_short_tooltip = yes
 	}
 }
 
