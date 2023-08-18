@@ -669,7 +669,50 @@ RICE_setup_sri_lanka_after_game_start_effect = {
 }
 
 
-RICE_setup_sri_lanka_display_values = {
+RICE_sri_lanka_display_values_effect = {
+
+	# Notify rulers in general
+	every_ruler = {
+		limit = {
+			OR = {
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_sri_lanka_struggle_region
+					}
+				}
+				AND = {						
+					exists = struggle:RICE_sri_lanka_struggle
+					any_character_struggle = {
+						involvement = involved
+						is_struggle_type = RICE_sri_lanka_struggle
+					}	
+				}	
+				AND = {
+					has_global_variable = RICE_sri_lanka_ending_united_sangha
+					religion = religion:buddhism_religion
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_sri_lanka_struggle_region
+						}
+					}
+				}
+				AND = {
+					faith = {
+						has_doctrine = rice_theravada_canon_doctrine
+					}
+					has_global_variable = RICE_sri_lanka_ending_revived_sangha
+				}	
+			}
+		}
+		add_to_list = RICE_sri_lanka_struggle_rulers
+	}
+	every_in_list = {
+		list = RICE_sri_lanka_struggle_rulers
+		trigger_event = sri_lanka.0002
+	}
+
 	if = {
 		limit = {
 			OR = {
@@ -691,13 +734,7 @@ RICE_setup_sri_lanka_display_values = {
 				}
 			}
 		}
-		send_interface_message = {
-			type = event_generic_neutral
-			title = RICE_sri_lanka_values_notification.title
-			custom_tooltip = RICE_sri_lanka_values_notification.mahavihara_tooltip
-			custom_tooltip = RICE_sri_lanka_values_notification.abhayagiri_tooltip
-			custom_tooltip = RICE_sri_lanka_values_notification.jetavana_tooltip
-		}
+
 	}
 }
 

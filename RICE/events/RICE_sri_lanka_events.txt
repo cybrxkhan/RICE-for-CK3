@@ -122,6 +122,123 @@ sri_lanka.0001 = { # Fullscreen Intro Event
 }
 
 
+
+# Give the yearly resources since it doesn't work in effects for some reason
+sri_lanka.0002 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+
+		# If you qualify for receiving piety and/or prestige
+		if = {
+			limit = {
+				OR = {
+					AND = {						
+						exists = struggle:RICE_sri_lanka_struggle
+						any_character_struggle = {
+							involvement = involved
+							is_struggle_type = RICE_sri_lanka_struggle
+						}	
+					}	
+					AND = {
+						has_global_variable = RICE_sri_lanka_ending_united_sangha
+						religion = religion:buddhism_religion
+						any_held_title = {
+							tier = tier_county
+							any_county_province = {
+								geographical_region = RICE_sri_lanka_struggle_region
+							}
+						}
+					}
+					AND = {
+						faith = {
+							has_doctrine = rice_theravada_canon_doctrine
+						}
+						has_global_variable = RICE_sri_lanka_ending_revived_sangha
+					}	
+				}
+			}
+			# Need to preset the values, or else the interface message won't display correctly for whatever reason
+			set_variable = {
+				name = RICE_sri_lanka_add_prestige_value
+				value = {
+					value = 0
+					add = {
+						integer_range = {
+							min = 0
+							max = RICE_sri_lanka_annual_prestige_max_value
+						}
+					}
+				}
+			}
+			set_variable = {
+				name = RICE_sri_lanka_add_piety_value
+				value = {
+					value = 0
+					add = {
+						integer_range = {
+							min = 0
+							max = RICE_sri_lanka_annual_piety_max_value
+						}
+					}
+				}
+			}
+		}
+
+		send_interface_message = {
+			type = event_generic_neutral
+			title = RICE_sri_lanka_values_notification.title
+			custom_tooltip = RICE_sri_lanka_values_notification.mahavihara_tooltip
+			custom_tooltip = RICE_sri_lanka_values_notification.abhayagiri_tooltip
+			custom_tooltip = RICE_sri_lanka_values_notification.jetavana_tooltip
+			if = {
+				limit = {
+					OR = {
+						AND = {						
+							exists = struggle:RICE_sri_lanka_struggle
+							any_character_struggle = {
+								involvement = involved
+								is_struggle_type = RICE_sri_lanka_struggle
+							}	
+						}	
+						AND = {
+							has_global_variable = RICE_sri_lanka_ending_united_sangha
+							religion = religion:buddhism_religion
+							any_held_title = {
+								tier = tier_county
+								any_county_province = {
+									geographical_region = RICE_sri_lanka_struggle_region
+								}
+							}
+						}
+						AND = {
+							faith = {
+								has_doctrine = rice_theravada_canon_doctrine
+							}
+							has_global_variable = RICE_sri_lanka_ending_revived_sangha
+						}	
+					}					
+				}
+				add_prestige = var:RICE_sri_lanka_add_prestige_value
+				add_piety = var:RICE_sri_lanka_add_piety_value
+			}
+		}
+		
+		if = {
+			limit = { has_variable = RICE_sri_lanka_add_prestige_value }
+			remove_variable = RICE_sri_lanka_add_prestige_value
+		}
+		
+		if = {
+			limit = { has_variable = RICE_sri_lanka_add_piety_value }
+			remove_variable = RICE_sri_lanka_add_piety_value
+		}
+
+	}
+}
+
+
 # Sangha unified ending
 sri_lanka.0005 = { 
 	type = character_event
@@ -942,123 +1059,123 @@ sri_lanka.0010 = {
 
 
 
-# Mahavihara disappears
-sri_lanka.0011 = {
-	type = character_event
-	title = sri_lanka.0011.t
-	desc = sri_lanka.0011.desc
-	theme = RICE_theme_sri_lanka_stupa
+# # Mahavihara disappears
+# sri_lanka.0011 = {
+# 	type = character_event
+# 	title = sri_lanka.0011.t
+# 	desc = sri_lanka.0011.desc
+# 	theme = RICE_theme_sri_lanka_stupa
 	
-	right_portrait = {
-		character = root
-		triggered_animation = {
-			trigger = {
-				has_trait = RICE_mahavihara_trait
-			}
-			animation = sadness
-		}
-		animation = thinking
-	}
+# 	right_portrait = {
+# 		character = root
+# 		triggered_animation = {
+# 			trigger = {
+# 				has_trait = RICE_mahavihara_trait
+# 			}
+# 			animation = sadness
+# 		}
+# 		animation = thinking
+# 	}
 
-	immediate = {
-		set_global_variable = {
-			name = RICE_sri_lanka_mahavira_extinct
-			value = yes
-		}
-		every_ruler = {
-			limit = {
-				has_trait = RICE_mahavihara_trait
-			}
-			custom = RICE_every_mahavihara_ruler
-			remove_trait = RICE_mahavihara_trait
-		}
-	}
+# 	immediate = {
+# 		set_global_variable = {
+# 			name = RICE_sri_lanka_mahavira_extinct
+# 			value = yes
+# 		}
+# 		every_ruler = {
+# 			limit = {
+# 				has_trait = RICE_mahavihara_trait
+# 			}
+# 			custom = RICE_every_mahavihara_ruler
+# 			remove_trait = RICE_mahavihara_trait
+# 		}
+# 	}
 
-	option = { # Ok
-		name = sri_lanka.0011.a
-		custom_tooltip = sri_lanka.0011.a.tooltip
-	}
+# 	option = { # Ok
+# 		name = sri_lanka.0011.a
+# 		custom_tooltip = sri_lanka.0011.a.tooltip
+# 	}
 
-}
+# }
 
 
-# Abhayagiri disappears
-sri_lanka.0012 = {
-	type = character_event
-	title = sri_lanka.0012.t
-	desc = sri_lanka.0012.desc
-	theme = RICE_theme_sri_lanka_stupa
+# # Abhayagiri disappears
+# sri_lanka.0012 = {
+# 	type = character_event
+# 	title = sri_lanka.0012.t
+# 	desc = sri_lanka.0012.desc
+# 	theme = RICE_theme_sri_lanka_stupa
 	
-	right_portrait = {
-		character = root
-		triggered_animation = {
-			trigger = {
-				has_trait = RICE_abhayagiri_trait
-			}
-			animation = sadness
-		}
-		animation = thinking
-	}
+# 	right_portrait = {
+# 		character = root
+# 		triggered_animation = {
+# 			trigger = {
+# 				has_trait = RICE_abhayagiri_trait
+# 			}
+# 			animation = sadness
+# 		}
+# 		animation = thinking
+# 	}
 
-	immediate = {
-		set_global_variable = {
-			name = RICE_sri_lanka_abhayagiri_extinct
-			value = yes
-		}
-		every_ruler = {
-			limit = {
-				has_trait = RICE_abhayagiri_trait
-			}
-			custom = RICE_every_abhayagiri_ruler
-			remove_trait = RICE_abhayagiri_trait
-		}
-	}
+# 	immediate = {
+# 		set_global_variable = {
+# 			name = RICE_sri_lanka_abhayagiri_extinct
+# 			value = yes
+# 		}
+# 		every_ruler = {
+# 			limit = {
+# 				has_trait = RICE_abhayagiri_trait
+# 			}
+# 			custom = RICE_every_abhayagiri_ruler
+# 			remove_trait = RICE_abhayagiri_trait
+# 		}
+# 	}
 
-	option = { # Ok
-		name = sri_lanka.0012.a
-		custom_tooltip = sri_lanka.0012.a.tooltip
-	}
+# 	option = { # Ok
+# 		name = sri_lanka.0012.a
+# 		custom_tooltip = sri_lanka.0012.a.tooltip
+# 	}
 
-}
+# }
 
-# Jetavana disappears
-sri_lanka.0013 = {
-	type = character_event
-	title = sri_lanka.0013.t
-	desc = sri_lanka.0013.desc
-	theme = RICE_theme_sri_lanka_stupa
+# # Jetavana disappears
+# sri_lanka.0013 = {
+# 	type = character_event
+# 	title = sri_lanka.0013.t
+# 	desc = sri_lanka.0013.desc
+# 	theme = RICE_theme_sri_lanka_stupa
 	
-	right_portrait = {
-		character = root
-		triggered_animation = {
-			trigger = {
-				has_trait = RICE_jetavana_trait
-			}
-			animation = sadness
-		}
-		animation = thinking
-	}
+# 	right_portrait = {
+# 		character = root
+# 		triggered_animation = {
+# 			trigger = {
+# 				has_trait = RICE_jetavana_trait
+# 			}
+# 			animation = sadness
+# 		}
+# 		animation = thinking
+# 	}
 
-	immediate = {
-		set_global_variable = {
-			name = RICE_sri_lanka_jetavana_extinct
-			value = yes
-		}
-		every_ruler = {
-			limit = {
-				has_trait = RICE_jetavana_trait
-			}
-			custom = RICE_every_jetavana_ruler
-			remove_trait = RICE_jetavana_trait
-		}
-	}
+# 	immediate = {
+# 		set_global_variable = {
+# 			name = RICE_sri_lanka_jetavana_extinct
+# 			value = yes
+# 		}
+# 		every_ruler = {
+# 			limit = {
+# 				has_trait = RICE_jetavana_trait
+# 			}
+# 			custom = RICE_every_jetavana_ruler
+# 			remove_trait = RICE_jetavana_trait
+# 		}
+# 	}
 
-	option = { # Ok
-		name = sri_lanka.0013.a
-		custom_tooltip = sri_lanka.0013.a.tooltip
-	}
+# 	option = { # Ok
+# 		name = sri_lanka.0013.a
+# 		custom_tooltip = sri_lanka.0013.a.tooltip
+# 	}
 
-}
+# }
 
 
 
