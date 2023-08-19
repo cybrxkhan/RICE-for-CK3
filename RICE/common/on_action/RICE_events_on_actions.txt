@@ -433,6 +433,7 @@ RICE_yearly_global_pulse = {
 
 yearly_playable_pulse = {
 	on_actions = {
+		RICE_events_yearly_maintenance_pulse
 		delay = { days = { 8 288 } }
 		RICE_events_yearly_pulse
 		delay = { days = { 8 288 } }
@@ -459,6 +460,44 @@ five_year_playable_pulse = {
 	}
 }
 
+# Tri-yearly maintenance pulse
+RICE_events_yearly_maintenance_pulse = {
+	effect = {
+		# Chance every year that Sri Lankan rulers who aren't supporting one monastery will support one
+		if = {
+			limit = {
+				is_ai = yes
+				RICE_sri_lanka_struggle_decisions_light_trigger = yes
+				NOT = { has_global_variable = RICE_sri_lanka_ending_united_sangha }
+				NOT = { has_global_variable = RICE_sri_lanka_ending_destroyed_sangha }
+				NOR = {
+					has_trait = RICE_mahavihara_trait
+					has_trait = RICE_abhayagiri_trait
+					has_trait = RICE_jetavana_trait
+				}
+			}
+			random_list = {
+				30 = {
+					# Non-Buddhists less likely to care
+					modifier = {
+						add = 15
+						NOT = { religion = religion:buddhism_religion }
+					}
+
+				}
+				10 = {
+					add_trait = RICE_mahavihara_trait
+				}
+				10 = {
+					add_trait = RICE_abhayagiri_trait
+				}
+				10 = {
+					add_trait = RICE_jetavana_trait
+				}
+			}
+		}
+	}
+}
 
 # Common events - covers normal events
 RICE_events_yearly_pulse = {
