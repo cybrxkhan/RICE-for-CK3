@@ -48,12 +48,23 @@ RICE_normandy_grant_normandy_interaction = {
 			NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
 			highest_held_title_tier >= tier_duchy
 			#is_independent_ruler = yes
-			# Don't want you to lose your capital
-			NOT = {
-				capital_province = {
-					geographical_region = RICE_normandy_region
-				}
-			}
+			# Don't want you to lose your only capital, unless you're AI
+			# OR = {
+			# 	title:c_rouen.holder = {
+			# 		any_held_county = {
+			# 			count > 1
+			# 		}
+			# 	}
+			# 	is_ai = no
+			# }
+			# OR = {
+			# 	NOT = {
+			# 		capital_province = {
+			# 			geographical_region = RICE_normandy_region
+			# 		}
+			# 	}
+			# 	is_ai = yes
+			# }
 			# Completely control at least 3 counties in Normandy
 			# calc_true_if = {
 			# 	amount >= 3
@@ -98,12 +109,6 @@ RICE_normandy_grant_normandy_interaction = {
 	is_valid_showing_failures_only = {
 		scope:actor.gold >= scope:actor.medium_gold_value
 		scope:actor = {
-			# Whoever controls Rouen cannot become landless
-			title:c_rouen.holder = {
-				any_held_county = {
-					count > 1
-				}
-			}
 			#NOT = { has_title = title:c_rouen }
 		 	#NOT = { is_vassal_or_below_of = scope:recipient } # Doesn't make sense to give it to your liege
 		}
@@ -116,13 +121,25 @@ RICE_normandy_grant_normandy_interaction = {
 
 	is_valid = {
 		scope:actor = {
-			prestige_level >= 3
-			# Don't want you to lose your capital
-			NOT = {
-				capital_province = {
-					geographical_region = RICE_normandy_region
+			# Whoever controls Rouen cannot become landless if they are not AI
+			custom_description = {
+				text = RICE_normandy_interaction_AI_rouen_req
+				OR = {
+					title:c_rouen.holder = {
+						any_held_county = {
+							count > 1
+						}
+					}
+					is_ai = yes
 				}
 			}
+			prestige_level >= 3
+			# Don't want you to lose your capital
+			# NOT = {
+			# 	capital_province = {
+			# 		geographical_region = RICE_normandy_region
+			# 	}
+			# }
 			# Completely control at least 3 counties in Normandy
 			calc_true_if = {
 				amount >= 3
@@ -279,16 +296,11 @@ RICE_normandy_negotiate_normandy_interaction = {
 	
 	is_valid_showing_failures_only = {
 		#scope:actor.gold >= medium_gold_value
-		scope:actor = {
+		#scope:actor = {
 			# Whoever controls Rouen cannot become landless
-			title:c_rouen.holder = {
-				any_held_county = {
-					count > 1
-				}
-			}
 			#NOT = { has_title = title:c_rouen }
 		 	#NOT = { is_vassal_or_below_of = scope:recipient } # Doesn't make sense to give it to your liege
-		}
+		#}
 		scope:recipient = {
 			#is_landed = no
 			is_busy_in_events_localised = yes
@@ -302,12 +314,24 @@ RICE_normandy_negotiate_normandy_interaction = {
 			RICE_normandy_can_be_granted_normandy_trigger = yes
 		}
 		scope:recipient = {
-			# Don't want you to lose your capital
-			NOT = {
-				capital_province = {
-					geographical_region = RICE_normandy_region
+			# Whoever controls Rouen cannot become landless if they are not AI
+			custom_description = {
+				text = RICE_normandy_interaction_AI_rouen_req
+				OR = {
+					title:c_rouen.holder = {
+						any_held_county = {
+							count > 1
+						}
+					}
+					is_ai = yes
 				}
 			}
+			# Don't want you to lose your capital
+			# NOT = {
+			# 	capital_province = {
+			# 		geographical_region = RICE_normandy_region
+			# 	}
+			# }
 			# Completely control at least 3 counties in Normandy
 			calc_true_if = {
 				amount >= 3
