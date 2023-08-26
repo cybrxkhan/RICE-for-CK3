@@ -134,6 +134,11 @@ sri_lanka.0002 = {
 		if = {
 			limit = {
 				RICE_sri_lanka_can_access_most_sangha_mechanics_trigger = yes
+				OR = {
+					has_trait = RICE_mahavihara_trait
+					has_trait = RICE_abhayagiri_trait
+					has_trait = RICE_jetavana_trait
+				}
 			}
 			# Need to preset the values, or else the interface message won't display correctly for whatever reason
 			set_variable = {
@@ -170,7 +175,12 @@ sri_lanka.0002 = {
 			custom_tooltip = RICE_sri_lanka_values_notification.jetavana_tooltip
 			if = {
 				limit = {
-					RICE_sri_lanka_can_access_most_sangha_mechanics_trigger = yes					
+					RICE_sri_lanka_can_access_most_sangha_mechanics_trigger = yes		
+					OR = {
+						has_trait = RICE_mahavihara_trait
+						has_trait = RICE_abhayagiri_trait
+						has_trait = RICE_jetavana_trait
+					}			
 				}
 				add_prestige = var:RICE_sri_lanka_add_prestige_value
 				add_piety = var:RICE_sri_lanka_add_piety_value
@@ -198,6 +208,139 @@ sri_lanka.0003 = {
 	immediate = {
 		# Activate the catalyst.
 		activate_struggle_catalyst = catalyst_passing_of_time
+
+		# Low Prominence
+		if = {
+			limit = {
+				global_var:RICE_mahavihara_prominence < 150
+			}
+			struggle:RICE_sri_lanka_struggle = {
+				activate_struggle_catalyst = catalyst_RICE_sri_lanka_low_mahavihara_prominence
+			}
+		}
+		if = {
+			limit = {
+				global_var:RICE_abhayagiri_prominence < 150
+			}
+			struggle:RICE_sri_lanka_struggle = {
+				activate_struggle_catalyst = catalyst_RICE_sri_lanka_low_abhayagiri_prominence
+			}
+		}
+		if = {
+			limit = {
+				global_var:RICE_jetavana_prominence < 150
+			}
+			struggle:RICE_sri_lanka_struggle = {
+				activate_struggle_catalyst = catalyst_RICE_sri_lanka_low_jetavana_prominence
+			}
+		}
+
+		# High Prominence
+		if = {
+			limit = {
+				global_var:RICE_mahavihara_prominence > 800
+			}
+			struggle:RICE_sri_lanka_struggle = {
+				activate_struggle_catalyst = catalyst_RICE_sri_lanka_high_mahavihara_prominence
+			}
+		}
+		if = {
+			limit = {
+				global_var:RICE_abhayagiri_prominence > 800
+			}
+			struggle:RICE_sri_lanka_struggle = {
+				activate_struggle_catalyst = catalyst_RICE_sri_lanka_high_abhayagiri_prominence
+			}
+		}
+		if = {
+			limit = {
+				global_var:RICE_jetavana_prominence > 800
+			}
+			struggle:RICE_sri_lanka_struggle = {
+				activate_struggle_catalyst = catalyst_RICE_sri_lanka_high_jetavana_prominence
+			}
+		}
+
+		# Buddhist rulers who don't patronize any monastery
+		every_involved_ruler = {
+			limit = {
+				religion = religion:buddhism_religion
+				highest_held_title_tier > tier_barony
+				NOR = {
+					has_trait = RICE_mahavihara_trait
+					has_trait = RICE_abhayagiri_trait
+					has_trait = RICE_jetavana_trait
+				}
+			}
+			struggle:RICE_sri_lanka_struggle = {
+				activate_struggle_catalyst = catalyst_RICE_sri_lanka_non_buddhist_ruler
+			}
+		}
+
+		# Sinful Buddhist rulers
+		every_involved_ruler = {
+			limit = {
+				religion = religion:buddhism_religion
+				highest_held_title_tier > tier_barony
+			}
+			if = {
+				limit = {
+					num_sinful_traits >= 3
+				}
+				struggle:RICE_sri_lanka_struggle = {
+					activate_struggle_catalyst = catalyst_RICE_sri_lanka_buddhist_ruler_three_sins
+				}
+			}
+			else_if = {
+				limit = {
+					num_sinful_traits = 2
+				}
+				struggle:RICE_sri_lanka_struggle = {
+					activate_struggle_catalyst = catalyst_RICE_sri_lanka_buddhist_ruler_two_sins
+				}
+			}
+			else_if = {
+				limit = {
+					num_sinful_traits = 1
+				}
+				struggle:RICE_sri_lanka_struggle = {
+					activate_struggle_catalyst = catalyst_RICE_sri_lanka_buddhist_ruler_one_sin
+				}
+			}
+		}
+
+		# Virtuous Buddhist rulers
+		every_involved_ruler = {
+			limit = {
+				religion = religion:buddhism_religion
+				highest_held_title_tier > tier_barony
+			}
+			if = {
+				limit = {
+					num_virtuous_traits >= 3
+				}
+				struggle:RICE_sri_lanka_struggle = {
+					activate_struggle_catalyst = catalyst_RICE_sri_lanka_buddhist_ruler_three_virtues
+				}
+			}
+			else_if = {
+				limit = {
+					num_virtuous_traits = 2
+				}
+				struggle:RICE_sri_lanka_struggle = {
+					activate_struggle_catalyst = catalyst_RICE_sri_lanka_buddhist_ruler_two_virtues
+				}
+			}
+			else_if = {
+				limit = {
+					num_virtuous_traits = 1
+				}
+				struggle:RICE_sri_lanka_struggle = {
+					activate_struggle_catalyst = catalyst_RICE_sri_lanka_buddhist_ruler_one_virtue
+				}
+			}
+		}
+
 		# Then queue the event up against for a year hence.
 		trigger_event = {
 			id = sri_lanka.0003
@@ -2571,6 +2714,7 @@ sri_lanka.0030 = {
 			}
 			random = {
 				chance = RICE_sri_lanka_pali_literature_chance
+				custom_tooltip = sri_lanka.0032.tooltip.pali_literature
 				trigger_event = {
 					id = sri_lanka.0032
 					days = { 30 180 }
@@ -3171,9 +3315,8 @@ sri_lanka.0031 = {
 # Receive Pali literature
 
 # Kavya about devotion/enlightenment/religious
-# Kavya about Buddhist legends/hagioraphies of Boddhisattvas
 # Pali grammatical aids
-# Theological treatise
+# Doctrinal Manual
 # Histories
 # Tika/Tikas - sub-commentaries
 
@@ -3188,6 +3331,30 @@ sri_lanka.0032 = {
 					var:RICE_sri_lanka_pali_literature_type = flag:kavya_legends
 				}
 				desc = sri_lanka.0032.desc.kavya_legends
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_sri_lanka_pali_literature_type = flag:grammatical_aid
+				}
+				desc = sri_lanka.0032.desc.grammatical_aid
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_sri_lanka_pali_literature_type = flag:doctrinal_manual
+				}
+				desc = sri_lanka.0032.desc.doctrinal_manual
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_sri_lanka_pali_literature_type = flag:historical_chronicle
+				}
+				desc = sri_lanka.0032.desc.historical_chronicle
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_sri_lanka_pali_literature_type = flag:sub_commentaries
+				}
+				desc = sri_lanka.0032.desc.sub_commentaries
 			}
 		}
 	}
@@ -3206,14 +3373,19 @@ sri_lanka.0032 = {
 	trigger = {
 		is_ruler = yes
 		religion = religion:buddhism_religion
+		OR = {
+			has_trait = RICE_mahavihara_trait
+			has_trait = RICE_abhayagiri_trait
+			has_trait = RICE_jetavana_trait
+		}
 	}
 
 	immediate = {
 		religion:buddhism_religion = {
 			save_scope_as = buddhism
 		}
-		#random_list = {
-			#10 = {
+		random_list = {
+			10 = {
 				set_variable = {
 					name = RICE_sri_lanka_pali_literature_type
 					value = flag:kavya_legends
@@ -3226,13 +3398,13 @@ sri_lanka.0032 = {
 						visuals = RICE_leaf_booklet_placeholder					
 						quality = 50
 						wealth = 50
-						modifier = artifact_monthly_piety_2_modifier
+						modifier = artifact_monthly_minor_prestige_8_modifier
 						save_scope_as = pali_literature
 					}
 					scope:pali_literature = {
 						random = {
 							chance = 30
-							add_artifact_modifier = artifact_monthly_minor_prestige_5_modifier
+							add_artifact_modifier = artifact_monthly_piety_2_modifier
 						}
 						random = {
 							chance = 30
@@ -3260,8 +3432,200 @@ sri_lanka.0032 = {
 						}
 					}
 				}
-			#}
-		#}
+			}
+			10 = {
+				set_variable = {
+					name = RICE_sri_lanka_pali_literature_type
+					value = flag:grammatical_aid
+				}
+				hidden_effect_new_object = {
+					create_artifact = {
+						name = RICE_sri_lanka_pali_literature_grammatical_aid_name
+						description = RICE_sri_lanka_pali_literature_grammatical_aid_desc
+						type = miscellaneous
+						visuals = RICE_leaf_booklet_placeholder					
+						quality = 50
+						wealth = 50
+						modifier = artifact_learn_language_scheme_power_add_2_modifier
+						save_scope_as = pali_literature
+					}
+					scope:pali_literature = {
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_monthly_minor_prestige_5_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_learning_1_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_monthly_learning_lifestyle_xp_1_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_monthly_diplomacy_lifestyle_xp_1_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_monthly_piety_2_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_personal_scheme_power_add_3_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_diplomacy_1_modifier
+						}
+					}
+				}
+			}
+			10 = {
+				set_variable = {
+					name = RICE_sri_lanka_pali_literature_type
+					value = flag:doctrinal_manual
+				}
+				hidden_effect_new_object = {
+					create_artifact = {
+						name = RICE_sri_lanka_pali_literature_doctrinal_manual_name
+						description = RICE_sri_lanka_pali_literature_doctrinal_manual_desc
+						type = miscellaneous
+						visuals = RICE_leaf_booklet_placeholder					
+						quality = 50
+						wealth = 50
+						modifier = artifact_learning_2_modifier
+						save_scope_as = pali_literature
+					}
+					scope:pali_literature = {
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_monthly_minor_prestige_5_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_church_holding_build_speed_add_1_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_monthly_learning_lifestyle_xp_1_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_monthly_piety_from_buildings_mult_2_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_monthly_piety_2_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_clergy_opinion_4_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_stress_gain_2_modifier
+						}
+					}
+				}
+			}
+			10 = {
+				set_variable = {
+					name = RICE_sri_lanka_pali_literature_type
+					value = flag:historical_chronicle
+				}
+				hidden_effect_new_object = {
+					create_artifact = {
+						name = RICE_sri_lanka_pali_literature_historical_chronicle_name
+						description = RICE_sri_lanka_pali_literature_historical_chronicle_desc
+						type = miscellaneous
+						visuals = RICE_leaf_booklet_placeholder					
+						quality = 50
+						wealth = 50
+						modifier = artifact_monthly_minor_prestige_8_modifier
+						save_scope_as = pali_literature
+					}
+					scope:pali_literature = {
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_monthly_prestige_add_1_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_learning_1_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_monthly_learning_lifestyle_xp_1_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_vassal_limit_1_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_martial_1_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_short_reign_duration_mult_3_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_stewardship_1_modifier
+						}
+					}
+				}
+			}
+			10 = {
+				set_variable = {
+					name = RICE_sri_lanka_pali_literature_type
+					value = flag:sub_commentaries
+				}
+				hidden_effect_new_object = {
+					create_artifact = {
+						name = RICE_sri_lanka_pali_literature_sub_commentaries_name
+						description = RICE_sri_lanka_pali_literature_sub_commentaries_desc
+						type = miscellaneous
+						visuals = RICE_leaf_booklet_placeholder					
+						quality = 50
+						wealth = 50
+						modifier = artifact_monthly_learning_lifestyle_xp_2_modifier
+						save_scope_as = pali_literature
+					}
+					scope:pali_literature = {
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_monthly_minor_prestige_5_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_learning_1_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_stewardship_1_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_monthly_piety_from_buildings_mult_2_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_monthly_piety_2_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_clergy_opinion_4_modifier
+						}
+						random = {
+							chance = 30
+							add_artifact_modifier = artifact_learn_language_scheme_power_add_1_modifier
+						}
+					}
+				}
+			}
+		}
 	}
 
 	option = { # Ok
