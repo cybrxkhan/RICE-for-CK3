@@ -536,7 +536,6 @@ RICE_sri_lanka_choose_monastic_sect = {
 			has_trait = RICE_abhayagiri_trait
 			has_trait = RICE_jetavana_trait
 		}
-		NOT = { has_character_flag = RICE_picking_sri_lankan_monastery }
 	}
 	is_valid = {
 
@@ -569,18 +568,27 @@ RICE_sri_lanka_choose_monastic_sect = {
 				has_global_variable = RICE_sri_lanka_ending_united_sangha_mahavihara
 			}
 			add_trait = RICE_mahavihara_trait
+			create_character_memory = {
+				type = RICE_sri_lanka_start_patronizing_mahavihara_memory
+			}
 		}	
 		else_if = {
 			limit = {
 				has_global_variable = RICE_sri_lanka_ending_united_sangha_abhayagiri
 			}
 			add_trait = RICE_abhayagiri_trait
+			create_character_memory = {
+				type = RICE_sri_lanka_start_patronizing_abhayagiri_memory
+			}
 		}	
 		else_if = {
 			limit = {
 				has_global_variable = RICE_sri_lanka_ending_united_sangha_jetavana
 			}
 			add_trait = RICE_jetavana_trait
+			create_character_memory = {
+				type = RICE_sri_lanka_start_patronizing_jetavana_memory
+			}
 		}	
 		custom_tooltip = RICE_sri_lanka_choose_monastic_sect_effect_tooltip_2
 
@@ -2252,16 +2260,23 @@ RICE_sri_lanka_vijayabahu_reward_budal = {
 			}
 		}
 		OR = {
-			character:189029 = {
-				root = this
-			}
+			has_character_flag = RICE_is_vijayabahu
 			AND = {
-				character:189029 = {
-					is_alive = no
-					# NOT = {
-					# 	has_title = title:k_lanka
-					# }
+				exists = dynasty
+				NOT = {
+					dynasty = {
+						any_dynasty_member = {
+							has_character_flag = RICE_is_vijayabahu
+						}
+					}
 				}
+				# Can't scope to historical characters or it'll cause errors in the error log if it's at a start date where this character doesn't exist
+				# character:189029 = {
+				# 	is_alive = no
+				# 	# NOT = {
+				# 	# 	has_title = title:k_lanka
+				# 	# }
+				# }
 				root.dynasty = {
 					this = dynasty:1029172
 				}
@@ -2277,17 +2292,27 @@ RICE_sri_lanka_vijayabahu_reward_budal = {
 			# Is Vijayabahu
 			custom_description = {
 				text = "RICE_sri_lanka_is_vijayabahu_req"
-				character:189029 = {
-					root = this
-				}
+				has_character_flag = RICE_is_vijayabahu
 			}
 			# Is not Vijayabahu, but someone else of his dynasty
 			AND = {
 				custom_description = {
 					text = "RICE_sri_lanka_is_vijayabahu_dead_req"
-					character:189029 = {
-						is_alive = no
+					exists = dynasty
+					NOT = {
+						dynasty = {
+							any_dynasty_member = {
+								has_character_flag = RICE_is_vijayabahu
+							}
+						}
 					}
+					# Can't scope to historical characters or it'll cause errors in the error log if it's at a start date where this character doesn't exist
+					# character:189029 = {
+					# 	is_alive = no
+					# 	# NOT = {
+					# 	# 	has_title = title:k_lanka
+					# 	# }
+					# }
 				}
 				custom_description = {
 					text = "RICE_sri_lanka_is_vijayabahu_dynasty_req"
