@@ -1,14 +1,16 @@
-<img src="https://i.imgur.com/iDXfYdv.jpg">
+<img src="https://i.imgur.com/VzpuXH5.jpg">
 
-## Latest Version: Version 1.9.2 "Rouen" (Released 6/28/23, for vanilla patch 1.9.x)
+## Latest Version: Version 1.10.0 "Pali" (Released 8/28/23, for vanilla patch 1.10.x)
 
-**Newest Flavor Pack: *Tuareg: People of the Veil***
+**Newest Flavor Pack: *Sri Lanka: Abode of Lions***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_The city of Rouen, which lies along the Seine river that also flows through Paris, has been a major urban center in Normandy for centuries. It served as the capital of the Dukes of Normandy for many years._
+_"Better than a thousand hollow words_
+_Is one word that brings peace."_
+_– Dhammapada, part of the Pali Canon of Theravada Buddhism_
 
-RICE, or Regional Immersion and Cultural Enrichment, is a mod that adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places and peoples.
+RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
 RICE is designed with compatibility in mind, and is technically compatible with most mods; I avoid editing vanilla files to prevent conflicts with other mods. For example, new cultures are added via hidden events at game start instead of directly through province history. If you are a mod author or user and concerned about compatibiliy with RICE, don't hesitate to contact me on the forums or Discord! Also feel free to use my work in your mods - all I ask is that I am credited and (if possible) to give me a heads up.
 
@@ -26,7 +28,7 @@ The mod folder should look something like this:
 
 <img src="https://i.imgur.com/UMv7AZ5.png">
 
-**NOTE**: If you are re-installing a mod, delete the old version of the mod first before copy and pasting the new one! While it's not always necessary, it's a good habit to do to prevent any potential issues.
+**NOTE**: When re-installing a mod, delete the old version of the mod first before copy and pasting the new one! While it's not always necessary, it's a good habit to do to prevent any potential issues. Additionally, make sure you are not subscribed to the Steam version of the mod, to prevent the launcher from getting confused as to which version to use.
 
 
 ## Current Flavor Packs
@@ -54,6 +56,7 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 - [Siberia: People of the Reindeer](https://docs.google.com/document/d/e/2PACX-1vTOr-vq1KkHRJ_gxPOlb9brCKde3TRzN_1TVZwfPmSiIIW5TEAJGkQ0eNGwiEfvgape1pDAKau3ZcvD/pub)
 - [Siwa: Oases of the Western Desert](https://docs.google.com/document/d/1OOXqqBEGv94IBAH-rIsjoBog1YFtVAFg_TPsuIQmhtg/pub)
 - [Socotra: Isle of Dragon's Blood](https://docs.google.com/document/d/e/2PACX-1vRs_x_9wjofcveP_yhymlL5TWPB1UdSQyi_C_M1z4dWpFg3lqHgHwGpFD2xfkf0-RdsKIlRekQsLD4s/pub)
+- [Sri Lanka: Abode of Lions](https://docs.google.com/document/d/e/2PACX-1vTuEbSCc2fBJPzI7zUerL46bBslIV4rHMGF_nZlG_RDn2zvl96Cw-fHLYdwBqkELSSeBZDWubI1L0yI/pub)
 - [Sus: Door of the Sahara](https://docs.google.com/document/d/e/2PACX-1vQo9H7CnvJxD-KEjrwKEZ6GUUAJSqtF8-3oHW8YyoOntDliMBNHEOxRMNJRt8VFdpNs9LOGdgX9jCtZ/pub)
 - [Tarim Basin: Peoples of the Silk Road](https://docs.google.com/document/d/e/2PACX-1vTDLXZZlm5IfgIRvQfu6nIqd7Hflm-9BsgtrHGA8nHKtpxbIVxukXWD2Z6V0NPZ-iFUj6TtOgH3qFdy/pub)
 - [Tuareg: People of the Veil](https://docs.google.com/document/d/e/2PACX-1vSXsPZ1GvXLx10DXJ1IKA4w555ZnLQ1jg-5FrBG332UVf4QAoQ73dydF1JEvzII37kH7mKlTPqi24P9/pub)
@@ -65,21 +68,40 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/tdrNe91.jpg">
+<img src="https://i.imgur.com/04l2lKZ.jpg">
 
-### 1.9.2 "Rouen"
+### 1.10.0 "Pali"
 
-- Norman adventurer CB can now be taken even when you’re a vassal/not independent
-- Added an alternative requirement to end the Normandy struggle where instead of being in a specific phase, you need to have gone through the Adventure and Acculturation phases at least once (New requirement might not work properly on old games; for 1066, this requirement is considered to have already “happened”)
-- Added new catalyst for the Normandy struggle to go to Adventure phase: Travel for a Hunt
-- Added compatibility for Extended Marriage Doctrines
-- Greatly reduced the impact of the Normandy struggle catalyst effect for traveling for an activity
-- Northern Sorcerers tradition is now given to all cultures of Balto-Finnic heritage at game start
-- Any culture descended from Saka, Tocharian, or Sogdian is given the Silk Road tradition at game start
-- Fixed accolades not being affected by victory in RICE’s CBs
-- Fixed Acculturation phase of Normandy struggle not accounting for catalysts to constructing Christian religious buildings
-- Fixed Norman/Norse mercenaries tooltip being inaccurate (by having it not show a number)
-- Fixed catalysts for the Mont-Saint-Michel activities not showing up in the message feed
+- Added the **Sri Lanka Flavor Pack: Abode of Lions**
+- Added 3 Indian themed soundtracks
+- Revamped the old Silk Road communities mechanic:
+    - Added 2 new Silk Road communities, East African and Southeast Asia, with corresponding decisions and flavor
+    - Added a few new events for Silk Road community gifts
+    - Expanded te area the mechanic is available to
+    - Himalayan, Steppe, and East Asian communities are no longer available in certain regions far away
+    - Tweaked culture and faith variety for some Silk Road courtier spawn
+- Added many new East African and Southeast Asian cultures and faiths; most of the Asian ones were adapted from Rajas of Asia
+- New and improved bookmark visuals, courtesy of Nezaros from the Rajas of Asia mod
+- Adjusted some bookmark characters’ poses and positions
+- There is now a small chance of gaining the Silk Road/Trans-Saharan merchant traits once you complete a number of successful deals with the Silk Road/Trans-Saharan trade options
+- Interaction to grant or receive Normandy can be taken even when the holder of Rouen only has one county, as long as they’re AI; additionally, this is made clearer in the requirements for this interaction
+- Going to war (whether as an attacker or defender) is now a catalyst for the Normandy struggle
+- Udmurts now have the Sacred Grove tradition
+- Xenophilic tradition removed from Swahili
+- Tweaked Red Sea region for relevant events/content
+- Theravadins in Eastern India are now mostly Vajrayana instead
+- Removed hill farm bonus from the Reach of the Eagles tradition
+- Increased chances AI will take the decision to grant Normandy to the Norse in later dates
+- Silk Road/Trans-Saharan Merchant traits are now tiered
+- Reduced the chances of getting deals while taking the Silk Road/Trans-Saharan merchant caravan travel options
+- Network with Trans-Saharan Merchants decision now available if you have any county in Africa, not just your capital
+- Made AI more likely to take the decision to Commission the Historia Normannorum
+- Made AI more likely to take the decisions to discover Greenland and Vinland
+- Made AI who is not North Germanic less likely to take the decisions to discover Greenland and Vinland
+- Fixed decision to Revive Gomati Monastery missing illustration
+- Fixed Greenland/Vinland game rules not accounting for the Gamerule Gadget mod
+- Fixed AI possibly not taking the decision to grant Normandy to the Norse if no one has done it within a certain timeframe
+- Fixed intro travel event not triggering for the Crescent Lake at Dunhuang activity
 - Miscellaneous bugfixes
 
 ## Credits
@@ -89,21 +111,24 @@ Thanks to all I worked with, took stuff from, and provided me encouragement and 
 Special thanks in particular to:
 
 - Atreides for bookmark icons
-- B7E7 for collaboration and various cultures/faiths from BlackEmperor's Africa Plus
+- B7E7 for collaboration and content from BlackEmperor's Africa Plus mod
 - Bonseny for the amazing VIET and RICE logos and the beautiful 3D art assets
 - Celticus for a lot of useful help and suggestions
+- DrStein(Dupont) for revamped artwork
 - Fische for the Dragon Blood art icon and Vertimnus for donating it to me (originally made for Sinews of War)
 - George Hammond for some music ([see here](https://fanlink.to/georgehammondmusic) for more of his work)
 - Henry for the Better Bedouin Culture mod
 - KeizerHarm for UI work
 - Lahom for most of the Native American names
 - Макс for Erzya and Moksha names and info
-- Naatturi for faiths and other features from the [Ukonusko Overhaul](url=https://steamcommunity.com/sharedfiles/filedetails/?id=2224796496) mod
+- Naatturi for content from the [Ukonusko Overhaul] [Ukonusko Overhaul](url=https://steamcommunity.com/sharedfiles/filedetails/?id=2224796496) mod
 - Nezaros for reformed religion template
 - Nix for Evenki names
 - PinkPanzer for some decision art
+- Rajas of Asia for Asian stuff and collab
 - Shatzi for more Breton content
+- Soraya for Indian research and code
 - The Fallen Eagle for some icons and collab
-- The Not So Lonely Arrikirri and Tundragrass for suggestions and sources on the Zunbils
+- The Not So Lonely Arrikirri and Tundragrass for help on the Zunbils
 - YTnuBF for Native American ethnicities from the [Amerindian Steppe Tribe](url=https://steamcommunity.com/workshop/filedetails/?id=2417123207) mod
 
