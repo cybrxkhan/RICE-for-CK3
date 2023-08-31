@@ -2622,3 +2622,141 @@ RICE_sri_lanka_worship_local_deities = {
 }
 
 
+
+# Immersively make your culture and/or faith involved in Sri Lanka's Sangha as a Buddhist
+RICE_sri_lanka_make_culture_or_faith_involved_in_sri_lanka = {
+	picture = "gfx/interface/illustrations/decisions/decision_rice_buddhist_monk.dds"
+
+	desc = RICE_sri_lanka_make_culture_or_faith_involved_in_sri_lanka_desc
+	selection_tooltip = RICE_sri_lanka_make_culture_or_faith_involved_in_sri_lanka_tooltip
+	major = yes
+
+	ai_check_interval = 24
+
+	is_shown = {
+		exists = dynasty
+		is_landed = yes
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_sri_lanka_struggle_region
+			}			
+		}
+		exists = struggle:RICE_sri_lanka_struggle
+		OR = {
+			NOT = { struggle:RICE_sri_lanka_struggle = { is_culture_involved_in_struggle = root.culture } }
+			NOT = { struggle:RICE_sri_lanka_struggle = { is_faith_involved_in_struggle = root.faith } }
+		}
+	}
+	
+	is_valid = {
+
+		religion = religion:buddhism_religion
+
+		custom_description = {
+			text = "RICE_sri_lanka_capital_req"
+			root.capital_county = {
+				title_province = { geographical_region = RICE_sri_lanka_struggle_region }
+			}
+		}
+
+		piety_level >= 2
+		prestige_level >= 2
+
+		OR = {
+
+			has_trait_xp = {
+				trait = RICE_mahavihara_trait
+				value >= 40
+			}
+
+			has_trait_xp = {
+				trait = RICE_abhayagiri_trait
+				value >= 40
+			}
+
+			has_trait_xp = {
+				trait = RICE_jetavana_trait
+				value >= 40
+			}
+
+		}
+
+	}
+
+	is_valid_showing_failures_only = {
+		RICE_is_available_adult_even_if_sick_trigger = yes
+	}
+
+	effect = {
+
+		show_as_tooltip = {
+			RICE_sri_lanka_new_culture_or_faith_involvement_effect = yes
+			if = {
+				limit = {
+					has_trait = RICE_mahavihara_trait
+				}
+				custom_tooltip = RICE_sri_lanka_mahavihara_prominence_increase_massive_short_tooltip
+			}
+			else_if = {
+				limit = {
+					has_trait = RICE_abhayagiri_trait
+				}
+				custom_tooltip = RICE_sri_lanka_abhayagiri_prominence_increase_massive_short_tooltip
+			}
+			else_if = {
+				limit = {
+					has_trait = RICE_jetavana_trait
+				}
+				custom_tooltip = RICE_sri_lanka_jetavana_prominence_increase_massive_short_tooltip
+			}			
+		}
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_sri_lanka_make_culture_or_faith_involved_in_sri_lanka_context_tooltip
+		}
+
+		trigger_event = sri_lanka.0019
+
+
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value }
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = -5
+			has_trait = lazy
+		}
+		modifier = {
+			add = 5
+			has_trait = diligent
+		}
+		modifier = {
+			add = 5
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -5
+			has_trait = content
+		}
+		modifier = {
+			add = 5
+			has_trait = zealous
+		}
+		modifier = {
+			add = -5
+			has_trait = cynical
+		}
+	}
+}
