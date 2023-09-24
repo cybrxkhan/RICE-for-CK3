@@ -1,14 +1,13 @@
 <img src="https://i.imgur.com/VzpuXH5.jpg">
 
-## Latest Version: Version 1.10.0.a Hotfix for "Pali" (Released 8/31/23, for vanilla patch 1.10.x)
+## Latest Version: Version 1.10.1 "Sri Pada" (Released 9/24/23, for vanilla patch 1.10.x)
 
 **Newest Flavor Pack: *Sri Lanka: Abode of Lions***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_"Better than a thousand hollow words_
-_Is one word that brings peace."_
-_– Dhammapada, part of the Pali Canon of Theravada Buddhism_
+_“The mountain of Sarandib [Sri Pada] is one of the highest in the World. We saw it from the sea when we were nine days' journey away, and when we climbed it we saw the clouds below us, shutting out our view of its base.”_
+_– Ibn Battuta (1304-1369 CE), Moroccan explorer, pilgrim, and scholar_
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
@@ -70,60 +69,19 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 
 <img src="https://i.imgur.com/04l2lKZ.jpg">
 
-### 1.10.0.a Hotfix for "Pali"
+### 1.10.1 "Sri Pada"
 
-- Added a decision to get your culture and/or faith automatically involved in the Sri Lanka struggle if you are Buddhist
-- Changed Abhayagiri trait to have an additive rather than multiplicative bonus to development
-- Lowered the percentage of counties needed for a culture or faith to be involved in the Sri Lankan struggle from 40% to 15%
-- Increased how much trait experience is gained or lost for Sri Lanka’s monastery patron traits in various places
-- Nerfed development bonus for the Zimbabwes tradition
-- Made it easier for AI to take the decisions to discover Greenland or the Americas
-- Slightly reduced the unlikeliness that non-Germanic rulers would not take the decisions to discover Greenland or the Americans
-- Ari and Srikula Shaktism are now involved in the Sri Lanka struggle from the get-go
-- Changed Buddhist canon doctrine of Ari back to Tantric Canon
-- Changed most of Central Asia from Theravada to Mahayana
-- Socotra Kingdom decision now requires the Cosmopolitan Ports rather than The Spice Must Flow dynasty perk in the Maritime Trade legacy(i.e. 2nd rather than 3rd perk)
-- Reduced prestige level requirement for the Socotra Kingdom decision
-- Reduced costs of the Socotra and Tuyuhun Kingdom decisions to be more in line with other decisions
-- County modifiers from the Socotra and Tuyuhun Kingdom decisions now last for 100 years
-- Disabled camera pan feature from the event to change Sri Lanka’s capital to Polonnaruwa, since it may have been causing issues in certain situations
-- Fixed Vijayabahu’s daughter being a different dynasty if playing with ROA
-- Fixed Budal not being Vijayabahu’s vassal if playing with ROA
-- Fixed missing English placeholder text for Sri Lankan loc in the Spanish version
-- Miscellaneous bugfixes
-
-### 1.10.0 "Pali"
-
-- Added the **Sri Lanka Flavor Pack: Abode of Lions**
-- Added 3 Indian themed soundtracks
-- Revamped the old Silk Road communities mechanic:
-    - Added 2 new Silk Road communities, East African and Southeast Asia, with corresponding decisions and flavor
-    - Added a few new events for Silk Road community gifts
-    - Expanded te area the mechanic is available to
-    - Himalayan, Steppe, and East Asian communities are no longer available in certain regions far away
-    - Tweaked culture and faith variety for some Silk Road courtier spawn
-- Added many new East African and Southeast Asian cultures and faiths; most of the Asian ones were adapted from Rajas of Asia
-- New and improved bookmark visuals, courtesy of Nezaros from the Rajas of Asia mod
-- Adjusted some bookmark characters’ poses and positions
-- There is now a small chance of gaining the Silk Road/Trans-Saharan merchant traits once you complete a number of successful deals with the Silk Road/Trans-Saharan trade options
-- Interaction to grant or receive Normandy can be taken even when the holder of Rouen only has one county, as long as they’re AI; additionally, this is made clearer in the requirements for this interaction
-- Going to war (whether as an attacker or defender) is now a catalyst for the Normandy struggle
-- Udmurts now have the Sacred Grove tradition
-- Xenophilic tradition removed from Swahili
-- Tweaked Red Sea region for relevant events/content
-- Theravadins in Eastern India are now mostly Vajrayana instead
-- Removed hill farm bonus from the Reach of the Eagles tradition
-- Increased chances AI will take the decision to grant Normandy to the Norse in later dates
-- Silk Road/Trans-Saharan Merchant traits are now tiered
-- Reduced the chances of getting deals while taking the Silk Road/Trans-Saharan merchant caravan travel options
-- Network with Trans-Saharan Merchants decision now available if you have any county in Africa, not just your capital
-- Made AI more likely to take the decision to Commission the Historia Normannorum
-- Made AI more likely to take the decisions to discover Greenland and Vinland
-- Made AI who is not North Germanic less likely to take the decisions to discover Greenland and Vinland
-- Fixed decision to Revive Gomati Monastery missing illustration
-- Fixed Greenland/Vinland game rules not accounting for the Gamerule Gadget mod
-- Fixed AI possibly not taking the decision to grant Normandy to the Norse if no one has done it within a certain timeframe
-- Fixed intro travel event not triggering for the Crescent Lake at Dunhuang activity
+- Updated RICE+EPE compatch to the newest version of EPE
+- Added full unique namelists for the Vedda, Tsonga, and Sotho-Tswana cultures
+- Added unique dynasty names for the Mijikenda and Pokomo cultures
+- Added code to disable a few changes when run with the Paganism Plus mod (mod was previously compatible, just needed to remove a few of RICE’s conflicting changes per mod author’s request)
+- Added text for the East African and Southeast Asian Silk Road communities options explaining they are only available in certain regions
+- Added East African god names
+- Fixed some CBs being unavailable to rulers involved in the Sri Lanka struggle (using a similar workaround to what was done previously for the Greenland and Normandy struggles)
+- Fixed book burning option when Purifying/Persecuting Sri Lanka’s Sangha not calculating the correct monastery Prominence loss
+- Fixed Nadun festival giving stress instead of losing stress
+- Fixed Oracle of Amun activity not working for rulers who are not in the same realm as Siwa but still own counties in Egypt
+- Fixed Sri Pada pilgrimage activity canceling if you are of certain faiths
 - Miscellaneous bugfixes
 
 ## Credits
