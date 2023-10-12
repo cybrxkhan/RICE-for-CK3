@@ -4,9 +4,9 @@
 # 
 # polabian.0000-polabian.0019			Setup events, history events, miscellaneous events and decisions
 # polabian.0020-polabian.0039			Drown Marzanna
-# polabian.0040-polabian.0049			Temple of Arkona
-# polabian.0050-polabian.0069			Zapust Festival
-# polabian.0070-polabian.0099			Generic Flavor Events
+# polabian.0040-polabian.0059			Temple of Arkona
+# polabian.0060-polabian.0079			Zapust Festival
+# polabian.0080-polabian.0099			Generic Flavor Events
 # 
 # 
 ###############################################################################
@@ -230,3 +230,369 @@ polabian.0011 = {
 		}
 	}
 }
+
+
+
+######################################################################################
+# 
+# TEMPLE OF ARKONA
+# 
+# polabian.0040-polabian.0059
+# 
+######################################################################################
+
+
+
+# Send the gifts to Arkona
+polabian.0050 = {
+	type = character_event
+	title = polabian.0050.t
+	desc = polabian.0050.desc
+	theme = faith
+	override_background = { reference = throne_room }
+
+	right_portrait = root
+
+	# Ok
+	option = {
+		name = polabian.0050.a
+		custom_tooltip = polabian.0050.tooltip
+		if = {
+			limit = {
+				var:RICE_polabian_svetovit_offering_type = flag:small
+			}
+			add_piety = RICE_polabian_svetovit_offering_small_bonus
+			add_prestige = RICE_polabian_svetovit_offering_small_bonus
+		}
+		else_if = {
+			limit = {
+				var:RICE_polabian_svetovit_offering_type = flag:medium
+			}
+			add_piety = RICE_polabian_svetovit_offering_medium_bonus
+			add_prestige = RICE_polabian_svetovit_offering_medium_bonus
+		}
+		else_if = {
+			limit = {
+				var:RICE_polabian_svetovit_offering_type = flag:large
+			}
+			add_piety = RICE_polabian_svetovit_offering_large_bonus
+			add_prestige = RICE_polabian_svetovit_offering_large_bonus
+		}
+		# Event
+		trigger_event = {
+			id = polabian.0051
+			trigger_on_next_date = 3.20
+		}
+	}
+}
+
+
+# Receive the boons
+polabian.0051 = {
+	type = character_event
+	title = polabian.0051.t
+	desc = polabian.0051.desc
+	theme = RICE_outdoors_pagan_altar_theme
+
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	trigger = {
+		NOT = { has_global_variable = RICE_polabian_arkona_temple_down }
+		religion = { is_in_family = rf_pagan }
+	}
+
+	on_trigger_fail = {
+		if = {
+			limit = { has_variable = RICE_polabian_svetovit_offering_type }
+			remove_variable = RICE_polabian_svetovit_offering_type
+		}
+		# If Idol/Temple has been torn down
+		if = {
+			limit = {
+				has_global_variable = RICE_polabian_arkona_temple_down
+			}
+			trigger_event = polabian.0052
+		}
+		# If you are no longer Pagan
+		else_if = {
+			limit = {
+				NOT = { religion = { is_in_family = rf_pagan } }
+			}
+			trigger_event = polabian.0053
+		}
+	}
+
+	immediate = {		
+		if = {
+			limit = {
+				exists = global_var:RICE_polabian_arkona_temple_oracle_good_variable
+			}
+			if = {
+				limit = {
+					var:RICE_polabian_svetovit_offering_type = flag:small
+				}
+				add_piety = RICE_polabian_svetovit_offering_small_bonus
+				random = {
+					chance = RICE_polabian_svetovit_modifier_chance_small
+					random_list = {
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_1
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_2
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_3
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_4
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_5
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_6
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_7
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_8
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_9
+								years = 10
+							}
+						}
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					var:RICE_polabian_svetovit_offering_type = flag:medium
+				}
+				add_piety = RICE_polabian_svetovit_offering_medium_bonus
+				random = {
+					chance = RICE_polabian_svetovit_modifier_chance_medium
+					random_list = {
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_1
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_2
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_3
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_4
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_5
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_6
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_7
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_8
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_9
+								years = 10
+							}
+						}
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					var:RICE_polabian_svetovit_offering_type = flag:large
+				}
+				add_piety = RICE_polabian_svetovit_offering_large_bonus
+				random = {
+					chance = RICE_polabian_svetovit_modifier_chance_large
+					random_list = {
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_1
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_2
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_3
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_4
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_5
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_6
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_7
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_8
+								years = 10
+							}
+						}
+						10 = {
+							add_character_modifier = {
+								modifier = RICE_polabian_svetovit_oracle_modifier_9
+								years = 10
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	# Ok
+	option = {
+		name = polabian.0051.a
+	}
+
+	after = {
+		if = {
+			limit = { has_variable = RICE_polabian_svetovit_offering_type }
+			remove_variable = RICE_polabian_svetovit_offering_type
+		}
+	}
+
+}
+
+# Idol/Temple has been torn down
+polabian.0052 = {
+	type = character_event
+	title = polabian.0052.t
+	desc = polabian.0052.desc
+	theme = faith
+	override_background = { reference = throne_room }
+
+	right_portrait = {
+		character = root
+		animation = sadness
+	}
+
+	# Ok
+	option = {
+		name = polabian.0052.a
+	}
+
+	after = {
+		if = {
+			limit = { has_variable = RICE_polabian_svetovit_offering_type }
+			remove_variable = RICE_polabian_svetovit_offering_type
+		}
+	}
+
+}
+
+# Converted to a different faith
+polabian.0053 = {
+	type = character_event
+	title = polabian.0053.t
+	desc = polabian.0053.desc
+	theme = faith
+	override_background = { reference = throne_room }
+
+	right_portrait = {
+		character = root
+		animation = war_attacker
+	}
+
+	# Ok
+	option = {
+		name = polabian.0053.a
+	}
+
+	after = {
+		if = {
+			limit = { has_variable = RICE_polabian_svetovit_offering_type }
+			remove_variable = RICE_polabian_svetovit_offering_type
+		}
+	}
+
+}
+

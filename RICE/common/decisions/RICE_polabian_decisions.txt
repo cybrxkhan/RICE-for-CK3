@@ -16,6 +16,7 @@ RICE_polabian_destroy_arkona_temple = {
 				OR = {
 					geographical_region = custom_west_slavia
 					geographical_region = custom_europe_western_germany
+					geographical_region = custom_europe_eastern_germany
 					geographical_region = ghw_region_baltic
 					geographical_region = ghw_region_scandinavia
 					geographical_region = ghw_region_finland_&_estonia
@@ -153,3 +154,218 @@ RICE_polabian_restore_arkona_temple = {
 		}
 	}
 }
+
+
+
+
+
+RICE_polabian_gift_to_svetovit_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_slavic_gord.dds"
+	ai_check_interval = 40
+	
+	cooldown = { days = 3650 }
+
+	
+	desc = RICE_polabian_gift_to_svetovit_decision_desc
+	selection_tooltip = RICE_polabian_gift_to_svetovit_decision_tooltip
+
+	is_shown = {
+		highest_held_title_tier > tier_barony
+		is_landed = yes
+		faith.religion = { is_in_family = rf_pagan }
+		OR = {
+			has_title = title:c_rugen
+			title:c_rugen = {
+				squared_distance = {
+					target = root.capital_province
+					value <= squared_distance_medium
+				}
+			}		
+		}
+	}
+	
+	is_valid = {
+		custom_description = {
+			text = RICE_decision_pagan_requirement
+			faith.religion = { is_in_family = rf_pagan }
+		}
+		OR = {
+			has_title = title:c_rugen
+			custom_description = {
+				text = "RICE_harran_geography_req"
+				title:c_rugen = {
+					squared_distance = {
+						target = root.capital_province
+						value <= squared_distance_medium
+					}
+				}
+			}		
+		}
+		OR = {
+			religion = religion:slavic_religion
+			piety_level >= 3
+			prestige_level >= 3
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+
+		
+    widget = {
+    	gui = "decision_view_widget_RICE_polabian_gift_to_svetovit_decision"
+		controller = decision_option_list_controller
+    	
+		decision_has_second_step = yes
+		decision_custom_widget_container = "custom_widgets_container_step_two"
+		decision_to_second_step_button = "RICE_polabian_gift_to_svetovit_decision_type" 
+
+		item = {		
+			value = RICE_polabian_gift_to_svetovit_decision_small_option
+			#is_valid = {
+			#	gold >= RICE_polabian_svetovit_offering_small_cost
+			#}
+			current_description = RICE_polabian_gift_to_svetovit_decision_small_option_desc
+			localization = RICE_polabian_gift_to_svetovit_decision_small_option
+			icon = "gfx/interface/icons/widgets/RICE_coin_copper.dds"
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {		
+			value = RICE_polabian_gift_to_svetovit_decision_medium_option
+			is_valid = {
+				gold >= RICE_polabian_svetovit_offering_medium_cost
+			}
+			current_description = RICE_polabian_gift_to_svetovit_decision_medium_option_desc
+			localization = RICE_polabian_gift_to_svetovit_decision_medium_option
+			icon = "gfx/interface/icons/widgets/RICE_coin_silver.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {		
+			value = RICE_polabian_gift_to_svetovit_decision_large_option
+			is_valid = {
+				gold >= RICE_polabian_svetovit_offering_large_cost
+			}
+			current_description = RICE_polabian_gift_to_svetovit_decision_large_option_desc
+			localization = RICE_polabian_gift_to_svetovit_decision_large_option
+			icon = "gfx/interface/icons/widgets/RICE_coin_gold.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+
+	}
+
+	effect = {
+
+		custom_tooltip = RICE_polabian_gift_to_svetovit_decision_effect_tooltip_1	
+		custom_tooltip = RICE_polabian_gift_to_svetovit_decision_effect_tooltip_2	
+						
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_polabian_gift_to_svetovit_decision_context_tooltip
+		}
+
+		# Not sure why AI can't pick one option or another
+		if = {
+			limit = { is_ai = yes }
+			random_list = {
+				10 = {
+					set_variable = {
+						name = RICE_polabian_svetovit_offering_type
+						value = flag:small
+					}
+				}
+				10 = {
+					trigger = {
+						gold >= RICE_polabian_svetovit_offering_medium_cost
+					}
+					set_variable = {
+						name = RICE_polabian_svetovit_offering_type
+						value = flag:medium
+					}
+				}
+				10 = {
+					trigger = {
+						gold >= RICE_polabian_svetovit_offering_large_cost
+					}
+					set_variable = {
+						name = RICE_polabian_svetovit_offering_type
+						value = flag:large
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:RICE_polabian_gift_to_svetovit_decision_small_option = yes
+			}
+			set_variable = {
+				name = RICE_polabian_svetovit_offering_type
+				value = flag:small
+			}
+		}
+		else_if = {
+			limit = {
+				scope:RICE_polabian_gift_to_svetovit_decision_medium_option = yes
+			}
+			set_variable = {
+				name = RICE_polabian_svetovit_offering_type
+				value = flag:medium
+			}
+		}
+		else_if = {
+			limit = {
+				scope:RICE_polabian_gift_to_svetovit_decision_large_option = yes
+			}
+			set_variable = {
+				name = RICE_polabian_svetovit_offering_type
+				value = flag:large
+			}
+		}
+
+		
+		trigger_event = polabian.0050
+	}
+
+	#minimum_cost = {
+	#	gold = RICE_polabian_svetovit_offering_small_cost
+	#}
+
+	ai_potential = {
+		short_term_gold > RICE_polabian_svetovit_offering_medium_cost
+	}
+
+	ai_will_do = {
+		base = 40
+		modifier = {
+			add = 10
+			has_trait = zealous
+		}
+		modifier = {
+			add = -10
+			has_trait = cynical
+		}
+		modifier = {
+			add = 5
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -5
+			has_trait = lazy
+		}
+	}
+}
+

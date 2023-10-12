@@ -4,9 +4,61 @@ RICE_setup_polabian_flavor_pack_effect = {
 
 	############################################################
 	#
+	# RELIGION CHANGES
+	#
+	############################################################
+
+	# Most of these were taken from msl229 with permission
+	faith:slavic_pagan = {
+		if = {
+			limit = { has_doctrine = doctrine_pluralism_fundamentalist }
+			remove_doctrine = doctrine_pluralism_fundamentalist
+			add_doctrine = doctrine_pluralism_pluralistic
+		}
+		if = {
+			limit = { has_doctrine = doctrine_monogamy }
+			remove_doctrine = doctrine_monogamy
+			add_doctrine = doctrine_polygamy
+		}
+		if = {
+			limit = { has_doctrine = doctrine_bastardry_legitimization }
+			remove_doctrine = doctrine_bastardry_legitimization
+			add_doctrine = doctrine_bastardry_all
+		}
+		if = {
+			limit = { has_doctrine = doctrine_homosexuality_crime }
+			remove_doctrine = doctrine_homosexuality_crime
+			add_doctrine = doctrine_homosexuality_shunned
+		}
+		if = {
+			limit = { has_doctrine = doctrine_witchcraft_crime }
+			remove_doctrine = doctrine_witchcraft_crime
+			add_doctrine = doctrine_witchcraft_accepted
+		}
+	}
+
+	############################################################
+	#
 	# CULTURE CHANGES
 	#
 	############################################################
+
+	culture:polabian = { save_scope_as = polabian }
+
+	culture:sorbian = {
+		add_culture_tradition = tradition_EEE_people_of_boika
+		remove_variable = tradition_cooldown
+		get_all_innovations_from = scope:polabian
+	}	
+
+	culture:polabian = {
+		remove_culture_tradition = tradition_hereditary_hierarchy
+		add_culture_tradition = tradition_practiced_pirates
+		add_culture_tradition = tradition_fishermen
+		add_culture_tradition = tradition_RICE_wendish_confederations
+		remove_variable = tradition_cooldown
+	}	
+
 	if = {
 		limit = {
 			current_date < 1120.1.1
@@ -238,6 +290,32 @@ RICE_setup_polabian_flavor_pack_effect = {
 					modifier = RICE_polabian_temple_of_arkona_modifier
 				}
 			}
+		}
+		# Set the global variable for the Oracle
+		random_list = {
+			# A good divination is for a year
+			10 = {
+				set_global_variable = {
+					name = RICE_polabian_arkona_temple_oracle_good_variable
+					value = yes
+					days = 365
+				}
+			}
+			# In case it is still around, remove it
+			10 = {
+				if = {
+					limit = {
+						exists = global_var:RICE_polabian_arkona_temple_oracle_good_variable
+					}
+					remove_global_variable = RICE_polabian_arkona_temple_oracle_good_variable
+				}
+			}
+		}	
+	}
+	else = {
+		set_global_variable = {
+			name = RICE_polabian_arkona_temple_down
+			value = yes
 		}
 	}
 
