@@ -455,3 +455,69 @@ make_sorbian_culture_effect = {
 		}
 	}
 }
+
+
+
+
+RICE_polabian_zapust_festival_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_polabian_zapust_festival_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				show_as_tooltip = {
+					if = {
+						limit = {
+							has_activity_intent = RICE_polabian_zapust_festival_community_intent
+						}
+						add_prestige = 100
+						stress_impact = {
+							base = minor_stress_impact_loss
+							diligent = minor_stress_impact_loss
+							ambitious = minor_stress_impact_loss
+						}
+					}
+					else_if = {
+						limit = {
+							has_activity_intent = RICE_polabian_zapust_festival_fun_intent
+						}
+						add_prestige = 50
+						stress_impact = {
+							base = medium_stress_impact_loss
+							gregarious = minor_stress_impact_loss
+							gluttonous = minor_stress_impact_loss
+							lazy = minor_stress_impact_loss
+						}
+					}
+					if = {
+						limit = {
+							any_sub_realm_county = {
+								tier = tier_county
+								has_county_modifier = RICE_polabian_zapust_festival_county_modifier
+							}
+						}					
+						custom_tooltip = RICE_activity_result_zapust_modifier
+					}
+				}
+			}
+			show_as_tooltip = {
+				every_attending_character = {
+					limit = { NOT = { this = scope:host } }
+					custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+					add_prestige = 25
+					stress_impact = {
+						base = miniscule_stress_impact_loss
+						gregarious = miniscule_stress_impact_loss
+						gluttonous = miniscule_stress_impact_loss
+						lazy = miniscule_stress_impact_loss
+					}
+				}	
+			}
+		}
+	}
+}
+
+

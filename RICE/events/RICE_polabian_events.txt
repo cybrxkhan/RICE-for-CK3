@@ -596,3 +596,139 @@ polabian.0053 = {
 
 }
 
+
+
+######################################################################################
+# 
+# ZAPUST FESTIVAL
+# 
+# polabian.0060-polabian.0079
+# 
+######################################################################################
+
+
+
+# Zapust Begins
+polabian.0060 = {
+	type = activity_event
+	title = polabian.0060.t
+	desc = polabian.0060.desc
+	theme = RICE_theme_festival_generic	
+	override_background = { reference = market_west }
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Ok
+		name = polabian.0060.a
+	}
+
+	after = {
+		trigger_event = {
+			id = polabian.0061
+			days = { 20 25 }
+		}
+	}
+}
+
+
+# Zapust Procession and Dinner
+polabian.0061 = {
+	type = activity_event
+	title = polabian.0061.t
+	desc = polabian.0061.desc
+	theme = RICE_theme_festival_generic
+	override_background = { reference = market_west }
+	
+	left_portrait = {
+		character = root
+		animation = wedding_drunk
+	}
+	
+	option = { # Ok
+		name = polabian.0061.a
+	}
+
+	after = {
+		trigger_event = {
+			id = polabian.0062
+			days = { 3 5 }
+		}
+	}
+}
+
+# Zapust Ends
+polabian.0062 = {
+	type = activity_event
+	title = polabian.0062.t
+	desc = polabian.0062.desc
+	theme = RICE_theme_festival_generic
+	override_background = { reference = market_west }
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Ok
+		name = polabian.0062.a
+		if = {
+			limit = {
+				has_activity_intent = RICE_polabian_zapust_festival_community_intent
+			}
+			add_prestige = 100
+			stress_impact = {
+				base = minor_stress_impact_loss
+				diligent = minor_stress_impact_loss
+				ambitious = minor_stress_impact_loss
+			}
+		}
+		else_if = {
+			limit = {
+				has_activity_intent = RICE_polabian_zapust_festival_fun_intent
+			}
+			add_prestige = 50
+			stress_impact = {
+				base = medium_stress_impact_loss
+				gregarious = minor_stress_impact_loss
+				gluttonous = minor_stress_impact_loss
+				lazy = minor_stress_impact_loss
+			}
+		}
+		every_held_title = {
+			custom = RICE_every_county
+			limit = {
+				tier = tier_county			
+			}
+			random = {
+				chance = 33
+				add_county_modifier = {
+					modifier = RICE_polabian_zapust_festival_county_modifier
+					years = 10
+				}
+			}
+		}
+		every_attending_character = {
+			limit = { NOT = { this = scope:host } }
+			custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+			add_prestige = 25
+			stress_impact = {
+				base = miniscule_stress_impact_loss
+				gregarious = miniscule_stress_impact_loss
+				gluttonous = miniscule_stress_impact_loss
+				lazy = miniscule_stress_impact_loss
+			}
+		}	
+	}
+
+	after = {
+		scope:activity = {
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}
+}
+
+
+

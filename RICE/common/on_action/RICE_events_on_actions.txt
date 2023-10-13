@@ -433,6 +433,8 @@ RICE_yearly_global_pulse = {
 			limit = {
 				NOT = { has_global_variable = RICE_polabian_arkona_temple_down }
 			}
+
+			# Divination Check
 			random_list = {
 				# A good divination is for a year
 				10 = {
@@ -452,6 +454,41 @@ RICE_yearly_global_pulse = {
 					}
 				}
 			}	
+
+			# Check if Arkona modifier needs to be switched between pagan/non-pagan versions
+			if = {
+				limit = {
+					title:c_rugen = {
+						has_county_modifier = RICE_polabian_temple_of_arkona_modifier
+					}
+					title:c_rugen.holder = {
+						NOT = { religion = { is_in_family = rf_pagan } }
+					}
+				}
+				title:c_rugen = {
+					remove_county_modifier = RICE_polabian_temple_of_arkona_modifier
+					add_county_modifier = {
+						modifier = RICE_polabian_temple_of_arkona_modifier_non_pagan
+					}
+				}
+			}
+			if = {
+				limit = {
+					title:c_rugen = {
+						has_county_modifier = RICE_polabian_temple_of_arkona_modifier_non_pagan
+					}
+					title:c_rugen.holder = {
+						religion = { is_in_family = rf_pagan }
+					}
+				}
+				title:c_rugen = {
+					remove_county_modifier = RICE_polabian_temple_of_arkona_modifier_non_pagan
+					add_county_modifier = {
+						modifier = RICE_polabian_temple_of_arkona_modifier
+					}
+				}
+			}
+
 		}	
 
 	}
