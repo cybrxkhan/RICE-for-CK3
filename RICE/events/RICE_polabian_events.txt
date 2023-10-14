@@ -233,6 +233,315 @@ polabian.0011 = {
 
 
 
+
+######################################################################################
+# 
+# DROWNING OF MARZANNA
+# 
+# polabian.0020-polabian.0039
+# 
+######################################################################################
+
+
+
+# Drowning of Marzanna preparations
+polabian.0020 = {
+	type = activity_event
+	title = polabian.0020.t
+	desc = polabian.0020.desc
+	theme = RICE_theme_festival_generic	
+	override_background = { reference = market_west }
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Ok
+		name = polabian.0020.a
+	}
+
+	after = {
+		trigger_event = {
+			id = polabian.0021
+			days = { 10 20 }
+		}
+	}
+}
+
+
+# Drowning of Marzanna - effigy is introduced around town
+polabian.0021 = {
+	type = activity_event
+	title = polabian.0021.t
+	desc = polabian.0021.desc
+	theme = RICE_theme_festival_generic
+	override_background = { reference = market_west }
+	
+	left_portrait = {
+		character = root
+		animation = throne_room_cheer_1
+	}
+	
+	option = { # Ok
+		name = polabian.0021.a
+	}
+
+	after = {
+		trigger_event = {
+			id = polabian.0022
+			days = { 3 5 }
+		}
+	}
+}
+
+# Drowning of Marzanna - effigy is burned and drowned
+polabian.0022 = {
+	type = activity_event
+	title = polabian.0022.t
+	desc = polabian.0022.desc
+	theme = RICE_theme_festival_generic
+	override_background = { reference = RICE_background_polish_river }
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = polabian.0022.a
+	}
+
+	after = {
+		# Chance of getting a bad superstition/omen
+		random = {
+			chance = RICE_polabian_marzanna_bad_omen_chance # 99
+			random_list = {
+				# Accidentally touch her while she's in the water
+				10 = {
+					trigger_event = polabian.0030
+				}
+				# Looked back
+				10 = {
+					trigger_event = polabian.0031
+				}
+				# Fall down on the way home
+				10 = {
+					trigger_event = polabian.0032
+				}
+			}
+		}
+		trigger_event = {
+			id = polabian.0023
+			days = { 3 5 }
+		}
+	}
+}
+
+# Drowning of Marzanna Ends
+polabian.0023 = {
+	type = activity_event
+	title = polabian.0023.t
+	desc = polabian.0023.desc
+	theme = RICE_theme_festival_generic
+	override_background = { reference = market_west }
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Ok
+		name = polabian.0023.a
+		if = {
+			limit = {
+				religion = { is_in_family = rf_pagan }
+			}
+			add_piety = 100
+			stress_impact = {
+				base = miniscule_stress_impact_loss
+				zealous = miniscule_stress_impact_loss
+				diligent = miniscule_stress_impact_loss
+			}
+		}
+		else = {
+			add_prestige = 100
+			stress_impact = {
+				base = miniscule_stress_impact_loss
+				gregarious = miniscule_stress_impact_loss
+				humble = miniscule_stress_impact_loss
+			}
+		}
+		every_held_title = {
+			custom = RICE_every_county
+			limit = {
+				tier = tier_county			
+			}
+			random = {
+				chance = 33
+				add_county_modifier = {
+					modifier = RICE_polabian_drowning_marzanna_county_modifier
+					years = 10
+				}
+			}
+		}
+		every_attending_character = {
+			limit = { NOT = { this = scope:host } }
+			custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+			if = {
+				limit = {
+					religion = { is_in_family = rf_pagan }
+				}
+				add_piety = 25
+				stress_impact = {
+					base = miniscule_stress_impact_loss
+					zealous = miniscule_stress_impact_loss
+					diligent = miniscule_stress_impact_loss
+				}
+			}
+			else = {
+				add_prestige = 25
+				stress_impact = {
+					base = miniscule_stress_impact_loss
+					gregarious = miniscule_stress_impact_loss
+					humble = miniscule_stress_impact_loss
+				}
+			}
+		}	
+	}
+
+	after = {
+		scope:activity = {
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}
+}
+
+
+
+# Drowning of Marzanna - accidentally touch her
+polabian.0030 = {
+	type = activity_event
+	title = polabian.0030.t
+	desc = polabian.0030.desc
+	theme = RICE_theme_festival_generic
+	override_background = { reference = RICE_background_polish_river }
+	
+	right_portrait = {
+		character = root
+		animation = fear
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_stress
+	}
+	
+	option = { # Ok
+		name = polabian.0030.a
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_polabian_drowning_marzanna_superstition_1_log
+				tags = { bad }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					add_character_modifier = {
+						modifier = RICE_polabian_marzanna_superstition_1
+						years = 5
+					}
+					stress_impact = {
+						base = miniscule_stress_impact_gain
+					}
+				}
+			}
+		}
+	}
+}
+
+
+# Drowning of Marzanna - accidentally look back
+polabian.0031 = {
+	type = activity_event
+	title = polabian.0031.t
+	desc = polabian.0031.desc
+	theme = RICE_theme_festival_generic
+	override_background = { reference = RICE_background_polish_river }
+	
+	right_portrait = {
+		character = root
+		animation = prisonhouse
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_stress
+	}
+	
+	option = { # Ok
+		name = polabian.0031.a
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_polabian_drowning_marzanna_superstition_2_log
+				tags = { bad }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					add_character_modifier = {
+						modifier = RICE_polabian_marzanna_superstition_2
+						years = 5
+					}
+					stress_impact = {
+						base = miniscule_stress_impact_gain
+					}
+				}
+			}
+		}
+	}
+}
+
+
+# Drowning of Marzanna - slip and fall
+polabian.0032 = {
+	type = activity_event
+	title = polabian.0032.t
+	desc = polabian.0032.desc
+	theme = RICE_theme_festival_generic
+	override_background = { reference = RICE_background_polish_river }
+	
+	right_portrait = {
+		character = root
+		animation = pain
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_stress
+	}
+	
+	option = { # Ok
+		name = polabian.0032.a
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_polabian_drowning_marzanna_superstition_3_log
+				tags = { bad }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					add_character_modifier = {
+						modifier = RICE_polabian_marzanna_superstition_3
+						years = 5
+					}
+					stress_impact = {
+						base = miniscule_stress_impact_gain
+					}
+				}
+			}
+		}
+	}
+}
+
+
 ######################################################################################
 # 
 # TEMPLE OF ARKONA
