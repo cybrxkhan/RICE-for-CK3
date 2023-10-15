@@ -23,7 +23,7 @@ namespace = polabian
 
 
 
-# Budivoj Event
+# Budivoj Intro Event
 polabian.0010 = {
 	type = character_event
 	title = polabian.0010.t
@@ -97,7 +97,7 @@ polabian.0010 = {
 					reason = RICE_nemesis_reason_krutoj_murder
 				}
 				add_character_modifier = {
-					modifier = RICE_polabian_objective_gottschalk_sons_revenge
+					modifier = RICE_polabian_aspiration_gottschalk_sons_revenge
 				}
 			}
 			character:8402 = {
@@ -106,12 +106,12 @@ polabian.0010 = {
 					reason = RICE_nemesis_reason_krutoj_murder
 				}
 				add_character_modifier = {
-					modifier = RICE_polabian_objective_gottschalk_sons_revenge
+					modifier = RICE_polabian_aspiration_gottschalk_sons_revenge
 				}
 			}
 			character:20584 = {
 				add_character_modifier = {
-					modifier = RICE_polabian_objective_krutoj_finish_job
+					modifier = RICE_polabian_aspiration_krutoj_finish_job
 				}
 			}
 		}
@@ -127,7 +127,7 @@ polabian.0010 = {
 	}
 }
 
-# Krutoj Event
+# Krutoj Intro Event
 polabian.0011 = {
 	type = character_event
 	title = polabian.0011.t
@@ -201,7 +201,7 @@ polabian.0011 = {
 					reason = RICE_nemesis_reason_krutoj_murder
 				}
 				add_character_modifier = {
-					modifier = RICE_polabian_objective_gottschalk_sons_revenge
+					modifier = RICE_polabian_aspiration_gottschalk_sons_revenge
 				}
 			}
 			character:8402 = {
@@ -210,12 +210,12 @@ polabian.0011 = {
 					reason = RICE_nemesis_reason_krutoj_murder
 				}
 				add_character_modifier = {
-					modifier = RICE_polabian_objective_gottschalk_sons_revenge
+					modifier = RICE_polabian_aspiration_gottschalk_sons_revenge
 				}
 			}
 			character:20584 = {
 				add_character_modifier = {
-					modifier = RICE_polabian_objective_krutoj_finish_job
+					modifier = RICE_polabian_aspiration_krutoj_finish_job
 				}
 			}
 		}
@@ -233,6 +233,130 @@ polabian.0011 = {
 
 
 
+# Krutoj Aspiration Fulfilled
+polabian.0013 = {
+	type = character_event
+	title = polabian.0013.t
+	desc = polabian.0013.desc
+	theme = rival_relation
+	override_background = { reference = RICE_background_slavic_gord }
+
+	right_portrait = {
+		character = scope:krutoj
+		animation = war_over_win
+	}
+
+	lower_right_portrait = scope:budivoj
+	lower_left_portrait = scope:henry
+
+	immediate = {
+
+		custom_tooltip = RICE_historical_aspiration_fulfilled
+		if = {
+			limit = { has_variable = RICE_historical_aspiration }
+			remove_variable = RICE_historical_aspiration
+		}	
+
+		religion:christianity_religion = { save_scope_as = christian }
+		religion:slavic_religion = { save_scope_as = slavic }
+		character:8400 = { # Budivoj
+			save_scope_as = budivoj
+		}		
+		character:8402 = { # Henry
+			save_scope_as = henry
+		}		
+		character:8410 = { # Gottschalk
+			save_scope_as = gottschalk
+		}		
+		character:20584 = { # Krutoj
+			save_scope_as = krutoj
+		}
+
+		if = {
+			limit = {
+				has_character_modifier = RICE_polabian_aspiration_krutoj_finish_job
+			}
+			remove_character_modifier = RICE_polabian_aspiration_krutoj_finish_job
+		}
+
+		# Main Objective Reward
+		add_prestige = 1000
+		dynasty ?= {
+			add_dynasty_modifier = {
+				modifier = RICE_polabian_defenders_of_svetovit
+			}
+		}
+
+		# Bonus Objective Reward(s)
+		if = {
+			limit = {
+				exists = var:RICE_polabian_krutoj_svetovit_counter
+			}
+			if = {
+				limit = {
+					var:RICE_polabian_krutoj_svetovit_counter = 1
+				}
+				add_piety = 200
+			}
+			else_if = {
+				limit = {
+					var:RICE_polabian_krutoj_svetovit_counter = 2
+				}
+				add_piety = 400
+			}
+			else_if = {
+				limit = {
+					var:RICE_polabian_krutoj_svetovit_counter = 3
+				}
+				add_piety = 600
+			}
+			else_if = {
+				limit = {
+					var:RICE_polabian_krutoj_svetovit_counter = 4
+				}
+				add_piety = 800
+			}
+			else_if = {
+				limit = {
+					var:RICE_polabian_krutoj_svetovit_counter >= 5
+				}
+				add_piety = 1000
+			}
+		}
+
+		# You personally killed Budivoj
+		if = {
+			limit = {
+				character:8400 = {
+					exists = killer
+					killer = root
+				}
+			}
+			dynasty ?= {
+				add_dynasty_prestige = 500
+			}
+		}
+
+		# You personally killed Henry
+		if = {
+			limit = {
+				character:8402 = {
+					exists = killer
+					killer = root
+				}
+			}
+			dynasty ?= {
+				add_dynasty_prestige = 500
+			}
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = polabian.0013.a
+	}
+}
 
 ######################################################################################
 # 
@@ -561,6 +685,27 @@ polabian.0050 = {
 	override_background = { reference = throne_room }
 
 	right_portrait = root
+
+	immediate = {
+		if = {
+			limit = {
+				has_character_modifier = RICE_polabian_aspiration_krutoj_finish_job
+			}
+			if = {
+				limit = { NOT = { exists = var:RICE_polabian_krutoj_svetovit_counter } }
+				set_variable = {
+					name = RICE_polabian_krutoj_svetovit_counter
+					value = 1
+				}
+			}
+			else = {
+				change_variable = {
+					name = RICE_polabian_krutoj_svetovit_counter
+					add = 1
+				}		
+			}
+		}
+	}
 
 	# Ok
 	option = {
