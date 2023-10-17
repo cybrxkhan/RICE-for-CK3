@@ -32,6 +32,17 @@ RICE_polabian_destroy_arkona_temple = {
 		highest_held_title_tier >= tier_duchy
 		piety_level >= 3
 		prestige_level >= 3
+		OR = {
+			is_independent_ruler = yes
+			AND = {
+				liege = {
+					NOT = { religion = { is_in_family = rf_pagan } }
+				}
+				top_liege = {
+					NOT = { religion = { is_in_family = rf_pagan } }
+				}
+			}
+		}
 	}
 	
 	is_valid_showing_failures_only = {
@@ -46,6 +57,8 @@ RICE_polabian_destroy_arkona_temple = {
 			RICE_polabian_destroy_arkona_temple_effect = yes
 		}
 
+		custom_tooltip = RICE_polabian_destroy_arkona_temple_effect_tooltip_1
+
 
 		if = {
 			limit = {
@@ -53,15 +66,47 @@ RICE_polabian_destroy_arkona_temple = {
 			}
 			custom_tooltip = RICE_polabian_destroy_arkona_temple_context_tooltip
 		}
-		trigger_event = polabian.8888
+
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:arkona_destroyer
+					AND = {
+						religion = religion:slavic_religion
+						any_held_title = {
+							tier = tier_county
+							any_county_province = {
+								geographical_region = world_europe
+							}
+						}
+					}
+					culture = { has_cultural_pillar = heritage_west_slavic }
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							OR = {
+								geographical_region = custom_west_slavia
+								geographical_region = custom_europe_western_germany
+								geographical_region = ghw_region_baltic
+								geographical_region = ghw_region_scandinavia
+								geographical_region = ghw_region_finland_&_estonia
+							}		
+						}
+					}
+				}
+			}
+			trigger_event = polabian.0055
+		}
+
+		
 	}
 
 	cost = {
-		gold = medium_gold_value
+		prestige = major_prestige_value
 	}
 	
 	ai_potential = {
-		gold > medium_gold_value
+		prestige > major_prestige_value
 	}
 
 	ai_will_do = {
@@ -124,6 +169,8 @@ RICE_polabian_restore_arkona_temple = {
 			RICE_polabian_restore_arkona_temple_effect = yes
 		}
 
+		custom_tooltip = RICE_polabian_restore_arkona_temple_effect_tooltip_1
+
 
 		if = {
 			limit = {
@@ -131,7 +178,7 @@ RICE_polabian_restore_arkona_temple = {
 			}
 			custom_tooltip = RICE_polabian_restore_arkona_temple_context_tooltip
 		}
-		trigger_event = tarim_basin.0174
+		trigger_event = polabian.0056
 	}
 
 	cost = {
