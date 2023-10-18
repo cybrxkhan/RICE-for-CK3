@@ -7550,12 +7550,17 @@ tarim_basin.0052 = {
 		# 	}
 		# 	custom_tooltip = tarim_basin.0052.tooltip.yes_hostage
 		# }
-		if = {
-			limit = {
-				has_character_modifier = RICE_tarim_basin_aspiration_restore_order_guiyi
-			}		
-			custom_description_no_bullet = {
-				text = tarim_basin.0052.cao_yijin.tooltip
+		# if = {
+		# 	limit = {
+		# 		has_character_modifier = RICE_tarim_basin_aspiration_restore_order_guiyi
+		# 	}		
+		# 	custom_description_no_bullet = {
+		# 		text = tarim_basin.0052.cao_yijin.tooltip
+		# 	}
+		# }
+		show_as_tooltip = {
+			add_character_modifier = {
+				modifier = RICE_tarim_basin_aspiration_restore_order_guiyi
 			}
 		}
 		RICE_dunhuang_intro_history_context_effect = yes
@@ -8104,6 +8109,98 @@ tarim_basin.0059 = {
 }
 
 
+# Cao Yijin Aspiration Fulfilled
+tarim_basin.0060 = {
+	type = character_event
+	title = tarim_basin.0060.t
+	desc = tarim_basin.0060.desc
+	theme = diplomacy_majesty_focus
+	override_background = { reference = RICE_background_dunhuang_villa }
+
+	right_portrait = {
+		character = root
+		animation = war_over_win
+	}
+
+	immediate = {
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_tarim_basin_aspiration_restore_order_guiyi
+				}
+				remove_character_modifier = RICE_tarim_basin_aspiration_restore_order_guiyi
+			}
+		}
+
+		# Main Objective Reward
+
+		add_prestige = 1000
+		spawn_army = {
+			levies = 500
+			men_at_arms = {
+				type = light_footmen
+				stacks = 1
+			}
+			men_at_arms = {
+				type = chu_ko_nu
+				stacks = 2
+			}
+			men_at_arms = {
+				type = pikemen_unit
+				stacks = 1
+			}
+			men_at_arms = {
+				type = light_horsemen
+				stacks = 1
+			}
+			location = capital_province
+			#inheritable = no
+			name = RICE_tarim_basin_cao_yijin_aspiration_event_troops
+		}
+
+		# Bonus Objective Reward(s)
+		# Take the decision to patronize a Mogao cave at least once
+		if = {
+			limit = {
+				exists = var:RICE_tarim_basin_mogao_caves_done_once
+			}
+			add_piety = 1000
+		}
+
+		# Have at least one ally who is a king or emperor
+		if = {
+			limit = {
+				any_ally = {
+					highest_held_title_tier >= tier_kingdom
+					count >= 1
+				}
+			}
+			dynasty ?= {
+				add_dynasty_prestige = 1000
+			}
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = tarim_basin.0060.a
+	}
+
+
+	after = {
+		if = {
+			limit = { has_variable = RICE_tarim_basin_mogao_caves_done_once }
+			remove_variable = RICE_tarim_basin_mogao_caves_done_once
+		}
+	}
+
+}
 
 ######################################################################################
 # 
@@ -8147,6 +8244,21 @@ tarim_basin.0070 = {
 	right_portrait = {
 		character = root
 		animation = personality_rational
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				has_character_modifier = RICE_tarim_basin_aspiration_restore_order_guiyi
+			}
+			if = {
+				limit = { NOT = { exists = var:RICE_tarim_basin_mogao_caves_done_once } }
+				set_variable = {
+					name = RICE_tarim_basin_mogao_caves_done_once
+					value = yes
+				}
+			}
+		}		
 	}
 	
 	# Pay basic amount
@@ -10827,9 +10939,6 @@ tarim_basin.0200 = {
 		}
 		custom_tooltip = tarim_basin.0200.tooltip
 		custom_description_no_bullet = {
-			text = tarim_basin.0200.al_kashgari.tooltip
-		}
-		custom_description_no_bullet = {
 			text = tarim_basin.0200.info
 		}
 	}
@@ -11206,6 +11315,13 @@ tarim_basin.0205 = {
 
 		play_music_cue = "mx_cue_epic_sacral_moment"
 
+		if = {
+			limit = {
+				var:RICE_historical_aspiration ?= flag:al_kashgari
+			}
+			add_character_flag = RICE_tarim_basin_al_kashgari_aspiration_done
+		}
+
 		remove_character_modifier = RICE_tarim_basin_working_on_turkic_dictionary
 
 		add_character_modifier = {
@@ -11469,6 +11585,76 @@ tarim_basin.0207 = {
 	}
 }
 
+
+
+# Al-Kashgari's Aspiration Fulfilled
+tarim_basin.0208 = {
+	type = character_event
+	title = tarim_basin.0208.t
+	desc = tarim_basin.0208.desc
+	theme = learning
+
+	right_portrait = {
+		character = root
+		animation = war_over_win
+	}
+
+	immediate = {
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_tarim_basin_is_al_kashgari
+				}
+				remove_character_modifier = RICE_tarim_basin_is_al_kashgari
+			}
+		}
+
+		# Main Objective Reward
+
+		add_prestige = 1000
+		add_character_modifier = {
+			modifier = RICE_tarim_basin_is_al_kashgari_upgrade
+		}
+
+		# Bonus Objective Reward(s)
+		# Know at least three languages
+		if = {
+			limit = {
+				num_of_known_languages >= 3
+			}
+			add_relevant_lifestyle_perk_point_effect = { NUMBER = 1 }
+		}
+
+		# Have at least 3 prestige level/level of fame
+		if = {
+			limit = {
+				prestige_level >= 3
+			}
+			add_diplomacy_skill = 1
+			add_learning_skill = 1
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = tarim_basin.0208.a
+	}
+
+
+	after = {
+		if = {
+			limit = { has_variable = RICE_tarim_basin_mogao_caves_done_once }
+			remove_variable = RICE_tarim_basin_mogao_caves_done_once
+		}
+	}
+
+}
 
 
 ######################################################################################
