@@ -232,12 +232,187 @@ polabian.0011 = {
 }
 
 
+# Budivoj and Henry's Aspiration fulfilled
+polabian.0012 = {
+	type = character_event
+	title = polabian.0012.t
+	desc = {
+		desc = polabian.0012.desc
+		first_valid = {
+			# Alive
+			triggered_desc = {
+				trigger = {
+					character:20584 = {
+						is_alive = yes
+					}
+				}
+				desc = polabian.0012.desc.alive
+			}
+			# Killed by you
+			triggered_desc = {
+				trigger = {
+					OR = {
+						character:20584 = {
+							exists = killer
+							killer = scope:budivoj
+						}
+						character:20584 = {
+							exists = killer
+							killer = scope:henry
+						}
+					}
+				}
+				desc = polabian.0012.desc.direct
+			}
+			desc = polabian.0012.desc.indirect
+		}
+		first_valid = {
+			# Brother is not alive
+			triggered_desc = {
+				trigger = {
+					scope:brother = {
+						is_alive = no
+					}
+				}
+				desc = polabian.0012.desc.one_brother
+			}
+			desc = polabian.0012.desc.both_brothers
+		}
+	}
+	theme = rival_relation
+	override_background = { reference = RICE_background_slavic_gord }
+
+	left_portrait = {
+		character = scope:krutoj
+		animation = severelywounded
+	}
+
+	right_portrait = {
+		character = root
+		animation = war_over_win
+	}
+
+	lower_right_portrait = scope:gottschalk
+	lower_left_portrait = scope:brother
+
+	immediate = {
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		religion:christianity_religion = { save_scope_as = christian }
+		religion:slavic_religion = { save_scope_as = slavic }
+
+		if = {
+			limit = {
+				root = character:8400
+			}
+			character:8402 = { # Henry
+				save_scope_as = brother
+			}	
+		}
+		else_if = {
+			limit = {
+				root = character:8402
+			}
+			character:8400 = { # Henry
+				save_scope_as = brother
+			}	
+		}
+
+		character:8400 = { # Budivoj
+			save_scope_as = budivoj
+		}		
+		character:8402 = { # Henry
+			save_scope_as = henry
+		}		
+		character:8410 = { # Gottschalk
+			save_scope_as = gottschalk
+		}		
+		character:20584 = { # Krutoj
+			save_scope_as = krutoj
+		}
+
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_polabian_aspiration_gottschalk_sons_revenge
+				}
+				remove_character_modifier = RICE_polabian_aspiration_gottschalk_sons_revenge
+			}
+		}
+
+		# Main Objective Reward
+		add_prestige = RICE_aspiration_medium_resource_bonus
+		dynasty ?= {
+			add_dynasty_modifier = {
+				modifier = RICE_polabian_scions_of_saint_gottschalk
+			}
+		}
+
+		# Bonus Objective Reward(s)
+		# Remain Christian
+		if = {
+			limit = {
+				religion = religion:christianity_religion
+			}
+			add_piety = RICE_aspiration_medium_resource_bonus
+		}
+
+		# Personally  kill Krutoj
+		if = {
+			limit = {
+				OR = {
+					character:20584 = {
+						exists = killer
+						killer = scope:budivoj
+					}
+					character:20584 = {
+						exists = killer
+						killer = scope:henry
+					}
+				}
+			}
+			dynasty ?= {
+				add_dynasty_prestige = RICE_aspiration_medium_resource_bonus
+			}
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = polabian.0012.a
+	}
+
+}
+
+
 
 # Krutoj Aspiration Fulfilled
 polabian.0013 = {
 	type = character_event
 	title = polabian.0013.t
-	desc = polabian.0013.desc
+	desc = {
+		desc = polabian.0013.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					character:8400 = {
+						exists = killer
+						killer = root
+					}
+					character:8402 = {
+						exists = killer
+						killer = root
+					}
+				}
+				desc = polabian.0013.desc.direct
+			}
+			desc = polabian.0013.desc.indirect
+		}
+	}
 	theme = rival_relation
 	override_background = { reference = RICE_background_slavic_gord }
 

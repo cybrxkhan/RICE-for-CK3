@@ -752,21 +752,14 @@ pamir.0017 = {
 		}
 		character:188712 = {
 			save_scope_as = RICE_last_zunbil
+			show_as_tooltip = {
+				add_character_modifier = {
+					modifier = RICE_pamir_aspiration_assert_zunbil_independence
+				}
+			}
 		}
 		title:k_makran.holder = {
 			save_scope_as = saffarid
-		}
-	}
-	
-	option = {
-		name = pamir.0017.a
-		if = {
-			limit = {
-				has_character_modifier = RICE_tarim_basin_aspiration_restore_order_guiyi
-			}		
-			custom_description_no_bullet = {
-				text = pamir.0017.firuz.tooltip
-			}
 		}
 		if = {
 			limit = {
@@ -777,21 +770,122 @@ pamir.0017 = {
 			}
 		}
 	}
-	# option = {
-	# 	name = pamir.0017.b
-	# 	trigger = {
-	# 		is_ai = no
-	# 	}
-	# 	set_player_character = scope:RICE_last_zunbil	
-	# 	if = {
-	# 		limit = {
-	# 			has_game_rule = RICE_historical_context_on
-	# 		}
-	# 		custom_description_no_bullet = {
-	# 			text = pamir.0017.info
-	# 		}
-	# 	}
-	# }
+	
+	option = {
+		name = pamir.0017.a
+	}
+}
+
+
+# The Last Zunbil/Firuz ibn Kabk's Aspiration fulfilled
+pamir.0018 = {
+	type = character_event
+	title = pamir.0018.t
+	desc = pamir.0018.desc
+	theme = martial
+	override_background = { reference = RICE_background_pamir_valley }
+
+	right_portrait = {
+		character = root
+		animation = war_over_win
+	}
+
+	immediate = {
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_pamir_aspiration_assert_zunbil_independence
+				}
+				remove_character_modifier = RICE_pamir_aspiration_assert_zunbil_independence
+			}
+		}
+
+		# Main Objective Reward
+
+		add_prestige = RICE_aspiration_medium_resource_bonus
+		spawn_army = {
+			name = event_troop_default_name
+			men_at_arms = {
+				type = RICE_pamir_tribesmen
+				stacks = 5
+			}
+			location = capital_province
+		}
+		every_held_title = {
+			limit = {
+				tier = tier_county
+				duchy = title:d_zabulistan
+			}
+			change_development_level = RICE_red_sea_al_umari_aspiration_dev_bonus
+		}
+
+		# Bonus Objective Reward(s)
+		# You personally killed the Saffarid Bros
+		# Yaqub
+		if = {
+			limit = {
+				character:163101 = {
+					exists = killer
+					killer = root
+				}
+			}
+			dynasty ?= {
+				add_dynasty_prestige = RICE_aspiration_small_resource_bonus
+			}
+		}
+		# Amr
+		if = {
+			limit = {
+				character:163164 = {
+					exists = killer
+					killer = root
+				}
+			}
+			dynasty ?= {
+				add_dynasty_prestige = RICE_aspiration_small_resource_bonus
+			}
+		}
+		# Ali
+		if = {
+			limit = {
+				character:163165 = {
+					exists = killer
+					killer = root
+				}
+			}
+			dynasty ?= {
+				add_dynasty_prestige = RICE_aspiration_small_resource_bonus
+			}
+		}
+
+		# Restored the Idol of Zun
+		if = {
+			limit = {
+				has_character_flag = RICE_pamir_restored_zun_idol_as_last_zunbil
+			}
+			add_piety = RICE_aspiration_medium_resource_bonus
+		}
+	}
+
+	# Ok
+	option = {
+		name = pamir.0018.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_pamir_restored_zun_idol_as_last_zunbil
+			}
+			remove_character_flag = RICE_pamir_restored_zun_idol_as_last_zunbil
+		}		
+	}
+
 }
 
 
@@ -1795,7 +1889,7 @@ pamir.0038 = {
 	type = character_event
 	title = pamir.0038.t
 	desc = pamir.0038.desc
-	theme = faith
+	theme = RICE_theme_tibet_inner_altar
 	
 	left_portrait = {
 		character = root
@@ -1845,6 +1939,7 @@ pamir.0039 = {
 	title = pamir.0039.t
 	desc = pamir.0039.desc
 	theme = faith
+	override_background = { reference = RICE_background_pamir_valley }
 	
 	left_portrait = {
 		character = root
@@ -1893,7 +1988,7 @@ pamir.0040 = {
 	type = character_event
 	title = pamir.0040.t
 	desc = pamir.0040.desc
-	theme = faith
+	theme = RICE_theme_tibet_inner_altar
 	
 	left_portrait = {
 		character = scope:zun_idol_restorer
@@ -1910,12 +2005,13 @@ pamir.0040 = {
 	}
 }
 
-# Restoring the Idol of Zun notification
+# Restoring the Idol of Zun on Mount Aruna notification
 pamir.0041 = {
 	type = character_event
 	title = pamir.0041.t
 	desc = pamir.0041.desc
 	theme = faith
+	override_background = { reference = RICE_background_pamir_valley }
 	
 	left_portrait = {
 		character = scope:zun_mount_aruna_relcaimer

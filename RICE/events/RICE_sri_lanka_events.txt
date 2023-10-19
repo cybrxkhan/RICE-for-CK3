@@ -714,6 +714,103 @@ sri_lanka.0008 = {
 }
 
 
+# Vijayabahu's Aspiration fulfilled
+sri_lanka.0009 = {
+	type = character_event
+	title = sri_lanka.0009.t
+	desc = sri_lanka.0009.desc
+	theme = RICE_theme_sri_lanka_stupa
+
+	right_portrait = {
+		character = root
+		animation = war_over_win
+	}
+
+	immediate = {
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		religion:buddhism_religion = {
+			save_scope_as = buddhism
+		}
+		
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_sri_lanka_aspiration_rule_sri_lanka
+				}
+				remove_character_modifier = RICE_sri_lanka_aspiration_rule_sri_lanka
+			}
+		}
+
+		# Main Objective Reward
+		add_prestige = RICE_aspiration_medium_resource_bonus
+		spawn_army = {
+			name = RICE_vijayabahu_velakkara_guards
+			men_at_arms = {
+				type = RICE_velakkara
+				stacks = 5
+			}
+			location = capital_province
+		}
+		every_held_title = {
+			custom = RICE_every_sri_lanka_county
+			limit = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_sri_lanka_struggle_region
+				}
+			}	
+			change_county_control = RICE_red_sea_al_umari_aspiration_dev_bonus
+		}
+
+		# Bonus Objective Reward(s)
+		# Irrigation tank at least once
+		if = {
+			limit = {
+				has_character_flag = RICE_sri_lanka_vijayabahu_built_irrigation_tank
+			}
+			add_prestige = RICE_aspiration_medium_resource_bonus
+		}
+		# Support a monastery at least once
+		if = {
+			limit = {
+				has_character_flag = RICE_sri_lanka_vijayabahu_supported_monastery
+			}
+			add_piety = RICE_aspiration_medium_resource_bonus
+		}
+	}
+
+	# Ok
+	option = {
+		name = sri_lanka.0009.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_sri_lanka_vijayabahu_built_irrigation_tank
+			}
+			remove_character_flag = RICE_sri_lanka_vijayabahu_built_irrigation_tank
+		}		
+		if = {
+			limit = {
+				has_character_flag = RICE_sri_lanka_vijayabahu_supported_monastery
+			}
+			remove_character_flag = RICE_sri_lanka_vijayabahu_supported_monastery
+		}		
+		if = {
+			limit = {
+				has_character_flag = RICE_sri_lanka_vijayabahu_polonnaruwa_capital_done
+			}
+			remove_character_flag = RICE_sri_lanka_vijayabahu_polonnaruwa_capital_done
+		}		
+	}
+
+}
+
 
 # Land granted to Buddhist/Hindu/Jain monasteries/temples
 sri_lanka.0010 = {
@@ -2484,6 +2581,14 @@ sri_lanka.0030 = {
 	}
 
 	immediate = {
+
+		if = {
+			limit = {
+				has_character_modifier = RICE_sri_lanka_aspiration_rule_sri_lanka
+			}
+			add_character_flag = RICE_sri_lanka_vijayabahu_supported_monastery
+		}
+
 		religion:buddhism_religion = {
 			save_scope_as = buddhism
 		}
