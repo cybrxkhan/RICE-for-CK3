@@ -641,9 +641,9 @@ red_sea.0023 = {
 				modifier = RICE_red_sea_aspiration_red_sea_riches
 			}
 		}
-		custom_description_no_bullet = {
-			text = red_sea.0023.al_umari.tooltip
-		}
+		# custom_description_no_bullet = {
+		# 	text = red_sea.0023.al_umari.tooltip
+		# }
 		if = {
 			limit = {
 				has_game_rule = RICE_historical_context_on
@@ -653,6 +653,83 @@ red_sea.0023 = {
 			}
 		}
 	}
+}
+
+
+
+# Al-Umari's Aspiration fulfilled
+red_sea.0024 = {
+	type = character_event
+	title = red_sea.0024.t
+	desc = red_sea.0024.desc
+	theme = dread
+	override_background = { reference = RICE_background_egypt_desert }
+
+	right_portrait = {
+		character = root
+		animation = war_over_win
+	}
+
+	immediate = {
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		religion:christianity_religion = { save_scope_as = christian }
+		
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_normandy_aspiration_settle_in_normandy
+				}
+				remove_character_modifier = RICE_normandy_aspiration_settle_in_normandy
+			}
+		}
+
+		# Main Objective Reward
+
+		add_gold = RICE_aspiration_medium_resource_bonus
+		every_county_in_region = {
+			region = world_africa_east
+			limit = {
+				holder.top_liege = root
+			}
+			custom = every_county_RICE_east_africa
+			change_development_level = RICE_red_sea_al_umari_aspiration_dev_bonus
+		}
+
+		# Bonus Objective Reward(s)
+		# Have at least 80 dread
+		if = {
+			limit = {
+				dread >= 80
+			}
+			add_martial_lifestyle_perk_points = 1
+		}
+
+		# At least 2 rivals/nemeses
+		if = {
+			limit = {
+				OR = {
+					num_of_relation_rival >= 2
+					num_of_relation_nemesis >= 2
+					AND = {
+						num_of_relation_rival >= 1
+						num_of_relation_nemesis >= 1
+					}
+				}
+			}
+			add_intrigue_lifestyle_perk_points = 1
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = red_sea.0024.a
+	}
+
 }
 
 

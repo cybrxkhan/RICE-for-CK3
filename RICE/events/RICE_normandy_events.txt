@@ -9467,6 +9467,105 @@ normandy.0086 = {
 
 
 
+# Rollo's Aspiration Fulfilled
+normandy.0087 = {
+	type = character_event
+	title = normandy.0087.t
+	desc = normandy.0087.desc
+	theme = RICE_theme_normandy_castle
+
+	right_portrait = {
+		character = root
+		animation = war_over_win
+	}
+
+	immediate = {
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		religion:christianity_religion = { save_scope_as = christian }
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_normandy_aspiration_settle_in_normandy
+				}
+				remove_character_modifier = RICE_normandy_aspiration_settle_in_normandy
+			}
+		}
+
+		# Main Objective Reward
+
+		add_prestige = RICE_aspiration_medium_resource_bonus
+		spawn_army = {
+			levies = 500
+			men_at_arms = {
+				type = varangian_veterans
+				stacks = 1
+			}
+			men_at_arms = {
+				type = bondi
+				stacks = 1
+			}
+			men_at_arms = {
+				type = vigmen
+				stacks = 2
+			}
+			men_at_arms = {
+				type = huscarl
+				stacks = 1
+			}
+			location = capital_province
+			#inheritable = no
+			name = RICE_norman_spawn_event_troops
+		}
+
+		# Bonus Objective Reward(s)
+		# Convert to Christianity
+		if = {
+			limit = {
+				religion = religion:christianity_religion
+			}
+			add_piety = RICE_aspiration_medium_resource_bonus
+		}
+
+		# Rule Normandy
+		if = {
+			limit = {
+				has_title = title:d_normandy
+			}
+			dynasty ?= {
+				add_dynasty_prestige = RICE_aspiration_medium_resource_bonus
+			}
+		}
+
+		# Have at least 1000 gold
+		if = {
+			limit = {
+				gold >= 1000
+			}
+			every_county_in_region = {
+				region = RICE_normandy_region
+				limit = {
+					OR = {
+						holder = { is_vassal_or_below_of = root }
+						holder = root
+					}
+				}
+				change_development_level = RICE_red_sea_al_umari_aspiration_dev_bonus
+			}
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = normandy.0087.a
+	}
+
+}
 
 
 ######################################################################################
