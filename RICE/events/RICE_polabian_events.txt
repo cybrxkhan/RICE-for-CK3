@@ -715,29 +715,31 @@ polabian.0023 = {
 				}
 			}
 		}
-		every_attending_character = {
-			limit = { NOT = { this = scope:host } }
-			custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
-			if = {
-				limit = {
-					religion = { is_in_family = rf_pagan }
+		scope:activity = {
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				if = {
+					limit = {
+						religion = { is_in_family = rf_pagan }
+					}
+					add_piety = 25
+					stress_impact = {
+						base = miniscule_stress_impact_loss
+						zealous = miniscule_stress_impact_loss
+						diligent = miniscule_stress_impact_loss
+					}
 				}
-				add_piety = 25
-				stress_impact = {
-					base = miniscule_stress_impact_loss
-					zealous = miniscule_stress_impact_loss
-					diligent = miniscule_stress_impact_loss
+				else = {
+					add_prestige = 25
+					stress_impact = {
+						base = miniscule_stress_impact_loss
+						gregarious = miniscule_stress_impact_loss
+						humble = miniscule_stress_impact_loss
+					}
 				}
-			}
-			else = {
-				add_prestige = 25
-				stress_impact = {
-					base = miniscule_stress_impact_loss
-					gregarious = miniscule_stress_impact_loss
-					humble = miniscule_stress_impact_loss
-				}
-			}
-		}	
+			}	
+		}
 	}
 
 	after = {
@@ -1353,13 +1355,30 @@ polabian.0056 = {
 polabian.0060 = {
 	type = activity_event
 	title = polabian.0060.t
-	desc = polabian.0060.desc
+	desc = {
+		desc = polabian.0060.desc.intro
+		first_valid = {
+			# Pagan
+			triggered_desc = {
+				trigger = {
+					OR = {
+						culture = { has_cultural_tradition = tradition_EEE_people_of_boika }
+						culture = { has_cultural_tradition = tradition_RICE_wendish_confederations }
+					}
+				}
+				desc = polabian.0060.desc.culture
+			}
+			# Non Pagan
+			desc = polabian.0060.desc.not_culture
+		}
+		desc = polabian.0060.desc
+	}
 	theme = RICE_theme_festival_generic	
 	override_background = { reference = market_west }
 	
-	left_portrait = {
+	right_portrait = {
 		character = root
-		animation = happiness
+		animation = personality_forgiving
 	}
 	
 	option = { # Ok
@@ -1383,13 +1402,37 @@ polabian.0061 = {
 	theme = RICE_theme_festival_generic
 	override_background = { reference = market_west }
 	
-	left_portrait = {
+	right_portrait = {
 		character = root
-		animation = wedding_drunk
+		animation = throne_room_cheer_2
 	}
 	
 	option = { # Ok
 		name = polabian.0061.a
+	}
+	
+	option = { # Ok
+		name = polabian.0061.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 25
+			}
+		}
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_polabian_zapust_grand_donation_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					remove_short_term_gold = 25
+					add_prestige = 50
+					add_piety = 50
+				}
+			}
+		}
 	}
 
 	after = {
@@ -1400,7 +1443,7 @@ polabian.0061 = {
 	}
 }
 
-# Zapust Ends
+# Zapust dinner/dance/eating
 polabian.0062 = {
 	type = activity_event
 	title = polabian.0062.t
@@ -1410,11 +1453,36 @@ polabian.0062 = {
 	
 	right_portrait = {
 		character = root
-		animation = personality_content
+		animation = wedding_drunk
 	}
 	
 	option = { # Ok
 		name = polabian.0062.a
+	}
+
+	after = {
+		trigger_event = {
+			id = polabian.0063
+			days = { 3 5 }
+		}
+	}
+}
+
+# Zapust Ends
+polabian.0063 = {
+	type = activity_event
+	title = polabian.0063.t
+	desc = polabian.0063.desc
+	theme = RICE_theme_festival_generic
+	override_background = { reference = market_west }
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Ok
+		name = polabian.0063.a
 		if = {
 			limit = {
 				has_activity_intent = RICE_polabian_zapust_festival_community_intent
@@ -1451,17 +1519,19 @@ polabian.0062 = {
 				}
 			}
 		}
-		every_attending_character = {
-			limit = { NOT = { this = scope:host } }
-			custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
-			add_prestige = 25
-			stress_impact = {
-				base = miniscule_stress_impact_loss
-				gregarious = miniscule_stress_impact_loss
-				gluttonous = miniscule_stress_impact_loss
-				lazy = miniscule_stress_impact_loss
-			}
-		}	
+		scope:activity = {
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_prestige = 25
+				stress_impact = {
+					base = miniscule_stress_impact_loss
+					gregarious = miniscule_stress_impact_loss
+					gluttonous = miniscule_stress_impact_loss
+					lazy = miniscule_stress_impact_loss
+				}
+			}	
+		}
 	}
 
 	after = {
