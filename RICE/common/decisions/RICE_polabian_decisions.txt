@@ -34,18 +34,25 @@ RICE_polabian_destroy_arkona_temple = {
 		prestige_level >= 3
 		OR = {
 			is_independent_ruler = yes
-			AND = {
-				liege = {
-					NOT = { religion = { is_in_family = rf_pagan } }
-				}
-				top_liege = {
-					NOT = { religion = { is_in_family = rf_pagan } }
+			custom_description = {
+				text = RICE_no_liege_or_above_pagan
+				NOT = {
+					any_liege_or_above = {
+						religion = { is_in_family = rf_pagan }
+					}
 				}
 			}
 		}
 		OR = {
 			NOT = { has_character_modifier = RICE_polabian_restore_arkona_idol_modifier }
 			piety_level >= 5
+		}
+		custom_description = {
+			text = RICE_has_court_chaplain
+			exists = cp:councillor_court_chaplain
+			cp:councillor_court_chaplain = {
+				is_available_adult = yes
+			}
 		}
 	}
 	
@@ -163,6 +170,13 @@ RICE_polabian_restore_arkona_temple = {
 			NOT = { has_character_modifier = RICE_polabian_destroy_arkona_idol_modifier }
 			piety_level >= 5
 		}
+		custom_description = {
+			text = RICE_has_court_chaplain
+			exists = cp:councillor_court_chaplain
+			cp:councillor_court_chaplain = {
+				is_available_adult = yes
+			}
+		}
 	}
 	
 	is_valid_showing_failures_only = {
@@ -261,12 +275,16 @@ RICE_polabian_gift_to_svetovit_decision = {
 		faith.religion = { is_in_family = rf_pagan }
 		OR = {
 			has_title = title:c_rugen
-			title:c_rugen = {
-				squared_distance = {
-					target = root.capital_province
-					value <= squared_distance_medium
-				}
-			}		
+			capital_province = {
+				OR = {
+					geographical_region = custom_west_slavia
+					geographical_region = custom_europe_western_germany
+					geographical_region = custom_europe_eastern_germany
+					geographical_region = ghw_region_baltic
+					geographical_region = ghw_region_scandinavia
+					geographical_region = ghw_region_finland_&_estonia
+				}		
+			}	
 		}
 	}
 	
@@ -278,13 +296,26 @@ RICE_polabian_gift_to_svetovit_decision = {
 		OR = {
 			has_title = title:c_rugen
 			custom_description = {
-				text = "RICE_harran_geography_req"
-				title:c_rugen = {
-					squared_distance = {
-						target = root.capital_province
-						value <= squared_distance_medium
+				text = "RICE_polabian_near_rugen_req"
+				any_held_title = {
+					tier = tier_county
+					capital_province = {
+						OR = {
+							geographical_region = custom_west_slavia
+							geographical_region = custom_europe_western_germany
+							geographical_region = custom_europe_eastern_germany
+							geographical_region = ghw_region_baltic
+							geographical_region = ghw_region_scandinavia
+							geographical_region = ghw_region_finland_&_estonia
+						}		
 					}
 				}
+				# title:c_rugen = {
+				# 	squared_distance = {
+				# 		target = root.capital_province
+				# 		value <= squared_distance_medium
+				# 	}
+				# }
 			}		
 		}
 		OR = {

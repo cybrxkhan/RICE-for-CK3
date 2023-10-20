@@ -918,13 +918,13 @@ polabian.0050 = {
 	# Ok
 	option = {
 		name = polabian.0050.a
-		custom_tooltip = polabian.0050.tooltip
 		if = {
 			limit = {
 				var:RICE_polabian_svetovit_offering_type = flag:small
 			}
 			add_piety = RICE_polabian_svetovit_offering_small_bonus
 			add_prestige = RICE_polabian_svetovit_offering_small_bonus
+			remove_gold = RICE_polabian_svetovit_offering_small_cost
 		}
 		else_if = {
 			limit = {
@@ -932,6 +932,7 @@ polabian.0050 = {
 			}
 			add_piety = RICE_polabian_svetovit_offering_medium_bonus
 			add_prestige = RICE_polabian_svetovit_offering_medium_bonus
+			remove_gold = RICE_polabian_svetovit_offering_medium_cost
 		}
 		else_if = {
 			limit = {
@@ -939,11 +940,13 @@ polabian.0050 = {
 			}
 			add_piety = RICE_polabian_svetovit_offering_large_bonus
 			add_prestige = RICE_polabian_svetovit_offering_large_bonus
+			remove_gold = RICE_polabian_svetovit_offering_large_cost
 		}
+		custom_tooltip = polabian.0050.tooltip
 		# Event
 		trigger_event = {
 			id = polabian.0051
-			trigger_on_next_date = 3.20
+			trigger_on_next_date = 11.1
 		}
 	}
 }
@@ -953,7 +956,20 @@ polabian.0050 = {
 polabian.0051 = {
 	type = character_event
 	title = polabian.0051.t
-	desc = polabian.0051.desc
+	desc = {
+		desc = polabian.0051.desc
+		first_valid = {
+			# Pagan
+			triggered_desc = {
+				trigger = {
+					exists = global_var:RICE_polabian_arkona_temple_oracle_good_variable
+				}
+				desc = polabian.0051.desc.good
+			}
+			# Non Pagan
+			desc = polabian.0051.desc.bad
+		}
+	}
 	theme = RICE_outdoors_pagan_altar_theme
 
 	right_portrait = {
@@ -971,19 +987,19 @@ polabian.0051 = {
 			limit = { has_variable = RICE_polabian_svetovit_offering_type }
 			remove_variable = RICE_polabian_svetovit_offering_type
 		}
-		# If Idol/Temple has been torn down
-		if = {
-			limit = {
-				has_global_variable = RICE_polabian_arkona_temple_down
-			}
-			trigger_event = polabian.0052
-		}
 		# If you are no longer Pagan
-		else_if = {
+		if = {
 			limit = {
 				NOT = { religion = { is_in_family = rf_pagan } }
 			}
 			trigger_event = polabian.0053
+		}
+		# If Idol/Temple has been torn down
+		else_if = {
+			limit = {
+				has_global_variable = RICE_polabian_arkona_temple_down
+			}
+			trigger_event = polabian.0052
 		}
 	}
 
@@ -1220,6 +1236,7 @@ polabian.0052 = {
 	# Ok
 	option = {
 		name = polabian.0052.a
+		custom_tooltip = polabian.0052.tooltip
 	}
 
 	after = {
@@ -1247,6 +1264,7 @@ polabian.0053 = {
 	# Ok
 	option = {
 		name = polabian.0053.a
+		custom_tooltip = polabian.0052.tooltip
 	}
 
 	after = {
@@ -1279,6 +1297,11 @@ polabian.0055 = {
 		play_music_cue = mx_cue_crusade_starts
 		religion:slavic_religion = { save_scope_as = slavic }
 		custom_tooltip = RICE_polabian_destroy_arkona_temple_effect_tooltip_1
+		scope:arkona_destroyer = {
+			cp:councillor_court_chaplain = {
+				save_scope_as = chaplain
+			}
+		}
 		if = {
 			limit = {
 				root = scope:arkona_destroyer
@@ -1319,6 +1342,11 @@ polabian.0056 = {
 		play_music_cue = "mx_cue_epic_sacral_moment"
 		religion:slavic_religion = { save_scope_as = slavic }
 		custom_tooltip = RICE_polabian_restore_arkona_temple_effect_tooltip_1
+		scope:arkona_destroyer = {
+			cp:councillor_court_chaplain = {
+				save_scope_as = chaplain
+			}
+		}
 		if = {
 			limit = {
 				root = scope:arkona_restorer
