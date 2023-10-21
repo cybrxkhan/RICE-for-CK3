@@ -1,6 +1,6 @@
 ﻿###############################################################################
 # 
-# Sri Lanka
+# Polabians
 # 
 # polabian.0000-polabian.0019			Setup events, history events, miscellaneous events and decisions
 # polabian.0020-polabian.0039			Drown Marzanna
@@ -839,7 +839,7 @@ polabian.0032 = {
 	title = polabian.0032.t
 	desc = polabian.0032.desc
 	theme = RICE_theme_festival_generic
-	override_background = { reference = RICE_background_polish_river }
+	override_background = { reference = RICE_background_pomeranian_forest }
 	
 	right_portrait = {
 		character = root
@@ -924,7 +924,7 @@ polabian.0050 = {
 			}
 			add_piety = RICE_polabian_svetovit_offering_small_bonus
 			add_prestige = RICE_polabian_svetovit_offering_small_bonus
-			remove_gold = RICE_polabian_svetovit_offering_small_cost
+			remove_short_term_gold = RICE_polabian_svetovit_offering_small_cost
 		}
 		else_if = {
 			limit = {
@@ -932,7 +932,7 @@ polabian.0050 = {
 			}
 			add_piety = RICE_polabian_svetovit_offering_medium_bonus
 			add_prestige = RICE_polabian_svetovit_offering_medium_bonus
-			remove_gold = RICE_polabian_svetovit_offering_medium_cost
+			remove_short_term_gold = RICE_polabian_svetovit_offering_medium_cost
 		}
 		else_if = {
 			limit = {
@@ -940,7 +940,7 @@ polabian.0050 = {
 			}
 			add_piety = RICE_polabian_svetovit_offering_large_bonus
 			add_prestige = RICE_polabian_svetovit_offering_large_bonus
-			remove_gold = RICE_polabian_svetovit_offering_large_cost
+			remove_short_term_gold = RICE_polabian_svetovit_offering_large_cost
 		}
 		custom_tooltip = polabian.0050.tooltip
 		# Event
@@ -1568,6 +1568,613 @@ polabian.0063 = {
 		}
 	}
 }
+
+
+
+
+
+######################################################################################
+# 
+# FLAVOR EVENTS
+# 
+# polabian.0080-polabian.0099 reserved
+# 
+######################################################################################
+
+
+# Non-pagan ruler hears their merchants are paying tribute to the Idol of Svetovit
+polabian.0080 = {
+	type = character_event
+	title = polabian.0080.t
+	desc = polabian.0080.desc
+	theme = diplomacy_foreign_affairs_focus
+	
+	right_portrait = {
+		character = root
+		animation = disapproval
+	}
+	
+	trigger = {
+		NOT = { has_global_variable = RICE_polabian_arkona_temple_down }
+		NOT = { faith.religion = { is_in_family = rf_pagan } }
+		NOT = { has_title = title:c_rugen }
+		capital_province = {
+			OR = {
+				geographical_region = custom_west_slavia
+				geographical_region = custom_europe_western_germany
+				geographical_region = custom_europe_eastern_germany
+				geographical_region = ghw_region_baltic
+				geographical_region = ghw_region_scandinavia
+				geographical_region = ghw_region_finland_&_estonia
+			}		
+		}	
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = -0.2
+			has_trait = humble
+		}
+	}
+
+	immediate = {
+		title:c_rugen = {
+			save_scope_as = county
+		}
+	}
+
+	option = { # Ok
+		name = polabian.0080.a
+		add_piety = 50
+		stress_impact = {
+			greedy = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = polabian.0080.b
+		add_prestige = 50
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+	}
+}
+
+
+# Renovate an old Slavic ringfort
+polabian.0081 = {
+	type = character_event
+	title = polabian.0081.t
+	desc = polabian.0081.desc
+	theme = martial
+	override_background = { reference = RICE_background_slavic_gord }
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = custom_slavia
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = paranoid
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+		modifier = {
+			add = 0.2
+			has_trait = deceitful
+		}
+		modifier = {
+			add = -0.2
+			has_trait = honest
+		}
+	}
+
+	immediate = {
+		random_held_title = {			
+			limit = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = custom_slavia
+				}
+			}
+			save_scope_as = county
+		}
+	}
+
+	option = { # Ok
+		name = polabian.0081.a
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_polabian_renovated_slavic_ringfort
+				years = 15
+			}
+		}
+		stress_impact = {
+			greedy = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = polabian.0081.b
+		stress_impact = {
+			diligent = miniscule_stress_impact_gain
+			paranoid = miniscule_stress_impact_gain
+		}
+	}
+
+}
+
+
+# You get a cut of the tribute for Svetovit
+polabian.0082 = {
+	type = character_event
+	title = polabian.0082.t
+	desc = polabian.0082.desc
+	theme = faith
+	override_background = { reference = RICE_background_rugen_island }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	trigger = {
+		NOT = { has_global_variable = RICE_polabian_arkona_temple_down }
+		religion = { is_in_family = rf_pagan }
+		has_title = title:c_rugen
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+
+	option = { # Ok
+		name = polabian.0082.a
+		add_gold = { 25 200 }
+		stress_impact = {
+			greedy = miniscule_stress_impact_loss
+			zealous = miniscule_stress_impact_loss
+		}
+	}
+
+}
+
+
+# Traditional Sorbian/Wendish rooster beating custom during summer
+polabian.0083 = {
+	type = character_event
+	title = polabian.0083.t
+	desc = polabian.0083.desc
+	theme = party
+	override_background = { reference = market }
+	
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	
+	trigger = {
+		middle_of_year_season_trigger = yes
+		OR = {
+			culture = culture:polabian
+			culture = culture:sorbian
+			culture = { has_cultural_tradition = tradition_EEE_people_of_boika }
+			culture = { has_cultural_tradition = tradition_RICE_wendish_confederations }
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	option = { # Ok
+		name = polabian.0083.a
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			sadistic = miniscule_stress_impact_loss
+			gregarious = miniscule_stress_impact_loss
+		}
+	}
+
+	option = { # Ok
+		name = polabian.0083.b
+		add_piety = 25
+	}
+
+}
+
+
+
+
+# Locals claim the Draben/Graben creatures have been attacking horses
+polabian.0084 = {
+	type = character_event
+	title = polabian.0084.t
+	desc = polabian.0084.desc
+	theme = intrigue
+	override_background = { reference = RICE_background_pomeranian_forest }
+	
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			OR = {
+				culture = culture:polabian
+				culture = culture:sorbian
+				culture = {
+					any_parent_culture_or_above = {
+						this = culture:polabian
+					}
+				}
+				culture = {
+					any_parent_culture_or_above = {
+						this = culture:sorbian
+					}
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		random_held_title = {			
+			limit = {
+				OR = {
+					culture = culture:polabian
+					culture = culture:sorbian
+					culture = {
+						any_parent_culture_or_above = {
+							this = culture:polabian
+						}
+					}
+					culture = {
+						any_parent_culture_or_above = {
+							this = culture:sorbian
+						}
+					}
+				}
+			}
+			save_scope_as = county
+		}
+	}
+
+	option = { # Ok
+		name = polabian.0084.a
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 30
+			}
+		}
+		remove_short_term_gold = 30
+		add_prestige = -50
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_polabian_graben_modifier
+				years = 10
+			}
+		}
+		stress_impact = {
+			greedy = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = polabian.0084.b
+	}
+
+}
+
+# Traditional Sorbian/Wendish beef dumplings with horseradish sauce
+polabian.0085 = {
+	type = character_event
+	title = polabian.0085.t
+	desc = polabian.0085.desc
+	theme = party
+	
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	
+	trigger = {
+		middle_of_year_season_trigger = yes
+		OR = {
+			culture = culture:polabian
+			culture = culture:sorbian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:polabian
+				}
+			}
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:sorbian
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	option = { # Ok
+		name = polabian.0085.a
+		add_character_modifier = {
+			modifier = RICE_polabian_beef_dumplings_horseradish_sauce
+			years = 3
+		}
+		stress_impact = {
+			gluttonous = miniscule_stress_impact_loss
+		}
+	}
+
+}
+
+# Priests of Svetovit are getting uppity in Rugen/Arkona
+polabian.0086 = {
+	type = character_event
+	title = polabian.0086.t
+	desc = polabian.0086.desc
+	theme = corruption
+	override_background = { reference = RICE_background_rugen_island }
+	
+	right_portrait = {
+		character = root
+		animation = stress
+	}
+	
+	trigger = {
+		NOT = { has_global_variable = RICE_polabian_arkona_temple_down }
+		religion = { is_in_family = rf_pagan }
+		has_title = title:c_rugen
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+		modifier = {
+			add = 0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = -0.2
+			has_trait = zealous
+		}
+	}
+
+	immediate = {
+		title:c_rugen = {
+			save_scope_as = county
+		}
+	}
+
+	option = { # Ok
+		name = polabian.0086.a
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_polabian_powerful_svetovit_priests
+				years = 10
+			}
+		}
+		stress_impact = {
+			ambitious = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = polabian.0086.b
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_polabian_oppressing_svetovit_priests
+				years = 10
+			}
+		}
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+			just = miniscule_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = polabian.0086.c
+		trigger = {
+			diplomacy >= decent_skill_rating			
+		}
+		skill = diplomacy
+		show_as_unavailable = {
+			diplomacy < decent_skill_rating
+		}
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_polabian_cooperating_svetovit_priests
+				years = 10
+			}
+		}
+	}
+
+}
+
+
+
+
+
 
 
 
