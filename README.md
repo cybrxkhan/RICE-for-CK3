@@ -1,13 +1,13 @@
-<img src="https://i.imgur.com/VzpuXH5.jpg">
+<img src="https://i.imgur.com/5z2vdg4.jpg">
 
-## Latest Version: Version 1.10.1 "Sri Pada" (Released 9/24/23, for vanilla patch 1.10.x)
+## Latest Version: Version 1.10.2 "Arkona" (Released 10/23/23, for vanilla patch 1.10.x)
 
-**Newest Flavor Pack: *Sri Lanka: Abode of Lions***
+**Newest Flavor Pack: *Polabians: Defenders of Svetovit***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_“The mountain of Sarandib [Sri Pada] is one of the highest in the World. We saw it from the sea when we were nine days' journey away, and when we climbed it we saw the clouds below us, shutting out our view of its base.”_
-_– Ibn Battuta (1304-1369 CE), Moroccan explorer, pilgrim, and scholar_
+_“For the Slavs show such reverence for their holy things that they do not allow the neighborhood of a fane to be defiled by blood even in time of war.”_
+_– Helmold of Bosau, 12th century Saxon historian and priest, in the Chronicle of the Slavs_
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
@@ -32,7 +32,7 @@ The mod folder should look something like this:
 
 ## Current Flavor Packs
 
-At the moment, the following RICE flavor packs are included in the mod (click to view the guides which cover the features included in each pack in more detail).
+At the moment, the following RICE flavor packs are included in the mod. Click to view guides which cover the features included in each pack in more detail (please note some guides are unfinished and/or out of date).
 
 - [Aachen: Charlemagne's Capital](https://docs.google.com/document/d/e/2PACX-1vQNflzrfD7oYcEYcMWDW07MsWCW-8cwIO8-JxSIm_WTnB1Ij0Dr-b3PRNu8mKmUFRXfHW3QDax2Z0DD/pub)
 - [Bozo: Masters of the River](https://docs.google.com/document/d/e/2PACX-1vSgpnZZbXXz3sProMU-P70vbCsYatZOqkonVQMLdtZMFWhXf8zH1RE1ubz9hQI-kTqWIIK0at1Ki5PR/pub)
@@ -50,6 +50,7 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 - [Normandy: Adventurers and Aristocrats](https://docs.google.com/document/d/e/2PACX-1vSJl5JRfLjzdzwnCo6WJVG8qJ8-5htcWQ1L1PU3tMIq1Ym4HOO6fPhQ1ovarPeb_3b3pLPRhLBvgyRT/pub)
 - [North Atlantic: From Iceland to Vinland](https://docs.google.com/document/d/e/2PACX-1vQmBr7TYKBGRMtVYj8IWAjLHHAadsxJwGZI1VIG0PRA4ZV3mru5HGv3vAqaktbnVMe1oFpTdCEPKFLd/pub)
 - [Pamir and Zunist: Roof of the World](https://docs.google.com/document/d/e/2PACX-1vQmHEFpko8WE1fnHLHyG-4t01Xyka4eTe88WuLJWRL6jk0S3ju3fA1CFyX_dDArSduFlzqUl58pjRRO/pub)
+- [Polabians: Defenders of Svetovit](https://docs.google.com/document/d/e/2PACX-1vQqIii6uXJkyQUEe6Q00VRUNrj3ega216kcKp1GVMYaHNKgzyqyG0rHJz9ZsBTbzr3jPe4awL7yvTCS/pub)
 - [Red Sea: Treasures of the Eastern Desert](https://docs.google.com/document/d/e/2PACX-1vQzLb-MR90fMQvjqZsxceuydKihTehAlpxexdhdim5pfxi_aGVBeLl1rJMmuR-89nVB7PVLfboZKBuy/pub)
 - [Rhodes: Shadow of the Colossus](https://docs.google.com/document/d/e/2PACX-1vRXCGUoynvQtA3RuaJUE9FYagIHOX4wJkyeDHRsV-cjvyyBTONIEy0oOYr3yvcUt1eG_fEHtzUgv_wA/pub)
 - [Siberia: People of the Reindeer](https://docs.google.com/document/d/e/2PACX-1vTOr-vq1KkHRJ_gxPOlb9brCKde3TRzN_1TVZwfPmSiIIW5TEAJGkQ0eNGwiEfvgape1pDAKau3ZcvD/pub)
@@ -67,21 +68,26 @@ At the moment, the following RICE flavor packs are included in the mod (click to
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/04l2lKZ.jpg">
+<img src="https://i.imgur.com/LwKwfEC.jpg">
 
-### 1.10.1 "Sri Pada"
+### 1.10.2 "Arkona"
 
-- Updated RICE+EPE compatch to the newest version of EPE
-- Added full unique namelists for the Vedda, Tsonga, and Sotho-Tswana cultures
-- Added unique dynasty names for the Mijikenda and Pokomo cultures
-- Added code to disable a few changes when run with the Paganism Plus mod (mod was previously compatible, just needed to remove a few of RICE’s conflicting changes per mod author’s request)
-- Added text for the East African and Southeast Asian Silk Road communities options explaining they are only available in certain regions
-- Added East African god names
-- Fixed some CBs being unavailable to rulers involved in the Sri Lanka struggle (using a similar workaround to what was done previously for the Greenland and Normandy struggles)
-- Fixed book burning option when Purifying/Persecuting Sri Lanka’s Sangha not calculating the correct monastery Prominence loss
-- Fixed Nadun festival giving stress instead of losing stress
-- Fixed Oracle of Amun activity not working for rulers who are not in the same realm as Siwa but still own counties in Egypt
-- Fixed Sri Pada pilgrimage activity canceling if you are of certain faiths
+- Added Polabian Flavor Pack
+- Added 7 medieval/renaissance European soundtracks
+- Renamed Peristani culture to Darada
+- Put Darada (Peristani) culture on the map (thanks to Soraya for the research)
+- Turco-Hephthalites are now on the map in 1066 and are slightly more widespread, to represent Turkic tribes with possible Hephthalite admixture like the Khallukh and Khalaj (thanks to Soraya for the research)
+- White Hun tradition now only allows raiding over land, not sea
+- Added Marib as a holy site for South Arabian and Aksumite pagans
+- Rollo will now always receive the dream event if the player or AI controlling him chooses to go through the legendary event chain
+- Al-Kashgari now has tier 4 learning education instead of tier 3
+- Gilgit is now Vajrayana
+- Nerfed the option to try to get extra gold when encountering merchants from the Silk Road/Trans-Saharan merchants travel option
+- Maastricht bridge collapse event can no longer happen immediately, and will only trigger after 1100 CE
+- Fixed several religious activities continuing even if a character converted to another faith
+- Fixed the Normandy Adventurer CB not properly displaying the requirement that you need to be in the Adventure Phase of the Normandy struggle (if it still exists)
+- Fixed Silk Road and Maritime Trade dynasty perks not properly indicating which one is needed to do the SIlk Road decision more than once in a lifetime
+- Fixed Successful Chinir Festival county modifier not applying if you have the Community Intent for the Chinir Festival
 - Miscellaneous bugfixes
 
 ## Credits
@@ -91,7 +97,7 @@ Thanks to all I worked with, took stuff from, and provided me encouragement and 
 Special thanks in particular to:
 
 - Atreides for bookmark icons
-- B7E7 for collaboration and content from BlackEmperor's Africa Plus mod
+- B7E7 for collab and content from BlackEmperor's Africa Plus mod
 - Bonseny for the amazing VIET and RICE logos and the beautiful 3D art assets
 - Celticus for a lot of useful help and suggestions
 - DrStein(Dupont) for revamped artwork
@@ -99,16 +105,17 @@ Special thanks in particular to:
 - George Hammond for some music ([see here](https://fanlink.to/georgehammondmusic) for more of his work)
 - Henry for the Better Bedouin Culture mod
 - KeizerHarm for UI work
-- Lahom for most of the Native American names
+- Lahom for most Native American names
 - Макс for Erzya and Moksha names and info
-- Naatturi for content from the [Ukonusko Overhaul] [Ukonusko Overhaul](url=https://steamcommunity.com/sharedfiles/filedetails/?id=2224796496) mod
+- Msl229 for Eastern Europe research and code
+- Naatturi for content from the Ukonusko Overhaul mod
 - Nezaros for reformed religion template
 - Nix for Evenki names
 - PinkPanzer for some decision art
 - Rajas of Asia for Asian stuff and collab
 - Shatzi for more Breton content
-- Soraya for Indian research and code
+- Soraya for a lot of research and code
 - The Fallen Eagle for some icons and collab
 - The Not So Lonely Arrikirri and Tundragrass for help on the Zunbils
-- YTnuBF for Native American ethnicities from the [Amerindian Steppe Tribe](url=https://steamcommunity.com/workshop/filedetails/?id=2417123207) mod
+- YTnuBF for Native American ethnicities from the Amerindian Steppe Tribe mod
 
