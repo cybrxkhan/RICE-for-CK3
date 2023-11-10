@@ -1,0 +1,2115 @@
+﻿###############################################################################
+# 
+# YAZIDIS
+# 
+# yazidi.0000-yazidi.0019			Setup events, history events, miscellaneous events and decisions
+# yazidi.0020-yazidi.0039			Yazidi Decision/Activity Events
+# yazidi.0040-yazidi.0059			Yarsani Decision/Activity Events
+# yazidi.0060-yazidi.0069			Bull Sacrifice
+# yazidi.0070-yazidi.0079			????
+# yazidi.0080-yazidi.0099			Generic Flavor Events
+# 
+# 
+###############################################################################
+
+namespace = yazidi
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# yazidi.0000-yazidi.0019
+# 
+######################################################################################
+
+# Death of Sheikh Adi ibn Musafir
+# Founder of the Adawiyya Order and a central figure in Yazidism, although he was considered an orthodox Sufi Muslim in his time
+yazidi.0001 = {
+	type = character_event
+	title = yazidi.0001.t
+	desc = yazidi.0001.desc
+	theme = RICE_theme_yazidi_lalish
+
+	immediate = {
+		religion:islam_religion = { save_scope_as = islam }
+		faith:yazidi = { save_scope_as = yazidi }
+		set_global_variable = {
+			name = RICE_yazidi_sheikh_adi_death
+			value = yes
+		}
+		title:c_ninive = {
+			save_scope_as = lalish
+			show_as_tooltip = {
+				add_county_modifier = {
+					modifier = RICE_yazidi_sheikh_adi_recently_died
+				}	
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = yazidi.0001.a
+		custom_tooltip = yazidi.0001.tooltip
+	}
+
+}
+
+# Yazidis emerge as a distinct group
+# Setup event
+yazidi.0002 = {
+	hidden = yes
+
+	immediate = {
+		religion:islam_religion = { save_scope_as = islam }
+		religion:yazidi_religion = { save_scope_as = yazidi_religion }
+		faith:yazidi = { save_scope_as = yazidi }
+		set_global_variable = {
+			name = RICE_yazidi_appearance
+			value = yes
+		}
+		title:c_ninive = {
+			save_scope_as = lalish
+		}
+		if = {
+			limit = {
+				title:c_ninive = {
+					OR = {
+						culture = { has_cultural_pillar = heritage_iranian }
+						culture = { has_cultural_pillar = heritage_turkic }
+						culture = { has_cultural_pillar = heritage_arabic }						
+					}
+				}
+			}
+			title:c_ninive = {
+				culture = { save_scope_as = culture }
+			}
+		}
+		else_if = {
+			limit = {
+				title:c_kurdistan = {
+					OR = {
+						culture = { has_cultural_pillar = heritage_iranian }
+						culture = { has_cultural_pillar = heritage_turkic }
+						culture = { has_cultural_pillar = heritage_arabic }						
+					}
+				}
+			}
+			title:c_kurdistan = {
+				culture = { save_scope_as = culture }
+			}
+		}
+		else_if = {
+			limit = {
+				title:c_hakkari = {
+					OR = {
+						culture = { has_cultural_pillar = heritage_iranian }
+						culture = { has_cultural_pillar = heritage_turkic }
+						culture = { has_cultural_pillar = heritage_arabic }						
+					}
+				}
+			}
+			title:c_hakkari = {
+				culture = { save_scope_as = culture }
+			}
+		}
+		else = {
+			title:c_ninive = {
+				culture = { save_scope_as = culture }
+			}
+		}
+		create_character = {
+			employer = root
+			template = RICE_yazidi_religious_leader_character
+			random_traits = no
+			save_scope_as = new_mir
+		}
+		scope:new_mir = {
+			get_title = title:d_yazidi
+		}
+		faith:yazidi = {
+			remove_variable = block_conversion_till_nebulous_circumstances
+		}
+		title:c_kurdistan = {
+			set_county_faith = faith:yazidi
+			every_neighboring_county = {
+				limit = {					
+					NOT = { faith = faith:yazidi }
+					OR = {
+						culture = culture:kurdish
+						culture = {
+							any_parent_culture_or_above = {
+								culture = culture:kurdish
+							}
+						}
+						religion = religion:yazidi_religion
+					}
+				}
+				random = {
+					chance = 30
+					set_county_faith = faith:yazidi
+					holder = {
+						every_courtier_or_guest = {
+							limit = {
+								is_lowborn = yes
+							}
+							random = {
+								chance = 20
+								set_character_faith = faith:yazidi
+							}
+						}
+					}
+					random_neighboring_county = {
+						limit = {
+							culture = { has_cultural_pillar = heritage_iranian }
+						}
+						set_county_faith = faith:yazidi
+						holder = {
+							every_courtier_or_guest = {
+								limit = {
+									is_lowborn = yes
+								}
+								random = {
+									chance = 20
+									set_character_faith = faith:yazidi
+								}
+							}
+						}
+					}
+				}
+			}
+
+		}
+		title:c_hakkari = {
+			set_county_faith = faith:yazidi
+			every_neighboring_county = {
+				limit = {					
+					NOT = { faith = faith:yazidi }
+					OR = {
+						culture = culture:kurdish
+						culture = {
+							any_parent_culture_or_above = {
+								culture = culture:kurdish
+							}
+						}
+						religion = religion:yazidi_religion
+					}
+				}
+				random = {
+					chance = 30
+					set_county_faith = faith:yazidi
+					holder = {
+						every_courtier_or_guest = {
+							limit = {
+								is_lowborn = yes
+							}
+							random = {
+								chance = 20
+								set_character_faith = faith:yazidi
+							}
+						}
+					}
+					random_neighboring_county = {
+						limit = {
+							culture = { has_cultural_pillar = heritage_iranian }
+						}
+						set_county_faith = faith:yazidi
+						holder = {
+							every_courtier_or_guest = {
+								limit = {
+									is_lowborn = yes
+								}
+								random = {
+									chance = 20
+									set_character_faith = faith:yazidi
+								}
+							}
+						}
+					}
+				}
+			}
+
+		}
+		title:c_ninive = {
+			save_scope_as = lalish
+			set_county_faith = faith:yazidi
+			if = {
+				limit = {
+					NOR = {
+						culture = culture:kurdish
+						culture = {
+							any_parent_culture_or_above = {
+								culture = culture:kurdish
+							}
+						}
+					}
+				}
+				set_county_culture = culture:kurdish
+			}
+			if = {
+				limit = {
+					has_county_modifier = RICE_yazidi_sheikh_adi_recently_died
+				}
+				remove_county_modifier = RICE_yazidi_sheikh_adi_recently_died
+			}
+			holder = {
+				every_courtier_or_guest = {
+					limit = {
+						is_lowborn = yes
+					}
+					random = {
+						chance = 30
+						set_character_faith = faith:yazidi
+					}
+				}
+			}
+			every_neighboring_county = {
+				limit = {					
+					NOT = { faith = faith:yazidi }
+					OR = {
+						culture = culture:kurdish
+						culture = {
+							any_parent_culture_or_above = {
+								culture = culture:kurdish
+							}
+						}
+						religion = religion:yazidi_religion
+					}
+				}
+				random = {
+					chance = 30
+					set_county_faith = faith:yazidi
+					holder = {
+						every_courtier_or_guest = {
+							limit = {
+								is_lowborn = yes
+							}
+							random = {
+								chance = 20
+								set_character_faith = faith:yazidi
+							}
+						}
+					}
+					random_neighboring_county = {
+						limit = {
+							culture = { has_cultural_pillar = heritage_iranian }
+						}
+						set_county_faith = faith:yazidi
+						holder = {
+							every_courtier_or_guest = {
+								limit = {
+									is_lowborn = yes
+								}
+								random = {
+									chance = 20
+									set_character_faith = faith:yazidi
+								}
+							}
+						}
+					}
+				}
+			}
+			every_neighboring_county = {
+				limit = {
+					NOT = { faith = faith:yazidi }
+					NOR = {
+						culture = culture:kurdish
+						culture = {
+							any_parent_culture_or_above = {
+								culture = culture:kurdish
+							}
+						}
+						religion = religion:yazidi_religion
+					}
+				}
+				random = {
+					chance = 10
+					set_county_faith = faith:yazidi
+					holder = {
+						every_courtier_or_guest = {
+							limit = {
+								is_lowborn = yes
+							}
+							random = {
+								chance = 20
+								set_character_faith = faith:yazidi
+							}
+						}
+					}
+					random_neighboring_county = {
+						set_county_faith = faith:yazidi
+						holder = {
+							every_courtier_or_guest = {
+								limit = {
+									is_lowborn = yes
+								}
+								random = {
+									chance = 15
+									set_character_faith = faith:yazidi
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		every_ruler = {
+			limit = {
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						OR = {
+							geographical_region = world_middle_east
+							geographical_region = world_europe_south_east
+							geographical_region = world_asia_minor
+						}
+					}
+				}
+			}
+			trigger_event = yazidi.0003
+		}	
+	}
+
+}
+
+# Yazidis emerge as a distinct group
+# Notification/conversion event
+yazidi.0003 = {
+	type = character_event
+	title = yazidi.0003.t
+	desc = yazidi.0003.desc
+	theme = RICE_theme_yazidi_lalish
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		custom_tooltip = yazidi.0003.tooltip
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = yazidi.0003.info
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = yazidi.0003.a
+		ai_chance = {
+			base = 50
+		}
+	}
+	
+	option = { # Ok
+		name = yazidi.0003.b
+		# Only certain types of AI rulers qualify
+		trigger = {
+			OR = {
+				is_ai = no
+				capital_province = {
+					geographical_region = RICE_greater_kurdistan_region
+				}		
+			}
+		}
+		set_character_faith_with_conversion = faith:yazidi
+		ai_chance = {
+			base = 50
+			modifier = {
+				religion = religion:yazidi_religion
+				add = 20
+			}
+			modifier = {
+				culture = culture:kurdish
+				culture = {
+					any_parent_culture_or_above = {
+						culture = culture:kurdish
+					}
+				}
+				add = 10
+			}
+			modifier = {
+				NOR = {
+					religion = { is_in_family = rf_abrahamic }
+					religion = religion:zoroastrianism_religion
+					religion = religion:zunism_religion
+				}
+				add = -10
+			}
+			modifier = {
+				has_trait = zealous
+				add = -30 
+			}
+			modifier = {
+				has_trait = content
+				add = -10 
+			}
+			modifier = {
+				NOR = {
+					culture = { has_cultural_pillar = heritage_iranian }
+					religion = religion:yazidi_religion
+				}
+				add = -30 
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_title = title:c_ninive
+			}
+			# Event to give a county to the Yazidi Mirate, either Ninive, Kurdistan, or Hakkari
+			# As long as there is a holder who can give it away
+			if = {
+				limit = {
+					title:c_ninive.holder = {
+						OR = {
+							any_held_county = {
+								count > 1
+							}
+							is_ai = no
+						}
+					}
+				}
+				title:c_ninive.holder = {
+					trigger_event = yazidi.0007
+				}
+			}
+			else_if = {
+				limit = {
+					title:c_kurdistan.holder = {
+						OR = {
+							any_held_county = {
+								count > 1
+							}
+							is_ai = no
+						}
+					}
+				}
+				title:c_kurdistan.holder = {
+					trigger_event = yazidi.0007
+				}
+			}
+			else_if = {
+				limit = {
+					title:c_hakkari.holder = {
+						OR = {
+							any_held_county = {
+								count > 1
+							}
+							is_ai = no
+						}
+					}
+				}
+				title:c_hakkari.holder = {
+					trigger_event = yazidi.0007
+				}
+			}
+		}
+	}
+
+}
+
+
+# Rumors of Sultan Sahak's miracles
+# Central figure in Yarsanism, a manifestation of God
+yazidi.0004 = {
+	type = character_event
+	title = yazidi.0004.t
+	desc = yazidi.0004.desc
+	theme = faith
+	override_background = { reference = RICE_background_kurdish_mountains }
+
+	immediate = {
+		religion:islam_religion = { save_scope_as = islam }
+		faith:meshefaresism = { save_scope_as = yarsani }
+		set_global_variable = {
+			name = RICE_yarsani_sultan_sahak_rumors
+			value = yes
+		}
+		title:c_kermanshah = {
+			save_scope_as = kermanshah
+			show_as_tooltip = {
+				add_county_modifier = {
+					modifier = RICE_yarsani_sultan_sahak_here
+				}	
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = yazidi.0004.a
+		custom_tooltip = yazidi.0004.tooltip
+	}
+
+}
+
+# Yarsani emerge as a distinct group after Sultan Sahak passes away
+# Setup event
+yazidi.0005 = {
+	hidden = yes
+
+	immediate = {
+		religion:islam_religion = { save_scope_as = islam }
+		religion:yazidi_religion = { save_scope_as = yazidi_religion }
+		faith:meshefaresism = { save_scope_as = yarsani }
+		set_global_variable = {
+			name = RICE_yarsani_appearance
+			value = yes
+		}
+		faith:meshefaresism = {
+			remove_variable = block_conversion_till_nebulous_circumstances
+		}
+		title:c_kermanshah = {
+			save_scope_as = kermanshah
+			set_county_faith = faith:meshefaresism
+			if = {
+				limit = {
+					NOR = {
+						culture = culture:kurdish
+						culture = {
+							any_parent_culture_or_above = {
+								culture = culture:kurdish
+							}
+						}
+					}
+				}
+				set_county_culture = culture:kurdish
+			}
+			if = {
+				limit = {
+					has_county_modifier = RICE_yarsani_sultan_sahak_here
+				}
+				remove_county_modifier = RICE_yarsani_sultan_sahak_here
+			}
+			holder = {
+				every_courtier_or_guest = {
+					limit = {
+						is_lowborn = yes
+					}
+					random = {
+						chance = 30
+						set_character_faith = faith:meshefaresism
+					}
+				}
+			}
+			every_neighboring_county = {
+				limit = {					
+					OR = {
+						culture = { has_cultural_pillar = heritage_iranian }
+						religion = religion:yazidi_religion
+					}
+				}
+				random = {
+					chance = 40
+					set_county_faith = faith:meshefaresism
+					holder = {
+						every_courtier_or_guest = {
+							limit = {
+								is_lowborn = yes
+							}
+							random = {
+								chance = 25
+								set_character_faith = faith:meshefaresism
+							}
+						}
+					}
+					random_neighboring_county = {
+						set_county_faith = faith:meshefaresism
+						holder = {
+							every_courtier_or_guest = {
+								limit = {
+									is_lowborn = yes
+								}
+								random = {
+									chance = 20
+									set_character_faith = faith:meshefaresism
+								}
+							}
+						}
+					}
+				}
+			}
+			every_neighboring_county = {
+				limit = {					
+					OR = {
+						culture = { has_cultural_pillar = heritage_turkic }
+						culture = { has_cultural_pillar = heritage_arabic }
+					}
+				}
+				random = {
+					chance = 25
+					set_county_faith = faith:meshefaresism
+					holder = {
+						every_courtier_or_guest = {
+							limit = {
+								is_lowborn = yes
+							}
+							random = {
+								chance = 25
+								set_character_faith = faith:meshefaresism
+							}
+						}
+					}
+					random_neighboring_county = {
+						set_county_faith = faith:meshefaresism
+						holder = {
+							every_courtier_or_guest = {
+								limit = {
+									is_lowborn = yes
+								}
+								random = {
+									chance = 20
+									set_character_faith = faith:meshefaresism
+								}
+							}
+						}
+					}
+				}
+			}
+			every_neighboring_county = {
+				limit = {
+					NOT = { faith = faith:meshefaresism }
+					NOR = {
+						culture = culture:kurdish
+						culture = {
+							any_parent_culture_or_above = {
+								culture = culture:kurdish
+							}
+						}
+						religion = religion:yazidi_religion
+					}
+				}
+				random = {
+					chance = 10
+					set_county_faith = faith:meshefaresism
+					holder = {
+						every_courtier_or_guest = {
+							limit = {
+								is_lowborn = yes
+							}
+							random = {
+								chance = 25
+								set_character_faith = faith:meshefaresism
+							}
+						}
+					}
+					random_neighboring_county = {
+						set_county_faith = faith:meshefaresism
+						holder = {
+							every_courtier_or_guest = {
+								limit = {
+									is_lowborn = yes
+								}
+								random = {
+									chance = 15
+									set_character_faith = faith:meshefaresism
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		every_ruler = {
+			limit = {
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						OR = {
+							geographical_region = world_middle_east
+							geographical_region = world_europe_south_east
+							geographical_region = world_asia_minor
+						}
+					}
+				}
+			}
+			trigger_event = yazidi.0006
+		}
+	}
+
+}
+
+# Yarsani emerge as a distinct group
+# Notification/conversion event
+yazidi.0006 = {
+	type = character_event
+	title = yazidi.0006.t
+	desc = yazidi.0006.desc
+	theme = faith
+	override_background = { reference = RICE_background_kurdish_mountains }
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		custom_tooltip = yazidi.0006.tooltip
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = yazidi.0006.info
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = yazidi.0006.a
+		ai_chance = {
+			base = 60
+		}
+	}
+	
+	option = { # Ok
+		name = yazidi.0006.b
+		# Only certain types of AI rulers qualify
+		trigger = {
+			OR = {
+				is_ai = no
+				capital_province = {
+					geographical_region = RICE_yarsani_region
+				}		
+			}
+		}
+		set_character_faith_with_conversion = faith:meshefaresism
+		ai_chance = {
+			base = 40
+			modifier = {
+				religion = religion:yazidi_religion
+				add = 10
+			}
+			modifier = {
+				culture = culture:kurdish
+				culture = {
+					any_parent_culture_or_above = {
+						culture = culture:kurdish
+					}
+				}
+				add = 10
+			}
+			modifier = {
+				NOR = {
+					religion = { is_in_family = rf_abrahamic }
+					religion = religion:zoroastrianism_religion
+					religion = religion:zunism_religion
+				}
+				add = -10
+			}
+			modifier = {
+				has_trait = zealous
+				add = -30 
+			}
+			modifier = {
+				has_trait = content
+				add = -10 
+			}
+			modifier = {
+				NOR = {
+					culture = { has_cultural_pillar = heritage_iranian }
+					culture = { has_cultural_pillar = heritage_turkic }
+					religion = religion:yazidi_religion
+				}
+				add = -30 
+			}
+		}
+	}
+
+}
+
+
+
+# Give the Yazidi Mirate a county?
+yazidi.0007 = {
+	type = character_event
+	title = yazidi.0007.t
+	desc = yazidi.0007.desc
+	theme = RICE_theme_yazidi_lalish
+
+	left_portrait = scope:granter
+
+	right_portrait = {
+		character = scope:yazidi_head
+		animation = personality_zealous
+	}
+
+	trigger = {
+		faith:yazidi = {
+			exists = religious_head
+		}
+	}
+
+	immediate = {
+		faith:yazidi = {
+			religious_head = {
+				save_scope_as = yazidi_head
+			}
+		}
+		title:c_ninive = {
+			save_scope_as = lalish
+		}
+		save_scope_as = granter
+		if = {
+			limit = {
+				has_title = title:c_ninive
+			}
+			title:c_ninive = {
+				save_scope_as = yazidi_county
+			}
+		}
+		else_if = {
+			limit = {
+				has_title = title:c_kurdistan
+			}
+			title:c_kurdistan = {
+				save_scope_as = yazidi_county
+			}
+		}
+		else_if = {
+			limit = {
+				has_title = title:c_hakkari
+			}
+			title:c_kurdistan = {
+				save_scope_as = yazidi_county
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = yazidi.0007.a
+		scope:yazidi_head = {
+			get_title = scope:yazidi_county
+		}
+		if = {
+			limit = {
+				highest_held_title_tier > tier_duchy
+			}
+			create_title_and_vassal_change = {
+				type = swear_fealty
+				save_scope_as = change
+			}
+			scope:yazidi_head = {
+				change_liege = {
+					liege = scope:granter
+					change = scope:change
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+		}
+		else_if = {
+			limit = {
+				is_independent_ruler = no
+			}
+			create_title_and_vassal_change = {
+				type = swear_fealty
+				save_scope_as = change
+			}
+			scope:yazidi_head = {
+				change_liege = {
+					liege = scope:granter.liege
+					change = scope:change
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+		}
+		add_truce_both_ways = {
+			character = scope:yazidi_head
+			days = purchase_truce_interaction_truce_days_small_value
+			name = RICE_yazidi_truce
+		}
+		if = {
+			limit = {
+				faith = faith:yazidi
+			}
+			add_piety = 1000
+		}
+		else = {
+			add_prestige = 1000
+			add_piety = -500
+		}
+		if = {
+			limit = {
+				is_ai = no
+				any_held_county = {
+					count = 1
+				}				
+			}
+			custom_tooltip = RICE_yazidi_county_warning
+		}
+	}
+	
+	# Play as the Yazidi head
+	option = { # Ok
+		name = yazidi.0007.b
+		trigger = {
+			is_ai = no
+		}
+		scope:yazidi_head = {
+			get_title = scope:yazidi_county
+		}
+		if = {
+			limit = {
+				highest_held_title_tier > tier_duchy
+			}
+			create_title_and_vassal_change = {
+				type = swear_fealty
+				save_scope_as = change
+			}
+			scope:yazidi_head = {
+				change_liege = {
+					liege = root
+					change = scope:change
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+		}
+		else_if = {
+			limit = {
+				is_independent_ruler = no
+			}
+			create_title_and_vassal_change = {
+				type = swear_fealty
+				save_scope_as = change
+			}
+			scope:yazidi_head = {
+				change_liege = {
+					liege = scope:granter.liege
+					change = scope:change
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+		}
+		add_truce_both_ways = {
+			character = scope:yazidi_head
+			days = purchase_truce_interaction_truce_days_small_value
+			name = RICE_yazidi_truce
+		}
+		if = {
+			limit = {
+				faith = faith:yazidi
+			}
+			add_piety = 1000
+		}
+		else = {
+			add_prestige = 1000
+			add_piety = -500
+		}
+		set_player_character = scope:yazidi_head
+	}
+	
+	option = { # Ok
+		name = yazidi.0007.c
+		if = {
+			limit = {
+				faith = faith:yazidi
+			}
+			add_piety_level = -1
+		}
+	}
+
+}
+
+
+
+
+######################################################################################
+# 
+# YAZIDI DECISIONS/ACTIVITIES
+# 
+# yazidi.0020-yazidi.0029
+# 
+######################################################################################
+
+
+
+# Prepare for the arrival of the Peacock Standard
+yazidi.0020 = {
+	type = activity_event
+	title = yazidi.0020.t
+	desc = yazidi.0020.desc
+	theme = RICE_theme_yazidi_lalish
+	
+	left_portrait = root
+
+	immediate = {
+		faith = { save_scope_as = faith }
+		scope:activity.activity_location = {
+			county = {
+				save_scope_as = location
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = yazidi.0020.a
+	}
+
+	after = {
+		trigger_event = {
+			id = yazidi.0021
+			days = { 5 10 }
+		}
+	}
+}
+
+# The Peacock standard arrives, everyone celebrates, it goes into the house of a village notable
+yazidi.0021 = {
+	type = activity_event
+	title = yazidi.0021.t
+	desc = yazidi.0021.desc
+	theme = RICE_theme_yazidi_lalish
+	
+	right_portrait = {
+		character = root
+		animation = throne_room_bow_1
+	}
+	
+	option = { # Ok
+		name = yazidi.0021.a
+	}
+
+	after = {
+		trigger_event = {
+			id = yazidi.0022
+			days = { 3 6 }
+		}
+	}
+}
+
+# Listening to the Qawals' sermons
+yazidi.0022 = {
+	type = activity_event
+	title = yazidi.0022.t
+	desc = yazidi.0022.desc
+	theme = faith
+	override_background = { reference = bp1_relaxing_room_mena }
+	
+	right_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	option = { # Ok
+		name = yazidi.0022.a
+	}
+
+	after = {
+		trigger_event = {
+			id = yazidi.0023
+			days = { 3 6 }
+		}
+	}
+}
+
+# People provide donations, worship the image of Melek Taus
+yazidi.0023 = {
+	type = activity_event
+	title = yazidi.0023.t
+	desc = yazidi.0023.desc
+	theme = faith
+	override_background = { reference = bp1_relaxing_room_mena }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = yazidi.0023.a
+	}
+
+	after = {
+		trigger_event = {
+			id = yazidi.0024
+			days = { 3 6 }
+		}
+	}
+}
+
+
+# Tawus Geran done
+yazidi.0024 = {
+	type = activity_event
+	title = yazidi.0024.t
+	desc = yazidi.0024.desc
+	theme = faith
+	override_background = { reference = bp1_relaxing_room_mena }
+	
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+
+	#immediate = {
+	#}
+	
+	option = { # Ok
+		name = yazidi.0024.a
+		RICE_yazidi_tawus_geran_completed_log_entry_effect = yes
+	}
+
+	after = {
+		scope:activity = {
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}
+}
+
+
+
+# Tiwaf festival preparations
+yazidi.0030 = {
+	type = activity_event
+	title = yazidi.0030.t
+	desc = yazidi.0030.desc
+	theme = faith
+	override_background = { reference = market }
+	
+	left_portrait = root
+
+	immediate = {
+		faith = { save_scope_as = faith }
+		scope:activity.activity_location = {
+			county = {
+				save_scope_as = location
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = yazidi.0030.a
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_yazidi_tiwaf_relax_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					stress_impact = {
+						base = minor_stress_impact_loss
+						lazy = miniscule_stress_impact_loss
+						content = miniscule_stress_impact_loss
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = yazidi.0030.b
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_yazidi_tiwaf_chat_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					add_prestige = 25
+					stress_impact = {
+						gregarious = miniscule_stress_impact_loss
+						shy = miniscule_stress_impact_gain
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = yazidi.0030.c
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_yazidi_tiwaf_pray_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					add_piety = 25
+					stress_impact = {
+						zealous = miniscule_stress_impact_loss
+						cynical = miniscule_stress_impact_gain
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		trigger_event = {
+			id = yazidi.0031
+			days = { 10 15 }
+		}
+	}
+}
+
+# Tiwaf festival starts
+yazidi.0031 = {
+	type = activity_event
+	title = yazidi.0031.t
+	desc = yazidi.0031.desc
+	theme = RICE_theme_yazidi_lalish
+	
+	right_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	option = { # Ok
+		name = yazidi.0031.a
+		hidden_effect = {
+			random = {
+				chance = 99
+				# Auction of cooked parts of sacrificed sheep
+				trigger_event = {
+					id = yazidi.0035
+					days = { 2 9 }
+				}			
+			}
+			random = {
+				chance = 99
+				# Strenuous hike this time
+				trigger_event = {
+					id = yazidi.0036
+					days = { 2 9 }
+				}			
+			}
+			random = {
+				chance = 99
+				# Meet people from other villages
+				trigger_event = {
+					id = yazidi.0037
+					days = { 2 9 }
+				}			
+			}
+			random = {
+				chance = 99
+				# Music and hymns from qewals and sacred instruments
+				trigger_event = {
+					id = yazidi.0038
+					days = { 2 9 }
+				}			
+			}
+		}
+	}
+
+	after = {
+		trigger_event = {
+			id = yazidi.0032
+			days = { 10 15 }
+		}
+	}
+}
+
+# Tiwaf festival ends
+yazidi.0032 = {
+	type = activity_event
+	title = yazidi.0032.t
+	desc = yazidi.0032.desc
+	theme = faith
+	override_background = { reference = market }
+	
+	right_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	option = { # Ok
+		name = yazidi.0032.a
+		RICE_yazidi_tiwaf_completed_log_entry_effect = yes
+	}
+
+	after = {
+		scope:activity = {
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}
+}
+
+# Auction of cooked parts of sacrificed sheep
+yazidi.0035 = {
+	type = activity_event
+	title = yazidi.0035.t
+	desc = yazidi.0035.desc
+	theme = RICE_theme_kurdish_mountains
+	override_icon = { reference = "gfx/interface/icons/event_types/type_feast.dds" } 
+	
+	right_portrait = {
+		character = root
+		animation = throne_room_cheer_2
+	}
+	
+	option = { # Ok
+		name = yazidi.0035.a
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 25
+			}
+		}
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_yazidi_tiwaf_buy_sacrifice_meat_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					remove_short_term_gold = 25
+					stress_impact = {
+						gluttonous = miniscule_stress_impact_loss
+					}
+					add_character_modifier = {
+						modifier = RICE_yazidi_tiwaf_sacrifice_meat
+						years = 5
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = yazidi.0035.b
+	}
+}
+
+# Strenuous hike this time
+yazidi.0036 = {
+	type = activity_event
+	title = yazidi.0036.t
+	desc = yazidi.0036.desc
+	theme = RICE_theme_kurdish_mountains
+		
+	right_portrait = {
+		character = root
+		animation = pain
+	}
+	
+	option = { # Ok
+		name = yazidi.0036.a
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_yazidi_tiwaf_hike_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					stress_impact = {
+						base = miniscule_stress_impact_gain
+						lazy = miniscule_stress_impact_gain
+					}
+					add_character_modifier = {
+						modifier = RICE_yazidi_tiwaf_hike
+						years = 5
+					}
+				}
+			}
+		}
+	}
+}
+
+# Meet people from other villages
+yazidi.0037 = {
+	type = activity_event
+	title = yazidi.0037.t
+	desc = yazidi.0037.desc
+	theme = RICE_theme_kurdish_mountains
+	
+	right_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+	
+	option = { # Ok
+		name = yazidi.0037.a
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_yazidi_tiwaf_meet_others_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					add_prestige = 25
+				}
+			}
+		}
+	}
+}
+
+# Music and hymns from qewals and sacred instruments
+yazidi.0038 = {
+	type = activity_event
+	title = yazidi.0038.t
+	desc = yazidi.0038.desc
+	theme = RICE_theme_yazidi_lalish
+	
+	right_portrait = {
+		character = root
+		animation = personality_forgiving
+	}
+	
+	option = { # Ok
+		name = yazidi.0038.a
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_yazidi_tiwaf_music_and_dance_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					add_piety = 25
+				}
+			}
+		}
+	}
+}
+
+
+
+
+######################################################################################
+# 
+# YARSANI ACTIVITIES
+# 
+# yazidi.0040-yazidi.0079
+# 
+######################################################################################
+
+
+
+# Jam Ceremony Prep
+yazidi.0040 = {
+	type = activity_event
+	title = yazidi.0040.t
+	desc = yazidi.0040.desc
+	theme = RICE_theme_garden_generic
+	
+	left_portrait = root
+	right_portrait = {
+		character = scope:host
+		trigger = {
+			NOT = {
+				this = root
+			}
+		}
+		animation = personality_forgiving
+	}
+
+	immediate = {
+		faith = { save_scope_as = faith }
+		scope:activity.activity_location = {
+			county = {
+				save_scope_as = location
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = yazidi.0040.a
+	}
+
+	after = {
+		trigger_event = {
+			id = yazidi.0041
+			days = { 5 10 }
+		}
+	}
+}
+
+
+# Jam Ceremony - enter the room for the Jam
+yazidi.0041 = {
+	type = activity_event
+	title = yazidi.0041.t
+	desc = yazidi.0041.desc
+	theme = RICE_religious_feast_theme
+	
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	right_portrait = {
+		character = scope:host
+		trigger = {
+			NOT = {
+				this = root
+			}
+		}
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = yazidi.0041.a
+	}
+
+	after = {
+		trigger_event = {
+			id = yazidi.0042
+			days = { 3 6 }
+		}
+	}
+}
+
+# Jam Ceremony - ceremony begins
+yazidi.0042 = {
+	type = activity_event
+	title = yazidi.0042.t
+	desc = yazidi.0042.desc
+	theme = RICE_religious_feast_theme
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	right_portrait = {
+		character = scope:host
+		trigger = {
+			NOT = {
+				this = root
+			}
+		}
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = yazidi.0042.a
+	}
+
+	after = {
+		trigger_event = {
+			id = yazidi.0043
+			days = { 3 6 }
+		}
+	}
+}
+
+# Jam Ceremony - Sharing the sacrificial food; circulating the water
+yazidi.0043 = {
+	type = activity_event
+	title = yazidi.0043.t
+	desc = yazidi.0043.desc
+	theme = RICE_religious_feast_theme
+	
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	right_portrait = {
+		character = scope:host
+		trigger = {
+			NOT = {
+				this = root
+			}
+		}
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = yazidi.0043.a
+	}
+
+	after = {
+		trigger_event = {
+			id = yazidi.0044
+			days = { 3 6 }
+		}
+	}
+}
+
+# Jam Ceremony - ceremony concludes
+yazidi.0044 = {
+	type = activity_event
+	title = yazidi.0044.t
+	desc = yazidi.0044.desc
+	theme = RICE_theme_garden_generic
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	right_portrait = {
+		character = scope:host
+		trigger = {
+			NOT = {
+				this = root
+			}
+		}
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = yazidi.0044.a
+		if = {
+			limit = {
+				root = scope:host
+			}
+			scope:activity = {
+				RICE_yazidi_yarsani_jam_completed_log_entry_effect = yes
+			}
+		}
+		else = {
+			show_as_tooltip = {				
+				RICE_yazidi_yarsani_jam_completed_log_entry_effect = yes
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				root = scope:host
+			}
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
+		}
+	}
+}
+
+
+
+
+######################################################################################
+# 
+# BULL SACRIFICE
+# 
+# yazidi.0060-yazidi.0079
+# 
+######################################################################################
+
+
+
+# Bull Sacrifice Prep
+yazidi.0060 = {
+	type = activity_event
+	title = yazidi.0060.t
+	desc = yazidi.0060.desc
+	theme = faith
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	immediate = {
+		faith = { save_scope_as = faith }
+		scope:activity.activity_location = {
+			county = {
+				save_scope_as = location
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = yazidi.0060.a
+	}
+
+	after = {
+		trigger_event = {
+			id = yazidi.0061
+			days = { 5 10 }
+		}
+	}
+}
+
+
+# Bull Sacrifice done
+yazidi.0061 = {
+	type = activity_event
+	title = yazidi.0061.t
+	desc = yazidi.0061.desc
+	theme = faith
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	immediate = {
+		add_piety = { 25 200 }
+		add_prestige = { 25 200 }
+		random = {
+			chance = RICE_yazidi_bull_sacrifice_chance
+			random_list = {
+				10 = {
+					add_character_modifier = {
+						modifier = RICE_yazidi_bull_sacrifice_modifier_diplomacy
+						years = 10
+					}
+				}
+				10 = {
+					add_character_modifier = {
+						modifier = RICE_yazidi_bull_sacrifice_modifier_martial
+						years = 10
+					}
+				}
+				10 = {
+					add_character_modifier = {
+						modifier = RICE_yazidi_bull_sacrifice_modifier_stewardship
+						years = 10
+					}
+				}
+				10 = {
+					add_character_modifier = {
+						modifier = RICE_yazidi_bull_sacrifice_modifier_intrigue
+						years = 10
+					}
+				}
+				10 = {
+					add_character_modifier = {
+						modifier = RICE_yazidi_bull_sacrifice_modifier_learning
+						years = 10
+					}
+				}
+			}
+		}
+		scope:activity = {
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				custom_tooltip = RICE_activity_result_gained_piety
+				hidden_effect = {
+					add_piety = { 25 100 }
+					add_prestige = { 25 100 }					
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = yazidi.0061.a
+	}
+
+	after = {
+		scope:activity = {
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}
+}
+
+
+
+
+
+
+######################################################################################
+# 
+# FLAVOR EVENTS
+# 
+# yazidi.0080-yazidi.0099 reserved
+# 
+######################################################################################
+
+
+# Foreign merchant selling cabbages doesn't realize Yazidis consider cabbages taboo
+yazidi.0080 = {
+	type = character_event
+	title = yazidi.0080.t
+	desc = yazidi.0080.desc
+	theme = stewardship_domain_focus
+	override_background = {
+		reference = market
+	}
+	
+	right_portrait = {
+		character = root
+		animation = disapproval
+	}
+	
+	trigger = {
+		OR = {
+			faith = { has_doctrine = rice_west_iranian_yazidi_doctrine }
+			faith = faith:yazidi
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+	}
+
+	option = { # Ok
+		name = yazidi.0080.a
+		add_piety = -50
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+			vengeful = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = yazidi.0080.b
+		add_prestige = -50
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			forgiving = miniscule_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = yazidi.0080.c
+		add_prestige = -100
+		add_gold = { 10 50 }
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+			forgiving = minor_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = yazidi.0080.info
+		}
+	}
+
+}
+
+
+# Dignitary offers you blue clothes, which are taboo in Yazidi culture
+yazidi.0081 = {
+	type = character_event
+	title = yazidi.0081.t
+	desc = yazidi.0081.desc
+	theme = diplomacy_foreign_affairs_focus
+	
+	right_portrait = {
+		character = root
+		animation = worry
+	}
+	
+	trigger = {
+		OR = {
+			faith = { has_doctrine = rice_west_iranian_yazidi_doctrine }
+			faith = faith:yazidi
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+	}
+
+	option = { # Ok
+		name = yazidi.0081.a
+		add_prestige = -100
+		add_piety = 50
+		stress_impact = {
+			ambitious = minor_stress_impact_gain
+			diligent = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = yazidi.0081.b
+		add_piety = -100
+		add_prestige = 50
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+			vengeful = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = yazidi.0081.c
+		trigger = {
+			intrigue >= medium_skill_rating			
+		}
+		skill = intrigue
+		show_as_unavailable = {
+			intrigue < medium_skill_rating
+		}
+		add_prestige = 50
+		stress_impact = {
+			honest = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = yazidi.0081.info
+		}
+	}
+
+}
+
+
+# Morning prayers to the sun
+yazidi.0082 = {
+	type = character_event
+	title = yazidi.0082.t
+	desc = yazidi.0082.desc
+	theme = faith
+	override_background = { reference = bedchamber }
+	
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	trigger = {
+		OR = {
+			religion = religion:yazidi_religion
+			faith = faith:shamsi_pagan
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	option = { # Ok
+		name = yazidi.0082.a
+		add_piety = 20
+	}
+
+}
+
+
+# Pir visits and recites the mešur
+yazidi.0083 = {
+	type = character_event
+	title = yazidi.0083.t
+	desc = yazidi.0083.desc
+	theme = diplomacy_foreign_affairs_focus
+	
+	
+	left_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	trigger = {
+		OR = {
+			faith = { has_doctrine = rice_west_iranian_yazidi_doctrine }
+			faith = faith:yazidi
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	option = { # Ok
+		name = yazidi.0083.a
+		add_prestige = 25
+		dynasty ?= { add_dynasty_prestige = 50 }
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+

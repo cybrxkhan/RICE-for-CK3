@@ -480,6 +480,146 @@ RICE_yearly_global_pulse = {
 
 		}	
 
+		# Death of Sheikh Adi ibn Musafir
+		if = {
+			limit = {
+				NOT = { has_global_variable = RICE_yazidi_sheikh_adi_death }
+				# Won't happen right away - historically happened over the course of the medieval period
+				OR = {
+					has_game_rule = RICE_yazidi_emergence_unrestricted
+					AND = {
+						has_game_rule = RICE_yazidi_emergence_default
+						NOT = { has_global_variable = RICE_yazidi_start_timer }
+					}
+					AND = {
+						has_game_rule = RICE_yazidi_emergence_historical
+						current_date >= 1150.1.1
+					}
+				}
+			}
+			
+			random = {
+				chance = 5 # 99
+				modifier = {
+					add = 10
+					current_date >= 1150.1.1
+				}
+				modifier = {
+					add = 15
+					current_date >= 1175.1.1
+				}
+				modifier = {
+					add = 20
+					current_date >= 1200.1.1
+				}
+				modifier = {
+					add = 25
+					current_date >= 1225.1.1
+				}
+				RICE_yazidi_appearance_prequel_effect = yes
+			}
+		}
+
+		# Yazidis emerge as a distinct group
+		if = {
+			limit = {
+				has_global_variable = RICE_yazidi_sheikh_adi_death
+				NOT = { has_global_variable = RICE_yazidi_appearance }
+				NOT = { has_global_variable = RICE_yazidi_event_timer }
+			}
+			
+			random = {
+				chance = 20 # 99
+				modifier = {
+					add = 10
+					current_date >= 1250.1.1
+				}
+				modifier = {
+					add = 10
+					current_date >= 1300.1.1
+				}
+				modifier = {
+					add = 20
+					current_date >= 1350.1.1
+				}
+				modifier = {
+					add = 20
+					current_date >= 1400.1.1
+				}
+				RICE_yazidi_appearance_effect = yes
+			}
+		}
+
+		# Rumors of Sultan Sahak
+		if = {
+			limit = {
+				NOT = { has_global_variable = RICE_yarsani_sultan_sahak_rumors }				
+				# Won't happen right away - historically happened in the 14th/15th century
+				OR = {
+					has_game_rule = RICE_yarsani_emergence_unrestricted
+					AND = {
+						has_game_rule = RICE_yarsani_emergence_default
+						NOT = { has_global_variable = RICE_yarsani_start_timer }
+					}
+					AND = {
+						has_game_rule = RICE_yarsani_emergence_historical
+						current_date >= 1350.1.1
+					}
+				}
+			}
+			
+			random = {
+				chance = 5 # 99
+				modifier = {
+					add = 10
+					current_date >= 1275.1.1
+				}
+				modifier = {
+					add = 10
+					current_date >= 1325.1.1
+				}
+				modifier = {
+					add = 20
+					current_date >= 1375.1.1
+				}
+				modifier = {
+					add = 20
+					current_date >= 1425.1.1
+				}
+				RICE_yarsani_appearance_prequel_effect = yes
+			}
+		}
+
+		# Yarsanis emerge as a distinct group after Sultan Sahak's death
+		if = {
+			limit = {
+				has_global_variable = RICE_yarsani_sultan_sahak_rumors
+				NOT = { has_global_variable = RICE_yarsani_appearance }
+				NOT = { has_global_variable = RICE_yarsani_event_timer }
+			}
+			
+			random = {
+				chance = 70 # 99
+				modifier = {
+					add = 5
+					current_date >= 1350.1.1
+				}
+				modifier = {
+					add = 5
+					current_date >= 1375.1.1
+				}
+				modifier = {
+					add = 5
+					current_date >= 1400.1.1
+				}
+				modifier = {
+					add = 5
+					current_date >= 1425.1.1
+				}
+				RICE_yarsani_appearance_effect = yes
+			}
+		}
+
 	}
 }
 
@@ -593,6 +733,26 @@ RICE_events_yearly_maintenance_pulse = {
 					}
 				}
 			}
+		}
+		# Clean up Yazidis who shouldn't exist before Yazidism appears
+		if = {
+			limit = {
+				NOT = { has_global_variable = RICE_yazidi_appearance }
+			}
+			every_county_in_region = {
+				region = world_middle_east
+				holder = {
+					every_courtier_or_guest = {
+						limit = {
+							faith = faith:yazidi
+						}
+						set_character_faith = faith:kitebacilweism
+					}
+				}
+			}
+
+			# Can't figure out a way to get rid of pool characters
+
 		}
 	}
 }
@@ -811,6 +971,9 @@ RICE_events_yearly_pulse = {
 		# POLABIAN
 		100 = polabian.0083 			# Traditional Sorbian/Wendish rooster beating custom during summer
 		100 = polabian.0085 			# Traditional Sorbian/Wendish beef dumplings with horseradish sauce
+
+		# YAZIDI
+		100 = yazidi.0082	 			# Morning prayers to the sun
 		
 	}
 }
@@ -1035,6 +1198,9 @@ RICE_events_tri_yearly_pulse = {
 		100 = polabian.0084 			# Locals claim the Draben/Graben creatures have been attacking horses
 		100 = polabian.0086 			# Priests of Svetovit are getting uppity in Rugen/Arkona
 		
+		# YAZIDI
+		100 = yazidi.0080	 			# Foreign merchant selling cabbages doesn't realize Yazidis consider cabbages taboo
+		100 = yazidi.0081	 			# Dignitary offers you blue clothes, which are taboo in Yazidi culture
 		
 	}
 }
@@ -1197,6 +1363,9 @@ RICE_events_five_yearly_pulse = {
 
 		# POLABIAN
 		100 = polabian.0082 			# You get a cut of the tribute for Svetovit
+		
+		# YAZIDI
+		100 = yazidi.0083	 			# Pir visits and recites the mešur
 		
 	}
 }

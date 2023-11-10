@@ -9,9 +9,9 @@
 	# culture:nuristani = {
 	# 	get_all_innovations_from = scope:afghan
 	# }	
-	# culture:brahui = {
-	# 	get_all_innovations_from = scope:afghan
-	# }	
+	culture:brahui = {
+		set_name_list = name_list_brahui
+	}	
 	# culture:burusho = {
 	# 	get_all_innovations_from = scope:afghan
 	# }
@@ -86,9 +86,9 @@
 		title:c_zamindawar = {
 			set_county_culture = culture:turco_hephthalite
 		}	
-		title:c_zabulistan = {
-			set_county_culture = culture:turco_hephthalite
-		}
+		# title:c_zabulistan = {
+		# 	set_county_culture = culture:turco_hephthalite
+		# }
 		title:c_bost = {
 			set_county_culture = culture:turco_hephthalite
 		}
@@ -138,6 +138,17 @@
 		culture:turco_hephthalite = {
 			add_culture_tradition = tradition_RICE_white_huns # White Huns
 			remove_variable = tradition_cooldown
+		}
+
+		if = {
+			limit = {
+				has_dlc_feature = legacy_of_persia
+			}
+			culture:turco_hephthalite = {
+				remove_culture_tradition = tradition_fervent_temple_builders
+				add_culture_tradition = tradition_fp3_frontier_warriors
+				remove_variable = tradition_cooldown
+			}
 		}
 	}
 
@@ -264,18 +275,18 @@
 	#
 	############################################################	
 
-
+	# PI added Sar-i Sang mines in Legacy of Persia, so no need for this anymore
 	## Add Lapis Lazuli Mines
-	if = {
-		limit = {
-			title:b_munjan = {
-				title_province = { has_special_building = no }
-			}
-		}
-		title:b_munjan.title_province = {
-			add_special_building = RICE_pamir_lapis_lazuli_mines_01
-		}
-	}
+	# if = {
+	# 	limit = {
+	# 		title:b_munjan = {
+	# 			title_province = { has_special_building = no }
+	# 		}
+	# 	}
+	# 	title:b_munjan.title_province = {
+	# 		add_special_building = RICE_pamir_lapis_lazuli_mines_01
+	# 	}
+	# }
 	## Add Ruby Mines
 	if = {
 		limit = {
@@ -525,10 +536,10 @@
 				save_scope_as = banijurid_ruler
 				trigger_event = pamir.0004
 			}
-			character:163101 = { # Return territory to Saffarids
-				get_title = title:c_qain
-				get_title = title:c_tun
-			}
+			# character:163101 = { # Return territory to Saffarids
+			# 	get_title = title:c_qain
+			# 	get_title = title:c_tun
+			# }
 		}
 		character:188712 = { # Firuz. Zunbils are pagan and independent until 870 CE, ID# 188710 is the cousin
 			get_title = title:c_zamindawar
@@ -616,14 +627,14 @@
 			}
 			save_scope_as = nasir_khusraw
 		}
-		character:93123 = {
-			save_scope_as = seljuk_muhtajid_overlord
-		}
-		character:3040 = {
-			save_scope_as = seljuk_alp_arslan
-		}
+		# character:93123 = {
+		# 	save_scope_as = seljuk_muhtajid_overlord
+		# }
+		# character:3040 = {
+		# 	save_scope_as = seljuk_alp_arslan
+		# }
 		character:248023 = {
-			destroy_title = title:d_badakhshan
+			#destroy_title = title:d_badakhshan
 			save_scope_as = muhtajid_ruler
 			get_title = title:c_chaghaniyan
 			get_title = title:c_wakhsh
@@ -637,8 +648,21 @@
 			dynasty = { add_dynasty_prestige = 1000 }
 		}
 		# Ali ibn Asad, Nasir Khusraw's friend
-		character:RICE_pamir_006 = {
+		character:badakhshanids_2 = { 
 			save_scope_as = ali_ibn_asad
+			set_culture = culture:pamiri
+			set_character_faith = faith:maturidi
+			every_courtier_or_guest = {
+				limit = {
+					NOT = { has_character_modifier = RICE_pamir_nasir_khusraw }
+				}
+				set_character_faith = faith:maturidi
+				set_culture = culture:pamiri
+			}
+			set_relation_friend = {
+				reason = RICE_friend_reason_placeholder
+				target = character:248022
+			}
 			trigger_event = pamir.0003
 		}
 		character:248023 = {

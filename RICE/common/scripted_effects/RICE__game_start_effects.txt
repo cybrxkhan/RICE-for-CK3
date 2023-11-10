@@ -73,6 +73,21 @@ RICE_setup_optional_flavor_events_effect = {
 
 		# Zunbils
 		character:188710 = { 
+			# Start off with a few Zunist characters
+			if = {
+				limit = {
+					is_ruler = yes
+				}
+				every_courtier_or_guest = {
+					limit = {
+						is_lowborn = yes
+					}
+					random = {
+						chance = 25
+						set_faith = faith:zun_pagan
+					}
+				}
+			}
 			trigger_event = pamir.0017
 		}
 		character:188712 = { 
@@ -96,11 +111,15 @@ RICE_setup_optional_flavor_events_effect = {
 			}
 		}
 		# Abd-al-Rahman, Kharijite rebel in Herat c. 872
-		character:RICE_yazd_004 = {
+		character:azariqa_0009 = {
+			trigger_event = yazd.0004
+		}
+		# Ismail Akhdar, follower of Abd-al-Rahman
+		character:azariqa_0005 = {
 			trigger_event = yazd.0004
 		}
 		# Esmail ibn Musa, last leader of the Kharijite remnants in Bam
-		character:RICE_yazd_001 = {
+		character:azariqa_0006 = {
 			trigger_event = yazd.0004
 		}
 
@@ -222,7 +241,7 @@ RICE_setup_non_optional_flavor_events_effect = {
 			trigger_event = pamir.0016
 		}
 		# Ali ibn Asad
-		character:RICE_pamir_006 = {
+		character:badakhshanids_2 = {
 			trigger_event = pamir.0009
 		}
 		# Kakuyids
@@ -274,18 +293,25 @@ RICE_setup_music_effect = {
 			NOT = { has_game_rule = RICE_music_off }
 			OR = {
 				has_game_rule = RICE_music_unrestricted
-				culture = {
-					OR = {
-						has_cultural_pillar = heritage_west_slavic
-						has_cultural_pillar = heritage_central_germanic
-					}
-				}
+				culture_has_mena_heritage_pillar_trigger = yes
+				culture_has_west_asian_heritage_pillar_trigger = yes
 				capital_province = {
-					geographical_region = custom_west_slavia
+					OR = {
+						geographical_region = world_asia_minor
+						geographical_region = world_middle_east
+						geographical_region = world_africa_east
+						geographical_region = world_africa_north
+						geographical_region = world_africa_sahara
+						geographical_region = world_middle_east_persia
+						geographical_region = ghw_region_caucasus
+						geographical_region = ghw_region_near_east
+						geographical_region = ghw_region_anatolia
+						geographical_region = world_steppe_tarim
+					}
 				}
 			}
 		}
-		play_music_cue = mx_lubeck_law
+		play_music_cue = mx_lalish_dawn
 	}
 }
 
@@ -393,6 +419,30 @@ RICE_setup_misc_after_effect = {
 		}
 	}
 
+	if = {
+		limit = {
+			has_game_rule = RICE_yazidi_emergence_default
+		}
+		# Yazidi appearance event won't happen for at least 50 years normally
+		set_global_variable = {
+			name = RICE_yazidi_start_timer
+			value = yes
+			days = 18250
+		}
+	}
+
+	if = {
+		limit = {
+			has_game_rule = RICE_yarsani_emergence_default
+		}
+		# Yarsani appearance event won't happen for at least 50 years normally
+		set_global_variable = {
+			name = RICE_yarsani_start_timer
+			value = yes
+			days = 18250
+		}
+	}
+
 	# Move courtiers to the right court since they refuse to go to it for some reason
 	# For 1066 bookmark
 	if = {
@@ -419,7 +469,152 @@ RICE_setup_misc_after_effect = {
 			add_courtier = character:RICE_khuzestan_023
 		}
 	}
+	if = {
+		limit = {
+			character:RICE_kurdish_pagan_001 = {
+				is_alive = yes
+				is_landed = yes
+				is_independent_ruler = no
+			}
+		}
+		# Tirahaye Kurds
+		character:RICE_kurdish_pagan_001 = {
+			RICE_jizya_contract_at_start_effect = yes
+		}
+	}
 	
+	# Clean up Yazidis who shouldn't exist before Yazidism appears
+	if = {
+		limit = {
+			NOT = { has_global_variable = RICE_yazidi_appearance }
+		}
+		every_county_in_region = {
+			region = world_middle_east
+			holder = {
+				every_courtier_or_guest = {
+					limit = {
+						faith = faith:yazidi
+					}
+					set_character_faith = faith:kitebacilweism
+				}
+			}
+		}
+
+		# Can't figure out a way to get rid of pool characters
+
+	}
+
+	# Change struggle involvement
+	if = {
+		limit = {
+			exists = struggle:persian_struggle
+		}
+		# Cultures
+		if = {
+			limit = {
+				NOT = { struggle:persian_struggle = { is_culture_involved_in_struggle = culture:turco_hephthalite } }
+			}
+			struggle:persian_struggle = { set_culture_as_involved = culture:turco_hephthalite }
+		}
+		if = {
+			limit = {
+				NOT = { struggle:persian_struggle = { is_culture_involved_in_struggle = culture:hephthalite } }
+			}
+			struggle:persian_struggle = { set_culture_as_involved = culture:hephthalite }
+		}
+		if = {
+			limit = {
+				NOT = { struggle:persian_struggle = { is_culture_involved_in_struggle = culture:pamiri } }
+			}
+			struggle:persian_struggle = { set_culture_as_involved = culture:pamiri }
+		}
+		if = {
+			limit = {
+				NOT = { struggle:persian_struggle = { is_culture_involved_in_struggle = culture:khuzi } }
+			}
+			struggle:persian_struggle = { set_culture_as_involved = culture:khuzi }
+		}
+		if = {
+			limit = {
+				NOT = { struggle:persian_struggle = { is_culture_involved_in_struggle = culture:parsim } }
+			}
+			struggle:persian_struggle = { set_culture_as_involved = culture:parsim }
+		}
+		if = {
+			limit = {
+				NOT = { struggle:persian_struggle = { is_culture_involved_in_struggle = culture:bavlim } }
+			}
+			struggle:persian_struggle = { set_culture_as_involved = culture:bavlim }
+		}
+		if = {
+			limit = {
+				NOT = { struggle:persian_struggle = { is_culture_involved_in_struggle = culture:assyrian } }
+			}
+			struggle:persian_struggle = { set_culture_as_involved = culture:assyrian }
+		}
+		# Faiths
+		if = {
+			limit = {
+				NOT = { struggle:persian_struggle = { is_faith_involved_in_struggle = faith:rabbinism } }
+			}
+			struggle:persian_struggle = { set_faith_as_involved = faith:rabbinism }
+		}
+		if = {
+			limit = {
+				NOT = { struggle:persian_struggle = { is_faith_involved_in_struggle = faith:zun_pagan } }
+			}
+			struggle:persian_struggle = { set_faith_as_involved = faith:zun_pagan }
+		}
+		if = {
+			limit = {
+				NOT = { struggle:persian_struggle = { is_faith_involved_in_struggle = faith:nuristani_pagan } }
+			}
+			struggle:persian_struggle = { set_faith_as_involved = faith:nuristani_pagan }
+		}
+		if = {
+			limit = {
+				NOT = { struggle:persian_struggle = { is_faith_involved_in_struggle = faith:manichean } }
+			}
+			struggle:persian_struggle = { set_faith_as_involved = faith:manichean }
+		}
+		if = {
+			limit = {
+				NOT = { struggle:persian_struggle = { is_faith_involved_in_struggle = faith:mandeaism } }
+			}
+			struggle:persian_struggle = { set_faith_as_involved = faith:mandeaism }
+		}
+		if = {
+			limit = {
+				NOT = { struggle:persian_struggle = { is_faith_involved_in_struggle = faith:yazidi } }
+			}
+			struggle:persian_struggle = { set_faith_as_involved = faith:yazidi }
+		}
+		if = {
+			limit = {
+				NOT = { struggle:persian_struggle = { is_faith_involved_in_struggle = faith:meshefaresism } }
+			}
+			struggle:persian_struggle = { set_faith_as_involved = faith:meshefaresism }
+		}
+		if = {
+			limit = {
+				NOT = { struggle:persian_struggle = { is_faith_involved_in_struggle = faith:kitebacilweism } }
+			}
+			struggle:persian_struggle = { set_faith_as_involved = faith:kitebacilweism }
+		}
+		if = {
+			limit = {
+				NOT = { struggle:persian_struggle = { is_faith_involved_in_struggle = faith:harranian_pagan } }
+			}
+			struggle:persian_struggle = { set_faith_as_involved = faith:harranian_pagan }
+		}
+		if = {
+			limit = {
+				NOT = { struggle:persian_struggle = { is_faith_involved_in_struggle = faith:shamsi_pagan } }
+			}
+			struggle:persian_struggle = { set_faith_as_involved = faith:shamsi_pagan }
+		}
+	}
+
 }
 
 
