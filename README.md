@@ -1,13 +1,16 @@
-<img src="https://i.imgur.com/5z2vdg4.jpg">
+<img src="https://i.imgur.com/qnoWzeT.jpg">
 
-## Latest Version: Version 1.10.2 "Arkona" (Released 10/23/23, for vanilla patch 1.10.x)
+## Latest Version: Version 1.11.0 "Melek Taus" (Released 11/11/23, for vanilla patch 1.11.x)
 
-**Newest Flavor Pack: *Polabians: Defenders of Svetovit***
+**Newest Flavor Pack: *Yazidis: People of the Peacock Angel***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_“For the Slavs show such reverence for their holy things that they do not allow the neighborhood of a fane to be defiled by blood even in time of war.”_
-_– Helmold of Bosau, 12th century Saxon historian and priest, in the Chronicle of the Slavs_
+_“O my Lord, you are angel-ruler of the world,_
+_O my Lord, you are the generous angel-ruler,_
+_You are the angel of the heavenly firmament,_
+_O my Lord, you are forever primordial.”_
+_– Excerpt from the Yazidi hymn to Melek Taus, the Peacock Angel_
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
@@ -63,31 +66,36 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 - [Tuyuhun: Horsemen of Qinghai](https://docs.google.com/document/d/e/2PACX-1vSLTlVseJqHCut1xBqm9tY2AVgfunhUTX0m8oN-OvHpMgexvpbFO8OIXVC2xDkgo9UvMYnv4qnjBUqP/pub)
 - [Upper Egypt: Children of the Nile](https://docs.google.com/document/d/e/2PACX-1vRPqf2Ip9U9cgDBiihQw6J-sGoCMiobFNhXrTsnzvwNIWBcjlRf2Cvn5ifDYADIwLt9w636GB7WCeY2/pub)
 - [Yazd: Abode of Worship](https://docs.google.com/document/d/e/2PACX-1vSPDkkP1PqCoPsi_HM29C5MM5L-as_SyKkmx_jNtOEqoW2mQx2APneBmbHNhi5hNePLHAxqm9QTm8y3/pub)
+- [Yazidis: People of the Peacock Angel](https://docs.google.com/document/d/e/2PACX-1vR3oN9lw2Yzsz_tGQb4sLDUPOVUjE6xhyYXvjtqnuKAJOegbo4UBuXpncgmk4s-cjEmAe8t1VvINe2h/pub)
 - [Yorkshire: To Scarborough Fair](https://docs.google.com/document/d/e/2PACX-1vQpl_JscDm-mK927vAdVA3-EUVdZ6A_htNKej7_cAKC1NcnYxHz8uvOT-bidmyLCNrfrYAsPun1QW3X/pub)
 
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/LwKwfEC.jpg">
+<img src="https://i.imgur.com/riGZH5D.jpg">
 
-### 1.10.2 "Arkona"
+### 1.11.0 "Melek Taus"
 
-- Added Polabian Flavor Pack
-- Added 7 medieval/renaissance European soundtracks
-- Renamed Peristani culture to Darada
-- Put Darada (Peristani) culture on the map (thanks to Soraya for the research)
-- Turco-Hephthalites are now on the map in 1066 and are slightly more widespread, to represent Turkic tribes with possible Hephthalite admixture like the Khallukh and Khalaj (thanks to Soraya for the research)
-- White Hun tradition now only allows raiding over land, not sea
-- Added Marib as a holy site for South Arabian and Aksumite pagans
-- Rollo will now always receive the dream event if the player or AI controlling him chooses to go through the legendary event chain
-- Al-Kashgari now has tier 4 learning education instead of tier 3
-- Gilgit is now Vajrayana
-- Nerfed the option to try to get extra gold when encountering merchants from the Silk Road/Trans-Saharan merchants travel option
-- Maastricht bridge collapse event can no longer happen immediately, and will only trigger after 1100 CE
-- Fixed several religious activities continuing even if a character converted to another faith
-- Fixed the Normandy Adventurer CB not properly displaying the requirement that you need to be in the Adventure Phase of the Normandy struggle (if it still exists)
-- Fixed Silk Road and Maritime Trade dynasty perks not properly indicating which one is needed to do the SIlk Road decision more than once in a lifetime
-- Fixed Successful Chinir Festival county modifier not applying if you have the Community Intent for the Chinir Festival
+- Added **Yazidi Flavor Pack: People of the Peacock Angel**
+- Added 3 Middle Eastern soundtracks
+- Many miscellaneous tweaks to existing Iranian content to adapt to Legacy of Persia
+- Added Sorbian language for Sorbians
+- Added a fictitious ruler to represent the “pagan” Tirahaye Kurds in 1066
+- Added Zunism, Dezawism, Manichaeism, Mandaeism, Yazidism, Yarsanism, Mehrism, Harranianism, Shamsism, and Rabbinism as involved faiths in the Iranian Intermezzo struggle
+- Added Pamiri, Turco-Hephthalite, Hephthalite, Khuzi, Parsim, and Bavlim as involved cultures in the Iranian Intermezzo struggle
+- Renamed vanilla’s East Bantu culture to Zanj
+- Renamed vanilla’s Afridunism faith to Faridunism (since Afridun is the Arabized version of Faridun/Fareydun)
+- Placed all formerly East Bantu and South Bantu heritage cultures into vanilla's Bantu heritage (the two heritages remain in the code, though, just in case)
+- Turco-Hephthalites have the Frontier Warriors tradition if you own Legacy of Persia
+- Pamiris have Frequent Festivities replaced with Jirga tradition if you own Legacy of Persia
+- Harran and Upper Khabur are now Syriac
+- Thabit ibn Qurra and most other historical Harranian characters are now Syriac
+- Some of the other historical Harranian characters now know the Greek and/or Arabic language at game start
+- Brahuis now use RICE’s old custom namelist (instead of the Gond namelist)
+- Disabled all RICE memories for now as memories (both modded and vanilla) may have been causing performance issues in both modded and vanilla games, and RICE adds a lot for activities; this is experimental and may be reverted at a later time
+- Fixed encoding for compatibility triggers file in scripted triggers
+- Fixed possible bug where non-Theravada faiths were inheriting Theravada doctrines
+- Fixed the game concept for Mud Masons missing text
 - Miscellaneous bugfixes
 
 ## Credits
