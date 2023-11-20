@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/qnoWzeT.jpg">
 
-## Latest Version: Version 1.11.0 "Melek Taus" (Released 11/11/23, for vanilla patch 1.11.x)
+## Latest Version: Version 1.11.0.a Hotfix for "Melek Taus" (Released 11/18/23, for vanilla patch 1.11.x)
 
 **Newest Flavor Pack: *Yazidis: People of the Peacock Angel***
 
@@ -73,6 +73,24 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 ## Latest Changelog
 
 <img src="https://i.imgur.com/riGZH5D.jpg">
+
+### 1.11.0.a Hotfix for "Melek Taus"
+
+- Updated RICE+EPE Compatch
+- Added French translations for the Siwa Flavor Pack (credits to Castorjunior on Paratranz)
+- AI is now more likely to take the decision to Commission Historia Normannorum
+- The Commission Historia Normannorum decision is now available outside the Acculturation phase if you have a high enough prestige level and learning
+- Drowning of Morana/Marzanna activity now costs prestige and piety for non-pagans, rather than giving prestige
+- Default name of the Drowning of Marzanna activity changed to Drowning of Morana, and it will only be called Marzanna for Lechitic cultures in later eras
+- Several characters in Persia now retain their personality traits assigned by vanilla that RICE previously changed
+- Reduced the chances AI will adopt Kala Settlements and Akhtarveniks traditions for their culture
+- Increased the chances AI will adopt the Wewa Systems and Stepwell Builders traditions
+- Implemented a workaround for an odd bug where Clan Unity interface won’t appear until a month passes after game start for some Clan government rulers added by RICE
+- Fixed RICE cultures not wearing Iranian clothes as appropriate (like the Hephthalites and Pamiris)
+- Fixed Firuz (the last Zunbil) being both secretly Zunist and Zunist at the same time for a few days at game start
+- Fixed loc error with the high god name for the Shamsi pagans
+- Fixed Munya group vacation activity ending earlier than it should
+- Miscellaneous bugfixes
 
 ### 1.11.0 "Melek Taus"
 
