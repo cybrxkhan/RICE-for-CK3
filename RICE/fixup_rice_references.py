@@ -19,7 +19,7 @@ def replace_this_ref(ref_type,the_list):
 def replace_ref_type_ref(ref_type,the_list):
     for item in the_list:
         print(item)
-        os.system('find . -iname "*.txt" -exec sed -i -b "s/'+item+'/'+ref_type+' = { rice_'ref_type'_trigger_'+strip_before_colon(item)+' = yes }/g" {} +')
+        os.system('find . -iname "*.txt" -exec sed -i -b "s/'+item+'/'+ref_type+' = { rice_'+ref_type+'_trigger_'+strip_before_colon(item)+' = yes }/g" {} +')
 
 #Culture
 replace_this_ref('culture',culture_list_this)
@@ -30,3 +30,5 @@ replace_ref_type_ref('faith',faith_list_faith)
 #Religion
 replace_this_ref('religion',religion_list_this)
 replace_ref_type_ref('religion',religion_list_religion)
+
+#TODO: propose all unlabed triggers (like exists = culture:soissons) be replaced with something more expressive like this_submod_in_use_trigger = { exists = culture:soissons }
