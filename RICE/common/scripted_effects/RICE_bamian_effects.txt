@@ -1,0 +1,104 @@
+﻿
+RICE_setup_bamian_flavor_pack_effect = {
+
+	############################################################
+	#
+	# RELIGION CHANGES
+	#
+	############################################################
+
+	############################################################
+	#
+	# CULTURE CHANGES
+	#
+	############################################################
+
+	############################################################
+	#
+	# HISTORY/TITLE CHANGES
+	#
+	############################################################
+
+	# Set up Sher Bamiyan family
+	if = {
+		limit = {
+			current_date > 860.1.1
+			current_date < 875.1.1			
+		}
+
+		# Obscure Sa'id father and son who ruled over Andarab
+		character:RICE_bamian_said_001 = {
+			get_title = title:c_east-tokharestan
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+		}
+	
+		# Muslim branch of the Sher Bamiyan working under the Abbasids
+		# Al-Hasan, son of Harthamah
+		character:RICE_bamian_005 = {
+			get_title = title:c_rusafa
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+		}
+	
+		# Buddhist branch of the Sher Bamiyan
+		character:RICE_bamian_008 = {
+			get_title = title:c_bamian
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+		}
+
+		create_title_and_vassal_change = {
+			type = independency
+			save_scope_as = going_independent
+			add_claim_on_loss = no
+		}
+		character:RICE_bamian_008 = {
+			becomes_independent = {
+				change = scope:going_independent
+			}
+		}
+		resolve_title_and_vassal_change = scope:going_independent	
+
+	}
+
+	############################################################
+	#
+	# MISCELLANEOUS
+	#
+	############################################################
+
+	
+	# For 1066 bookmark
+	if = {
+		limit = {
+			game_start_date = 1066.9.15
+		}
+		# Siman-Tov's modifier
+		character:RICE_bamian_jewish_003 = {
+			add_character_modifier = {
+				modifier = RICE_bamian_siman_tov_modifier
+			}
+		}
+	}
+
+
+
+}
+
+RICE_bamian_pilgrimage_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_bamian_pilgrimage_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				RICE_local_pilgrimage_generic_host_effect = yes
+			}
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				RICE_local_pilgrimage_generic_guest_effect = yes
+			}	
+		}
+	}
+}

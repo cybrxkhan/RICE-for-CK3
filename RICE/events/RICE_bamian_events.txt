@@ -1,0 +1,582 @@
+﻿###############################################################################
+# 
+# BAMIAN
+# 
+# bamian.0000-bamian.0019			Setup events, history events, miscellaneous events and decisions
+# bamian.0020-bamian.0029			Bamian Visit/Trip for non-Buddhists
+# bamian.0030-bamian.0039			Bamian Pilgrimage for Buddhists
+# bamian.0040-bamian.0049			Fortress decisions
+# bamian.0050-bamian.0069			Generic Flavor Events
+# bamian.0060-bamian.0069			????
+# bamian.0070-bamian.0079			????
+# bamian.0080-bamian.0089			????
+# bamian.0090-bamian.0099			????
+# 
+# 
+###############################################################################
+
+namespace = bamian
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# bamian.0000-bamian.0019
+# 
+######################################################################################
+
+
+
+# Shar Bamian/Sher Bamiyan Royal Dynasty Intro Event
+bamian.0001 = {
+	type = character_event
+	title = bamian.0001.t
+	desc = bamian.0001.desc
+	theme = RICE_theme_bamian_valley
+
+	left_portrait = scope:bamian_muslim
+	right_portrait = scope:bamian_buddhist
+
+	lower_center_portrait = scope:caliph
+
+	immediate = {
+		religion:buddhism_religion = { save_scope_as = buddhist }
+		religion:islam_religion = { save_scope_as = islam }
+		faith:ashari = { save_scope_as = ashari }
+		faith:mahayana = { save_scope_as = mahayana }
+		character:RICE_bamian_005 = { # Muslim Bamiyan Branch
+			save_scope_as = bamian_muslim
+		}
+		character:RICE_bamian_008 = { # Buddhist Bamiyan Branch
+			save_scope_as = bamian_buddhist
+		}
+		character:34014 = { # Abbasid Caliph
+			save_scope_as = caliph
+		}
+	}
+
+	# Ok
+	option = {
+		name = bamian.0001.a
+		trigger = {
+			this = character:RICE_bamian_005
+		}
+		custom_tooltip = bamian.0001.stay_faith
+	}
+
+	# Ok
+	option = {
+		name = bamian.0001.b
+		trigger = {
+			this = character:RICE_bamian_005
+		}
+		custom_tooltip = bamian.0001.fake_faith
+		make_character_crypto_religionist_effect = { CRYPTO_RELIGION = faith:mahayana }
+	}
+
+	# Ok
+	option = {
+		name = bamian.0001.c
+		trigger = {
+			this = character:RICE_bamian_008
+		}
+		custom_tooltip = bamian.0001.stay_faith
+	}
+
+	# Ok
+	option = {
+		name = bamian.0001.d
+		trigger = {
+			this = character:RICE_bamian_008
+		}
+		custom_tooltip = bamian.0001.fake_faith
+		set_character_faith = faith:ashari
+		make_character_crypto_religionist_effect = { CRYPTO_RELIGION = faith:mahayana }
+	}
+
+	# Ok
+	option = {
+		name = bamian.0001.e
+		trigger = {
+			this = character:RICE_bamian_008
+		}
+		set_character_faith_with_conversion = faith:ashari
+	}
+
+}
+
+
+
+
+
+######################################################################################
+# 
+# BAMIAN PILGRIMAGE
+# 
+# bamian.0030-bamian.0039
+# 
+######################################################################################
+
+
+
+# Set off for Bamian
+bamian.0030 = {
+	type = character_event
+	title = bamian.0030.t
+	desc = bamian.0030.desc
+	theme = travel_pilgrimage
+	override_background = { reference = RICE_background_pamir_valley }
+	
+	right_portrait = root
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_bamian_pilgrimage
+		}
+	}
+
+	immediate = {
+		religion:buddhism_religion = { save_scope_as = buddhist }
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+	
+	option = { # Ok
+		name = bamian.0030.a
+	}
+}
+
+
+# Arrive in Bamian
+bamian.0031 = {
+	type = activity_event
+	title = bamian.0031.t
+	desc = bamian.0031.desc
+	theme = RICE_theme_bamian_valley_religious
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	immediate = {
+		religion:buddhism_religion = { save_scope_as = buddhist }
+	}
+	
+	option = { # Ok
+		name = bamian.0031.a
+		# Chance of failing to do the rituals properly
+		random_list = {
+			65 = {
+				custom_tooltip = bamian.0031.success
+				trigger_event = {
+					id = bamian.0033
+					days = { 5 10 }
+				}
+			}
+			35 = {
+				custom_tooltip = bamian.0031.failure
+				modifier = {
+					add = -4				
+					has_trait = diligent
+				}
+				modifier = {
+					add = 4
+					has_trait = lazy
+				}
+				modifier = {
+					add = -4				
+					has_trait = stubborn
+				}
+				modifier = {
+					add = 4				
+					has_trait = eccentric
+				}
+				modifier = {
+					add = -4				
+					has_trait = cynical
+				}
+				modifier = {
+					add = 4				
+					has_trait = zealous
+				}
+				modifier = {
+					add = -4				
+					has_trait = paranoid
+				}
+				modifier = {
+					add = 4				
+					has_trait = trusting
+				}
+				modifier = {
+					add = -4				
+					has_trait = humble
+				}
+				modifier = {
+					add = 4				
+					has_trait = arrogant
+				}
+				modifier = {
+					add = -4				
+					has_trait = patient
+				}
+				modifier = {
+					add = 4				
+					has_trait = impatient
+				}	
+
+				trigger_event = {
+					id = bamian.0032
+					days = { 4 8 }
+				}
+				trigger_event = {
+					id = bamian.0033
+					days = { 11 16 }
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = bamian.0031.b
+		stress_impact = {
+			base = miniscule_stress_impact_gain
+			lazy = minor_stress_impact_gain
+			impatient = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+		}
+		# Chance of failing to do the rituals properly
+		random_list = {
+			85 = {
+				custom_tooltip = bamian.0031.success
+				trigger_event = {
+					id = bamian.0033
+					days = { 5 10 }
+				}
+			}
+			15 = {
+				custom_tooltip = bamian.0031.failure
+				modifier = {
+					add = -2				
+					has_trait = diligent
+				}
+				modifier = {
+					add = 2
+					has_trait = lazy
+				}
+				modifier = {
+					add = -2				
+					has_trait = stubborn
+				}
+				modifier = {
+					add = 2				
+					has_trait = eccentric
+				}
+				modifier = {
+					add = -2				
+					has_trait = cynical
+				}
+				modifier = {
+					add = 2				
+					has_trait = zealous
+				}
+				modifier = {
+					add = -2				
+					has_trait = paranoid
+				}
+				modifier = {
+					add = 2				
+					has_trait = trusting
+				}
+				modifier = {
+					add = -2				
+					has_trait = humble
+				}
+				modifier = {
+					add = 2				
+					has_trait = arrogant
+				}
+				modifier = {
+					add = -2				
+					has_trait = patient
+				}
+				modifier = {
+					add = 2				
+					has_trait = impatient
+				}	
+				trigger_event = {
+					id = bamian.0032
+					days = { 4 8 }
+				}
+				trigger_event = {
+					id = bamian.0033
+					days = { 11 16 }
+				}
+
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = bamian.0031.info
+		}
+	}
+
+
+}
+
+
+
+# Failed, have to go back
+bamian.0032 = {
+	type = activity_event
+	title = bamian.0032.t
+	desc = bamian.0032.desc
+	theme = RICE_theme_bamian_valley_religious
+	
+	right_portrait = {
+		character = root
+		animation = stress
+	}
+
+	immediate = {
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_bamian_negligence_log
+				tags = { bad }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					add_piety = -50
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = bamian.0032.a
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_bamian_negligence_went_back_log
+				tags = { bad }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					add_piety = 25
+					stress_impact = {
+						base = miniscule_stress_impact_gain
+						zealous = miniscule_stress_impact_gain
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = bamian.0032.b
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_bamian_negligence_ignored_log
+				tags = { bad }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					add_prestige = 25
+					add_piety = -50
+					stress_impact = {
+						zealous = medium_stress_impact_gain
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+# Arrive at the statues, make offerings
+bamian.0033 = {
+	type = activity_event
+	title = bamian.0033.t
+	desc = bamian.0033.desc
+	theme = RICE_theme_bamian_valley_religious
+	
+	right_portrait = {
+		character = root
+		animation = admiration
+	}
+	
+	option = { # No extra offerings
+		name = bamian.0033.a
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_bamian_offerings_none_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					custom_tooltip = RICE_bamian_no_offerings_tooltip
+					stress_impact = {
+						zealous = miniscule_stress_impact_gain
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Offering to Siddhartha statue
+		name = bamian.0033.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 40
+			}
+		}
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_bamian_offerings_siddhartha_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					remove_short_term_gold = 40
+					add_piety = 80
+					add_character_modifier = {
+						modifier = RICE_bamian_offerings_siddhartha_modifier
+						years = 10
+					}
+					stress_impact = {
+						greedy = miniscule_stress_impact_gain
+						cynical = miniscule_stress_impact_gain
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Offering to Vairocana statue
+		name = bamian.0033.c
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 60
+			}
+		}
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_bamian_offerings_vairocana_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					remove_short_term_gold = 60
+					add_piety = 120
+					add_character_modifier = {
+						modifier = RICE_bamian_offerings_vairocana_modifier
+						years = 10
+					}
+					stress_impact = {
+						greedy = miniscule_stress_impact_gain
+						cynical = miniscule_stress_impact_gain
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Offering to both statues
+		name = bamian.0033.d
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 100
+			}
+		}
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_bamian_offerings_both_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					remove_short_term_gold = 100
+					add_piety = 200
+					add_character_modifier = {
+						modifier = RICE_bamian_offerings_siddhartha_modifier
+						years = 10
+					}
+					add_character_modifier = {
+						modifier = RICE_bamian_offerings_vairocana_modifier
+						years = 10
+					}
+					stress_impact = {
+						greedy = minor_stress_impact_gain
+						cynical = minor_stress_impact_gain
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		trigger_event = {
+			id = bamian.0034
+			days = { 6 12 }
+		}
+	}
+
+}
+
+
+# Bamian pilgrimage concludes
+bamian.0034 = {
+	type = activity_event
+	title = bamian.0034.t
+	desc = bamian.0034.desc
+	theme = RICE_theme_bamian_valley_religious
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	
+	option = { # Ok
+		name = bamian.0034.a
+		RICE_bamian_pilgrimage_completed_log_entry_effect = yes
+	}
+
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
+		}
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
