@@ -32,3 +32,4 @@ replace_this_ref('religion',religion_list_this)
 replace_ref_type_ref('religion',religion_list_religion)
 
 #TODO: propose all unlabed triggers (like exists = culture:soissons) be replaced with something more expressive like this_submod_in_use_trigger = { exists = culture:soissons }
+#Fix up all set_{,county,character}_{culture,faith} instances
