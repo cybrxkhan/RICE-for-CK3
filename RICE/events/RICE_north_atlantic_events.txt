@@ -15,6 +15,7 @@
 # north_atlantic.0180-north_atlantic.0199			Whaling
 # north_atlantic.0200-north_atlantic.0249			Generic flavor events
 # north_atlantic.0250-north_atlantic.0269			Exile/send to Greenland/Vinland
+# north_atlantic.0270-north_atlantic.0289			Other/More Historical Events
 # 
 # 
 ###############################################################################
@@ -1644,6 +1645,7 @@ north_atlantic.0027 = {
 
 	immediate = {
 		scope:isleifur = {
+			add_character_flag = RICE_iceland_isleifur_built_school
 			show_as_tooltip = {
 				RICE_skalholt_school_decision_effect = yes
 			}
@@ -19943,3 +19945,131 @@ north_atlantic.0253 = {
 }
 
 
+
+######################################################################################
+# 
+# OTHER/MORE HISTORICAL EVENTS
+# 
+# north_atlantic.0270-north_atlantic.0289
+# 
+######################################################################################
+
+
+
+# Isleifur Intro Event
+north_atlantic.0270 = {
+	type = character_event
+	title = north_atlantic.0270.t
+	desc = north_atlantic.0270.desc
+	theme = faith
+	override_background = { reference = RICE_background_north_atlantic_iceland }
+
+	left_portrait = {
+		character = scope:aldabert
+		animation = happy_teacher
+	}
+
+	right_portrait = {
+		character = scope:isleifur
+		animation = personality_bold
+	}
+
+	immediate = {
+		religion:christianity_religion = { save_scope_as = christian }
+		character:20579 = { # Isleifur
+			save_scope_as = isleifur
+		}		
+		character:20251 = { # Aldabert of Bremen
+			save_scope_as = aldabert
+		}
+		show_as_tooltip = {
+			character:20579 = {
+				add_character_modifier = {
+					modifier = RICE_north_atlantic_aspiration_cultivate_icelands_church
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = north_atlantic.0270.info
+			}
+		}
+	}
+
+	# Ok
+	option = {
+		name = north_atlantic.0270.a
+	}
+}
+
+
+
+# Isleifur's Aspiration fulfilled
+north_atlantic.0271 = {
+	type = character_event
+	title = north_atlantic.0271.t
+	desc = north_atlantic.0271.desc
+	theme = faith
+	override_background = { reference = RICE_background_north_atlantic_iceland }
+
+	right_portrait = {
+		character = root
+		animation = war_over_win
+	}
+
+	immediate = {
+
+		religion:christianity_religion = { save_scope_as = christian }
+		character:20579 = { # Isleifur
+			save_scope_as = isleifur
+		}		
+		character:20251 = { # Aldabert of Bremen
+			save_scope_as = aldabert
+		}
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_north_atlantic_aspiration_cultivate_icelands_church
+				}
+				remove_character_modifier = RICE_north_atlantic_aspiration_cultivate_icelands_church
+			}
+		}
+
+		# Main Objective Reward
+		add_piety = RICE_aspiration_large_resource_bonus
+		add_prestige = RICE_aspiration_medium_resource_bonus
+		every_held_title = {
+			custom = every_county_RICE_iceland_region
+			limit = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = custom_iceland
+				}
+			}	
+			change_development_level = RICE_red_sea_al_umari_aspiration_dev_bonus
+		}
+
+		# Bonus Objective Reward(s)
+		# Build Large Christian Monastery/Church
+		if = {
+			limit = {
+				has_character_flag = RICE_north_atlantic_isleifur_built_large_christian_building
+			}
+			add_prestige = RICE_aspiration_medium_resource_bonus
+		}
+	}
+
+	# Ok
+	option = {
+		name = north_atlantic.0271.a
+	}
+
+}
