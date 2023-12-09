@@ -103,9 +103,9 @@
 		}
 	}
 
-	province_filter = top_realm
+	province_filter = all
 	ai_province_filter = realm
-	wait_time_before_start = { days = 2 }
+	wait_time_before_start = { days = 14 }
 
 	###################
 	# OPTIONS
@@ -135,10 +135,9 @@
 					limit = {
 						this = scope:host
 					}
-					trigger_event = bamian.0021
+					scope:host = { trigger_event = bamian.0021 }
 				}		
 			}
-
 			on_end = {
 				# Run conclusion stuff here
 				# if = {
@@ -149,7 +148,7 @@
 		}
 	}
 
-	max_guest_arrival_delay_time = { days = 2 }
+	max_guest_arrival_delay_time = { days = 14 }
 
 	# desc is only shown in debug AI watch window
 	ai_will_do = {
@@ -176,9 +175,10 @@
 			}
 			add = -50
 		}
+
 	}
 
-	ai_check_interval = 48
+	ai_check_interval = 60
 
 	ai_will_select_province = {
 		value = 10
@@ -203,6 +203,17 @@
 	}
 
 	max_province_icons = 1
+
+	province_score = {
+		add = 0
+		# Actual location
+		if = {
+			limit = {
+				county ?= title:c_bamian
+			}
+			add = 100
+		}
+	}
 	
 	cost = {
 		gold = {
@@ -240,23 +251,15 @@
 		#trigger_event = tarim_basin.0058	
 	}
 
-	# Once you arrive at the springs, trigger the relevant event(s)
-	on_leave_travel_state = {
-
+	on_enter_passive_state = {
+		
 	}
-
-	on_enter_passive_state = {	
-		#trigger_event = tarim_basin.0058	
-	}
-	
 
 	###################
 	# GUEST HANDLING
 	###################
-	
-	allow_zero_guest_invites = yes
 
-	max_guests = 10
+	max_guests = 20
 
 	guest_invite_rules = {
 		rules = {
@@ -303,7 +306,7 @@
 	}
 
 	guest_join_chance = {
-		base = 0
+		base = 10
 		base_activity_modifier = yes
 
 		# Scripted Modifiers
