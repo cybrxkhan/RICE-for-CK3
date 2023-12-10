@@ -961,26 +961,26 @@ bamian.0052 = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					NOT = { religion = religion:buddhism_reliigon }
+					NOT = { religion = religion:buddhism_religion }
 				}
 				desc = bamian.0052.desc.non_buddhist
 			}
 			desc = bamian.0052.desc.buddhist
 		}
 	}
-	theme = learning
+	theme = diplomacy_foreign_affairs_focus
 	
 	left_portrait = root
 	
 	right_portrait = {
-		character = scope:xuanzang
-		animation = throne_room_writer
+		character = scope:monk
+		animation = personality_honorable
 	}
 	
 	trigger = {
 		capital_province = {
 			OR = {
-				geographical_region = ghw_region_eastern_middle_east
+				geographical_region = custom_bactria
 				geographical_region = world_steppe_tarim
 			}
 		}
@@ -1015,6 +1015,7 @@ bamian.0052 = {
 	}
 
 	immediate = {
+		religion:buddhism_religion = { save_scope_as = buddhist }
 		random_list = {
 			# Chinese
 			# Tibetan
@@ -1024,7 +1025,7 @@ bamian.0052 = {
 				create_character = {
 					location = root.location
 					template = xuanzang_pilgrim_template
-					save_scope_as = xuanzang
+					save_scope_as = monk
 					culture = culture:han
 					faith = faith:mahayana
 				}				
@@ -1033,7 +1034,7 @@ bamian.0052 = {
 				create_character = {
 					location = root.location
 					template = xuanzang_pilgrim_template
-					save_scope_as = xuanzang
+					save_scope_as = monk
 					culture = culture:bodpa
 					faith = faith:lamaism
 				}				
@@ -1042,7 +1043,7 @@ bamian.0052 = {
 				create_character = {
 					location = root.location
 					template = xuanzang_pilgrim_template
-					save_scope_as = xuanzang
+					save_scope_as = monk
 					culture = culture:samhan
 					faith = faith:mahayana
 				}				
@@ -1051,7 +1052,7 @@ bamian.0052 = {
 				create_character = {
 					location = root.location
 					template = xuanzang_pilgrim_template
-					save_scope_as = xuanzang
+					save_scope_as = monk
 					culture = culture:kinh
 					faith = faith:mahayana
 				}				
@@ -1092,11 +1093,169 @@ bamian.0052 = {
 			}
 		}
 		hidden_effect = {
-			scope:xuanzang = {
+			scope:monk = {
 				death = {
 					death_reason = death_disappearance
 				}
 			}
+		}
+	}
+}
+
+
+# Iranian Buddhist Translators gain fame and want to go to the far east with your aid
+bamian.0053 = {
+	type = character_event
+	title = bamian.0053.t
+	desc = bamian.0053.desc
+	theme = learning
+	
+	right_portrait = {
+		character = root
+		animation = throne_room_writer
+	}
+	
+	trigger = {
+		religion = religion:buddhism_religion
+		OR = {
+			culture = { has_cultural_pillar = heritage_iranian }
+			culture = { has_cultural_pillar = heritage_tocharian }
+			culture = { has_cultural_pillar = heritage_indo_aryan }
+			culture = { has_cultural_pillar = heritage_dravidian }
+		}
+		capital_province = {
+			OR = {
+				geographical_region = world_middle_east
+				geographical_region = world_middle_east_persia
+				geographical_region = world_india
+				geographical_region = world_tibet
+				geographical_region = world_steppe_tarim
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = -0.3
+			NOT = { culture = { has_cultural_pillar = heritage_iranian } }
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	option = { # Ok
+		name = bamian.0053.a
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 100
+			}
+		}
+		remove_short_term_gold = 100
+		add_piety = 150
+		add_character_modifier = {
+			modifier = RICE_bamian_supported_buddhist_translators
+			years = 10
+		}
+		stress_impact = {
+			callous = miniscule_stress_impact_gain
+			greedy = minor_stress_impact_gain
+			cynical = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = bamian.0053.b
+		stress_impact = {
+			compassionate = miniscule_stress_impact_gain
+			generous = minor_stress_impact_gain
+			zealous = minor_stress_impact_gain
+		}
+	}
+}
+
+
+# Contemplating about Trapusa and Bhallika
+bamian.0054 = {
+	type = character_event
+	title = bamian.0054.t
+	desc = bamian.0054.desc
+	theme = faith
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+	
+	trigger = {
+		religion = religion:buddhism_religion
+		# OR = {
+		# 	culture = { has_cultural_pillar = heritage_iranian }
+		# 	culture = { has_cultural_pillar = heritage_tocharian }
+		# 	culture = { has_cultural_pillar = heritage_indo_aryan }
+		# 	culture = { has_cultural_pillar = heritage_dravidian }
+		# }
+		capital_province = {
+			geographical_region = world_middle_east_persia
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	option = { # Ok
+		name = bamian.0054.a
+		add_character_modifier = {
+			modifier = RICE_bamian_trapusa_and_bhallika_modifier
+			years = 10
 		}
 	}
 }
