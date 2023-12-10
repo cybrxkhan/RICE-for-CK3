@@ -788,3 +788,320 @@ bamian.0040 = {
 		}
 	}
 }
+
+
+
+
+
+
+######################################################################################
+# 
+# FLAVOR EVENTS
+# 
+# bamian.0050-bamian.0069 reserved
+# 
+######################################################################################
+
+
+# Islamic ruler notices that Buddhists circumambulate around their holy buildings like Muslims
+bamian.0050 = {
+	type = character_event
+	title = bamian.0050.t
+	desc = bamian.0050.desc
+	theme = faith
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	
+	trigger = {
+		religion = religion:islam_religion
+		any_held_title = {
+			tier = tier_county
+			religion = religion:buddhism_religion
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+	}
+
+	immediate = {
+		religion:buddhism_religion = { save_scope_as = buddhist }
+	}
+
+	option = { # Ok
+		name = bamian.0050.a
+		add_character_modifier = {
+			modifier = RICE_bamian_muslim_understanding_buddhists
+			years = 10
+		}
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			zealous = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = bamian.0050.b
+		add_piety = 50
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+}
+
+
+# Writing poetry with cliches about bot/idol faces
+bamian.0051 = {
+	type = character_event
+	title = bamian.0051.t
+	desc = bamian.0051.desc
+	theme = learning
+	
+	right_portrait = {
+		character = root
+		animation = throne_room_writer
+	}
+	
+	trigger = {
+		OR = {
+			religion = religion:islam_religion
+			religion = religion:zoroastrianism_religion
+			religion = religion:yazidi_religion
+			religion = religion:zunism_religion
+		}
+		# Should be a literate culture
+		NOT = { government_has_flag = government_is_tribal }
+		OR = {
+			culture = { has_cultural_pillar = heritage_iranian }
+			culture = { has_cultural_pillar = heritage_tocharian }
+			culture = { has_cultural_pillar = heritage_turkic }
+		}
+		capital_province = {
+			OR = {
+				geographical_region = world_middle_east
+				geographical_region = world_middle_east_persia
+				geographical_region = world_india
+				geographical_region = world_tibet
+				geographical_region = world_steppe_tarim
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	option = { # Ok
+		name = bamian.0051.a
+		add_character_modifier = {
+			modifier = RICE_bamian_cliche_poetry
+			years = 5
+		}
+	}
+}
+
+
+# Buddhist pilgrim monk visits you
+bamian.0052 = {
+	type = character_event
+	title = bamian.0052.t
+	desc = {
+		desc = bamian.0052.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { religion = religion:buddhism_reliigon }
+				}
+				desc = bamian.0052.desc.non_buddhist
+			}
+			desc = bamian.0052.desc.buddhist
+		}
+	}
+	theme = learning
+	
+	left_portrait = root
+	
+	right_portrait = {
+		character = scope:xuanzang
+		animation = throne_room_writer
+	}
+	
+	trigger = {
+		capital_province = {
+			OR = {
+				geographical_region = ghw_region_eastern_middle_east
+				geographical_region = world_steppe_tarim
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+	}
+
+	immediate = {
+		random_list = {
+			# Chinese
+			# Tibetan
+			# Korean
+			# Vietnamese
+			20 = {
+				create_character = {
+					location = root.location
+					template = xuanzang_pilgrim_template
+					save_scope_as = xuanzang
+					culture = culture:han
+					faith = faith:mahayana
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = xuanzang_pilgrim_template
+					save_scope_as = xuanzang
+					culture = culture:bodpa
+					faith = faith:lamaism
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = xuanzang_pilgrim_template
+					save_scope_as = xuanzang
+					culture = culture:samhan
+					faith = faith:mahayana
+				}				
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = xuanzang_pilgrim_template
+					save_scope_as = xuanzang
+					culture = culture:kinh
+					faith = faith:mahayana
+				}				
+			}
+		}
+	}
+
+	option = { # Ok
+		name = bamian.0052.a
+		add_prestige = 50
+		dynasty ?= { add_dynasty_prestige = 50 }
+	}
+
+	after = {
+		random = {
+			chance = 40
+			modifier = {
+				add = 7
+				diplomacy >= decent_skill_rating
+			}
+			modifier = {
+				add = 5
+				diplomacy >= very_high_skill_rating
+			}
+			modifier = {
+				add = 7
+				learning >= decent_skill_rating
+			}
+			modifier = {
+				add = 5
+				learning >= very_high_skill_rating
+			}
+			send_interface_toast = {
+				type = event_toast_effect_good
+				left_icon = ROOT
+				title = bamian.0052.toast
+				add_character_modifier = RICE_magadha_mentioned_by_a_buddhist_pilgrim
+			}
+		}
+		hidden_effect = {
+			scope:xuanzang = {
+				death = {
+					death_reason = death_disappearance
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
