@@ -1,16 +1,13 @@
-<img src="https://i.imgur.com/qnoWzeT.jpg">
+<img src="https://i.imgur.com/7AfWivH.jpg">
 
-## Latest Version: Version 1.11.0.a Hotfix for "Melek Taus" (Released 11/18/23, for vanilla patch 1.11.x)
+## Latest Version: Version 1.11.1 "Hindu Kush" (Released 12/12/23, for vanilla patch 1.11.x)
 
-**Newest Flavor Pack: *Yazidis: People of the Peacock Angel***
+**Newest Flavor Pack: *Bamian: Valley of Light***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_“O my Lord, you are angel-ruler of the world,_
-_O my Lord, you are the generous angel-ruler,_
-_You are the angel of the heavenly firmament,_
-_O my Lord, you are forever primordial.”_
-_– Excerpt from the Yazidi hymn to Melek Taus, the Peacock Angel_
+_“To the north-east of the royal city [of Bamian] there is a mountain, on the declivity of which is placed a stone figure of Buddha, erect, in height 140 or 150 feet. Its golden hues sparkle on every side, and its precious ornaments dazzle the eyes by their brightness.”_
+_- Xuanzang, 7th century Chinese pilgrim and monk, on the larger Bamian Buddha statue_
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
@@ -38,6 +35,7 @@ The mod folder should look something like this:
 At the moment, the following RICE flavor packs are included in the mod. Click to view guides which cover the features included in each pack in more detail (please note some guides are unfinished and/or out of date).
 
 - [Aachen: Charlemagne's Capital](https://docs.google.com/document/d/e/2PACX-1vQNflzrfD7oYcEYcMWDW07MsWCW-8cwIO8-JxSIm_WTnB1Ij0Dr-b3PRNu8mKmUFRXfHW3QDax2Z0DD/pub)
+- [Bamian: Valley of Light](https://docs.google.com/document/d/e/2PACX-1vRkkEsWly8Ma6TtWuE1ucsiTEGNFxRP4O-691XW02FvlHhX-02u_PVIf1LTeNx2egNEUnFuhXw6wNve/pub)
 - [Bozo: Masters of the River](https://docs.google.com/document/d/e/2PACX-1vSgpnZZbXXz3sProMU-P70vbCsYatZOqkonVQMLdtZMFWhXf8zH1RE1ubz9hQI-kTqWIIK0at1Ki5PR/pub)
 - [Brittany: The Western Duchy](https://docs.google.com/document/d/e/2PACX-1vTzGuR_ffwqfpm6rwh27hq71K4Fs35pcLZioPLbHulhHn2ZV25SD2HrGipPofvBYngi5S_O4Yino4Y7/pub)
 - [Chios: Isle of Mastic](https://docs.google.com/document/d/1Lu4cGXN7hSaDtYd_wsXKbjAeIOYMoYVuum6zfYfBc_k/pub)
@@ -72,49 +70,34 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/riGZH5D.jpg">
+<img src="https://i.imgur.com/RXo9bBu.jpg">
 
-### 1.11.0.a Hotfix for "Melek Taus"
+### 1.11.0 "Hindu Kush"
 
-- Updated RICE+EPE Compatch
-- Added French translations for the Siwa Flavor Pack (credits to Castorjunior on Paratranz)
-- AI is now more likely to take the decision to Commission Historia Normannorum
-- The Commission Historia Normannorum decision is now available outside the Acculturation phase if you have a high enough prestige level and learning
-- Drowning of Morana/Marzanna activity now costs prestige and piety for non-pagans, rather than giving prestige
-- Default name of the Drowning of Marzanna activity changed to Drowning of Morana, and it will only be called Marzanna for Lechitic cultures in later eras
-- Several characters in Persia now retain their personality traits assigned by vanilla that RICE previously changed
-- Reduced the chances AI will adopt Kala Settlements and Akhtarveniks traditions for their culture
-- Increased the chances AI will adopt the Wewa Systems and Stepwell Builders traditions
-- Implemented a workaround for an odd bug where Clan Unity interface won’t appear until a month passes after game start for some Clan government rulers added by RICE
-- Fixed RICE cultures not wearing Iranian clothes as appropriate (like the Hephthalites and Pamiris)
-- Fixed Firuz (the last Zunbil) being both secretly Zunist and Zunist at the same time for a few days at game start
-- Fixed loc error with the high god name for the Shamsi pagans
-- Fixed Munya group vacation activity ending earlier than it should
-- Miscellaneous bugfixes
-
-### 1.11.0 "Melek Taus"
-
-- Added **Yazidi Flavor Pack: People of the Peacock Angel**
+- Added Bamian Flavor Pack: Valley of Light
 - Added 3 Middle Eastern soundtracks
-- Many miscellaneous tweaks to existing Iranian content to adapt to Legacy of Persia
-- Added Sorbian language for Sorbians
-- Added a fictitious ruler to represent the “pagan” Tirahaye Kurds in 1066
-- Added Zunism, Dezawism, Manichaeism, Mandaeism, Yazidism, Yarsanism, Mehrism, Harranianism, Shamsism, and Rabbinism as involved faiths in the Iranian Intermezzo struggle
-- Added Pamiri, Turco-Hephthalite, Hephthalite, Khuzi, Parsim, and Bavlim as involved cultures in the Iranian Intermezzo struggle
-- Renamed vanilla’s East Bantu culture to Zanj
-- Renamed vanilla’s Afridunism faith to Faridunism (since Afridun is the Arabized version of Faridun/Fareydun)
-- Placed all formerly East Bantu and South Bantu heritage cultures into vanilla's Bantu heritage (the two heritages remain in the code, though, just in case)
-- Turco-Hephthalites have the Frontier Warriors tradition if you own Legacy of Persia
-- Pamiris have Frequent Festivities replaced with Jirga tradition if you own Legacy of Persia
-- Harran and Upper Khabur are now Syriac
-- Thabit ibn Qurra and most other historical Harranian characters are now Syriac
-- Some of the other historical Harranian characters now know the Greek and/or Arabic language at game start
-- Brahuis now use RICE’s old custom namelist (instead of the Gond namelist)
-- Disabled all RICE memories for now as memories (both modded and vanilla) may have been causing performance issues in both modded and vanilla games, and RICE adds a lot for activities; this is experimental and may be reverted at a later time
-- Fixed encoding for compatibility triggers file in scripted triggers
-- Fixed possible bug where non-Theravada faiths were inheriting Theravada doctrines
-- Fixed the game concept for Mud Masons missing text
+- Added historical aspirations for 2 characters in 1066: Qawurd, the last Seljuk Prince, and Isleifur, the first bishop of Ireland
+- Added Sher Bamiyan dynasty for the rulers of Bamiyan in 867
+- Added Sa’id, ruler of Andarab in Tokharistan in 867
+- Added Jewish courtier Siman-Tov to Ghaznavid court in 1066
+- Added new struggle catalysts and effects from LoP’s struggle to RICE’s struggles
+- Decision to construct a Qanat now grants you extra prestige and the county modifier lasts longer if you have the Irrigation Experts tradition
+- Decisions to repair the watchposts of Wakhan and Karakorum will now continue to appear even when they are not normally available
+- Removed unneeded RICE_sea_character_names, RICE_sea_dynasties and sea_religion_steppe localization files in non-English localizations
+- Changed most Theravada in Afghanistan back to Mahayana
+- Increased the chances of getting a Sephardi merchant when spawning Jewish Trans-Saharan merchants
+- Switched out Mountain Homes for Pastoralists for the Turco-Hephthalites
+- Nerfed Yaqub Saffarid and his brothers’ modifiers
+- Yazidi head of faith is now hereditary
+- Replaced all Tribal Government triggers with government flag triggers for improved compatibility with mods that add governments
+- Nasir Khusraw content now uses PI’s new Nasir Khusraw character, rather than the old duplicate
+- Disabled Tapama Djenepo character from spawning when moving Jenne (and adjusted pilgrimage to her tomb accordingly to mention her offscreen) to potentially reduce bloat/lag issues\*
+- Fixed several Polabian equivalent cultures in CE not getting the Wendish Confederations tradition when playing with CE
+- Fixed edge cases where expedition leaders would be unable to do other activities if they became rulers
+- Fixed a bug where Ali ibn Asad, the Badakhshanid ruler in 1066, spawns a random extra son
 - Miscellaneous bugfixes
+
+\* This is just one possible cause of late game bloat based on some investigation with help from various users – this does NOT prevent all possible causes of the bloat issue, nor does it mean that this issue overall is or isn’t caused by RICE per se (for instance, it could be a vanilla issue that interacts badly with RICE), merely that this was one repeatable instance of the bug.
 
 ## Credits
 
