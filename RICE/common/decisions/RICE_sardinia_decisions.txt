@@ -1,0 +1,326 @@
+﻿
+
+RICE_sardinia_decide_sardinia_orientation = {
+	picture = "gfx/interface/illustrations/decisions/decision_christian_monastery_monks.dds"
+	major = yes
+	desc = RICE_sardinia_decide_sardinia_orientation_desc
+
+	ai_check_interval = 40
+	
+	#cooldown = { years = 30 }
+
+	is_shown = {
+		is_landed = yes
+		any_held_county = {
+			any_county_province = {
+				geographical_region = RICE_sardinia_region
+			}
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_sardinia_orientation_decided
+			}
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		faith.religion = religion:christianity_religion
+	}
+
+	is_valid = {
+		
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		RICE_is_available_adult_even_if_sick_trigger = yes
+	}
+
+	
+	widget = {
+		gui = "decision_view_widget_generic_multichoice_with_effects"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "CHOOSE_SARDINIA_ORIENTATION"
+		show_from_start = yes
+		
+		### Catholic
+		item = {
+			value = choose_catholic
+			is_valid = {
+				faith.religion = religion:christianity_religion
+				#faith = { has_doctrine = special_doctrine_ecumenical_christian }
+			}
+			current_description = choose_catholic_desc
+			localization = choose_catholic_name
+			icon = "gfx/interface/icons/faith/catholic.dds"
+			ai_chance = {
+				value = 0
+				if = {
+					limit = {
+						faith = faith:catholic
+					}
+					add = 20
+				}
+				if = {
+					limit = {
+						any_sub_realm_county = {
+							faith = faith:catholic
+						}
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						exists = title:k_papal_state.holder
+						opinion = {
+							target = title:k_papal_state.holder
+							value > 0
+						}
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						OR = {
+							has_title = title:e_hre
+							top_liege = { has_title = title:e_hre }
+							top_liege = { has_title = title:k_papal_state }
+						}						
+					}
+					add = 20
+				}
+			}
+		}
+		# Orthodox
+		item = {
+			value = choose_orthodox
+			is_valid = {
+				faith.religion = religion:christianity_religion
+				#faith = { has_doctrine = special_doctrine_ecumenical_christian }
+			}
+			current_description = choose_orthodox_desc
+			localization = choose_orthodox_name
+			icon = "gfx/interface/icons/faith/orthodox.dds"
+			ai_chance = {
+				value = 0
+				if = {
+					limit = {
+						faith = faith:orthodox
+					}
+					add = 20
+				}
+				if = {
+					limit = {
+						any_sub_realm_county = {
+							faith = faith:orthodox
+						}
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						exists = title:e_byzantium.holder
+						opinion = {
+							target = title:e_byzantium.holder
+							value > 0
+						}
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						OR = {
+							has_title = title:e_byzantium
+							top_liege = { has_title = title:e_byzantium }
+							top_liege = { has_title = title:k_orthodox }
+							has_title = title:e_roman_empire
+							top_liege = { has_title = title:e_roman_empire }
+						}						
+					}
+					add = 20
+				}
+			}
+		}
+		# Neither Catholic nor Orthodox
+		item = {
+			value = choose_neither
+			is_valid = {
+				faith.religion = religion:christianity_religion
+				NOR = {
+					faith = faith:catholic
+					faith = faith:orthodox
+				}
+			}
+			current_description = choose_neither_desc
+			localization = choose_neither_name
+			icon = "gfx/interface/icons/message_feed/heresy.dds"
+			ai_chance = {
+				value = 0
+				if = {
+					limit = {
+						NOR = {
+							faith = faith:catholic
+							faith = faith:orthodox
+						}
+					}
+					add = 20
+				}
+				if = {
+					limit = {
+						any_sub_realm_county = {
+							religion = religion:christianity_religion
+							NOR = {
+								faith = faith:catholic
+								faith = faith:orthodox
+							}
+						}
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						exists = title:k_orthodox.holder
+						opinion = {
+							target = title:k_orthodox.holder
+							value < 0
+						}
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						exists = title:e_byzantium.holder
+						opinion = {
+							target = title:e_byzantium.holder
+							value < 0
+						}
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						NOR = {
+							has_title = title:e_hre
+							top_liege = { has_title = title:e_hre }
+							top_liege = { has_title = title:k_papal_state }
+							has_title = title:e_byzantium
+							top_liege = { has_title = title:e_byzantium }
+							top_liege = { has_title = title:k_orthodox }
+							has_title = title:e_roman_empire
+							top_liege = { has_title = title:e_roman_empire }
+						}						
+					}
+					add = 10
+				}
+			}
+		}
+	}
+
+	minimum_cost = {
+		gold = major_gold_value
+	}
+	
+	ai_potential = {
+		short_term_gold > major_gold_value
+	}
+
+	effect = {
+
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_sardinia_orientation_decided
+		}
+
+		custom_tooltip = RICE_sardinia_decide_sardinia_orientation_effect_tooltip_1
+
+		if = {
+			limit = { scope:choose_catholic = yes }
+			
+			if = {
+				limit = {
+					NOT = { capital_county.faith = faith:catholic }
+				}
+				capital_county = { set_county_faith = faith:catholic }
+			}
+			if = {
+				limit = {
+					NOT = { faith = faith:catholic }
+				}
+				show_as_tooltip = { set_character_faith = faith:catholic }
+				hidden_effect = {
+					set_character_faith_with_conversion = faith:catholic
+				}
+			}
+			faith:catholic = {
+				change_fervor = {
+					value = 10
+					desc = RICE_fervor_gain_sardinia_fervor
+				}
+			}
+		}
+
+		else_if = {
+			limit = { scope:choose_orthodox = yes }
+			
+			if = {
+				limit = {
+					NOT = { capital_county.faith = faith:orthodox }
+				}
+				capital_county = { set_county_faith = faith:orthodox }
+			}
+			if = {
+				limit = {
+					NOT = { faith = faith:orthodox }
+				}
+				show_as_tooltip = { set_character_faith = faith:orthodox }
+				hidden_effect = {
+					set_character_faith_with_conversion = faith:orthodox
+				}
+			}
+			faith:orthodox = {
+				change_fervor = {
+					value = 10
+					desc = RICE_fervor_gain_sardinia_fervor
+				}
+			}
+		}
+
+		else_if = {
+			limit = { scope:choose_neither = yes }			
+			if = {
+				limit = {
+					NOT = { capital_county.faith = faith }
+				}
+				capital_county = { set_county_faith = root.faith }
+			}
+			root.faith = {
+				change_fervor = {
+					value = 10
+					desc = RICE_fervor_gain_sardinia_fervor
+				}
+			}
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_sardinia_decide_sardinia_orientation_context_tooltip
+		}
+		
+		trigger_event = sardinia.8888
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+	}
+}
+
+
+# Send in Catholic monks
+# decision_christian_monastery_monks
