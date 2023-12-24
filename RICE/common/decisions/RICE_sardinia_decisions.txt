@@ -1,7 +1,7 @@
 ﻿
 
 RICE_sardinia_decide_sardinia_orientation = {
-	picture = "gfx/interface/illustrations/decisions/decision_christian_monastery_monks.dds"
+	picture = "gfx/interface/illustrations/decisions/decision_ck2_prospering_province.dds"
 	major = yes
 	desc = RICE_sardinia_decide_sardinia_orientation_desc
 
@@ -142,9 +142,93 @@ RICE_sardinia_decide_sardinia_orientation = {
 				}
 			}
 		}
-		# Neither Catholic nor Orthodox
+		# North Africa
 		item = {
-			value = choose_neither
+			value = choose_north_african
+			is_valid = {
+				# OR = {
+				# 	religion = religion:islam_religion
+				# 	religion = religion:amazigh_religion
+				# 	culture = {	has_cultural_pillar = heritage_berber }
+				# 	culture = {	has_cultural_pillar = heritage_arabic }
+				# 	NOR = {
+				# 		faith = faith:catholic
+				# 		faith = faith:orthodox
+				# 	}
+				# }
+			}
+			current_description = choose_north_african_desc
+			localization = choose_north_african_name
+			icon = "gfx/interface/icons/message_feed/conciliation.dds"
+			ai_chance = {
+				value = 0
+				if = {
+					limit = {
+						NOR = {
+							faith = faith:catholic
+							faith = faith:orthodox
+						}
+					}
+					add = 5
+				}
+				if = {
+					limit = {
+						OR = {
+							religion = religion:islam_religion
+							religion = religion:amazigh_religion
+						}
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						OR = {
+							culture = {	has_cultural_pillar = heritage_berber }
+							culture = {	has_cultural_pillar = heritage_arabic }
+						}
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						exists = title:k_orthodox.holder
+						opinion = {
+							target = title:k_orthodox.holder
+							value < 0
+						}
+					}
+					add = 5
+				}
+				if = {
+					limit = {
+						exists = title:e_byzantium.holder
+						opinion = {
+							target = title:e_byzantium.holder
+							value < 0
+						}
+					}
+					add = 5
+				}
+				if = {
+					limit = {
+						NOR = {
+							has_title = title:e_hre
+							top_liege = { has_title = title:e_hre }
+							top_liege = { has_title = title:k_papal_state }
+							has_title = title:e_byzantium
+							top_liege = { has_title = title:e_byzantium }
+							top_liege = { has_title = title:k_orthodox }
+							has_title = title:e_roman_empire
+							top_liege = { has_title = title:e_roman_empire }
+						}						
+					}
+					add = 5
+				}
+			}
+		}
+		# none Catholic nor Orthodox nor North African
+		item = {
+			value = choose_none
 			is_valid = {
 				faith.religion = religion:christianity_religion
 				NOR = {
@@ -152,8 +236,8 @@ RICE_sardinia_decide_sardinia_orientation = {
 					faith = faith:orthodox
 				}
 			}
-			current_description = choose_neither_desc
-			localization = choose_neither_name
+			current_description = choose_none_desc
+			localization = choose_none_name
 			icon = "gfx/interface/icons/message_feed/heresy.dds"
 			ai_chance = {
 				value = 0
@@ -232,7 +316,7 @@ RICE_sardinia_decide_sardinia_orientation = {
 			target = flag:RICE_sardinia_orientation_decided
 		}
 
-		custom_tooltip = RICE_sardinia_decide_sardinia_orientation_effect_tooltip_1
+		#custom_tooltip = RICE_sardinia_decide_sardinia_orientation_effect_tooltip_1
 
 		if = {
 			limit = { scope:choose_catholic = yes }
@@ -252,10 +336,37 @@ RICE_sardinia_decide_sardinia_orientation = {
 					set_character_faith_with_conversion = faith:catholic
 				}
 			}
+
+			custom_tooltip = RICE_sardinia_decide_sardinia_orientation_effect_tooltip.catholic.1
+			custom_tooltip = RICE_sardinia_decide_sardinia_orientation_effect_tooltip.catholic.2
+
 			faith:catholic = {
 				change_fervor = {
 					value = 10
 					desc = RICE_fervor_gain_sardinia_fervor
+				}
+			}
+			
+
+			show_as_tooltip = {
+				culture = {
+					if = {
+						limit = {
+							culture = {
+								has_cultural_tradition = tradition_RICE_judicati
+							}
+						}
+						#remove_culture_tradition = tradition_RICE_judicati
+						add_culture_tradition = tradition_RICE_judicati
+					}
+				}
+			}
+			hidden_effect = {
+				every_culture_global = {
+					limit = { has_cultural_tradition = tradition_RICE_judicati }
+					remove_culture_tradition = tradition_RICE_judicati
+					add_culture_tradition = tradition_RICE_judicati
+					remove_variable = tradition_cooldown
 				}
 			}
 		}
@@ -284,10 +395,28 @@ RICE_sardinia_decide_sardinia_orientation = {
 					desc = RICE_fervor_gain_sardinia_fervor
 				}
 			}
+			
+			every_culture_global = {
+				limit = { has_cultural_tradition = tradition_RICE_judicati }
+				remove_culture_tradition = tradition_RICE_judicati
+				add_culture_tradition = tradition_RICE_judicati
+				remove_variable = tradition_cooldown
+			}
 		}
 
 		else_if = {
-			limit = { scope:choose_neither = yes }			
+			limit = { scope:choose_north_african = yes }
+			
+			every_culture_global = {
+				limit = { has_cultural_tradition = tradition_RICE_judicati }
+				remove_culture_tradition = tradition_RICE_judicati
+				add_culture_tradition = tradition_RICE_judicati
+				remove_variable = tradition_cooldown
+			}
+		}
+
+		else_if = {
+			limit = { scope:choose_none = yes }			
 			if = {
 				limit = {
 					NOT = { capital_county.faith = faith }
@@ -300,14 +429,21 @@ RICE_sardinia_decide_sardinia_orientation = {
 					desc = RICE_fervor_gain_sardinia_fervor
 				}
 			}
+			
+			every_culture_global = {
+				limit = { has_cultural_tradition = tradition_RICE_judicati }
+				remove_culture_tradition = tradition_RICE_judicati
+				add_culture_tradition = tradition_RICE_judicati
+				remove_variable = tradition_cooldown
+			}
 		}
 		
-		if = {
-			limit = {
-				has_game_rule = RICE_historical_context_on
-			}
-			custom_tooltip = RICE_sardinia_decide_sardinia_orientation_context_tooltip
-		}
+		# if = {
+		# 	limit = {
+		# 		has_game_rule = RICE_historical_context_on
+		# 	}
+		# 	custom_tooltip = RICE_sardinia_decide_sardinia_orientation_context_tooltip
+		# }
 		
 		trigger_event = sardinia.8888
 	}
