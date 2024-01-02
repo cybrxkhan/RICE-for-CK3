@@ -301,8 +301,8 @@ RICE_sardinia_decide_sardinia_orientation = {
 		}
 	}
 
-	minimum_cost = {
-		gold = major_gold_value
+	cost = {
+		gold = { value = medium_gold_value }
 	}
 	
 	ai_potential = {
@@ -460,3 +460,180 @@ RICE_sardinia_decide_sardinia_orientation = {
 
 # Send in Catholic monks
 # decision_christian_monastery_monks
+
+
+
+
+
+
+RICE_sardinia_inaugurate_major_palio = {
+	picture = "gfx/interface/illustrations/decisions/decision_ck2_prospering_province.dds"
+	desc = RICE_sardinia_inaugurate_major_palio_desc
+
+	major = yes
+
+	ai_check_interval = 40
+	
+	#cooldown = { days = 3650 }
+
+	is_shown = {
+		is_landed = yes
+		culture = {
+			OR = {
+				AND = {
+					has_cultural_pillar = heritage_latin
+					has_cultural_era_or_later = culture_era_early_medieval
+				}
+				has_innovation = innovation_RICE_palio_races
+			}
+		}
+	}
+
+	is_valid = {
+		culture = {
+			has_innovation = innovation_RICE_palio_races
+		}
+		#custom_description = {
+		#	text = RICE_bamian_shahr_e_zohak_recently_repaired_req
+			NOT = {
+				capital_county.duchy = {
+					any_in_de_jure_hierarchy = {
+						tier = tier_county
+						RICE_has_major_palio_trigger = yes
+					}
+				}
+			}
+		#}
+		#gold >= 80
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		RICE_is_available_adult_even_if_sick_trigger = yes
+	}
+
+	cost = {
+		gold = { value = major_gold_value }
+	}
+
+	widget = {
+		gui = "decision_view_widget_generic_multichoice_with_effects"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "CHOOSE_MAJOR_PALIO_TYPE"
+		show_from_start = yes
+		
+		### RELIGIOUS
+		item = {
+			value = choose_religious
+			current_description = choose_religious_desc
+			localization = choose_religious_name
+			icon = "gfx/interface/icons/message_feed/religious_councillor_job.dds"
+			ai_chance = {
+				value = 30
+				if = {
+					limit = {
+						has_trait = zealous					
+					}
+					add = 10
+				}
+			}
+		}
+		
+		### CIVIC
+		item = {
+			value = choose_civic
+			current_description = choose_civic_desc
+			localization = choose_civic_name
+			icon = "gfx/interface/icons/message_feed/council.dds"
+			ai_chance = {
+				value = 10
+				if = {
+					limit = {
+						has_trait = generous					
+					}
+					add = 20
+				}
+			}
+		}
+		
+		### DYNASTIC
+		item = {
+			value = choose_dynastic
+			current_description = choose_dynastic_desc
+			localization = choose_dynastic_name
+			icon = "gfx/interface/icons/message_feed/dynasty.dds"
+			ai_chance = {
+				value = 10
+				if = {
+					limit = {
+						has_trait = ambitious					
+					}
+					add = 20
+				}
+			}
+		}
+
+	}
+	
+	ai_potential = {
+		short_term_gold > major_gold_value
+	}
+
+	effect = {
+		custom_description_no_bullet = {
+			text = RICE_sardinia_inaugurate_major_palio_effect_tooltip_4
+		}
+
+		if = {
+			limit = { scope:choose_religious = yes }
+			show_as_tooltip = {
+				RICE_inaugurate_religious_palio_effect = yes
+			}
+		}
+
+		else_if = {
+			limit = { scope:choose_civic = yes }
+			show_as_tooltip = {
+				RICE_inaugurate_civic_palio_effect = yes
+			}
+		}
+
+		else_if = {
+			limit = { scope:choose_dynastic = yes }
+			show_as_tooltip = {
+				RICE_inaugurate_dynastic_palio_effect = yes
+			}
+		}
+		
+		# if = {
+		# 	limit = {
+		# 		has_game_rule = RICE_historical_context_on
+		# 	}
+		# 	custom_tooltip = RICE_sardinia_inaugurate_major_palio_context_tooltip
+		# }
+		
+		trigger_event = sardinia.8888
+
+		# add_to_list = notification_sent
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
