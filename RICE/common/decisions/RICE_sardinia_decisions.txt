@@ -632,6 +632,121 @@ RICE_sardinia_inaugurate_major_palio = {
 
 
 
+RICE_saridinia_sardaniya_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_moorish_decor.dds"
+	major = yes
+	desc = RICE_saridinia_sardaniya_decision_desc
+
+	ai_check_interval = 120
+
+	is_shown = {
+		is_landed = yes
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_sardinia_sardaniya_established
+			}
+		}
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_ifriqiya_region
+			}
+		}
+	}
+
+	is_valid = {
+		custom_description = {
+			text = RICE_ifriqiya_region_geographical_req
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_ifriqiya_region
+				}
+			}
+		}
+		prestige_level >= 2
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		RICE_is_available_adult_even_if_sick_trigger = yes
+	}
+
+	cost = {
+		gold = {
+			value = medium_gold_value
+		}
+		prestige = {
+			value = medium_prestige_value
+		}
+	}
+
+	effect = {
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_sardinia_sardaniya_established
+		}
+		
+		save_scope_as = sardinia_settlement_liege
+
+		show_as_tooltip = {
+			RICE_sardaniya_settlement_decision_effect = yes
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_saridinia_sardaniya_decision_context_tooltip
+		}
+
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:sardinia_settlement_liege
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							OR = {
+								geographical_region = world_europe_south
+								geographical_region = world_europe_west_iberia
+								geographical_region = world_africa_north
+								geographical_region = world_africa_sahara
+								geographical_region = world_asia_minor
+							}		
+						}
+					}
+				}
+			}
+			trigger_event = sardinia.0010
+		}		
+		
+
+		# add_to_list = notification_sent
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 15
+			has_trait = diligent
+		}
+		modifier = {
+			add = -15
+			has_trait = lazy
+		}
+		modifier = {
+			add = 15
+			has_trait = zealous
+		}
+		modifier = {
+			add = -15
+			has_trait = arbitrary
+		}
+	}
+}
 
 
 
