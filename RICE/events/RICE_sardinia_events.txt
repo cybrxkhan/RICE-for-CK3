@@ -26,6 +26,19 @@ namespace = sardinia
 
 
 
+# Hidden event to spawn Afro-Latin characters at game start
+sardinia.0002 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		create_character = {
+			location = root.capital_province
+			template = RICE_afro_latin_generic_template
+			employer = root			
+		}
+	}
+}
 
 # Sardinians arrive in Sardaniya
 # County randomly chosen, but weighted to 
@@ -33,7 +46,7 @@ sardinia.0010 = {
 	type = character_event
 	title = sardinia.0010.t
 	desc = sardinia.0010.desc
-	theme = realm
+	theme = RICE_theme_north_africa_ksar
 	
 	left_portrait = {
 		character = scope:sardinia_settlement_liege
@@ -42,6 +55,13 @@ sardinia.0010 = {
 	
 	immediate = {		
 		play_music_cue = mx_cue_low_key_positive
+
+		culture:sardinian = { save_scope_as = sardinian }
+
+		culture:african_roman = { save_scope_as = african_roman }
+
+		religion:christianity_religion = { save_scope_as = christianity }
+
 		if = {
 			limit = {
 				root = scope:sardinia_settlement_liege
@@ -55,9 +75,149 @@ sardinia.0010 = {
 				}
 			}
 		}
+
+		custom_tooltip = sardinia.0010.tooltip
 	}
 
 	option = { # OK
 		name = sardinia.0010.a
 	}
 }
+
+
+# Sardinian courtier spawn in North Africa
+# Setup event
+sardinia.0011 = {
+	hidden = yes
+
+	trigger = {
+		is_target_in_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_sardinia_sardaniya_established
+		}
+		any_held_county = {
+			has_county_modifier = RICE_sardinia_north_african_settlement_modifier 
+		}
+	}
+
+	immediate = {
+		# Find random Sardinian culture as appropriate
+		if = {
+			limit = {
+				any_county = {					
+					OR = {
+						culture = culture:sardinian
+						culture = {
+							any_parent_culture_or_above = {
+								this = culture:sardinian
+							}
+						}
+					}
+				}
+			}
+			random_county = {
+				limit = {
+					OR = {
+						culture = culture:sardinian
+						culture = {
+							any_parent_culture_or_above = {
+								this = culture:sardinian
+							}
+						}
+					}
+				}
+				culture = {
+					save_scope_as = sardinian_culture
+				}
+			}
+		}
+		else = {
+			culture:sardinian = {
+				save_scope_as = sardinian_culture
+			}
+		}
+		# random_county_in_region = {
+		# 	region = RICE_ifriqiya_region
+		# 	limit = {
+		# 		has_county_modifier = RICE_sardinia_north_african_settlement_modifier
+		# 	}	
+		# 	save_scope_as = sardaniya_county		
+		# }
+		every_county = {
+			limit = {
+				squared_distance = {
+					target = root.capital_county
+					value < squared_distance_medium
+				}
+			}
+			add_to_list = sardinian_spawn_candidates
+		}
+		random_list = {
+			50 = {
+				trigger_event = sardinia.0012
+			}
+			50 = {			
+				random_in_list = {
+					list = sardinian_spawn_candidates
+					save_scope_as = sardinian_spawn_county
+				}
+				scope:sardinian_spawn_county.holder = {
+					trigger_event = sardinia.0012
+				}
+			}
+		}
+	}
+}
+
+# Sardinian courtier spawn in North Africa
+sardinia.0012 = {
+	type = character_event
+	title = sardinia.0012.t
+	desc = sardinia.0012.desc
+	theme = RICE_theme_north_africa_ksar
+
+	left_portrait = root
+	right_portrait = {
+		character = scope:courtier
+		animation = throne_room_bow_1
+	}
+
+	immediate = {
+		create_character = {
+			location = root.capital_province
+			template = RICE_north_african_sardinian_generic_template
+			save_scope_as = courtier			
+		}
+	}
+
+	# Work with them
+	option = {
+		name = sardinia.0012.a
+		trigger = {
+			OR = {
+				gold >= 50
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 50
+		add_courtier = scope:courtier
+	}
+	# Don't work with them
+	option = {
+		name = sardinia.0012.b
+		hidden_effect = {
+			random = {
+				chance = 80
+				scope:courtier = {
+					death = {
+						death_reason = death_vanished
+					}
+				}
+			}
+		}
+	}
+
+}
+
+
+
