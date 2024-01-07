@@ -46,26 +46,71 @@ RICE_setup_sardinia_flavor_pack_effect = {
 	#
 	############################################################
 
-	character:235092 = {
-		get_title = title:d_sardinia
-		save_scope_as = sardinia_archon
-	}
-
-	character:75000 = {
-		save_scope_as = sardinia_vassal
-	}
-
-	create_title_and_vassal_change = {
-		type = swear_fealty
-		save_scope_as = change
-	}
-	scope:sardinia_vassal = {
-		change_liege = {
-			liege = scope:sardinia_archon
-			change = scope:change
+	if = {
+		limit = {
+			game_start_date = 867.1.1	
 		}
+
+		# Keep Sardinia united
+		character:235092 = {
+			get_title = title:d_sardinia
+			save_scope_as = sardinia_archon
+		}
+	
+		character:75000 = {
+			save_scope_as = sardinia_vassal
+		}
+	
+		create_title_and_vassal_change = {
+			type = swear_fealty
+			save_scope_as = change
+		}
+		scope:sardinia_vassal = {
+			change_liege = {
+				liege = scope:sardinia_archon
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+
 	}
-	resolve_title_and_vassal_change = scope:change
+	else_if = {
+		limit = {
+			game_start_date = 1066.9.15
+		}
+
+		character:RICE_sardinia_001 = {
+			save_scope_as = mujahid_mother
+		}
+		character:85008 = {
+			set_mother = scope:mujahid_mother
+		}
+
+		# Ali ibn Mujahid, son of the guy who tried conquering Sardinia in 1015-1016 
+		character:20869 = {
+			
+			RICE_remove_personality_traits_effect = yes
+			
+			add_trait = diligent 	# Focused on improving economy and turning Denia into a center of learning and culture
+			add_trait = just 		# Recognized rights of Chrisitan minorities
+			add_trait = generous 	# Donated to Christian churches despite converting back to Islam, tried to maintain peaceful relations with neighbors
+	
+			add_character_modifier = {
+				modifier = RICE_is_ali_ibn_mujahid
+			}
+	
+			add_unpressed_claim = title:d_sardinia
+			add_unpressed_claim = title:c_cagliari
+			add_unpressed_claim = title:c_tortoli
+			add_unpressed_claim = title:c_gallura
+			add_unpressed_claim = title:c_logudoro
+			add_unpressed_claim = title:c_arborea
+	
+		}
+
+	}
+
+
 
 	############################################################
 	#
