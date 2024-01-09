@@ -1697,11 +1697,11 @@ tradition_RICE_judicati = {
 				this = culture:sardinian
 			}
 		}
-		has_cultural_pillar = heritage_latin
+		#has_cultural_pillar = heritage_latin
 	}
 
 	parameters = {
-		unlock_rice_judicates_upgrade = yes
+		unlock_rice_judicati_upgrade = yes
 		# Concubinage
 		#number_of_spouses = 1
 		#number_of_consorts = 1
@@ -1730,13 +1730,14 @@ tradition_RICE_judicati = {
 			if = {
 				limit = {
 					NOR = {
-						any_in_list = { list = traits this = flag:ethos_courtly }
-						any_in_list = { list = traits this = flag:ethos_spiritual }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_bureaucratic = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
 					}
 				}
 				add = {
 					value = tradition_incompatible_ethos_penalty
-					desc = not_spiritual_or_courtly_desc
+					desc = not_communal_bureaucratic_or_stoic_desc
 				}
 			}
 			multiply = tradition_replacement_cost_if_relevant
@@ -1762,6 +1763,8 @@ tradition_RICE_judicati_catholic = {
 				this = culture:sardinian
 			}
 		}
+		# Only available after the Catholic/Latin West option is chosen in the Sardinian decision
+		has_global_variable = RICE_sardinia_catholic_ending
 	}
 
 	can_pick = {
@@ -1775,11 +1778,7 @@ tradition_RICE_judicati_catholic = {
 	}
 
 	parameters = {
-		unlock_rice_judicates_upgrade = yes
-		# Concubinage
-		#number_of_spouses = 1
-		#number_of_consorts = 1
-		#gender_equal_inheritance = yes
+		unlock_rice_judicati_catholic_decision = yes
 	}
 
 	character_modifier = {
@@ -1804,13 +1803,232 @@ tradition_RICE_judicati_catholic = {
 			if = {
 				limit = {
 					NOR = {
-						any_in_list = { list = traits this = flag:ethos_courtly }
-						any_in_list = { list = traits this = flag:ethos_spiritual }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_bureaucratic = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
 					}
 				}
 				add = {
 					value = tradition_incompatible_ethos_penalty
-					desc = not_spiritual_or_courtly_desc
+					desc = not_communal_bureaucratic_or_stoic_desc
+				}
+			}
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = { value = 100 }
+}
+
+tradition_RICE_judicati_orthodox = {
+	category = regional
+
+	layers = {
+		0 = intrigue
+		1 = mediterranean
+		4 = RICE_literalism.dds
+	}
+
+	is_shown = {
+		OR = {
+			this = culture:sardinian
+			any_parent_culture_or_above = {
+				this = culture:sardinian
+			}
+		}
+		# Only available after the Orthodox/Greek East option is chosen in the Sardinian decision
+		has_global_variable = RICE_sardinia_orthodox_ending
+	}
+
+	can_pick = {
+		OR = {
+			this = culture:sardinian
+			any_parent_culture_or_above = {
+				this = culture:sardinian
+			}
+		}
+		has_cultural_pillar = heritage_byzantine
+	}
+
+	parameters = {
+		unlock_rice_judicati_orthodox_decision = yes
+	}
+
+	character_modifier = {
+		domain_limit = -1 # -2
+		tyranny_gain_mult = 0.25
+		opinion_of_female_rulers = 10
+		direct_vassal_opinion = 10
+	}
+
+	county_modifier = {
+		county_opinion_add = 5
+		#monthly_county_control_change_factor = 0.1
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_bureaucratic = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_communal_bureaucratic_or_stoic_desc
+				}
+			}
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = { value = 100 }
+}
+
+tradition_RICE_judicati_north_african = {
+	category = regional
+
+	layers = {
+		0 = steward
+		1 = mediterranean
+		4 = RICE_literalism.dds
+	}
+
+	is_shown = {
+		OR = {
+			this = culture:sardinian
+			any_parent_culture_or_above = {
+				this = culture:sardinian
+			}
+		}
+		# Only available after the North African option is chosen in the Sardinian decision
+		has_global_variable = RICE_sardinia_north_african_ending
+	}
+
+	can_pick = {
+		OR = {
+			this = culture:sardinian
+			any_parent_culture_or_above = {
+				this = culture:sardinian
+			}
+		}
+		has_cultural_pillar = heritage_berber
+	}
+
+	parameters = {
+		unlock_rice_judicati_north_african_decision = yes
+	}
+
+	character_modifier = {
+		domain_limit = -1 # -2
+		tyranny_gain_mult = 0.25
+		opinion_of_female_rulers = 10
+		direct_vassal_opinion = 10
+	}
+
+	county_modifier = {
+		county_opinion_add = 5
+		#monthly_county_control_change_factor = 0.1
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_bureaucratic = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_communal_bureaucratic_or_stoic_desc
+				}
+			}
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = { value = 100 }
+}
+
+tradition_RICE_judicati_none = {
+	category = regional
+
+	layers = {
+		0 = learning
+		1 = mediterranean
+		4 = RICE_literalism.dds
+	}
+
+	is_shown = {
+		OR = {
+			this = culture:sardinian
+			any_parent_culture_or_above = {
+				this = culture:sardinian
+			}
+		}
+		# Only available after the None option is chosen in the Sardinian decision
+		has_global_variable = RICE_sardinia_none_ending
+	}
+
+	can_pick = {
+		OR = {
+			this = culture:sardinian
+			any_parent_culture_or_above = {
+				this = culture:sardinian
+			}
+		}
+	}
+
+	parameters = {
+		unlock_rice_judicati_none_decision = yes
+	}
+
+	character_modifier = {
+		domain_limit = -1 # -2
+		tyranny_gain_mult = 0.25
+		opinion_of_female_rulers = 10
+		direct_vassal_opinion = 10
+	}
+
+	county_modifier = {
+		county_opinion_add = 5
+		#monthly_county_control_change_factor = 0.1
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_bureaucratic = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_communal_bureaucratic_or_stoic_desc
 				}
 			}
 			multiply = tradition_replacement_cost_if_relevant

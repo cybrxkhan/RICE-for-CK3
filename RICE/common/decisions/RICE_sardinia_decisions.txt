@@ -24,12 +24,12 @@ RICE_sardinia_decide_sardinia_orientation = {
 		}
 	}
 	
-	is_valid_showing_failures_only = {
-		faith.religion = religion:christianity_religion
-	}
+	#is_valid_showing_failures_only = {
+	#	faith.religion = religion:christianity_religion
+	#}
 
 	is_valid = {
-		
+		prestige_level >= 3
 	}
 
 	is_valid_showing_failures_only = {
@@ -321,6 +321,11 @@ RICE_sardinia_decide_sardinia_orientation = {
 		if = {
 			limit = { scope:choose_catholic = yes }
 			
+			set_global_variable = {
+				name = RICE_sardinia_catholic_ending
+				value = yes
+			}
+			
 			if = {
 				limit = {
 					NOT = { capital_county.faith = faith:catholic }
@@ -377,14 +382,20 @@ RICE_sardinia_decide_sardinia_orientation = {
 				every_culture_global = {
 					limit = { has_cultural_tradition = tradition_RICE_judicati }
 					remove_culture_tradition = tradition_RICE_judicati
-					add_culture_tradition = tradition_RICE_judicati
+					add_culture_tradition = tradition_RICE_judicati_catholic
 					remove_variable = tradition_cooldown
 				}
 			}
+
 		}
 
 		else_if = {
 			limit = { scope:choose_orthodox = yes }
+			
+			set_global_variable = {
+				name = RICE_sardinia_orthodox_ending
+				value = yes
+			}
 			
 			if = {
 				limit = {
@@ -426,16 +437,36 @@ RICE_sardinia_decide_sardinia_orientation = {
 				}
 			}		
 
-			every_culture_global = {
-				limit = { has_cultural_tradition = tradition_RICE_judicati }
-				remove_culture_tradition = tradition_RICE_judicati
-				add_culture_tradition = tradition_RICE_judicati
-				remove_variable = tradition_cooldown
+			show_as_tooltip = {
+				culture = {
+					if = {
+						limit = {
+							culture = {
+								has_cultural_tradition = tradition_RICE_judicati
+							}
+						}
+						remove_culture_tradition = tradition_RICE_judicati
+						add_culture_tradition = tradition_RICE_judicati_orthodox
+					}
+				}
+			}
+			hidden_effect = {
+				every_culture_global = {
+					limit = { has_cultural_tradition = tradition_RICE_judicati }
+					remove_culture_tradition = tradition_RICE_judicati
+					add_culture_tradition = tradition_RICE_judicati_orthodox
+					remove_variable = tradition_cooldown
+				}
 			}
 		}
 
 		else_if = {
 			limit = { scope:choose_north_african = yes }
+			
+			set_global_variable = {
+				name = RICE_sardinia_north_african_ending
+				value = yes
+			}
 
 			if = {
 				limit = {
@@ -453,16 +484,37 @@ RICE_sardinia_decide_sardinia_orientation = {
 			custom_tooltip = RICE_sardinia_decide_sardinia_orientation_effect_tooltip.north_african.1
 			custom_tooltip = RICE_sardinia_decide_sardinia_orientation_effect_tooltip.north_african.2
 			
-			every_culture_global = {
-				limit = { has_cultural_tradition = tradition_RICE_judicati }
-				remove_culture_tradition = tradition_RICE_judicati
-				add_culture_tradition = tradition_RICE_judicati
-				remove_variable = tradition_cooldown
+			show_as_tooltip = {
+				culture = {
+					if = {
+						limit = {
+							culture = {
+								has_cultural_tradition = tradition_RICE_judicati
+							}
+						}
+						remove_culture_tradition = tradition_RICE_judicati
+						add_culture_tradition = tradition_RICE_judicati_north_african
+					}
+				}
+			}
+			hidden_effect = {
+				every_culture_global = {
+					limit = { has_cultural_tradition = tradition_RICE_judicati }
+					remove_culture_tradition = tradition_RICE_judicati
+					add_culture_tradition = tradition_RICE_judicati_north_african
+					remove_variable = tradition_cooldown
+				}
 			}
 		}
 
 		else_if = {
-			limit = { scope:choose_none = yes }			
+			limit = { scope:choose_none = yes }	
+			
+			set_global_variable = {
+				name = RICE_sardinia_none_ending
+				value = yes
+			}
+
 			if = {
 				limit = {
 					NOT = { capital_county.faith = faith }
@@ -493,12 +545,27 @@ RICE_sardinia_decide_sardinia_orientation = {
 			# 		set_de_jure_liege_title = title:e_sardinia
 			# 	}
 			# }	
-
-			every_culture_global = {
-				limit = { has_cultural_tradition = tradition_RICE_judicati }
-				remove_culture_tradition = tradition_RICE_judicati
-				add_culture_tradition = tradition_RICE_judicati
-				remove_variable = tradition_cooldown
+			
+			show_as_tooltip = {
+				culture = {
+					if = {
+						limit = {
+							culture = {
+								has_cultural_tradition = tradition_RICE_judicati
+							}
+						}
+						remove_culture_tradition = tradition_RICE_judicati
+						add_culture_tradition = tradition_RICE_judicati_none
+					}
+				}
+			}
+			hidden_effect = {
+				every_culture_global = {
+					limit = { has_cultural_tradition = tradition_RICE_judicati }
+					remove_culture_tradition = tradition_RICE_judicati
+					add_culture_tradition = tradition_RICE_judicati_none
+					remove_variable = tradition_cooldown
+				}
 			}
 		}
 		
@@ -522,9 +589,89 @@ RICE_sardinia_decide_sardinia_orientation = {
 }
 
 
-# Send in Catholic monks
-# decision_christian_monastery_monks
+# Send in Catholic/Latin monks
+RICE_sardinia_catholic_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_christian_monastery_monks.dds"
+	desc = RICE_sardinia_catholic_decision_desc
 
+	ai_check_interval = 36
+
+	cooldown = { days = 3650 }
+
+	is_shown = {
+		highest_held_title_tier > tier_barony
+		is_landed = yes
+		any_held_county = {
+			any_county_province = {
+				geographical_region = RICE_sardinia_region
+			}
+		}
+		has_global_variable = RICE_sardinia_catholic_ending
+	}
+
+	is_valid = {
+		religion = religion:christianity_religion
+		any_held_county = {
+			any_county_province = {
+				geographical_region = RICE_sardinia_region
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	cost = {
+		gold = medium_gold_value
+		prestige = medium_prestige_value
+	}
+
+	effect = {
+		
+		custom_tooltip = RICE_sardinia_catholic_decision_effect_tooltip_1
+		custom_tooltip = RICE_sardinia_catholic_decision_effect_tooltip_2
+		custom_tooltip = RICE_sardinia_catholic_decision_effect_tooltip_3
+
+		show_as_tooltip = {
+			RICE_saridnia_catholic_decision_effect = yes
+		}
+
+
+
+		trigger_event = sardinia.8888
+	}
+
+	ai_will_do = {
+		base = 30
+
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -10
+			has_trait = greedy
+		}
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+		modifier = {
+			add = 10
+			has_trait = zealous
+		}
+		modifier = {
+			add = -10
+			has_trait = cynical
+		}
+
+	}
+}
 
 
 
@@ -577,7 +724,7 @@ RICE_sardinia_inaugurate_major_palio = {
 	}
 
 	cost = {
-		gold = { value = major_gold_value }
+		gold = { value = massive_gold_value }
 	}
 
 	widget = {

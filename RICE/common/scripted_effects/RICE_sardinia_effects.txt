@@ -218,7 +218,7 @@ RICE_setup_sardinia_flavor_pack_effect = {
 
 RICE_inaugurate_religious_palio_effect = {
 	capital_county = {
-		change_development_level = 2
+		change_development_level = 1
 		add_county_modifier = {
 			modifier = RICE_sardinia_palio_race_religious_modifier
 		}			
@@ -229,7 +229,7 @@ RICE_inaugurate_religious_palio_effect = {
 
 RICE_inaugurate_civic_palio_effect = {
 	capital_county = {
-		change_development_level = 2
+		change_development_level = 1
 		add_county_modifier = {
 			modifier = RICE_sardinia_palio_race_civic_modifier
 		}			
@@ -241,7 +241,7 @@ RICE_inaugurate_civic_palio_effect = {
 
 RICE_inaugurate_dynastic_palio_effect = {
 	capital_county = {
-		change_development_level = 2
+		change_development_level = 1
 		add_county_modifier = {
 			modifier = RICE_sardinia_palio_race_dynastic_modifier
 		}			
@@ -257,9 +257,54 @@ RICE_sardaniya_settlement_decision_effect = {
 			holder = root
 		}
 		save_scope_as = sardaniya_location
-		change_development_level = 2
+		change_development_level = 1
 		add_county_modifier = {
 			modifier = RICE_sardinia_north_african_settlement_modifier
+		}
+	}
+}
+
+RICE_saridnia_catholic_decision_effect = {
+	if = {
+		limit = {
+			faith.religious_head_title ?= title:k_papal_state
+		}
+		add_piety = 200
+	}
+	else_if = {
+		limit = {
+			faith = { has_doctrine = special_doctrine_ecumenical_christian }
+		}
+		add_piety = 100
+	}
+	else = {
+		add_piety = 50
+	}
+	if = {
+		limit = { exists = title:k_papal_state.holder }
+		title:k_papal_state.holder = {
+			add_opinion = {
+				target = root
+				modifier = RICE_sardinia_opinion_pope_catholic_decision
+			}
+		}
+	}
+	every_county_in_region = {
+		region = RICE_sardinia_region
+		limit = {
+			holder = root
+		}
+		custom = RICE_every_owned_sardinia_county
+		change_county_control = minor_county_control_gain
+		add_county_modifier = {
+			modifier = RICE_sardinia_latin_monks
+			years = 10
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_sardinia_catholic_decision_context_tooltip
 		}
 	}
 }
