@@ -308,3 +308,91 @@ RICE_saridnia_catholic_decision_effect = {
 		}
 	}
 }
+
+RICE_saridnia_orthodox_decision_effect = {
+
+	if = {
+		limit = {
+			exists = title:e_byzantium.holder
+		}
+		if = {
+			limit = {
+				opinion = {
+					target = title:e_byzantium.holder
+					value >= medium_positive_opinion
+				}				
+			}
+			add_prestige = 200
+		}
+		else_if = {
+			limit = {
+				opinion = {
+					target = title:e_byzantium.holder
+					value >= medium_negative_opinion
+				}				
+			}
+			add_prestige = 100
+		}
+		else = {
+			add_prestige = 50
+		}
+		title:e_byzantium.holder = {
+			add_opinion = {
+				target = root
+				modifier = RICE_sardinia_opinion_roman_emperor_decision
+			}
+		}
+	}
+
+	else_if = {
+		limit = {
+			exists = title:e_roman_empire.holder
+		}
+		if = {
+			limit = {
+				opinion = {
+					target = title:e_roman_empire.holder
+					value >= medium_positive_opinion
+				}				
+			}
+			add_prestige = 200
+		}
+		else_if = {
+			limit = {
+				opinion = {
+					target = title:e_roman_empire.holder
+					value >= medium_negative_opinion
+				}				
+			}
+			add_prestige = 100
+		}
+		else = {
+			add_prestige = 50
+		}
+		title:e_roman_empire.holder = {
+			add_opinion = {
+				target = root
+				modifier = RICE_sardinia_opinion_roman_emperor_decision
+			}
+		}
+	}
+
+	every_county_in_region = {
+		region = RICE_sardinia_region
+		limit = {
+			holder = root
+		}
+		custom = RICE_every_owned_sardinia_county
+		change_county_control = minor_county_control_gain
+		add_county_modifier = {
+			modifier = RICE_sardinia_byzantine_administration
+			years = 10
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_sardinia_orthodox_decision_context_tooltip
+		}
+	}
+}
