@@ -376,9 +376,21 @@ RICE_sardinia_decide_sardinia_orientation = {
 						remove_culture_tradition = tradition_RICE_judicati
 						add_culture_tradition = tradition_RICE_judicati_catholic
 					}
+					if = {
+						limit = {
+							culture = {
+								NOT = { has_cultural_pillar = heritage_latin }
+							}
+						}
+						set_culture_pillar = heritage_latin
+					}
 				}
 			}
 			hidden_effect = {
+				every_culture_global = {
+					limit = { has_cultural_tradition = tradition_RICE_judicati }
+					set_culture_pillar = heritage_latin
+				}
 				every_culture_global = {
 					limit = { has_cultural_tradition = tradition_RICE_judicati }
 					remove_culture_tradition = tradition_RICE_judicati
@@ -448,9 +460,21 @@ RICE_sardinia_decide_sardinia_orientation = {
 						remove_culture_tradition = tradition_RICE_judicati
 						add_culture_tradition = tradition_RICE_judicati_orthodox
 					}
+					if = {
+						limit = {
+							culture = {
+								NOT = { has_cultural_pillar = heritage_byzantine }
+							}
+						}
+						set_culture_pillar = heritage_byzantine
+					}
 				}
 			}
 			hidden_effect = {
+				every_culture_global = {
+					limit = { has_cultural_tradition = tradition_RICE_judicati }
+					set_culture_pillar = heritage_byzantine
+				}
 				every_culture_global = {
 					limit = { has_cultural_tradition = tradition_RICE_judicati }
 					remove_culture_tradition = tradition_RICE_judicati
@@ -495,9 +519,21 @@ RICE_sardinia_decide_sardinia_orientation = {
 						remove_culture_tradition = tradition_RICE_judicati
 						add_culture_tradition = tradition_RICE_judicati_north_african
 					}
+					if = {
+						limit = {
+							culture = {
+								NOT = { has_cultural_pillar = heritage_berber }
+							}
+						}
+						set_culture_pillar = heritage_berber
+					}
 				}
 			}
 			hidden_effect = {
+				every_culture_global = {
+					limit = { has_cultural_tradition = tradition_RICE_judicati }
+					set_culture_pillar = heritage_berber
+				}
 				every_culture_global = {
 					limit = { has_cultural_tradition = tradition_RICE_judicati }
 					remove_culture_tradition = tradition_RICE_judicati
@@ -694,7 +730,17 @@ RICE_sardinia_orthodox_decision = {
 	}
 
 	is_valid = {
-		#religion = religion:christianity_religion
+		OR = {
+			culture = { has_cultural_pillar = heritage_byzantine }
+			has_title = title:e_byzantium
+			has_title = title:e_roman_empire
+			any_liege_or_above = {
+				has_title = title:e_byzantium
+			}
+			any_liege_or_above = {
+				has_title = title:e_roman_empire
+			}
+		}
 		any_held_county = {
 			any_county_province = {
 				geographical_region = RICE_sardinia_region
@@ -752,6 +798,181 @@ RICE_sardinia_orthodox_decision = {
 		modifier = {
 			add = -10
 			has_trait = cynical
+		}
+
+	}
+}
+
+# Expand Sardinia's North African Networks
+RICE_sardinia_north_african_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_middle_eastern_port.dds"
+	desc = RICE_sardinia_north_african_decision_desc
+
+	ai_check_interval = 36
+
+	cooldown = { days = 3650 }
+
+	is_shown = {
+		highest_held_title_tier > tier_barony
+		is_landed = yes
+		any_held_county = {
+			any_county_province = {
+				geographical_region = RICE_sardinia_region
+			}
+		}
+		has_global_variable = RICE_sardinia_north_african_ending
+	}
+
+	is_valid = {
+		OR = {
+			culture = { has_cultural_pillar = heritage_berber }
+			highest_held_title_tier >= tier_duchy
+		}
+		any_held_county = {
+			any_county_province = {
+				geographical_region = RICE_sardinia_region
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	cost = {
+		gold = medium_gold_value
+		prestige = medium_prestige_value
+	}
+
+	effect = {
+		
+		custom_tooltip = RICE_sardinia_north_african_decision_effect_tooltip_1
+		custom_tooltip = RICE_sardinia_north_african_decision_effect_tooltip_2
+		custom_tooltip = RICE_sardinia_north_african_decision_effect_tooltip_3
+
+		show_as_tooltip = {
+			RICE_saridnia_north_african_decision_effect = yes
+		}
+
+
+
+		trigger_event = sardinia.8888
+	}
+
+	ai_will_do = {
+		base = 30
+
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -10
+			has_trait = content
+		}
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+		modifier = {
+			add = 10
+			has_trait = trusting
+		}
+		modifier = {
+			add = -10
+			has_trait = paranoid
+		}
+
+	}
+}
+
+# Fortify Sardinia
+RICE_sardinia_none_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_ck2_castle_tower.dds"
+	desc = RICE_sardinia_none_decision_desc
+
+	ai_check_interval = 36
+
+	cooldown = { days = 3650 }
+
+	is_shown = {
+		highest_held_title_tier > tier_barony
+		is_landed = yes
+		any_held_county = {
+			any_county_province = {
+				geographical_region = RICE_sardinia_region
+			}
+		}
+		has_global_variable = RICE_sardinia_none_ending
+	}
+
+	is_valid = {
+		#religion = religion:christianity_religion
+		# any_held_county = {
+		# 	any_county_province = {
+		# 		geographical_region = RICE_sardinia_region
+		# 	}
+		# }
+		custom_description = {
+			text = RICE_sardinia_region_req
+			capital_province = {
+				geographical_region = RICE_sardinia_region
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	cost = {
+		gold = medium_gold_value
+		prestige = medium_prestige_value
+	}
+
+	effect = {
+		
+		custom_tooltip = RICE_sardinia_none_decision_effect_tooltip_1
+
+		show_as_tooltip = {
+			RICE_saridnia_none_decision_effect = yes
+		}
+
+
+
+		trigger_event = sardinia.8888
+	}
+
+	ai_will_do = {
+		base = 30
+
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -10
+			has_trait = greedy
+		}
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+		modifier = {
+			add = 10
+			has_trait = craven
+		}
+		modifier = {
+			add = -10
+			has_trait = brave
 		}
 
 	}

@@ -284,6 +284,17 @@ sardinia.0012 = {
 		animation = throne_room_bow_1
 	}
 
+	trigger = {
+		NOR = {
+			culture = culture:sardinian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:sardinian
+				}
+			}
+		}
+	}
+
 	immediate = {
 		create_character = {
 			location = root.capital_province
@@ -307,6 +318,89 @@ sardinia.0012 = {
 	# Don't work with them
 	option = {
 		name = sardinia.0012.b
+		hidden_effect = {
+			random = {
+				chance = 80
+				scope:courtier = {
+					death = {
+						death_reason = death_vanished
+					}
+				}
+			}
+		}
+	}
+
+}
+
+# Afro-Latin courtier spawn in North Africa or Western Mediterranean
+sardinia.0013 = {
+	type = character_event
+	title = sardinia.0013.t
+	desc = {
+		desc = sardinia.0013.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					capital_province = {
+						geographical_region = RICE_roman_africa_region
+					}
+				}
+				desc = sardinia.0013.desc.north_africa
+			}
+			desc = sardinia.0013.desc.other
+		}
+	}
+	theme = diplomacy_foreign_affairs_focus
+
+	left_portrait = root
+	right_portrait = {
+		character = scope:courtier
+		animation = throne_room_bow_1
+	}
+
+	trigger = {
+		any_held_county = {
+			any_county_province = {
+				OR = {
+					geographical_region = RICE_roman_africa_region
+					geographical_region = RICE_west_mediterranean_europe_region
+				}
+			}
+		}
+		NOR = {
+			culture = culture:african_roman
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:african_roman
+				}
+			}
+		}
+	}
+
+	immediate = {
+		create_character = {
+			location = root.capital_province
+			template = RICE_afro_latin_generic_template
+			save_scope_as = courtier			
+		}
+	}
+
+	# Work with them
+	option = {
+		name = sardinia.0013.a
+		trigger = {
+			OR = {
+				gold >= 50
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 50
+		add_courtier = scope:courtier
+	}
+	
+	# Don't work with them
+	option = {
+		name = sardinia.0013.b
 		hidden_effect = {
 			random = {
 				chance = 80

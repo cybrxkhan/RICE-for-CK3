@@ -15,6 +15,7 @@ RICE_setup_sardinia_flavor_pack_effect = {
 
 	culture:sardinian = {
 		add_culture_tradition = tradition_ancient_miners
+		add_culture_tradition = tradition_hard_working
 		add_culture_tradition = tradition_RICE_judicati
 		remove_variable = tradition_cooldown
 	}	
@@ -37,6 +38,78 @@ RICE_setup_sardinia_flavor_pack_effect = {
 		every_culture_global = {
 			limit = { has_cultural_pillar = heritage_latin }
 			add_innovation = innovation_RICE_palio_races
+		}
+	}
+
+	if = {
+		limit = {
+			has_game_rule = RICE_afro_roman_counties_on_the_map
+			NOT = {
+				any_county_in_region = {
+					region = world_africa_north_west
+					OR = {
+						culture = culture:african_roman
+						culture = culture:afro_roman
+					}
+				}
+			}
+		}	
+		if = {
+			limit = {
+				game_start_date < 1000.1.1
+			}
+			title:c_gabes = {
+				set_county_culture = culture:african_roman
+				set_county_faith = faith:catholic
+			}
+			title:c_bejaia = {
+				set_county_culture = culture:african_roman
+				set_county_faith = faith:catholic
+			}
+			title:c_tlemcen = {
+				set_county_culture = culture:african_roman
+				set_county_faith = faith:catholic
+			}
+			title:c_biskra = {
+				set_county_culture = culture:african_roman
+				set_county_faith = faith:catholic
+			}
+			title:c_souf = {
+				set_county_culture = culture:african_roman
+				set_county_faith = faith:catholic
+			}
+			title:c_bir_amir = {
+				set_county_culture = culture:african_roman
+				set_county_faith = faith:catholic
+			}
+			title:c_tabassa = {
+				set_county_culture = culture:african_roman
+				set_county_faith = faith:catholic
+			}
+			title:c_jafara = {
+				set_county_faith = faith:catholic
+			}
+			title:c_tripolitania = {
+				set_county_faith = faith:catholic
+			}
+			title:c_satif = {
+				set_county_faith = faith:catholic
+			}
+		}
+		else_if = {
+			limit = {
+				game_start_date <= 1200.1.1
+			}
+			title:c_qashtiliya = { # Gafsa
+				set_county_culture = culture:african_roman
+				set_county_faith = faith:catholic
+			}
+			title:c_tunis = {
+				set_county_faith = faith:catholic
+			}
+			title:c_djerba = {
+				set_county_faith = faith:catholic
+			}
 		}
 	}
 
@@ -295,7 +368,7 @@ RICE_saridnia_catholic_decision_effect = {
 			holder = root
 		}
 		custom = RICE_every_owned_sardinia_county
-		change_county_control = minor_county_control_gain
+		#change_county_control = minor_county_control_gain
 		add_county_modifier = {
 			modifier = RICE_sardinia_latin_monks
 			years = 10
@@ -383,7 +456,7 @@ RICE_saridnia_orthodox_decision_effect = {
 			holder = root
 		}
 		custom = RICE_every_owned_sardinia_county
-		change_county_control = minor_county_control_gain
+		#change_county_control = minor_county_control_gain
 		add_county_modifier = {
 			modifier = RICE_sardinia_byzantine_administration
 			years = 10
@@ -395,4 +468,110 @@ RICE_saridnia_orthodox_decision_effect = {
 			custom_tooltip = RICE_sardinia_orthodox_decision_context_tooltip
 		}
 	}
+}
+
+RICE_saridnia_north_african_decision_effect = {
+
+	if = {
+		limit = {
+			highest_held_title_tier >= tier_kingdom
+		}
+		add_prestige = 100
+		add_piety = 100
+	}
+	else_if = {
+		limit = {
+			highest_held_title_tier >= tier_duchy
+		}
+		add_prestige = 50
+		add_piety = 50
+	}
+	else = {
+		add_prestige = 25
+		add_piety = 25
+	}
+	
+	every_county_in_region = {
+		region = RICE_sardinia_region
+		limit = {
+			holder = root
+		}
+		custom = RICE_every_owned_sardinia_county
+		#change_county_control = minor_county_control_gain
+		add_county_modifier = {
+			modifier = RICE_sardinia_north_african_networks
+			years = 10
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_sardinia_north_african_decision_context_tooltip
+		}
+	}
+
+	hidden_effect = {
+		every_county_in_region = {
+			region = RICE_sardinia_region
+			limit = {
+				holder = root
+			}
+			random = {
+				chance = 99
+				holder = {
+					send_interface_message = {
+						type = msg_county_corruption_bad
+						title = RICE_saridnia_north_african_decision_effect.message
+						add_county_modifier = {
+							modifier = RICE_sardinia_north_african_option_piracy
+							years = 10
+						}
+					}
+				}
+			}
+		}
+	}
+
+}
+
+RICE_saridnia_none_decision_effect = {
+
+	if = {
+		limit = {
+			highest_held_title_tier >= tier_kingdom
+		}
+		add_prestige = 100
+		add_piety = 100
+	}
+	else_if = {
+		limit = {
+			highest_held_title_tier >= tier_duchy
+		}
+		add_prestige = 50
+		add_piety = 50
+	}
+	else = {
+		add_prestige = 25
+		add_piety = 25
+	}
+	
+	every_county_in_region = {
+		region = RICE_sardinia_region
+		limit = {
+			holder = root
+		}
+		custom = RICE_every_owned_sardinia_county
+		#change_county_control = minor_county_control_gain
+		add_county_modifier = {
+			modifier = RICE_sardinia_none_fortifications
+			years = 10
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_sardinia_north_african_decision_context_tooltip
+		}
+	}
+
 }
