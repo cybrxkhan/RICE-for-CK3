@@ -2039,3 +2039,115 @@ tradition_RICE_judicati_none = {
 }
 
 
+
+# Adapted from Fallen Eagle
+# Original tradition was added by Shatzi
+# Africagrarian
+tradition_african_agriculture = {
+	category = regional
+
+	layers = { 
+		0 = steward
+		1 = mena
+		4 = RICE_cow.dds
+	}
+
+	is_shown = {
+		# OR = {
+		# 	this = culture:african_roman
+		# 	any_parent_culture_or_above = {
+		# 		this = culture:african_roman
+		# 	}
+		# }
+		has_cultural_pillar = heritage_berber
+	}
+
+	
+	can_pick = {
+		NOT = { has_cultural_tradition = tradition_dryland_dwellers }
+		has_cultural_pillar = heritage_berber
+		custom_description = {
+			text = culture_in_dryland_desc
+			any_culture_county = {
+				any_county_province = {
+					terrain = drylands
+				}
+			}
+		}
+	}
+	
+	parameters = {
+		plantations_building_bonuses = yes
+		unlock_tfe_cheaper_qanats = yes
+	}
+	character_modifier = {
+		drylands_travel_danger = drylands_medium_danger_reduction
+	}
+	county_modifier = {
+		drylands_development_growth_factor = 0.15
+	}
+	province_modifier = {
+		drylands_tax_mult = 0.2
+	}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					culture_pillar:ethos_bellicose = { is_in_list = traits }
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = culture_not_bellicose
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_culture_county = {
+							percent >= 0.3
+							any_county_province = {
+								terrain = drylands
+								terrain = desert
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = dry_percentage_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				NOT = {
+					scope:character = {
+						any_sub_realm_county = {
+							percent >= 0.2
+							culture = scope:character.culture
+							any_county_province = {
+								OR = {
+									terrain = drylands
+									terrain = desert
+								}
+							}
+						}
+					}
+				}
+			}
+			multiply = 0
+		}
+	}
+}
