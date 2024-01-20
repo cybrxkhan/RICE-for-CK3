@@ -3,8 +3,7 @@
 # SARDINIA
 # 
 # sardinia.0000-sardinia.0019			Setup events, history events, miscellaneous events and decisions
-# sardinia.0020-sardinia.0039			Palio Events
-# sardinia.0040-sardinia.0049			Misc decisions
+# sardinia.0020-sardinia.0049			Palio Events
 # sardinia.0050-sardinia.0069			Generic Flavor Events
 # sardinia.0060-sardinia.0069			????
 # sardinia.0070-sardinia.0079			????
@@ -415,5 +414,513 @@ sardinia.0013 = {
 
 }
 
+
+# Sardinian Latin Decision to send in Catholic/Latin monks
+sardinia.0014 = {
+	type = character_event
+	title = sardinia.0014.t
+	desc = {
+		desc = sardinia.0014.desc.intro
+		triggered_desc = {
+			trigger = {
+				exists = scope:pope
+			}
+			desc = sardinia.0014.desc.pope
+		}
+		triggered_desc = {
+			trigger = {
+				exists = scope:priest
+			}
+			desc = sardinia.0014.desc.priest
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:opportunist
+				}
+				desc = sardinia.0014.desc.opportunist
+			}
+			desc = sardinia.0014.desc.conclusion
+		}
+	}
+	theme = RICE_theme_sardinia_church
+
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	right_portrait = {
+		character = scope:pope
+		animation = personality_content
+		trigger = {
+			exists = scope:pope
+		}
+	}
+
+	lower_left_portrait = {
+		character = scope:priest
+		trigger = { exists = scope:priest }
+	}
+
+	lower_right_portrait = {
+		character = scope:opportunist
+		trigger = { exists = scope:opportunist }
+	}
+
+	immediate = {
+		title:k_papal_state.holder ?= {
+			save_scope_as = pope
+		}
+		faith:catholic = {
+			save_scope_as = catholic
+		}
+		random = {
+			chance = 30
+			# Culture of monk
+			if = {
+				limit = {
+					any_county_in_region = {
+						region = RICE_western_christendom_region
+						faith = faith:catholic
+					}
+				}
+				every_county_in_region = {
+					region = RICE_western_christendom_region
+					limit = {
+						faith = faith:catholic
+					}
+					add_to_list = christian_counties
+				}
+				random_in_list = {
+					list = christian_counties
+					weight = {
+						base = 10
+						modifier = {
+							culture = {
+								has_cultural_pillar = heritage_latin
+							}
+							add = 10
+						}
+					}
+					save_scope_as = county
+				}
+				scope:county.culture = {
+					save_scope_as = christian_county_culture
+				}
+			}
+			else_if = {
+				limit = {
+					any_county_in_region = {
+						region = RICE_western_christendom_region
+						religion = religion:christianity_religion
+					}
+				}
+				every_county_in_region = {
+					region = RICE_western_christendom_region
+					limit = {
+						religion = religion:christianity_religion
+					}
+					add_to_list = christian_counties
+				}
+				random_in_list = {
+					list = christian_counties
+					weight = {
+						base = 10
+						modifier = {
+							culture = {
+								has_cultural_pillar = heritage_latin
+							}
+							add = 10
+						}
+					}
+					save_scope_as = county
+				}	
+				scope:county.culture = {
+					save_scope_as = christian_county_culture
+				}		
+			}
+			else = {
+				random_county_in_region = {
+					region = world_europe_south_italy
+					save_scope_as = county
+				}
+				scope:county.culture = {
+					save_scope_as = christian_county_culture
+				}
+			}			
+			create_character = {
+				location = root.capital_province
+				template = RICE_sardinian_catholic_decision_monk_character_template
+				save_scope_as = priest
+			}
+		}
+		if = {
+			limit = {
+				any_county_in_region = {
+					region = RICE_sardinia_christian_decision_opportunist_region
+					is_coastal_county = yes
+					holder = {
+						is_ai = yes
+						religion = religion:christianity_religion
+					}
+				}
+			}
+			random = {
+				chance = 20
+				every_county_in_region = {
+					region = RICE_sardinia_christian_decision_opportunist_region
+					limit = {
+						is_coastal_county = yes
+						holder = {
+							is_ai = yes
+							#religion = religion:christianity_religion
+							faith.religious_head = title:k_papal_state.holder
+						}
+					}
+					holder = {
+						add_to_list = opportunist_candidates
+					}
+				}
+				random_in_list = {
+					list = opportunist_candidates
+					weight = {
+						base = 10
+						modifier = {
+							has_trait = ambitious
+							add = 5
+						}
+						modifier = {
+							has_trait = content
+							add = -5
+						}
+						modifier = {
+							has_trait = deceitful
+							add = 5
+						}
+						modifier = {
+							has_trait = honest
+							add = -5
+						}
+						modifier = {
+							has_trait = greedy
+							add = 5
+						}
+						modifier = {
+							has_trait = zealous
+							add = -5
+						}
+						modifier = {
+							opinion = {
+								target = root
+								value < -25
+							}
+							add = 5
+						}
+						modifier = {
+							opinion = {
+								target = root
+								value > 25
+							}
+							add = -5
+						}
+						modifier = {
+							government_has_flag = government_is_republic
+							add = 10
+						}
+						modifier = {
+							capital_county = {
+								title_province = { geographical_region = world_europe_south_italy }
+							}
+							add = 10
+						}
+						# modifier = {
+						# 	faith.religious_head = title:k_papal_state.holder
+						# 	add = 15
+						# }
+					}
+					save_scope_as = opportunist
+				}
+				random_held_county = {
+					limit = {
+						any_county_province = {
+							geographical_region = RICE_sardinia_region
+						}
+					}
+					save_scope_as = claimed_county
+				}
+			}
+		}
+	}
+
+	# Ok
+	option = {
+		name = sardinia.0014.a
+
+		if = {
+			limit = {
+				exists = scope:priest
+			}
+			add_courtier = scope:priest
+		}
+
+		if = {
+			limit = {
+				exists = scope:opportunist
+			}
+			scope:opportunist = {
+				add_unpressed_claim = scope:claimed_county
+				reverse_add_opinion = {
+					target = root
+					modifier = angry_opinion
+					opinion = -30
+				}
+			}
+		}
+
+		RICE_saridnia_catholic_decision_effect = yes
+
+	}
+
+}
+
+
+
+
+
+# Sardinian Greek Decision to Revitalize Byzantine Administration in Sardinia
+sardinia.0015 = {
+	type = character_event
+	title = sardinia.0015.t
+	desc = {
+		desc = sardinia.0015.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:emperor
+				}
+				desc = sardinia.0015.desc.emperor
+			}
+			desc = sardinia.0015.desc.no_emperor
+		}
+		triggered_desc = {
+			trigger = {
+				exists = scope:official
+			}
+			desc = sardinia.0015.desc.official
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:opportunist
+				}
+				desc = sardinia.0015.desc.opportunist
+			}
+			desc = sardinia.0015.desc.conclusion
+		}
+	}
+	theme = RICE_theme_sardinia_villa
+	
+	left_portrait = {
+		character = root
+		animation = chancellor
+	}
+
+	right_portrait = {
+		character = scope:emperor
+		animation = personality_callous
+		trigger = {
+			exists = scope:emperor
+		}
+	}
+
+	lower_left_portrait = {
+		character = scope:official
+		trigger = { exists = scope:official }
+	}
+
+	lower_right_portrait = {
+		character = scope:opportunist
+		trigger = {
+			exists = scope:opportunist
+			scope:opportunist = {
+				NOR = {
+					has_title = title:e_byzantium
+					has_title = title:e_roman_empire
+				}
+			}
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				exists = title:e_roman_empire.holder
+				OR = {
+					NOT = { exists = title:e_roman_empire.var:variable_restored_hre }
+					#has_title = title:e_roman_empire
+					top_liege = { has_title = title:e_roman_empire }
+				}
+				NOT = { has_title = title:e_roman_empire }
+			}
+			title:e_roman_empire.holder ?= {
+				save_scope_as = emperor
+			}
+		}
+		else_if = {
+			limit = {
+				exists = title:e_byzantium.holder
+				NOT = { has_title = title:e_byzantium }
+			}
+			title:e_byzantium.holder ?= {
+				save_scope_as = emperor
+			}
+		}
+		random = {
+			chance = 99
+			# Culture of official
+			if = {
+				limit = {
+					exists = scope:emperor
+				}
+				scope:emperor = {
+					every_held_county = {
+						add_to_list = imperial_counties
+					}
+				}
+				random_in_list = {
+					list = imperial_counties
+					weight = {
+						base = 10
+						modifier = {
+							culture = {
+								has_cultural_pillar = heritage_byzantine
+							}
+							add = 10
+						}
+					}
+					save_scope_as = county
+				}
+				scope:emperor.faith = {
+					save_scope_as = imperial_county_faith
+				}
+				scope:county.culture = {
+					save_scope_as = imperial_county_culture
+				}
+			}
+			else = {
+				random_county_in_region = {
+					region = RICE_byzantine_heartland_region
+					save_scope_as = county
+				}
+				scope:county.faith = {
+					save_scope_as = imperial_county_faith
+				}
+				scope:county.culture = {
+					save_scope_as = imperial_county_culture
+				}
+			}			
+			create_character = {
+				location = root.capital_province
+				template = RICE_sardinian_orthodox_decision_official_character_template
+				save_scope_as = official
+			}
+		}
+		# Others potentially get hooks
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						exists = scope:emperor
+						scope:emperor = {
+							is_available_ai_adult = yes
+						}
+					}
+					has_title = title:e_roman_empire
+					has_title = title:e_byzantium
+				}
+			}
+			random = {
+				chance = 50
+				random_list = {
+					50 = {
+						trigger = {
+							NOR = {								
+								has_title = title:e_roman_empire
+								has_title = title:e_byzantium
+							}
+						}
+						scope:emperor = {
+							save_scope_as = opportunist
+						}
+					}
+					50 = {
+						trigger = {
+							scope:emperor = {
+								any_vassal_or_below = {
+									is_available_ai_adult = yes
+									highest_held_title_tier >= tier_county
+								}
+							}
+						}
+						scope:emperor = {
+							random_vassal_or_below = {
+								limit = {
+									is_available_ai_adult = yes
+									highest_held_title_tier >= tier_county
+								}
+								save_scope_as = opportunist
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0015.a
+
+		if = {
+			limit = {
+				exists = scope:official
+			}
+			add_courtier = scope:official
+		}
+
+		if = {
+			limit = {
+				exists = scope:opportunist
+			}
+			random_list = {
+				85 = {
+					scope:opportunist = {
+						add_hook = {
+							type = RICE_sardinia_byzantine_admin_weak_hook
+							target = root
+						}
+					}
+				}
+				15 = {
+					scope:opportunist = {
+						add_hook = {
+							type = RICE_sardinia_byzantine_admin_strong_hook
+							target = root
+						}
+					}
+				}
+			}
+			scope:opportunist = {
+				reverse_add_opinion = {
+					target = root
+					modifier = annoyed_opinion
+					opinion = -15
+				}
+			}
+		}
+
+		RICE_saridnia_orthodox_decision_effect = yes
+
+	}
+}
 
 

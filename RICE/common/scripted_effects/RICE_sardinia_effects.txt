@@ -484,10 +484,51 @@ RICE_saridnia_orthodox_decision_effect = {
 
 	if = {
 		limit = {
+			exists = title:e_roman_empire.holder
+			OR = {
+				NOT = { exists = title:e_roman_empire.var:variable_restored_hre }
+				has_title = title:e_roman_empire
+				top_liege = { has_title = title:e_roman_empire }
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_title = title:e_roman_empire }
+				opinion = {
+					target = title:e_roman_empire.holder
+					value >= medium_positive_opinion
+				}				
+			}
+			add_prestige = 200
+		}
+		else_if = {
+			limit = {
+				NOT = { has_title = title:e_roman_empire }
+				opinion = {
+					target = title:e_roman_empire.holder
+					value >= medium_negative_opinion
+				}				
+			}
+			add_prestige = 100
+		}
+		else = {
+			add_prestige = 50
+		}
+		title:e_roman_empire.holder = {
+			add_opinion = {
+				target = root
+				modifier = RICE_sardinia_opinion_roman_emperor_decision
+			}
+		}
+	}
+
+	else_if = {
+		limit = {
 			exists = title:e_byzantium.holder
 		}
 		if = {
 			limit = {
+				NOT = { has_title = title:e_byzantium }
 				opinion = {
 					target = title:e_byzantium.holder
 					value >= medium_positive_opinion
@@ -497,6 +538,7 @@ RICE_saridnia_orthodox_decision_effect = {
 		}
 		else_if = {
 			limit = {
+				NOT = { has_title = title:e_byzantium }
 				opinion = {
 					target = title:e_byzantium.holder
 					value >= medium_negative_opinion
@@ -514,38 +556,9 @@ RICE_saridnia_orthodox_decision_effect = {
 			}
 		}
 	}
-
-	else_if = {
-		limit = {
-			exists = title:e_roman_empire.holder
-		}
-		if = {
-			limit = {
-				opinion = {
-					target = title:e_roman_empire.holder
-					value >= medium_positive_opinion
-				}				
-			}
-			add_prestige = 200
-		}
-		else_if = {
-			limit = {
-				opinion = {
-					target = title:e_roman_empire.holder
-					value >= medium_negative_opinion
-				}				
-			}
-			add_prestige = 100
-		}
-		else = {
-			add_prestige = 50
-		}
-		title:e_roman_empire.holder = {
-			add_opinion = {
-				target = root
-				modifier = RICE_sardinia_opinion_roman_emperor_decision
-			}
-		}
+	
+	else = {
+		add_prestige = 50
 	}
 
 	every_county_in_region = {
