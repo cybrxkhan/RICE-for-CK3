@@ -924,3 +924,250 @@ sardinia.0015 = {
 }
 
 
+
+# Sardinian North African Decision to Expand Sardinia's North African Networks
+sardinia.0016 = {
+	type = character_event
+	title = sardinia.0016.t
+	desc = {
+		desc = sardinia.0016.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:north_african_ruler
+				}
+				desc = sardinia.0016.desc.north_african_ruler
+			}
+			desc = sardinia.0016.desc.no_north_african_ruler
+		}
+		triggered_desc = {
+			trigger = {
+				exists = scope:merchant
+			}
+			desc = sardinia.0016.desc.merchant
+		}
+		desc = sardinia.0016.desc.conclusion
+	}
+	theme = RICE_theme_sardinia_nuraghe
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	right_portrait = {
+		character = scope:north_african_ruler
+		animation = personality_forgiving
+		trigger = {
+			exists = scope:north_african_ruler
+		}
+	}
+
+	lower_center_portrait = {
+		character = scope:merchant
+		trigger = {
+			exists = scope:merchant
+		}
+	}
+
+	immediate = {
+		every_county_in_region = {
+			region = world_africa_north
+			add_to_list = north_african_counties
+		}
+		random_in_list = {
+			list = north_african_counties
+			weight = {
+				base = 10
+				modifier = {
+					culture = {
+						OR = {
+							has_cultural_pillar = heritage_arabic
+							has_cultural_pillar = heritage_berber
+						}
+					}
+					add = 5
+				}
+				modifier = {
+					is_coastal_county = yes
+					add = 5
+				}
+			}
+			save_scope_as = county
+		}
+		random = {
+			chance = 99
+			# Culture of North African
+			random_list = {	
+				# Non-Jewish
+				80 = {
+					scope:county.faith = {
+						save_scope_as = north_african_faith
+					}						
+					scope:county.culture = {
+						save_scope_as = north_african_culture
+					}						
+				}
+				# Jewish
+				20 = {
+					random_list = {
+						30 = {
+							faith:rabbinism = {
+								save_scope_as = north_african_faith							
+							}
+						}
+						10 = {
+							faith:karaism = {
+								save_scope_as = north_african_faith							
+							}
+						}
+					}
+					random_list = {
+						10 = {
+							culture:ashkenazi = {
+								save_scope_as = north_african_culture
+							}
+						}
+						20 = {
+							culture:sephardi = {
+								save_scope_as = north_african_culture
+							}
+						}
+						20 = {
+							culture:bavlim = {
+								save_scope_as = north_african_culture
+							}
+						}
+					}
+				}
+			}			
+			create_character = {
+				location = root.capital_province
+				template = RICE_sardinian_north_african_decision_merchant_character_template
+				save_scope_as = merchant
+			}
+		}
+		# Possible North African ruler chosen to improve relations
+		if = {
+			limit = {
+				any_county_in_region = {
+					region = RICE_ifriqiya_region
+					NOT = { holder = root }
+				}
+			}
+			random = {
+				chance = 99
+				random_county_in_region = {
+					region = RICE_ifriqiya_region
+					limit = {
+						NOT = { holder = root }
+					}
+					holder = {
+						save_scope_as = north_african_ruler
+					}
+				}
+			}
+		}
+
+	}
+
+	option = { # Ok
+		name = sardinia.0016.a
+
+		if = {
+			limit = {
+				exists = scope:merchant
+			}
+			add_courtier = scope:merchant
+		}
+
+		if = {
+			limit = {
+				exists = scope:north_african_ruler
+			}
+			duel = {
+				skills = { diplomacy stewardship }
+				target = scope:north_african_ruler
+				30 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 2.5
+						min = -49
+					}
+					add_opinion = {
+						target = scope:north_african_ruler
+						modifier = RICE_sardinia_north_african_decision_opinion_lesser
+					}
+					reverse_add_opinion = {
+						target = scope:north_african_ruler
+						modifier = RICE_sardinia_north_african_decision_opinion_lesser
+					}
+					random_list = {
+						30 = {
+
+						}
+						50 = {
+							progress_towards_friend_effect = {
+								CHARACTER = scope:north_african_ruler
+								OPINION = default_friend_opinion
+								REASON = RICE_sardinia_ties_reason_placeholder
+							}
+						}
+						20 = {
+							set_relation_friend = {
+								target = scope:north_african_ruler
+								reason = RICE_sardinia_ties_reason_placeholder
+							}
+						}
+					}
+				}
+				20 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -2.5
+						min = -49
+					}
+					add_opinion = {
+						target = scope:north_african_ruler
+						modifier = RICE_sardinia_north_african_decision_opinion_greater
+					}
+					reverse_add_opinion = {
+						target = scope:north_african_ruler
+						modifier = RICE_sardinia_north_african_decision_opinion_greater
+					}	
+					random_list = {
+						10 = {
+
+						}
+						45 = {
+							progress_towards_friend_effect = {
+								CHARACTER = scope:north_african_ruler
+								OPINION = default_friend_opinion
+								REASON = RICE_sardinia_ties_reason_placeholder
+							}
+						}
+						45 = {
+							set_relation_friend = {
+								target = scope:north_african_ruler
+								reason = RICE_sardinia_ties_reason_placeholder
+							}
+						}
+					}
+				}
+			}
+		}
+
+		RICE_saridnia_north_african_decision_effect = yes
+
+
+	}
+}
+
+
+
+
+
+
+
+
+
