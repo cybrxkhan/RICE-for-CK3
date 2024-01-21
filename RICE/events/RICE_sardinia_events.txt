@@ -1168,6 +1168,92 @@ sardinia.0016 = {
 
 
 
+# Sardinian Independent/None Decision to Fortify Sardinia
+sardinia.0017 = {
+	type = character_event
+	title = sardinia.0017.t
+	desc = {
+		desc = sardinia.0017.desc.intro
+		triggered_desc = {
+			trigger = {
+				exists = scope:local
+			}
+			desc = sardinia.0017.desc.local
+		}
+		desc = sardinia.0017.desc.conclusion
+	}
+	theme = RICE_theme_sardinia_nuraghe
+	
+	left_portrait = {
+		character = root
+		animation = war_defender
+	}
+
+	# right_portrait = {
+	# 	character = scope:north_african_ruler
+	# 	animation = personality_forgiving
+	# 	trigger = {
+	# 		exists = scope:north_african_ruler
+	# 	}
+	# }
+
+	right_portrait = {
+		character = scope:local
+		animation = personality_greedy
+		trigger = {
+			exists = scope:local
+		}
+	}
+
+	immediate = {
+		# Courtier spawn
+		if = {
+			limit = {
+				any_county_in_region = {
+					region = RICE_sardinia_region
+					holder = root
+				}
+			}
+			random = {
+				chance = 99
+				random_county_in_region = {
+					region = RICE_sardinia_region
+					limit = {
+						holder = root
+					}
+					save_scope_as = county
+				}
+				scope:county.faith = {
+					save_scope_as = county_faith
+				}						
+				scope:county.culture = {
+					save_scope_as = county_culture
+				}						
+				create_character = {
+					location = root.capital_province
+					template = RICE_sardinian_none_decision_local_character_template
+					save_scope_as = local
+				}
+			}
+		}
+
+	}
+
+	option = { # Ok
+		name = sardinia.0017.a
+
+		if = {
+			limit = {
+				exists = scope:local
+			}
+			add_courtier = scope:local
+		}
+
+		RICE_saridnia_none_decision_effect = yes
+
+
+	}
+}
 
 
 
