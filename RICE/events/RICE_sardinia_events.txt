@@ -141,6 +141,374 @@ sardinia.0003 = {
 	}
 }
 
+
+
+# Sardinia orientation decision event
+sardinia.0004 = {
+	type = character_event
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_global_variable = RICE_sardinia_catholic_ending
+				}
+				desc = sardinia.0004.t.catholic
+			}
+			triggered_desc = {
+				trigger = {
+					has_global_variable = RICE_sardinia_orthodox_ending
+				}
+				desc = sardinia.0004.t.orthodox
+			}
+			triggered_desc = {
+				trigger = {
+					has_global_variable = RICE_sardinia_north_african_ending
+				}
+				desc = sardinia.0004.t.north_african
+			}
+			triggered_desc = {
+				trigger = {
+					has_global_variable = RICE_sardinia_none_ending
+				}
+				desc = sardinia.0004.t.none
+			}
+			desc = sardinia.0004.t.backup
+		}
+	}
+	desc = {
+		desc = sardinia.0004.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_global_variable = RICE_sardinia_catholic_ending
+				}
+				desc = sardinia.0004.desc.catholic
+			}
+			triggered_desc = {
+				trigger = {
+					has_global_variable = RICE_sardinia_orthodox_ending
+				}
+				desc = sardinia.0004.desc.orthodox
+			}
+			triggered_desc = {
+				trigger = {
+					has_global_variable = RICE_sardinia_north_african_ending
+				}
+				desc = sardinia.0004.desc.north_african
+			}
+			triggered_desc = {
+				trigger = {
+					has_global_variable = RICE_sardinia_none_ending
+				}
+				desc = sardinia.0004.desc.none
+			}
+		}
+	}
+	theme = RICE_theme_sardinia_nuraghe
+
+	right_portrait = {
+		character = scope:sardinia_leader
+		animation = war_over_win
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		show_as_tooltip = {
+			if = {
+				limit = {
+					has_global_variable = RICE_sardinia_catholic_ending
+				}
+				faith:catholic = {
+					change_fervor = {
+						value = 10
+						desc = RICE_fervor_gain_sardinia_fervor
+					}
+				}
+				if = {
+					limit = {
+						title:k_sardinia = {
+							target_is_de_jure_liege_or_above = title:e_italy
+						}
+					}
+					title:k_sardinia = {
+						set_de_jure_liege_title = title:e_italy
+					}
+				}
+				custom_tooltip = sardinia.0004.catholic.tradition
+				custom_tooltip = RICE_sardinia_decide_sardinia_orientation_effect_tooltip.catholic.1
+				custom_tooltip = RICE_sardinia_decide_sardinia_orientation_effect_tooltip.catholic.2
+			}			
+			else_if = {
+				limit = {
+					has_global_variable = RICE_sardinia_orthodox_ending
+				}
+				faith:orthodox = {
+					change_fervor = {
+						value = 10
+						desc = RICE_fervor_gain_sardinia_fervor
+					}
+				}
+				if = {
+					limit = {
+						title:k_sardinia = {
+							target_is_de_jure_liege_or_above = title:e_byzantium
+						}
+					}
+					title:k_sardinia = {
+						set_de_jure_liege_title = title:e_byzantium
+					}
+				}
+				custom_tooltip = sardinia.0004.orthodox.tradition
+				custom_tooltip = RICE_sardinia_decide_sardinia_orientation_effect_tooltip.orthodox.1
+				custom_tooltip = RICE_sardinia_decide_sardinia_orientation_effect_tooltip.orthodox.2
+			}			
+			else_if = {
+				limit = {
+					has_global_variable = RICE_sardinia_north_african_ending
+				}
+				if = {
+					limit = {
+						title:k_sardinia = {
+							target_is_de_jure_liege_or_above = title:e_maghreb
+						}
+					}
+					title:k_sardinia = {
+						set_de_jure_liege_title = title:e_maghreb
+					}
+				}
+				custom_tooltip = sardinia.0004.north_african.tradition
+				custom_tooltip = RICE_sardinia_decide_sardinia_orientation_effect_tooltip.north_african.1
+				custom_tooltip = RICE_sardinia_decide_sardinia_orientation_effect_tooltip.north_african.2
+			}			
+			else_if = {
+				limit = {
+					has_global_variable = RICE_sardinia_none_ending
+				}
+				custom_tooltip = sardinia.0004.none.tradition
+				if = {
+					limit = {
+						scope:sardinia_leader.culture = {
+							has_cultural_pillar = heritage_latin
+						}
+					}					
+					custom_tooltip = RICE_sardinia_decide_sardinia_orientation_effect_tooltip.catholic.1
+				}
+				else_if = {
+					limit = {
+						scope:sardinia_leader.culture = {
+							has_cultural_pillar = heritage_byzantine
+						}
+					}
+					custom_tooltip = RICE_sardinia_decide_sardinia_orientation_effect_tooltip.orthodox.1
+				}
+				else_if = {
+					limit = {
+						scope:sardinia_leader.culture = {
+							has_cultural_pillar = heritage_berber
+						}
+					}					
+					custom_tooltip = RICE_sardinia_decide_sardinia_orientation_effect_tooltip.north_african.1
+				}
+				custom_tooltip = RICE_sardinia_decide_sardinia_orientation_effect_tooltip.none.2
+			}			
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_sardinia_decide_sardinia_orientation_context_tooltip
+		}
+	}
+	
+	option = { # Convert Catholic?
+		name = sardinia.0004.a
+		trigger = {
+			has_global_variable = RICE_sardinia_catholic_ending
+			culture = {
+				has_cultural_tradition = tradition_RICE_judicati_catholic
+			}
+			capital_province = {
+				geographical_region = RICE_sardinia_region
+			}
+			NOT = {
+				faith = faith:catholic
+			}
+			NOT = {
+				faith.religious_head_title ?= title:k_papal_state
+			}
+		}
+		set_character_faith_with_conversion = faith:catholic
+		ai_chance = {
+			base = 50
+			modifier = {
+				has_trait = zealous
+				add = -30 
+			}
+			modifier = {
+				NOT = {
+					religion = religion:christianity_religion
+				}
+				add = -30 
+			}
+			modifier = {
+				has_trait = content
+				add = -10 
+			}
+		}
+	}	
+	option = { # Convert orthodox
+		name = sardinia.0004.b
+		trigger = {
+			has_global_variable = RICE_sardinia_orthodox_ending
+			culture = {
+				has_cultural_tradition = tradition_RICE_judicati_orthodox
+			}
+			capital_province = {
+				geographical_region = RICE_sardinia_region
+			}
+			NOT = {
+				faith = faith:orthodox
+			}
+			NOT = {
+				faith.religious_head_title ?= title:k_orthodox
+			}
+		}
+		set_character_faith_with_conversion = faith:orthodox
+		ai_chance = {
+			base = 50
+			modifier = {
+				has_trait = zealous
+				add = -30 
+			}
+			modifier = {
+				NOT = {
+					religion = religion:christianity_religion
+				}
+				add = -30 
+			}
+			modifier = {
+				has_trait = content
+				add = -10 
+			}
+		}
+	}
+	option = { # Ok
+		name = sardinia.0004.c
+		# trigger = {
+		# 	culture = {
+		# 		NOR = {
+		# 			#has_cultural_tradition = tradition_RICE_judicati
+		# 			has_cultural_tradition = tradition_RICE_judicati_catholic
+		# 			has_cultural_tradition = tradition_RICE_judicati_orthodox
+		# 			has_cultural_tradition = tradition_RICE_judicati_north_african
+		# 			has_cultural_tradition = tradition_RICE_judicati_none
+		# 		}
+		# 	}
+		# }
+		ai_chance = {
+			base = 50
+		}
+	}
+}
+
+# Sardinia orientation decision event
+sardinia.0005 = {
+	type = character_event
+	title = sardinia.0005.t
+	desc = sardinia.0005.desc
+	theme = RICE_theme_sardinia_nuraghe
+
+	right_portrait = {
+		character = scope:sardinia_leader
+		animation = thinking
+	}
+
+	# Latin
+	option = {
+		name = sardinia.0005.a
+		custom_tooltip = {
+			text = sardinia.0005.a.tooltip
+			every_culture_global = {
+				limit = {
+					has_cultural_tradition = tradition_RICE_judicati_none
+				}
+				set_culture_pillar = heritage_latin
+			}
+		}
+		set_global_variable = {
+			name = RICE_sardinia_none_ending_catholic
+			value = yes
+		}
+	}
+
+	# Byzantine
+	option = {
+		name = sardinia.0005.b
+		custom_tooltip = {
+			text = sardinia.0005.b.tooltip
+			every_culture_global = {
+				limit = {
+					has_cultural_tradition = tradition_RICE_judicati_none
+				}
+				set_culture_pillar = heritage_byzantine
+			}
+		}
+		set_global_variable = {
+			name = RICE_sardinia_none_ending_orthodox
+			value = yes
+		}
+	}
+
+	# North African
+	option = {
+		name = sardinia.0005.c
+		custom_tooltip = {
+			text = sardinia.0005.c.tooltip
+			every_culture_global = {
+				limit = {
+					has_cultural_tradition = tradition_RICE_judicati_none
+				}
+				set_culture_pillar = heritage_berber
+			}
+		}
+		set_global_variable = {
+			name = RICE_sardinia_none_ending_north_african
+			value = yes
+		}
+	}
+
+	after = {
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:sardinia_settlement_liege
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							OR = {
+								geographical_region = world_europe_south
+								geographical_region = world_europe_west_iberia
+								geographical_region = world_africa_north
+								geographical_region = world_europe_west_francia
+								geographical_region = world_asia_minor
+								geographical_region = world_middle_east_jerusalem
+							}	
+							# OR = {
+							# 	geographical_region = world_europe_south
+							# 	geographical_region = world_europe_west_iberia
+							# 	geographical_region = world_africa_north
+							# 	geographical_region = world_europe_west_francia
+							# }		
+						}
+					}
+				}
+			}
+			trigger_event = sardinia.0004
+		}	
+	}
+
+}
+
 # Sardinians arrive in Sardaniya
 # County randomly chosen, but weighted to 
 sardinia.0010 = {

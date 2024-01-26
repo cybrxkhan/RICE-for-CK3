@@ -33,6 +33,23 @@ RICE_sardinia_decide_sardinia_orientation = {
 		culture = {
 			has_cultural_tradition = tradition_RICE_judicati
 		}
+		OR = {
+			culture = {
+				has_cultural_parameter = unlock_rice_condaghes_innovation
+			}
+			culture = { 
+				has_cultural_era_or_later = culture_era_high_medieval
+			}
+		}
+		
+		OR = {
+			AND = {
+				completely_controls = title:d_sardinia
+				has_title = title:d_sardinia
+			}
+			root.culture.culture_head = root
+			prestige_level >= 5
+		}
 	}
 
 	is_valid_showing_failures_only = {
@@ -313,6 +330,8 @@ RICE_sardinia_decide_sardinia_orientation = {
 	}
 
 	effect = {
+
+		save_scope_as = sardinia_leader
 
 		culture:sardinian = {
 			save_scope_as = sardinian
@@ -611,7 +630,42 @@ RICE_sardinia_decide_sardinia_orientation = {
 		# 	custom_tooltip = RICE_sardinia_decide_sardinia_orientation_context_tooltip
 		# }
 		
-		trigger_event = sardinia.8888
+		if = {
+			limit = {
+				scope:choose_none = yes
+			}
+			trigger_event = sardinia.0005
+		}
+		else = {
+			every_ruler = {
+				limit = {
+					OR = {
+						this = scope:sardinia_settlement_liege
+						any_held_title = {
+							tier = tier_county
+							any_county_province = {
+								OR = {
+									geographical_region = world_europe_south
+									geographical_region = world_europe_west_iberia
+									geographical_region = world_africa_north
+									geographical_region = world_europe_west_francia
+									geographical_region = world_asia_minor
+									geographical_region = world_middle_east_jerusalem
+								}	
+								# OR = {
+								# 	geographical_region = world_europe_south
+								# 	geographical_region = world_europe_west_iberia
+								# 	geographical_region = world_africa_north
+								# 	geographical_region = world_europe_west_francia
+								# }		
+							}
+						}
+					}
+				}
+				trigger_event = sardinia.0004
+			}	
+		}
+
 	}
 
 	ai_will_do = {
@@ -997,10 +1051,10 @@ RICE_sardinia_inaugurate_major_palio = {
 		is_landed = yes
 		culture = {
 			OR = {
-				AND = {
+				#AND = {
 					has_cultural_pillar = heritage_latin
-					has_cultural_era_or_later = culture_era_early_medieval
-				}
+				#	has_cultural_era_or_later = culture_era_early_medieval
+				#}
 				has_innovation = innovation_RICE_palio_races
 			}
 		}
