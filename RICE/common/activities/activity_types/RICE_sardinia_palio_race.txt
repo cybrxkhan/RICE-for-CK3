@@ -3,7 +3,13 @@
 		highest_held_title_tier > tier_barony
 		is_landed = yes
 		culture = {
-			has_innovation = innovation_RICE_palio_races
+			OR = {
+				#AND = {
+					has_cultural_pillar = heritage_latin
+				#	has_cultural_era_or_later = culture_era_early_medieval
+				#}
+				has_innovation = innovation_RICE_palio_races
+			}
 		}
 		trigger_if = {
 			limit = {
@@ -374,6 +380,110 @@
 				}
 			}
 		}
+		
+		#########
+		# PALIO PARTICIPATION
+		#########
+		RICE_sardinia_palio_race_preparations_type = {
+			RICE_sardinia_palio_race_preparations_none = {
+				ai_will_do = {
+					value = 20
+					if = {
+						limit = {
+							has_trait = greedy
+						}
+						add = 10
+					}
+				}
+			}
+			RICE_sardinia_palio_race_preparations_basic = {
+				default = yes
+				cost = { 
+					gold = {
+						add = {
+							value = 0
+							desc = RICE_sardinia_palio_race_preparations_amount
+							add = {
+								value = 50
+								desc = RICE_sardinia_palio_race_preparations_amount
+							}
+						}
+					}
+				}			
+				ai_will_do = {
+					value = 30
+					if = {
+						limit = {
+							short_term_gold <= 50
+						}
+						subtract = {
+							value = 30
+						}
+					}
+					if = {
+						limit = {
+							has_trait = compassionate
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = just
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = generous
+						}
+						add = 5
+					}
+				}
+			}
+			RICE_sardinia_palio_race_preparations_extensive = {
+				cost = { 
+					gold = {
+						add = {
+							value = 0
+							desc = RICE_sardinia_palio_race_preparations_amount
+							add = {
+								value = 100
+								desc = RICE_sardinia_palio_race_preparations_amount
+							}
+						}
+					}
+				}			
+				ai_will_do = {
+					value = 10
+					if = {
+						limit = {
+							short_term_gold <= 100
+						}
+						subtract = {
+							value = 10
+						}
+					}
+					if = {
+						limit = {
+							has_trait = compassionate
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = just
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = generous
+						}
+						add = 5
+					}
+				}
+			}
+		}
 
 	}
 
@@ -489,6 +599,14 @@
 			}
 			
 			add = { # Charity
+				value = 0
+				add = 50
+				add = 100
+				# Divide by 3 to get the average option cost
+				divide = 3
+			}
+			
+			add = { # Preparations
 				value = 0
 				add = 50
 				add = 100

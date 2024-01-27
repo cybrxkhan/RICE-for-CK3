@@ -386,24 +386,16 @@ RICE_sardinia_decide_sardinia_orientation = {
 			}
 
 			show_as_tooltip = {
-				culture = {
-					if = {
-						limit = {
-							culture = {
-								has_cultural_tradition = tradition_RICE_judicati
-							}
+				if = {
+					limit = {
+						culture = {
+							has_cultural_tradition = tradition_RICE_judicati
 						}
+					}
+					culture = {
 						remove_culture_tradition = tradition_RICE_judicati
 						add_culture_tradition = tradition_RICE_judicati_catholic
 					}
-					# if = {
-					# 	limit = {
-					# 		culture = {
-					# 			NOT = { has_cultural_pillar = heritage_latin }
-					# 		}
-					# 	}
-					# 	set_culture_pillar = heritage_latin
-					# }
 				}
 			}
 			hidden_effect = {
@@ -464,24 +456,16 @@ RICE_sardinia_decide_sardinia_orientation = {
 			}		
 
 			show_as_tooltip = {
-				culture = {
-					if = {
-						limit = {
-							culture = {
-								has_cultural_tradition = tradition_RICE_judicati
-							}
+				if = {
+					limit = {
+						culture = {
+							has_cultural_tradition = tradition_RICE_judicati
 						}
+					}
+					culture = {
 						remove_culture_tradition = tradition_RICE_judicati
 						add_culture_tradition = tradition_RICE_judicati_orthodox
 					}
-					# if = {
-					# 	limit = {
-					# 		culture = {
-					# 			NOT = { has_cultural_pillar = heritage_byzantine }
-					# 		}
-					# 	}
-					# 	set_culture_pillar = heritage_byzantine
-					# }
 				}
 			}
 			hidden_effect = {
@@ -523,24 +507,16 @@ RICE_sardinia_decide_sardinia_orientation = {
 			custom_tooltip = RICE_sardinia_decide_sardinia_orientation_effect_tooltip.north_african.2
 			
 			show_as_tooltip = {
-				culture = {
-					if = {
-						limit = {
-							culture = {
-								has_cultural_tradition = tradition_RICE_judicati
-							}
+				if = {
+					limit = {
+						culture = {
+							has_cultural_tradition = tradition_RICE_judicati
 						}
+					}
+					culture = {
 						remove_culture_tradition = tradition_RICE_judicati
 						add_culture_tradition = tradition_RICE_judicati_north_african
 					}
-					# if = {
-					# 	limit = {
-					# 		culture = {
-					# 			NOT = { has_cultural_pillar = heritage_berber }
-					# 		}
-					# 	}
-					# 	set_culture_pillar = heritage_berber
-					# }
 				}
 			}
 			hidden_effect = {
@@ -601,13 +577,13 @@ RICE_sardinia_decide_sardinia_orientation = {
 			# }	
 			
 			show_as_tooltip = {
-				culture = {
-					if = {
-						limit = {
-							culture = {
-								has_cultural_tradition = tradition_RICE_judicati
-							}
+				if = {
+					limit = {
+						culture = {
+							has_cultural_tradition = tradition_RICE_judicati
 						}
+					}
+					culture = {
 						remove_culture_tradition = tradition_RICE_judicati
 						add_culture_tradition = tradition_RICE_judicati_none
 					}
@@ -1419,6 +1395,7 @@ RICE_sardinia_invest_in_palio_horses = {
 	cooldown = { days = 3650 }
 
 	is_shown = {
+		exists = house
 		is_landed = yes
 		culture = {
 			OR = {
@@ -1435,8 +1412,20 @@ RICE_sardinia_invest_in_palio_horses = {
 		culture = {
 			has_innovation = innovation_RICE_palio_races
 		}
-		NOT = {
-			house ?= { has_house_modifier = RICE_sardinia_palio_horse_investment }
+		custom_description = {
+			text = RICE_sardinia_palio_horses_recent_req
+			house ?= { 
+				NOR = {
+					has_house_modifier = RICE_sardinia_palio_horse_investment_small_modifier
+					has_house_modifier = RICE_sardinia_palio_horse_investment_medium_modifier
+					has_house_modifier = RICE_sardinia_palio_horse_investment_large_modifier
+				}
+			}
+		}
+		OR = {
+			is_house_head = yes
+			highest_held_title_tier >= tier_kingdom
+			prestige_level >= 3
 		}
 	}
 
@@ -1509,11 +1498,14 @@ RICE_sardinia_invest_in_palio_horses = {
 
 	effect = {
 
+		save_scope_as = palio_horse_investor
+
 		custom_tooltip = RICE_sardinia_invest_in_palio_horses_effect_tooltip_1
+		custom_description_no_bullet = { text = RICE_sardinia_invest_in_palio_horses_effect_tooltip_2 }
 		
-		show_as_tooltip = {
-			RICE_sardinia_invest_in_palio_horses_effect = yes
-		}
+		# show_as_tooltip = {
+		# 	RICE_sardinia_invest_in_palio_horses_effect = yes
+		# }
 		
 		if = {
 			limit = {
@@ -1521,8 +1513,78 @@ RICE_sardinia_invest_in_palio_horses = {
 			}
 			custom_tooltip = RICE_sardinia_invest_in_palio_horses_context_tooltip
 		}
+
 		
-		trigger_event = sardinia.0018
+		# Not sure why AI can't pick one option or another
+		if = {
+			limit = { is_ai = yes }
+			random_list = {
+				10 = {
+					set_variable = {
+						name = RICE_sardinia_palio_horse_investment_type
+						value = flag:small
+					}
+				}
+				10 = {
+					trigger = {
+						gold >= RICE_sardinia_palio_horse_investment_medium_cost
+					}
+					set_variable = {
+						name = RICE_sardinia_palio_horse_investment_type
+						value = flag:medium
+					}
+				}
+				10 = {
+					trigger = {
+						gold >= RICE_sardinia_palio_horse_investment_large_cost
+					}
+					set_variable = {
+						name = RICE_sardinia_palio_horse_investment_type
+						value = flag:large
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:RICE_sardinia_invest_in_palio_horses_small_option = yes
+			}
+			set_variable = {
+				name = RICE_sardinia_palio_horse_investment_type
+				value = flag:small
+			}
+		}
+		else_if = {
+			limit = {
+				scope:RICE_sardinia_invest_in_palio_horses_medium_option = yes
+			}
+			set_variable = {
+				name = RICE_sardinia_palio_horse_investment_type
+				value = flag:medium
+			}
+		}
+		else_if = {
+			limit = {
+				scope:RICE_sardinia_invest_in_palio_horses_large_option = yes
+			}
+			set_variable = {
+				name = RICE_sardinia_palio_horse_investment_type
+				value = flag:large
+			}
+		}
+		house = {
+			every_house_member = {
+				limit = {
+					is_landed = yes
+				}
+				#trigger_event = sardinia.0019
+				# Change to immediately later
+				trigger_event = {
+					id = sardinia.0019
+					days = 1
+				}
+			}
+		}
 	}
 
 	ai_will_do = {

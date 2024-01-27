@@ -1631,7 +1631,7 @@ sardinia.0018 = {
 	desc = sardinia.0018.desc
 	theme = RICE_theme_sardinia_church
 
-	left_portrait = root
+	#left_portrait = root
 	right_portrait = root
 
 	# Ok
@@ -1639,6 +1639,82 @@ sardinia.0018 = {
 		name = sardinia.0018.a
 		add_prestige = { RICE_sardinia_condaghe_prestige_gain_min RICE_sardinia_condaghe_prestige_gain_max }
 		RICE_sardinia_condaghe_decision_effect = yes
+	}
+
+
+}
+
+
+# Palio horse investment decision event
+sardinia.0019 = {
+	type = character_event
+	title = sardinia.0019.t
+	desc = {
+		desc = sardinia.0019.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { root = scope:palio_horse_investor }
+				}
+				desc = sardinia.0019.desc.other
+			}
+			desc = sardinia.0019.desc.investor
+		}
+		desc = sardinia.0019.desc.conclusion
+	}
+	theme = tournament_grounds
+	override_icon = { reference = "gfx/interface/icons/event_types/type_chivalry.dds" }
+
+	right_portrait = {
+		character = scope:palio_horse_investor
+		animation = personality_greedy
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				root = scope:palio_horse_investor
+			}
+			scope:palio_horse_investor = {
+				RICE_sardinia_invest_in_palio_horses_effect = yes
+			}
+		}
+		if = {
+			limit = {
+				scope:palio_horse_investor = {
+					var:RICE_sardinia_palio_horse_investment_type = flag:small
+				}
+			}
+			custom_tooltip = sardinia.0019.small.tooltip
+		}
+		else_if = {
+			limit = {
+				scope:palio_horse_investor = {
+					var:RICE_sardinia_palio_horse_investment_type = flag:medium
+				}
+			}
+			custom_tooltip = sardinia.0019.medium.tooltip
+		}
+		else_if = {
+			limit = {
+				scope:palio_horse_investor = {
+					var:RICE_sardinia_palio_horse_investment_type = flag:large
+				}
+			}
+			custom_tooltip = sardinia.0019.large.tooltip
+		}
+	}
+
+	# Ok
+	option = {
+		name = sardinia.0019.a
+	}
+
+	after = {
+		if = {
+			limit = { has_variable = RICE_sardinia_palio_horse_investment_type }
+			remove_variable = RICE_sardinia_palio_horse_investment_type
+		}
 	}
 
 
