@@ -64,12 +64,14 @@ sardinia.0003 = {
 								modifier = RICE_sardinia_malaria_modifier
 								years = 3
 							}
-							every_character_in_location = {
-								random = {
-									chance = 100
-									trigger_event = {
-										id = sardinia.0003
-										days = { 1 730 }
+							every_county_province = {
+								every_character_in_location = {
+									random = {
+										chance = 100
+										trigger_event = {
+											id = sardinia.0003
+											days = { 1 730 }
+										}
 									}
 								}
 							}
@@ -1749,6 +1751,18 @@ sardinia.0020 = {
 	
 	option = { # Ok
 		name = sardinia.0020.a
+		# Decide to participate or not if you are a house head, and not the house or in the same house as the host
+		if = {
+			limit = {
+				is_house_head = yes
+				NOT = { this = scope:host }
+				NOT = {
+					this.house ?= scope:host.house
+				}
+				NOT = { has_variable = RICE_sardinia_palio_participation }
+			}
+			trigger_event = sardinia.0021
+		}
 	}
 }
 
@@ -1772,6 +1786,25 @@ sardinia.0021 = {
 			value = flag:none
 			days = 200 # Failsafe in case it doesn't get removed at the end
 		}
+		ai_chance = {
+			base = 60
+			# modifier = {
+			# 	has_trait = ambitious
+			# 	add = -30 
+			# }
+			# modifier = {
+			# 	has_trait = content
+			# 	add = 10 
+			# }
+			# modifier = {
+			# 	has_trait = lazy
+			# 	add = 10 
+			# }
+			# modifier = {
+			# 	has_trait = greedy
+			# 	add = 10 
+			# }
+		}
 	}
 	
 	option = { # Ok
@@ -1789,6 +1822,25 @@ sardinia.0021 = {
 			value = flag:basic
 			days = 200 # Failsafe in case it doesn't get removed at the end
 		}
+		ai_chance = {
+			base = 30
+			modifier = {
+				has_trait = ambitious
+				add = 10
+			}
+			modifier = {
+				has_trait = content
+				add = -10 
+			}
+			modifier = {
+				has_trait = lazy
+				add = -10 
+			}
+			modifier = {
+				has_trait = greedy
+				add = -20 
+			}
+		}
 	}
 	
 	option = { # Ok
@@ -1805,6 +1857,25 @@ sardinia.0021 = {
 			name = RICE_sardinia_palio_participation
 			value = flag:extensive
 			days = 200 # Failsafe in case it doesn't get removed at the end
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				has_trait = ambitious
+				add = 10
+			}
+			modifier = {
+				has_trait = content
+				add = -10 
+			}
+			modifier = {
+				has_trait = lazy
+				add = -10 
+			}
+			modifier = {
+				has_trait = greedy
+				add = -20 
+			}
 		}
 	}
 }
@@ -1895,7 +1966,7 @@ sardinia.0023 = {
 	}
 }
 
-# Palio banquet the eve
+# Palio banquet the eve (host)
 sardinia.0024 = {
 	type = activity_event
 	title = sardinia.0024.t
@@ -1905,7 +1976,7 @@ sardinia.0024 = {
 	left_portrait = {
 		character = scope:host
 		trigger = {
-			NOT = { this = scope:host }
+			NOT = { root = scope:host }
 		}
 		animation = toast_goblet
 	}
@@ -1925,58 +1996,12 @@ sardinia.0024 = {
 					is_landed = yes
 					NOT = { this = scope:host }
 				}
-				trigger_event = sardinia.0024
-			}	
-		}
-		if = {
-			limit = {
-				this = scope:host
-			}
-			trigger_event = {
-				id = sardinia.0025
-				days = { 3 5 }
-			}
-		}
-	}
-}
-
-# Palio procession and offerings
-sardinia.0025 = {
-	type = activity_event
-	title = sardinia.0025.t
-	desc = sardinia.0025.desc
-	theme = faith
-	override_background = { reference = alley_day }
-	
-	left_portrait = {
-		character = scope:host
-		trigger = {
-			NOT = { this = scope:host }
-		}
-		animation = personality_honorable
-	}
-	right_portrait = {
-		character = root
-		animation = personality_zealous
-	}
-	
-	option = { # Ok
-		name = sardinia.0025.a
-	}
-
-	after = {
-		scope:activity = {
-			every_attending_character = {
-				limit = {
-					is_landed = yes
-					NOT = { this = scope:host }
-				}
 				trigger_event = sardinia.0025
 			}	
 		}
 		if = {
 			limit = {
-				this = scope:host
+				root = scope:host
 			}
 			trigger_event = {
 				id = sardinia.0026
@@ -1986,24 +2011,38 @@ sardinia.0025 = {
 	}
 }
 
-# Palio race begins
+# Palio banquet the eve (participant)
+sardinia.0025 = {
+	type = activity_event
+	title = sardinia.0025.t
+	desc = sardinia.0025.desc
+	theme = feast_activity
+	
+	left_portrait = {
+		character = scope:host
+		animation = toast_goblet
+	}
+	right_portrait = {
+		character = root
+		animation = drink_goblet
+	}
+	
+	option = { # Ok
+		name = sardinia.0025.a
+	}
+}
+
+# Palio procession and offerings, and the Palio begins! (host)
 sardinia.0026 = {
 	type = activity_event
 	title = sardinia.0026.t
 	desc = sardinia.0026.desc
 	theme = martial_chivalry_focus
 	override_background = { reference = alley_day }
-	
-	left_portrait = {
-		character = scope:host
-		trigger = {
-			NOT = { this = scope:host }
-		}
-		animation = throne_room_applaud_1
-	}
+
 	right_portrait = {
 		character = root
-		animation = throne_room_cheer_1
+		animation = throne_room_cheer_2
 	}
 	
 	option = { # Ok
@@ -2017,26 +2056,86 @@ sardinia.0026 = {
 					is_landed = yes
 					NOT = { this = scope:host }
 				}
-				trigger_event = sardinia.0026
+				trigger_event = sardinia.0027
 			}	
 		}
 		if = {
 			limit = {
-				this = scope:host
+				root = scope:host
 			}
 			trigger_event = {
-				id = sardinia.0027
+				id = sardinia.0028
 				days = { 3 5 }
 			}
 		}
 	}
 }
 
-# Palio race ends - winner is declared
+# Palio procession and offerings, and the Palio begins! (participant)
+sardinia.0027 = {
+	type = activity_event
+	title = sardinia.0027.t
+	desc = sardinia.0027.desc
+	theme = martial_chivalry_focus
+	override_background = { reference = alley_day }
+	
+	left_portrait = {
+		character = scope:host
+		animation = throne_room_cheer_1
+	}
+	right_portrait = {
+		character = root
+		animation = throne_room_cheer_2
+	}
+	
+	option = { # Ok
+		name = sardinia.0027.a
+	}
+}
+
+
+# Palio race ends - winner is declared (host)
 sardinia.0028 = {
 	type = activity_event
 	title = sardinia.0028.t
-	desc = sardinia.0028.desc
+	desc = {
+		desc = sardinia.0028.desc
+		first_valid = {
+			# Your house won
+			triggered_desc = {
+				trigger = {
+					scope:host = { var:RICE_sardinia_palio_winner ?= flag:ruler }
+					root.house ?= scope:palio_winner.house
+				}
+				desc = sardinia.0028.desc.house_host
+			}		
+			# Another house won
+			triggered_desc = {
+				trigger = {
+					scope:host = { var:RICE_sardinia_palio_winner ?= flag:ruler }
+					#NOT = { root.house ?= scope:palio_winner.house }
+				}
+				desc = sardinia.0028.desc.house_other
+			}	
+			# Commoner wins
+			triggered_desc = {
+				trigger = {
+					scope:host = { var:RICE_sardinia_palio_winner ?= flag:commoner }
+				}
+				desc = sardinia.0028.desc.commoner
+			}			
+			# Merchant wins
+			triggered_desc = {
+				trigger = {
+					scope:host = { var:RICE_sardinia_palio_winner ?= flag:merchant }
+				}
+				desc = sardinia.0028.desc.merchant
+			}	
+			# Default / Patrician or minor nobility family wins
+			desc = sardinia.0028.desc.patrician		
+		}
+		desc = sardinia.0028.desc.conclusion
+	}
 	theme = RICE_theme_tournament_grounds_horse
 	
 	left_portrait = {
@@ -2054,99 +2153,87 @@ sardinia.0028 = {
 
 	immediate = {
 		# Choose a winner
-		if = {
-			limit = {
-				this = scope:host
+		random_list = {
+			# Random patrician family
+			1 = { # 50
+				set_variable = {
+					name = RICE_sardinia_palio_winner
+					value = flag:patrician
+				}
 			}
-			random_list = {
-				# Random patrician family
-				50 = {
-					set_variable = {
-						name = RICE_sardinia_palio_winner
-						value = flag:patrician
-					}
+			# Random merchant family
+			1 = { # 50
+				set_variable = {
+					name = RICE_sardinia_palio_winner
+					value = flag:merchant
 				}
-				# Random merchant family
-				50 = {
-					set_variable = {
-						name = RICE_sardinia_palio_winner
-						value = flag:patrician
-					}
+			}
+			# Random commoner
+			1 = { # 25
+				set_variable = {
+					name = RICE_sardinia_palio_winner
+					value = flag:commoner
 				}
-				# Random commoner
-				25 = {
-					set_variable = {
-						name = RICE_sardinia_palio_winner
-						value = flag:patrician
-					}
-				}
-				# Random participant
-				75 = {
-					scope:activity = {
-						every_attending_character = {
-							limit = {
-								is_landed = yes
-								OR = {
-									var:RICE_sardinia_palio_participation ?= flag:basic
-									var:RICE_sardinia_palio_participation ?= flag:extensive
-								}
-								#NOT = { this = scope:host }
-							}
-							add_to_list = RICE_sardinia_palio_winner_candidates
-						}	
-					}
-					random_in_list = {
-						list = RICE_sardinia_palio_winner_candidates
-						weight = {
-							base = 10
-							modifier = {
-								this = scope:host
-								add = 10
-							}
-							modifier = {
-								var:RICE_sardinia_palio_participation ?= flag:extensive
-								add = 10
-							}
-							modifier = {
+			}
+			# Random participant
+			75 = {
+				scope:activity = {
+					every_attending_character = {
+						limit = {
+							is_landed = yes
+							OR = {
 								var:RICE_sardinia_palio_participation ?= flag:basic
-								add = 10
+								var:RICE_sardinia_palio_participation ?= flag:extensive
 							}
-							modifier = {
-								house ?= { 
-									has_house_modifier = RICE_sardinia_palio_horse_investment_small_modifier
-								}
-								add = 5
-							}
-							modifier = {
-								house ?= { 
-									has_house_modifier = RICE_sardinia_palio_horse_investment_medium_modifier
-								}
-								add = 10
-							}
-							modifier = {
-								house ?= { 
-									has_house_modifier = RICE_sardinia_palio_horse_investment_large_modifier
-								}
-								add = 15
-							}
+							#NOT = { this = scope:host }
 						}
-						save_scope_as = palio_winner
-						set_variable = {
-							name = RICE_sardinia_palio_winner
-							value = scope:palio_winner
-						}
-					}					
-					scope:palio_winner = {
-						RICE_sardinia_palio_race_winner_effect = yes
-					}
+						add_to_list = RICE_sardinia_palio_winner_candidates
+					}	
 				}
-			}
-		}
-		else = {
-			show_as_tooltip = {
-				scope:palio_winner = {
+				random_in_list = {
+					list = RICE_sardinia_palio_winner_candidates
+					weight = {
+						base = 10
+						modifier = {
+							this = scope:host
+							add = 10
+						}
+						modifier = {
+							var:RICE_sardinia_palio_participation ?= flag:extensive
+							add = 10
+						}
+						modifier = {
+							var:RICE_sardinia_palio_participation ?= flag:basic
+							add = 10
+						}
+						modifier = {
+							house ?= { 
+								has_house_modifier = RICE_sardinia_palio_horse_investment_small_modifier
+							}
+							add = 5
+						}
+						modifier = {
+							house ?= { 
+								has_house_modifier = RICE_sardinia_palio_horse_investment_medium_modifier
+							}
+							add = 10
+						}
+						modifier = {
+							house ?= { 
+								has_house_modifier = RICE_sardinia_palio_horse_investment_large_modifier
+							}
+							add = 15
+						}
+					}
+					save_scope_as = palio_winner
+				}		
+				set_variable = {
+					name = RICE_sardinia_palio_winner
+					value = flag:ruler
+				}			
+				scope:palio_winner ?= {
 					RICE_sardinia_palio_race_winner_effect = yes
-				}				
+				}
 			}
 		}
 	}
@@ -2154,14 +2241,14 @@ sardinia.0028 = {
 	option = { # Ok
 		name = sardinia.0028.a
 		trigger = {
-			NOT = { root.house ?= scope:host.palio_winner }
+			NOT = { root.house ?= scope:palio_winner.house }
 		}
 	}
 	
 	option = { # If you are the Palio winner
 		name = sardinia.0028.b
 		trigger = {
-			root.house ?= scope:host.palio_winner
+			root.house ?= scope:palio_winner.house
 		}
 	}
 
@@ -2172,28 +2259,134 @@ sardinia.0028 = {
 					is_landed = yes
 					NOT = { this = scope:host }
 				}
-				trigger_event = sardinia.0028
+				trigger_event = sardinia.0029
 			}	
 		}
-		if = {
-			limit = {
-				this = scope:host
-			}
-			trigger_event = {
-				id = sardinia.0029
-				days = { 3 5 }
-			}
+		trigger_event = {
+			id = sardinia.0030
+			days = { 3 5 }
 		}
 	}
 }
 
-# Celebrations and banqueting
+
+# Palio race ends - winner is declared (participant)
 sardinia.0029 = {
 	type = activity_event
 	title = sardinia.0029.t
-	desc = sardinia.0029.desc
-	theme = feast_activity
+	desc = {
+		desc = sardinia.0029.desc
+		first_valid = {
+			# Your house won
+			triggered_desc = {
+				trigger = {
+					scope:host = { var:RICE_sardinia_palio_winner ?= flag:ruler }
+					root.house ?= scope:palio_winner.house
+				}
+				desc = sardinia.0029.desc.house_host
+			}		
+			# Another house won
+			triggered_desc = {
+				trigger = {
+					scope:host = { var:RICE_sardinia_palio_winner ?= flag:ruler }
+					#NOT = { root.house ?= scope:palio_winner.house }
+				}
+				desc = sardinia.0029.desc.house_other
+			}	
+			# Commoner wins
+			triggered_desc = {
+				trigger = {
+					scope:host = { var:RICE_sardinia_palio_winner ?= flag:commoner }
+				}
+				desc = sardinia.0029.desc.commoner
+			}			
+			# Merchant wins
+			triggered_desc = {
+				trigger = {
+					scope:host = { var:RICE_sardinia_palio_winner ?= flag:merchant }
+				}
+				desc = sardinia.0029.desc.merchant
+			}	
+			# Default / Patrician or minor nobility family wins
+			desc = sardinia.0029.desc.patrician		
+		}
+		desc = sardinia.0029.desc.conclusion
+	}
+	theme = RICE_theme_tournament_grounds_horse
 	
+	left_portrait = {
+		character = scope:host
+		triggered_animation = {
+			trigger = {
+				NOT = { scope:host = scope:palio_winner }
+			}
+			animation = throne_room_applaud_1
+		}
+		triggered_animation = {
+			trigger = {	
+				var:RICE_sardinia_palio_winner ?= flag:ruler		
+				scope:host = scope:palio_winner
+			}
+			animation = ecstasy
+		}
+	}
+	right_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = {
+				NOT = { scope:host = scope:palio_winner }
+			}
+			animation = throne_room_applaud_1
+		}
+		triggered_animation = {
+			trigger = {	
+				scope:host = { var:RICE_sardinia_palio_winner ?= flag:ruler }
+				scope:host = scope:palio_winner
+			}
+			animation = ecstasy
+		}
+	}	
+
+	immediate = {
+		show_as_tooltip = {
+			scope:palio_winner ?= {
+				RICE_sardinia_palio_race_winner_effect = yes
+			}
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0029.a
+		trigger = {
+			scope:host = { var:RICE_sardinia_palio_winner ?= flag:ruler }
+			NOT = { root.house ?= scope:palio_winner.house }
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0029.b
+		trigger = {
+			scope:host = { var:RICE_sardinia_palio_winner ?= flag:ruler }
+			root.house ?= scope:palio_winner.house
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0029.c
+		trigger = {
+			NOT = { scope:host = { var:RICE_sardinia_palio_winner ?= flag:ruler } }
+		}
+	}
+
+}
+
+# Celebrations and banqueting
+sardinia.0030 = {
+	type = activity_event
+	title = sardinia.0030.t
+	desc = sardinia.0030.desc
+	theme = feast_activity
+
 	left_portrait = {
 		character = scope:host
 		trigger = {
@@ -2207,42 +2400,6 @@ sardinia.0029 = {
 	}
 	
 	option = { # Ok
-		name = sardinia.0029.a
-	}
-
-	after = {
-		scope:activity = {
-			every_attending_character = {
-				limit = {
-					is_landed = yes
-					NOT = { this = scope:host }
-				}
-				trigger_event = sardinia.0029
-			}	
-		}
-		if = {
-			limit = {
-				this = scope:host
-			}
-			trigger_event = {
-				id = sardinia.0030
-				days = { 3 5 }
-			}
-		}
-	}
-}
-
-# Mostra/Mercato and giving out charity to conclude
-sardinia.0030 = {
-	type = activity_event
-	title = sardinia.0030.t
-	desc = sardinia.0030.desc
-	theme = RICE_theme_festival_generic
-	override_background = { reference = market_west }
-
-	right_portrait = root
-	
-	option = { # Ok
 		name = sardinia.0030.a
 	}
 
@@ -2250,18 +2407,58 @@ sardinia.0030 = {
 		scope:activity = {
 			every_attending_character = {
 				limit = {
-					is_landed = yes
-					NOT = { this = scope:host }
+					OR = {
+						is_landed = yes
+						this = scope:host # In case host loses land for some reason
+					}
 				}
-				trigger_event = sardinia.0031
+				trigger_event = {
+					id = sardinia.0031
+					days = 3
+				}
 			}	
 		}
+	}
+}
+
+
+# Mostra/Mercato and giving out charity to conclude
+sardinia.0031 = {
+	type = activity_event
+	title = sardinia.0031.t
+	desc = sardinia.0031.desc
+	theme = RICE_theme_festival_generic
+	override_background = { reference = market_west }
+
+	right_portrait = root
+	
+	option = { # Ok
+		name = sardinia.0031.a
+	}
+	
+	option = { # Ok
+		name = sardinia.0031.b
+		trigger = {
+			OR = {
+				gold >= 50
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = { 15 75 }
+		add_prestige = { 15 75 }
+		add_character_modifier = {
+			modifier = RICE_sardinia_mercato_trinkets
+			years = 10
+		}
+	}
+
+	after = {
 		if = {
 			limit = {
 				root = scope:host
 			}
 			trigger_event = {
-				id = sardinia.0031
+				id = sardinia.0032
 				days = 1
 			}
 		}
@@ -2269,7 +2466,7 @@ sardinia.0030 = {
 }
 
 # Misc cleanup
-sardinia.0031 = {
+sardinia.0032 = {
 	hidden = yes	
 	immediate = {
 		scope:activity = {
@@ -2278,6 +2475,12 @@ sardinia.0031 = {
 					has_variable = RICE_sardinia_palio_participation
 				}
 				remove_variable = RICE_sardinia_palio_participation
+			}	
+			every_attending_character = {
+				limit = {
+					has_variable = RICE_sardinia_palio_winner
+				}
+				remove_variable = RICE_sardinia_palio_winner
 			}	
 			hidden_effect = { skip_activity_phase = yes }
 		}

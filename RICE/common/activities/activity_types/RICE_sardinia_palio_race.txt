@@ -186,7 +186,7 @@
 							value = 0
 							desc = RICE_sardinia_palio_race_banner_amount
 							add = {
-								value = 50
+								value = minor_gold_value
 								desc = RICE_sardinia_palio_race_banner_amount
 							}
 						}
@@ -196,7 +196,7 @@
 					value = 30
 					if = {
 						limit = {
-							short_term_gold <= 50
+							short_term_gold <= minor_gold_value
 						}
 						subtract = {
 							value = 30
@@ -223,7 +223,7 @@
 							value = 0
 							desc = RICE_sardinia_palio_race_banner_amount
 							add = {
-								value = 100
+								value = medium_gold_value
 								desc = RICE_sardinia_palio_race_banner_amount
 							}
 						}
@@ -233,7 +233,7 @@
 					value = 15
 					if = {
 						limit = {
-							short_term_gold <= 100
+							short_term_gold <= medium_gold_value
 						}
 						subtract = {
 							value = 15
@@ -474,7 +474,12 @@
 			is_predefined = yes
 			
 			on_phase_active = {
-				trigger_event = sardinia.0022
+				if = {
+					limit = {
+						this = scope:host
+					}
+					trigger_event = sardinia.0022
+				}	
 			}
 
 			on_end = {
@@ -570,8 +575,8 @@
 
 			add = { # Banner
 				value = 0
-				add = 50
-				add = 100
+				add = minor_gold_value
+				add = medium_gold_value
 				# Divide by 3 to get the average option cost
 				divide = 3
 			}
@@ -660,21 +665,21 @@
 				}
 			}
 		}
+	}
+
+	on_enter_passive_state = {
 		# Decide to participate or not if you are a house head, and not the house or in the same house as the host
-		every_attending_character = {
+		if = {
 			limit = {
 				is_house_head = yes
 				NOT = { this = scope:host }
 				NOT = {
 					this.house ?= scope:host.house
 				}
+				NOT = { has_variable = RICE_sardinia_palio_participation }
 			}
-			trigger_event = sardinia.0030
+			trigger_event = sardinia.0021
 		}
-	}
-
-	on_enter_passive_state = {
-		#trigger_event = magadha.0050
 	}
 
 	###################
@@ -718,6 +723,22 @@
 		is_adult = yes
 		is_available = yes
 		in_diplomatic_range = scope:host
+		OR = {
+			culture = {
+				OR = {
+					has_cultural_pillar = heritage_latin
+					has_innovation = innovation_RICE_palio_races
+				}				
+			}
+			liege = {
+				culture = {
+					OR = {
+						has_cultural_pillar = heritage_latin
+						has_innovation = innovation_RICE_palio_races
+					}				
+				}				
+			}
+		}
 	}
 
 	host_intents = {
@@ -739,6 +760,18 @@
 	}
 	
 	on_complete = {
+		if = {
+			limit = {
+				has_variable = RICE_sardinia_palio_participation
+			}
+			remove_variable = RICE_sardinia_palio_participation
+		}	
+		if = {
+			limit = {
+				has_variable = RICE_sardinia_palio_winner
+			}
+			remove_variable = RICE_sardinia_palio_winner
+		}	
 		if = {
 			limit = { this = scope:host }
 			#create_character_memory = {
