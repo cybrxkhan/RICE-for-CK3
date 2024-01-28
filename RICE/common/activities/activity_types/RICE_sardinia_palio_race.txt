@@ -45,14 +45,6 @@
 			}
 			has_attending_activity_guests = yes
 		}
-		# Converting mid-activity is a big no-no.
-		scope:activity = {
-			OR = {
-				NOT = { has_variable = starting_faith }
-				# We could check whether the place you're going to is still a holy site in the new faith, but then that messes up all the people moving with you, so we just cancel the whole thing.
-				scope:host.faith = var:starting_faith
-			}
-		}
 	}
 
 	on_invalidated = {
@@ -92,20 +84,6 @@
 				activity_location = { save_scope_as = location }
 			}
 			scope:host = { trigger_event = activity_system.0100 }
-		}
-		# Host converted to a different faith
-		# Could check to see if new faith allows for this kind of shenanigans, but it's easier to just do it broadly like this
-		if = {
-			limit = {
-				NOT = { scope:host.faith = var:starting_faith }
-			}
-			scope:activity = {
-				activity_type = { save_scope_as = activity_type }
-				activity_location = { save_scope_as = location }
-			}
-			every_attending_character = {
-				trigger_event = RICEmisc.0010
-			}
 		}
 	}
 
@@ -404,7 +382,7 @@
 							value = 0
 							desc = RICE_sardinia_palio_race_preparations_amount
 							add = {
-								value = 50
+								value = minor_gold_value
 								desc = RICE_sardinia_palio_race_preparations_amount
 							}
 						}
@@ -414,7 +392,7 @@
 					value = 30
 					if = {
 						limit = {
-							short_term_gold <= 50
+							short_term_gold <= minor_gold_value
 						}
 						subtract = {
 							value = 30
@@ -447,7 +425,7 @@
 							value = 0
 							desc = RICE_sardinia_palio_race_preparations_amount
 							add = {
-								value = 100
+								value = medium_gold_value
 								desc = RICE_sardinia_palio_race_preparations_amount
 							}
 						}
@@ -457,7 +435,7 @@
 					value = 10
 					if = {
 						limit = {
-							short_term_gold <= 100
+							short_term_gold <= medium_gold_value
 						}
 						subtract = {
 							value = 10
@@ -496,7 +474,7 @@
 			is_predefined = yes
 			
 			on_phase_active = {
-				trigger_event = sardinia.8888
+				trigger_event = sardinia.0022
 			}
 
 			on_end = {
@@ -608,8 +586,8 @@
 			
 			add = { # Preparations
 				value = 0
-				add = 50
-				add = 100
+				add = minor_gold_value
+				add = medium_gold_value
 				# Divide by 3 to get the average option cost
 				divide = 3
 			}
@@ -631,22 +609,79 @@
 	}
 
 	on_start = {
-		# Check what faith the pilgrimage is supposed to be for.
-		set_variable = {
-			name = starting_faith
-			value = scope:host.faith
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = { 
+						category = RICE_sardinia_palio_race_preparations_type
+						option = RICE_sardinia_palio_race_preparations_none
+					}
+				}
+			}
+			scope:host = {
+				set_variable = {
+					name = RICE_sardinia_palio_participation
+					value = flag:none
+					days = 200 # Failsafe in case it doesn't get removed at the end
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = { 
+						category = RICE_sardinia_palio_race_preparations_type
+						option = RICE_sardinia_palio_race_preparations_basic
+					}
+				}
+			}
+			scope:host = {
+				set_variable = {
+					name = RICE_sardinia_palio_participation
+					value = flag:basic
+					days = 200 # Failsafe in case it doesn't get removed at the end
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = { 
+						category = RICE_sardinia_palio_race_preparations_type
+						option = RICE_sardinia_palio_race_preparations_extensive
+					}
+				}
+			}
+			scope:host = {
+				set_variable = {
+					name = RICE_sardinia_palio_participation
+					value = flag:extensive
+					days = 200 # Failsafe in case it doesn't get removed at the end
+				}
+			}
+		}
+		# Decide to participate or not if you are a house head, and not the house or in the same house as the host
+		every_attending_character = {
+			limit = {
+				is_house_head = yes
+				NOT = { this = scope:host }
+				NOT = {
+					this.house ?= scope:host.house
+				}
+			}
+			trigger_event = sardinia.0030
 		}
 	}
 
 	on_enter_passive_state = {
-		trigger_event = magadha.0050
+		#trigger_event = magadha.0050
 	}
 
 	###################
 	# GUEST HANDLING
 	###################
 
-	max_guests = 30
+	max_guests = 50
 
 	guest_invite_rules = {
 		rules = {
@@ -658,7 +693,7 @@
 			3 = activity_invite_rule_extended_family
 
 			# Magnates.
-			4 = activity_invite_neighbouring_rulers
+			#4 = activity_invite_neighbouring_rulers
 
 			# Misc landless.
 			5 = activity_invite_rule_knights
@@ -672,6 +707,7 @@
 			1 = activity_invite_rule_liege
 			1 = activity_invite_rule_vassals
 			2 = activity_invite_rule_fellow_vassals
+			2 = activity_invite_neighbouring_rulers
 			3 = activity_invite_rule_courtiers
 			4 = activity_invite_rule_guests
 			1 = activity_invite_spouses
@@ -679,7 +715,6 @@
 	}
 
 	can_be_activity_guest = {
-		faith.religion = scope:host.faith.religion
 		is_adult = yes
 		is_available = yes
 		in_diplomatic_range = scope:host
