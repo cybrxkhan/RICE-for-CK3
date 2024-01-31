@@ -2431,6 +2431,75 @@ sardinia.0031 = {
 	override_background = { reference = market_west }
 
 	right_portrait = root
+
+	immediate = {
+		# Determine what kind of county modifier the county gets, if any
+		random_list = {
+			20 = {
+
+			}
+			10 = {
+				modifier = { 
+					add = 10
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_sardinia_palio_race_religious
+						}
+					}
+				}
+				set_variable = {
+					name = RICE_sardinia_palio_county_type
+					value = flag:gold
+					days = 3 # Failsafe in case it doesn't get removed at the end
+				}
+			}
+			10 = {
+				modifier = { 
+					add = 10
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_sardinia_palio_race_civic
+						}
+					}
+				}
+				set_variable = {
+					name = RICE_sardinia_palio_county_type
+					value = flag:development
+					days = 3 # Failsafe in case it doesn't get removed at the end
+				}
+				scope:activity.activity_location.county = {
+					add_county_modifier = {
+						modifier = RICE_sardinia_palio_modifier_development
+						years = 5
+					}		
+				}
+			}
+			10 = {
+				modifier = { 
+					add = 10
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_sardinia_palio_race_dynastic
+						}
+					}
+				}
+				set_variable = {
+					name = RICE_sardinia_palio_county_type
+					value = flag:building
+					days = 3 # Failsafe in case it doesn't get removed at the end
+				}
+				scope:activity.activity_location.county = {
+					add_county_modifier = {
+						modifier = RICE_sardinia_palio_modifier_building
+						years = 5
+					}		
+				}
+			}
+		}
+	}
 	
 	option = { # Ok
 		name = sardinia.0031.a
@@ -2481,6 +2550,12 @@ sardinia.0032 = {
 					has_variable = RICE_sardinia_palio_winner
 				}
 				remove_variable = RICE_sardinia_palio_winner
+			}	
+			if = {
+				limit = {
+					has_variable = RICE_sardinia_palio_county_type
+				}
+				remove_variable = RICE_sardinia_palio_county_type
 			}	
 			hidden_effect = { skip_activity_phase = yes }
 		}

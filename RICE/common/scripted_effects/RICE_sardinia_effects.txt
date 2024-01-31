@@ -1032,3 +1032,144 @@ RICE_sardinia_palio_race_winner_effect = {
 
 
 
+RICE_sardinia_palio_race_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_sardinia_palio_race_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			if = {
+				limit = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_sardinia_palio_race_religious
+						}
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_sardinia_palio_race_civic
+						}
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_sardinia_palio_race_dynastic
+						}
+					}
+				}
+			}
+			scope:host = {
+				stress_impact = {
+					base = medium_stress_impact_loss
+					gregarious = miniscule_stress_impact_loss
+				}
+				add_prestige = RICE_sardinia_palio_host_prestige_gain
+				add_piety = RICE_sardinia_palio_host_piety_gain
+				dynasty ?= {
+					add_dynasty_prestige = RICE_sardinia_palio_host_dynasty_prestige_gain
+				}
+				if = {
+					limit = {
+						has_activity_intent = RICE_sardinia_palio_race_fun_intent
+					}
+					stress_impact = {
+						base = medium_stress_impact_loss
+						gregarious = miniscule_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_sardinia_palio_race_fun_intent
+					}
+					add_prestige = 100
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_sardinia_palio_race_fun_intent
+					}
+					add_piety = 100
+				}
+				if = {
+					limit = {
+						var:RICE_sardinia_palio_county_type = flag:gold
+					}
+					scope:activity.activity_location.county = {
+						add_county_modifier = {
+							modifier = RICE_sardinia_palio_modifier_gold
+							years = 5
+						}		
+					}
+				}
+				else_if = {
+					limit = {
+						var:RICE_sardinia_palio_county_type = flag:development
+					}
+					scope:activity.activity_location.county = {
+						add_county_modifier = {
+							modifier = RICE_sardinia_palio_modifier_development
+							years = 5
+						}		
+					}
+				}
+				else_if = {
+					limit = {
+						var:RICE_sardinia_palio_county_type = flag:building
+					}
+					scope:activity.activity_location.county = {
+						add_county_modifier = {
+							modifier = RICE_sardinia_palio_modifier_building
+							years = 5
+						}		
+					}
+				}
+			}
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				stress_impact = {
+					base = medium_stress_impact_loss
+					gregarious = miniscule_stress_impact_loss
+				}
+				if = {
+					limit = {
+						has_activity_intent = RICE_sardinia_palio_race_fun_intent
+					}
+					stress_impact = {
+						base = medium_stress_impact_loss
+						gregarious = miniscule_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_sardinia_palio_race_fun_intent
+					}
+					add_prestige = 100
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_sardinia_palio_race_fun_intent
+					}
+					add_piety = 100
+				}
+			}	
+		}
+	}
+}
+
+
+
+
+
+
