@@ -13,16 +13,21 @@ RICE_setup_sardinia_flavor_pack_effect = {
 	#
 	############################################################
 
-	culture:sardinian = {
-		add_culture_tradition = tradition_ancient_miners
-		add_culture_tradition = tradition_hard_working
-		add_culture_tradition = tradition_RICE_judicati
-		remove_variable = tradition_cooldown
-		if = {
-			limit = {
-				game_start_date >= 1000.1.1
-			}			
-			add_innovation = innovation_RICE_condaghes
+	if = {
+		limit = {
+			NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+		}
+		culture:sardinian = {
+			add_culture_tradition = tradition_ancient_miners
+			add_culture_tradition = tradition_hard_working
+			add_culture_tradition = tradition_RICE_judicati
+			remove_variable = tradition_cooldown
+			if = {
+				limit = {
+					game_start_date >= 1000.1.1
+				}			
+				add_innovation = innovation_RICE_condaghes
+			}
 		}
 	}	
 
@@ -64,6 +69,7 @@ RICE_setup_sardinia_flavor_pack_effect = {
 		}
 	}
 
+	#
 	#RICE_setup_afro_roman_counties_effect = yes
 
 	############################################################
@@ -1040,36 +1046,36 @@ RICE_sardinia_palio_race_completed_log_entry_effect = {
 			# this line below adds the entry to the Effects section of the conclusion UI
 			show_in_conclusion = yes
 			character = root
-			if = {
-				limit = {
-					scope:activity = {
-						has_activity_option = {
-							category = special_type
-							option = RICE_sardinia_palio_race_religious
-						}
-					}
-				}
-			}
-			else_if = {
-				limit = {
-					scope:activity = {
-						has_activity_option = {
-							category = special_type
-							option = RICE_sardinia_palio_race_civic
-						}
-					}
-				}
-			}
-			else_if = {
-				limit = {
-					scope:activity = {
-						has_activity_option = {
-							category = special_type
-							option = RICE_sardinia_palio_race_dynastic
-						}
-					}
-				}
-			}
+			# if = {
+			# 	limit = {
+			# 		scope:activity = {
+			# 			has_activity_option = {
+			# 				category = special_type
+			# 				option = RICE_sardinia_palio_race_religious
+			# 			}
+			# 		}
+			# 	}
+			# }
+			# else_if = {
+			# 	limit = {
+			# 		scope:activity = {
+			# 			has_activity_option = {
+			# 				category = special_type
+			# 				option = RICE_sardinia_palio_race_civic
+			# 			}
+			# 		}
+			# 	}
+			# }
+			# else_if = {
+			# 	limit = {
+			# 		scope:activity = {
+			# 			has_activity_option = {
+			# 				category = special_type
+			# 				option = RICE_sardinia_palio_race_dynastic
+			# 			}
+			# 		}
+			# 	}
+			# }
 			scope:host = {
 				stress_impact = {
 					base = medium_stress_impact_loss
@@ -1141,6 +1147,56 @@ RICE_sardinia_palio_race_completed_log_entry_effect = {
 				stress_impact = {
 					base = medium_stress_impact_loss
 					gregarious = miniscule_stress_impact_loss
+				}
+				if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_sardinia_palio_race_charity_type
+								option = RICE_sardinia_palio_race_charity_small
+							}
+						}
+					}
+					add_opinion = {
+						target = scope:host
+						modifier = opinion_attended_palio_guest
+						opinion = 10
+					}
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_sardinia_palio_race_charity_type
+								option = RICE_sardinia_palio_race_charity_medium
+							}
+						}
+					}
+					add_opinion = {
+						target = scope:host
+						modifier = opinion_attended_palio_guest
+						opinion = 20
+					}
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_sardinia_palio_race_charity_type
+								option = RICE_sardinia_palio_race_charity_large
+							}
+						}
+					}
+					add_opinion = {
+						target = scope:host
+						modifier = opinion_attended_palio_guest
+						opinion = 30
+					}
+				}
+				reverse_add_opinion = {
+					target = scope:host
+					modifier = opinion_attended_palio_host
+					opinion = 10
 				}
 				if = {
 					limit = {
