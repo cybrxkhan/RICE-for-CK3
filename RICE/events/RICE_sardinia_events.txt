@@ -542,7 +542,7 @@ sardinia.0006 = {
 			}
 		}
 
-		custom_tooltip = sardinia.0006.tooltip
+		#custom_tooltip = sardinia.0006.tooltip
 	}
 
 	option = { # OK
@@ -1673,13 +1673,39 @@ sardinia.0018 = {
 	theme = RICE_theme_sardinia_church
 
 	#left_portrait = root
-	right_portrait = root
+	right_portrait = scope:condaghe_person
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:condaghe_artifact
+		position = lower_center_portrait
+		trigger = { exists = scope:condaghe_artifact }
+	}
+
+	immediate = {
+		save_scope_as = condaghe_person
+		add_prestige = { RICE_sardinia_condaghe_prestige_gain_min RICE_sardinia_condaghe_prestige_gain_max }
+		RICE_sardinia_condaghe_decision_effect = yes
+		random = {
+			chance = RICE_sardinia_condaghe_chance
+			RICE_sardinia_create_condaghe_artifact_effect = yes
+		}
+	}
 
 	# Ok
 	option = {
 		name = sardinia.0018.a
-		add_prestige = { RICE_sardinia_condaghe_prestige_gain_min RICE_sardinia_condaghe_prestige_gain_max }
-		RICE_sardinia_condaghe_decision_effect = yes
+		if = {
+			limit = {
+				exists = scope:condaghe_artifact
+			}
+			show_as_tooltip = {
+				scope:condaghe_artifact = {
+					set_owner = {
+						target = root
+					}
+				}
+			}
+		}
 	}
 
 
