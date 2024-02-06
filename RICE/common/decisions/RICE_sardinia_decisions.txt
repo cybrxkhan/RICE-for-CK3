@@ -10,6 +10,7 @@ RICE_sardinia_decide_sardinia_orientation = {
 	#cooldown = { years = 30 }
 
 	is_shown = {
+		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
 		is_landed = yes
 		any_held_county = {
 			any_county_province = {
@@ -35,7 +36,7 @@ RICE_sardinia_decide_sardinia_orientation = {
 		}
 		OR = {
 			culture = {
-				has_cultural_parameter = unlock_rice_condaghes_innovation
+				has_innovation = innovation_RICE_condaghes
 			}
 			culture = { 
 				has_cultural_era_or_later = culture_era_high_medieval
@@ -47,7 +48,10 @@ RICE_sardinia_decide_sardinia_orientation = {
 				completely_controls = title:d_sardinia
 				has_title = title:d_sardinia
 			}
-			root.culture.culture_head = root
+			custom_description = {
+				text = RICE_culture_head_req
+				root.culture.culture_head = root
+			}
 			prestige_level >= 5
 		}
 	}
@@ -322,7 +326,7 @@ RICE_sardinia_decide_sardinia_orientation = {
 	}
 
 	cost = {
-		gold = { value = medium_gold_value }
+		gold = { value = major_gold_value }
 	}
 	
 	ai_potential = {
@@ -664,6 +668,7 @@ RICE_sardinia_catholic_decision = {
 	cooldown = { days = 3650 }
 
 	is_shown = {
+		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
 		highest_held_title_tier > tier_barony
 		is_landed = yes
 		any_held_county = {
@@ -748,6 +753,7 @@ RICE_sardinia_orthodox_decision = {
 	cooldown = { days = 3650 }
 
 	is_shown = {
+		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
 		highest_held_title_tier > tier_barony
 		is_landed = yes
 		any_held_county = {
@@ -842,6 +848,7 @@ RICE_sardinia_north_african_decision = {
 	cooldown = { days = 3650 }
 
 	is_shown = {
+		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
 		highest_held_title_tier > tier_barony
 		is_landed = yes
 		any_held_county = {
@@ -930,6 +937,7 @@ RICE_sardinia_none_decision = {
 	cooldown = { days = 3650 }
 
 	is_shown = {
+		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
 		highest_held_title_tier > tier_barony
 		is_landed = yes
 		any_held_county = {
@@ -1014,7 +1022,7 @@ RICE_sardinia_none_decision = {
 
 
 RICE_sardinia_inaugurate_major_palio = {
-	picture = "gfx/interface/illustrations/decisions/decision_ck2_prospering_province.dds"
+	picture = "gfx/interface/illustrations/decisions/RICE_decision_joust.dds"
 	desc = RICE_sardinia_inaugurate_major_palio_desc
 
 	major = yes
@@ -1034,14 +1042,26 @@ RICE_sardinia_inaugurate_major_palio = {
 				has_innovation = innovation_RICE_palio_races
 			}
 		}
+		NOT = {
+			capital_county = {
+				RICE_has_major_palio_trigger = yes
+			}
+		}
 	}
 
 	is_valid = {
 		culture = {
 			has_innovation = innovation_RICE_palio_races
 		}
-		#custom_description = {
-		#	text = RICE_bamian_shahr_e_zohak_recently_repaired_req
+		OR = {
+			prestige_level >= 4
+			AND = {
+				highest_held_title_tier >= tier_duchy
+				prestige_level >= 3
+			}
+		}
+		custom_description = {
+			text = RICE_not_has_major_palio_req
 			NOT = {
 				capital_county.duchy = {
 					any_in_de_jure_hierarchy = {
@@ -1050,7 +1070,7 @@ RICE_sardinia_inaugurate_major_palio = {
 					}
 				}
 			}
-		#}
+		}
 		#gold >= 80
 	}
 
@@ -1136,12 +1156,20 @@ RICE_sardinia_inaugurate_major_palio = {
 			show_as_tooltip = {
 				RICE_inaugurate_religious_palio_effect = yes
 			}
+			set_variable = {
+				name = RICE_sardinia_major_palio_type
+				value = flag:religious
+			}
 		}
 
 		else_if = {
 			limit = { scope:choose_civic = yes }
 			show_as_tooltip = {
 				RICE_inaugurate_civic_palio_effect = yes
+			}
+			set_variable = {
+				name = RICE_sardinia_major_palio_type
+				value = flag:civic
 			}
 		}
 
@@ -1150,16 +1178,15 @@ RICE_sardinia_inaugurate_major_palio = {
 			show_as_tooltip = {
 				RICE_inaugurate_dynastic_palio_effect = yes
 			}
+			set_variable = {
+				name = RICE_sardinia_major_palio_type
+				value = flag:dynastic
+			}
 		}
+
+
 		
-		# if = {
-		# 	limit = {
-		# 		has_game_rule = RICE_historical_context_on
-		# 	}
-		# 	custom_tooltip = RICE_sardinia_inaugurate_major_palio_context_tooltip
-		# }
-		
-		trigger_event = sardinia.8888
+		trigger_event = sardinia.0007
 
 		# add_to_list = notification_sent
 	}
@@ -1187,6 +1214,7 @@ RICE_saridinia_sardaniya_decision = {
 	ai_check_interval = 120
 
 	is_shown = {
+		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
 		is_landed = yes
 		NOT = {
 			is_target_in_global_variable_list = {
@@ -1340,6 +1368,7 @@ RICE_sardinia_condaghe_decision = {
 	effect = {
 
 		custom_tooltip = RICE_sardinia_condaghe_decision_effect_tooltip_1
+		custom_tooltip = RICE_sardinia_condaghe_decision_effect_tooltip_2
 		
 		show_as_tooltip = {
 			RICE_sardinia_condaghe_decision_effect = yes
@@ -1618,6 +1647,138 @@ RICE_sardinia_invest_in_palio_horses = {
 
 
 
+RICE_saridinia_algherese_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_european_port.dds"
+	major = yes
+	desc = RICE_saridinia_algherese_decision_desc
+
+	ai_check_interval = 40
+
+	is_shown = {
+		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+		is_landed = yes
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_sardinia_algherese_decision_done
+			}
+		}
+		OR = {
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_sardinia_region
+				}
+			}
+			any_vassal_or_below = {
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_sardinia_region
+					}
+				}
+			}
+		}
+		culture = { has_cultural_pillar = heritage_iberian }
+	}
+
+	is_valid = {	
+		culture = { has_cultural_pillar = heritage_iberian }	
+		has_title = title:c_logudoro
+		title:b_alghero.title_province = {
+			has_holding = yes
+		}
+		OR = {
+			highest_held_title_tier >= tier_kingdom
+			prestige_level >= 4
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		RICE_is_available_adult_even_if_sick_trigger = yes
+	}
+
+	cost = {
+		gold = {
+			value = medium_gold_value
+		}
+		prestige = {
+			value = medium_prestige_value
+		}
+	}
+
+	effect = {
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_sardinia_algherese_decision_done
+		}
+		
+		save_scope_as = alghero_settlement_liege
+
+		root.culture = {
+			save_scope_as = culture
+		}
+
+		#custom_tooltip = RICE_saridinia_algherese_decision_effect_tooltip_1
+
+		show_as_tooltip = {
+			RICE_sardinia_alghero_settlement_decision_effect = yes
+		}
+		
+		# if = {
+		# 	limit = {
+		# 		has_game_rule = RICE_historical_context_on
+		# 	}
+		# 	custom_tooltip = RICE_saridinia_algherese_decision_context_tooltip
+		# }
+
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:sardinia_settlement_liege
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							OR = {
+								geographical_region = world_europe_south
+								geographical_region = world_europe_west_iberia
+								geographical_region = world_africa_north
+								geographical_region = world_africa_sahara
+								geographical_region = world_asia_minor
+							}		
+						}
+					}
+				}
+			}
+			trigger_event = sardinia.0006
+		}		
+		
+
+		# add_to_list = notification_sent
+	}
+
+	ai_will_do = {
+		base = 40
+		modifier = {
+			add = 15
+			has_trait = diligent
+		}
+		modifier = {
+			add = -15
+			has_trait = lazy
+		}
+		modifier = {
+			add = 15
+			has_trait = zealous
+		}
+		modifier = {
+			add = -15
+			has_trait = arbitrary
+		}
+	}
+}
 
 
 

@@ -1,5 +1,6 @@
 ﻿activity_RICE_sardinia_palio_race = {
 	is_shown = {
+		# NO TFE???
 		highest_held_title_tier > tier_barony
 		is_landed = yes
 		culture = {
@@ -48,6 +49,26 @@
 	}
 
 	on_invalidated = {
+		scope:activity = {
+			every_attending_character = {
+				limit = {
+					has_variable = RICE_sardinia_palio_participation
+				}
+				remove_variable = RICE_sardinia_palio_participation
+			}	
+			every_attending_character = {
+				limit = {
+					has_variable = RICE_sardinia_palio_winner
+				}
+				remove_variable = RICE_sardinia_palio_winner
+			}	
+			if = {
+				limit = {
+					has_variable = RICE_sardinia_palio_county_type
+				}
+				remove_variable = RICE_sardinia_palio_county_type
+			}	
+		}
 		# Host becomes unlanded
 		if = {
 			limit = {
@@ -87,8 +108,26 @@
 		}
 	}
 
-	on_host_death = {
+	on_host_death = {		
 		scope:activity = {
+			every_attending_character = {
+				limit = {
+					has_variable = RICE_sardinia_palio_participation
+				}
+				remove_variable = RICE_sardinia_palio_participation
+			}	
+			every_attending_character = {
+				limit = {
+					has_variable = RICE_sardinia_palio_winner
+				}
+				remove_variable = RICE_sardinia_palio_winner
+			}	
+			if = {
+				limit = {
+					has_variable = RICE_sardinia_palio_county_type
+				}
+				remove_variable = RICE_sardinia_palio_county_type
+			}	
 			set_variable = {
 				name = activity_invalidated
 			}
@@ -278,7 +317,7 @@
 							value = 0
 							desc = RICE_sardinia_palio_race_charity_amount
 							add = {
-								value = 50
+								value = minor_gold_value
 								desc = RICE_sardinia_palio_race_charity_amount
 							}
 						}
@@ -288,7 +327,7 @@
 					value = 30
 					if = {
 						limit = {
-							short_term_gold <= 50
+							short_term_gold <= minor_gold_value
 						}
 						subtract = {
 							value = 30
@@ -321,7 +360,7 @@
 							value = 0
 							desc = RICE_sardinia_palio_race_charity_amount
 							add = {
-								value = 100
+								value = medium_gold_value
 								desc = RICE_sardinia_palio_race_charity_amount
 							}
 						}
@@ -331,7 +370,7 @@
 					value = 10
 					if = {
 						limit = {
-							short_term_gold <= 100
+							short_term_gold <= medium_gold_value
 						}
 						subtract = {
 							value = 10
@@ -537,6 +576,7 @@
 
 	ai_will_select_province = {
 		value = 10
+		# Capital
 		if = {
 			limit = {
 				this = scope:host.capital_province
@@ -546,6 +586,24 @@
 				desc = "Capital Province preferred"
 			}
 		}
+		if = {
+			limit = {
+				this.county = {
+					RICE_has_major_palio_trigger = yes
+				}
+			}
+			add = {
+				value = 30
+				desc = "Home to a famous Palio tradition"
+			}
+		}
+		# if = {
+		# 	limit = { "scope:host.capital_province.squared_distance(root)" <= squared_distance_small }
+		# 	add = {
+		# 		value = 10
+		# 		desc = "super close"
+		# 	}
+		# }
 	}
 	
 	is_location_valid = {
@@ -555,7 +613,60 @@
 	province_filter = domain
 	ai_province_filter = domain
 
+	province_description = {
+		# Major Palio traditions
+		triggered_desc = {
+			trigger = {				
+				this.county = {
+					has_county_modifier = RICE_sardinia_palio_race_religious_modifier
+				}
+			}
+			desc = RICE_sardinia_palio_race_religious_province_desc
+		}
+		triggered_desc = {
+			trigger = {				
+				this.county = {
+					has_county_modifier = RICE_sardinia_palio_race_civic_modifier
+				}
+			}
+			desc = RICE_sardinia_palio_race_civic_province_desc
+		}
+		triggered_desc = {
+			trigger = {				
+				this.county = {
+					has_county_modifier = RICE_sardinia_palio_race_dynastic_modifier
+				}
+			}
+			desc = RICE_sardinia_palio_race_dynastic_province_desc
+		}
+	}
+
 	max_province_icons = 3
+
+	province_score = {
+		add = 0
+		# Capital
+		if = {
+			limit = {
+				this = scope:host.capital_province
+			}
+			add = 50
+		}
+		# Major Palio
+		if = {
+			limit = {				
+				this.county = {
+					RICE_has_major_palio_trigger = yes
+				}
+			}
+			add = 50
+		}
+		# Flavor
+		add = {
+			value = county.development_level
+			divide = 4
+		}
+	}
 	
 	cost = {
 		gold = {
@@ -571,7 +682,7 @@
 
 	ui_predicted_cost = {
 		gold = {
-			value = RICE_activity_cost
+			value = RICE_major_activity_cost
 
 			add = { # Banner
 				value = 0
@@ -760,27 +871,48 @@
 	}
 	
 	on_complete = {
-		if = {
-			limit = {
-				has_variable = RICE_sardinia_palio_participation
-			}
-			remove_variable = RICE_sardinia_palio_participation
-		}	
-		if = {
-			limit = {
-				has_variable = RICE_sardinia_palio_winner
-			}
-			remove_variable = RICE_sardinia_palio_winner
-		}	
-		if = {
-			limit = { this = scope:host }
+		
+		scope:activity = {
+			every_attending_character = {
+				limit = {
+					has_variable = RICE_sardinia_palio_participation
+				}
+				remove_variable = RICE_sardinia_palio_participation
+			}	
+			every_attending_character = {
+				limit = {
+					has_variable = RICE_sardinia_palio_winner
+				}
+				remove_variable = RICE_sardinia_palio_winner
+			}	
+			if = {
+				limit = {
+					has_variable = RICE_sardinia_palio_county_type
+				}
+				remove_variable = RICE_sardinia_palio_county_type
+			}	
+		}
+		# if = {
+		# 	limit = {
+		# 		has_variable = RICE_sardinia_palio_participation
+		# 	}
+		# 	remove_variable = RICE_sardinia_palio_participation
+		# }	
+		# if = {
+		# 	limit = {
+		# 		has_variable = RICE_sardinia_palio_winner
+		# 	}
+		# 	remove_variable = RICE_sardinia_palio_winner
+		# }	
+		#if = {
+			#limit = { this = scope:host }
 			#create_character_memory = {
 			#	type = RICE_sardinia_palio_race_host_memory
 			#}
-			scope:host = {
-				RICE_sardinia_palio_race_completed_log_entry_effect = yes
-			}
-		}
+			#scope:host = {
+			#	RICE_sardinia_palio_race_completed_log_entry_effect = yes
+			#}
+		#}
 		# else = {			
 		# 	create_character_memory = {
 		# 		type = RICE_sardinia_palio_race_guest_memory
