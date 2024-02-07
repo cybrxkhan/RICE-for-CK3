@@ -27,7 +27,7 @@ sardinia.0002 = {
 
 	immediate = {
 		create_character = {
-			location = root.capital_province
+			#location = root.capital_province
 			template = RICE_afro_latin_generic_template
 			employer = root			
 		}
@@ -47,7 +47,7 @@ sardinia.0003 = {
 			}
 			save_temporary_scope_as = county
 			random = {
-				chance = 33
+				chance = 5
 				hidden_effect = {											
 					# add_county_modifier = {
 					# 	modifier = RICE_sardinia_malaria_modifier
@@ -478,7 +478,7 @@ sardinia.0005 = {
 		every_ruler = {
 			limit = {
 				OR = {
-					this = scope:sardinia_settlement_liege
+					this = scope:sardinia_leader
 					any_held_title = {
 						tier = tier_county
 						any_county_province = {
@@ -3032,6 +3032,1490 @@ sardinia.0032 = {
 
 
 
+######################################################################################
+# 
+# FLAVOR EVENTS
+# 
+# sardinia.0050-sardinia.0069 reserved
+# 
+######################################################################################
+
+
+# Attending an ispuntinu and eating the infamous Casu Marzu / maggot cheese
+sardinia.0050 = {
+	type = character_event
+	title = sardinia.0050.t
+	desc = sardinia.0050.desc
+	theme = feast_activity
+	
+	right_portrait = {
+		character = root
+		animation = personality_greedy
+		triggered_animation = {
+			trigger = {
+				root = {
+					OR = {
+						has_trait = craven
+						has_trait = paranoid
+					}
+				}
+			}
+			animation = disgust
+		}
+	}
+
+	cooldown = { years = 10 }
+	
+	trigger = {
+		OR = {
+			culture = culture:sardinian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:sardinian
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0050.a
+		add_prestige = 50
+		if = {
+			limit = {
+				OR = {
+					has_trait = craven
+					has_trait = paranoid
+				}
+			}
+			stress_impact = {
+				craven = minor_stress_impact_gain
+				paranoid = minor_stress_impact_gain
+			}
+		}
+		else = {
+			stress_impact = {
+				base = minor_stress_impact_loss
+				gluttonous = minor_stress_impact_loss
+			}
+		}
+		random = {
+			chance = 30
+			send_interface_toast = {
+				type = event_toast_effect_bad
+				left_icon = ROOT
+				title = sardinia.0050.bad.toast
+				add_character_modifier = {
+					modifier = RICE_sardinia_bad_casu_marzu
+					years = 10
+				}
+			}
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0050.b
+		add_prestige = 25
+		if = {
+			limit = {
+				OR = {
+					has_trait = craven
+					has_trait = paranoid
+				}
+			}
+			stress_impact = {
+				craven = miniscule_stress_impact_gain
+				paranoid = miniscule_stress_impact_gain
+			}
+		}
+		else = {
+			stress_impact = {
+				base = miniscule_stress_impact_loss
+				gluttonous = miniscule_stress_impact_loss
+			}
+		}
+		random = {
+			chance = 10
+			send_interface_toast = {
+				type = event_toast_effect_bad
+				left_icon = ROOT
+				title = sardinia.0050.bad.toast
+				add_character_modifier = {
+					modifier = RICE_sardinia_bad_casu_marzu
+					years = 10
+				}
+			}
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0050.c
+		add_prestige = -100
+		stress_impact = {
+			brave = minor_stress_impact_gain
+			gluttonous = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sardinia.0050.info
+		}
+	}
+
+}
+
+
+
+# Eating seadas
+sardinia.0051 = {
+	type = character_event
+	title = sardinia.0051.t
+	desc = sardinia.0051.desc
+	theme = RICE_theme_sardinia_villa
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		OR = {
+			culture = culture:sardinian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:sardinian
+				}
+			}
+		}
+		capital_county = {
+			OR = {
+				culture = culture:sardinian
+				culture = {
+					any_parent_culture_or_above = {
+						this = culture:sardinian
+					}
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = sadistic
+		}
+	}
+
+	immediate = {
+		capital_county.culture = {
+			save_scope_as = culture
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0051.a
+		add_character_modifier = {
+			modifier = RICE_sardinia_seadas
+			years = 3
+		}
+		stress_impact = {
+			gluttonous = miniscule_stress_impact_loss
+		}
+	}
+}
+
+
+# Discussing theories about the origins of Nuraghes with courtiers
+sardinia.0052 = {
+	type = character_event
+	title = sardinia.0052.t
+	desc = sardinia.0052.desc
+	theme = RICE_theme_sardinia_nuraghe
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+	
+	trigger = {
+		capital_province = {
+			geographical_region = RICE_sardinia_region	
+		}	
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0052.a
+		add_prestige = 15
+		add_piety = 15
+	}
+
+	option = { # Ok
+		name = sardinia.0052.b
+		add_prestige = 30
+	}
+
+	option = { # Ok
+		name = sardinia.0052.c
+		add_piety = 30
+	}
+
+	option = { # Ok
+		name = sardinia.0052.d
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			lazy = miniscule_stress_impact_loss
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sardinia.0052.info
+		}
+	}
+
+
+}
+
+
+
+# Bidemortos saw your courtier in a procession, meaning they will die soon
+sardinia.0053 = {
+	type = character_event
+	title = sardinia.0053.t
+	desc = sardinia.0053.desc
+	theme = death
+	override_background = { reference = RICE_background_sardinia_countryside }
+	
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	
+	right_portrait = {
+		character = scope:doomed
+		animation = worry
+		triggered_animation = {
+			trigger = {
+				scope:doomed = {
+					OR = {
+						has_trait = craven
+						has_trait = paranoid
+					}
+				}
+			}
+			animation = paranoia
+		}
+	}
+
+	cooldown = { years = 25 }
+	
+	trigger = {
+		OR = {
+			culture = culture:sardinian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:sardinian
+				}
+			}
+		}
+		any_courtier = {
+			is_available_ai_adult = yes
+			age >= 30 # Don't make them too young
+			any_heir_title = { count = 0 } # Isn't the heir to anything
+			is_lowborn = yes # Lowborn just to make sure they aren't going to inherit something
+			OR = {
+				culture = culture:sardinian
+				culture = {
+					any_parent_culture_or_above = {
+						this = culture:sardinian
+					}
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	immediate = {
+		random_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+				age >= 30 # Don't make them too young
+				any_heir_title = { count = 0 } # Isn't the heir to anything
+				is_lowborn = yes # Lowborn just to make sure they aren't going to inherit something
+				OR = {
+					culture = culture:sardinian
+					culture = {
+						any_parent_culture_or_above = {
+							this = culture:sardinian
+						}
+					}
+				}
+			}
+			save_scope_as = doomed
+			add_character_modifier = {
+				modifier = RICE_sardinia_bidemortos_marked
+				years = 10
+			}
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0053.a
+		add_piety = 25
+		custom_tooltip = sardinia.0053.a.tooltip
+		hidden_effect = {
+			random = {
+				chance = 15
+				trigger_event = {
+					id = sardinia.0054
+					days = { 1 365 }
+				}
+			}
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0053.b
+		add_prestige = 25
+		custom_tooltip = sardinia.0053.b.tooltip
+		hidden_effect = {
+			random = {
+				chance = 30
+				trigger_event = {
+					id = sardinia.0054
+					days = { 1 365 }
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sardinia.0053.info
+		}
+	}
+
+
+}
+
+
+
+
+# Bidemortos event, part two
+sardinia.0054 = {
+	type = character_event
+	title = sardinia.0054.t
+	desc = sardinia.0054.desc
+	theme = death
+	override_background = { reference = corridor_night }
+	
+	right_portrait = {
+		character = root
+		animation = worry
+	}
+	
+	lower_center_portrait = scope:doomed
+
+	trigger = {
+		scope:doomed = {
+			is_alive = yes
+		}
+	}
+
+	immediate = {
+		scope:doomed = {
+			death = { death_reason = death_mysterious }
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0054.a
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+			paranoid = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sardinia.0053.info
+		}
+	}
+
+
+}
+
+
+
+
+# Female courtier has a dream of Aradia the Just
+sardinia.0055 = {
+	type = character_event
+	title = sardinia.0055.t
+	desc = {
+		desc = sardinia.0055.desc
+		first_valid = {	
+			triggered_desc = {
+				trigger = {
+					scope:dreamer = {
+						has_character_modifier = RICE_sardinia_aradia_bad_dream
+					}
+				}
+				desc = sardinia.0055.desc.bad
+			}	
+			triggered_desc = {
+				trigger = {
+					scope:dreamer = {
+						has_character_modifier = RICE_sardinia_aradia_good_dream
+					}
+				}
+				desc = sardinia.0055.desc.good
+			}
+		}
+	}
+	theme = memory_learning
+	override_background = { reference = throne_room }
+	
+	#left_portrait = root
+	
+	right_portrait = {
+		character = scope:dreamer
+		animation = personality_content
+		triggered_animation = {
+			trigger = {
+				scope:dreamer = {
+					has_character_modifier = RICE_sardinia_aradia_bad_dream
+				}
+			}
+			animation = paranoia
+		}
+	}
+	
+	trigger = {
+		OR = {
+			culture = culture:sardinian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:sardinian
+				}
+			}
+		}
+		any_courtier = {
+			is_available_ai_adult = yes
+			is_female = yes
+			age <= 40 # Aradia comes to younger women
+			OR = {
+				culture = culture:sardinian
+				culture = {
+					any_parent_culture_or_above = {
+						this = culture:sardinian
+					}
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = sadistic
+		}
+	}
+
+	immediate = {
+		random_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+				is_female = yes
+				age <= 40 # Aradia comes to younger women
+				OR = {
+					culture = culture:sardinian
+					culture = {
+						any_parent_culture_or_above = {
+							this = culture:sardinian
+						}
+					}
+				}
+			}
+			save_scope_as = dreamer
+		}
+		random_list = {
+			50 = {
+				modifier = {
+					add = 25
+					scope:dreamer = { has_trait = lazy }
+				}
+				modifier = {
+					add = 5
+					scope:dreamer = { has_trait = cynical }
+				}
+				modifier = {
+					add = 5
+					scope:dreamer = { has_trait = impatient }
+				}
+				modifier = {
+					add = 5
+					scope:dreamer = { has_trait = callous }
+				}
+				modifier = {
+					add = 5
+					scope:dreamer = { has_trait = deceitful }
+				}
+				modifier = {
+					add = 5
+					scope:dreamer = { has_trait = arbitrary }
+				}
+				modifier = {
+					add = 5
+					scope:dreamer = { has_trait = wrathful }
+				}
+				scope:dreamer = {
+					add_character_modifier = {
+						modifier = RICE_sardinia_aradia_bad_dream
+						years = 10
+					}
+				}
+			}
+			50 = {
+				modifier = {
+					add = 25
+					scope:dreamer = { has_trait = diligent }
+				}
+				modifier = {
+					add = 5
+					scope:dreamer = { has_trait = zealous }
+				}
+				modifier = {
+					add = 5
+					scope:dreamer = { has_trait = patient }
+				}
+				modifier = {
+					add = 5
+					scope:dreamer = { has_trait = compassionate }
+				}
+				modifier = {
+					add = 5
+					scope:dreamer = { has_trait = honest }
+				}
+				modifier = {
+					add = 5
+					scope:dreamer = { has_trait = just }
+				}
+				modifier = {
+					add = 5
+					scope:dreamer = { has_trait = calm }
+				}
+				scope:dreamer = {
+					add_character_modifier = {
+						modifier = RICE_sardinia_aradia_good_dream
+						years = 10
+					}
+				}
+			}
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0055.a
+		add_piety = 25
+	}
+
+	option = { # Ok
+		name = sardinia.0055.b
+		add_prestige = 25
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sardinia.0055.info
+		}
+	}
+
+
+}
+
+
+
+# Chaplain suggests you pray to Saint Saturninus
+sardinia.0056 = {
+	type = character_event
+	title = sardinia.0056.t
+	desc = sardinia.0056.desc
+	theme = RICE_theme_sardinia_church
+	
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	right_portrait = {
+		character = scope:chaplain
+		animation = thinking
+	}
+	
+	trigger = {
+		religion = religion:christianity_religion
+		exists = cp:councillor_court_chaplain
+		cp:councillor_court_chaplain = {
+			is_available_healthy_ai_adult = yes
+		}
+		OR = {
+			culture = culture:sardinian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:sardinian
+				}
+			}
+			capital_province = {
+				geographical_region = RICE_sardinia_region
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = sadistic
+		}
+	}
+
+	immediate = {
+		cp:councillor_court_chaplain = {
+			save_scope_as = chaplain
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0056.a
+		add_piety = 50
+	}
+
+	option = { # Ok
+		name = sardinia.0056.b
+		add_character_modifier = {
+			modifier = RICE_sardinia_public_prayers_to_saint_saturninus
+			years = 4
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sardinia.0056.info
+		}
+	}
+
+
+}
+
+# Serfs claim a monastery doesn't have a right to them, based on an IRL case recorded in a condaghe
+sardinia.0057 = {
+	type = character_event
+	title = sardinia.0057.t
+	desc = sardinia.0057.desc
+	theme = RICE_theme_sardinia_church
+	
+	left_portrait = {
+		character = root
+		animation = personality_callous
+	}
+	
+	trigger = {
+		culture = {
+			has_innovation = innovation_RICE_condaghes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = wrathful
+		}
+		modifier = {
+			add = -0.2
+			has_trait = calm
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0057.a
+		add_piety = 50
+		stress_impact = {
+			vengeful = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+			sadistic = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0057.b
+		add_prestige = 50
+		stress_impact = {
+			forgiving = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sardinia.0057.info
+		}
+	}
+
+
+}
+
+# Noble and priest argue over who owns a servant, based on an IRL case recorded in a condaghe
+sardinia.0058 = {
+	type = character_event
+	title = sardinia.0058.t
+	desc = sardinia.0058.desc
+	theme = vassal
+	
+	right_portrait = {
+		character = root
+		animation = reading
+	}
+	
+	trigger = {
+		culture = {
+			has_innovation = innovation_RICE_condaghes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0058.a
+		add_prestige = 50
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0058.b
+		add_piety = 50
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sardinia.0058.info
+		}
+	}
+
+
+}
+
+
+# Condaghe donation or no?
+sardinia.0059 = {
+	type = character_event
+	title = sardinia.0059.t
+	desc = sardinia.0059.desc
+	theme = RICE_theme_sardinia_church
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+	
+	trigger = {
+		culture = {
+			has_innovation = innovation_RICE_condaghes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0059.a
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		add_piety = 100
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			greedy = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0059.b
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			generous = miniscule_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+		}
+	}
+
+
+}
+
+
+# Dignitary mentions rumors about how Sardinia is a land of disease and barbarians
+sardinia.0060 = {
+	type = character_event
+	title = sardinia.0060.t
+	desc = sardinia.0060.desc
+	theme = diplomacy_foreign_affairs_focus
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	trigger = {
+		capital_province = {
+			geographical_region = RICE_sardinia_region
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0060.a
+		add_piety = 25
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0060.b
+		add_prestige = 25
+		stress_impact = {
+			calm = miniscule_stress_impact_gain
+			patient = miniscule_stress_impact_gain
+			forgiving = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0060.c
+		add_dread = 8
+		stress_impact = {
+			trusting = miniscule_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+			compassionate = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sardinia.0058.info
+		}
+	}
+
+}
+
+
+
+# Nuraghe shows promise as a potential site for a religious structure
+sardinia.0061 = {
+	type = character_event
+	title = sardinia.0061.t
+	desc = sardinia.0061.desc
+	theme = RICE_theme_sardinia_nuraghe
+	
+	right_portrait = root
+	
+	trigger = {
+		any_held_county = {
+			any_county_province = {
+				geographical_region = RICE_sardinia_region
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		random_held_title = {
+			limit = {			
+				any_county_province = {
+					geographical_region = RICE_sardinia_region
+				}
+			}
+			save_scope_as = county
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0061.a
+		trigger = {
+			OR = {
+				gold >= 50
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 50
+		add_piety = 50
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_sardinia_transformed_nuraghe
+				years = 10
+			}
+		}
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0061.b
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			generous = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sardinia.0052.info
+		}
+	}
+
+}
+
+
+
+
+
+# Cantu e Tenore throat singing performance
+sardinia.0062 = {
+	type = character_event
+	title = sardinia.0062.t
+	desc = sardinia.0062.desc
+	theme = friendly
+	override_background = { reference = throne_room }
+	
+	right_portrait = {
+		character = root
+		animation = throne_room_applaud_1
+	}
+	
+	trigger = {
+		any_held_county = {
+			any_county_province = {
+				geographical_region = RICE_sardinia_region
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		random_held_title = {
+			limit = {			
+				any_county_province = {
+					geographical_region = RICE_sardinia_region
+				}
+			}
+			save_scope_as = county
+		}
+		scope:county.culture = {
+			save_scope_as = culture
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			gregarious = miniscule_stress_impact_loss
+		}
+		every_courtier_or_guest = {
+			custom = custom.every_courtier_and_guest
+			stress_impact = {
+				base = miniscule_stress_impact_loss
+				gregarious = miniscule_stress_impact_loss
+			}
+		}
+	}
+
+	option = { # Ok
+		name = sardinia.0062.a
+	}
+
+	option = { # Ok
+		name = sardinia.0062.b
+		trigger = {
+			OR = {
+				gold >= 15
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 15
+		add_prestige = 25
+		stress_impact = {
+			generous = miniscule_stress_impact_loss
+			greedy = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sardinia.0062.info
+		}
+	}
+
+}
+
+
+# Exploring Shepherds' paths in Sardinia
+sardinia.0063 = {
+	type = character_event
+	title = sardinia.0063.t
+	desc = sardinia.0063.desc
+	theme = RICE_theme_sardinia_countryside
+	
+	right_portrait = {
+		character = root
+		animation = war_over_tie
+	}
+	
+	trigger = {
+		capital_county = {
+			title_province = { geographical_region = RICE_sardinia_region }
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+	}
+
+
+	option = { # Ok
+		name = sardinia.0063.a
+		add_character_modifier = {
+			modifier = RICE_sardinia_shepherds_paths
+			years = 5
+		}
+	}
+
+
+}
+
+
+# Encountering Giara wild horses in Sardinia
+sardinia.0064 = {
+	type = character_event
+	title = sardinia.0064.t
+	desc = sardinia.0064.desc
+	theme = RICE_theme_sardinia_countryside
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		capital_county = {
+			title_province = { geographical_region = RICE_sardinia_region }
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+	}
+
+
+	option = { # Ok
+		name = sardinia.0064.a
+		stress_impact = {
+			base = minor_stress_impact_loss
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sardinia.0064.info
+		}
+	}
+
+}
 
 
 
