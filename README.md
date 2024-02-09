@@ -1,13 +1,12 @@
-<img src="https://i.imgur.com/7AfWivH.jpg">
+<img src="https://i.imgur.com/Pg2YZ3k.jpg">
 
-## Latest Version: Version 1.11.1 "Hindu Kush" (Released 12/12/23, for vanilla patch 1.11.x)
+## Latest Version: Version 1.11.2 "Eleanor of Arborea" (Released 2/8/24, for vanilla patch 1.11.x)
 
-**Newest Flavor Pack: *Bamian: Valley of Light***
+**Newest Flavor Pack: *Sardinia: Reign of the Judges***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_“To the north-east of the royal city [of Bamian] there is a mountain, on the declivity of which is placed a stone figure of Buddha, erect, in height 140 or 150 feet. Its golden hues sparkle on every side, and its precious ornaments dazzle the eyes by their brightness.”_
-_- Xuanzang, 7th century Chinese pilgrim and monk, on the larger Bamian Buddha statue_
+_Eleanor of Arborea (1347-1404 CE) was one of the last independent judicati, or judges, of medieval Sardinia. She is known for resisting the Kingdom of Aragon’s attempts to exert greater influence over Arborea, and for the Carta de Logu, her legal code which was still in force in Sardinia until 1827._
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
@@ -54,6 +53,7 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 - [Polabians: Defenders of Svetovit](https://docs.google.com/document/d/e/2PACX-1vQqIii6uXJkyQUEe6Q00VRUNrj3ega216kcKp1GVMYaHNKgzyqyG0rHJz9ZsBTbzr3jPe4awL7yvTCS/pub)
 - [Red Sea: Treasures of the Eastern Desert](https://docs.google.com/document/d/e/2PACX-1vQzLb-MR90fMQvjqZsxceuydKihTehAlpxexdhdim5pfxi_aGVBeLl1rJMmuR-89nVB7PVLfboZKBuy/pub)
 - [Rhodes: Shadow of the Colossus](https://docs.google.com/document/d/e/2PACX-1vRXCGUoynvQtA3RuaJUE9FYagIHOX4wJkyeDHRsV-cjvyyBTONIEy0oOYr3yvcUt1eG_fEHtzUgv_wA/pub)
+- [Sardinia: Reign of the Judges](https://docs.google.com/document/d/e/2PACX-1vTFqEepIES0OzohAoV1tXHwn8B95wVVu7dQoSC0wIb_-pzHF2_RxnA-pwUqTC5NvVidtmeGPpVNXlfd/pub)
 - [Siberia: People of the Reindeer](https://docs.google.com/document/d/e/2PACX-1vTOr-vq1KkHRJ_gxPOlb9brCKde3TRzN_1TVZwfPmSiIIW5TEAJGkQ0eNGwiEfvgape1pDAKau3ZcvD/pub)
 - [Siwa: Oases of the Western Desert](https://docs.google.com/document/d/1OOXqqBEGv94IBAH-rIsjoBog1YFtVAFg_TPsuIQmhtg/pub)
 - [Socotra: Isle of Dragon's Blood](https://docs.google.com/document/d/e/2PACX-1vRs_x_9wjofcveP_yhymlL5TWPB1UdSQyi_C_M1z4dWpFg3lqHgHwGpFD2xfkf0-RdsKIlRekQsLD4s/pub)
@@ -70,34 +70,43 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/RXo9bBu.jpg">
+<img src="https://i.imgur.com/uxKAbZV.jpg">
 
-### 1.11.0 "Hindu Kush"
+### 1.11.2 "Eleanor of Arborea"
 
-- Added Bamian Flavor Pack: Valley of Light
-- Added 3 Middle Eastern soundtracks
-- Added historical aspirations for 2 characters in 1066: Qawurd, the last Seljuk Prince, and Isleifur, the first bishop of Ireland
-- Added Sher Bamiyan dynasty for the rulers of Bamiyan in 867
-- Added Sa’id, ruler of Andarab in Tokharistan in 867
-- Added Jewish courtier Siman-Tov to Ghaznavid court in 1066
-- Added new struggle catalysts and effects from LoP’s struggle to RICE’s struggles
-- Decision to construct a Qanat now grants you extra prestige and the county modifier lasts longer if you have the Irrigation Experts tradition
-- Decisions to repair the watchposts of Wakhan and Karakorum will now continue to appear even when they are not normally available
-- Removed unneeded RICE_sea_character_names, RICE_sea_dynasties and sea_religion_steppe localization files in non-English localizations
-- Changed most Theravada in Afghanistan back to Mahayana
-- Increased the chances of getting a Sephardi merchant when spawning Jewish Trans-Saharan merchants
-- Switched out Mountain Homes for Pastoralists for the Turco-Hephthalites
-- Nerfed Yaqub Saffarid and his brothers’ modifiers
-- Yazidi head of faith is now hereditary
-- Replaced all Tribal Government triggers with government flag triggers for improved compatibility with mods that add governments
-- Nasir Khusraw content now uses PI’s new Nasir Khusraw character, rather than the old duplicate
-- Disabled Tapama Djenepo character from spawning when moving Jenne (and adjusted pilgrimage to her tomb accordingly to mention her offscreen) to potentially reduce bloat/lag issues\*
-- Fixed several Polabian equivalent cultures in CE not getting the Wendish Confederations tradition when playing with CE
-- Fixed edge cases where expedition leaders would be unable to do other activities if they became rulers
-- Fixed a bug where Ali ibn Asad, the Badakhshanid ruler in 1066, spawns a random extra son
+- Added Sardinian Flavor Pack: Reign of the Judges
+- Added 3 Italian themed soundtracks
+- Updated RICE’s Tuareg culture to make use of the new North African DLC assets
+- Added Mount Damota (in the county of Damot) as a holy site for Omotic and Aksumite paganism
+- Added Kasdanianism (South Mesopotamian paganism) (from my work in The Fallen Eagle, research by Soraya)
+- Expeditions and discovering Greenland/Vinland now give a bit of renown for the expedition leader if they have a dynasty
+- Greenland, Sri Lanka, and Nile river flood notifications now have their own unique message icons
+- Amazigh pagan courtiers are spawned in Waddan at game start to represent pagans attested as late as the 11th century in Ghirza
+- Waddan is now Amazigh pagan in 867
+- Yazidism and Yarsanism no longer “emerge” if RICE is run with TFE
+- Changed Adoricism to other tenets for various faiths (due to vanilla limitation where only Hausa and Akan faiths can reform while still keeping Adorcism)
+- Nerfed Al-Umari’s MAA maintenance bonus
+- Nerfed the Salterns of Guérande modifier in Britanny
+- Nerfed renown bonus from the dynasty modifier rewarded for completing the Normandy struggle
+- William the Conqueror’s Pope Alexander modifier now gives opinion bonus for Christians in general, rather than just Catholics
+- Removed culture requirements for the Pilgrimage to Beverley pilgrimage activity to be consistent with other local pilgrimages not having culture requirements
+- County of Bamian no longer automatically converts to Islam in 867 if the starting ruler decides to become Muslim
+- Starting the Normandy struggle via the vanilla decision now also changes your dynasty and/or house name to “de Normandie” like with RICE’s decisions/interactions
+- Allaqi now starts off as a castle rather than tribal holding if you are non-tribal, so that rulers can benefit from the Wadi Allaqi Mining Settlement as appropriate
+- Xossism (Omotic paganism) now is polygamous rather than monogamous
+- Reduced costs of some African activities
+- Ruler of Jabal Quzlum is now turned to clan/feudal if they weren’t before so that they can properly use the Smaragdus mines special building
+- Decisions to Patronize the Neo-Platonic Academy in Harran and Make Offerings to the Moon Temple are now also available to rulers with counties in the region even if their capital isn’t in it, but they’ll have additional requirements
+- Fixed various activities’ participants having the horse riding animation even when they’ve arrived at the activity destination
+- Fixed some decisions saying they require tribal government when they require *not* being a tribal government (it’s a vanilla loc bug but I did a little workaround for now)
+- Fixed Whaling decision spamming error log messages about coastal counties for some reason
+- Fixed requirement text for the decision to Collaborate with Indian Ocean Pirates showing the wrong dynasty legacy needed
+- Fixed potential bug with Tocharian Animal Fight activity blocking access to other activities
+- Fixed Goat Sacrifice activity not giving stress for certain traits depending on intent
+- Fixed decision to build Christian buildings not giving renown if you built a large church or monastery
+- Fixed decision to Reopen the Temple of Kalabsha requiring owning Aswan to view, instead of Kalabsha
+- Fixed Turco-Hephthalites appearing early when using TFE
 - Miscellaneous bugfixes
-
-\* This is just one possible cause of late game bloat based on some investigation with help from various users – this does NOT prevent all possible causes of the bloat issue, nor does it mean that this issue overall is or isn’t caused by RICE per se (for instance, it could be a vanilla issue that interacts badly with RICE), merely that this was one repeatable instance of the bug.
 
 ## Credits
 
