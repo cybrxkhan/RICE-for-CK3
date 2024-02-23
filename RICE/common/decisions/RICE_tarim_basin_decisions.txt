@@ -339,7 +339,7 @@ RICE_tarim_basin_construct_ordam_mazar = {
 	}
 }
 
-
+# Diwan al Lughat
 RICE_tarim_basin_compile_the_turkic_dictionary = {
 	picture = "gfx/interface/illustrations/decisions/decision_muslim_scholar.dds"
 	major = yes
@@ -350,26 +350,26 @@ RICE_tarim_basin_compile_the_turkic_dictionary = {
 
 	is_shown = {
 		highest_held_title_tier > tier_barony
-		OR = {
-			AND = {
-				learning >= decent_skill_rating
-				diplomacy >= medium_skill_rating
-			}
-			has_character_modifier = RICE_tarim_basin_is_al_kashgari
-		}
-		OR = {
-			learning >= high_skill_rating
-			culture = {
-				has_cultural_era_or_later = culture_era_early_medieval
-			}
-			has_character_modifier = RICE_tarim_basin_is_al_kashgari
-		}
+		# OR = {
+		# 	AND = {
+		# 		learning >= decent_skill_rating
+		# 		diplomacy >= medium_skill_rating
+		# 	}
+		# 	has_character_modifier = RICE_tarim_basin_is_al_kashgari
+		# }
+		# OR = {
+		# 	learning >= high_skill_rating
+		# 	culture = {
+		# 		has_cultural_era_or_later = culture_era_early_medieval
+		# 	}
+		# 	has_character_modifier = RICE_tarim_basin_is_al_kashgari
+		# }
 		OR = {
 			has_character_modifier = RICE_tarim_basin_is_al_kashgari
 			has_global_variable = RICE_anyone_can_write_turkic_dictionary
 		}
-		culture = { has_cultural_pillar = heritage_turkic }
 		OR = {
+			culture = { has_cultural_pillar = heritage_turkic }
 			culture = { has_cultural_pillar = language_turkic }
 			culture = { has_cultural_pillar = language_oghur }
 		}
@@ -379,7 +379,6 @@ RICE_tarim_basin_compile_the_turkic_dictionary = {
 				target = flag:RICE_tarim_basin_compile_turkic_dictionary_done
 			}
 		}
-		NOT = { government_has_flag = government_is_tribal }
 	}
 	
 	is_valid = {
@@ -393,10 +392,17 @@ RICE_tarim_basin_compile_the_turkic_dictionary = {
 				has_character_modifier = RICE_tarim_basin_is_al_kashgari
 			}
 		}
+		NOT = { government_has_flag = government_is_tribal }
 		culture = { has_cultural_pillar = heritage_turkic }
-		OR = {
-			culture = { has_cultural_pillar = language_turkic }
-			culture = { has_cultural_pillar = language_oghur }
+		# If not running CE, since they split the Turkic languages up and I've no way of accounting for all of them
+		trigger_if = {
+			limit = {
+				NOT = { has_global_variable = CE_is_loaded }
+			}
+			OR = {
+				culture = { has_cultural_pillar = language_turkic }
+				culture = { has_cultural_pillar = language_oghur }
+			}
 		}
 		OR = {
 			learning >= high_skill_rating
