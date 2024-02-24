@@ -1,12 +1,12 @@
 <img src="https://i.imgur.com/Pg2YZ3k.jpg">
 
-## Latest Version: Version 1.11.2 "Eleanor of Arborea" (Released 2/8/24, for vanilla patch 1.11.x)
+## Latest Version: Version 1.11.3 "Nuraghe" (Released 2/24/24, for vanilla patch 1.11.x)
 
 **Newest Flavor Pack: *Sardinia: Reign of the Judges***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_Eleanor of Arborea (1347-1404 CE) was one of the last independent judicati, or judges, of medieval Sardinia. She is known for resisting the Kingdom of Aragon’s attempts to exert greater influence over Arborea, and for the Carta de Logu, her legal code which was still in force in Sardinia until 1827._
+_Nuraghes are megalithic monuments scattered across Sardinia, built and constructed during Sardinia's Bronze Age. They were occasionally inhabited during later periods, and are a modern symbol of the island’s past._
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
@@ -72,40 +72,25 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 
 <img src="https://i.imgur.com/uxKAbZV.jpg">
 
-### 1.11.2 "Eleanor of Arborea"
+### 1.11.3 "Nuraghe"
 
-- Added Sardinian Flavor Pack: Reign of the Judges
-- Added 3 Italian themed soundtracks
-- Updated RICE’s Tuareg culture to make use of the new North African DLC assets
-- Added Mount Damota (in the county of Damot) as a holy site for Omotic and Aksumite paganism
-- Added Kasdanianism (South Mesopotamian paganism) (from my work in The Fallen Eagle, research by Soraya)
-- Expeditions and discovering Greenland/Vinland now give a bit of renown for the expedition leader if they have a dynasty
-- Greenland, Sri Lanka, and Nile river flood notifications now have their own unique message icons
-- Amazigh pagan courtiers are spawned in Waddan at game start to represent pagans attested as late as the 11th century in Ghirza
-- Waddan is now Amazigh pagan in 867
-- Yazidism and Yarsanism no longer “emerge” if RICE is run with TFE
-- Changed Adoricism to other tenets for various faiths (due to vanilla limitation where only Hausa and Akan faiths can reform while still keeping Adorcism)
-- Nerfed Al-Umari’s MAA maintenance bonus
-- Nerfed the Salterns of Guérande modifier in Britanny
-- Nerfed renown bonus from the dynasty modifier rewarded for completing the Normandy struggle
-- William the Conqueror’s Pope Alexander modifier now gives opinion bonus for Christians in general, rather than just Catholics
-- Removed culture requirements for the Pilgrimage to Beverley pilgrimage activity to be consistent with other local pilgrimages not having culture requirements
-- County of Bamian no longer automatically converts to Islam in 867 if the starting ruler decides to become Muslim
-- Starting the Normandy struggle via the vanilla decision now also changes your dynasty and/or house name to “de Normandie” like with RICE’s decisions/interactions
-- Allaqi now starts off as a castle rather than tribal holding if you are non-tribal, so that rulers can benefit from the Wadi Allaqi Mining Settlement as appropriate
-- Xossism (Omotic paganism) now is polygamous rather than monogamous
-- Reduced costs of some African activities
-- Ruler of Jabal Quzlum is now turned to clan/feudal if they weren’t before so that they can properly use the Smaragdus mines special building
-- Decisions to Patronize the Neo-Platonic Academy in Harran and Make Offerings to the Moon Temple are now also available to rulers with counties in the region even if their capital isn’t in it, but they’ll have additional requirements
-- Fixed various activities’ participants having the horse riding animation even when they’ve arrived at the activity destination
-- Fixed some decisions saying they require tribal government when they require *not* being a tribal government (it’s a vanilla loc bug but I did a little workaround for now)
-- Fixed Whaling decision spamming error log messages about coastal counties for some reason
-- Fixed requirement text for the decision to Collaborate with Indian Ocean Pirates showing the wrong dynasty legacy needed
-- Fixed potential bug with Tocharian Animal Fight activity blocking access to other activities
-- Fixed Goat Sacrifice activity not giving stress for certain traits depending on intent
-- Fixed decision to build Christian buildings not giving renown if you built a large church or monastery
-- Fixed decision to Reopen the Temple of Kalabsha requiring owning Aswan to view, instead of Kalabsha
-- Fixed Turco-Hephthalites appearing early when using TFE
+- Added an alternate requirement for the Regional Integration ending for the Greenland struggle, to have high development in every county of your capital’s de jure duchy
+- Added a hidden background effect where each county-less culture has a chance of getting a random innovation every year, so they can keep up with on-map cultures
+- Added Khalluk, Khalaj, and Kanjina as divergent culture names from Turco-Hephthalite in Balkh, parts of the eastern Iranian world, and Khuttal respectively
+- Added Kasdanian presence to more counties in southern Iraq in 867
+- Nerfed development bonus for Norse and Norman settlers
+- Revitalizing the Neoplatonic Academy can now also be done by non-pagans who have the Folk Syncretism tenet
+- Replaced Roman surnames in the Afro-Roman namelist with some Sardinian ones since it’s probably closer to historical Afro-Roman names
+- Removed some requirements for viewing the Diwan al-Lughat decision
+- Changed Diwan al-Lughat decision for RICE when running with Cultures Expanded as a temporary solution to account for additional Turkic languages (requirement is simplified to only requiring Turkic heritage)
+- Fixed duplicate Irrigation Tank decision when running RICE with TFE
+- Fixed bug with the decision to Reclaim Hephthalite Homeland where the capital will move to the County of Balkh even if you don’t own it
+- Fixed traditions text referring to the old Ancestor Veneration decision instead of the activity
+- Fixed wording for activity log when mentioning rulers doing basic preparations for the Palio activity
+- Fixed original Judicati tradition being available after you take the decision to Determine Sardinia’s Orientation
+- Fixed Alp Arslan having two sisters named Safiya in the 1066 start date 
+- Fixed Sri Lankan monastery support decision giving errors related to capital_province
+- Fixed missing localization for the Palio game concept
 - Miscellaneous bugfixes
 
 ## Credits
