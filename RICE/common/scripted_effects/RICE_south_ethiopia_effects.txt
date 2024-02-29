@@ -41,9 +41,9 @@
 		title:c_damot = {
 			set_county_faith = faith:damot_pagan
 		}
-		title:c_innarya = {
-			set_county_faith = faith:damot_pagan
-		}
+		# title:c_innarya = {
+		# 	set_county_faith = faith:damot_pagan
+		# }
 		title:c_showa = {
 			set_county_faith = faith:damot_pagan
 		}
@@ -976,7 +976,7 @@ RICE_south_ethiopia_enset_decision_effect = {
 			}				
 		}
 		change_development_progress = minor_development_progress_loss
-		change_county_control = 20
+		change_county_control = major_county_control_gain
 		add_county_modifier = {
 			modifier = RICE_south_ethiopia_enset_harvest
 			years = 20
@@ -984,3 +984,220 @@ RICE_south_ethiopia_enset_decision_effect = {
 	}
 
 }
+
+
+
+RICE_south_ethiopia_cattle_counting_ceremony_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_south_ethiopia_cattle_counting_ceremony_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				if = {
+					limit = {
+						has_trait = RICE_cattle_owner_1
+					}
+					remove_trait = RICE_cattle_owner_1
+					add_trait = RICE_cattle_owner_2
+				}
+				else = {
+					add_trait = RICE_cattle_owner_1
+				}
+				if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_south_ethiopia_cattle_counting_ceremony_feast_type
+								option = RICE_south_ethiopia_cattle_counting_ceremony_feast_large
+							}
+						}
+					}
+					add_prestige = RICE_south_ethiopia_cattle_counting_resource_gain_large
+					add_piety = RICE_south_ethiopia_cattle_counting_resource_gain_large
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_south_ethiopia_cattle_counting_ceremony_feast_type
+								option = RICE_south_ethiopia_cattle_counting_ceremony_feast_medium
+							}
+						}
+					}
+					add_prestige = RICE_south_ethiopia_cattle_counting_resource_gain_medium
+					add_piety = RICE_south_ethiopia_cattle_counting_resource_gain_medium
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_south_ethiopia_cattle_counting_ceremony_feast_type
+								option = RICE_south_ethiopia_cattle_counting_ceremony_feast_small
+							}
+						}
+					}
+					add_prestige = RICE_south_ethiopia_cattle_counting_resource_gain_small
+					add_piety = RICE_south_ethiopia_cattle_counting_resource_gain_small
+				}
+			}
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				stress_impact = {
+					base = minor_stress_impact_loss
+				}
+			}	
+		}
+	}
+}
+
+RICE_south_ethiopia_cattle_counting_ceremony_gimuwa_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_south_ethiopia_cattle_counting_ceremony_gimuwa_log
+			tags = { good }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = scope:gimuwa
+			scope:gimuwa = {
+				add_trait = RICE_cattle_owner_spouse
+				add_prestige = 500
+				add_opinion = {
+					target = scope:host
+					modifier = RICE_south_ethiopia_gimuwa_opinion
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
+
+RICE_south_ethiopia_gifaataa_festival_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_south_ethiopia_gifaataa_festival_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				if = {
+					limit = {
+						has_activity_intent = RICE_south_ethiopia_new_year_generic_reconciliation_intent
+					}
+					add_piety = 100
+					stress_impact = {
+						base = minor_stress_impact_loss
+						forgiving = minor_stress_impact_loss
+						humble = minor_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_south_ethiopia_new_year_generic_fun_intent
+					}
+					add_prestige = 100
+					stress_impact = {
+						base = medium_stress_impact_loss
+						gregarious = minor_stress_impact_loss
+						generous = minor_stress_impact_loss
+					}
+				}
+				if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_south_ethiopia_gifaataa_gift_type
+								option = RICE_south_ethiopia_gifaataa_gift_small
+							}
+						}
+					}
+					add_prestige = RICE_south_ethiopia_gifaataa_gift_gain_small_base
+					add_piety = RICE_south_ethiopia_gifaataa_gift_gain_small_base
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_south_ethiopia_gifaataa_gift_type
+								option = RICE_south_ethiopia_gifaataa_gift_medium
+							}
+						}
+					}
+					add_prestige = RICE_south_ethiopia_gifaataa_gift_gain_medium_base
+					add_piety = RICE_south_ethiopia_gifaataa_gift_gain_medium_base
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_south_ethiopia_gifaataa_gift_type
+								option = RICE_south_ethiopia_gifaataa_gift_large
+							}
+						}
+					}
+					add_prestige = RICE_south_ethiopia_gifaataa_gift_gain_large_base
+					add_piety = RICE_south_ethiopia_gifaataa_gift_gain_large_base
+				}
+				add_character_modifier = {
+					modifier = RICE_south_ethiopia_gifaataa_festival_modifier
+					years = 5
+				}
+			}
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_prestige = 100
+				stress_impact = {
+					base = medium_stress_impact_loss
+					gregarious = minor_stress_impact_loss
+					generous = minor_stress_impact_loss
+				}
+				if = {
+					limit = {
+						scope:host = {
+							has_activity_intent = RICE_south_ethiopia_new_year_generic_reconciliation_intent
+						}
+					}
+					add_opinion = {
+						target = scope:host
+						modifier = RICE_south_ethiopia_reconciliation_opinion
+					}
+				}
+				add_character_modifier = {
+					modifier = RICE_south_ethiopia_gifaataa_festival_modifier
+					years = 5
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

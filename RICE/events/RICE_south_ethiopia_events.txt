@@ -1,0 +1,1275 @@
+﻿###############################################################################
+# 
+# SOUTH ETHIOPIA
+# 
+# south_ethiopia.0000-south_ethiopia.0019			Setup events, history events, miscellaneous events and decisions
+# south_ethiopia.0020-south_ethiopia.0039			Cattle Counting Ceremony
+# south_ethiopia.0040-south_ethiopia.0059			Gifaataa Festival
+# south_ethiopia.0060-south_ethiopia.0079			Fichee Festival
+# south_ethiopia.0080-south_ethiopia.0089			Other Major Decisions
+# south_ethiopia.0090-south_ethiopia.0099			???
+# south_ethiopia.0100-south_ethiopia.0149			Generic Flavor Events
+# 
+###############################################################################
+
+namespace = south_ethiopia
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# south_ethiopia.0000-south_ethiopia.0019
+# 
+######################################################################################
+
+
+
+# Aari/South Omotic character spawn
+south_ethiopia.0010 = {
+	type = character_event
+	title = south_ethiopia.0010.t
+	desc = south_ethiopia.0010.desc
+	theme = RICE_theme_south_ethiopia_omotic_village
+
+	left_portrait = root
+	right_portrait = {
+		character = scope:courtier
+		animation = throne_room_bow_1
+	}
+
+	trigger = {
+		any_held_county = {
+			any_county_province = {
+				geographical_region = RICE_south_ethiopia_region
+			}
+		}
+		NOR = {
+			culture = culture:aari
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:aari
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 2.5
+			has_cultural_tradition = tradition_RICE_great_rift_valley
+		}
+	}
+
+	immediate = {
+		culture:aari = {
+			save_scope_as = aari
+		}
+		create_character = {
+			location = root.capital_province
+			template = RICE_aari_generic_template
+			save_scope_as = courtier			
+		}
+	}
+
+	# Work with them
+	option = {
+		name = south_ethiopia.0010.a
+		trigger = {
+			OR = {
+				gold >= 50
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 50
+		add_courtier = scope:courtier
+		if = {
+			limit = {
+				culture = { has_cultural_tradition = tradition_RICE_great_rift_valley }
+			}
+			capital_county = {
+				add_county_modifier = {
+					modifier = RICE_south_ethiopia_south_omotic_connections
+					years = 20
+				}
+			}
+		}
+		else = {
+			capital_county = {
+				add_county_modifier = {
+					modifier = RICE_south_ethiopia_south_omotic_connections
+					years = 10
+				}
+			}
+		}
+	}
+	
+	# Don't work with them
+	option = {
+		name = south_ethiopia.0010.b
+		hidden_effect = {
+			random = {
+				chance = 80
+				scope:courtier = {
+					death = {
+						death_reason = death_vanished
+					}
+				}
+			}
+		}
+	}
+
+}
+
+
+# Oropom character spawn
+south_ethiopia.0011 = {
+	type = character_event
+	title = south_ethiopia.0011.t
+	desc = south_ethiopia.0011.desc
+	theme = RICE_theme_south_ethiopia_omotic_village
+
+	left_portrait = root
+	right_portrait = {
+		character = scope:courtier
+		animation = throne_room_bow_1
+	}
+
+	trigger = {
+		any_held_county = {
+			any_county_province = {
+				geographical_region = RICE_south_ethiopia_region
+			}
+		}
+		NOR = {
+			culture = culture:oropom
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:oropom
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 2.5
+			has_cultural_tradition = tradition_RICE_great_rift_valley
+		}
+	}
+
+	immediate = {
+		culture:oropom = {
+			save_scope_as = oropom
+		}
+		create_character = {
+			location = root.capital_province
+			template = RICE_oropom_generic_template
+			save_scope_as = courtier			
+		}
+	}
+
+	# Work with them
+	option = {
+		name = south_ethiopia.0011.a
+		trigger = {
+			OR = {
+				gold >= 50
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 50
+		add_courtier = scope:courtier
+		if = {
+			limit = {
+				culture = { has_cultural_tradition = tradition_RICE_great_rift_valley }
+			}
+			capital_county = {
+				add_county_modifier = {
+					modifier = RICE_south_ethiopia_oropom_connections
+					years = 20
+				}
+			}
+		}
+		else = {
+			capital_county = {
+				add_county_modifier = {
+					modifier = RICE_south_ethiopia_oropom_connections
+					years = 10
+				}
+			}
+		}
+	}
+	
+	# Don't work with them
+	option = {
+		name = south_ethiopia.0011.b
+		hidden_effect = {
+			random = {
+				chance = 80
+				scope:courtier = {
+					death = {
+						death_reason = death_vanished
+					}
+				}
+			}
+		}
+	}
+
+}
+
+
+
+
+######################################################################################
+# 
+# OTHER MAJOR DECISIONS
+# 
+# south_ethiopia.0080-south_ethiopia.0089
+# 
+######################################################################################
+
+
+
+# Enset event
+south_ethiopia.0080 = {
+	type = character_event
+	title = south_ethiopia.0080.t
+	desc = south_ethiopia.0080.desc
+	theme = RICE_theme_south_ethiopia_landscape
+
+	right_portrait = root
+
+
+	immediate = {
+		show_as_tooltip = {
+			remove_short_term_gold = RICE_south_ethiopia_enset_cost
+		}
+		RICE_south_ethiopia_enset_decision_effect = yes
+	}
+
+	# Ok
+	option = {
+		name = south_ethiopia.0080.a
+	}
+
+
+}
+
+# Sidama sacred grove maintenance event
+south_ethiopia.0081 = {
+	type = character_event
+	title = south_ethiopia.0081.t
+	desc = {
+		desc = south_ethiopia.0081.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_south_ethiopia_sidama_groves_type = flag:small
+				}
+				desc = south_ethiopia.0081.desc.small
+			}		
+			triggered_desc = {
+				trigger = {
+					var:RICE_south_ethiopia_sidama_groves_type = flag:medium
+				}
+				desc = south_ethiopia.0081.desc.medium
+			}		
+			triggered_desc = {
+				trigger = {
+					var:RICE_south_ethiopia_sidama_groves_type = flag:large
+				}
+				desc = south_ethiopia.0081.desc.large
+			}
+		}
+	}
+	theme = faith
+	override_background = { reference = RICE_background_south_ethiopia_omotic_village }
+
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+
+	immediate = {
+		culture = {
+			save_scope_as = culture
+		}
+		if = {
+			limit = {
+				var:RICE_south_ethiopia_sidama_groves_type = flag:small
+			}
+			remove_short_term_gold = RICE_south_ethiopia_sidama_tree_decision_small_cost
+			add_piety = RICE_south_ethiopia_sidama_tree_piety_gain_small
+			dynasty ?= {
+				add_dynasty_prestige = RICE_south_ethiopia_sidama_tree_dynasty_prestige_gain_small
+			}
+			add_character_modifier = {
+				modifier = RICE_south_ethiopia_maintained_groves_small_modifier
+				years = 10
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_south_ethiopia_sidama_groves_type = flag:medium
+			}
+			remove_short_term_gold = RICE_south_ethiopia_sidama_tree_decision_medium_cost
+			add_piety = RICE_south_ethiopia_sidama_tree_piety_gain_medium
+			dynasty ?= {
+				add_dynasty_prestige = RICE_south_ethiopia_sidama_tree_dynasty_prestige_gain_medium
+			}
+			add_character_modifier = {
+				modifier = RICE_south_ethiopia_maintained_groves_medium_modifier
+				years = 10
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_south_ethiopia_sidama_groves_type = flag:large
+			}
+			remove_short_term_gold = RICE_south_ethiopia_sidama_tree_decision_large_cost
+			add_piety = RICE_south_ethiopia_sidama_tree_piety_gain_large
+			dynasty ?= {
+				add_dynasty_prestige = RICE_south_ethiopia_sidama_tree_dynasty_prestige_gain_large
+			}
+			add_character_modifier = {
+				modifier = RICE_south_ethiopia_maintained_groves_large_modifier
+				years = 10
+			}
+		}
+	}
+
+	# Ok
+	option = {
+		name = south_ethiopia.0081.a
+	}
+
+
+}
+
+
+
+
+
+
+
+######################################################################################
+# 
+# CATTLE COUNTING CEREMONY
+# 
+# south_ethiopia.0020-south_ethiopia.0029
+# 
+######################################################################################
+
+
+
+
+# Preparations - Keeroo Gallasa aka marking day
+south_ethiopia.0020 = {
+	type = activity_event
+	title = south_ethiopia.0020.t
+	desc = {
+		desc = south_ethiopia.0020.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_south_ethiopia_cattle_counting_ceremony_dala
+						}
+					}
+				}
+				desc = south_ethiopia.0020.desc.dala
+			}
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_south_ethiopia_cattle_counting_ceremony_lika
+						}
+					}
+				}
+				desc = south_ethiopia.0020.desc.lika
+			}
+		}
+	}
+	theme = stewardship_duty_focus
+	
+	right_portrait = root
+	
+	option = { # Ok
+		name = south_ethiopia.0020.a
+	}
+}
+
+
+# Start the cattle counting ceremony, describing the location
+south_ethiopia.0021 = {
+	type = activity_event
+	title = south_ethiopia.0021.t
+	desc = {
+		desc = south_ethiopia.0021.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_south_ethiopia_cattle_counting_ceremony_dala
+						}
+					}
+				}
+				desc = south_ethiopia.0021.desc.dala
+			}
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_south_ethiopia_cattle_counting_ceremony_lika
+						}
+					}
+				}
+				desc = south_ethiopia.0021.desc.lika
+			}
+		}
+	}
+	theme = RICE_theme_south_ethiopia_omotic_village
+	
+	right_portrait = root
+	
+	option = { # Ok
+		name = south_ethiopia.0021.a
+		trigger_event = {
+			id = south_ethiopia.0022
+			days = { 5 10 }
+		}
+	}
+}
+
+
+# Molana arrives to count the cattle
+south_ethiopia.0022 = {
+	type = activity_event
+	title = south_ethiopia.0022.t
+	desc = {
+		desc = south_ethiopia.0022.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_south_ethiopia_cattle_counting_ceremony_dala
+						}
+					}
+				}
+				desc = south_ethiopia.0022.desc.dala
+			}
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_south_ethiopia_cattle_counting_ceremony_lika
+						}
+					}
+				}
+				desc = south_ethiopia.0022.desc.lika
+			}
+		}
+	}
+	theme = RICE_theme_south_ethiopia_omotic_village
+	
+	right_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	option = { # Ok
+		name = south_ethiopia.0022.a
+		trigger_event = {
+			id = south_ethiopia.0023
+			days = { 3 5 }
+		}
+	}
+}
+
+
+# Prepare to make a speech extolling your deeds
+south_ethiopia.0023 = {
+	type = activity_event
+	title = south_ethiopia.0023.t
+	desc = {
+		desc = south_ethiopia.0023.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_south_ethiopia_cattle_counting_ceremony_dala
+						}
+					}
+				}
+				desc = south_ethiopia.0023.desc.dala
+			}
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_south_ethiopia_cattle_counting_ceremony_lika
+						}
+					}
+				}
+				desc = south_ethiopia.0023.desc.lika
+			}
+		}
+	}
+	theme = RICE_theme_south_ethiopia_landscape
+	
+	right_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+	
+	option = { # Duel
+		name = south_ethiopia.0023.a
+		duel = {
+			skills = { diplomacy learning }
+			value = medium_skill_rating
+			9 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.5
+				}
+				set_variable = {
+					name = RICE_south_ethiopia_cattle_counting_speech
+					value = flag:fair
+					days = 30 # Just in case it doesn't remove itself for some reason
+				}
+				custom_tooltip = south_ethiopia.0023.a.fair
+			}
+			6 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.75
+				}
+				set_variable = {
+					name = RICE_south_ethiopia_cattle_counting_speech
+					value = flag:good
+					days = 30 # Just in case it doesn't remove itself for some reason
+				}
+				custom_tooltip = south_ethiopia.0023.a.good
+			}
+			3 = {
+				set_variable = {
+					name = RICE_south_ethiopia_cattle_counting_speech
+					value = flag:excellent
+					days = 30 # Just in case it doesn't remove itself for some reason
+				}
+				custom_tooltip = south_ethiopia.0023.a.excellent
+			}
+		}
+	}
+
+	after = {		
+		trigger_event = {
+			id = south_ethiopia.0024
+			days = { 3 5 }
+		}
+	}
+
+}
+
+
+# Making the speech to boast to everyone
+south_ethiopia.0024 = {
+	type = activity_event
+	title = south_ethiopia.0024.t
+	desc = {
+		desc = south_ethiopia.0024.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:host = {
+						var:RICE_south_ethiopia_cattle_counting_speech = flag:fair
+					}
+				}
+				desc = south_ethiopia.0024.desc.fair
+			}
+			triggered_desc = {
+				trigger = {
+					scope:host = {
+						var:RICE_south_ethiopia_cattle_counting_speech = flag:good
+					}
+				}
+				desc = south_ethiopia.0024.desc.good
+			}
+			triggered_desc = {
+				trigger = {
+					scope:host = {
+						var:RICE_south_ethiopia_cattle_counting_speech = flag:excellent
+					}
+				}
+				desc = south_ethiopia.0024.desc.excellent
+			}
+		}
+	}
+	theme = RICE_theme_south_ethiopia_landscape
+	
+	right_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	
+	option = { # Ok
+		name = south_ethiopia.0024.a
+		if = {
+			limit = {
+				var:RICE_south_ethiopia_cattle_counting_speech = flag:excellent
+			}
+			scope:activity = {
+				add_activity_log_entry = {
+					key = RICE_south_ethiopia_cattle_counting_ceremony_speech_excellent_log
+					tags = { good }
+					# this line below adds the entry to the Effects section of the conclusion UI
+					show_in_conclusion = yes
+					character = scope:host
+					scope:host = {
+						dynasty ?= {
+							add_dynasty_prestige = RICE_cattle_counting_dynasty_prestige_excellent
+						}
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_south_ethiopia_cattle_counting_speech = flag:good
+			}
+			scope:activity = {
+				add_activity_log_entry = {
+					key = RICE_south_ethiopia_cattle_counting_ceremony_speech_good_log
+					tags = { good }
+					# this line below adds the entry to the Effects section of the conclusion UI
+					show_in_conclusion = yes
+					character = scope:host
+					scope:host = {
+						dynasty ?= {
+							add_dynasty_prestige = RICE_cattle_counting_dynasty_prestige_good
+						}
+					}
+				}
+			}
+		}
+		else = {
+			scope:activity = {
+				add_activity_log_entry = {
+					key = RICE_south_ethiopia_cattle_counting_ceremony_speech_fair_log
+					tags = { good }
+					# this line below adds the entry to the Effects section of the conclusion UI
+					show_in_conclusion = yes
+					character = scope:host
+					scope:host = {
+						dynasty ?= {
+							add_dynasty_prestige = RICE_cattle_counting_dynasty_prestige_fair
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {	
+		if = {
+			limit = { has_variable = RICE_south_ethiopia_cattle_counting_speech }
+			remove_variable = RICE_south_ethiopia_cattle_counting_speech
+		}
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_south_ethiopia_cattle_counting_ceremony_lika
+					}
+				}
+			}
+			# Huluko ritual for the Lika ceremony
+			trigger_event = {
+				id = south_ethiopia.0025
+				days = { 2 4 }
+			}
+		}
+		else = {
+			trigger_event = {
+				id = south_ethiopia.0026
+				days = { 3 5 }
+			}
+		}
+	}
+
+}
+
+
+# Huluko Ritual for the Lika Ceremony
+south_ethiopia.0025 = {
+	type = activity_event
+	title = south_ethiopia.0025.t
+	desc = south_ethiopia.0025.desc
+	theme = RICE_theme_south_ethiopia_landscape
+	
+	right_portrait = {
+		character = root
+		animation = celebrate_spear
+	}
+	
+	option = { # Ok
+		name = south_ethiopia.0025.a
+	}
+
+	after = {	
+		trigger_event = {
+			id = south_ethiopia.0026
+			days = { 3 5 }
+		}
+	}
+
+}
+
+
+
+# Feasting
+south_ethiopia.0026 = {
+	type = activity_event
+	title = south_ethiopia.0026.t
+	desc = {
+		desc = south_ethiopia.0026.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_south_ethiopia_cattle_counting_ceremony_dala
+						}
+					}
+				}
+				desc = south_ethiopia.0026.desc.dala
+			}
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_south_ethiopia_cattle_counting_ceremony_lika
+						}
+					}
+				}
+				desc = south_ethiopia.0026.desc.lika
+			}
+		}
+	}
+	theme = RICE_theme_south_ethiopia_omotic_village
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Ok
+		name = south_ethiopia.0026.a
+		# Gimuwa
+		if = {
+			limit = {
+				exists = scope:activity.special_guest:RICE_special_guest_gimuwa
+			}
+			trigger_event = {
+				id = south_ethiopia.0030
+				days = { 3 5 }
+			}
+		}
+		else = {
+			trigger_event = {
+				id = south_ethiopia.0027
+				days = { 3 5 }
+			}
+		}
+	}
+}
+
+
+# Cattle Counting Ceremony concludes
+south_ethiopia.0027 = {
+	type = activity_event
+	title = south_ethiopia.0027.t
+	desc = {
+		desc = south_ethiopia.0027.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_south_ethiopia_cattle_counting_ceremony_dala
+						}
+					}
+				}
+				desc = south_ethiopia.0027.desc.dala
+			}
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_south_ethiopia_cattle_counting_ceremony_lika
+						}
+					}
+				}
+				desc = south_ethiopia.0027.desc.lika
+			}
+		}
+	}
+	theme = RICE_theme_south_ethiopia_omotic_village
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Ok
+		name = south_ethiopia.0028.a
+		RICE_south_ethiopia_cattle_counting_ceremony_completed_log_entry_effect = yes
+	}
+
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
+		}
+	}
+
+}
+
+
+
+
+# Gimuwa
+south_ethiopia.0030 = {
+	type = activity_event
+	title = south_ethiopia.0030.t
+	desc = south_ethiopia.0030.desc
+	theme = RICE_theme_south_ethiopia_omotic_village
+	
+	left_portrait = {
+		character = root
+		animation = throne_room_cheer_1
+	}
+
+	right_portrait = {
+		character = scope:gimuwa
+		animation = personality_bold
+	}
+
+	immediate = {
+		scope:activity.special_guest:RICE_special_guest_gimuwa = {
+			save_scope_as = gimuwa
+		}
+	}
+	
+	option = { # Ok
+		name = south_ethiopia.0030.a
+		scope:gimuwa = {
+			RICE_south_ethiopia_cattle_counting_ceremony_gimuwa_log_entry_effect = yes
+		}
+		trigger_event = {
+			id = south_ethiopia.0027
+			days = { 3 5 }
+		}
+	}
+}
+
+
+
+######################################################################################
+# 
+# GIFAATAA CEREMONY
+# 
+# south_ethiopia.0040-south_ethiopia.0059
+# 
+######################################################################################
+
+
+# Preparations - Send off any lingering negativity
+
+
+
+# Preparations - Keeroo Gallasa aka marking day
+south_ethiopia.0040 = {
+	type = activity_event
+	title = south_ethiopia.0040.t
+	desc = south_ethiopia.0040.desc
+	theme = stewardship_duty_focus
+	
+	right_portrait = root
+	
+	option = { # Ok
+		name = south_ethiopia.0040.a
+	}
+}
+
+# Gifaataa begins
+# Guliya-Gosha - binding tree; spirit will visit each household to see if it has enough food
+south_ethiopia.0041 = {
+	type = activity_event
+	title = south_ethiopia.0041.t
+	desc = south_ethiopia.0041.desc
+	theme = RICE_theme_south_ethiopia_omotic_village
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_banquet
+	}
+	
+	option = { # Ok
+		name = south_ethiopia.0041.a
+	}
+
+	after = {
+		
+		hidden_effect = {
+			random = {
+				chance = 25
+				trigger_event = {
+					id = south_ethiopia.0044
+					days = { 5 32 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = south_ethiopia.0045
+					days = { 5 32 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = south_ethiopia.0046
+					days = { 5 32 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = south_ethiopia.0047
+					days = { 5 32 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = south_ethiopia.0048
+					days = { 5 32 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = south_ethiopia.0049
+					days = { 5 32 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = south_ethiopia.0050
+					days = { 5 32 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = south_ethiopia.0051
+					days = { 5 32 }
+				}
+			}
+		}
+		trigger_event = {
+			id = south_ethiopia.0042
+			days = { 35 45 }
+		}
+		trigger_event = {
+			id = south_ethiopia.0043
+			days = { 5 32 }
+		}
+	}
+}
+
+# Gifaataa ends - Gollo-Igeta - farewell ceremony; spirit leaves if it is assured each family has enough food
+south_ethiopia.0042 = {
+	type = activity_event
+	title = south_ethiopia.0042.t
+	desc = south_ethiopia.0042.desc
+	theme = RICE_theme_south_ethiopia_omotic_village
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Fun!
+		name = south_ethiopia.0042.a
+		RICE_south_ethiopia_gifaataa_festival_completed_log_entry_effect = yes
+	}
+	
+	after = {
+		scope:activity = {
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}		
+}
+
+# Gift-giving event
+south_ethiopia.0043 = {
+	type = activity_event
+	title = south_ethiopia.0043.t
+	desc = south_ethiopia.0043.desc
+	theme = RICE_theme_south_ethiopia_omotic_village
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # ok
+		name = south_ethiopia.0043.a
+	}
+	
+}
+
+
+# Eating Asho (raw meat), butter, honey, and other meats
+south_ethiopia.0044 = {
+	type = activity_event
+	title = south_ethiopia.0044.t
+	desc = south_ethiopia.0044.desc
+	theme = feast_activity
+	override_background = { reference = RICE_background_south_ethiopia_omotic_village }
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # ok
+		name = south_ethiopia.0044.a
+		add_prestige = 25
+	}
+	
+}
+
+# Meditating two locals' rivalries
+south_ethiopia.0045 = {
+	type = activity_event
+	title = south_ethiopia.0045.t
+	desc = south_ethiopia.0045.desc
+	theme = friendly
+	override_background = { reference = RICE_background_south_ethiopia_omotic_village }
+	
+	right_portrait = {
+		character = root
+		animation = personality_forgiving
+	}
+	
+	option = { # ok
+		name = south_ethiopia.0045.a
+		add_prestige = 25
+	}
+	
+}
+
+
+# Youths gather to sing songs at the Gaziyaa place (field for Gifaataa songs/dances)
+south_ethiopia.0046 = {
+	type = activity_event
+	title = south_ethiopia.0046.t
+	desc = south_ethiopia.0046.desc
+	theme = friendly
+	override_background = { reference = RICE_background_south_ethiopia_omotic_village }
+	
+	right_portrait = {
+		character = root
+		animation = admiration
+	}
+	
+	option = { # ok
+		name = south_ethiopia.0046.a
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			gregarious = miniscule_stress_impact_loss
+		}
+	}
+	
+}
+
+
+# Meeting at Gaziyaa place to discuss common social issues
+south_ethiopia.0047 = {
+	type = activity_event
+	title = south_ethiopia.0047.t
+	desc = south_ethiopia.0047.desc
+	theme = stewardship_duty_focus
+	override_background = { reference = RICE_background_south_ethiopia_omotic_village }
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+	
+	option = { # ok
+		name = south_ethiopia.0047.a
+		add_prestige = 25
+	}
+	
+}
+
+
+# Paying debts
+south_ethiopia.0048 = {
+	type = activity_event
+	title = south_ethiopia.0048.t
+	desc = south_ethiopia.0048.desc
+	theme = stewardship_duty_focus
+	override_background = { reference = RICE_background_south_ethiopia_omotic_village }
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # ok
+		name = south_ethiopia.0048.a
+		add_gold = { 10 50 }
+	}
+	
+	option = { # ok
+		name = south_ethiopia.0048.b
+		add_piety = 100
+		stress_impact = {
+			generous = medium_stress_impact_loss
+			greedy = medium_stress_impact_gain
+		}
+	}
+	
+}
+
+
+# Local claims to stop being corrupt and villainous
+south_ethiopia.0049 = {
+	type = activity_event
+	title = south_ethiopia.0049.t
+	desc = south_ethiopia.0049.desc
+	theme = faith
+	override_background = { reference = RICE_background_south_ethiopia_omotic_village }
+	
+	right_portrait = {
+		character = root
+		animation = personality_callous
+	}
+	
+	option = { # ok
+		name = south_ethiopia.0049.a
+		add_prestige = 25
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			trusting = miniscule_county_control_gain
+		}
+	}
+	
+	option = { # ok
+		name = south_ethiopia.0049.b
+		add_piety = 25
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			callous = miniscule_county_control_gain
+		}
+	}
+	
+}
+
+
+# Marriage selections
+south_ethiopia.0050 = {
+	type = activity_event
+	title = south_ethiopia.0050.t
+	desc = south_ethiopia.0050.desc
+	theme = marriage
+	override_background = { reference = RICE_background_south_ethiopia_omotic_village }
+	
+	right_portrait = {
+		character = root
+		animation = flirtation
+	}
+	
+	option = { # ok
+		name = south_ethiopia.0050.a
+		add_prestige = 15
+		stress_impact = {
+			lustful = minor_stress_impact_loss
+		}
+	}
+	
+}
+
+
+# Elders tell lore and stories
+south_ethiopia.0051 = {
+	type = activity_event
+	title = south_ethiopia.0051.t
+	desc = south_ethiopia.0051.desc
+	theme = memory_positive
+	override_background = { reference = RICE_background_south_ethiopia_omotic_village }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # ok
+		name = south_ethiopia.0051.a
+		RICE_minor_lifestyle_experience_gain_effect = yes
+	}
+	
+}
+
+
+# Forgive a rival?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

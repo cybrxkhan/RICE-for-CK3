@@ -10,11 +10,13 @@
 			is_at_war = no
 			short_term_gold >= RICE_activity_cost
 		}	
+		
 	}
 
 	can_start = {
 		culture = { has_cultural_tradition = tradition_RICE_cattle_counting_ceremonies }
 		has_dominant_ruling_gender = root
+		NOT = { has_trait = RICE_cattle_owner_2 }
 	}
 
 	can_start_showing_failures_only = {
@@ -102,7 +104,7 @@
 		# TYPE OF CATTLE COUNTING CEREMONY
 		#########
 		special_type = {
-			RICE_south_ethiopia_cattle_county_ceremony_dala = {
+			RICE_south_ethiopia_cattle_counting_ceremony_dala = {
 				default = {
 					NOT = { has_trait = RICE_cattle_owner_1 }
 				}
@@ -110,12 +112,124 @@
 					NOT = { has_trait = RICE_cattle_owner_1 }
 				}
 			}
-			RICE_south_ethiopia_cattle_county_ceremony_lika = {				
+			RICE_south_ethiopia_cattle_counting_ceremony_lika = {				
 				default = {
 					has_trait = RICE_cattle_owner_1
 				}
 				is_valid = {
 					has_trait = RICE_cattle_owner_1
+				}
+				cost = { 
+					gold = {
+						add = {
+							value = 0
+							desc = RICE_south_ethiopia_lika_ceremony
+							add = {
+								value = medium_gold_value
+								desc = RICE_south_ethiopia_lika_ceremony
+							}
+						}
+					}
+				}	
+			}
+		}
+
+		#########
+		# FEAST SIZE
+		#########
+		RICE_south_ethiopia_cattle_counting_ceremony_feast_type = {
+			RICE_south_ethiopia_cattle_counting_ceremony_feast_small = {
+				default = yes
+				ai_will_do = {
+					value = 15
+					if = {
+						limit = {
+							short_term_gold <= 100
+						}
+						add = {
+							value = 10
+						}
+					}
+					if = {
+						limit = {
+							has_trait = greedy
+						}
+						add = 10
+					}
+				}
+			}
+			RICE_south_ethiopia_cattle_counting_ceremony_feast_medium = {
+				cost = { 
+					gold = {
+						add = {
+							value = 0
+							desc = RICE_south_ethiopia_cattle_counting_feast_amount
+							add = {
+								value = minor_gold_value
+								desc = RICE_south_ethiopia_cattle_counting_feast_amount
+							}
+						}
+					}
+				}			
+				ai_will_do = {
+					value = 30
+					if = {
+						limit = {
+							short_term_gold <= minor_gold_value
+						}
+						subtract = {
+							value = 30
+						}
+					}
+					if = {
+						limit = {
+							has_trait = ambitious
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = arrogant
+						}
+						add = 5
+					}
+				}
+			}
+			RICE_south_ethiopia_cattle_counting_ceremony_feast_large = {
+				cost = { 
+					gold = {
+						add = {
+							value = 0
+							desc = RICE_south_ethiopia_cattle_counting_feast_amount
+							add = {
+								value = medium_gold_value
+								desc = RICE_south_ethiopia_cattle_counting_feast_amount
+							}
+						}
+					}
+				}			
+				ai_will_do = {
+					value = 15
+					if = {
+						limit = {
+							short_term_gold <= medium_gold_value
+						}
+						subtract = {
+							value = 15
+						}
+					}
+					if = {
+						limit = {
+							has_trait = ambitious
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = arrogant
+						}
+						add = 5
+					}
 				}
 			}
 		}
@@ -136,7 +250,7 @@
 					limit = {
 						this = scope:host
 					}
-					trigger_event = polabian.0060
+					trigger_event = south_ethiopia.0021
 				}		
 			}
 			on_end = {
@@ -214,6 +328,21 @@
 		gold = {
 			value = RICE_activity_cost
 
+			add = { # Dala vs Lika ceremony
+				value = 0
+				add = medium_gold_value
+				# Divide by 3 to get the average option cost
+				divide = 2
+			}
+
+			add = { # Feast
+				value = 0
+				add = minor_gold_value
+				add = medium_gold_value
+				# Divide by 3 to get the average option cost
+				divide = 3
+			}
+
 			# Make it a multiple of 5 (rounded up)
 			divide = 5 
 			ceiling = yes 
@@ -234,7 +363,7 @@
 	# }
 
 	on_enter_passive_state = {
-		
+		trigger_event = south_ethiopia.0020
 	}
 
 	###################
@@ -298,6 +427,7 @@
 			is_required = no
 			can_pick = {
 				NOT = { this = scope:host }
+				NOT = { has_trait = trait_RICE_cattle_owner_spouse }
 				is_landed = no
 				is_healthy = yes
 				is_adult = yes
@@ -312,15 +442,15 @@
 	}
 	
 	on_complete = {
-		if = {
-			limit = { this = scope:host }
+		#if = {
+		#	limit = { this = scope:host }
 			#create_character_memory = {
 			#	type = RICE_polabian_zapust_festival_host_memory
 			#}
-			scope:host = {
-				RICE_polabian_zapust_festival_completed_log_entry_effect = yes
-			}
-		}
+		#	scope:host = {
+		#		RICE_south_ethiopia_cattle_counting_ceremony_completed_log_entry_effect = yes
+		#	}
+		#}
 		# else = {			
 		# 	create_character_memory = {
 		# 		type = RICE_polabian_zapust_festival_guest_memory
