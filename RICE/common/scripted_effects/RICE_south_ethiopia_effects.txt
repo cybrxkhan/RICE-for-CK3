@@ -7,6 +7,10 @@
 	#
 	############################################################
 
+	faith:fandaanano = {
+		set_variable = { name = block_conversion_till_nebulous_circumstances }
+	}
+
 	if = {
 		limit = {
 			NOT = { exists = culture:soissons }
@@ -1283,7 +1287,65 @@ RICE_south_ethiopia_fichee_chambalaalla_festival_completed_log_entry_effect = {
 }
 
 
-
+RICE_create_fandaanano_effect = {
+	religion:islam_religion = { save_scope_as = islam }
+	religion:sidamic_religion = { save_scope_as = sidamic_religion }
+	religion:sidamic_religion = { save_scope_as = waaqism_religion }
+	faith:fandaanano = {
+		save_scope_as = fandaanano
+		remove_variable = block_conversion_till_nebulous_circumstances
+	}
+	set_character_faith_with_conversion = faith:fandaanano
+	root.capital_county = {
+		set_county_faith = faith:fandaanano
+		every_neighboring_county = {
+			limit = {					
+				NOT = { faith = faith:fandaanano }
+				OR = {
+					religion = religion:sidamic_religion
+					religion = religion:waaqism_religion
+					religion = { is_in_family = rf_abrahamic }
+				}
+			}
+			holder = {
+				every_courtier_or_guest = {
+					limit = {
+						is_lowborn = yes
+					}
+					random = {
+						chance = 30
+						set_character_faith = faith:fandaanano
+					}
+				}
+			}
+			random = {
+				chance = 30
+				set_county_faith = faith:fandaanano
+				random_neighboring_county = {
+					limit = {
+						OR = {
+							religion = religion:sidamic_religion
+							religion = religion:waaqism_religion
+							religion = { is_in_family = rf_abrahamic }
+						}
+					}
+					set_county_faith = faith:fandaanano
+					holder = {
+						every_courtier_or_guest = {
+							limit = {
+								is_lowborn = yes
+							}
+							random = {
+								chance = 25
+								set_character_faith = faith:fandaanano
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
 
 
 

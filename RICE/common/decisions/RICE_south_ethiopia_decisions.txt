@@ -285,3 +285,145 @@ RICE_south_ethiopia_sidama_groves_decision = {
 
 
 
+
+RICE_south_ethiopia_fandaanano_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_heavenly_light.dds"
+	desc = RICE_south_ethiopia_fandaanano_decision_desc
+	major = yes
+
+	ai_check_interval = 24
+
+	is_shown = {
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:south_ethiopia_fandaanano_established
+			}
+		}
+		OR = {
+			religion = { is_in_family = rf_pagan }
+			religion = { is_in_family = rf_abrahamic }
+		}
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_south_ethiopia_region
+			}
+		}
+	}
+
+	is_valid = {
+		OR = {
+			religion = religion:sidamic_religion
+			religion = religion:waaqism_religion
+			religion = religion:islam_religion
+		}	
+		custom_description = {
+			text = "RICE_south_ethiopia_capital_req"
+			root.capital_county = {
+				title_province = { geographical_region = RICE_south_ethiopia_region }
+			}
+		}
+		custom_description = {
+			text = "RICE_same_faith_capital_req"
+			root.capital_county.faith = root.faith
+		}
+		OR = {
+			AND = {
+				piety_level >= 5				
+				culture = {
+					has_cultural_era_or_later = culture_era_early_medieval
+				}
+			}
+			AND = {
+				piety_level >= 3	
+				culture = {
+					has_cultural_era_or_later = culture_era_high_medieval
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	cost = {
+		gold = {
+			value = medium_gold_value
+		}
+		# prestige = {
+		# 	value = massive_prestige_value
+		# }
+		piety = {
+			value = massive_piety_value
+		}
+	}
+
+	effect = {
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:south_ethiopia_fandaanano_established
+		}
+
+		show_as_tooltip = {
+			set_character_faith_with_conversion = faith:fandaanano
+			root.capital_county = {
+				set_county_faith = faith:fandaanano
+			}
+			add_prestige = 500
+			dynasty ?= {
+				add_dynasty_prestige = major_dynasty_prestige_value
+			}
+		}
+
+		custom_tooltip = RICE_south_ethiopia_fandaanano_decision_effect_tooltip_1
+		custom_tooltip = RICE_south_ethiopia_fandaanano_decision_effect_tooltip_2
+
+
+		# show_as_tooltip = {
+		# 	RICE_create_fandaanano_effect = yes
+		# }
+
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_south_ethiopia_fandaanano_decision_context_tooltip
+		}
+
+		#trigger_event = south_ethiopia.0001
+		trigger_event = {
+			id = south_ethiopia.0001
+			days = 1
+		}
+
+
+	}
+
+	ai_will_do = {
+		base = 5
+
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 10
+			# Happened in the 1300-1400s IRL
+			current_date >= 1150.1.1
+		}
+		modifier = {
+			add = 20
+			# Happened in 1349 IRL
+			current_date >= 1250.1.1
+		}
+		modifier = {
+			add = 30
+			# Happened in 1349 IRL
+			current_date >= 1350.1.1
+		}
+
+	}
+}

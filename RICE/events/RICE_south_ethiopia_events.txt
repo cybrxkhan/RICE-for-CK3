@@ -23,6 +23,129 @@ namespace = south_ethiopia
 ######################################################################################
 
 
+# Fandaanano faith emerges
+# Setup event
+south_ethiopia.0001 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		save_scope_as = fandaanano_creator
+		RICE_create_fandaanano_effect = yes
+		add_prestige = 5000
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:fandaanano_creator
+					any_liege_or_above = { this = scope:fandaanano_creator }
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_south_ethiopia_region
+						}
+					}
+				}
+			}
+			trigger_event = south_ethiopia.0002
+		}
+	}
+}
+
+# Fandaanano faith emerges
+# Proper event
+south_ethiopia.0002 = {
+	type = character_event
+	title = south_ethiopia.0002.t
+	desc = south_ethiopia.0002.desc
+	theme = RICE_theme_south_ethiopia_omotic_village
+
+	right_portrait = {
+		character = scope:fandaanano_creator
+		animation = personality_zealous
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		if = {
+			limit = {
+				root = scope:fandaanano_creator
+			}
+			add_prestige = 500
+			dynasty ?= {
+				add_dynasty_prestige = major_dynasty_prestige_value
+			}
+		}
+		custom_tooltip = RICE_south_ethiopia_fandaanano_decision_effect_tooltip_1
+		custom_tooltip = RICE_south_ethiopia_fandaanano_decision_effect_tooltip_2
+	}
+
+	# Ok
+	option = {
+		name = south_ethiopia.0002.a
+		trigger = {
+			faith = faith:fandaanano
+		}
+	}
+
+	# Ok
+	option = {
+		name = south_ethiopia.0002.b
+		trigger = {
+			NOT = { faith = faith:fandaanano }
+		}
+		ai_chance = {
+			base = 70
+		}
+	}
+
+	# Convert
+	option = {
+		name = south_ethiopia.0002.c
+		# Only certain types of AI rulers qualify
+		trigger = {
+			NOT = { faith = faith:fandaanano }
+			OR = {
+				is_ai = no
+				capital_province = {
+					geographical_region = RICE_south_ethiopia_region
+				}		
+			}
+		}
+		set_character_faith_with_conversion = faith:fandaanano
+		ai_chance = {
+			base = 30
+			modifier = {
+				NOR = {
+					religion = religion:sidamic_religion
+					religion = religion:waaqism_religion
+					religion = religion:islam_religion
+				}
+				add = -40
+			}
+			modifier = {
+				faith = faith:damot_pagan
+				add = -20
+			}
+			modifier = {
+				has_trait = zealous
+				add = -30 
+			}
+			modifier = {
+				has_trait = content
+				add = -10 
+			}
+			modifier = {
+				NOR = {
+					culture = { has_cultural_pillar = heritage_somalian }
+					culture = { has_cultural_pillar = heritage_east_african }
+				}
+				add = -30 
+			}
+		}
+	}
+
+}
+
 
 # Aari/South Omotic character spawn
 south_ethiopia.0010 = {
@@ -906,16 +1029,12 @@ south_ethiopia.0030 = {
 ######################################################################################
 
 
-# Preparations - Send off any lingering negativity
-
-
-
-# Preparations - Keeroo Gallasa aka marking day
+# Preparations - Guliya-Gosha - binding tree; sending off any lingering negativity
 south_ethiopia.0040 = {
 	type = activity_event
 	title = south_ethiopia.0040.t
 	desc = south_ethiopia.0040.desc
-	theme = stewardship_duty_focus
+	theme = RICE_theme_south_ethiopia_landscape
 	
 	right_portrait = root
 	
@@ -925,7 +1044,7 @@ south_ethiopia.0040 = {
 }
 
 # Gifaataa begins
-# Guliya-Gosha - binding tree; spirit will visit each household to see if it has enough food
+# Spirit will visit each household to see if it has enough food
 south_ethiopia.0041 = {
 	type = activity_event
 	title = south_ethiopia.0041.t
@@ -1054,12 +1173,45 @@ south_ethiopia.0043 = {
 	
 	option = { # ok
 		name = south_ethiopia.0043.a
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = RICE_south_ethiopia_gifaataa_gift_type
+						option = RICE_south_ethiopia_gifaataa_gift_small
+					}
+				}
+			}
+			add_gold = { 1 tiny_gold_value }
+		}
+		else_if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = RICE_south_ethiopia_gifaataa_gift_type
+						option = RICE_south_ethiopia_gifaataa_gift_medium
+					}
+				}
+			}
+			add_gold = { 1 minor_gold_value }
+		}
+		else_if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = RICE_south_ethiopia_gifaataa_gift_type
+						option = RICE_south_ethiopia_gifaataa_gift_large
+					}
+				}
+			}
+			add_gold = { 1 medium_gold_value }
+		}
 	}
 	
 }
 
 
-# Eating Asho (raw meat), butter, honey, and other meats
+# Eating Asho (raw meat), butter, honey, and other meats - food and drink
 south_ethiopia.0044 = {
 	type = activity_event
 	title = south_ethiopia.0044.t
@@ -1067,9 +1219,9 @@ south_ethiopia.0044 = {
 	theme = feast_activity
 	override_background = { reference = RICE_background_south_ethiopia_omotic_village }
 	
-	left_portrait = {
+	right_portrait = {
 		character = root
-		animation = happiness
+		animation = drink
 	}
 	
 	option = { # ok
@@ -1079,7 +1231,7 @@ south_ethiopia.0044 = {
 	
 }
 
-# Meditating two locals' rivalries
+# Meditating two locals with a rivalry who then reconcile
 south_ethiopia.0045 = {
 	type = activity_event
 	title = south_ethiopia.0045.t
@@ -1094,13 +1246,18 @@ south_ethiopia.0045 = {
 	
 	option = { # ok
 		name = south_ethiopia.0045.a
-		add_prestige = 25
+		add_piety = 25
+		stress_impact = {
+			base = minor_stress_impact_loss
+			gregarious = miniscule_stress_impact_loss
+			gluttonous = minor_stress_impact_loss
+		}	
 	}
 	
 }
 
 
-# Youths gather to sing songs at the Gaziyaa place (field for Gifaataa songs/dances)
+# People gather to sing songs and dance at the Gaziyaa place (field for Gifaataa songs/dances)
 south_ethiopia.0046 = {
 	type = activity_event
 	title = south_ethiopia.0046.t
@@ -1113,11 +1270,29 @@ south_ethiopia.0046 = {
 		animation = admiration
 	}
 	
-	option = { # ok
+	option = { # Join in!
 		name = south_ethiopia.0046.a
+		if = {
+			limit = {
+				has_trait = shy
+			}
+			stress_impact = {
+				shy = minor_stress_impact_gain
+			}
+		}
+		else = {
+			stress_impact = {
+				base = minor_stress_impact_loss
+				gregarious = miniscule_stress_impact_loss
+				lustful = miniscule_stress_impact_loss
+			}		
+		}
+	}	
+	option = { # Stay back
+		name = south_ethiopia.0046.b
+		add_prestige = 20
 		stress_impact = {
-			base = miniscule_stress_impact_loss
-			gregarious = miniscule_stress_impact_loss
+			gregarious = miniscule_stress_impact_gain
 		}
 	}
 	
@@ -1128,7 +1303,15 @@ south_ethiopia.0046 = {
 south_ethiopia.0047 = {
 	type = activity_event
 	title = south_ethiopia.0047.t
-	desc = south_ethiopia.0047.desc
+	desc = {
+		desc = south_ethiopia.0047.desc
+		triggered_desc = {
+			trigger = {
+				age <= 30
+			}
+			desc = south_ethiopia.0047.desc.youth
+		}	
+	}
 	theme = stewardship_duty_focus
 	override_background = { reference = RICE_background_south_ethiopia_omotic_village }
 	
@@ -1139,7 +1322,29 @@ south_ethiopia.0047 = {
 	
 	option = { # ok
 		name = south_ethiopia.0047.a
-		add_prestige = 25
+		if = {
+			limit = {
+				age <= 30
+			}
+			scope:activity = {
+				add_activity_log_entry = {
+					key = RICE_south_ethiopia_gifaataa_youth_discussion_log
+					tags = { good }
+					# this line below adds the entry to the Effects section of the conclusion UI
+					show_in_conclusion = yes
+					character = scope:host
+					scope:host = {
+						add_character_modifier = {
+							modifier = RICE_south_ethiopia_gifaataa_youth_discussions
+							years = 3
+						}
+					}
+				}
+			}
+		}
+		else = {
+			add_prestige = 25
+		}
 	}
 	
 }
@@ -1160,15 +1365,37 @@ south_ethiopia.0048 = {
 	
 	option = { # ok
 		name = south_ethiopia.0048.a
-		add_gold = { 10 50 }
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_south_ethiopia_gifaataa_debts_received_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					add_gold = { 10 50 }
+				}
+			}
+		}
 	}
 	
 	option = { # ok
 		name = south_ethiopia.0048.b
-		add_piety = 100
-		stress_impact = {
-			generous = medium_stress_impact_loss
-			greedy = medium_stress_impact_gain
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_south_ethiopia_gifaataa_debts_forgiven_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					add_piety = 100
+					stress_impact = {
+						generous = medium_stress_impact_loss
+						greedy = medium_stress_impact_gain
+					}
+				}
+			}
 		}
 	}
 	
