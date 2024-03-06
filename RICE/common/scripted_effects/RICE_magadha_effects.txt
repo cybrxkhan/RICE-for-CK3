@@ -1,5 +1,161 @@
 ﻿
 RICE_setup_magadha_flavor_pack_effect = {
+
+
+	############################################################
+	#
+	# CULTURE CHANGES
+	#
+	############################################################
+
+
+    if = {
+        limit = {
+			NOT = { exists = culture:soissons }
+		}
+
+        # Bengali/Gaudi, Oriya, and Kamarupi changes are based on suggestions/research by Soraya
+
+        # Gaudi/Bengali culture
+        culture:bengali = {
+
+            set_culture_pillar = ethos_courtly
+
+            if = {
+                limit = { has_cultural_tradition = tradition_agrarian }
+                remove_culture_tradition = tradition_agrarian
+            }
+
+            # Soraya says Philosopher Culture and Religious Patronage can be kept, but here are Soraya's notes anyways:
+            # Philosopher Culture: Early Medieval Bengal produced many great Buddhist theologians like Atisha, and also many Hindu ones like Chaitanya particularly in later periods
+            # Religious Patronage: Palas and Chandras be funding a lot of Viharas
+
+            # Soraya: Bengal be trading with SEA, and rivers were used in trade through which this tradition allows sailing
+            add_culture_tradition = tradition_seafaring
+            # Soraya: Bengal be full of rainforests yo, it should have more in-game but what can you do
+            add_culture_tradition = tradition_jungle_dwellers
+            # Soraya: Kulinism began in this period, and thus Brahmins and Kayasthas began a process of creating excessively prestigious North Indian ancestries for themselves and a strict code of exogamy, the "Kulin Pratha" should really have its own system in a potential Bengal flavor pack
+            add_culture_tradition = tradition_hereditary_hierarchy
+            remove_variable = tradition_cooldown
+        }
+
+        # Oriya
+        culture:oriya = {
+
+            set_culture_pillar = ethos_egalitarian
+
+            add_culture_tradition = tradition_fervent_temple_builders
+            add_culture_tradition = tradition_festivities
+            remove_variable = tradition_cooldown
+
+        }
+
+        # Kamrupi/Assamese
+        culture:assamese = {
+
+            add_culture_tradition = tradition_lords_of_the_elephant
+            remove_variable = tradition_cooldown
+
+        }
+
+        title:c_magadha = {
+            set_county_culture = culture:magadhi
+        }
+
+        title:c_mudgagiri = {
+            set_county_culture = culture:magadhi
+        }
+
+        title:c_gaya = {
+            set_county_culture = culture:magadhi
+        }
+
+        title:c_sasaram = {
+            set_county_culture = culture:magadhi
+        }
+
+        title:c_mithila = {
+            set_county_culture = culture:magadhi
+        }
+
+        title:c_simaramapura = {
+            set_county_culture = culture:magadhi
+        }
+
+        title:c_kusinagara = {
+            set_county_culture = culture:magadhi
+        }
+
+        title:c_bangaon = {
+            set_county_culture = culture:magadhi
+        }
+
+        title:c_jharkand = {
+            set_county_culture = culture:magadhi
+        }
+
+        title:c_rothas = {
+            set_county_culture = culture:magadhi
+        }
+
+        title:c_rajrappa = {
+            set_county_culture = culture:magadhi
+        }
+
+        title:c_damin_i_koh = {
+            set_county_culture = culture:magadhi
+        }
+
+        title:c_janakpur = {
+            set_county_culture = culture:magadhi
+        }
+
+		every_ruler = {
+			limit = {
+				culture = { has_cultural_pillar = heritage_indo_aryan }
+				capital_county = {
+					culture = culture:magadhi
+				}
+			}
+			make_magadhi_culture_effect = yes
+		}
+
+		every_ruler = {
+			limit = {
+				culture = { has_cultural_pillar = heritage_indo_aryan }
+                any_held_county = {
+                    culture = culture:magadhi
+                }
+				NOT = {
+                    capital_county = {
+                        culture = culture:magadhi
+                    }
+                }
+			}
+            every_courtier_or_guest = {
+                limit = {
+                    culture = { has_cultural_pillar = heritage_indo_aryan }
+                    is_lowborn = yes
+                }
+                random = {
+                    chance = 33
+                    set_culture = culture:magadhi
+                }
+            }
+		}
+
+    }
+
+    
+
+
+
+	############################################################
+	#
+	# MISCELLANEOUS
+	#
+	############################################################
+
     title:c_magadha = {
         add_county_modifier = {
             modifier = RICE_magadha_rajgir_hot_springs_buddhist
@@ -1114,3 +1270,172 @@ RICE_magadha_bodhi_tree_bathing_ceremony_completed_log_entry_effect = {
 		}
 	}
 }
+
+
+
+make_magadhi_culture_effect = {	
+	#Convert your, and your whole family's, culture
+	set_culture = culture:magadhi
+	if = {
+		limit = {
+			any_spouse = {
+				is_landed = no	
+                culture = { has_cultural_pillar = heritage_indo_aryan }
+			}
+		}
+		every_spouse = {
+			limit = {
+				is_landed = no										
+				culture = { has_cultural_pillar = heritage_indo_aryan }
+			}
+			set_culture = culture:magadhi
+		}
+	}
+	if = {
+		limit = {
+			any_close_family_member = {
+				is_landed = no										
+				culture = { has_cultural_pillar = heritage_indo_aryan }
+			}
+		}
+		every_close_family_member = {
+			custom = all_family_members
+			limit = {
+				is_landed = no											
+				culture = { has_cultural_pillar = heritage_indo_aryan }
+			}
+			set_culture = culture:magadhi
+		}
+	}
+
+	#Convert appropriate vassals, and their family
+	if = {
+		limit = {
+			any_vassal = {							
+				culture = { has_cultural_pillar = heritage_indo_aryan }		
+				capital_county = {
+					culture = culture:magadhi
+				}
+			}
+		}
+		every_vassal = {
+			limit = {							
+				culture = { has_cultural_pillar = heritage_indo_aryan }		
+				capital_county = {
+					culture = culture:magadhi
+				}
+			}
+			set_culture = culture:magadhi
+			hidden_effect = {
+				if = {
+					limit = {
+						any_spouse = {
+							is_landed = no									
+							culture = { has_cultural_pillar = heritage_indo_aryan }
+						}
+					}
+					every_spouse = {
+						limit = {
+							is_landed = no									
+							culture = { has_cultural_pillar = heritage_indo_aryan }
+						}
+						set_culture = culture:magadhi
+					}
+				}
+				if = {
+					limit = {
+						any_close_family_member = {
+							is_landed = no									
+							culture = { has_cultural_pillar = heritage_indo_aryan }
+						}
+					}
+					every_close_family_member = {
+						custom = all_family_members
+						limit = {
+							is_landed = no									
+							culture = { has_cultural_pillar = heritage_indo_aryan }	
+						}
+						set_culture = culture:magadhi
+					}
+				}
+				if = {
+					limit = {
+						any_courtier = {
+							is_landed = no								
+							culture = { has_cultural_pillar = heritage_indo_aryan }	
+						}
+					}
+					every_courtier = {
+						limit = {
+							is_landed = no								
+							culture = { has_cultural_pillar = heritage_indo_aryan }
+						}
+						set_culture = culture:magadhi
+					}
+				}
+			}
+		}
+	}
+
+	#Convert appropriate courtiers
+	if = {
+		limit = {
+			any_courtier_or_guest = {							
+				culture = { has_cultural_pillar = heritage_indo_aryan }
+			}
+		}
+		every_courtier_or_guest = {
+			limit = {						
+				culture = { has_cultural_pillar = heritage_indo_aryan }
+			}
+			set_culture = culture:magadhi
+			hidden_effect = {
+				if = {
+					limit = {
+						any_spouse = {
+							is_landed = no									
+							culture = { has_cultural_pillar = heritage_indo_aryan }	
+						}
+					}
+					every_spouse = {
+						limit = {
+							is_landed = no									
+							culture = { has_cultural_pillar = heritage_indo_aryan }	
+						}
+						set_culture = culture:magadhi
+					}
+				}
+				if = {
+					limit = {
+						any_close_family_member = {
+							is_landed = no									
+							culture = { has_cultural_pillar = heritage_indo_aryan }
+						}
+					}
+					every_close_family_member = {
+						custom = all_family_members
+						limit = {
+							is_landed = no									
+							culture = { has_cultural_pillar = heritage_indo_aryan }
+						}
+						set_culture = culture:magadhi
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
