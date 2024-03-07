@@ -7,8 +7,7 @@
 # south_ethiopia.0040-south_ethiopia.0059			Gifaataa Festival
 # south_ethiopia.0060-south_ethiopia.0079			Fichee Festival
 # south_ethiopia.0080-south_ethiopia.0089			Other Major Decisions
-# south_ethiopia.0090-south_ethiopia.0099			???
-# south_ethiopia.0100-south_ethiopia.0149			Generic Flavor Events
+# south_ethiopia.0090-south_ethiopia.0099			Generic Flavor Events
 # 
 ###############################################################################
 
@@ -1875,3 +1874,604 @@ south_ethiopia.0066 = {
 }
 
 
+
+
+######################################################################################
+# 
+# FLAVOR EVENTS
+# 
+# south_ethiopia.0090-sardinia.0099 reserved
+# 
+######################################################################################
+
+
+# Courtier gains the Cattle Counting trait
+south_ethiopia.0090 = {
+	type = character_event
+	title = south_ethiopia.0090.t
+	desc = south_ethiopia.0090.desc
+	theme = RICE_theme_south_ethiopia_omotic_village
+
+	left_portrait = {
+		character = root
+		# triggered_animation = {
+		# 	trigger = {
+		# 		root = {
+		# 			OR = {
+		# 				opinion = {
+		# 					target = scope:courtier
+		# 					value < -10
+		# 				}
+		# 				has_relation_rival = scope:courtier
+		# 			}
+		# 		}				
+		# 	}
+		# 	animation = eyeroll
+		# }
+		animation = throne_room_applaud_1
+	}
+	
+	right_portrait = {
+		character = scope:courtier
+		animation = personality_bold
+	}
+
+	cooldown = { years = 20 }
+	
+	trigger = {
+		culture = { has_cultural_tradition = tradition_RICE_cattle_counting_ceremonies }
+		any_courtier = {
+			is_available_ai_adult = yes
+			age >= 30 # Don't make them too young
+			any_heir_title = { count = 0 } # Isn't the heir to anything
+			culture = { has_cultural_tradition = tradition_RICE_cattle_counting_ceremonies }
+			NOT = { has_trait = RICE_cattle_owner_2 } # No need if they've attained the highest cattle owner degree
+			faith = {
+				has_dominant_ruling_gender = prev
+			}
+			NOR = {
+				is_close_family_of = scope:host
+				is_spouse_of = scope:host
+			}
+			stewardship >= medium_skill_rating
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+	}
+
+	immediate = {
+		random_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+				age >= 30 # Don't make them too young
+				any_heir_title = { count = 0 } # Isn't the heir to anything
+				culture = { has_cultural_tradition = tradition_RICE_cattle_counting_ceremonies }
+				NOT = { has_trait = RICE_cattle_owner_2 } # No need if they've attained the highest cattle owner degree
+				faith = {
+					has_dominant_ruling_gender = prev
+				}
+				NOR = {
+					is_close_family_of = scope:host
+					is_spouse_of = scope:host
+				}
+				stewardship >= medium_skill_rating
+			}
+			save_scope_as = courtier
+			if = {
+				limit = {
+					has_trait = RICE_cattle_owner_1
+				}
+				remove_trait = RICE_cattle_owner_1
+				add_trait = RICE_cattle_owner_2
+			}
+			else = {
+				add_trait = RICE_cattle_owner_1
+			}
+			add_prestige = RICE_south_ethiopia_cattle_counting_resource_gain_small
+			add_piety = RICE_south_ethiopia_cattle_counting_resource_gain_small
+			dynasty ?= {
+				add_dynasty_prestige = medium_dynasty_prestige_value
+			}
+		}
+	}
+
+	option = { # Ok
+		name = south_ethiopia.0090.a
+		trigger = {			
+			NOR = {
+				has_trait = RICE_cattle_owner_1
+				has_trait = RICE_cattle_owner_2
+			}
+		}
+		scope:courtier = {
+			add_opinion = {
+				target = root
+				modifier = pleased_opinion
+				opinion = 15
+			}
+			reverse_add_opinion = {
+				target = root
+				modifier = pleased_opinion
+				opinion = 15
+			}
+			progress_towards_friend_effect = {
+				CHARACTER = scope:courtier
+				OPINION = 0
+				REASON = RICE_friend_reason_placeholder
+			}
+		}
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+		}	
+	}
+
+	option = { # Ok
+		name = south_ethiopia.0090.b
+		add_prestige = 50
+		scope:courtier = {
+			add_opinion = {
+				target = root
+				modifier = annoyed_opinion
+				opinion = -15
+			}
+		}
+		stress_impact = {
+			humble = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+			content = miniscule_stress_impact_gain
+		}	
+	}
+
+	option = { # Ok
+		name = south_ethiopia.0090.c
+		trigger = {				
+			OR = {
+				has_trait = RICE_cattle_owner_1
+				has_trait = RICE_cattle_owner_2
+			}
+		}
+		trait = RICE_cattle_owner_1
+		trait = RICE_cattle_owner_2
+		scope:courtier = {
+			add_opinion = {
+				target = root
+				modifier = pleased_opinion
+				opinion = 25
+			}
+			reverse_add_opinion = {
+				target = root
+				modifier = pleased_opinion
+				opinion = 25
+			}
+			progress_towards_friend_effect = {
+				CHARACTER = scope:courtier
+				OPINION = 0
+				REASON = RICE_friend_reason_placeholder
+			}
+		}
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+		}	
+	}
+
+}
+
+
+# Learning about "male" vs "female" enset varieties
+south_ethiopia.0091 = {
+	type = character_event
+	title = south_ethiopia.0091.t
+	desc = south_ethiopia.0091.desc
+	theme = RICE_theme_south_ethiopia_omo_river
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+	
+	trigger = {
+		culture = { 
+			has_innovation = innovation_RICE_enset
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+	}
+
+
+	option = { # Ok
+		name = south_ethiopia.0091.a
+		add_prestige = 25
+	}
+
+	option = { # Ok
+		name = south_ethiopia.0091.b
+		add_piety = 25
+	}
+
+}
+
+
+# Discussing plans for agricultural walls with a local committee
+south_ethiopia.0092 = {
+	type = character_event
+	title = south_ethiopia.0092.t
+	desc = south_ethiopia.0092.desc
+	theme = RICE_theme_south_ethiopia_omotic_village
+	
+	right_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	trigger = {
+		culture = { 
+			has_innovation = innovation_RICE_south_ethiopian_walls
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+	}
+
+
+	option = { # Ok
+		name = south_ethiopia.0092.a
+		add_character_modifier = {
+			modifier = RICE_south_ethiopia_agricultural_walls_planning
+			years = 10
+		}
+	}
+
+}
+
+
+# Locals demand you move undesirable artisans elsewhere
+south_ethiopia.0093 = {
+	type = character_event
+	title = south_ethiopia.0093.t
+	desc = south_ethiopia.0093.desc
+	theme = RICE_theme_south_ethiopia_omotic_village
+	
+	right_portrait = {
+		character = root
+		animation = worry
+	}
+
+	cooldown = { years = 20 }
+	
+	trigger = {
+		culture_has_east_african_heritage_pillar_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+	}
+
+
+	option = { # Ok
+		name = south_ethiopia.0093.a
+		add_character_modifier = {
+			modifier = RICE_south_ethiopia_relocated_artisan_communities
+			years = 10
+		}
+		stress_impact = {
+			compassionate = minor_stress_impact_gain
+			trusting = miniscule_stress_impact_gain
+			content = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = south_ethiopia.0093.b
+		add_character_modifier = {
+			modifier = RICE_south_ethiopia_did_not_relocate_artisan_communities
+			years = 10
+		}
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+			diligent = miniscule_stress_impact_gain
+		}
+	}
+
+}
+
+
+# Sitting with a council of local leaders to determine how to make use of collective land, in the Sidama fashion
+south_ethiopia.0094 = {
+	type = character_event
+	title = south_ethiopia.0094.t
+	desc = south_ethiopia.0094.desc
+	theme = RICE_theme_south_ethiopia_omotic_village
+	
+	left_portrait = root
+	
+	trigger = {
+		OR = {
+			culture = culture:sidama
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:sidama
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+	}
+
+
+	option = { # Ok
+		name = south_ethiopia.0094.a
+		stress_impact = {
+			base = minor_stress_impact_loss
+			lazy = minor_stress_impact_loss
+		}
+	}
+
+	option = { # Ok
+		name = south_ethiopia.0094.b
+		add_prestige = 50
+	}
+
+}
+
+
+# Eating Kocho
+south_ethiopia.0095 = {
+	type = character_event
+	title = south_ethiopia.0095.t
+	desc = south_ethiopia.0095.desc
+	theme = feast_activity
+	override_background = { reference = bp1_kitchen_western }
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		culture = { 
+			has_innovation = innovation_RICE_enset
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+
+	option = { # Ok
+		name = south_ethiopia.0095.a
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			gluttonous = miniscule_stress_impact_loss
+		}
+	}
+
+}
+
+
+# Planting more enset trees?
+south_ethiopia.0096 = {
+	type = character_event
+	title = south_ethiopia.0096.t
+	desc = south_ethiopia.0096.desc
+	theme = RICE_theme_south_ethiopia_omo_river
+	
+	right_portrait = root
+	
+	trigger = {
+		culture = { 
+			has_innovation = innovation_RICE_enset
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = paranoid
+		}
+		modifier = {
+			add = -0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+
+	option = { # Ok
+		name = south_ethiopia.0096.a
+		trigger = {
+			OR = {
+				gold >= 50
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 50
+		add_character_modifier = {
+			modifier = RICE_south_ethiopia_planted_enset_trees_around_house
+			years = 10
+		}
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = south_ethiopia.0096.b
+		stress_impact = {
+			paranoid = minor_stress_impact_gain
+		}
+	}
+
+}

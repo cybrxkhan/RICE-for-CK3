@@ -21,6 +21,8 @@ five_year_playable_pulse = {
 	on_actions = {
 		delay = { days = { 8 288 } }
 		RICE_BAP_shared_events_five_yearly_pulse
+		delay = { days = { 8 288 } }
+		RICE_BAP_events_courtier_yearly_pulse
 	}
 }
 
@@ -80,6 +82,55 @@ RICE_BAP_shared_yearly_global_pulse = {
 				trigger_event = guanche.0005
 			}
 		}
+
+
+
+		# Fandaanano emerges if no one takes the decision
+		if = {
+			limit = {
+				NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+				NOT = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:south_ethiopia_fandaanano_established
+					}
+				}
+				current_date >= 1250.1.1
+				any_county_in_region = {
+					region = RICE_south_ethiopia_region
+					holder = {
+						is_ai = no
+					}
+					OR = {
+						religion = religion:islam_religion
+						religion = religion:sidamic_religion
+						religion = religion:waaqism_religion
+					}
+				}
+			}
+			
+			random = {
+				chance = 5 # 99
+				modifier = {
+					add = 10
+					current_date >= 1350.1.1
+				}
+				modifier = {
+					add = 10
+					current_date >= 1375.1.1
+				}
+				modifier = {
+					add = 20
+					current_date >= 1400.1.1
+				}
+				modifier = {
+					add = 20
+					current_date >= 1425.1.1
+				}
+				RICE_fandaanano_appearance_effect = yes
+			}
+		}
+
 	}
 }
 
@@ -117,6 +168,11 @@ RICE_BAP_shared_events_yearly_pulse = {
 
 		# TUAREG
 		10 = tuareg.0052	 			# Eating Taguella
+
+		# SOUTH ETHIOPIA
+		10 = south_ethiopia.0091 		# Learning about "male" vs "female" enset varieties
+		10 = south_ethiopia.0092 		# Discussing plans for agricultural walls with a local committee
+		10 = south_ethiopia.0095 		# Eating Kocho
 		
 	}
 }
@@ -153,6 +209,11 @@ RICE_BAP_shared_events_tri_yearly_pulse = {
 		10 = tuareg.0050	 			# Kel Tagelmust is not approved by other cultures
 		10 = tuareg.0053	 			# Inadan artisans/smiths gain renown
 		10 = tuareg.0054	 			# Encounter tifnagh inscriptions
+
+		# SOUTH ETHIOPIA
+		10 = south_ethiopia.0093		# Locals demand you move undesirable artisans elsewhere
+		10 = south_ethiopia.0094		# Sitting with a council of local leaders to determine how to make use of collective land, in the Sidama fashion
+		10 = south_ethiopia.0096		# Planting more enset trees?
 		
 	}
 }
@@ -179,6 +240,9 @@ RICE_BAP_shared_events_five_yearly_pulse = {
 
 		# TUAREG
 		10 = tuareg.0051	 			# Courtier has takarakit, or reserve
+
+		# SOUTH ETHIOPIA
+		10 = south_ethiopia.0090		# Courtier gains the Cattle Counting trait
 		
 	}
 }
@@ -219,5 +283,49 @@ RICE_BAP_shared_maintenance_pulse = {
 				remove_character_modifier = RICE_niger_delta_uncrowned
 			}
 		}
+	}
+}
+
+
+# RICE Courtier spawn events
+RICE_BAP_events_courtier_yearly_pulse = {
+	trigger = {
+		RICE_basic_is_available_adult_trigger = yes
+	}
+	random_events = {
+		chance_of_no_event = {
+			value = 30
+			if = {
+				limit = {
+					has_game_rule = RICE_courtier_spawn_frequency_low
+				}
+				add = 10
+			}
+			if = {
+				limit = {
+					has_game_rule = RICE_courtier_spawn_frequency_very_low
+				}
+				add = 20
+			}
+			if = {
+				limit = {
+					has_game_rule = RICE_courtier_spawn_frequency_high
+				}
+				subtract = 10
+			}
+			if = {
+				limit = {
+					has_game_rule = RICE_courtier_spawn_frequency_very_high
+				}
+				subtract = 20
+			}
+		}
+		
+		1000 = 0
+
+		# SOUTH ETHIOPIA
+		50 = south_ethiopia.0010 	# Aari/South Omotic
+		50 = south_ethiopia.0011 	# Oropom
+		
 	}
 }
