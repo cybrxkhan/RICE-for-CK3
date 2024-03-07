@@ -1,12 +1,12 @@
-<img src="https://i.imgur.com/Pg2YZ3k.jpg">
+<img src="https://i.imgur.com/3t7Rv4w.jpg">
 
-## Latest Version: Version 1.11.3 "Nuraghe" (Released 2/24/24, for vanilla patch 1.11.x)
+## Latest Version: Version 1.12.0 "Omotic" (Released 3/7/24, for vanilla patch 1.12.x)
 
-**Newest Flavor Pack: *Sardinia: Reign of the Judges***
+**Newest Flavor Pack: *South Ethiopia: The Highland Kingdoms***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_Nuraghes are megalithic monuments scattered across Sardinia, built and constructed during Sardinia's Bronze Age. They were occasionally inhabited during later periods, and are a modern symbol of the island’s past._
+_Omotic is a language family in southern Ethiopia that is controversially considered by some scholars to be a highly divergent branch of the Afro-Asiatic languages, which include many languages across the Middle East and Africa._
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
@@ -57,6 +57,7 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 - [Siberia: People of the Reindeer](https://docs.google.com/document/d/e/2PACX-1vTOr-vq1KkHRJ_gxPOlb9brCKde3TRzN_1TVZwfPmSiIIW5TEAJGkQ0eNGwiEfvgape1pDAKau3ZcvD/pub)
 - [Siwa: Oases of the Western Desert](https://docs.google.com/document/d/1OOXqqBEGv94IBAH-rIsjoBog1YFtVAFg_TPsuIQmhtg/pub)
 - [Socotra: Isle of Dragon's Blood](https://docs.google.com/document/d/e/2PACX-1vRs_x_9wjofcveP_yhymlL5TWPB1UdSQyi_C_M1z4dWpFg3lqHgHwGpFD2xfkf0-RdsKIlRekQsLD4s/pub)
+- [South Ethiopia: The Highland Kingdoms](https://docs.google.com/document/d/e/2PACX-1vSPq9IoWEAWlTTkrLDZVqwzYzqlngxUYq2zKr800V7TXWQDn3CBX9molZq4dtp6rPmxa_hL3nL9tRrp/pub)
 - [Sri Lanka: Abode of Lions](https://docs.google.com/document/d/e/2PACX-1vTuEbSCc2fBJPzI7zUerL46bBslIV4rHMGF_nZlG_RDn2zvl96Cw-fHLYdwBqkELSSeBZDWubI1L0yI/pub)
 - [Sus: Door of the Sahara](https://docs.google.com/document/d/e/2PACX-1vQo9H7CnvJxD-KEjrwKEZ6GUUAJSqtF8-3oHW8YyoOntDliMBNHEOxRMNJRt8VFdpNs9LOGdgX9jCtZ/pub)
 - [Tarim Basin: Peoples of the Silk Road](https://docs.google.com/document/d/e/2PACX-1vTDLXZZlm5IfgIRvQfu6nIqd7Hflm-9BsgtrHGA8nHKtpxbIVxukXWD2Z6V0NPZ-iFUj6TtOgH3qFdy/pub)
@@ -70,27 +71,25 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/uxKAbZV.jpg">
+<img src="https://i.imgur.com/hQsyZ7X.jpg">
 
-### 1.11.3 "Nuraghe"
+### 1.12.0 "Omotic"
 
-- Added an alternate requirement for the Regional Integration ending for the Greenland struggle, to have high development in every county of your capital’s de jure duchy
-- Added a hidden background effect where each county-less culture has a chance of getting a random innovation every year, so they can keep up with on-map cultures
-- Added Khalluk, Khalaj, and Kanjina as divergent culture names from Turco-Hephthalite in Balkh, parts of the eastern Iranian world, and Khuttal respectively
-- Added Kasdanian presence to more counties in southern Iraq in 867
-- Nerfed development bonus for Norse and Norman settlers
-- Revitalizing the Neoplatonic Academy can now also be done by non-pagans who have the Folk Syncretism tenet
-- Replaced Roman surnames in the Afro-Roman namelist with some Sardinian ones since it’s probably closer to historical Afro-Roman names
-- Removed some requirements for viewing the Diwan al-Lughat decision
-- Changed Diwan al-Lughat decision for RICE when running with Cultures Expanded as a temporary solution to account for additional Turkic languages (requirement is simplified to only requiring Turkic heritage)
-- Fixed duplicate Irrigation Tank decision when running RICE with TFE
-- Fixed bug with the decision to Reclaim Hephthalite Homeland where the capital will move to the County of Balkh even if you don’t own it
-- Fixed traditions text referring to the old Ancestor Veneration decision instead of the activity
-- Fixed wording for activity log when mentioning rulers doing basic preparations for the Palio activity
-- Fixed original Judicati tradition being available after you take the decision to Determine Sardinia’s Orientation
-- Fixed Alp Arslan having two sisters named Safiya in the 1066 start date 
-- Fixed Sri Lankan monastery support decision giving errors related to capital_province
-- Fixed missing localization for the Palio game concept
+- Added South Ethiopia Flavor Pack: The Highland Kingdoms
+- Added 3 African themed soundtracks
+- Added Magadhi culture
+- Ancient Egyptian culture now gets the Children of the Nile tradition
+- Oromo culture now has the Noble Adoption instead of Quarrelsome tradition
+- Changed tradition setup for Oriya and Kamarupi cultures
+- A few traits now boost legitimacy
+- Renamed Bengali culture to Gaudi
+- Renamed Bengal and Bihar to Gauda and Magadha
+- The timer to prevent Yazidi and Yarsani emergence from happening too early, under default rules, is now somewhat randomized between 50, 100, and 150 years for more variety
+- Shughnan and Karran are now Khurmazta in 867
+- Wakhan is now Vajrayana
+- Disabled Svetovit content if running with TFE or earlier start dates
+- Removed duplicate CBs for struggle, as the workaround is no longer needed due to changes to vanilla’s struggle/CB code
+- Fixed custom characters in Trondheim resulting in instant game over in 867 due to Rollo shenanigans
 - Miscellaneous bugfixes
 
 ## Credits
