@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/3t7Rv4w.jpg">
 
-## Latest Version: Version 1.12.0 "Omotic" (Released 3/7/24, for vanilla patch 1.12.x)
+## Latest Version: Version 1.12.0.a Hotfix for "Omotic" (Released 3/10/24, for vanilla patch 1.12.x)
 
 **Newest Flavor Pack: *South Ethiopia: The Highland Kingdoms***
 
@@ -72,6 +72,16 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 ## Latest Changelog
 
 <img src="https://i.imgur.com/hQsyZ7X.jpg">
+
+### 1.12.0.a Hotfix for "Omotic"
+
+- Updated RICE+EPE Compatch
+- Changed African Latin language name to African Vulgar to be consistent with vanilla
+- Ukonusko (Finnic pagan) is now called Väenusko
+- Fixed missing ruler designer cost for Cattle Owner traits
+- Fixed all of RICE’s heritages being selectable when diverging cultures
+- Fixed missing audio parameters for RICE’s heritages
+- Miscellaneous bugfixes
 
 ### 1.12.0 "Omotic"
 
