@@ -1,12 +1,13 @@
-<img src="https://i.imgur.com/3t7Rv4w.jpg">
+<img src="https://i.imgur.com/bDNlQl4.jpg">
 
-## Latest Version: Version 1.12.0.a Hotfix for "Omotic" (Released 3/10/24, for vanilla patch 1.12.x)
+## Latest Version: Version 1.12.1 "Dioscorida" (Released 3/16/24, for vanilla patch 1.12.x)
 
 **Newest Flavor Pack: *South Ethiopia: The Highland Kingdoms***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_Omotic is a language family in southern Ethiopia that is controversially considered by some scholars to be a highly divergent branch of the Afro-Asiatic languages, which include many languages across the Middle East and Africa._
+_“Dioscorida [Socotra] is very large but desert and marshy [...] The inhabitants are few and they live on the coast toward the north, which from this side faces the continent. They are foreigners, a mixture of Arabs and Indians and Greeks, who have emigrated to carry on trade there.”_
+_- Periplus of the Erythraean Sea, Greek navigational aid from the 1st century CE_
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
@@ -71,35 +72,34 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/hQsyZ7X.jpg">
+### 1.12.1 "Dioscorida"
 
-### 1.12.0.a Hotfix for "Omotic"
-
-- Updated RICE+EPE Compatch
-- Changed African Latin language name to African Vulgar to be consistent with vanilla
-- Ukonusko (Finnic pagan) is now called Väenusko
-- Fixed missing ruler designer cost for Cattle Owner traits
-- Fixed all of RICE’s heritages being selectable when diverging cultures
-- Fixed missing audio parameters for RICE’s heritages
-- Miscellaneous bugfixes
-
-### 1.12.0 "Omotic"
-
-- Added South Ethiopia Flavor Pack: The Highland Kingdoms
-- Added 3 African themed soundtracks
-- Added Magadhi culture
-- Ancient Egyptian culture now gets the Children of the Nile tradition
-- Oromo culture now has the Noble Adoption instead of Quarrelsome tradition
-- Changed tradition setup for Oriya and Kamarupi cultures
-- A few traits now boost legitimacy
-- Renamed Bengali culture to Gaudi
-- Renamed Bengal and Bihar to Gauda and Magadha
-- The timer to prevent Yazidi and Yarsani emergence from happening too early, under default rules, is now somewhat randomized between 50, 100, and 150 years for more variety
-- Shughnan and Karran are now Khurmazta in 867
-- Wakhan is now Vajrayana
-- Disabled Svetovit content if running with TFE or earlier start dates
-- Removed duplicate CBs for struggle, as the workaround is no longer needed due to changes to vanilla’s struggle/CB code
-- Fixed custom characters in Trondheim resulting in instant game over in 867 due to Rollo shenanigans
+- Added new bookmark character in 1066: Bekele of Damot
+- Added improved bookmark map art (courtesy again of Nezaros, lead dev of the Rajas of Asia mod that expands the map into Asia)
+    - Added 12 legends:
+    - The Greenland Colony Succeeds
+    - Sunset Invasion
+    - Settlement of Vinland
+    - Reformation of Tambapanni’s Sangha
+    - A New Socotra
+    - Return of the Hephthalites
+    - The Khuzi Renaissance
+    - The Great Saharan Empire
+    - Revival of the Tuyuhun
+    - Songs of Holy Mary
+    - Guardians of the Diamond Throne
+    - Gateway to the Sahara
+- Added additional ethnicities for some of the new East African cultures for RICE+EPE
+- Expanded extent of Darada culture (per suggestions by Soraya, Rajas of Asia modder and researcher)
+- Tweaked religious setup in south Armenia and north Mesopotamia (also per Soraya’s suggestions)
+- Tweaked Kasdanianism spread in 867 (Soraya strikes again)
+- Kasdanianism, Gayomarthianism, and Behafaridism are now also involved in the Persian struggle by default
+- Moved Finnic/Uralic religion localization file to the replace folder to repress a lot of false alarm errors
+- Reduced prestige requirement for completing the Greenland struggle with the Regional Integration ending
+- Cao Yijin’s aspiration now requires him to hold the kingdom of either Guiyi or Xi Xia (as a workaround for vanilla weirdness with succession and titles)
+- Replaced Sami holy site of Hiiumaa with Akkel
+- Removed Concubine tradition from Kinh (Vietnamese)
+- Fixed the Polabian princes’ Budivoj and Henry’s alliances with King Magnus and Duke Ordulf autocancelling after a day in the 1066 start
 - Miscellaneous bugfixes
 
 ## Credits
@@ -121,7 +121,7 @@ Special thanks in particular to:
 - Макс for Erzya and Moksha names and info
 - Msl229 for Eastern Europe research and code
 - Naatturi for content from the Ukonusko Overhaul mod
-- Nezaros for reformed religion template
+- Nezaros for religion and bookmark art
 - Nix for Evenki names
 - PinkPanzer for some decision art
 - Rajas of Asia for Asian stuff and collab
