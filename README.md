@@ -72,6 +72,8 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 
 ## Latest Changelog
 
+<img src="https://i.imgur.com/hQsyZ7X.jpg">
+
 ### 1.12.1 "Dioscorida"
 
 - Added new bookmark character in 1066: Bekele of Damot
