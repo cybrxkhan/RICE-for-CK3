@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/bDNlQl4.jpg">
 
-## Latest Version: Version 1.12.1 "Dioscorida" (Released 3/16/24, for vanilla patch 1.12.x)
+## Latest Version: Version 1.12.1.a Hotfix for "Dioscorida" (Released 3/30/24, for vanilla patch 1.12.x)
 
 **Newest Flavor Pack: *South Ethiopia: The Highland Kingdoms***
 
@@ -73,6 +73,19 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 ## Latest Changelog
 
 <img src="https://i.imgur.com/hQsyZ7X.jpg">
+
+### 1.12.1.a Hotfix for "Dioscorida"
+
+- Various decisions related to the Greenland struggle and Vinland are no longer blocked off if you have a major illness
+- Wendish Confederations and People of Boika now unlock tribal elective 
+- Changed localization for Buddhist afterlife
+- Changed Rollo’s difficulty level in the bookmarks to Easy
+- Slightly buffed the Marc’hegion MAA for Bretons
+- Fixed Nile Repentance decision still existing after it was already adapted to be an activity
+- Fixed Sinicize as a West Asian decision being available to other East Asian cultures
+- Fixed decision to change Xwedodah to cousin marriage leaving you with only two tenets; third tenet will now be Religious Law
+- Fixed possible cause of a gamebreaking/freezing event that pops up without options due to Norman code (thanks to user SpunkyGamer1900 for helping me investigate this!)
+- Miscellaneous bugfixes
 
 ### 1.12.1 "Dioscorida"
 
