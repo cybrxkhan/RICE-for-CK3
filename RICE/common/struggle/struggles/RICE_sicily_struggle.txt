@@ -1,0 +1,1123 @@
+﻿RICE_sicily_struggle = {
+	# has_fp2_dlc_trigger = yes  #TODO_CD_AN Request support for dlc locking on struggles
+
+	##################################################
+	# Setup
+	##################################################
+	cultures = {
+		# Latin
+		italian
+		sicilian
+		lombard
+		cisalpine
+
+		# Byzantine
+		greek
+
+		# Arab
+		maghrebi
+		egyptian
+		bedouin
+		levantine
+		siculo_arabic
+
+		# Berber
+		butr
+		baranis
+		african_roman
+
+		# Frankish
+		norman
+
+	}
+	faiths = {
+
+		# Christian
+		catholic
+		orthodox
+
+		# Muslim
+		ashari
+		muwalladi
+		ismaili
+		ibadi
+
+	}
+	regions = { 
+		custom_sicily
+	}
+
+	# A culture or faith becomes involved if 15% of the total number of counties belonging to it are inside the struggle region.
+	involvement_prerequisite_percentage = 0.15
+
+	on_start = {
+		# Starting Events
+		#trigger_event = { on_action = RICE_sri_lanka_struggle_starting_events }
+		#trigger_event = north_atlantic.0001
+	}
+
+	on_change_phase = {
+
+		#trigger_event = { on_action = RICE_sri_lanka_struggle_phase_change_events }
+
+		# # Set up AI Intent
+		# trigger_event = fp2_struggle.0003
+	}
+	
+	# Root = the current struggle
+	# scope:character = the character which has joined the struggle
+ 	on_join = {
+		add_trait = RICE_sicilian_ruler
+		if = {
+			limit = {
+				is_ai = no
+			}
+			trigger_event = sicily.0001
+		}
+		# else = {
+		# 	# assign an intent to the freshly joined character
+		# 	trigger_event = fp2_struggle.004
+		# }
+ 	}  
+
+	##################################################
+	# Phases
+	##################################################
+	start_phase = struggle_RICE_sicily_phase_borderland
+	
+	phase_list = {
+
+		struggle_RICE_sicily_phase_borderland = {
+			#duration = { points = 500 }
+
+			future_phases = {
+				struggle_RICE_sicily_phase_colony = {
+					catalysts = {
+						catalyst_win_any_war_within_the_region = minor_struggle_catalyst_gain # Good
+						catalyst_forced_conversion = medium_struggle_catalyst_gain
+						catalyst_improve_development_vassal_diff_faith_culture = minimal_struggle_catalyst_gain # How to do AI?
+						catalyst_gift_independent_ruler = minor_struggle_catalyst_gain # AI done
+						# catalyst_became_friend_lover_with_character = minor_struggle_catalyst_gain
+						catalyst_learned_new_language_important = minor_struggle_catalyst_gain # AI done
+						catalyst_new_building_in_city = minor_struggle_catalyst_gain # How to do AI?
+						catalyst_sign_truce_outside_war = minor_struggle_catalyst_gain # will need update when addding truce through wards
+						catalyst_ransom_important = medium_struggle_catalyst_gain
+						catalyst_grant_privilege_to_diff_faith_culture_vassal = medium_struggle_catalyst_gain
+						catalyst_invite_diff_faith_culture_to_feast = medium_struggle_catalyst_gain
+						catalyst_grant_land_local_noble = major_struggle_catalyst_gain
+						# catalyst_became_best_friend_soulmate_with_very_important_character = major_struggle_catalyst_gain # AI done
+						catalyst_release_important = massive_struggle_catalyst_gain
+
+						catalyst_RICE_normandy_activity_travel = minimal_struggle_catalyst_gain	
+
+						catalyst_RICE_sicily_send_grain = medium_struggle_catalyst_gain
+						catalyst_RICE_sicily_request_grain = medium_struggle_catalyst_gain
+						catalyst_RICE_sicily_expedition_launched = major_struggle_catalyst_gain
+						catalyst_RICE_sicily_expedition_declined = medium_struggle_catalyst_gain
+						catalyst_RICE_sicily_recruit_sicilian_soldiers = medium_struggle_catalyst_gain
+						catalyst_RICE_sicily_fortify_settlements = major_struggle_catalyst_gain
+						catalyst_RICE_sicily_stronghold_appears = massive_struggle_catalyst_gain
+
+					}
+				}
+
+				struggle_RICE_sicily_phase_periphery = {
+					# Catalyst values are low here because we track this stuff across every phase, so they need to take _roughly_ ~100-120 years to build up, all else being equal.
+					catalysts = {
+						#catalyst_gain_claim_on_title = minor_struggle_catalyst_gain
+						catalyst_new_building_in_castle = minor_struggle_catalyst_gain # Good
+						catalyst_becomes_rival_with_involved = major_struggle_catalyst_gain # Good
+						catalyst_using_a_hook_on_very_important_character = medium_struggle_catalyst_gain # good
+						#- Host a Feast when having at least two different-faith vassals
+						catalyst_unnatural_death_important_character = medium_struggle_catalyst_gain
+						#catalyst_usurp_title = major_struggle_catalyst_gain # good
+						catalyst_reveal_secret_important = major_struggle_catalyst_gain
+						catalyst_broke_truce_against_important_character = massive_struggle_catalyst_gain # Cannot motivate the AI to do that without code support
+						catalyst_convert_local_culture_faith = major_struggle_catalyst_gain
+						catalyst_independence_from_non_dejure_vassal = major_struggle_catalyst_gain
+						catalyst_formed_interreligious_alliance_with_important_character = minor_struggle_catalyst_gain
+
+						catalyst_RICE_normandy_hunt = minor_struggle_catalyst_gain
+						catalyst_invite_involved_as_honorary_guests_to_feast_hunt = medium_struggle_catalyst_gain
+
+						catalyst_RICE_normandy_war_attacker = major_struggle_catalyst_gain
+						catalyst_RICE_normandy_war_defender = minor_struggle_catalyst_gain
+						catalyst_RICE_sicily_promote_officials = minor_struggle_catalyst_gain
+						catalyst_RICE_sicily_update_records = minor_struggle_catalyst_gain
+						catalyst_RICE_sicily_reform_government_practices = minor_struggle_catalyst_gain
+						catalyst_RICE_sicily_patronize_arts_sciences = minor_struggle_catalyst_gain
+						catalyst_RICE_sicily_gain_liminality_dynasty_perk = RICE_very_major_struggle_catalyst_gain
+
+						
+					}
+				}
+			}
+
+			war_effects = {
+				name = WAR_EFFECTS_NAME
+				# lower cost and higher gain for external wars
+				common_parameters = {
+					apply_truce_when_sending_ward = yes
+					invasion_conquest_war_cannot_be_declared = yes
+				}
+
+				involved_character_modifier = {
+					# Everyone hires soldiers, either to maintain the peace or ready for the next phase of war.
+					men_at_arms_recruitment_cost = -0.5
+					men_at_arms_maintenance = -0.25
+					# This pumps some characters up.
+					glory_hound_ai_energy = very_high_positive_ai_value
+					glory_hound_ai_boldness = very_high_positive_ai_value
+				}
+
+				interloper_character_modifier = {
+					# Interlopers benefit a little here too.
+					men_at_arms_recruitment_cost = -0.25
+				}
+			}
+
+			faith_effects = {
+				name = FAITH_EFFECTS_NAME
+				
+				involved_parameters = {
+					piety_from_new_alliance = yes
+					completing_building_in_temple_gives_piety = yes
+					same_faith_friend_piety_gain = yes
+				}
+
+				involved_character_modifier = {
+					# The Sunni Caliphate consolidates - everyone else closes ranks too.
+					same_faith_opinion = 20
+					# Whilst bunkering down and arguing 
+					minority_different_faith_opinion = -20
+				}
+			}
+
+			culture_effects = {
+				name = CULTURE_EFFECTS_NAME
+
+				involved_parameters = {
+					learning_languages_gives_prestige = yes
+					granting_title_to_local_noble_gives_prestige = yes
+					gain_acceptance_when_developing_other_culture_county = yes
+					release_prisoner_diff_culture_gives_prestige = yes
+				}
+
+				involved_character_modifier = {
+					# Solidarity within cultural blocks.
+					same_culture_opinion = 10
+					opinion_of_same_culture = 10
+					# Authority figures work to reestablish themselves.
+					cultural_head_acceptance_gain_mult = 0.5
+				}
+			}
+
+			other_effects = {
+				name = OTHER_EFFECTS_NAME
+				involved_parameters = {
+					struggle_unlocks_befriend_schemes_for_everyone = yes
+					unlocks_epic_commission_for_independent_rulers = yes
+					granting_independence_to_non_dejure_gives_renown = yes
+					unlocks_claim_throne_for_caliph_vassals = yes
+					less_dissolution_more_claimants = yes
+
+					# Note: this parameter doesn't _do_ anything, it's just for the tooltip.
+					## You need to manually set/clear the "struggle_block_dissolution_faction" variable on affected titles instead.
+					### We do it this way to save a bit on performance.
+					caliph_cant_be_dissolutioned = yes
+				}
+				involved_character_modifier = {
+					castle_holding_build_gold_cost = -0.3
+				}
+				interloper_parameters = {
+					less_dissolution_more_claimants = yes
+				}
+			}
+
+			ending_decisions = {
+				RICE_sicily_struggle_ending_dominion_decision
+				RICE_sicily_struggle_ending_crossroads_decision
+			}
+		}
+
+		struggle_RICE_sicily_phase_colony = {
+			#duration = { points = 500 }
+
+			future_phases = {
+
+				struggle_RICE_sicily_phase_imperial = {
+					# Catalyst values are low here because we track this stuff across every phase, so they need to take _roughly_ ~100-120 years to build up, all else being equal.
+					catalysts = {
+						catalyst_win_any_war_within_the_region = minor_struggle_catalyst_gain # Good
+						catalyst_forced_conversion = medium_struggle_catalyst_gain
+						catalyst_improve_development_vassal_diff_faith_culture = minimal_struggle_catalyst_gain # How to do AI?
+						catalyst_gift_independent_ruler = minor_struggle_catalyst_gain # AI done
+						# catalyst_became_friend_lover_with_character = minor_struggle_catalyst_gain
+						catalyst_learned_new_language_important = minor_struggle_catalyst_gain # AI done
+						catalyst_new_building_in_city = minor_struggle_catalyst_gain # How to do AI?
+						catalyst_sign_truce_outside_war = minor_struggle_catalyst_gain # will need update when addding truce through wards
+						catalyst_ransom_important = medium_struggle_catalyst_gain
+						catalyst_grant_privilege_to_diff_faith_culture_vassal = medium_struggle_catalyst_gain
+						catalyst_invite_diff_faith_culture_to_feast = medium_struggle_catalyst_gain
+						catalyst_grant_land_local_noble = major_struggle_catalyst_gain
+						# catalyst_became_best_friend_soulmate_with_very_important_character = major_struggle_catalyst_gain # AI done
+						catalyst_release_important = massive_struggle_catalyst_gain
+
+						catalyst_RICE_normandy_activity_travel = minimal_struggle_catalyst_gain	
+
+						catalyst_RICE_sicily_expedition_launched = major_struggle_catalyst_gain
+						catalyst_RICE_sicily_expedition_declined = medium_struggle_catalyst_gain
+						catalyst_RICE_sicily_update_records = minor_struggle_catalyst_gain
+						catalyst_RICE_sicily_reform_government_practices = minor_struggle_catalyst_gain
+						catalyst_RICE_sicily_patronize_arts_sciences = minor_struggle_catalyst_gain
+					}
+				}
+
+				struggle_RICE_sicily_phase_borderland = {
+					catalysts = {
+						#catalyst_gain_claim_on_title = minor_struggle_catalyst_gain
+						catalyst_new_building_in_castle = minor_struggle_catalyst_gain # Good
+						catalyst_becomes_rival_with_involved = major_struggle_catalyst_gain # Good
+						catalyst_using_a_hook_on_very_important_character = medium_struggle_catalyst_gain # good
+						#- Host a Feast when having at least two different-faith vassals
+						catalyst_unnatural_death_important_character = medium_struggle_catalyst_gain
+						#catalyst_usurp_title = major_struggle_catalyst_gain # good
+						catalyst_reveal_secret_important = major_struggle_catalyst_gain
+						catalyst_broke_truce_against_important_character = massive_struggle_catalyst_gain # Cannot motivate the AI to do that without code support
+						catalyst_convert_local_culture_faith = major_struggle_catalyst_gain
+						catalyst_independence_from_non_dejure_vassal = major_struggle_catalyst_gain
+						catalyst_formed_interreligious_alliance_with_important_character = minor_struggle_catalyst_gain
+
+						catalyst_RICE_normandy_hunt = minor_struggle_catalyst_gain
+						catalyst_invite_involved_as_honorary_guests_to_feast_hunt = medium_struggle_catalyst_gain
+
+						catalyst_RICE_normandy_war_attacker = major_struggle_catalyst_gain
+						catalyst_RICE_normandy_war_defender = minor_struggle_catalyst_gain
+
+						catalyst_RICE_sicily_send_grain = medium_struggle_catalyst_gain
+						catalyst_RICE_sicily_request_grain = medium_struggle_catalyst_gain
+						catalyst_RICE_sicily_promote_officials = minor_struggle_catalyst_gain
+						catalyst_RICE_sicily_gain_liminality_dynasty_perk = RICE_very_major_struggle_catalyst_gain
+						catalyst_RICE_sicily_recruit_sicilian_soldiers = medium_struggle_catalyst_gain
+						catalyst_RICE_sicily_fortify_settlements = major_struggle_catalyst_gain
+						catalyst_RICE_sicily_stronghold_appears = massive_struggle_catalyst_gain
+					}
+				}
+
+			}
+
+			war_effects = {
+				name = WAR_EFFECTS_NAME
+
+				involved_parameters = {
+					install_loyalist_cb_unlocked = yes
+					offer_vassalization_removes_disloyalty = yes
+					fp3_caliph_gets_cheaper_subjugation_cb = yes
+					cheaper_incursions_vs_caliph = yes
+				}
+
+				all_county_modifier = {
+					# The region is more amenable for waging war.
+					supply_limit_mult = 1
+					levy_reinforcement_rate_friendly_territory = 1
+				}
+
+				involved_county_modifier = {
+					# The region is more amenable for waging war.
+					levy_size = 1
+					garrison_size = -0.5
+				}
+
+				interloper_county_modifier = {
+					# Interlopers get partial benefits for waging war.
+					levy_size = 0.5
+					garrison_size = -0.25
+				}
+
+				uninvolved_county_modifier = {
+					# Uninvolved characters shouldn't be here (lookin' at you caliphs that lose Baghdad), so they get punished.
+					levy_size = -0.5
+					garrison_size = -0.75
+				}
+
+				involved_character_modifier = {
+					# Fighting is encouraged, especially defensively.
+					same_heritage_county_advantage_add = 5
+					mercenary_hire_cost_mult = -0.25
+					# Get out there and do your part.
+					led_by_owner_extra_advantage_add = 5
+					ai_war_chance = 2
+					ai_war_cooldown = -0.25
+				}
+
+				interloper_character_modifier = {
+					# Interlopers'll have an easier time with hiring mercenaries.
+					mercenary_hire_cost_mult = -0.35
+					# But also benefit greatly from taking part personally.
+					# Get out there and do your part.
+					led_by_owner_extra_advantage_add = 10
+					ai_war_chance = 10
+					ai_war_cooldown = -0.5
+				}
+			}
+
+			faith_effects = {
+				name = FAITH_EFFECTS_NAME
+
+				involved_parameters = {
+					completing_building_in_temple_gives_piety = yes
+					demand_submission_interaction_unlocked = yes
+					piety_level_affects_vassalage_acceptance = yes
+					can_trade_piety_for_marriage_acceptance = yes
+					piety_from_converting_county = yes
+					piety_from_converting_involved_rulers = yes
+				}
+
+				involved_character_modifier = {
+					# Zealots are ready to throw down.
+					zealot_opinion = 20
+					zealot_levy_contribution_mult = 0.5
+					zealot_tax_contribution_mult = 0.5
+					zealot_ai_vengefulness = very_high_positive_ai_value
+					zealot_ai_zeal = very_high_positive_ai_value
+					zealot_ai_boldness = high_positive_ai_value
+					church_holding_build_gold_cost = -0.3
+				}
+			}
+
+			culture_effects = {
+				name = CULTURE_EFFECTS_NAME
+
+				involved_parameters = {
+				  struggle_prestige_from_befriending_same_culture = yes
+				  struggle_prestige_install_same_culture_claimant = yes
+				  struggle_different_culture_more_likely_to_use_minority_stance = yes
+				}
+
+				involved_character_modifier = {
+					# Minorities within your realm want no part of whatever you're pushing.
+					minority_opinion = -10
+					minority_tax_contribution_mult = -0.5
+					minority_levy_contribution_mult = -0.5
+					minority_ai_energy = high_positive_ai_value
+					# Diff-faith minorities _especially_ have no time for you.
+					minority_different_faith_opinion = -10
+				}
+			}
+
+			other_effects = {
+				name = OTHER_EFFECTS_NAME
+
+				# We don't immediately dunk on your economics too much: you get tools to build up in the other phase + tools to wage war here, so we want characters to injure themselves because of conflicts they start first and foremost rather than nebulous regional factors.
+
+				all_county_modifier = {
+					# Not much happening economically.
+					build_speed = -0.5
+					# Lotta armed folk on the road.
+					travel_danger = 25
+				}
+
+				involved_county_modifier = {
+					# If you're at war, there's chaos at home.
+					monthly_county_control_growth_at_war_add = -0.02
+				}
+
+				interloper_county_modifier = {
+					# If you're at war, there's chaos at home.
+					monthly_county_control_growth_at_war_add = -0.01
+				}
+
+				uninvolved_county_modifier = {
+					# Everyone's squabbling amongst themselves in your struggle lands.
+					monthly_county_control_growth_at_war_add = -0.03
+				}
+
+				involved_character_modifier = {
+					owned_hostile_scheme_success_chance_add = 20
+					claim_throne_scheme_power_mult = 1
+				}
+
+				involved_parameters = {
+					unlocks_abandon_hook_for_all = yes
+					unlocks_claim_throne_for_all = yes
+					fp3_sway_scheme_more_powerful = yes 
+					fp3_sway_vassals_removes_disloyalty = yes
+					empowered_vizierate = yes
+					unlocks_challenge_house_head_for_clans = yes
+					less_dissolution_more_claimants = yes
+
+					# Note: this parameter doesn't _do_ anything, it's just for the tooltip.
+					## You need to manually set/clear the "struggle_block_dissolution_faction" variable on affected titles instead.
+					### We do it this way to save a bit on performance.
+					caliph_cant_be_dissolutioned = yes
+				}
+				interloper_parameters = {
+					less_dissolution_more_claimants = yes
+				}
+			}
+
+			ending_decisions = {
+				RICE_sicily_struggle_ending_dominion_decision
+				RICE_sicily_struggle_ending_crossroads_decision
+			}
+		}
+
+		# Phase Endings
+		struggle_RICE_sicily_phase_periphery = {
+			save_progress = yes
+
+			on_start = {
+
+				custom_tooltip = RICE_sicily_struggle_current_influence
+				custom_tooltip = RICE_sicily_struggle_periphery_ending_dominant_tt
+				custom_tooltip = RICE_sicily_struggle_periphery_ending_county_modifier_tt
+				custom_tooltip = RICE_sicily_struggle_periphery_ending_restart_tt
+
+				# Timer so it doesn't happen right away
+				# set_global_variable = {
+				# 	name = RICE_sicily_temporary_ending_timer
+				# 	value = yes
+				# 	days = 3650 # 10 Years
+				# }
+
+				RICE_sicily_end_struggle_effect = {
+					ENDING = yes
+					EVENT = sicily.8888
+					FLAG = flag:RICE_sicily_struggle_periphery_ending
+				}
+			}
+		}
+
+		# Phase Endings
+		struggle_RICE_sicily_phase_imperial = {
+			save_progress = yes
+
+			on_start = {
+
+				custom_tooltip = RICE_sicily_struggle_current_influence
+				custom_tooltip = RICE_sicily_struggle_imperial_ending_dominant_tt
+				custom_tooltip = RICE_sicily_struggle_imperial_ending_county_modifier_tt
+				custom_tooltip = RICE_sicily_struggle_imperial_ending_restart_tt
+
+				# Timer so it doesn't happen right away
+				# set_global_variable = {
+				# 	name = RICE_sicily_temporary_ending_timer
+				# 	value = yes
+				# 	days = 3650 # 10 Years
+				# }
+
+				RICE_sicily_end_struggle_effect = {
+					ENDING = yes
+					EVENT = sicily.8888
+					FLAG = flag:RICE_sicily_struggle_imperial_ending
+				}
+			}
+			# future_phases = {
+			# 	struggle_RICE_sicily_phase_colony = {
+			# 		catalysts = {
+			# 			# Global
+			# 			catalyst_yearly_influential_house_is_antagonistic_major = major_struggle_catalyst_gain
+			# 			catalyst_yearly_influential_house_is_antagonistic_medium = medium_struggle_catalyst_gain
+			# 			catalyst_yearly_influential_house_is_antagonistic_minor = minor_struggle_catalyst_gain
+			# 			catalyst_yearly_influential_house_is_antagonistic_minimal = minimal_struggle_catalyst_gain
+						
+			# 			# Flavour
+			# 			catalyst_becomes_rival_supporter_detractor = medium_struggle_catalyst_gain
+			# 			catalyst_gain_claim_on_title_fp3 = minor_struggle_catalyst_gain
+			# 			catalyst_usurp_title_fp3 = medium_struggle_catalyst_gain
+			# 			catalyst_cadet_branch_created = major_struggle_catalyst_gain
+			# 			catalyst_turn_supporter_into_detractor = medium_struggle_catalyst_gain
+			# 			catalyst_revealed_secret_faith_non_islam = medium_struggle_catalyst_gain
+
+			# 			# CBs
+			# 			catalyst_detractor_declare_unfair_war_within_the_region = medium_struggle_catalyst_gain
+			# 			catalyst_detractor_declare_fair_war_within_the_region = major_struggle_catalyst_gain
+			# 			catalyst_detractor_win_unfair_war_within_the_region = major_struggle_catalyst_gain
+			# 			catalyst_detractor_win_fair_war_within_the_region = massive_struggle_catalyst_gain
+
+			# 			# Negative actions on Supporters
+			# 			catalyst_supporter_forced_conversion = medium_struggle_catalyst_gain
+			# 			catalyst_imprison_supporter = minor_struggle_catalyst_gain
+			# 			catalyst_reveal_secret_supporter = medium_struggle_catalyst_gain
+			# 			catalyst_execute_supporter = medium_struggle_catalyst_gain
+			# 			catalyst_unnatural_death_supporter = medium_struggle_catalyst_gain
+
+			# 			# Positive actions of Detractors
+			# 			catalyst_forming_alliance_between_detractor_uninvolved_rulers = medium_struggle_catalyst_gain
+			# 			catalyst_ruler_chooses_persian_faith = major_struggle_catalyst_gain
+			# 			catalyst_became_detractor_fp3 = massive_struggle_catalyst_gain
+			# 		}
+			# 	}
+
+			# 	struggle_RICE_sicily_phase_borderland = {
+			# 		# Catalyst values are low here because we track this stuff across every phase, so they need to take _roughly_ ~100-120 years to build up, all else being equal.
+			# 		catalysts = {
+			# 			catalyst_passing_of_time = catalyst_fp3_yearly_time_out_ending_drift
+
+			# 			# Supporter / Detractor dynamic
+			# 			catalyst_war_ends_in_white_peace_between_supporter_detractor = minor_struggle_catalyst_gain
+			# 			catalyst_became_best_friend_soulmate_supporter_detractor = minor_struggle_catalyst_gain
+			# 			catalyst_became_friend_lover_supporter_detractor = minimal_struggle_catalyst_gain
+			# 			catalyst_forming_alliance_between_supporter_detractor_rulers = catalyst_forming_alliance_between_supporter_detractor_rulers_value
+			# 			catalyst_abandon_hook_on_supporter_detractor = minor_struggle_catalyst_gain
+			# 			catalyst_grants_pardon_supporter_detractor = minimal_struggle_catalyst_gain
+			# 			catalyst_release_supporter_detractor = minor_struggle_catalyst_gain
+			# 			catalyst_ransom_supporter_detractor = minimal_struggle_catalyst_gain
+			# 			catalyst_grants_vassal_to_de_jure_liege_supporter_detractor = minor_struggle_catalyst_gain
+			# 			catalyst_gift_supporter_detractor_ruler = minimal_struggle_catalyst_gain
+
+			# 			# Progress of the outsiders
+			# 			catalyst_interloper_uninvolved_gain_struggle_titles = minor_struggle_catalyst_gain
+
+			# 			# Global catalysts
+			# 			catalyst_raided_involved = minor_struggle_catalyst_gain
+
+			# 			# Caliphal things.
+			# 			catalyst_missing_caliphate_or_arabian_empire = monumental_struggle_catalyst_over_time_gain
+			# 			catalyst_caliph_or_emperor_loses_revolt_war = major_struggle_catalyst_gain
+			# 			catalyst_caliph_or_emperor_accepts_faction_demands = minor_struggle_catalyst_gain
+			# 			catalyst_caliph_died_violently = massive_struggle_catalyst_gain
+			# 			catalyst_caliph_died_naturally = major_struggle_catalyst_gain
+			# 		}
+			# 	}
+			# }
+
+			# war_effects = {
+			# 	name = WAR_EFFECTS_NAME
+			# 	# lower cost and higher gain for external wars
+			# 	common_parameters = {
+			# 		apply_truce_when_sending_ward = yes
+			# 		invasion_conquest_war_cannot_be_declared = yes
+			# 	}
+
+			# 	involved_character_modifier = {
+			# 		# Everyone hires soldiers, either to maintain the peace or ready for the next phase of war.
+			# 		men_at_arms_recruitment_cost = -0.5
+			# 		men_at_arms_maintenance = -0.25
+			# 		# This pumps some characters up.
+			# 		glory_hound_ai_energy = very_high_positive_ai_value
+			# 		glory_hound_ai_boldness = very_high_positive_ai_value
+			# 	}
+
+			# 	interloper_character_modifier = {
+			# 		# Interlopers benefit a little here too.
+			# 		men_at_arms_recruitment_cost = -0.25
+			# 	}
+			# }
+
+			# faith_effects = {
+			# 	name = FAITH_EFFECTS_NAME
+				
+			# 	involved_parameters = {
+			# 		piety_from_new_alliance = yes
+			# 		completing_building_in_temple_gives_piety = yes
+			# 		same_faith_friend_piety_gain = yes
+			# 	}
+
+			# 	involved_character_modifier = {
+			# 		# The Sunni Caliphate consolidates - everyone else closes ranks too.
+			# 		same_faith_opinion = 20
+			# 		# Whilst bunkering down and arguing 
+			# 		minority_different_faith_opinion = -20
+			# 	}
+			# }
+
+			# culture_effects = {
+			# 	name = CULTURE_EFFECTS_NAME
+
+			# 	involved_parameters = {
+			# 		learning_languages_gives_prestige = yes
+			# 		granting_title_to_local_noble_gives_prestige = yes
+			# 		gain_acceptance_when_developing_other_culture_county = yes
+			# 		release_prisoner_diff_culture_gives_prestige = yes
+			# 	}
+
+			# 	involved_character_modifier = {
+			# 		# Solidarity within cultural blocks.
+			# 		same_culture_opinion = 10
+			# 		opinion_of_same_culture = 10
+			# 		# Authority figures work to reestablish themselves.
+			# 		cultural_head_acceptance_gain_mult = 0.5
+			# 	}
+			# }
+
+			# other_effects = {
+			# 	name = OTHER_EFFECTS_NAME
+			# 	involved_parameters = {
+			# 		struggle_unlocks_befriend_schemes_for_everyone = yes
+			# 		unlocks_epic_commission_for_independent_rulers = yes
+			# 		granting_independence_to_non_dejure_gives_renown = yes
+			# 		unlocks_claim_throne_for_caliph_vassals = yes
+			# 		less_dissolution_more_claimants = yes
+
+			# 		# Note: this parameter doesn't _do_ anything, it's just for the tooltip.
+			# 		## You need to manually set/clear the "struggle_block_dissolution_faction" variable on affected titles instead.
+			# 		### We do it this way to save a bit on performance.
+			# 		caliph_cant_be_dissolutioned = yes
+			# 	}
+			# 	involved_character_modifier = {
+			# 		castle_holding_build_gold_cost = -0.3
+			# 	}
+			# 	interloper_parameters = {
+			# 		less_dissolution_more_claimants = yes
+			# 	}
+			# }
+
+			# ending_decisions = {
+			# 	RICE_sicily_struggle_ending_dominion_decision
+			# 	RICE_sicily_struggle_ending_crossroads_decision
+			# }
+		}
+
+		
+		# Placed here to suppress errors
+		struggle_iberia_phase_opportunity = {
+			##################################################
+			# General Set-Up
+
+			# background = "gfx/interface/illustrations/struggle_backgrounds/struggle_opportunity_bg.dds"
+			
+			future_phases = {
+				struggle_RICE_sicily_phase_borderland = {						
+					catalysts = {
+						catalyst_passing_of_time = minimal_struggle_catalyst_gain
+					}
+				}
+			}
+
+			war_effects = {
+				name = WAR_EFFECTS_NAME
+				###### Common
+
+				# Nothing
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				involved_character_modifier = {
+				}
+
+				###### Interlopers
+				interloper_parameters = {
+				}
+
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			faith_effects = {
+				name = FAITH_EFFECTS_NAME
+				###### Common
+				common_parameters = {
+				}
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				###### Interlopers
+
+				# Nothing
+
+				###### Uninvolved
+
+				# Nothing
+
+			}
+
+			culture_effects = {
+				name = CULTURE_EFFECTS_NAME
+				###### Common
+				common_parameters = {
+				}
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				###### Interlopers
+
+				# Nothing
+
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			other_effects = {
+				name = OTHER_EFFECTS_NAME
+				###### Common
+
+				# Nothing
+
+
+				###### Involved
+				involved_parameters = {
+
+				}
+
+				###### Interlopers
+				interloper_parameters = {
+				}
+
+				interloper_character_modifier = {
+				}
+
+				###### Uninvolved
+				uninvolved_parameters = {
+				}
+
+				uninvolved_county_modifier = {
+				}
+
+			}
+
+			#We are listing all available decision to give players insights on how they can end the Struggle
+			ending_decisions = {
+				RICE_sicily_struggle_ending_dominion_decision
+				RICE_sicily_struggle_ending_crossroads_decision
+			}
+		}
+
+		# Placed here to suppress errors
+		struggle_iberia_phase_hostility = {
+			##################################################
+			# General Set-Up
+
+			# background = "gfx/interface/illustrations/struggle_backgrounds/struggle_opportunity_bg.dds"
+			
+			future_phases = {
+				struggle_RICE_sicily_phase_borderland = {						
+					catalysts = {
+						catalyst_passing_of_time = minimal_struggle_catalyst_gain
+					}
+				}
+			}
+
+			war_effects = {
+				name = WAR_EFFECTS_NAME
+				###### Common
+
+				# Nothing
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				involved_character_modifier = {
+				}
+
+				###### Interlopers
+				interloper_parameters = {
+				}
+
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			faith_effects = {
+				name = FAITH_EFFECTS_NAME
+				###### Common
+				common_parameters = {
+				}
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				###### Interlopers
+
+				# Nothing
+
+				###### Uninvolved
+
+				# Nothing
+
+			}
+
+			culture_effects = {
+				name = CULTURE_EFFECTS_NAME
+				###### Common
+				common_parameters = {
+				}
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				###### Interlopers
+
+				# Nothing
+
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			other_effects = {
+				name = OTHER_EFFECTS_NAME
+				###### Common
+
+				# Nothing
+
+
+				###### Involved
+				involved_parameters = {
+
+				}
+
+				###### Interlopers
+				interloper_parameters = {
+				}
+
+				interloper_character_modifier = {
+				}
+
+				###### Uninvolved
+				uninvolved_parameters = {
+				}
+
+				uninvolved_county_modifier = {
+				}
+
+			}
+
+			#We are listing all available decision to give players insights on how they can end the Struggle
+			ending_decisions = {
+				RICE_sicily_struggle_ending_dominion_decision
+				RICE_sicily_struggle_ending_crossroads_decision
+			}
+		}
+
+		# Placed here to suppress errors
+		struggle_iberia_phase_compromise = {
+			##################################################
+			# General Set-Up
+
+			# background = "gfx/interface/illustrations/struggle_backgrounds/struggle_opportunity_bg.dds"
+			
+			future_phases = {
+				struggle_RICE_sicily_phase_borderland = {						
+					catalysts = {
+						catalyst_passing_of_time = minimal_struggle_catalyst_gain
+					}
+				}
+			}
+
+			war_effects = {
+				name = WAR_EFFECTS_NAME
+				###### Common
+
+				# Nothing
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				involved_character_modifier = {
+				}
+
+				###### Interlopers
+				interloper_parameters = {
+				}
+
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			faith_effects = {
+				name = FAITH_EFFECTS_NAME
+				###### Common
+				common_parameters = {
+				}
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				###### Interlopers
+
+				# Nothing
+
+				###### Uninvolved
+
+				# Nothing
+
+			}
+
+			culture_effects = {
+				name = CULTURE_EFFECTS_NAME
+				###### Common
+				common_parameters = {
+				}
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				###### Interlopers
+
+				# Nothing
+
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			other_effects = {
+				name = OTHER_EFFECTS_NAME
+				###### Common
+
+				# Nothing
+
+
+				###### Involved
+				involved_parameters = {
+
+				}
+
+				###### Interlopers
+				interloper_parameters = {
+				}
+
+				interloper_character_modifier = {
+				}
+
+				###### Uninvolved
+				uninvolved_parameters = {
+				}
+
+				uninvolved_county_modifier = {
+				}
+
+			}
+
+			#We are listing all available decision to give players insights on how they can end the Struggle
+			ending_decisions = {
+				RICE_sicily_struggle_ending_dominion_decision
+				RICE_sicily_struggle_ending_crossroads_decision
+			}
+		}
+
+		# Placed here to suppress errors
+		struggle_iberia_phase_conciliation = {
+			##################################################
+			# General Set-Up
+
+			# background = "gfx/interface/illustrations/struggle_backgrounds/struggle_opportunity_bg.dds"
+			
+			future_phases = {
+				struggle_RICE_sicily_phase_borderland = {						
+					catalysts = {
+						catalyst_passing_of_time = minimal_struggle_catalyst_gain
+					}
+				}
+			}
+
+			war_effects = {
+				name = WAR_EFFECTS_NAME
+				###### Common
+
+				# Nothing
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				involved_character_modifier = {
+				}
+
+				###### Interlopers
+				interloper_parameters = {
+				}
+
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			faith_effects = {
+				name = FAITH_EFFECTS_NAME
+				###### Common
+				common_parameters = {
+				}
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				###### Interlopers
+
+				# Nothing
+
+				###### Uninvolved
+
+				# Nothing
+
+			}
+
+			culture_effects = {
+				name = CULTURE_EFFECTS_NAME
+				###### Common
+				common_parameters = {
+				}
+
+				###### Involved
+				involved_parameters = {
+				}
+
+				###### Interlopers
+
+				# Nothing
+
+				###### Uninvolved
+
+				# Nothing
+			}
+
+			other_effects = {
+				name = OTHER_EFFECTS_NAME
+				###### Common
+
+				# Nothing
+
+
+				###### Involved
+				involved_parameters = {
+
+				}
+
+				###### Interlopers
+				interloper_parameters = {
+				}
+
+				interloper_character_modifier = {
+				}
+
+				###### Uninvolved
+				uninvolved_parameters = {
+				}
+
+				uninvolved_county_modifier = {
+				}
+
+			}
+
+			#We are listing all available decision to give players insights on how they can end the Struggle
+			ending_decisions = {
+				RICE_sicily_struggle_ending_dominion_decision
+				RICE_sicily_struggle_ending_crossroads_decision
+			}
+		}
+	}
+
+	# AI should gift
+
+
+
+
+}

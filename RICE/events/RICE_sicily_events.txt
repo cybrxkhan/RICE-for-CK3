@@ -1,0 +1,716 @@
+﻿###############################################################################
+# 
+# SICILY
+# 
+# sicily.0000-sicily.0019			Setup events, history events, miscellaneous events and decisions
+# sicily.0020-sicily.0029			Casus Bellis and other warfare related stuff
+# sicily.0030-sicily.0049			Sicily Strongholds
+# sicily.0050-sicily.0059			Sicily Grain
+# sicily.0060-sicily.0089			Starting situation/aspiration events
+# 
+# 
+###############################################################################
+
+namespace = sicily
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# sicily.0000-sicily.0019
+# 
+######################################################################################
+
+
+
+# SICILY STRUGGLE INTRO 
+sicily.0001 = { # Fullscreen Intro Event
+	type = character_event
+	window = fullscreen_event
+	title = sicily.0001.t
+	desc = {
+		desc = sicily.0001.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					any_character_struggle = {
+						involvement = involved
+						is_struggle_type = RICE_sicily_struggle
+					}
+				}
+				desc = sicily.0001.desc.involved
+			}
+			triggered_desc = {
+				trigger = {
+					any_character_struggle = {
+						involvement = interloper
+						is_struggle_type = RICE_sicily_struggle
+					}
+				}
+				desc = sicily.0001.desc.interloper
+			}
+			desc = sicily.0001.desc.uninvolved # Fallback option
+		}
+	}
+	theme = diplomacy_foreign_affairs_focus
+	trigger = { # we need to prevent this from firing for all players when a new player joins in MP
+		is_ai = no
+		NOT = { has_character_flag = RICE_sicily_struggle_intro_event_flag }
+		OR = {
+			any_character_struggle = {
+				involvement = involved
+				is_struggle_type = RICE_sicily_struggle
+			}
+			any_character_struggle = {
+				involvement = interloper
+				is_struggle_type = RICE_sicily_struggle
+			}
+		}
+ 	}
+	override_background = { reference = RICE_sicily_struggle_start }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	widgets = {
+		widget = {
+ 			gui = "event_window_widget_struggle_info"
+ 			container = "dynamic_content_widget"
+ 			controller = struggle_info
+ 			setup_scope = { struggle:RICE_sicily_struggle = { save_scope_as = struggle } }
+		}
+	}
+	immediate = {
+		play_music_cue = "mx_spirit_of_the_mediterranean"
+		add_character_flag = RICE_sicily_struggle_intro_event_flag
+		add_to_global_variable_list = { # List is only checked for removal, comparing it in the trigger would be needlessly expensive
+			name = RICE_sicily_struggle_intro_flag_character_list
+			target = root
+		}
+		save_scope_value_as = {
+			name = start
+			value = yes
+		}
+	}
+
+	option = {
+		name = sicily.0001.a
+		play_music_cue = "mx_spirit_of_the_mediterranean"
+		clicksound = "event:/DLC/FP2/SFX/UI/fp2_struggle_start_select"
+	}
+
+}
+
+
+
+# Restart Sicilian Struggle (Occupation)
+sicily.0010 = {
+	type = character_event
+	title = sicily.0010.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					global_var:RICE_sicily_struggle_ending = flag:RICE_sicily_struggle_periphery_ending
+				}
+				desc = sicily.0010.desc.periphery
+			}		
+			triggered_desc = {
+				trigger = {
+					global_var:RICE_sicily_struggle_ending = flag:RICE_sicily_struggle_imperial_ending
+				}
+				desc = sicily.0010.desc.imperial
+			}		
+		}
+		desc = sicily.0010.desc
+		desc = sicily.0010.desc.conclusion
+	}
+	theme = martial
+	override_background = { reference = RICE_background_sicily_countryside }
+
+	right_portrait = {
+		character = scope:sicily_struggle_restarter
+		animation = war_attacker
+	}
+
+	# Ok
+	option = {
+		name = sicily.0010.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				root = scope:sicily_struggle_restarter
+			}
+			trigger_event = {
+				id = sicily.0012
+				days = 1
+			}
+		}
+	}
+
+}
+
+
+# Restart Sicilian Struggle (Revitalizer)
+sicily.0011 = {
+	type = character_event
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					global_var:RICE_sicily_struggle_ending = flag:RICE_sicily_struggle_periphery_ending
+				}
+				desc = sicily.0011.t.periphery
+			}		
+			triggered_desc = {
+				trigger = {
+					global_var:RICE_sicily_struggle_ending = flag:RICE_sicily_struggle_imperial_ending
+				}
+				desc = sicily.0011.t.imperial
+			}	
+			desc = sicily.0011.t # Backup	
+		}
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					global_var:RICE_sicily_struggle_ending = flag:RICE_sicily_struggle_periphery_ending
+				}
+				desc = sicily.0010.desc.periphery
+			}		
+			triggered_desc = {
+				trigger = {
+					global_var:RICE_sicily_struggle_ending = flag:RICE_sicily_struggle_imperial_ending
+				}
+				desc = sicily.0010.desc.imperial
+			}		
+		}
+		desc = sicily.0011.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					global_var:RICE_sicily_struggle_ending = flag:RICE_sicily_struggle_periphery_ending
+				}
+				desc = sicily.0011.desc.periphery
+			}		
+			triggered_desc = {
+				trigger = {
+					global_var:RICE_sicily_struggle_ending = flag:RICE_sicily_struggle_imperial_ending
+				}
+				desc = sicily.0011.desc.imperial
+			}		
+		}
+		desc = sicily.0010.desc.conclusion
+	}
+	theme = diplomacy_foreign_affairs_focus
+	override_background = { reference = RICE_background_sicily_countryside }
+
+	right_portrait = {
+		character = scope:sicily_struggle_restarter
+		animation = war_attacker
+	}
+
+	# Ok
+	option = {
+		name = sicily.0011.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				root = scope:sicily_struggle_restarter
+			}
+			trigger_event = sicily.0012
+		}
+	}
+
+}
+
+sicily.0012 = {
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_global_variable = RICE_sicily_struggle_ending
+			}
+			remove_global_variable = RICE_sicily_struggle_ending
+		}
+		start_struggle = {
+			struggle_type = RICE_sicily_struggle
+			start_phase = struggle_RICE_sicily_phase_borderland
+		}
+	}
+}
+
+
+######################################################################################
+# 
+# CASUS BELLI & WARFARE EVENTS
+# 
+# sicily.0020-sicily.0029
+# 
+######################################################################################
+
+sicily.0020 = {
+	hidden = yes
+
+	immediate = {
+		random_character_war = { # We need to locate the war we just created, since we can't save it on creation
+			limit = {
+				using_cb = RICE_sicily_intervention_cb
+				primary_attacker = scope:secondary_recipient # root
+				primary_defender = scope:recipient
+			}
+			add_attacker = scope:actor
+		}
+	}
+}
+
+sicily.0021 = {
+	hidden = yes
+
+	immediate = {
+		random_character_war = { # We need to locate the war we just created, since we can't save it on creation
+			limit = {
+				using_cb = RICE_sicily_intervention_cb
+				primary_attacker = scope:secondary_recipient # root
+				primary_defender = scope:recipient
+			}
+			save_scope_as = sicilian_intervention_war
+		}
+		spawn_army = {
+			men_at_arms = {
+				type = horse_archers
+				stacks = fp3_request_invasion_troop_value_bonus_troops
+			}
+			men_at_arms = {
+				type = light_horsemen
+				stacks = fp3_request_invasion_troop_value_bonus_troops
+			}
+			levies = fp3_request_invasion_troop_value_bonus_levy_troops
+			location = capital_province
+			uses_supply = yes
+			war = scope:sicilian_intervention_war
+			inheritable = no
+			name = RICE_sicily_intervention_event_troops
+		}
+	}
+}
+
+
+
+
+
+######################################################################################
+# 
+# SICILY STRONGHOLDS
+# 
+# sicily.0030-sicily.0049
+# 
+######################################################################################
+
+# add_faction_discontent
+
+# Latin Stronghold rebels
+sicily.0030 = {
+	type = letter_event
+	sender = scope:RICE_sicily_leader
+	opening = "FACTION_DEMAND_RICE_sicily_latin_stronghold"
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = {
+						religion = religion:christianity_religion
+					}
+				}
+				desc = FACTION_DEMAND_RICE_sicily_latin_stronghold_desc_infidel
+			}		
+			desc = FACTION_DEMAND_RICE_sicily_latin_stronghold_desc_non_infidel
+		}
+	}
+
+	trigger = {
+		exists = scope:faction
+		exists = scope:RICE_sicily_leader
+		scope:RICE_sicily_leader.joined_faction = scope:faction
+	}
+
+	on_trigger_fail = {
+		debug_log = "Latin Stronghold Faction tried to press claim (probably) without existing RICE_sicily_leader"
+		debug_log_scopes = yes
+		debug_log = "Latin Stronghold Faction error reporting complete"
+	}
+
+	option = {
+		name = "FACTION_DEMAND_RICE_sicily_latin_stronghold_ACCEPT"
+
+		# LEGITIMACY LOSS FOR ACCEPTING FACTION DEMANDS
+		faction_accept_demand_legitimacy_effect = yes
+
+		peasant_faction_demands_enforced = {FACTION = scope:faction}
+
+		ai_chance = {
+			base = 0
+			ai_value_modifier = {
+				ai_boldness = -4
+			}
+			modifier = {
+				add = 50
+				scope:faction = { faction_power >= 100 }
+			}
+			modifier = {
+				add = 50
+				scope:faction = { faction_power >= 110 }
+			}
+			modifier = {
+				add = 50
+				scope:faction = { faction_power >= 120 }
+			}
+			modifier = {
+				add = 50
+				scope:faction = { faction_power >= 130 }
+			}
+			modifier = {
+				add = 50
+				scope:faction = { faction_power >= 140 }
+			}
+			modifier = {
+				add = 50
+				scope:faction = { faction_power >= 150 }
+			}
+			modifier = {
+				add = -50
+				scope:faction.faction_target = {
+					is_at_war = no
+					primary_title.tier >= tier_kingdom
+				}
+			}
+			modifier = {
+				add = -150
+				scope:faction.faction_target = {
+					is_at_war = no
+					primary_title.tier >= tier_empire
+				}
+			}
+		}
+	}
+
+	option = {
+		name = "FACTION_DEMAND_RICE_sicily_latin_stronghold_REFUSE"
+
+		scope:faction = {
+			faction_start_war = {}
+			
+			# This needs to run after 'faction_start_war' or the troops won't spawn correctly.
+			faction_spawn_member_county_armies_effect = {
+				FACTION = scope:faction
+				ARMY_OWNER = scope:RICE_sicily_leader
+				PEASANT_ARMY_NAME = peasant_faction_event_troops
+			}	
+		}
+
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_boldness = 4
+			}
+			modifier = {
+				add = 50
+				scope:faction = { faction_power < 90 }
+			}
+			modifier = {
+				add = 50
+				scope:faction = { faction_power < 80 }
+			}
+			modifier = {
+				add = 50
+				NOT = {
+					religion = religion:christianity_religion
+				}
+			}
+		}
+	}
+}
+
+
+
+
+
+######################################################################################
+# 
+# SICILY STRONGHOLDS
+# 
+# sicily.0050-sicily.0059
+# 
+######################################################################################
+
+
+# Give Sicilian grain shipments
+sicily.0050 = {
+	type = character_event
+	title = sicily.0050.t
+	desc = sicily.0050.desc
+	theme = RICE_theme_sicily_countryside
+	
+	left_portrait = scope:actor
+	right_portrait = scope:recipient
+	
+	immediate = {
+		remove_short_term_gold = 220
+		add_prestige = 100		
+	}
+
+	option = { # OK
+		name = sicily.0050.a
+		scope:recipient = {
+			show_as_tooltip = {
+				RICE_sicily_recipient_gets_wheat_shipments_effect = yes				
+			}
+			trigger_event = sicily.0051
+		}
+	}
+}
+
+
+
+# Gift target receives Sicilian grain shipments
+sicily.0051 = {
+	type = letter_event
+	opening = {
+		desc = sicily.0051.opening
+	}
+	desc = sicily.0051.desc
+	
+	sender = scope:actor
+	
+	immediate = {
+		title:c_rhodos = { #For loc.
+			save_scope_as = rhodes_county
+		}		
+		add_character_modifier = {
+			modifier = RICE_rhodes_character_kalymnian_sponges
+			years = 5
+		}
+		add_opinion = {
+			target = scope:actor
+			modifier = RICE_rhodes_opinion_gifted_kalymnian_sponges
+		}	
+	}
+
+	option = {
+		name = sicily.0051.a
+	}
+}
+
+
+
+# Gift target refuses Sicilian grain shipments
+sicily.0052 = {
+	type = letter_event
+	opening = {
+		desc = sicily.0052.opening
+	}
+	desc = sicily.0052.desc
+	
+	sender = scope:recipient
+
+	option = {
+		name = sicily.0052.a
+		scope:actor = {
+			add_prestige = -50
+		}
+		scope:recipient = {			
+			custom_tooltip = RICE_sicily_give_wheat_shipments_reject_effects_1_tt
+			custom_tooltip = RICE_sicily_give_wheat_shipments_reject_effects_2_tt
+			reverse_add_opinion = {
+				target = scope:actor
+				modifier = rejected_opinion
+			}
+		}
+	}
+}
+
+
+# Requestee refuses to give Sicilian grain shipments
+sicily.0055 = {
+	type = letter_event
+	opening = {
+		desc = sicily.0055.opening
+	}
+	desc = sicily.0055.desc
+	
+	sender = scope:recipient
+
+	option = {
+		name = sicily.0055.a
+		scope:actor = {
+			add_prestige = -50
+			add_opinion = {
+				target = scope:recipient
+				modifier = rejected_opinion
+			}
+		}
+		scope:recipient = {		
+			custom_tooltip = RICE_sicily_request_wheat_shipments_reject_effects_1_tt
+		}
+	}
+}
+
+
+
+
+######################################################################################
+# 
+# STARTING SITUATION/ASPIRATION EVENTS
+# 
+# sicily.0060-sicily.0089
+# 
+######################################################################################
+
+
+
+# Benavert and other Sicilian Muslim leaders in 1066 Intro Event
+sicily.0060 = {
+	type = character_event
+	title = sicily.0060.t
+	desc = sicily.0060.desc
+	theme = martial
+	override_background = { reference = RICE_background_sicily_ancient_temple }
+
+	left_portrait = {
+		character = scope:roger
+		animation = war_over_win
+	}
+	right_portrait = {
+		character = scope:benavert
+		animation = marshal
+	}
+
+	lower_right_portrait = scope:palermo
+	lower_center_portrait = scope:agrigento
+	lower_left_portrait = scope:malta
+
+	immediate = {
+
+		culture:norman = {
+			save_scope_as = norman
+		}
+
+		culture:lombard = {
+			save_scope_as = lombard
+		}
+
+		culture:greek = {
+			save_scope_as = greek
+		}
+
+		character:maghrebi0011 = { # ibn al-Thumna
+			save_scope_as = al_thumna
+		}		
+
+		character:159193 = { # Hassan as-Samson, last Kalbid Emir
+			save_scope_as = kalbid
+		}		
+
+		character:20829 = { # Benavert
+			save_scope_as = benavert
+		}		
+
+		character:1132 = { # roger I of Sicily
+			save_scope_as = roger
+		}		
+
+		character:1128 = { # Robert of Sicily
+			save_scope_as = robert
+		}		
+
+		title:c_palermo.holder = { # palermo
+			save_scope_as = palermo
+		}		
+
+		title:c_agrigento.holder = { # agrigento
+			save_scope_as = agrigento
+		}		
+
+		title:c_malta.holder = { # Palermo
+			save_scope_as = malta
+		}	
+		
+		title:c_siracusa.holder = {
+			save_scope_as = syracuse
+		}
+
+		show_as_tooltip = {	
+			scope:benavert = {
+				add_character_modifier = {
+					modifier = RICE_sicily_aspiration_reunify_sicily
+				}
+			}
+			scope:palermo = {
+				add_character_modifier = {
+					modifier = RICE_sicily_aspiration_reunify_sicily
+				}
+			}
+			scope:agrigento = {
+				add_character_modifier = {
+					modifier = RICE_sicily_aspiration_reunify_sicily
+				}
+			}
+			scope:malta = {
+				add_character_modifier = {
+					modifier = RICE_sicily_aspiration_reunify_sicily
+				}
+			}
+			scope:roger = {
+				add_character_modifier = {
+					modifier = RICE_sicily_aspiration_complete_conquest_of_sicily
+				}
+			}
+		}
+		# In case we have a custom Muslim ruler
+		if = {
+			limit = {
+				has_title = c_siracusa
+				religion = religion:islam_religion
+				NOT = { has_character_modifier = RICE_sicily_aspiration_reunify_sicily }
+			}
+			add_character_modifier = {
+				modifier = RICE_sicily_aspiration_reunify_sicily
+			}
+		}
+	}
+
+	# Ok
+	option = {
+		name = sicily.0060.a
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = sicily.0060.tooltip
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

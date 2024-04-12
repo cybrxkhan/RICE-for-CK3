@@ -1,0 +1,1413 @@
+﻿
+
+###################################
+# Request Sicily Intervention
+# For people inside the struggle
+# Based on vanilla's Turkic Invasion CB
+###################################
+
+RICE_request_sicily_intervention_interaction = {
+	interface_priority = 100
+	common_interaction = yes
+	category = interaction_category_hostile
+	cooldown_against_recipient = { years = 2 }
+
+	icon = RICE_request_sicily_intervention
+	desc = RICE_request_sicily_intervention_interaction_desc
+
+	is_shown = {
+		scope:actor = {
+			# If duchy, lose title, if not, place rulers
+			#highest_held_title_tier <= tier_duchy
+			any_character_struggle = { is_struggle_type = RICE_sicily_struggle }
+		}
+		scope:recipient = {
+			is_landed = yes
+			any_character_struggle = { is_struggle_type = RICE_sicily_struggle }
+			is_independent_ruler = yes
+			is_ai = yes
+		}
+		NOT = { scope:actor = scope:recipient }
+	}
+
+	is_valid_showing_failures_only = {
+	}
+
+	populate_recipient_list = {
+		scope:actor.top_liege = {
+			every_independent_ruler = {
+				limit = {
+					is_ai = yes
+					is_landed = yes
+					is_physically_able = yes
+					has_raised_armies = no
+					in_diplomatic_range = scope:actor
+					highest_held_title_tier >= tier_county
+					NOR = {
+						is_at_war_with = scope:actor
+						is_at_war_with = scope:recipient
+						is_allied_to = scope:recipient
+						has_truce = scope:recipient
+						this = scope:actor
+						this = scope:recipient
+					}
+
+					# RICE_lands_near_sicily_region
+					capital_province = {
+						OR = {
+							geographical_region = RICE_lands_near_sicily_region
+							geographical_region = custom_sicily
+						}
+					}
+
+					# Distance from target
+					# capital_province = {
+					# 	squared_distance = {
+					# 		target = scope:recipient.capital_province
+					# 		value <= squared_distance_huge
+					# 	}
+					# }
+				}
+				add_to_list = characters
+			}
+		}
+	}
+	
+	send_options_exclusive = no
+
+	send_option = {
+		flag = war_support
+		localization = RICE_request_sicily_intervention_interaction_option_join_war
+		current_description = RICE_request_sicily_intervention_interaction_option_join_war_desc
+		is_shown = { exists = scope:secondary_recipient }
+		is_valid = {
+			scope:actor = {
+				NOR = {
+					is_at_war_with = scope:recipient
+					is_allied_to = scope:recipient
+					has_truce = scope:recipient
+				}
+			}
+		}
+	}
+
+	send_option = {
+		flag = financial_support
+		localization = RICE_request_sicily_intervention_interaction_option_more_gold
+		current_description = RICE_request_sicily_intervention_interaction_option_more_gold_desc
+		is_shown = { exists = scope:secondary_recipient }
+		is_valid = {
+			custom_description = {
+				text = fp3_please_dont_give_me_negative_gold
+				fp3_request_invasion_troop_value_estimate > 0
+			}
+		}
+	}
+
+	cost = {
+		gold = {
+			value = {
+				value = scope:secondary_recipient.max_military_strength
+				divide = 15 # 20
+				round = yes
+			}
+			add = {
+				if = {
+					limit = { scope:financial_support = yes }
+					add = fp3_request_invasion_troop_value_estimate
+				}
+			}
+			# if = {
+			# 	limit = {
+			# 		scope:recipient = { has_title = title:d_sunni }
+			# 		struggle:persian_struggle = { has_struggle_phase_parameter = cheaper_incursions_vs_caliph }
+			# 	}
+			# 	divide = 2
+			# }
+		}
+	}
+
+	on_accept = {
+		if = {
+			limit = { exists = scope:secondary_recipient }
+
+			scope:recipient = {
+				if = {
+					limit = {
+						any_realm_county = {
+							NOT = { this = scope:recipient.capital_county }
+							any_neighboring_county = { holder.top_liege = scope:secondary_recipient.top_liege }
+							any_county_province = { geographical_region = custom_sicily }
+							NOR = {
+								holder = scope:actor
+								holder = { is_vassal_or_below_of = scope:actor }
+							}
+						}
+					}
+					random_realm_county = {
+						limit = {
+							NOT = { this = scope:recipient.capital_county }
+							any_neighboring_county = { holder.top_liege = scope:secondary_recipient.top_liege }
+							any_county_province = { geographical_region = custom_sicily }
+							NOR = {
+								holder = scope:actor
+								holder = { is_vassal_or_below_of = scope:actor }
+							}
+						}
+						save_scope_as = invasion_target_title
+					}
+				}
+				else_if = {
+					limit = {
+						any_realm_county = {
+							NOT = { this = scope:recipient.capital_county }
+							any_neighboring_county = {
+								any_county_province = { geographical_region = custom_sicily }
+								NOT = {
+									holder.top_liege = prev.holder.top_liege
+								}
+							}
+							NOR = {
+								holder = scope:actor
+								holder = { is_vassal_or_below_of = scope:actor }
+							}
+						}
+					}
+					random_realm_county = {
+						limit = {
+							NOT = { this = scope:recipient.capital_county }
+							any_neighboring_county = {
+								any_county_province = { geographical_region = custom_sicily }
+								NOT = {
+									holder.top_liege = prev.holder.top_liege
+								}
+							}
+							NOR = {
+								holder = scope:actor
+								holder = { is_vassal_or_below_of = scope:actor }
+							}
+						}
+						save_scope_as = invasion_target_title
+					}
+				}
+				else_if = {
+					limit = {
+						any_realm_county = {
+							NOT = { this = scope:recipient.capital_county }
+							NOR = {
+								holder = scope:actor
+								holder = { is_vassal_or_below_of = scope:actor }
+							}
+						}
+					}
+					random_realm_county = {
+						limit = {
+							NOT = { this = scope:recipient.capital_county }
+							NOR = {
+								holder = scope:actor
+								holder = { is_vassal_or_below_of = scope:actor }
+							}
+						}
+						save_scope_as = invasion_target_title
+					}
+				}
+				else_if = {
+					limit = {
+						any_realm_county = {
+							NOR = {
+								holder = scope:actor
+								holder = { is_vassal_or_below_of = scope:actor }
+							}
+						}
+					}
+					random_realm_county = {
+						limit = {
+							NOR = {
+								holder = scope:actor
+								holder = { is_vassal_or_below_of = scope:actor }
+							}
+						}
+						save_scope_as = invasion_target_title
+					}
+				}
+				else = {
+					random_realm_county = { save_scope_as = invasion_target_title }
+				}
+				
+				scope:invasion_target_title.duchy = { save_scope_as = text_title }
+
+				hidden_effect = { # Not worth cluttering the UI with
+					add_opinion = {
+						modifier = fp3_incited_conflict
+						target = scope:actor
+					}
+					add_opinion = {
+						modifier = declared_war
+						target = scope:secondary_recipient
+					}
+				}
+			}
+
+			scope:secondary_recipient = {
+				add_gold = {
+					value = {
+						value = scope:secondary_recipient.max_military_strength
+						divide = 20
+						round = yes
+					}
+					add = {
+						if = {
+							limit = { scope:financial_support = yes }
+							add = fp3_request_invasion_troop_value_estimate
+						}
+					}
+					# if = {
+					# 	limit = {
+					# 		scope:recipient = { has_title = title:d_sunni }
+					# 		struggle:persian_struggle = { has_struggle_phase_parameter = cheaper_incursions_vs_caliph }
+					# 	}
+					# 	divide = 2
+					# }
+				}
+				start_war = {
+					casus_belli = RICE_sicily_intervention_cb
+					target = scope:recipient
+					target_title = scope:invasion_target_title.duchy
+				}
+				custom_tooltip = RICE_sicily_intervention_cb_result_1_tt
+				if = {
+					limit = {
+						scope:secondary_recipient = {
+							OR = {
+								faith.religious_head_title ?= title:k_papal_state
+								culture = { has_cultural_pillar = heritage_latin }
+								culture = { has_cultural_pillar = heritage_frankish }
+								culture = { has_cultural_pillar = heritage_iberian }
+							}
+						}
+					}
+					custom_tooltip = RICE_sicily_intervention_cb_result_2_tt
+				}
+				if = {
+					limit = {
+						scope:secondary_recipient = {
+							OR = {
+								culture = { has_cultural_pillar = heritage_byzantine }
+								faith.religious_head_title ?= title:k_orthodox
+							}
+						}
+					}
+					custom_tooltip = RICE_sicily_intervention_cb_result_3_tt
+				}
+				if = {
+					limit = {
+						scope:secondary_recipient = {
+							OR = {
+								culture = { has_cultural_pillar = heritage_berber }
+								culture = { has_cultural_pillar = heritage_arabic }
+								religion = religion:islam_religion
+							}
+						}
+					}
+					custom_tooltip = RICE_sicily_intervention_cb_result_4_tt
+				}
+				if = {
+					limit = {
+						scope:financial_support = yes
+					}
+					trigger_event = sicily.0021
+					show_as_tooltip = {
+						spawn_army = {
+							men_at_arms = {
+								type = horse_archers
+								stacks = fp3_request_invasion_troop_value_bonus_troops
+							}
+							men_at_arms = {
+								type = light_horsemen
+								stacks = fp3_request_invasion_troop_value_bonus_troops
+							}
+							levies = fp3_request_invasion_troop_value_bonus_levy_troops
+							location = capital_province
+							uses_supply = yes
+							inheritable = no
+							name = RICE_sicily_intervention_event_troops
+						}
+					}
+				}
+				if = {
+					limit = { scope:war_support = yes }
+					custom_tooltip = RICE_request_sicily_intervention_interaction_option_join_war_outcome_tooltip
+					trigger_event = sicily.0020
+				}
+			}
+			
+			scope:actor = {
+				hidden_effect = {
+					send_interface_toast = {
+						type = event_toast_effect_good
+						title = RICE_request_sicily_intervention_interaction_accept_notification.t
+						left_icon = scope:secondary_recipient
+						right_icon = scope:recipient
+	
+						show_as_tooltip = {
+							custom_tooltip = RICE_request_sicily_intervention_interaction_accept_notification.desc
+						}
+					}
+				}
+			}
+			
+			scope:recipient = {
+				add_character_flag = {
+					flag = incursion_ai_pacing
+					years = 5
+				}
+				hidden_effect = {
+					send_interface_toast = {
+						type = event_toast_effect_bad
+						title = RICE_request_sicily_intervention_interaction_accept_notification.t
+						left_icon = scope:secondary_recipient
+						right_icon = scope:actor
+	
+						show_as_tooltip = {
+							custom_tooltip = RICE_request_sicily_intervention_interaction_accept_target_notification.desc
+						}
+					}
+				}
+			}
+		}
+	}
+
+	use_diplomatic_range = yes
+
+	ai_accept = {
+		base = -75
+
+		# Relationships: actor -> recipient / We avoid more relationship checks for balance reasons (and because important decisions tend to care little for relationships)
+		modifier = { # Rivalry modifier.
+			desc = offer_vassalization_interaction_aibehavior_rival_tt_2
+			trigger = {
+				scope:secondary_recipient = {
+					has_relation_rival = scope:actor
+					NOT = { has_relation_nemesis = scope:actor }
+				}
+			}
+			add = -10
+		}
+		modifier = { # Nemesis modifier.
+			desc = offer_vassalization_interaction_aibehavior_nemesis_tt_2
+			trigger = {
+				scope:secondary_recipient = {
+					has_relation_nemesis = scope:actor
+				}
+			}
+			add = -30
+		}
+		modifier = { # Same Dynasty modifier.
+			desc = offer_vassalization_interaction_aibehavior_dynasty_tt_2
+			trigger = {
+				scope:secondary_recipient = {
+					dynasty = scope:actor.dynasty
+				}
+			}
+			add = 10
+		}
+
+		# Compare Opinion modifier
+		opinion_modifier = {
+			who = scope:secondary_recipient
+			opinion_target = scope:actor
+			multiplier = 0.25
+		}
+
+		# Pledged to help in invasion
+		modifier = {
+			add = {
+				value = scope:actor.max_military_strength
+				divide = 70
+				round = yes
+			}
+			desc = HAS_YOUR_SUPPORT_REASON
+			scope:war_support = yes
+		}
+
+		# Relative power (taken from PT interaction)
+		modifier = { # A lot less levies than scope:secondary_recipient
+			add = -50
+			scope:secondary_recipient.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_far_weaker_value
+			desc = fp3_RTI_AI_RECIPIENT_IS_MUCH_WEAKER
+		}
+		modifier = { # Few less levies than scope:secondary_recipient
+			add = -25
+			scope:secondary_recipient.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_far_weaker_value
+			scope:secondary_recipient.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_somewhat_weaker_value
+			desc = fp3_RTI_AI_RECIPIENT_IS_SOMEWHAT_WEAKER
+		}
+		modifier = { # Roughly equal levies with scope:secondary_recipient
+			add = 10
+			scope:secondary_recipient.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_somewhat_weaker_value
+			scope:secondary_recipient.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_somewhat_stronger_value
+			desc = fp3_RTI_AI_RECIPIENT_IS_ROUGHLY_EQUAL
+		}
+		modifier = { # More levies than scope:secondary_recipient
+			add = 20
+			scope:secondary_recipient.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_somewhat_stronger_value
+			scope:secondary_recipient.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_far_stronger_value
+			desc = fp3_RTI_AI_RECIPIENT_IS_SOMEWHAT_STRONGER
+		}
+		modifier = { # Many more levies than scope:secondary_recipient
+			add = 30
+			scope:secondary_recipient.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_far_stronger_value
+			desc = fp3_RTI_AI_RECIPIENT_IS_MUCH_STRONGER
+		}
+
+		# AI who are in debt will take whatever windfalls they can.
+		modifier = {
+			add = {
+				value = scope:secondary_recipient.debt_level
+				add = 1 # Our first level is 0, so we add one to always get a positive number.
+				multiply = 10
+			}
+			debt_level >= 0
+			desc = PT_AI_IS_IN_DEBT
+		}
+
+		# Pacifist AI don't like raiding
+		modifier = {
+			add = -25
+			scope:secondary_recipient.faith = { has_doctrine_parameter = pacifist_opinion_active }
+			desc = PT_AI_IS_PACIFIST_FAITH_2
+		}
+		modifier = {
+			add = -25
+			scope:secondary_recipient.culture = { has_cultural_parameter = reduced_cost_for_conversion_to_pacifist_faith }
+			desc = PT_AI_IS_PACIFIST_CULTURE_2
+		}
+
+		# Offered proportional gold
+		modifier = {
+			add = 85
+			scope:financial_support = yes
+			desc = GOLD_REASON
+		}
+
+		# Different faith than target but same religion
+		modifier = {
+			add = 10
+			scope:secondary_recipient.faith.religion = scope:recipient.faith.religion
+			NOT = { 
+				scope:secondary_recipient.faith = scope:recipient.faith
+			}
+			desc = RICE_AI_SAME_RELIGION_DIFF_FAITH
+		}
+
+		# Different religion
+		modifier = {
+			add = 20			
+			NOT = { 
+				scope:secondary_recipient.faith.religion = scope:recipient.faith.religion
+			}
+			desc = RICE_AI_DIFF_RELIGION
+		}
+
+		# Different culture
+		modifier = {
+			add = 10			
+			NOT = { 
+				scope:secondary_recipient.culture = scope:recipient.culture
+			}
+			desc = RICE_AI_DIFF_CULTURE
+		}
+
+		# AI value mod
+		ai_value_modifier = {
+			ai_greed = 0.5
+			ai_boldness = 0.25
+			min = 0
+			max = 25
+		}
+	}
+
+	#auto_accept = {
+	#	scope:recipient = { is_ai = yes }
+	#}
+	can_send_despite_rejection = no
+	ai_frequency = 24
+	ai_targets = {
+		ai_recipients = neighboring_rulers
+		ai_recipients = liege
+	}
+	ai_potential = {
+		#has_trait = fp3_struggle_detractor
+		is_at_war = no
+		NOT = { ai_has_economical_boom_personality = yes }
+		ai_greed <= 25
+		highest_held_title_tier > tier_barony
+		#NOT = { culture = { has_cultural_pillar = heritage_turkic } }
+	}
+	ai_will_do = {
+		base = 0
+
+		modifier = {
+			add = 50
+			scope:recipient = {
+				#has_trait = fp3_struggle_supporter
+				scope:recipient.max_military_strength >= scope:actor.max_military_strength
+			}
+		}
+
+		# modifier = {
+		# 	add = 50
+		# 	title:d_sunni.holder ?= scope:recipient
+		# }
+
+		modifier = {
+			add = 100
+			scope:recipient = {
+				has_relation_rival = scope:actor
+			}
+		}
+
+		modifier = {
+			factor = 0.1
+			scope:actor.liege ?= scope:recipient
+		}
+
+		modifier = {
+			factor = 0
+			scope:recipient = {
+				has_character_flag = incursion_ai_pacing
+			}
+		}
+
+		modifier = {
+			factor = 0
+			scope:recipient = {
+				is_at_war = yes
+				is_ai = no
+			}
+		}
+
+		modifier = {
+			factor = 0
+			scope:recipient = {
+				is_ai = no
+				is_liege_or_above_of = scope:actor
+			}
+		}
+
+		modifier = {
+			factor = 0
+			scope:recipient = {
+				OR = {
+					has_relation_friend = scope:actor
+					has_relation_lover = scope:actor
+					opinion = {
+						target = scope:actor
+						value >= 45
+					}
+				}
+			}
+		}
+	}
+}
+
+
+###################################
+# 
+# Wheat Interactions
+# 
+###################################
+
+RICE_sicily_give_wheat_shipments = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+
+	desc = RICE_sicily_give_wheat_shipments_desc
+	ai_maybe = yes
+	ai_min_reply_days = 5
+	ai_max_reply_days = 10
+
+	auto_accept = yes
+	
+	ai_targets = {
+		ai_recipients = scripted_relations
+	}
+	ai_targets = {
+		ai_recipients = liege
+	}
+	ai_targets = {
+		ai_recipients = neighboring_rulers
+		ai_recipients = peer_vassals
+		max = 10
+	}
+	ai_targets = {
+		ai_recipients = vassals
+		max = 10
+	}
+	ai_target_quick_trigger = {
+		adult = yes
+	}
+	ai_frequency = 48
+	
+	cooldown = { years = 5 }
+	cooldown_against_recipient = { years = 15 }
+	
+	is_shown = {
+		NOT = {
+			scope:recipient = scope:actor
+		}
+		scope:actor = {	
+			is_ruler = yes
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_sicily_island_region
+				}
+			}
+		}
+		scope:recipient = {
+			#is_ai = yes
+			is_adult = yes
+			is_ruler = yes
+			NOT = {
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_sicily_island_region
+					}
+				}
+			}
+		}
+	}
+	
+	is_valid = {
+		scope:actor = {
+			gold >= 50
+			custom_description = {
+				text = RICE_sicily_geographical_req
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_sicily_island_region
+					}
+				}
+			}
+		}
+		scope:recipient = {
+			custom_description = {
+				text = RICE_sicily_geographical_req_not
+				NOT = {
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_sicily_island_region
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	on_accept = {
+		scope:actor = {
+			remove_short_term_gold = 220
+			add_prestige = 100		
+			trigger_event = sicily.0050
+		}
+		scope:recipient = {
+			show_as_tooltip = {
+				RICE_sicily_recipient_gets_wheat_shipments_effect = yes				
+			}
+			custom_tooltip = RICE_sicily_give_wheat_shipments_positive_effects_tt
+			custom_tooltip = RICE_sicily_give_wheat_shipments_negative_effects_tt
+		}
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 60
+		modifier = { # Basic Filtering
+			factor = 0
+			scope:recipient = {
+				NOR = {
+					AND = { # Bankrupt vassals, lovers, friends and a bankrupt liege should be considered
+						OR = {
+							is_vassal_of = scope:actor
+							AND = {
+								exists = liege
+								liege = scope:actor
+							}
+							has_secret_relation_lover = scope:actor
+							has_relation_lover = scope:actor
+							has_relation_soulmate = scope:actor
+							has_relation_friend = scope:actor
+							has_relation_best_friend = scope:actor
+						}
+						gold < 0
+					}
+					AND = { # Generous characters will give gifts to their friends/lovers
+						OR = {
+							has_secret_relation_lover = scope:actor
+							has_relation_lover = scope:actor
+							has_relation_soulmate = scope:actor
+							has_relation_friend = scope:actor
+							has_relation_best_friend = scope:actor
+						}
+						scope:actor = {
+							OR = {
+								ai_greed <= high_negative_ai_value
+								AND = {
+									ai_greed < 0
+									culture = {
+										has_cultural_parameter = gives_more_gifts
+									}
+								}
+							}
+						}
+					}
+					AND = { # Characters with the Generous Cultural Tradition will give gifts to more people
+						is_ruler = yes
+						OR = {
+							is_allied_to = scope:actor
+							is_close_or_extended_family_of = scope:actor
+						}
+						scope:actor = {
+							ai_greed < 0
+							culture = {
+								has_cultural_parameter = gives_more_gifts
+							}
+						}
+					}
+					AND = { # Powerful vassals should be considered
+						is_powerful_vassal_of = scope:actor
+						opinion = {
+							target = scope:actor
+							value < 0
+						}
+						NOT ={
+							has_opinion_modifier = {
+								target = scope:actor
+								modifier = gift_opinion
+							}
+						}
+					}
+					AND = { # Factioneering vassals should be considered
+						is_vassal_of = scope:actor
+						is_a_faction_member = yes
+						NOT ={
+							has_opinion_modifier = {
+								target = scope:actor
+								modifier = gift_opinion
+							}
+						}
+					}
+					AND = { # Realm Priests should be considered
+						scope:actor = {
+							faith = { has_doctrine = doctrine_theocracy_temporal }
+							exists = cp:councillor_court_chaplain
+							cp:councillor_court_chaplain = scope:recipient
+						}
+						opinion = {
+							target = scope:actor
+							value <= 25
+						}
+						NOT = {
+							has_opinion_modifier = {
+								target = scope:actor
+								modifier = gift_opinion
+							}
+						}
+					}
+					AND = { # Rulers at war with your rivals deserve gold if they're bankrupt
+						gold < 0
+						is_at_war = yes
+						any_war_enemy = {
+							has_relation_rival = scope:actor
+						}
+					}
+				}
+			}
+		}
+		
+		modifier = {
+			factor = 0.1
+			scope:recipient = {
+				opinion = {
+					target = scope:actor
+					value < 0
+				}
+				NAND = {
+					is_vassal_of = scope:actor
+					scope:actor = {
+						ai_rationality > 50
+					}
+				}
+			}
+		}
+	}
+
+	ai_accept = {
+		base = 50
+
+	   # AI take opinion into account, but reduced so they'll at least occasionally accept from folks they dislike.
+	   opinion_modifier = {
+		   who = scope:recipient
+		   opinion_target = scope:actor
+		   multiplier = 0.8
+		   desc = AI_OPINION_REASON
+	   }
+
+		#Relations & relatives (with actor)
+
+		modifier = {
+			has_relation_friend = scope:actor
+			add = 10
+			desc = AI_YOUR_FRIEND
+		}
+
+		modifier = {
+			this.dynasty.dynast = scope:actor
+			add = 10
+			desc = AI_YOU_ARE_THE_DYNAST
+		}
+
+		modifier = {
+			this.house.house_head = scope:actor
+			add = 10
+			desc = AI_YOU_ARE_THE_HOUSE_HEAD
+		}
+
+		modifier = {
+			is_spouse_of = scope:actor
+			add = 25
+			desc = AI_YOUR_SPOUSE
+		}
+
+		#Relations & relatives (with host)
+		modifier = {
+			exists = liege
+			has_relation_lover = liege
+			add = 25
+			desc = AI_THEIR_LOVER
+		}
+
+		#Make less likely that they accept if they are of another culture
+		modifier = {
+			add = -10
+			trigger = {
+				scope:actor = {
+					culture = { has_same_culture_heritage = scope:recipient.culture }
+					NOT = { has_same_culture_as = scope:recipient }
+				}
+			}
+			desc = AI_NOT_CULTURE
+		}
+		
+		modifier = {
+			add = -20
+			trigger = {
+				scope:actor = {
+					NOT = { culture = { has_same_culture_heritage = scope:recipient.culture } }
+				}
+			}
+			desc = AI_NOT_CULTURE
+		}
+	   
+
+		#Less likely if they don't like other religion
+		modifier = {
+			add = {
+				value = -5
+				if = {
+					limit = {
+						scope:recipient.faith = {
+							faith_hostility_level = {
+								target = scope:actor.faith
+								value >= faith_hostile_level
+							}
+						}
+					}
+					subtract = 5
+				}
+				if = {
+					limit = {
+						scope:recipient.faith = {
+							faith_hostility_level = {
+								target = scope:actor.faith
+								value >= faith_evil_level
+							}
+						}
+					}
+					subtract = 10
+				}
+			}
+			trigger = {
+				NOT = { scope:recipient.faith = scope:actor.faith }
+			}
+			desc = AI_RELIGION
+		}
+
+	   # TRAITS
+	#    modifier = {
+	# 	   add = 20
+	# 	   scope:recipient = {
+	# 		   has_trait = generous
+	# 	   }
+	# 	   desc = RICE_interaction_recipient_generous_acceptance
+	#    }
+	   modifier = {
+		   add = 25
+		   scope:recipient = {
+			   has_trait = greedy
+		   }
+		   desc = RICE_interaction_recipient_greedy_acceptance
+	   }
+
+
+    }
+
+	on_decline = {
+		# Scope:actor gains some stress over the whole ordeal.
+		scope:actor = {
+			trigger_event = sicily.0052
+			show_as_tooltip = {
+				add_prestige = -50
+				# stress_impact = {
+				# 	base = miniscule_stress_impact_gain
+				# 	ambitious = miniscule_stress_impact_gain
+				# 	shy = miniscule_stress_impact_gain
+				# 	impatient = miniscule_stress_impact_gain
+				# 	arrogant = miniscule_stress_impact_gain
+				# }				
+			}
+			# send_interface_toast = {
+			# 	title = RICE_niger_delta_kola_nut_interaction.decline.actor.tt
+			# 	left_icon = scope:recipient
+			# 	add_stress = minor_stress_gain
+			# }
+		}
+		# Scope:actor loses opinion of scope:recipient.
+		show_as_tooltip = {
+			scope:recipient = {
+				custom_tooltip = RICE_sicily_give_wheat_shipments_reject_effects_1_tt
+				custom_tooltip = RICE_sicily_give_wheat_shipments_reject_effects_2_tt
+				reverse_add_opinion = {
+					target = scope:actor
+					modifier = rejected_opinion
+				}
+			}			
+		}
+	}
+
+	# Hook
+	auto_accept = {
+		custom_description = {
+			text = "spending_hook"
+			subject = scope:actor
+			object = scope:recipient
+			scope:hook = yes
+		}
+	}
+
+	send_option = {
+		is_valid = {
+			scope:actor = {
+				has_usable_hook = scope:recipient
+			}
+		}
+		flag = hook
+		localization = SCHEME_HOOK
+	}
+	should_use_extra_icon = {
+		scope:actor = { has_usable_hook = scope:recipient }
+	}
+	extra_icon = "gfx/interface/icons/character_interactions/hook_icon.dds"
+
+	send_options_exclusive = no
+
+}
+
+
+
+RICE_sicily_request_wheat_shipments = {
+	category = interaction_category_diplomacy
+	common_interaction = yes
+
+	desc = RICE_sicily_request_wheat_shipments_desc
+	ai_maybe = yes
+	ai_min_reply_days = 5
+	ai_max_reply_days = 10
+
+	auto_accept = yes
+	
+	ai_targets = {
+		ai_recipients = scripted_relations
+	}
+	ai_targets = {
+		ai_recipients = liege
+	}
+	ai_targets = {
+		ai_recipients = neighboring_rulers
+		ai_recipients = peer_vassals
+		max = 10
+	}
+	ai_targets = {
+		ai_recipients = vassals
+		max = 10
+	}
+	ai_target_quick_trigger = {
+		adult = yes
+	}
+	ai_frequency = 48
+	
+	cooldown = { years = 2 }
+	cooldown_against_recipient = { years = 5 }
+	
+	is_shown = {
+		NOT = {
+			scope:recipient = scope:actor
+		}
+		scope:actor = {	
+			is_ruler = yes
+			NOT = {
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_sicily_island_region
+					}
+				}
+			}
+		}
+		scope:recipient = {
+			#is_ai = yes
+			is_adult = yes
+			is_ruler = yes
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_sicily_island_region
+				}
+			}
+		}
+	}
+	
+	is_valid = {
+		scope:actor = {
+			gold >= 50
+			custom_description = {
+				text = RICE_sicily_geographical_req_not
+				NOT = {
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_sicily_island_region
+						}
+					}
+				}
+			}
+		}
+		scope:recipient = {
+			custom_description = {
+				text = RICE_sicily_geographical_req
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_sicily_island_region
+					}
+				}
+			}
+		}
+	}
+
+
+
+	# Pay them extra
+	send_option = {
+		is_shown = {
+			exists = scope:recipient
+		}
+		flag = RICE_pay_for_grain
+		localization = RICE_pay_for_grain
+	}
+	
+	on_accept = {
+		scope:actor = {
+			show_as_tooltip = {
+				remove_short_term_gold = 220
+				add_character_modifier = {
+					modifier = RICE_sicily_grain_shipments
+					years = 10
+				}
+				every_held_title = {
+					custom = RICE_every_county_UI_actor_owns
+					limit = {
+						tier = tier_county
+						NOT = {
+							any_county_province = {
+								geographical_region = RICE_sicily_island_region	
+							}
+						}
+					}
+					custom_tooltip = RICE_sicily_wheat_shipments_control_tt
+				}	
+				add_opinion = {
+					target = scope:recipient
+					modifier = grateful_opinion
+					opinion = 20
+				}				
+			}
+				
+			custom_tooltip = RICE_sicily_request_wheat_shipments_positive_effects_tt
+			custom_tooltip = RICE_sicily_request_wheat_shipments_negative_effects_tt
+		}
+		scope:recipient = {
+			add_prestige = 100
+			add_gold = 220		
+			trigger_event = sicily.0053
+		}
+
+		if = {
+			limit = { always = scope:RICE_pay_for_grain }
+			scope:actor = {
+				pay_short_term_gold = {
+					gold = {
+						value = bribe_value
+						#multiply = 1
+					}
+					target = scope:recipient
+				}
+				stress_impact = {
+					greedy = minor_stress_impact_gain
+				}
+			}
+		}
+
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 60
+
+		# modifier = { # Or when greedy
+		# 	add = scope:actor.ai_greed
+		# 	scope:actor = {
+		# 		ai_greed > 0
+		# 	}
+		# }
+
+		# modifier = {
+		# 	add = 100
+		# 	scope:actor = {
+		# 		ai_has_economical_boom_personality = yes
+		# 	}
+		# 	scope:recipient.gold >= 1000
+		# }
+
+	}
+
+	ai_accept = {
+		base = 50
+
+	   # AI take opinion into account, but reduced so they'll at least occasionally accept from folks they dislike.
+	   opinion_modifier = {
+		   who = scope:recipient
+		   opinion_target = scope:actor
+		   multiplier = 0.5
+		   desc = AI_OPINION_REASON
+	   }
+
+		#Relations & relatives (with actor)
+
+		modifier = {
+			has_relation_friend = scope:actor
+			add = 10
+			desc = AI_YOUR_FRIEND
+		}
+
+		modifier = {
+			this.dynasty.dynast = scope:actor
+			add = 10
+			desc = AI_YOU_ARE_THE_DYNAST
+		}
+
+		modifier = {
+			this.house.house_head = scope:actor
+			add = 10
+			desc = AI_YOU_ARE_THE_HOUSE_HEAD
+		}
+
+		modifier = {
+			is_spouse_of = scope:actor
+			add = 25
+			desc = AI_YOUR_SPOUSE
+		}
+
+		#Relations & relatives (with host)
+		modifier = {
+			exists = liege
+			has_relation_lover = liege
+			add = 25
+			desc = AI_THEIR_LOVER
+		}
+
+		#Make less likely that they accept if they are of another culture
+		modifier = {
+			add = -5
+			trigger = {
+				scope:actor = {
+					culture = { has_same_culture_heritage = scope:recipient.culture }
+					NOT = { has_same_culture_as = scope:recipient }
+				}
+			}
+			desc = AI_NOT_CULTURE
+		}
+		
+		modifier = {
+			add = -10
+			trigger = {
+				scope:actor = {
+					NOT = { culture = { has_same_culture_heritage = scope:recipient.culture } }
+				}
+			}
+			desc = AI_NOT_CULTURE
+		}
+	   
+
+		#Less likely if they don't like other religion
+		modifier = {
+			add = {
+				value = 0
+				if = {
+					limit = {
+						scope:recipient.faith = {
+							faith_hostility_level = {
+								target = scope:actor.faith
+								value >= faith_hostile_level
+							}
+						}
+					}
+					subtract = 3
+				}
+				if = {
+					limit = {
+						scope:recipient.faith = {
+							faith_hostility_level = {
+								target = scope:actor.faith
+								value >= faith_evil_level
+							}
+						}
+					}
+					subtract = 5
+				}
+			}
+			trigger = {
+				NOT = { scope:recipient.faith = scope:actor.faith }
+			}
+			desc = AI_RELIGION
+		}
+
+	   modifier = {
+		   add = {
+			   value = 20
+			   if = {
+				   limit = {
+					   has_trait = greedy
+				   }
+				   multiply = 1.5
+			   }
+			   else_if = {
+				   limit = {
+					   has_trait = generous
+				   }
+				   multiply = 0.5
+			   }
+		   }
+		   scope:RICE_pay_for_grain = yes
+		   desc = RICE_paid_me_extra_to_accept
+	   }
+
+	   # TRAITS
+	   modifier = {
+		   add = 20
+		   scope:recipient = {
+			   has_trait = generous
+		   }
+		   desc = RICE_interaction_recipient_generous_acceptance
+	   }
+	   modifier = {
+		   add = 10
+		   scope:recipient = {
+			   has_trait = greedy
+		   }
+		   desc = RICE_interaction_recipient_greedy_acceptance
+	   }
+
+
+    }
+
+	on_decline = {
+		# Scope:actor gains some stress over the whole ordeal.
+		scope:actor = {
+			trigger_event = sicily.0055
+			show_as_tooltip = {
+				add_prestige = -50
+				add_opinion = {
+					target = scope:recipient
+					modifier = rejected_opinion
+				}
+				# stress_impact = {
+				# 	base = miniscule_stress_impact_gain
+				# 	ambitious = miniscule_stress_impact_gain
+				# 	shy = miniscule_stress_impact_gain
+				# 	impatient = miniscule_stress_impact_gain
+				# 	arrogant = miniscule_stress_impact_gain
+				# }				
+			}
+			# send_interface_toast = {
+			# 	title = RICE_niger_delta_kola_nut_interaction.decline.actor.tt
+			# 	left_icon = scope:recipient
+			# 	add_stress = minor_stress_gain
+			# }
+		}
+		# Scope:actor loses opinion of scope:recipient.
+		show_as_tooltip = {
+			scope:recipient = {
+				custom_tooltip = RICE_sicily_request_wheat_shipments_reject_effects_1_tt
+			}			
+		}
+	}
+
+	# Hook
+	auto_accept = {
+		custom_description = {
+			text = "spending_hook"
+			subject = scope:actor
+			object = scope:recipient
+			scope:hook = yes
+		}
+	}
+
+	send_option = {
+		is_valid = {
+			scope:actor = {
+				has_usable_hook = scope:recipient
+			}
+		}
+		flag = hook
+		localization = SCHEME_HOOK
+	}
+	should_use_extra_icon = {
+		scope:actor = { has_usable_hook = scope:recipient }
+	}
+	extra_icon = "gfx/interface/icons/character_interactions/hook_icon.dds"
+
+	send_options_exclusive = no
+
+
+}

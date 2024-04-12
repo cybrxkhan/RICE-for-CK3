@@ -1,0 +1,1212 @@
+﻿RICE_setup_sicily_flavor_pack_effect = {
+
+
+	############################################################
+	#
+	# RELIGION CHANGES
+	#
+	############################################################
+
+
+
+	############################################################
+	#
+	# CULTURE CHANGES
+	#
+	############################################################
+
+	culture:sicilian = {
+		remove_culture_tradition = tradition_xenophilic
+		add_culture_tradition = tradition_RICE_between_three_worlds
+		remove_variable = tradition_cooldown
+	}
+
+	culture:siculo_arabic = {
+		add_name_list = name_list_greek # Uses both Arabic and Greek names
+		add_culture_tradition = tradition_RICE_between_three_worlds
+		remove_variable = tradition_cooldown
+	}
+
+
+	############################################################
+	#
+	# HISTORY/TITLE CHANGES
+	#
+	############################################################
+
+	if = {
+		limit = {
+			game_start_date > 827.1.1
+		}
+		title:c_palermo = {
+			set_county_culture = culture:siculo_arabic
+		}
+	}
+	
+	if = {
+		limit = {
+			game_start_date > 1000.1.1
+		}
+		title:c_messina = {
+			set_county_culture = culture:siculo_arabic # culture:greek
+		}
+		title:c_siracusa = {
+			set_county_culture = culture:siculo_arabic
+		}
+		title:c_agrigento = {
+			set_county_culture = culture:siculo_arabic
+		}
+		title:c_malta = {
+			set_county_culture = culture:siculo_arabic
+		}
+	}
+
+
+
+	every_ruler = {
+		limit = {
+			NOR = {
+				culture = { has_cultural_pillar = heritage_berber }
+				culture = { has_cultural_pillar = heritage_arabic }
+			}
+			capital_county ?= {
+				culture = culture:siculo_arabic
+			}
+		}
+		every_courtier = {
+			limit = {
+				is_lowborn = yes
+				OR = {
+					culture = { has_cultural_pillar = heritage_berber }
+					culture = { has_cultural_pillar = heritage_arabic }
+					culture = { has_cultural_pillar = heritage_byzantine }
+				}
+			}
+			random = {
+				chance = 50
+				set_culture = culture:siculo_arabic
+			}
+		}
+	}
+
+	every_ruler = {
+		limit = {
+			OR = {
+				culture = { has_cultural_pillar = heritage_berber }
+				culture = { has_cultural_pillar = heritage_arabic }
+			}
+			capital_county ?= {
+				culture = culture:siculo_arabic
+			}
+		}
+		make_siculo_arabic_culture_effect = yes
+	}
+
+
+	############################################################
+	#
+	# MISCELLANEOUS
+	#
+	############################################################
+
+	# For 1066 bookmark
+	if = {
+		limit = {
+			game_start_date >= 867.1.1
+			game_start_date <= 880.1.1
+		}	
+		# Uthman, attested leader of the Emirate of Taranto in 880
+		# Since we can't actually give him Taranto, we'll give him the next closest thing
+		character:RICE_sicily_arabic_001 = {
+			get_title = title:c_camarda
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+		}
+		# Make Sawdan of the Emirate of Bari Siculo-Arabic
+		character:163094 = {
+			make_siculo_arabic_culture_effect = yes
+			add_character_modifier = {
+				modifier = RICE_sicily_aspiration_establish_islam_in_southern_italy
+			}
+			set_variable = {
+				name = RICE_historical_aspiration
+				value = flag:sawdan
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			game_start_date >= 1066.9.15
+			game_start_date <= 1071.1.1
+		}	
+		# Rename al-Thumna
+		character:maghrebi0011 = { # ibn al-Thumna
+			change_first_name = Muhammad # Not sure why they call him Ali in-game and not Muhammad
+		}		
+		title:e_byzantium.holder = {
+			save_scope_as = byzantine_emperor
+		}
+		# Roger of Sicily
+		character:1132 = {
+			add_character_modifier = {
+				modifier = RICE_sicily_aspiration_complete_conquest_of_sicily
+			}
+			set_variable = {
+				name = RICE_historical_aspiration
+				value = flag:roger
+			}
+		}
+		# Benavert and other Muslim taifa warlords of Sicily
+		# Yusuf ibn Abdallah Mankudid
+		character:20831 = {
+			add_character_modifier = {
+				modifier = RICE_sicily_aspiration_reunify_sicily
+			}
+			set_variable = {
+				name = RICE_historical_aspiration
+				value = flag:benavert
+			}
+		}
+		# Ibn Abbad 'Benavert'
+		character:20829 = {
+			add_character_modifier = {
+				modifier = RICE_sicily_aspiration_reunify_sicily
+			}
+			set_variable = {
+				name = RICE_historical_aspiration
+				value = flag:benavert
+			}
+		}
+		# ibn Hamud
+		character:maghrebi0015 = {
+			add_character_modifier = {
+				modifier = RICE_sicily_aspiration_reunify_sicily
+			}
+			set_variable = {
+				name = RICE_historical_aspiration
+				value = flag:benavert
+			}
+		}
+		# Ramadan Mdnid
+		character:20828 = {
+			add_character_modifier = {
+				modifier = RICE_sicily_aspiration_reunify_sicily
+			}
+			set_variable = {
+				name = RICE_historical_aspiration
+				value = flag:benavert
+			}
+		}
+		# Shuffle around Norman rulers so Bari is free to give to the Byzantines
+		# Move Abelard de Hauteville to Rossano, the last extra county Robert Guiscard has
+		character:1134 = {
+			get_title = title:c_rossano
+		}
+		# Then, move Geoffroy of Conversano to Abelard's old county
+		character:171155 = {
+			get_title = title:c_camarda
+		}
+		# Finally, give Bari to Abulchares, and make him a vassal of the Byzantines# Add some leading citizens of Bari to Abulchares' court
+		character:RICE_sicily_greek_001 = {
+			get_title = title:c_bari
+			save_scope_as = abulchares
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+			
+			add_courtier = character:RICE_sicily_greek_002
+			add_courtier = character:RICE_sicily_greek_004
+			add_courtier = character:RICE_sicily_greek_005
+			add_courtier = character:RICE_sicily_greek_006
+		}
+		create_title_and_vassal_change = {
+			type = swear_fealty
+			save_scope_as = change
+		}
+		scope:abulchares = {
+			change_liege = {
+				liege = scope:byzantine_emperor
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+
+	}
+
+
+	# Mount Etna
+	if = {
+		limit = {
+			title:b_catania = {
+				title_province = { has_special_building = no }
+			}
+		}
+		title:b_catania.title_province = {
+			add_special_building = RICE_sicily_mount_etna
+		}
+	}
+	
+	# Arab-Berber jund settlements in Sicily
+	if = {
+		limit = {
+			game_start_date > 827.1.1
+			game_start_date < 1091.1.1
+		}
+		title:c_palermo = {
+			add_county_modifier = {
+				modifier = RICE_sicily_stronghold_arabic
+			}
+		}
+		title:c_agrigento = {
+			add_county_modifier = {
+				modifier = RICE_sicily_stronghold_arabic
+			}
+		}
+	}
+	
+	# Arab-Berber base of Garigliano
+	if = {
+		limit = {
+			game_start_date > 850.1.1
+			game_start_date < 915.1.1
+		}
+		title:c_capua = {
+			add_county_modifier = {
+				modifier = RICE_sicily_stronghold_arabic
+			}
+		}
+	}
+	
+	# Greek fortresses of Taormina/Rometta
+	if = {
+		limit = {
+			game_start_date > 850.1.1
+			game_start_date < 902.1.1
+		}
+		title:c_messina = {
+			add_county_modifier = {
+				modifier = RICE_sicily_stronghold_greek
+			}
+		}
+	}
+
+
+
+	start_struggle = {
+		struggle_type = RICE_sicily_struggle
+		start_phase = struggle_RICE_sicily_phase_borderland
+	}
+
+	RICE_sicily_annual_values_calculator = yes
+
+
+}
+
+
+# Determines likelihood of being Latin/Arab/Greek
+# This value is recalculated at the start of every year
+RICE_sicily_annual_values_calculator = {
+	if = {
+		limit = {
+			exists = struggle:RICE_sicily_struggle
+		}
+		set_global_variable = {
+			name = RICE_sicily_latin_influence
+			value = RICE_sicily_latin_influence_global_value
+		}
+		set_global_variable = {
+			name = RICE_sicily_greek_influence
+			value = RICE_sicily_greek_influence_global_value
+		}
+		set_global_variable = {
+			name = RICE_sicily_arabic_influence
+			value = RICE_sicily_arabic_influence_global_value
+		}
+	}
+}
+
+
+
+make_siculo_arabic_culture_effect = {
+	#Convert your, and your whole family's, culture
+	set_culture = culture:siculo_arabic
+	if = {
+		limit = {
+			any_spouse = {
+				is_landed = no				
+				OR = {
+					culture = { has_cultural_pillar = heritage_berber }
+					culture = { has_cultural_pillar = heritage_arabic }
+				}
+			}
+		}
+		every_spouse = {
+			limit = {
+				is_landed = no				
+				OR = {
+					culture = { has_cultural_pillar = heritage_berber }
+					culture = { has_cultural_pillar = heritage_arabic }
+				}
+			}
+			set_culture = culture:siculo_arabic
+		}
+	}
+	if = {
+		limit = {
+			any_close_family_member = {
+				is_landed = no				
+				OR = {
+					culture = { has_cultural_pillar = heritage_berber }
+					culture = { has_cultural_pillar = heritage_arabic }
+				}
+			}
+		}
+		every_close_family_member = {
+			custom = all_family_members
+			limit = {
+				is_landed = no				
+				OR = {
+					culture = { has_cultural_pillar = heritage_berber }
+					culture = { has_cultural_pillar = heritage_arabic }
+				}
+			}
+			set_culture = culture:siculo_arabic
+		}
+	}
+
+	#Convert appropriate vassals, and their family
+	if = {
+		limit = {
+			any_vassal = {			
+				OR = {
+					culture = { has_cultural_pillar = heritage_berber }
+					culture = { has_cultural_pillar = heritage_arabic }
+				}
+			}
+		}
+		every_vassal = {
+			limit = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_berber }
+					culture = { has_cultural_pillar = heritage_arabic }
+				}
+			}
+			set_culture = culture:siculo_arabic
+			hidden_effect = {
+				if = {
+					limit = {
+						any_spouse = {
+							is_landed = no				
+							OR = {
+								culture = { has_cultural_pillar = heritage_berber }
+								culture = { has_cultural_pillar = heritage_arabic }
+							}
+						}
+					}
+					every_spouse = {
+						limit = {
+							is_landed = no				
+							OR = {
+								culture = { has_cultural_pillar = heritage_berber }
+								culture = { has_cultural_pillar = heritage_arabic }
+							}
+						}
+						set_culture = culture:siculo_arabic
+					}
+				}
+				if = {
+					limit = {
+						any_close_family_member = {
+							is_landed = no				
+							OR = {
+								culture = { has_cultural_pillar = heritage_berber }
+								culture = { has_cultural_pillar = heritage_arabic }
+							}
+						}
+					}
+					every_close_family_member = {
+						custom = all_family_members
+						limit = {
+							is_landed = no				
+							OR = {
+								culture = { has_cultural_pillar = heritage_berber }
+								culture = { has_cultural_pillar = heritage_arabic }
+							}
+						}
+						set_culture = culture:siculo_arabic
+					}
+				}
+			}
+		}
+	}
+
+	#Convert appropriate courtiers
+	if = {
+		limit = {
+			any_courtier_or_guest = {			
+				OR = {
+					culture = { has_cultural_pillar = heritage_berber }
+					culture = { has_cultural_pillar = heritage_arabic }
+				}
+			}
+		}
+		every_courtier_or_guest = {
+			limit = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_berber }
+					culture = { has_cultural_pillar = heritage_arabic }
+				}
+			}
+			set_culture = culture:siculo_arabic
+			hidden_effect = {
+				if = {
+					limit = {
+						any_spouse = {
+							is_landed = no				
+							OR = {
+								culture = { has_cultural_pillar = heritage_berber }
+								culture = { has_cultural_pillar = heritage_arabic }
+							}
+						}
+					}
+					every_spouse = {
+						limit = {
+							is_landed = no				
+							OR = {
+								culture = { has_cultural_pillar = heritage_berber }
+								culture = { has_cultural_pillar = heritage_arabic }
+							}
+						}
+						set_culture = culture:siculo_arabic
+					}
+				}
+				if = {
+					limit = {
+						any_close_family_member = {
+							is_landed = no				
+							OR = {
+								culture = { has_cultural_pillar = heritage_berber }
+								culture = { has_cultural_pillar = heritage_arabic }
+							}
+						}
+					}
+					every_close_family_member = {
+						custom = all_family_members
+						limit = {
+							is_landed = no				
+							OR = {
+								culture = { has_cultural_pillar = heritage_berber }
+								culture = { has_cultural_pillar = heritage_arabic }
+							}
+						}
+						set_culture = culture:siculo_arabic
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+##### Struggle Endings #####
+RICE_sicily_end_struggle_effect = {
+	every_in_global_list = { # We de-flag chars (surprisingly performance friendly, from all possible options)
+		variable = RICE_sicily_struggle_intro_flag_character_list
+		if = {
+			limit = { has_character_flag = RICE_sicily_struggle_intro_event_flag } # Since only alive chars have flags, we don't need to check for anything else
+			remove_character_flag = RICE_sicily_struggle_intro_event_flag
+		}
+	}
+
+	# Global variable tracking.
+	## For usage in councillor tasks.
+	set_global_variable = {
+		name = RICE_sicily_struggle_ending
+		value = $FLAG$
+	}
+
+	# I'm too dumb to understand what this means
+	# ## For debug purposes.
+	# if = {
+	# 	limit = { gather_debug_variables_for_persian_struggle_trigger = yes }
+	# 	increment_global_variable_effect = {
+	# 		VAL = current_year
+	# 		VAR = sp_end_date
+	# 	}
+	# }
+
+	every_player = {
+		limit = { RICE_sicily_does_this_player_care_about_the_sicilian_struggle = yes } # Needs to be checked before the struggle ends due to race condition issues
+		add_to_list = player_to_notify # Making a list so stuff is tiggered after the struggle ends, to make extra sure I don't break anything.
+	}
+
+	every_in_list = { # Then we *actually* notify palyers, making sure the struggle has already ended
+		list = player_to_notify
+		limit = {
+			NOT = { this = root }
+		}
+		trigger_event = $EVENT$
+	}
+	struggle:RICE_sicily_struggle ?= { end_struggle = $ENDING$ }
+}
+
+
+
+
+
+
+RICE_sicily_setup_latin_stronghold_leader_effect = {
+	save_scope_as = faction
+
+	# Determine original culture of these Latins
+	# If there are any Latins in Italy, go there first
+	if = {
+		limit = {
+			any_county_in_region = {
+				region = world_europe_south_italy
+				OR = {
+					culture = { has_cultural_pillar = heritage_latin }
+					culture = { has_cultural_pillar = heritage_frankish }
+					culture = { has_cultural_pillar = heritage_iberian }
+				}
+			}
+		}
+		every_county_in_region = {
+			region = world_europe_south_italy
+			limit = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_latin }
+					culture = { has_cultural_pillar = heritage_frankish }
+					culture = { has_cultural_pillar = heritage_iberian }
+				}
+			}
+			add_to_list = latin_culture_counties
+		}
+		random_in_list = {
+			list = latin_culture_counties
+			save_scope_as = county
+		}
+		scope:county.culture = {
+			save_scope_as = latin_culture
+		}
+	}
+	# If they cannot be found in Italy, search entire map
+	else_if = {
+		limit = {
+			any_county = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_latin }
+					culture = { has_cultural_pillar = heritage_frankish }
+					culture = { has_cultural_pillar = heritage_iberian }
+				}
+			}
+		}
+		every_county = {
+			limit = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_latin }
+					culture = { has_cultural_pillar = heritage_frankish }
+					culture = { has_cultural_pillar = heritage_iberian }
+				}
+			}
+			add_to_list = latin_culture_counties
+		}
+		random_in_list = {
+			list = latin_culture_counties
+			save_scope_as = county
+		}
+		scope:county.culture = {
+			save_scope_as = latin_culture
+		}
+	}
+	# If they don't exist on the map for some reason
+	else = {
+		every_culture_global = {
+			limit = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_latin }
+					culture = { has_cultural_pillar = heritage_frankish }
+					culture = { has_cultural_pillar = heritage_iberian }
+				}
+			}
+			add_to_list = latin_cultures
+		}
+		random_in_list = {
+			list = latin_cultures
+			save_scope_as = latin_culture
+		}
+	}
+	# Determine original faith of these Latins
+	# If there are any Christians in Italy, go there first
+	if = {
+		limit = {
+			any_county_in_region = {
+				region = world_europe_south_italy
+				religion = religion:christianity_religion
+			}
+		}
+		every_county_in_region = {
+			region = world_europe_south_italy
+			limit = {
+				religion = religion:christianity_religion
+			}
+			add_to_list = latin_faith_counties
+		}
+		random_in_list = {
+			list = latin_faith_counties
+			save_scope_as = county
+		}
+		scope:county.faith = {
+			save_scope_as = latin_faith
+		}
+	}
+	# If they don't exist on the map for some reason
+	else = {
+		faith:catholic = {
+			save_scope_as = latin_faith
+		}
+	}
+
+
+
+	# Does a peasant capital county already exist?
+	if = {
+		limit = {
+			NOT = { exists = scope:latin_county }
+		}
+		random_faction_county_member = { save_scope_as = latin_county }
+	}
+	# Does a peasant leader already exist?
+	if = {
+		limit = {
+			NOT = { exists = scope:RICE_sicily_leader }
+		}
+		create_character = {
+			location = scope:latin_county.title_province
+			template = RICE_latin_stronghold_faction_leader_template
+			gender_female_chance = {
+				if = {
+					limit = { scope:latin_county.faith = { has_doctrine = doctrine_gender_male_dominated } }
+					add = 0
+				}
+				else_if = {
+					limit = { scope:latin_county.faith = { has_doctrine = doctrine_gender_female_dominated } }
+					add = 100
+				}
+				else = {
+					add = 50
+				}
+			}
+			save_scope_as = RICE_sicily_leader
+		}
+	}
+	scope:RICE_sicily_leader = {
+		add_character_flag = RICE_sicily_faction_random_stronghold_leader
+	}
+
+
+	create_dynamic_title = {
+		tier = duchy
+		name = FACTION_RICE_sicily_latin_stronghold_TITLE_NAME
+	}
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+
+	scope:new_title = {
+		set_capital_county = scope:latin_county
+		set_landless_title = yes
+		set_destroy_on_succession = yes
+		set_delete_on_destroy = yes
+		set_no_automatic_claims = yes
+		set_definitive_form = yes
+		set_can_be_named_after_dynasty = no
+		change_title_holder = {
+			holder = scope:RICE_sicily_leader
+			change = scope:change
+		}
+
+		set_variable = {
+			name = faction
+			value = scope:faction
+		}
+
+		# avoid unused variable error. This variable is referenced in code
+		var:faction = {}
+	}
+	resolve_title_and_vassal_change = scope:change
+	scope:RICE_sicily_leader = {
+		set_variable = {
+			name = peasant_title
+			value = scope:new_title
+		}
+	}
+	scope:new_title = { generate_coa = factions }
+
+	scope:RICE_sicily_leader = {
+		set_variable = {
+			name = rebel_leader_peasants
+			value = scope:faction
+		}
+		join_faction_skip_check = scope:faction
+	}
+
+	set_special_character = scope:RICE_sicily_leader
+}
+
+
+RICE_sicily_occupy_sicilian_frontier_effect = {
+	add_prestige = 500
+	add_gold = major_gold_value
+	hidden_effect = {
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:sicily_struggle_restarter
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							OR = { # Is in relevant region
+								geographical_region = world_europe_south
+								geographical_region = world_europe_west_francia
+								geographical_region = world_asia_minor
+								geographical_region = world_europe_west_iberia
+								geographical_region = world_africa_north
+								geographical_region = world_africa_sahara
+								geographical_region = world_middle_east_jerusalem
+							}		
+						}
+					}
+				}
+			}
+			trigger_event = sardinia.0012
+		}		
+	}
+	# Struggle starts a day after, to give time to notify all relevant players
+	# start_struggle = {
+	# 	struggle_type = RICE_sicily_struggle
+	# 	start_phase = struggle_RICE_sicily_phase_borderland
+	# }
+}
+
+RICE_sicily_stabilize_sicilian_frontier_effect = {
+	add_prestige = 500
+	spawn_army = {
+		levies = 500
+		men_at_arms = {
+			type = light_footmen
+			stacks = 1
+		}
+		men_at_arms = {
+			type = bowmen
+			stacks = 2
+		}
+		men_at_arms = {
+			type = pikemen_unit
+			stacks = 1
+		}
+		men_at_arms = {
+			type = light_horsemen
+			stacks = 1
+		}
+		location = capital_province
+		#inheritable = no
+		name = RICE_sicily_event_troops
+	}
+	hidden_effect = {
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:sicily_struggle_restarter
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							OR = { # Is in relevant region
+								geographical_region = world_europe_south
+								geographical_region = world_europe_west_francia
+								geographical_region = world_asia_minor
+								geographical_region = world_europe_west_iberia
+								geographical_region = world_africa_north
+								geographical_region = world_africa_sahara
+								geographical_region = world_middle_east_jerusalem
+							}		
+						}
+					}
+				}
+			}
+			trigger_event = sardinia.0012
+		}		
+	}
+	# Struggle starts a day after, to give time to notify all relevant players
+	# start_struggle = {
+	# 	struggle_type = RICE_sicily_struggle
+	# 	start_phase = struggle_RICE_sicily_phase_borderland
+	# }
+}
+
+
+
+
+
+
+RICE_sicily_build_admirals_bridge_effect = {
+	add_prestige = 100
+	add_legitimacy = minor_legitimacy_gain
+
+	add_character_modifier = {
+		modifier = RICE_sicily_built_admirals_bridge
+	}
+
+	title:c_palermo = {
+		add_county_modifier = {
+			modifier = RICE_sicily_admirals_bridge_recently_built
+			years = 30
+		}
+	}
+
+}
+
+
+
+RICE_sicily_spawn_latin_mercenaries_effect = {
+	random_list = {
+		# 200
+		20 = {
+			spawn_army = {
+				levies = 100
+				men_at_arms = {
+					type = light_footmen
+					stacks = 1
+				}
+				location = root.capital_province
+				inheritable = no
+				name = RICE_sicily_event_troops
+			}
+		}
+		# 400
+		20 = {
+			spawn_army = {
+				levies = 200
+				men_at_arms = {
+					type = light_footmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = bowmen
+					stacks = 1
+				}
+				location = root.capital_province
+				inheritable = no
+				name = RICE_sicily_event_troops
+			}
+		}
+		# 600
+		15 = {
+			spawn_army = {
+				levies = 300
+				men_at_arms = {
+					type = light_footmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = bowmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = light_horsemen
+					stacks = 1
+				}
+				location = root.capital_province
+				inheritable = no
+				name = RICE_sicily_event_troops
+			}
+		}
+		# 800
+		10 = {
+			spawn_army = {
+				levies = 400
+				men_at_arms = {
+					type = light_footmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = bowmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = armored_footmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = light_horsemen
+					stacks = 1
+				}
+				location = root.capital_province
+				inheritable = no
+				name = RICE_sicily_event_troops
+			}
+		}
+		# 1000
+		5 = {
+			spawn_army = {
+				levies = 500
+				men_at_arms = {
+					type = light_footmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = bowmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = armored_footmen
+					stacks = 2
+				}
+				men_at_arms = {
+					type = light_horsemen
+					stacks = 1
+				}
+				location = root.capital_province
+				inheritable = no
+				name = RICE_sicily_event_troops
+			}
+		}
+	}
+}
+
+RICE_sicily_spawn_arabic_mercenaries_effect = {
+	random_list = {
+		# 200
+		20 = {
+			spawn_army = {
+				levies = 100
+				men_at_arms = {
+					type = mubarizun
+					stacks = 1
+				}
+				location = root.capital_province
+				inheritable = no
+				name = RICE_sicily_event_troops
+			}
+		}
+		# 400
+		20 = {
+			spawn_army = {
+				levies = 200
+				men_at_arms = {
+					type = mubarizun
+					stacks = 1
+				}
+				men_at_arms = {
+					type = bowmen
+					stacks = 1
+				}
+				location = root.capital_province
+				inheritable = no
+				name = RICE_sicily_event_troops
+			}
+		}
+		# 600
+		15 = {
+			spawn_army = {
+				levies = 300
+				men_at_arms = {
+					type = mubarizun
+					stacks = 1
+				}
+				men_at_arms = {
+					type = bowmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = light_horsemen
+					stacks = 1
+				}
+				location = root.capital_province
+				inheritable = no
+				name = RICE_sicily_event_troops
+			}
+		}
+		# 800
+		10 = {
+			spawn_army = {
+				levies = 400
+				men_at_arms = {
+					type = mubarizun
+					stacks = 1
+				}
+				men_at_arms = {
+					type = bowmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = light_footmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = light_horsemen
+					stacks = 1
+				}
+				location = root.capital_province
+				inheritable = no
+				name = RICE_sicily_event_troops
+			}
+		}
+		# 1000
+		5 = {
+			spawn_army = {
+				levies = 500
+				men_at_arms = {
+					type = mubarizun
+					stacks = 2
+				}
+				men_at_arms = {
+					type = bowmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = light_footmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = light_horsemen
+					stacks = 1
+				}
+				location = root.capital_province
+				inheritable = no
+				name = RICE_sicily_event_troops
+			}
+		}
+	}
+}
+
+
+RICE_sicily_spawn_greek_mercenaries_effect = {
+	random_list = {
+		# 200
+		20 = {
+			spawn_army = {
+				levies = 100
+				men_at_arms = {
+					type = cataphract
+					stacks = 2
+				}
+				location = root.capital_province
+				inheritable = no
+				name = RICE_sicily_event_troops
+			}
+		}
+		# 400
+		20 = {
+			spawn_army = {
+				levies = 200
+				men_at_arms = {
+					type = light_footmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = cataphract
+					stacks = 2
+				}
+				location = root.capital_province
+				inheritable = no
+				name = RICE_sicily_event_troops
+			}
+		}
+		# 600
+		15 = {
+			spawn_army = {
+				levies = 300
+				men_at_arms = {
+					type = light_footmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = bowmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = cataphract
+					stacks = 2
+				}
+				location = root.capital_province
+				inheritable = no
+				name = RICE_sicily_event_troops
+			}
+		}
+		# 800
+		10 = {
+			spawn_army = {
+				levies = 400
+				men_at_arms = {
+					type = light_footmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = bowmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = light_footmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = cataphract
+					stacks = 2
+				}
+				location = root.capital_province
+				inheritable = no
+				name = RICE_sicily_event_troops
+			}
+		}
+		# 1000
+		5 = {
+			spawn_army = {
+				levies = 500
+				men_at_arms = {
+					type = light_footmen
+					stacks = 2
+				}
+				men_at_arms = {
+					type = bowmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = light_footmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = cataphract
+					stacks = 2
+				}
+				location = root.capital_province
+				inheritable = no
+				name = RICE_sicily_event_troops
+			}
+		}
+	}
+}
+
+RICE_sicily_recipient_gets_wheat_shipments_effect = {
+	add_character_modifier = {
+		modifier = RICE_sicily_grain_shipments
+		years = 10
+	}
+	every_held_title = {
+		custom = RICE_every_county_UI_recipient_owns
+		limit = {
+			tier = tier_county
+			NOT = {
+				any_county_province = {
+					geographical_region = RICE_sicily_island_region	
+				}
+			}
+		}					
+		custom_tooltip = RICE_sicily_wheat_shipments_control_tt
+	}	
+	add_opinion = {
+		target = scope:actor
+		modifier = grateful_opinion
+		opinion = 20
+	}
+}

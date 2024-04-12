@@ -162,7 +162,10 @@ RICE_setup_optional_flavor_events_effect = {
 		}		
 		character:20579 = { # Isleifur
 			trigger_event = north_atlantic.0270
-		}		
+		}	
+		
+		
+		#sicily.0060
 	}
 
 }
@@ -266,6 +269,29 @@ RICE_setup_non_optional_flavor_events_effect = {
 		}
 	}
 
+	if = {
+		limit = {
+			current_date < 1091.1.1
+			current_date > 1040.1.1			
+		}
+		# Non-optional in case a custom ruler is made
+		every_ruler = {
+			limit = {
+				religion = religion:islam_religion
+				capital_province = {
+					geographical_region = RICE_sicily_island_region
+				}
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_sicily_island_region
+					}
+				}
+			}
+			trigger_event = sicily.0060
+		}
+	}
+
 }
 
 
@@ -332,13 +358,20 @@ RICE_setup_music_effect = {
 			NOT = { has_game_rule = RICE_music_off }
 			OR = {
 				has_game_rule = RICE_music_unrestricted
-				culture_has_east_african_heritage_pillar_trigger = yes
+				culture_has_south_european_heritage_pillar_trigger = yes
+				culture_has_north_african_heritage_pillar_trigger = yes
 				capital_province = {
-					geographical_region = world_africa_east
+					OR = {
+						geographical_region = world_europe_west_iberia
+						geographical_region = world_europe_south
+						geographical_region = world_asia_minor
+						geographical_region = world_africa_north
+						geographical_region = world_middle_east_jerusalem
+					}
 				}
 			}
 		}
-		play_music_cue = mx_shrine_of_dask
+		play_music_cue = mx_spirit_of_the_mediterranean
 	}
 }
 
