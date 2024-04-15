@@ -34,9 +34,28 @@
 	#
 	############################################################
 
-	title:b_cassino.title_province = {
-		set_holding_type = church_holding
+	# Monte Cassino
+	if = {
+		limit = {
+			title:b_cassino = {
+				NOT = { title_province = { has_holding_type = church_holding } }
+			}
+		}
+		title:b_cassino.title_province = {
+			set_holding_type = church_holding
+		}
 	}
+	if = {
+		limit = {
+			title:b_cassino = {
+				title_province = { has_special_building = no }
+			}
+		}
+		title:b_cassino.title_province = {
+			add_special_building = RICE_sicily_monte_cassino
+		}
+	}
+
 
 	if = {
 		limit = {
@@ -313,16 +332,16 @@ RICE_sicily_annual_values_calculator = {
 			exists = struggle:RICE_sicily_struggle
 		}
 		set_global_variable = {
-			name = RICE_sicily_latin_influence
-			value = RICE_sicily_latin_influence_global_value
+			name = RICE_sicily_latin_dominance
+			value = RICE_sicily_latin_dominance_global_value
 		}
 		set_global_variable = {
-			name = RICE_sicily_greek_influence
-			value = RICE_sicily_greek_influence_global_value
+			name = RICE_sicily_greek_dominance
+			value = RICE_sicily_greek_dominance_global_value
 		}
 		set_global_variable = {
-			name = RICE_sicily_arabic_influence
-			value = RICE_sicily_arabic_influence_global_value
+			name = RICE_sicily_arabic_dominance
+			value = RICE_sicily_arabic_dominance_global_value
 		}
 	}
 }
@@ -1216,3 +1235,20 @@ RICE_sicily_recipient_gets_wheat_shipments_effect = {
 		opinion = 20
 	}
 }
+
+
+
+RICE_notify_sicily_dominance_effect = {
+	# Notify rulers in general
+	every_county_in_region = {
+		region = custom_sicily
+		holder = {
+			add_to_list = RICE_sicily_rulers
+		}
+	}
+	every_in_list = {
+		list = RICE_sicily_rulers
+		trigger_event = sicily.0002
+	}
+}
+
