@@ -577,208 +577,6 @@ RICE_sicily_end_struggle_effect = {
 
 
 
-RICE_sicily_setup_latin_stronghold_leader_effect = {
-	save_scope_as = faction
-
-	# Determine original culture of these Latins
-	# If there are any Latins in Italy, go there first
-	if = {
-		limit = {
-			any_county_in_region = {
-				region = world_europe_south_italy
-				OR = {
-					culture = { has_cultural_pillar = heritage_latin }
-					culture = { has_cultural_pillar = heritage_frankish }
-					culture = { has_cultural_pillar = heritage_iberian }
-				}
-			}
-		}
-		every_county_in_region = {
-			region = world_europe_south_italy
-			limit = {
-				OR = {
-					culture = { has_cultural_pillar = heritage_latin }
-					culture = { has_cultural_pillar = heritage_frankish }
-					culture = { has_cultural_pillar = heritage_iberian }
-				}
-			}
-			add_to_list = latin_culture_counties
-		}
-		random_in_list = {
-			list = latin_culture_counties
-			save_scope_as = county
-		}
-		scope:county.culture = {
-			save_scope_as = latin_culture
-		}
-	}
-	# If they cannot be found in Italy, search entire map
-	else_if = {
-		limit = {
-			any_county = {
-				OR = {
-					culture = { has_cultural_pillar = heritage_latin }
-					culture = { has_cultural_pillar = heritage_frankish }
-					culture = { has_cultural_pillar = heritage_iberian }
-				}
-			}
-		}
-		every_county = {
-			limit = {
-				OR = {
-					culture = { has_cultural_pillar = heritage_latin }
-					culture = { has_cultural_pillar = heritage_frankish }
-					culture = { has_cultural_pillar = heritage_iberian }
-				}
-			}
-			add_to_list = latin_culture_counties
-		}
-		random_in_list = {
-			list = latin_culture_counties
-			save_scope_as = county
-		}
-		scope:county.culture = {
-			save_scope_as = latin_culture
-		}
-	}
-	# If they don't exist on the map for some reason
-	else = {
-		every_culture_global = {
-			limit = {
-				OR = {
-					culture = { has_cultural_pillar = heritage_latin }
-					culture = { has_cultural_pillar = heritage_frankish }
-					culture = { has_cultural_pillar = heritage_iberian }
-				}
-			}
-			add_to_list = latin_cultures
-		}
-		random_in_list = {
-			list = latin_cultures
-			save_scope_as = latin_culture
-		}
-	}
-	# Determine original faith of these Latins
-	# If there are any Christians in Italy, go there first
-	if = {
-		limit = {
-			any_county_in_region = {
-				region = world_europe_south_italy
-				religion = religion:christianity_religion
-			}
-		}
-		every_county_in_region = {
-			region = world_europe_south_italy
-			limit = {
-				religion = religion:christianity_religion
-			}
-			add_to_list = latin_faith_counties
-		}
-		random_in_list = {
-			list = latin_faith_counties
-			save_scope_as = county
-		}
-		scope:county.faith = {
-			save_scope_as = latin_faith
-		}
-	}
-	# If they don't exist on the map for some reason
-	else = {
-		faith:catholic = {
-			save_scope_as = latin_faith
-		}
-	}
-
-
-
-	# Does a peasant capital county already exist?
-	if = {
-		limit = {
-			NOT = { exists = scope:latin_county }
-		}
-		random_faction_county_member = { save_scope_as = latin_county }
-	}
-	# Does a peasant leader already exist?
-	if = {
-		limit = {
-			NOT = { exists = scope:RICE_sicily_leader }
-		}
-		create_character = {
-			location = scope:latin_county.title_province
-			template = RICE_latin_stronghold_faction_leader_template
-			gender_female_chance = {
-				if = {
-					limit = { scope:latin_county.faith = { has_doctrine = doctrine_gender_male_dominated } }
-					add = 0
-				}
-				else_if = {
-					limit = { scope:latin_county.faith = { has_doctrine = doctrine_gender_female_dominated } }
-					add = 100
-				}
-				else = {
-					add = 50
-				}
-			}
-			save_scope_as = RICE_sicily_leader
-		}
-	}
-	scope:RICE_sicily_leader = {
-		add_character_flag = RICE_sicily_faction_random_stronghold_leader
-	}
-
-
-	create_dynamic_title = {
-		tier = duchy
-		name = FACTION_RICE_sicily_latin_stronghold_TITLE_NAME
-	}
-	create_title_and_vassal_change = {
-		type = created
-		save_scope_as = change
-		add_claim_on_loss = no
-	}
-
-	scope:new_title = {
-		set_capital_county = scope:latin_county
-		set_landless_title = yes
-		set_destroy_on_succession = yes
-		set_delete_on_destroy = yes
-		set_no_automatic_claims = yes
-		set_definitive_form = yes
-		set_can_be_named_after_dynasty = no
-		change_title_holder = {
-			holder = scope:RICE_sicily_leader
-			change = scope:change
-		}
-
-		set_variable = {
-			name = faction
-			value = scope:faction
-		}
-
-		# avoid unused variable error. This variable is referenced in code
-		var:faction = {}
-	}
-	resolve_title_and_vassal_change = scope:change
-	scope:RICE_sicily_leader = {
-		set_variable = {
-			name = peasant_title
-			value = scope:new_title
-		}
-	}
-	scope:new_title = { generate_coa = factions }
-
-	scope:RICE_sicily_leader = {
-		set_variable = {
-			name = rebel_leader_peasants
-			value = scope:faction
-		}
-		join_faction_skip_check = scope:faction
-	}
-
-	set_special_character = scope:RICE_sicily_leader
-}
-
-
 RICE_sicily_occupy_sicilian_frontier_effect = {
 	add_prestige = 500
 	add_gold = major_gold_value
@@ -1251,4 +1049,222 @@ RICE_notify_sicily_dominance_effect = {
 		trigger_event = sicily.0002
 	}
 }
+
+
+
+
+
+
+
+RICE_sicily_arabic_faction_choose_culture_effect = {
+	# Determine original culture of these Arab-Berbers
+	# If there are any Arab-Berbers in Italy, go there first
+	if = {
+		limit = {
+			any_county_in_region = {
+				region = world_europe_south_italy
+				OR = {
+					culture = { has_cultural_pillar = heritage_berber }
+					culture = { has_cultural_pillar = heritage_arabic }
+				}
+			}
+		}
+		every_county_in_region = {
+			region = world_europe_south_italy
+			limit = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_berber }
+					culture = { has_cultural_pillar = heritage_arabic }
+				}
+			}
+			add_to_list = arabic_culture_counties
+		}
+		random_in_list = {
+			list = arabic_culture_counties
+			save_scope_as = county
+		}
+		scope:county.culture = {
+			save_scope_as = arabic_culture
+		}
+	}
+	# If they cannot be found in Italy, search entire map
+	else_if = {
+		limit = {
+			any_county = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_berber }
+					culture = { has_cultural_pillar = heritage_arabic }
+				}
+			}
+		}
+		every_county = {
+			limit = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_berber }
+					culture = { has_cultural_pillar = heritage_arabic }
+				}
+			}
+			add_to_list = arabic_culture_counties
+		}
+		random_in_list = {
+			list = arabic_culture_counties
+			save_scope_as = county
+		}
+		scope:county.culture = {
+			save_scope_as = arabic_culture
+		}
+	}
+	# If they don't exist on the map for some reason
+	else = {
+		every_culture_global = {
+			limit = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_berber }
+					culture = { has_cultural_pillar = heritage_arabic }
+				}
+			}
+			add_to_list = arabic_cultures
+		}
+		random_in_list = {
+			list = arabic_cultures
+			save_scope_as = arabic_culture
+		}
+	}
+}
+
+RICE_sicily_arabic_faction_choose_faith_effect = {
+	# Determine original faith of these Arab-Berbers
+	# If there are any Arabs or Berbers in Italy, go there first
+	if = {
+		limit = {
+			any_county_in_region = {
+				region = world_europe_south_italy
+				religion = religion:islam_religion
+			}
+		}
+		every_county_in_region = {
+			region = world_europe_south_italy
+			limit = {
+				religion = religion:islam_religion
+			}
+			add_to_list = arabic_faith_counties
+		}
+		random_in_list = {
+			list = arabic_faith_counties
+			save_scope_as = county
+		}
+		scope:county.faith = {
+			save_scope_as = arabic_faith
+		}
+	}
+	# If they don't exist on the map for some reason
+	else = {
+		random_list = {
+			50 = {
+				faith:ashari = {
+					save_scope_as = arabic_faith
+				}
+			}
+			50 = {
+				faith:ismaili = {
+					save_scope_as = arabic_faith
+				}
+			}
+		}
+	}
+}
+
+
+
+RICE_sicily_foothold_cb_damage_effect = {
+
+	change_county_control = fp2_border_raid_control_change_value
+	change_development_level = fp2_border_raid_development_change_value
+	if = {
+		limit = { exists = scope:raid_province }
+		show_as_tooltip = { destroy_random_building_effect = yes }
+	}
+	scope:attacker = { add_gold = fp2_border_raid_gold_change_value }
+	if = {
+		limit = {
+			NOR = {
+				has_county_modifier = RICE_sicily_stronghold_latin
+				has_county_modifier = RICE_sicily_stronghold_arabic
+				has_county_modifier = RICE_sicily_stronghold_greek
+			}
+		}
+		if = {
+			limit = {
+				scope:attacker = {
+					OR = {
+						faith.religious_head_title ?= title:k_papal_state
+						culture = { has_cultural_pillar = heritage_latin }
+						culture = { has_cultural_pillar = heritage_frankish }
+						culture = { has_cultural_pillar = heritage_iberian }
+					}				
+				}
+				scope:defender = {
+					NOR = {
+						faith.religious_head_title ?= title:k_papal_state
+						culture = { has_cultural_pillar = heritage_latin }
+						culture = { has_cultural_pillar = heritage_frankish }
+						culture = { has_cultural_pillar = heritage_iberian }
+					}
+				}
+			}
+			add_county_modifier = {
+				modifier = RICE_sicily_stronghold_latin
+			}
+		}
+		if = {
+			limit = {
+				scope:attacker = {
+					OR = {
+						culture = { has_cultural_pillar = heritage_byzantine }
+						faith.religious_head_title ?= title:k_orthodox
+					}			
+				}
+				scope:defender = {
+					NOR = {
+						culture = { has_cultural_pillar = heritage_byzantine }
+						faith.religious_head_title ?= title:k_orthodox
+					}
+				}
+			}
+			add_county_modifier = {
+				modifier = RICE_sicily_stronghold_greek
+			}
+		}
+		if = {
+			limit = {
+				scope:attacker = {
+					OR = {
+						culture = { has_cultural_pillar = heritage_berber }
+						culture = { has_cultural_pillar = heritage_arabic }
+						religion = religion:islam_religion
+					}				
+				}
+				scope:defender = {
+					NOR = {
+						culture = { has_cultural_pillar = heritage_berber }
+						culture = { has_cultural_pillar = heritage_arabic }
+						religion = religion:islam_religion
+					}
+				}
+			}
+			add_county_modifier = {
+				modifier = RICE_sicily_stronghold_arabic
+			}
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
 

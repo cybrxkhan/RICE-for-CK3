@@ -333,129 +333,568 @@ sicily.0021 = {
 # add_faction_discontent
 
 # Latin Stronghold rebels
-sicily.0030 = {
+# sicily.0030 = {
+# 	type = letter_event
+# 	sender = scope:RICE_sicily_leader
+# 	opening = "FACTION_DEMAND_RICE_sicily_latin_stronghold"
+# 	desc = {
+# 		first_valid = {
+# 			triggered_desc = {
+# 				trigger = {
+# 					NOT = {
+# 						religion = religion:christianity_religion
+# 					}
+# 				}
+# 				desc = FACTION_DEMAND_RICE_sicily_latin_stronghold_desc_infidel
+# 			}		
+# 			desc = FACTION_DEMAND_RICE_sicily_latin_stronghold_desc_non_infidel
+# 		}
+# 	}
+
+# 	trigger = {
+# 		exists = scope:faction
+# 		exists = scope:RICE_sicily_leader
+# 		scope:RICE_sicily_leader.joined_faction = scope:faction
+# 	}
+
+# 	on_trigger_fail = {
+# 		debug_log = "Latin Stronghold Faction tried to press claim (probably) without existing RICE_sicily_leader"
+# 		debug_log_scopes = yes
+# 		debug_log = "Latin Stronghold Faction error reporting complete"
+# 	}
+
+# 	option = {
+# 		name = "FACTION_DEMAND_RICE_sicily_latin_stronghold_ACCEPT"
+
+# 		# LEGITIMACY LOSS FOR ACCEPTING FACTION DEMANDS
+# 		faction_accept_demand_legitimacy_effect = yes
+
+# 		peasant_faction_demands_enforced = {FACTION = scope:faction}
+
+# 		ai_chance = {
+# 			base = 0
+# 			ai_value_modifier = {
+# 				ai_boldness = -4
+# 			}
+# 			modifier = {
+# 				add = 50
+# 				scope:faction = { faction_power >= 100 }
+# 			}
+# 			modifier = {
+# 				add = 50
+# 				scope:faction = { faction_power >= 110 }
+# 			}
+# 			modifier = {
+# 				add = 50
+# 				scope:faction = { faction_power >= 120 }
+# 			}
+# 			modifier = {
+# 				add = 50
+# 				scope:faction = { faction_power >= 130 }
+# 			}
+# 			modifier = {
+# 				add = 50
+# 				scope:faction = { faction_power >= 140 }
+# 			}
+# 			modifier = {
+# 				add = 50
+# 				scope:faction = { faction_power >= 150 }
+# 			}
+# 			modifier = {
+# 				add = -50
+# 				scope:faction.faction_target = {
+# 					is_at_war = no
+# 					primary_title.tier >= tier_kingdom
+# 				}
+# 			}
+# 			modifier = {
+# 				add = -150
+# 				scope:faction.faction_target = {
+# 					is_at_war = no
+# 					primary_title.tier >= tier_empire
+# 				}
+# 			}
+# 		}
+# 	}
+
+# 	option = {
+# 		name = "FACTION_DEMAND_RICE_sicily_latin_stronghold_REFUSE"
+
+# 		scope:faction = {
+# 			faction_start_war = {}
+			
+# 			# This needs to run after 'faction_start_war' or the troops won't spawn correctly.
+# 			faction_spawn_member_county_armies_effect = {
+# 				FACTION = scope:faction
+# 				ARMY_OWNER = scope:RICE_sicily_leader
+# 				PEASANT_ARMY_NAME = peasant_faction_event_troops
+# 			}	
+# 		}
+
+# 		ai_chance = {
+# 			base = 100
+# 			ai_value_modifier = {
+# 				ai_boldness = 4
+# 			}
+# 			modifier = {
+# 				add = 50
+# 				scope:faction = { faction_power < 90 }
+# 			}
+# 			modifier = {
+# 				add = 50
+# 				scope:faction = { faction_power < 80 }
+# 			}
+# 			modifier = {
+# 				add = 50
+# 				NOT = {
+# 					religion = religion:christianity_religion
+# 				}
+# 			}
+# 		}
+# 	}
+# }
+
+
+
+# Arab-Berber Stronghold Faction Demand
+# Based on vanilla's populist faction
+sicily.0034 = {
 	type = letter_event
-	sender = scope:RICE_sicily_leader
-	opening = "FACTION_DEMAND_RICE_sicily_latin_stronghold"
-	desc = {
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					NOT = {
-						religion = religion:christianity_religion
-					}
-				}
-				desc = FACTION_DEMAND_RICE_sicily_latin_stronghold_desc_infidel
-			}		
-			desc = FACTION_DEMAND_RICE_sicily_latin_stronghold_desc_non_infidel
-		}
+	sender = scope:peasant_leader
+	opening = {
+		desc = "FACTION_DEMAND_POPULIST"
 	}
+	desc = "FACTION_DEMAND_POPULIST_DESC"
 
 	trigger = {
 		exists = scope:faction
-		exists = scope:RICE_sicily_leader
-		scope:RICE_sicily_leader.joined_faction = scope:faction
+		exists = scope:peasant_leader
+		scope:peasant_leader.joined_faction = scope:faction
 	}
 
 	on_trigger_fail = {
-		debug_log = "Latin Stronghold Faction tried to press claim (probably) without existing RICE_sicily_leader"
+		debug_log = "Popular Faction tried to press claim (probably) without existing peasant_leader"
 		debug_log_scopes = yes
-		debug_log = "Latin Stronghold Faction error reporting complete"
+		debug_log = "Popular Faction error reporting complete"
 	}
 
+	immediate = {
+		every_realm_province = {
+			county = { add_to_list = remaining_counties_list }
+		}
+		scope:faction = {
+			every_faction_county_member = { remove_from_list = remaining_counties_list }
+		}
+	}
+
+	# Option A: Grant the faction independence.
 	option = {
-		name = "FACTION_DEMAND_RICE_sicily_latin_stronghold_ACCEPT"
+		name = "FACTION_DEMAND_POPULIST_ACCEPT_GRANT_INDEPENDENCE"
+		trigger = { # AI should not give the faction independence if a player is targeted by the faction.
+			NAND = {
+				scope:faction = {
+					has_variable = faction_targets_player
+				}
+				is_ai = yes
+			}
+		}
 
-		# LEGITIMACY LOSS FOR ACCEPTING FACTION DEMANDS
-		faction_accept_demand_legitimacy_effect = yes
+		# This effect should always be placed here, _before_ all the other effects in the block.
+		trigger_event = { on_action = on_faction_demand_accepted }
+		
+		add_prestige_level = -1
+		if = {
+			limit = {
+				dread > 0
+			}
+			add_dread = medium_dread_loss
+		}
 
-		peasant_faction_demands_enforced = {FACTION = scope:faction}
+		successful_popular_revolt_outcome_effect = {
+			FACTION_LEADER = scope:peasant_leader
+			TARGET_TITLE = scope:target_title
+			SOURCE_GOVERNMENT = root
+		}
+
+		# If the faction includes ALL of our counties, notify the player that it will leave them landless!
+		if = {
+			limit = {
+				any_in_list = {
+					list = remaining_counties_list
+					count < 1
+				}
+			}
+			custom_tooltip = FACTION_DEMAND_POPULIST_ACCEPT_GRANT_INDEPENCE_TT
+		}
+
+		# Struggle Catalysts.
+		# Should rename the Catalysts?
+		# if = {
+		# 	limit = {
+		# 		is_important_or_vip_struggle_character = yes
+		# 		any_character_struggle = {
+		# 			involvement = involved
+		# 			activate_struggle_catalyst_secondary_character_involvement_either_trigger = {
+		# 				CATALYST = catalyst_accepted_demand_from_faction_requesting_culture_faith_conversion
+		# 				CHAR = scope:faction_leader
+		# 			}
+		# 		}
+		# 	}
+		# 	every_character_struggle = {
+		# 		involvement = involved
+		# 		limit = {
+		# 			activate_struggle_catalyst_secondary_character_involvement_either_trigger = {
+		# 				CATALYST = catalyst_accepted_demand_from_faction_requesting_culture_faith_conversion
+		# 				CHAR = scope:faction_leader
+		# 			}
+		# 		}
+		# 		activate_struggle_catalyst = {
+		# 			catalyst = catalyst_accepted_demand_from_faction_requesting_culture_faith_conversion
+		# 			character = root
+		# 		}
+		# 	}
+		# }
+
+		hidden_effect = {
+			if = {
+				limit = {
+					exists = scope:faction
+				}
+				scope:faction = {
+					clean_revolt_county_modifiers_from_faction_members_effect = yes
+					destroy_faction = yes
+				}
+			}
+		}
 
 		ai_chance = {
 			base = 0
-			ai_value_modifier = {
-				ai_boldness = -4
+			compare_modifier = { # Stronger factions increase the chance of an AI ruler capitulating; at 200% ruler army strength, this maxes out at +50% chance to accept demands.
+				value = {
+					value = scope:faction.faction_power
+					subtract = 100
+					multiply = 0.5
+				}
+				max = 50
+			}
+			compare_modifier = { # Craven rulers can get up to +37% chance to accept demands.
+				value = ai_boldness
+				multiplier = -0.5
 			}
 			modifier = {
-				add = 50
-				scope:faction = { faction_power >= 100 }
+				factor = 0.1
+				any_ally = {
+					NOR = {
+						target_is_liege_or_above = root
+						target_is_vassal_or_below = root
+					}
+					max_military_strength > root.max_military_strength
+				}
 			}
-			modifier = {
-				add = 50
-				scope:faction = { faction_power >= 110 }
-			}
-			modifier = {
-				add = 50
-				scope:faction = { faction_power >= 120 }
-			}
-			modifier = {
-				add = 50
-				scope:faction = { faction_power >= 130 }
-			}
-			modifier = {
-				add = 50
-				scope:faction = { faction_power >= 140 }
-			}
-			modifier = {
-				add = 50
-				scope:faction = { faction_power >= 150 }
+			compare_modifier = {
+				value = debt_level
+				multiplier = 25
 			}
 			modifier = {
 				add = -50
-				scope:faction.faction_target = {
-					is_at_war = no
-					primary_title.tier >= tier_kingdom
-				}
+				is_at_war = no
+				primary_title.tier >= tier_kingdom
 			}
 			modifier = {
 				add = -150
-				scope:faction.faction_target = {
-					is_at_war = no
-					primary_title.tier >= tier_empire
+				is_at_war = no
+				primary_title.tier >= tier_empire
+			}
+			
+			modifier = {
+				add = -5000
+				OR = {
+					has_title = title:e_mongol_empire
+					has_title = title:e_ilkhanate
+					has_title = title:e_chagatai
+					has_title = title:e_black_horde
+					has_title = title:e_white_horde
+					has_title = title:e_aarlud_khanate
+					has_title = title:e_togskol_khanate
+					has_title = title:e_baruun_khanate
 				}
 			}
 		}
 	}
-
+	
+	# Option B: Refuse the demand and start a war.
 	option = {
-		name = "FACTION_DEMAND_RICE_sicily_latin_stronghold_REFUSE"
+		name = "FACTION_DEMAND_POPULIST_REFUSE"
+
+		# This effect should always be placed here, _before_ all the other effects in the block.
+		trigger_event = { on_action = on_faction_demand_rejected }
 
 		scope:faction = {
-			faction_start_war = {}
-			
-			# This needs to run after 'faction_start_war' or the troops won't spawn correctly.
-			faction_spawn_member_county_armies_effect = {
-				FACTION = scope:faction
-				ARMY_OWNER = scope:RICE_sicily_leader
-				PEASANT_ARMY_NAME = peasant_faction_event_troops
-			}	
+			faction_start_war = {
+				title = scope:target_title
+			}
+		}
+		
+		custom_tooltip = FACTION_DEMAND_POPULIST_REFUSE_TT
+		
+		if = { # Send follow up event to affected vassals.
+			limit = {
+				list_size = {
+					name = popular_faction_vassal_targets
+					value > 0
+				}
+			}
+			every_in_list = {
+				list = popular_faction_vassal_targets
+				trigger_event = sicily.0035
+			}
 		}
 
 		ai_chance = {
 			base = 100
-			ai_value_modifier = {
-				ai_boldness = 4
-			}
-			modifier = {
-				add = 50
-				scope:faction = { faction_power < 90 }
-			}
-			modifier = {
-				add = 50
-				scope:faction = { faction_power < 80 }
-			}
-			modifier = {
-				add = 50
-				NOT = {
-					religion = religion:christianity_religion
+			compare_modifier = { # Weaker factions increase the chance of an AI ruler refusing; at 80% army strength (minimum), this will be +20; at 200% army strength, this will max out at -50.
+				value = {			
+					value = scope:faction.faction_power
+					subtract = 100
+					multiply = -1
 				}
+				min = -50
+			}
+			compare_modifier = { # Brave rulers get up to a 50% bonus chance to refuse.
+				value = ai_boldness
+				multiplier = -0.5
+				min = -50
+			}
+			modifier = {
+				factor = 1.5
+				any_ally = {
+					NOR = {
+						target_is_liege_or_above = root
+						target_is_vassal_or_below = root
+					}
+					max_military_strength > root.max_military_strength
+				}
+			}
+			compare_modifier = {
+				value = debt_level
+				multiplier = -25
+			}
+			modifier = {
+				add = 5000
+				OR = {
+					has_title = title:e_mongol_empire
+					has_title = title:e_ilkhanate
+					has_title = title:e_chagatai
+					has_title = title:e_black_horde
+					has_title = title:e_white_horde
+					has_title = title:e_aarlud_khanate
+					has_title = title:e_togskol_khanate
+					has_title = title:e_baruun_khanate
+				}
+			}
+		}
+	}
+	
+	after = {
+		if = {
+			limit = {
+				exists = scope:faction
+				scope:faction = {
+					has_variable = faction_targets_player
+				}
+			}
+			scope:faction = {
+				remove_variable = faction_targets_player
 			}
 		}
 	}
 }
 
+# Arab-Berber Stronghold Faction Demand - Affected vassals choose their action
+sicily.0035 = {
+	type = letter_event
+	sender = scope:peasant_leader
+	opening = {
+		desc = "FACTION_DEMAND_POPULIST"
+	}
+	desc = "FACTION_DEMAND_POPULIST_VASSAL_DESC"
 
+	trigger = {
+		exists = scope:faction
+		exists = scope:peasant_leader
+		scope:peasant_leader.joined_faction = scope:faction
+	}
+	
+	immediate = {
+		scope:faction.faction_war = {
+			save_scope_as = populist_war
+		}
+	}
+	
+	# Option A: Join the rebels if you are Arab-Berber or Muslim already
+	option = {
+		trigger = {
+			OR = {
+				culture = { has_cultural_pillar = heritage_berber }
+				culture = { has_cultural_pillar = heritage_arabic }
+				religion = religion:islam_religion
+			}
+			# You cannot join the attacking side if you already are at war with another participant.
+			scope:faction.faction_war = {
+				NOT = {
+					any_war_participant = {
+						is_at_war_with = root
+					}
+				}
+			}
+			
+			# You cannot join the attacking side if it would put you against someone you are fighting another war with.
+			scope:faction.faction_war = {
+				NOT = {
+					any_war_defender = {
+						any_war_ally = {
+							this = root
+						}
+					}
+				}
+			}
+		}
+		name = "FACTION_DEMAND_POPULIST_VASSAL_JOIN_REBELS"
 
+		
+		# Change culture/faith and apply penalties if needed.
+		if = {
+			limit = {
+				NOT = { culture = scope:peasant_leader.culture }
+			}
+			set_culture = scope:peasant_leader.culture
+			add_prestige_level = -1
+		}
+		if = {
+			limit = {
+				NOT = { faith = scope:peasant_leader.faith }
+			}
+			set_character_faith = scope:peasant_leader.faith
+			add_piety_level = -1
+		}
+		
+		# Join the war.
+		scope:faction.faction_war = {
+			add_attacker = root
+		}
+		custom_tooltip = FACTION_DEMAND_POPULIST_VASSAL_CONVERTS_TT
+		
+		stress_impact = {
+			content = medium_stress_gain
+			craven = medium_stress_gain
+			lazy = minor_stress_gain
+		}
+		
+		ai_chance = {
+			base = 0
+			
+			# Want to convert for cultural reasons
+			modifier = {
+				add = 20
+				OR = {
+					culture = { has_cultural_pillar = heritage_berber }
+					culture = { has_cultural_pillar = heritage_arabic }
+				}
+				religion = religion:islam_religion
+			}
+			modifier = {
+				factor = 2
+				struggle:iberian_struggle ?= {
+					is_struggle_phase = struggle_RICE_sicily_phase_borderland
+				}
+			}
+			modifier = {
+				factor = 2
+				has_trait = zealous
+				religion = religion:islam_religion
+			}
+			
+			# General modifiers
+			modifier = {
+				factor = 1.25
+				has_trait = fickle
+			}
+		}
+	}
+	
+	# Option B: Fight alongside your liege.
+	option = {
+		name = FACTION_DEMAND_POPULIST_VASSAL_JOIN_WAR
+		
+		# You cannot join the defending side...
+		trigger = {
+			custom_tooltip = { # ... If you already are at war with another participant.
+				text = FACTION_DEMAND_POPULIST_VASSAL_JOIN_WAR_BLOCK_TT
+				scope:faction.faction_war = {
+					NOT = {
+						any_war_participant = {
+							is_at_war_with = root
+						}
+					}
+				}
+			}
+			custom_tooltip = { # ... If it would put you against someone you are fighting another war with.
+				text = FACTION_DEMAND_POPULIST_VASSAL_JOIN_WAR_BLOCK_TT_2
+				scope:faction.faction_war = {
+					NOT = {
+						any_war_attacker = {
+							any_war_ally = {
+								this = root
+							}
+						}
+					}
+				}
+			}
+		}
+		show_as_unavailable = {
+			OR = {
+				scope:faction.faction_war = {
+					any_war_participant = {
+						is_at_war_with = root
+					}
+				}
+				scope:faction.faction_war = {
+					any_war_attacker = {
+						any_war_ally = {
+							this = root
+						}
+					}
+				}
+			}
+		}
+		
+		# Join the war.
+		scope:faction.faction_war = {
+			add_defender = root
+		}
+		custom_tooltip = FACTION_DEMAND_POPULIST_VASSAL_JOIN_WAR_TT
+		
+		ai_chance = {
+			base = 100
+		}
+	}
+	
+	# Option C: Do nothing.
+	option = {
+		name = FACTION_DEMAND_POPULIST_VASSAL_TAKE_NO_SIDE
+		custom_tooltip = FACTION_DEMAND_POPULIST_VASSAL_TAKE_NO_SIDE_TT_A
+		custom_tooltip = FACTION_DEMAND_POPULIST_VASSAL_TAKE_NO_SIDE_TT_B
+		
+		ai_chance = {
+			base = 0
+			
+			modifier = {
+				add = 20
+				has_trait = craven
+			}
+		}
+	}
+}
 
 
 ######################################################################################
