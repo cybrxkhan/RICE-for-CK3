@@ -21,7 +21,7 @@
 		remove_variable = tradition_cooldown
 	}
 
-	culture:siculo_arabic = {
+	culture:siqilli = {
 		add_name_list = name_list_greek # Uses both Arabic and Greek names
 		add_culture_tradition = tradition_RICE_between_three_worlds
 		remove_variable = tradition_cooldown
@@ -62,7 +62,7 @@
 			game_start_date > 827.1.1
 		}
 		title:c_palermo = {
-			set_county_culture = culture:siculo_arabic
+			set_county_culture = culture:siqilli
 		}
 	}
 	
@@ -71,16 +71,16 @@
 			game_start_date > 1000.1.1
 		}
 		title:c_messina = {
-			set_county_culture = culture:siculo_arabic # culture:greek
+			set_county_culture = culture:siqilli # culture:greek
 		}
 		title:c_siracusa = {
-			set_county_culture = culture:siculo_arabic
+			set_county_culture = culture:siqilli
 		}
 		title:c_agrigento = {
-			set_county_culture = culture:siculo_arabic
+			set_county_culture = culture:siqilli
 		}
 		title:c_malta = {
-			set_county_culture = culture:siculo_arabic
+			set_county_culture = culture:siqilli
 		}
 	}
 
@@ -93,7 +93,7 @@
 				culture = { has_cultural_pillar = heritage_arabic }
 			}
 			capital_county ?= {
-				culture = culture:siculo_arabic
+				culture = culture:siqilli
 			}
 		}
 		every_courtier = {
@@ -107,7 +107,7 @@
 			}
 			random = {
 				chance = 50
-				set_culture = culture:siculo_arabic
+				set_culture = culture:siqilli
 			}
 		}
 	}
@@ -119,10 +119,10 @@
 				culture = { has_cultural_pillar = heritage_arabic }
 			}
 			capital_county ?= {
-				culture = culture:siculo_arabic
+				culture = culture:siqilli
 			}
 		}
-		make_siculo_arabic_culture_effect = yes
+		make_siqilli_culture_effect = yes
 	}
 
 
@@ -146,7 +146,7 @@
 		}
 		# Make Sawdan of the Emirate of Bari Siculo-Arabic
 		character:163094 = {
-			make_siculo_arabic_culture_effect = yes
+			make_siqilli_culture_effect = yes
 			add_character_modifier = {
 				modifier = RICE_sicily_aspiration_establish_islam_in_southern_italy
 			}
@@ -348,9 +348,9 @@ RICE_sicily_annual_values_calculator = {
 
 
 
-make_siculo_arabic_culture_effect = {
+make_siqilli_culture_effect = {
 	#Convert your, and your whole family's, culture
-	set_culture = culture:siculo_arabic
+	set_culture = culture:siqilli
 	if = {
 		limit = {
 			any_spouse = {
@@ -369,7 +369,7 @@ make_siculo_arabic_culture_effect = {
 					culture = { has_cultural_pillar = heritage_arabic }
 				}
 			}
-			set_culture = culture:siculo_arabic
+			set_culture = culture:siqilli
 		}
 	}
 	if = {
@@ -391,7 +391,7 @@ make_siculo_arabic_culture_effect = {
 					culture = { has_cultural_pillar = heritage_arabic }
 				}
 			}
-			set_culture = culture:siculo_arabic
+			set_culture = culture:siqilli
 		}
 	}
 
@@ -412,7 +412,7 @@ make_siculo_arabic_culture_effect = {
 					culture = { has_cultural_pillar = heritage_arabic }
 				}
 			}
-			set_culture = culture:siculo_arabic
+			set_culture = culture:siqilli
 			hidden_effect = {
 				if = {
 					limit = {
@@ -432,7 +432,7 @@ make_siculo_arabic_culture_effect = {
 								culture = { has_cultural_pillar = heritage_arabic }
 							}
 						}
-						set_culture = culture:siculo_arabic
+						set_culture = culture:siqilli
 					}
 				}
 				if = {
@@ -454,7 +454,7 @@ make_siculo_arabic_culture_effect = {
 								culture = { has_cultural_pillar = heritage_arabic }
 							}
 						}
-						set_culture = culture:siculo_arabic
+						set_culture = culture:siqilli
 					}
 				}
 			}
@@ -478,7 +478,7 @@ make_siculo_arabic_culture_effect = {
 					culture = { has_cultural_pillar = heritage_arabic }
 				}
 			}
-			set_culture = culture:siculo_arabic
+			set_culture = culture:siqilli
 			hidden_effect = {
 				if = {
 					limit = {
@@ -498,7 +498,7 @@ make_siculo_arabic_culture_effect = {
 								culture = { has_cultural_pillar = heritage_arabic }
 							}
 						}
-						set_culture = culture:siculo_arabic
+						set_culture = culture:siqilli
 					}
 				}
 				if = {
@@ -520,7 +520,7 @@ make_siculo_arabic_culture_effect = {
 								culture = { has_cultural_pillar = heritage_arabic }
 							}
 						}
-						set_culture = culture:siculo_arabic
+						set_culture = culture:siqilli
 					}
 				}
 			}
@@ -1185,78 +1185,121 @@ RICE_sicily_foothold_cb_damage_effect = {
 		show_as_tooltip = { destroy_random_building_effect = yes }
 	}
 	scope:attacker = { add_gold = fp2_border_raid_gold_change_value }
+
+	# if = {
+	# 	limit = {
+	# 		NOR = {
+	# 			has_county_modifier = RICE_sicily_stronghold_latin
+	# 			has_county_modifier = RICE_sicily_stronghold_arabic
+	# 			has_county_modifier = RICE_sicily_stronghold_greek
+	# 		}
+	# 	}
+	# }
+
+	# Placing the Strongholds
 	if = {
 		limit = {
-			NOR = {
-				has_county_modifier = RICE_sicily_stronghold_latin
-				has_county_modifier = RICE_sicily_stronghold_arabic
-				has_county_modifier = RICE_sicily_stronghold_greek
+			scope:attacker = {
+				RICE_sicily_latin_trigger = yes			
+			}
+			scope:defender = {
+				NOT = {
+					RICE_sicily_latin_trigger = yes
+				}
 			}
 		}
-		if = {
-			limit = {
-				scope:attacker = {
-					OR = {
-						faith.religious_head_title ?= title:k_papal_state
-						culture = { has_cultural_pillar = heritage_latin }
-						culture = { has_cultural_pillar = heritage_frankish }
-						culture = { has_cultural_pillar = heritage_iberian }
-					}				
-				}
-				scope:defender = {
-					NOR = {
-						faith.religious_head_title ?= title:k_papal_state
-						culture = { has_cultural_pillar = heritage_latin }
-						culture = { has_cultural_pillar = heritage_frankish }
-						culture = { has_cultural_pillar = heritage_iberian }
-					}
-				}
-			}
+		random = {
+			chance = RICE_sicily_latin_stronghold_appearance_cb_value
 			add_county_modifier = {
 				modifier = RICE_sicily_stronghold_latin
 			}
 		}
-		if = {
-			limit = {
-				scope:attacker = {
-					OR = {
-						culture = { has_cultural_pillar = heritage_byzantine }
-						faith.religious_head_title ?= title:k_orthodox
-					}			
-				}
-				scope:defender = {
-					NOR = {
-						culture = { has_cultural_pillar = heritage_byzantine }
-						faith.religious_head_title ?= title:k_orthodox
-					}
+	}
+	if = {
+		limit = {
+			scope:attacker = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_byzantine }
+					faith.religious_head_title ?= title:k_orthodox
+				}			
+			}
+			scope:defender = {
+				NOR = {
+					culture = { has_cultural_pillar = heritage_byzantine }
+					faith.religious_head_title ?= title:k_orthodox
 				}
 			}
+		}
+		random = {
+			chance = RICE_sicily_greek_stronghold_appearance_cb_value
 			add_county_modifier = {
 				modifier = RICE_sicily_stronghold_greek
 			}
 		}
-		if = {
-			limit = {
-				scope:attacker = {
-					OR = {
-						culture = { has_cultural_pillar = heritage_berber }
-						culture = { has_cultural_pillar = heritage_arabic }
-						religion = religion:islam_religion
-					}				
-				}
-				scope:defender = {
-					NOR = {
-						culture = { has_cultural_pillar = heritage_berber }
-						culture = { has_cultural_pillar = heritage_arabic }
-						religion = religion:islam_religion
-					}
+	}
+	if = {
+		limit = {
+			scope:attacker = {
+				RICE_sicily_arabic_trigger = yes				
+			}
+			scope:defender = {
+				NOT = {
+					RICE_sicily_arabic_trigger = yes
 				}
 			}
+		}
+		random = {
+			chance = RICE_sicily_arabic_stronghold_appearance_cb_value
 			add_county_modifier = {
 				modifier = RICE_sicily_stronghold_arabic
 			}
 		}
 	}
+
+	# Removing the strongholds
+	if = {
+		limit = {
+			has_county_modifier = RICE_sicily_stronghold_latin
+			scope:defender = {
+				NOT = {
+					RICE_sicily_latin_trigger = yes
+				}
+			}
+		}
+		random = {
+			chance = RICE_sicily_latin_stronghold_removal_value
+			remove_county_modifier = RICE_sicily_stronghold_latin
+		}
+	}
+	if = {
+		limit = {
+			has_county_modifier = RICE_sicily_stronghold_greek
+			scope:defender = {
+				NOT = {
+					RICE_sicily_greek_trigger = yes
+				}
+			}
+		}
+		random = {
+			chance = RICE_sicily_greek_stronghold_removal_value
+			remove_county_modifier = RICE_sicily_stronghold_greek
+		}
+	}
+	if = {
+		limit = {
+			has_county_modifier = RICE_sicily_stronghold_arabic
+			scope:defender = {
+				NOT = {
+					RICE_sicily_arabic_trigger = yes
+				}
+			}
+		}
+		random = {
+			chance = RICE_sicily_arabic_stronghold_removal_value
+			remove_county_modifier = RICE_sicily_stronghold_arabic
+		}
+	}
+
 }
 
 
