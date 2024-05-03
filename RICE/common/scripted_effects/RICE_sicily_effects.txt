@@ -817,7 +817,7 @@ RICE_sicily_spawn_arabic_mercenaries_effect = {
 			spawn_army = {
 				levies = 100
 				men_at_arms = {
-					type = mubarizun
+					type = RICE_sicily_bowmen
 					stacks = 1
 				}
 				location = root.capital_province
@@ -834,7 +834,7 @@ RICE_sicily_spawn_arabic_mercenaries_effect = {
 					stacks = 1
 				}
 				men_at_arms = {
-					type = bowmen
+					type = RICE_sicily_bowmen
 					stacks = 1
 				}
 				location = root.capital_province
@@ -851,7 +851,7 @@ RICE_sicily_spawn_arabic_mercenaries_effect = {
 					stacks = 1
 				}
 				men_at_arms = {
-					type = bowmen
+					type = RICE_sicily_bowmen
 					stacks = 1
 				}
 				men_at_arms = {
@@ -872,7 +872,7 @@ RICE_sicily_spawn_arabic_mercenaries_effect = {
 					stacks = 1
 				}
 				men_at_arms = {
-					type = bowmen
+					type = RICE_sicily_bowmen
 					stacks = 1
 				}
 				men_at_arms = {
@@ -894,11 +894,11 @@ RICE_sicily_spawn_arabic_mercenaries_effect = {
 				levies = 500
 				men_at_arms = {
 					type = mubarizun
-					stacks = 2
+					stacks = 1
 				}
 				men_at_arms = {
-					type = bowmen
-					stacks = 1
+					type = RICE_sicily_bowmen
+					stacks = 2
 				}
 				men_at_arms = {
 					type = light_footmen
@@ -1039,11 +1039,28 @@ RICE_sicily_recipient_gets_wheat_shipments_effect = {
 			}
 		}					
 		custom_tooltip = RICE_sicily_wheat_shipments_control_tt
+		custom_tooltip = RICE_sicily_wheat_shipments_development_tt
 	}	
 	add_opinion = {
 		target = scope:actor
 		modifier = grateful_opinion
 		opinion = 20
+	}
+	if = {
+		limit = {
+			scope:actor = {
+				can_add_hook = {
+					target = scope:recipient
+					type = RICE_sicily_grain_hook
+				}
+			}
+		}
+		scope:actor = {
+			add_hook = {
+				target = scope:recipient
+				type = RICE_sicily_grain_hook
+			}
+		}
 	}
 }
 
@@ -1187,28 +1204,7 @@ RICE_sicily_arabic_faction_choose_faith_effect = {
 	}
 }
 
-
-
-RICE_sicily_foothold_cb_damage_effect = {
-
-	change_county_control = fp2_border_raid_control_change_value
-	change_development_level = fp2_border_raid_development_change_value
-	if = {
-		limit = { exists = scope:raid_province }
-		show_as_tooltip = { destroy_random_building_effect = yes }
-	}
-	scope:attacker = { add_gold = fp2_border_raid_gold_change_value }
-
-	# if = {
-	# 	limit = {
-	# 		NOR = {
-	# 			has_county_modifier = RICE_sicily_stronghold_latin
-	# 			has_county_modifier = RICE_sicily_stronghold_arabic
-	# 			has_county_modifier = RICE_sicily_stronghold_greek
-	# 		}
-	# 	}
-	# }
-
+RICE_sicily_cb_stronghold_effect = {
 	# Placing the Strongholds
 	if = {
 		limit = {
@@ -1226,20 +1222,22 @@ RICE_sicily_foothold_cb_damage_effect = {
 			add_county_modifier = {
 				modifier = RICE_sicily_stronghold_latin
 			}
+			struggle:RICE_sicily_struggle ?= {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_sicily_stronghold_appears
+					character = scope:attacker
+				}
+			}
 		}
 	}
 	if = {
 		limit = {
 			scope:attacker = {
-				OR = {
-					culture = { has_cultural_pillar = heritage_byzantine }
-					faith.religious_head_title ?= title:k_orthodox
-				}			
+				RICE_sicily_greek_trigger = yes			
 			}
 			scope:defender = {
-				NOR = {
-					culture = { has_cultural_pillar = heritage_byzantine }
-					faith.religious_head_title ?= title:k_orthodox
+				NOT = {
+					RICE_sicily_greek_trigger = yes
 				}
 			}
 		}
@@ -1247,6 +1245,12 @@ RICE_sicily_foothold_cb_damage_effect = {
 			chance = RICE_sicily_greek_stronghold_appearance_cb_value
 			add_county_modifier = {
 				modifier = RICE_sicily_stronghold_greek
+			}
+			struggle:RICE_sicily_struggle ?= {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_sicily_stronghold_appears
+					character = scope:attacker
+				}
 			}
 		}
 	}
@@ -1266,9 +1270,17 @@ RICE_sicily_foothold_cb_damage_effect = {
 			add_county_modifier = {
 				modifier = RICE_sicily_stronghold_arabic
 			}
+			struggle:RICE_sicily_struggle ?= {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_sicily_stronghold_appears
+					character = scope:attacker
+				}
+			}
 		}
 	}
+}
 
+RICE_sicily_cb_stronghold_disappear_effect = {
 	# Removing the strongholds
 	if = {
 		limit = {
@@ -1282,6 +1294,12 @@ RICE_sicily_foothold_cb_damage_effect = {
 		random = {
 			chance = RICE_sicily_latin_stronghold_removal_value
 			remove_county_modifier = RICE_sicily_stronghold_latin
+			struggle:RICE_sicily_struggle ?= {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_sicily_stronghold_disappears
+					character = scope:attacker
+				}
+			}
 		}
 	}
 	if = {
@@ -1296,6 +1314,12 @@ RICE_sicily_foothold_cb_damage_effect = {
 		random = {
 			chance = RICE_sicily_greek_stronghold_removal_value
 			remove_county_modifier = RICE_sicily_stronghold_greek
+			struggle:RICE_sicily_struggle ?= {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_sicily_stronghold_disappears
+					character = scope:attacker
+				}
+			}
 		}
 	}
 	if = {
@@ -1310,14 +1334,111 @@ RICE_sicily_foothold_cb_damage_effect = {
 		random = {
 			chance = RICE_sicily_arabic_stronghold_removal_value
 			remove_county_modifier = RICE_sicily_stronghold_arabic
+			struggle:RICE_sicily_struggle ?= {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_sicily_stronghold_disappears
+					character = scope:attacker
+				}
+			}
 		}
 	}
+}
+
+RICE_sicily_border_raid_cb_damage_effect = {
+
+	change_county_control = fp2_border_raid_control_change_value
+	change_development_level = fp2_border_raid_development_change_value
+	if = {
+		limit = { exists = scope:raid_province }
+		show_as_tooltip = { destroy_random_building_effect = yes }
+	}
+	scope:attacker = { add_gold = fp2_border_raid_gold_change_value }
+
+	RICE_sicily_cb_stronghold_effect = yes
+	RICE_sicily_cb_stronghold_disappear_effect = yes
+
 
 }
 
 
 
+RICE_sicily_expedition_free_troops_effect = {
 
+	if = {
+		limit = {
+			RICE_sicily_latin_trigger = yes
+		}
+		spawn_army = {
+			men_at_arms = {
+				type = light_footmen
+				stacks = 1
+			}
+			men_at_arms = {
+				type = bowmen
+				stacks = 1
+			}
+			men_at_arms = {
+				type = light_horsemen
+				stacks = 1
+			}
+			levies = 200
+			location = capital_province
+			uses_supply = yes
+			inheritable = no
+			name = RICE_sicily_intervention_event_troops
+		}
+	}
+	if = {
+		limit = {
+			RICE_sicily_greek_trigger = yes	
+		}
+		spawn_army = {
+			men_at_arms = {
+				type = light_footmen
+				stacks = 1
+			}
+			men_at_arms = {
+				type = bowmen
+				stacks = 1
+			}
+			men_at_arms = {
+				type = cataphract
+				stacks = 2
+			}
+			levies = 200
+			location = capital_province
+			uses_supply = yes
+			inheritable = no
+			name = RICE_sicily_intervention_event_troops
+		}
+	}
+	if = {
+		limit = {
+			RICE_sicily_arabic_trigger = yes
+		}
+		spawn_army = {
+			men_at_arms = {
+				type = mubarizun
+				stacks = 1
+			}
+			men_at_arms = {
+				type = RICE_sicily_bowmen
+				stacks = 1
+			}
+			men_at_arms = {
+				type = light_horsemen
+				stacks = 1
+			}
+			levies = 200
+			location = capital_province
+			uses_supply = yes
+			inheritable = no
+			name = RICE_sicily_intervention_event_troops
+		}
+	}
+
+
+}
 
 
 

@@ -280,16 +280,19 @@ RICE_request_sicily_intervention_interaction = {
 						scope:secondary_recipient = {
 							RICE_sicily_latin_trigger = yes
 						}
+						scope:recipient = {
+							NOT = { RICE_sicily_latin_trigger = yes }
+						}
 					}
 					custom_tooltip = RICE_sicily_intervention_cb_result_2_tt
 				}
 				if = {
 					limit = {
 						scope:secondary_recipient = {
-							OR = {
-								culture = { has_cultural_pillar = heritage_byzantine }
-								faith.religious_head_title ?= title:k_orthodox
-							}
+							RICE_sicily_greek_trigger = yes
+						}
+						scope:recipient = {
+							NOT = { RICE_sicily_greek_trigger = yes }
 						}
 					}
 					custom_tooltip = RICE_sicily_intervention_cb_result_3_tt
@@ -298,6 +301,9 @@ RICE_request_sicily_intervention_interaction = {
 					limit = {
 						scope:secondary_recipient = {
 							RICE_sicily_arabic_trigger = yes
+						}
+						scope:recipient = {
+							NOT = { RICE_sicily_arabic_trigger = yes }
 						}
 					}
 					custom_tooltip = RICE_sicily_intervention_cb_result_4_tt
@@ -308,21 +314,7 @@ RICE_request_sicily_intervention_interaction = {
 					}
 					trigger_event = sicily.0021
 					show_as_tooltip = {
-						spawn_army = {
-							men_at_arms = {
-								type = horse_archers
-								stacks = fp3_request_invasion_troop_value_bonus_troops
-							}
-							men_at_arms = {
-								type = light_horsemen
-								stacks = fp3_request_invasion_troop_value_bonus_troops
-							}
-							levies = fp3_request_invasion_troop_value_bonus_levy_troops
-							location = capital_province
-							uses_supply = yes
-							inheritable = no
-							name = RICE_sicily_intervention_event_troops
-						}
+						RICE_sicily_expedition_free_troops_effect = yes
 					}
 				}
 				if = {
@@ -1143,6 +1135,7 @@ RICE_sicily_request_wheat_shipments = {
 						}
 					}
 					custom_tooltip = RICE_sicily_wheat_shipments_control_tt
+					custom_tooltip = RICE_sicily_wheat_shipments_development_tt
 				}	
 				add_opinion = {
 					target = scope:recipient
@@ -1156,7 +1149,23 @@ RICE_sicily_request_wheat_shipments = {
 		}
 		scope:recipient = {
 			add_prestige = 100
-			add_gold = 220		
+			add_gold = 220	
+			if = {
+				limit = {
+					scope:recipient = {
+						can_add_hook = {
+							target = scope:actor
+							type = RICE_sicily_grain_hook
+						}
+					}
+				}
+				scope:recipient = {
+					add_hook = {
+						target = scope:actor
+						type = RICE_sicily_grain_hook
+					}
+				}
+			}	
 			trigger_event = sicily.0053
 		}
 

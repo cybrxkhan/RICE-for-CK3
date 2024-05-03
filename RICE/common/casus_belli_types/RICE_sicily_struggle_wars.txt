@@ -88,6 +88,78 @@ RICE_sicily_intervention_cb = {
 			add_claim_on_loss = yes
 		}
 
+		show_as_tooltip = {
+			random_in_list = {
+				list = target_titles
+				random_in_de_jure_hierarchy = {
+					limit = {
+						tier = tier_county
+						# Current holder must be a (sub)vassal of the defender (no poaching titles from 3rd parties!)
+						#exists = holder
+						holder = {
+							OR = {
+								this = scope:defender
+								target_is_liege_or_above = scope:defender
+							}
+						}
+					}
+					RICE_sicily_cb_stronghold_effect = yes
+				}	
+			}
+		}
+
+
+		hidden_effect = {
+			scope:attacker = {
+				send_interface_message = {
+					type = msg_border_raid_good
+					title = border_raid_message_title
+					show_as_tooltip = {
+						random_in_list = {
+							list = target_titles
+							random_in_de_jure_hierarchy = {
+								limit = {
+									tier = tier_county
+									# Current holder must be a (sub)vassal of the defender (no poaching titles from 3rd parties!)
+									#exists = holder
+									holder = {
+										OR = {
+											this = scope:defender
+											target_is_liege_or_above = scope:defender
+										}
+									}
+								}
+								RICE_sicily_cb_stronghold_effect = yes
+							}	
+						}
+					}
+				}
+			}
+			scope:defender = {
+				send_interface_message = {
+					type = msg_border_raid_bad
+					title = border_raid_message_title
+					random_in_list = {
+						list = target_titles
+						random_in_de_jure_hierarchy = {
+							limit = {
+								tier = tier_county
+								# Current holder must be a (sub)vassal of the defender (no poaching titles from 3rd parties!)
+								#exists = holder
+								holder = {
+									OR = {
+										this = scope:defender
+										target_is_liege_or_above = scope:defender
+									}
+								}
+							}
+							RICE_sicily_cb_stronghold_effect = yes
+						}	
+					}
+				}
+			}
+		}
+
 		every_in_list = {
 			list = target_titles
 			custom = RICE_sicily_intervention_beneficiary
@@ -136,7 +208,7 @@ RICE_sicily_intervention_cb = {
 		
 		scope:defender = {
 			add_character_modifier = {
-				modifier = fp3_incursion_instability
+				modifier = RICE_sicily_intervention_instability
 				years = 20
 			}
 		}
@@ -157,39 +229,7 @@ RICE_sicily_intervention_cb = {
 					limit = {
 						exists = capital_province
 					}
-					spawn_army = {
-						men_at_arms = {
-							type = horse_archers
-							stacks = 5
-						}
-						men_at_arms = {
-							type = light_horsemen
-							stacks = 5
-						}
-						location = capital_province
-						uses_supply = yes
-						inheritable = yes
-						name = RICE_sicily_intervention_event_troops
-					}
-				}
-				if = {
-					limit = {
-						faith = { has_doctrine_parameter = unreformed }
-						NOT = { has_trait = zealous }
-						capital_county.faith ?= {
-							NOT = {
-								has_doctrine_parameter = unreformed
-							}
-						}
-					}
-					random_list = {
-						75 = {
-							set_character_faith_with_conversion = capital_county.faith
-						}
-						25 = {
-							set_character_faith_with_conversion = faith:alevi
-						}
-					}
+					RICE_sicily_expedition_free_troops_effect = yes
 				}
 			}
 		}
@@ -484,7 +524,7 @@ RICE_sicily_frontier_raid_cb = {
 			show_as_tooltip = {
 				every_in_list = {
 					list = target_titles
-					RICE_sicily_foothold_cb_damage_effect = yes
+					RICE_sicily_border_raid_cb_damage_effect = yes
 				}
 			}
 			# Find province for building destruction
@@ -508,7 +548,7 @@ RICE_sicily_frontier_raid_cb = {
 					show_as_tooltip = {
 						every_in_list = {
 							list = target_titles
-							RICE_sicily_foothold_cb_damage_effect = yes
+							RICE_sicily_border_raid_cb_damage_effect = yes
 						}
 					}
 				}
@@ -519,7 +559,7 @@ RICE_sicily_frontier_raid_cb = {
 					title = border_raid_message_title
 					every_in_list = {
 						list = target_titles
-						RICE_sicily_foothold_cb_damage_effect = yes
+						RICE_sicily_border_raid_cb_damage_effect = yes
 					}
 				}
 			}
