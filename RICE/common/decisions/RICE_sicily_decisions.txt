@@ -839,15 +839,29 @@ RICE_sicily_administer_frontier = {
 		decision_to_second_step_button = "RICE_SICILY_PICK_AGENDA_TYPE"
 		show_from_start = yes
 		
-		### Promote Officials
+		### Reform Government Practices
 		item = {
-			value = RICE_sicily_frontier_agenda_officials
+			value = RICE_sicily_frontier_agenda_government_practices
 			is_valid = {
 				diplomacy >= mediocre_skill_rating
+				OR = {
+					custom_tooltip = {
+						text = COUNCILLOR_MISSING_CHANCELLOR
+						exists = cp:councillor_chancellor
+					}
+					custom_tooltip = {
+						text = COUNCILLOR_MISSING_STEWARD
+						exists = cp:councillor_steward
+					}
+					custom_tooltip = {
+						text = COUNCILLOR_MISSING_COURT_CHAPLAIN
+						exists = cp:councillor_court_chaplain
+					}
+				}
 			}
-			current_description = RICE_sicily_frontier_agenda_officials_desc
-			localization = RICE_sicily_frontier_agenda_officials_name
-			icon = "gfx/interface/icons/widgets/RICE_sicily_officials.dds"
+			current_description = RICE_sicily_frontier_agenda_government_practices_desc
+			localization = RICE_sicily_frontier_agenda_government_practices_name
+			icon = "gfx/interface/icons/widgets/RICE_sicily_legal.dds"
 			ai_chance = {
 				value = 10
 			}
@@ -881,15 +895,15 @@ RICE_sicily_administer_frontier = {
 			}
 		}
 		
-		### Reform Government Practices
+		### Promote Officials
 		item = {
-			value = RICE_sicily_frontier_agenda_government_practices
+			value = RICE_sicily_frontier_agenda_officials
 			is_valid = {
 				intrigue >= mediocre_skill_rating
 			}
-			current_description = RICE_sicily_frontier_agenda_government_practices_desc
-			localization = RICE_sicily_frontier_agenda_government_practices_name
-			icon = "gfx/interface/icons/widgets/RICE_sicily_legal.dds"
+			current_description = RICE_sicily_frontier_agenda_officials_desc
+			localization = RICE_sicily_frontier_agenda_officials_name
+			icon = "gfx/interface/icons/widgets/RICE_sicily_officials.dds"
 			ai_chance = {
 				value = 10
 			}
@@ -954,8 +968,13 @@ RICE_sicily_administer_frontier = {
 		#custom_tooltip = RICE_sicily_administer_frontier_effect_tooltip_1
 
 		if = {
-			limit = { scope:RICE_sicily_frontier_agenda_officials = yes }
-			add_prestige = 1000
+			limit = { scope:RICE_sicily_frontier_agenda_government_practices = yes }
+			show_as_tooltip = {
+				RICE_sicily_government_practices_effect = yes
+				custom_tooltip = RICE_sicily_agenda_government_practices_effect_1_tt
+				custom_tooltip = RICE_sicily_agenda_government_practices_effect_2_tt
+			}
+			trigger_event = sicily.0104
 		}
 
 		else_if = {
@@ -969,7 +988,7 @@ RICE_sicily_administer_frontier = {
 		}
 
 		else_if = {
-			limit = { scope:RICE_sicily_frontier_agenda_government_practices = yes }
+			limit = { scope:RICE_sicily_frontier_agenda_officials = yes }
 			add_prestige = 1000
 		}
 

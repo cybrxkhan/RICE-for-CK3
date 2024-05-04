@@ -1218,11 +1218,11 @@ sicily.0060 = {
 
 # Promote Officials
 sicily.0100 = {
-	type = activity_event
+	type = character_event
 	title = sicily.0100.t
 	desc = sicily.0100.desc
-	theme = memory_positive
-	override_background = { reference = RICE_background_south_ethiopia_omotic_village }
+	theme = stewardship_duty_focus
+	override_background = { reference = RICE_background_sicily_interior }
 	
 	right_portrait = {
 		character = root
@@ -1231,16 +1231,816 @@ sicily.0100 = {
 	
 	option = { # Latin
 		name = sicily.0100.a
+		set_variable = {
+			name = RICE_sicily_promote_officials_type
+			value = flag:latin
+			days = 1
+		}
 	}
 	
-	option = { # Arab-Berber
+	option = { # Greek
 		name = sicily.0100.b
+		set_variable = {
+			name = RICE_sicily_promote_officials_type
+			value = flag:greek
+			days = 1
+		}
 	}
 	
 	option = { # Arab-Berber
 		name = sicily.0100.c
+		set_variable = {
+			name = RICE_sicily_promote_officials_type
+			value = flag:arabic
+			days = 1
+		}
 	}
 	
+	option = { # Self
+		name = sicily.0100.d
+		trigger = {
+			NOR = {
+				RICE_sicily_latin_trigger = yes
+				RICE_sicily_greek_trigger = yes
+				RICE_sicily_arabic_trigger = yes
+			}
+		}
+		set_variable = {
+			name = RICE_sicily_promote_officials_type
+			value = flag:none
+			days = 1
+		}
+	}
+
+	after = {
+		trigger_event = sicily.0101
+	}
+	
+}
+
+
+# Promote Officials
+sicily.0101 = {
+	type = character_event
+	title = sicily.0101.t
+	desc = sicily.0101.desc
+	theme = stewardship_duty_focus
+	override_background = { reference = RICE_background_sicily_interior }
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Option 1
+		name = sicily.0100.a
+	}
+	
+	option = { # Option 2
+		name = sicily.0100.b
+	}
+	
+	option = { # No
+		name = sicily.0100.c
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_variable = RICE_sicily_promote_officials_type
+			}
+			remove_variable = RICE_sicily_promote_officials_type
+		}
+	}
+	
+}
+
+
+
+# Updating Bureaucratic Records
+sicily.0103 = {
+	type = character_event
+	title = sicily.0103.t
+	desc = sicily.0103.desc
+	theme = stewardship_domain_focus
+	override_background = { reference = RICE_background_sicily_interior }
+	
+	left_portrait = {
+		character = scope:steward
+		animation = writing
+	}
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+	
+	option = { # Latin
+		name = sicily.0103.a
+	}
+	
+}
+
+# Reforming government practices
+sicily.0104 = {
+	type = character_event
+	title = sicily.0104.t
+	desc = {
+		desc = sicily.0104.desc
+		# Latin practices
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:latin_ruler
+				}
+				desc = sicily.0104.desc.latin
+			}
+			desc = sicily.0104.desc.no_latin # Fallback option
+		}
+		# Greek practices
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:greek_ruler
+				}
+				desc = sicily.0104.desc.greek
+			}
+			desc = sicily.0104.desc.no_greek # Fallback option
+		}
+		# Arabic practices
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:arabic_ruler
+				}
+				desc = sicily.0104.desc.arabic
+			}
+			desc = sicily.0104.desc.no_arabic # Fallback option
+		}
+	}
+	theme = diplomacy
+	override_background = { reference = RICE_background_sicily_interior }
+	
+	left_portrait = {
+		character = scope:councillor
+		animation = happy_teacher
+	}
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	lower_left_portrait = {
+		trigger = { exists = scope:latin_ruler }
+		character = scope:latin_ruler
+	}
+	lower_center_portrait = {
+		trigger = { exists = scope:greek_ruler }
+		character = scope:greek_ruler
+	}
+	lower_right_portrait = {
+		trigger = { exists = scope:arabic_ruler }
+		character = scope:arabic_ruler
+	}
+
+	immediate = {
+
+		# Choose the councilor to talk to you
+		if = {
+			limit = {
+				exists = cp:councillor_chancellor
+			}
+			cp:councillor_chancellor = {
+				add_to_list = councilor_candidates
+			}
+		}
+		if = {
+			limit = {
+				exists = cp:councillor_steward
+			}
+			cp:councillor_steward = {
+				add_to_list = councilor_candidates
+			}
+		}
+		if = {
+			limit = {
+				exists = cp:councillor_court_chaplain
+			}
+			cp:councillor_court_chaplain = {
+				add_to_list = councilor_candidates
+			}
+		}
+		random_in_list = {
+			list = councilor_candidates
+			save_scope_as = councillor
+		}
+
+		# Possible ruler chosen to use as a basis
+		if = {
+			limit = {
+				any_county_in_region = {
+					region = RICE_lands_near_sicily_region_farther
+					RICE_sicily_latin_trigger = yes
+					holder = {
+						RICE_sicily_latin_trigger = yes
+					}
+				}
+			}
+			every_county_in_region = {
+				region = RICE_lands_near_sicily_region_farther
+				limit = {
+					RICE_sicily_latin_trigger = yes
+					holder = {
+						RICE_sicily_latin_trigger = yes
+					}
+				}
+				add_to_list = nearby_latin_counties
+			}
+			random_in_list = {
+				list = nearby_latin_counties
+				weight = {
+					base = 10
+					modifier = {
+						is_coastal_county = yes
+						add = 10
+					}
+					modifier = {
+						holder = {
+							highest_held_title_tier >= tier_kingdom
+						}
+						add = 100
+					}
+					modifier = {
+						holder = {
+							highest_held_title_tier < tier_duchy
+						}
+						add = -30
+					}
+					modifier = {
+						holder = {
+							is_independent_ruler = no
+						}
+						add = -30
+					}
+					modifier = {
+						holder = {
+							diplomacy >= medium_skill_rating
+						}
+						add = 10
+					}
+					modifier = {
+						holder = {
+							martial >= medium_skill_rating
+						}
+						add = 5
+					}
+					modifier = {
+						holder = {
+							stewardship >= medium_skill_rating
+						}
+						add = 20
+					}
+					modifier = {
+						holder = {
+							intrigue >= medium_skill_rating
+						}
+						add = 10
+					}
+					modifier = {
+						holder = {
+							learning >= medium_skill_rating
+						}
+						add = 10
+					}
+				}
+				save_scope_as = latin_county
+			}
+			scope:latin_county.holder = {
+				save_scope_as = latin_ruler
+			}
+		}
+
+		if = {
+			limit = {
+				any_county_in_region = {
+					region = RICE_lands_near_sicily_region_farther
+					RICE_sicily_greek_trigger = yes
+					holder = {
+						RICE_sicily_greek_trigger = yes
+					}
+				}
+			}
+			every_county_in_region = {
+				region = RICE_lands_near_sicily_region_farther
+				limit = {
+					RICE_sicily_greek_trigger = yes
+					holder = {
+						RICE_sicily_greek_trigger = yes
+					}
+				}
+				add_to_list = nearby_greek_counties
+			}
+			random_in_list = {
+				list = nearby_greek_counties
+				weight = {
+					base = 10
+					modifier = {
+						is_coastal_county = yes
+						add = 10
+					}
+					modifier = {
+						holder = {
+							highest_held_title_tier >= tier_kingdom
+						}
+						add = 100
+					}
+					modifier = {
+						holder = {
+							highest_held_title_tier < tier_duchy
+						}
+						add = -30
+					}
+					modifier = {
+						holder = {
+							is_independent_ruler = no
+						}
+						add = -30
+					}
+					modifier = {
+						holder = {
+							diplomacy >= medium_skill_rating
+						}
+						add = 10
+					}
+					modifier = {
+						holder = {
+							martial >= medium_skill_rating
+						}
+						add = 5
+					}
+					modifier = {
+						holder = {
+							stewardship >= medium_skill_rating
+						}
+						add = 20
+					}
+					modifier = {
+						holder = {
+							intrigue >= medium_skill_rating
+						}
+						add = 10
+					}
+					modifier = {
+						holder = {
+							learning >= medium_skill_rating
+						}
+						add = 10
+					}
+				}
+				save_scope_as = greek_county
+			}
+			scope:greek_county.holder = {
+				save_scope_as = greek_ruler
+			}
+		}
+
+		if = {
+			limit = {
+				any_county_in_region = {
+					region = RICE_lands_near_sicily_region_farther
+					RICE_sicily_arabic_trigger = yes
+					holder = {
+						RICE_sicily_arabic_trigger = yes
+					}
+				}
+			}
+			every_county_in_region = {
+				region = RICE_lands_near_sicily_region_farther
+				limit = {
+					RICE_sicily_arabic_trigger = yes
+					holder = {
+						RICE_sicily_arabic_trigger = yes
+					}
+				}
+				add_to_list = nearby_arabic_counties
+			}
+			random_in_list = {
+				list = nearby_arabic_counties
+				weight = {
+					base = 10
+					modifier = {
+						is_coastal_county = yes
+						add = 10
+					}
+					modifier = {
+						holder = {
+							highest_held_title_tier >= tier_kingdom
+						}
+						add = 100
+					}
+					modifier = {
+						holder = {
+							highest_held_title_tier < tier_duchy
+						}
+						add = -30
+					}
+					modifier = {
+						holder = {
+							is_independent_ruler = no
+						}
+						add = -30
+					}
+					modifier = {
+						holder = {
+							diplomacy >= medium_skill_rating
+						}
+						add = 10
+					}
+					modifier = {
+						holder = {
+							martial >= medium_skill_rating
+						}
+						add = 5
+					}
+					modifier = {
+						holder = {
+							stewardship >= medium_skill_rating
+						}
+						add = 20
+					}
+					modifier = {
+						holder = {
+							intrigue >= medium_skill_rating
+						}
+						add = 10
+					}
+					modifier = {
+						holder = {
+							learning >= medium_skill_rating
+						}
+						add = 10
+					}
+				}
+				save_scope_as = arabic_county
+			}
+			scope:arabic_county.holder = {
+				save_scope_as = arabic_ruler
+			}
+		}		
+	}
+	
+	option = { # Latin
+		name = sicily.0104.a
+		RICE_sicily_signore_latin_track_major_gain = yes
+		scope:latin_ruler = {
+			if = {
+				limit = {
+					root = {
+						highest_held_title_tier = tier_empire
+					}
+				}
+				add_prestige = 300
+			}
+			else_if = {
+				limit = {
+					root = {
+						highest_held_title_tier = tier_kingdom
+					}
+				}
+				add_prestige = 200
+			}
+			else_if = {
+				limit = {
+					root = {
+						highest_held_title_tier = tier_duchy
+					}
+				}
+				add_prestige = 100
+			}
+			else_if = {
+				limit = {
+					root = {
+						highest_held_title_tier = tier_county
+					}
+				}
+				add_prestige = 50
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:latin_ruler
+			}
+			duel = {
+				skills = { diplomacy }
+				target = scope:latin_ruler
+				30 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 2.5
+						min = -49
+					}
+					add_opinion = {
+						target = scope:latin_ruler
+						modifier = RICE_sicily_government_inspired_by_opinion_lesser
+					}
+					reverse_add_opinion = {
+						target = scope:latin_ruler
+						modifier = RICE_sicily_government_inspiration_to_opinion_lesser
+					}
+					random_list = {
+						30 = {
+
+						}
+						50 = {
+							progress_towards_friend_effect = {
+								CHARACTER = scope:latin_ruler
+								OPINION = default_friend_opinion
+								REASON = RICE_sicily_ties_reason_placeholder
+							}
+						}
+						20 = {
+							set_relation_friend = {
+								target = scope:latin_ruler
+								reason = RICE_sicily_ties_reason_placeholder
+							}
+						}
+					}
+				}
+				20 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -2.5
+						min = -49
+					}
+					add_opinion = {
+						target = scope:latin_ruler
+						modifier = RICE_sicily_government_inspired_by_opinion_greater
+					}
+					reverse_add_opinion = {
+						target = scope:latin_ruler
+						modifier = RICE_sicily_government_inspiration_to_opinion_greater
+					}	
+					random_list = {
+						10 = {
+
+						}
+						45 = {
+							progress_towards_friend_effect = {
+								CHARACTER = scope:latin_ruler
+								OPINION = default_friend_opinion
+								REASON = RICE_sicily_ties_reason_placeholder
+							}
+						}
+						45 = {
+							set_relation_friend = {
+								target = scope:latin_ruler
+								reason = RICE_sicily_ties_reason_placeholder
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	option = { # Greek
+		name = sicily.0104.b
+		RICE_sicily_signore_greek_track_major_gain = yes
+		scope:greek_ruler = {
+			if = {
+				limit = {
+					root = {
+						highest_held_title_tier = tier_empire
+					}
+				}
+				add_prestige = 300
+			}
+			else_if = {
+				limit = {
+					root = {
+						highest_held_title_tier = tier_kingdom
+					}
+				}
+				add_prestige = 200
+			}
+			else_if = {
+				limit = {
+					root = {
+						highest_held_title_tier = tier_duchy
+					}
+				}
+				add_prestige = 100
+			}
+			else_if = {
+				limit = {
+					root = {
+						highest_held_title_tier = tier_county
+					}
+				}
+				add_prestige = 50
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:greek_ruler
+			}
+			duel = {
+				skills = { diplomacy }
+				target = scope:greek_ruler
+				30 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 2.5
+						min = -49
+					}
+					add_opinion = {
+						target = scope:greek_ruler
+						modifier = RICE_sicily_government_inspired_by_opinion_lesser
+					}
+					reverse_add_opinion = {
+						target = scope:greek_ruler
+						modifier = RICE_sicily_government_inspiration_to_opinion_lesser
+					}
+					random_list = {
+						30 = {
+
+						}
+						50 = {
+							progress_towards_friend_effect = {
+								CHARACTER = scope:greek_ruler
+								OPINION = default_friend_opinion
+								REASON = RICE_sicily_ties_reason_placeholder
+							}
+						}
+						20 = {
+							set_relation_friend = {
+								target = scope:greek_ruler
+								reason = RICE_sicily_ties_reason_placeholder
+							}
+						}
+					}
+				}
+				20 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -2.5
+						min = -49
+					}
+					add_opinion = {
+						target = scope:greek_ruler
+						modifier = RICE_sicily_government_inspired_by_opinion_greater
+					}
+					reverse_add_opinion = {
+						target = scope:greek_ruler
+						modifier = RICE_sicily_government_inspiration_to_opinion_greater
+					}	
+					random_list = {
+						10 = {
+
+						}
+						45 = {
+							progress_towards_friend_effect = {
+								CHARACTER = scope:greek_ruler
+								OPINION = default_friend_opinion
+								REASON = RICE_sicily_ties_reason_placeholder
+							}
+						}
+						45 = {
+							set_relation_friend = {
+								target = scope:greek_ruler
+								reason = RICE_sicily_ties_reason_placeholder
+							}
+						}
+					}
+				}
+			}
+		}
+	}	
+
+	option = { # arabic
+		name = sicily.0104.c
+		RICE_sicily_signore_arabic_track_major_gain = yes
+		scope:arabic_ruler = {
+			if = {
+				limit = {
+					root = {
+						highest_held_title_tier = tier_empire
+					}
+				}
+				add_prestige = 300
+			}
+			else_if = {
+				limit = {
+					root = {
+						highest_held_title_tier = tier_kingdom
+					}
+				}
+				add_prestige = 200
+			}
+			else_if = {
+				limit = {
+					root = {
+						highest_held_title_tier = tier_duchy
+					}
+				}
+				add_prestige = 100
+			}
+			else_if = {
+				limit = {
+					root = {
+						highest_held_title_tier = tier_county
+					}
+				}
+				add_prestige = 50
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:arabic_ruler
+			}
+			duel = {
+				skills = { diplomacy }
+				target = scope:arabic_ruler
+				30 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 2.5
+						min = -49
+					}
+					add_opinion = {
+						target = scope:arabic_ruler
+						modifier = RICE_sicily_government_inspired_by_opinion_lesser
+					}
+					reverse_add_opinion = {
+						target = scope:arabic_ruler
+						modifier = RICE_sicily_government_inspiration_to_opinion_lesser
+					}
+					random_list = {
+						30 = {
+
+						}
+						50 = {
+							progress_towards_friend_effect = {
+								CHARACTER = scope:arabic_ruler
+								OPINION = default_friend_opinion
+								REASON = RICE_sicily_ties_reason_placeholder
+							}
+						}
+						20 = {
+							set_relation_friend = {
+								target = scope:arabic_ruler
+								reason = RICE_sicily_ties_reason_placeholder
+							}
+						}
+					}
+				}
+				20 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -2.5
+						min = -49
+					}
+					add_opinion = {
+						target = scope:arabic_ruler
+						modifier = RICE_sicily_government_inspired_by_opinion_greater
+					}
+					reverse_add_opinion = {
+						target = scope:arabic_ruler
+						modifier = RICE_sicily_government_inspiration_to_opinion_greater
+					}	
+					random_list = {
+						10 = {
+
+						}
+						45 = {
+							progress_towards_friend_effect = {
+								CHARACTER = scope:arabic_ruler
+								OPINION = default_friend_opinion
+								REASON = RICE_sicily_ties_reason_placeholder
+							}
+						}
+						45 = {
+							set_relation_friend = {
+								target = scope:arabic_ruler
+								reason = RICE_sicily_ties_reason_placeholder
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_sicily_government_practices_effect = yes
+	}
+
 }
 
 
