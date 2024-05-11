@@ -61,16 +61,6 @@
 			set_holding_type = church_holding
 		}
 	}
-	if = {
-		limit = {
-			title:b_cassino = {
-				title_province = { has_special_building = no }
-			}
-		}
-		title:b_cassino.title_province = {
-			add_special_building = RICE_sicily_monte_cassino
-		}
-	}
 
 
 	if = {
@@ -86,16 +76,23 @@
 		limit = {
 			game_start_date > 1000.1.1
 		}
-		title:c_messina = {
-			set_county_culture = culture:siqilli # culture:greek
-		}
-		title:c_siracusa = {
-			set_county_culture = culture:siqilli
-		}
 		title:c_agrigento = {
 			set_county_culture = culture:siqilli
 		}
 		title:c_malta = {
+			set_county_culture = culture:siqilli
+		}
+	}
+	
+	if = {
+		limit = {
+			game_start_date < 1130.1.1
+			game_start_date > 1000.1.1
+		}
+		title:c_messina = {
+			set_county_culture = culture:siqilli # culture:greek
+		}
+		title:c_siracusa = {
 			set_county_culture = culture:siqilli
 		}
 	}
@@ -140,6 +137,73 @@
 		}
 		make_siqilli_culture_effect = yes
 	}
+
+	############################################################
+	#
+	# BUILDING
+	#
+	############################################################
+
+	# Monte Cassino
+	if = {
+		limit = {
+			title:b_cassino = {
+				title_province = { has_special_building = no }
+			}
+		}
+		title:b_cassino.title_province = {
+			add_special_building = RICE_sicily_monte_cassino
+		}
+	}
+
+	# Mount Etna
+	if = {
+		limit = {
+			title:b_catania = {
+				title_province = { has_special_building = no }
+			}
+		}
+		title:b_catania.title_province = {
+			add_special_building = RICE_sicily_mount_etna
+		}
+	}
+
+	# Salerno School of Medicine
+	if = {
+		limit = {
+			title:b_salerno = {
+				title_province = { has_special_building = no }
+			}
+		}
+		title:b_salerno.title_province = {
+			add_special_building = RICE_sicily_salerno_medical_school
+		}
+	}
+
+	if = {
+		limit = {
+			title:b_palermo = {
+				title_province = { has_special_building = no }
+			}
+		}
+
+		# Palace of Palermo
+		if = {
+			limit = {
+				game_start_date >= 1130.1.1
+			}
+			title:b_palermo.title_province = {
+				add_special_building = RICE_sicily_palace_of_palermo
+			}
+		}
+		else = {
+			title:b_palermo.title_province = {
+				add_special_building_slot = RICE_sicily_palace_of_palermo
+			}
+		}
+		
+	}
+
 
 
 	############################################################
@@ -439,23 +503,12 @@
 	}
 
 
-	# Mount Etna
-	if = {
-		limit = {
-			title:b_catania = {
-				title_province = { has_special_building = no }
-			}
-		}
-		title:b_catania.title_province = {
-			add_special_building = RICE_sicily_mount_etna
-		}
-	}
-	
 	# Arab-Berber jund settlements in Sicily
 	if = {
 		limit = {
 			game_start_date > 827.1.1
-			game_start_date < 1091.1.1
+			#game_start_date < 1091.1.1
+			game_start_date < 1224.1.1 # Frederick II expels Muslims to Lucera
 		}
 		title:c_palermo = {
 			add_county_modifier = {
@@ -1741,3 +1794,11 @@ RICE_sicily_government_practices_effect = {
 }
 
 
+RICE_sicily_salerno_medical_school_decision_effect = {
+	add_prestige = medium_prestige_gain
+	add_piety = medium_piety_gain
+	add_character_modifier = {
+		modifier = RICE_sicily_supported_salerno_medical_school
+		years = 10
+	}
+}
