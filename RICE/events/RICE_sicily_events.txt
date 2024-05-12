@@ -7,7 +7,7 @@
 # sicily.0030-sicily.0049			Sicily Strongholds
 # sicily.0050-sicily.0059			Sicily Grain
 # sicily.0060-sicily.0089			Starting situation/aspiration events
-# sicily.0090-sicily.0099			???
+# sicily.0090-sicily.0099			Baths of Baia
 # sicily.0100-sicily.0119			Administer Frontier Decision
 # 
 ###############################################################################
@@ -144,7 +144,7 @@ sicily.0010 = {
 		desc = sicily.0010.desc.conclusion
 	}
 	theme = martial
-	override_background = { reference = RICE_background_sicily_countryside }
+	override_background = { reference = RICE_background_sicily_travel }
 
 	right_portrait = {
 		character = scope:sicily_struggle_restarter
@@ -224,7 +224,7 @@ sicily.0011 = {
 		desc = sicily.0010.desc.conclusion
 	}
 	theme = diplomacy_foreign_affairs_focus
-	override_background = { reference = RICE_background_sicily_countryside }
+	override_background = { reference = RICE_background_sicily_travel }
 
 	right_portrait = {
 		character = scope:sicily_struggle_restarter
@@ -316,7 +316,7 @@ sicily.0016 = {
 	title = sicily.0016.t
 	desc = sicily.0016.desc
 	theme = culture_change
-	override_background = { reference = RICE_background_sicily_coastal_countryside }
+	override_background = { reference = RICE_background_sicily_travel }
 
 	left_portrait = root
 	
@@ -1331,6 +1331,498 @@ sicily.0060 = {
 
 
 
+
+# Abu Aaron prepares to leave, ping event
+sicily.0070 = {
+	type = character_event
+	hidden = yes
+
+	trigger = {
+		NOT = { has_global_variable = RICE_sicily_abu_aaron_event_happened }
+	}
+
+	immediate = {
+
+		# If Abu Aaron isn't in a ruler's court that's not in Babylon, trigger the event again at a later time
+		if = {
+			limit = {
+				OR = {
+					is_ruler = yes
+					is_foreign_court_or_pool_guest = yes
+					employer ?= {
+						OR = {
+							is_landed = no
+							any_held_title = {
+								tier = tier_county
+								any_county_province = {
+									geographical_region = ghw_region_near_east
+								}
+							}
+							highest_held_title_tier = tier_barony
+						}
+					}
+				}
+			}
+
+			trigger_event = {
+				id = sicily.0070
+				years = { 3 8 }
+			}
+
+		}
+
+		# If Abu Aaron is in a qualifying court
+		else_if = {
+			limit = {
+				employer ?= {
+					is_landed = yes
+					highest_held_title_tier > tier_barony
+					NOT = {
+						any_held_title = {
+							tier = tier_county
+							any_county_province = {
+								geographical_region = ghw_region_near_east
+							}
+						}
+					}
+				}
+			}
+			employer = {
+				trigger_event = sicily.0071
+			}
+		}
+
+		# Failsafe for edge cases
+		else = {
+			trigger_event = {
+				id = sicily.0070
+				years = { 3 10 }
+			}
+		}
+
+	}
+}
+
+# Abu Aaron says he'll be leaving
+sicily.0071 = {
+	type = character_event
+	title = sicily.0071.t
+	desc = {
+		desc = sicily.0071.desc
+		triggered_desc = {
+			trigger = {
+				root = character:163094
+				has_relation_friend = scope:abu_aaron
+			}
+			desc = sicily.0071.desc.sawdan
+		}
+	}
+	theme = travel_pilgrimage
+	override_background = { reference = RICE_background_sicily_coastal_town }
+	
+	left_portrait = {
+		character = root
+		animation = sadness
+	}
+	
+	right_portrait = {
+		character = scope:abu_aaron
+		animation = personality_forgiving
+	}
+
+	immediate = {
+		save_scope_as = abu_aaron_original_liege
+		character:RICE_sicily_jewish_001 = {
+			save_scope_as = abu_aaron
+		}
+		title:c_baghdad.holder = {
+			save_scope_as = baghdad_holder
+		}
+		set_global_variable = {
+			name = RICE_sicily_abu_aaron_event_happened
+			value = yes
+		}
+	}
+	
+	option = { # Let him go
+		name = sicily.0071.a
+		add_piety = major_piety_gain
+		scope:abu_aaron = {
+			set_employer = scope:baghdad_holder
+			start_travel_plan = {
+				destination = scope:baghdad_holder.capital_province
+				return_trip = no # One way
+			}
+		}
+		scope:baghdad_holder = {
+			trigger_event = sicily.0072
+		}
+	}
+
+
+	option = { # Try to detain him
+		name = sicily.0071.b
+		add_prestige = major_prestige_loss
+		# scope:abu_aaron = {
+		# 	if = {
+		# 		limit = { has_relation_friend = root }
+		# 		remove_friend_or_downgrade_friendship_effect = { SCOPE = root }
+		# 	}
+		# 	else_if = {
+		# 		limit = { has_relation_lover = root }
+		# 		remove_relation_lover = root
+		# 	}
+		# }
+		duel = {
+			skills = { prowess intrigue diplomacy }
+			target = scope:courtier_1
+			# You fail to detain him
+			10 = {
+				desc = sicily.0071.b.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.9
+					min = -49
+					max = 49
+				}
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					left_icon = scope:abu_aaron
+					title = sicily.0071.b.failure
+					scope:abu_aaron = {
+						set_employer = scope:baghdad_holder
+						add_opinion = {
+							modifier = disappointed_opinion
+							target = root
+							opinion = -40
+						}
+						start_travel_plan = {
+							destination = scope:baghdad_holder.capital_province
+							return_trip = no # One way
+						}
+					}
+				}	
+				scope:baghdad_holder = {
+					trigger_event = sicily.0072
+				}
+			}
+			# You manage to detain him
+			10 = {
+				desc = sicily.0071.b.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.9
+					min = -49
+					max = 49
+				}
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = scope:abu_aaron
+					title = sicily.0071.b.success
+					scope:abu_aaron = {
+						add_trait = depressed_1
+						add_opinion = {
+							modifier = angry_opinion
+							target = root
+							opinion = -40
+						}
+					}
+					imprison = {
+						target = scope:abu_aaron
+						type = house_arrest
+					}
+				}
+			}
+		}
+	}
+
+	
+}
+
+
+# Abu Aaron returns home
+sicily.0072 = {
+	type = character_event
+	title = sicily.0072.t
+	desc = sicily.0072.desc
+	theme = diplomacy
+	
+	right_portrait = {
+		character = scope:abu_aaron
+		animation = throne_room_bow_1
+	}
+
+	lower_center_portrait = scope:abu_aaron_original_liege
+
+	immediate = {
+		show_as_tooltip = {
+			scope:abu_aaron = {
+				set_employer = scope:baghdad_holder
+			}			
+		}
+	}
+	
+	option = { # Ok
+		name = sicily.0072.a
+	}
+}
+
+
+######################################################################################
+# 
+# BATHS OF BAIA
+# 
+# sicily.0090-sicily.0099
+# 
+######################################################################################
+
+# Setup activity
+sicily.0090 = {
+	type = character_event
+	title = sicily.0090.t
+	desc = sicily.0090.desc
+	theme = RICE_theme_sicily_travel
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_hot_springs_visit
+			activity_location.barony = title:b_napoli
+		}
+	}
+	
+	option = { # Ok
+		name = sicily.0090.a
+		if = {
+			limit = {
+				faith = {
+					NOT = { trait_is_virtue = chaste }
+					OR = {
+						faith = { has_doctrine = tenet_hedonistic }
+						faith = { has_doctrine = tenet_carnal_exaltation }
+						trait_is_virtue = lustful
+					}
+				}
+			}
+			custom_tooltip = RICE_sicily_baia_modifier.travel.dont_care
+		}
+		else_if = {
+			limit = {			
+				OR = {
+					AND = {
+						faith = { has_doctrine_parameter = male_dominated_law }
+						is_female = yes
+					}
+					AND = {
+						faith = { has_doctrine_parameter = female_dominated_law }
+						is_male = yes
+					}
+				}
+			}
+			custom_tooltip = RICE_sicily_baia_modifier.travel.non_dominant
+		}
+		else = {
+			custom_tooltip = RICE_sicily_baia_modifier.travel.dominant
+		}
+	}	
+}
+
+
+# Day of the Springs visit
+sicily.0091 = {
+	type = activity_event
+	title = sicily.0091.t
+	desc = sicily.0091.desc
+	theme = RICE_theme_sicily_amalfi_coast
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	immediate = {
+		add_character_flag = is_naked
+		scope:activity = {
+			activity_location = { save_scope_as = location }
+		}
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_public
+					}
+				}
+			}
+			set_variable = {
+				name = RICE_hot_springs_visit_special_type
+				value = flag:public
+				days = 1
+			}
+		}
+		else = {			
+			set_variable = {
+				name = RICE_hot_springs_visit_special_type
+				value = flag:private
+				days = 1
+			}
+		}
+	}
+	
+	option = { # Relaxing
+		name = sicily.0091.a
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+	}
+	
+	option = { # Beaches
+		name = sicily.0091.b
+		add_prestige = miniscule_prestige_gain
+	}
+	
+	option = { # Sightseeing
+		name = sicily.0091.c
+		RICE_minor_lifestyle_experience_gain_effect = yes
+	}
+	
+	after = {
+		RICE_sicily_visit_baia_effect = yes
+		if = {
+			limit = { has_character_flag = is_naked }
+			remove_character_flag = is_naked
+		}
+		# RICE_hot_springs_memory_effect = yes
+		set_variable = {
+			name = RICE_hot_springs_visit_special_location
+			value = flag:baia
+			days = 1
+		}
+		scope:activity = {
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				stress_impact = {
+					base = minor_stress_impact_loss
+				}
+				# random_list = {
+				# 	desc = RICE_sicily_baia_enjoy_yourself_tt
+				# 	100 = {
+				# 		show_chance = no
+				# 		desc = RICE_sicily_baia_modifier.dominant
+				# 		trigger = {
+				# 			NOT = {
+				# 				faith = {
+				# 					NOT = { trait_is_virtue = chaste }
+				# 					OR = {
+				# 						faith = { has_doctrine = tenet_hedonistic }
+				# 						faith = { has_doctrine = tenet_carnal_exaltation }
+				# 						trait_is_virtue = lustful
+				# 					}
+				# 				}
+				# 			}
+				# 			NOR = {
+				# 				AND = {
+				# 					faith = { has_doctrine_parameter = male_dominated_law }
+				# 					is_female = yes
+				# 				}
+				# 				AND = {
+				# 					faith = { has_doctrine_parameter = female_dominated_law }
+				# 					is_male = yes
+				# 				}
+				# 			}						
+				# 		}
+				# 		add_character_modifier = {
+				# 			modifier = RICE_sicily_visit_baia_normal
+				# 			years = 10
+				# 		}
+				# 	}
+				# 	100 = {
+				# 		show_chance = no
+				# 		desc = RICE_sicily_baia_modifier.non_dominant
+				# 		trigger = {
+				# 			NOT = {
+				# 				faith = {
+				# 					NOT = { trait_is_virtue = chaste }
+				# 					OR = {
+				# 						faith = { has_doctrine = tenet_hedonistic }
+				# 						faith = { has_doctrine = tenet_carnal_exaltation }
+				# 						trait_is_virtue = lustful
+				# 					}
+				# 				}
+				# 			}
+				# 			OR = {
+				# 				AND = {
+				# 					faith = { has_doctrine_parameter = male_dominated_law }
+				# 					is_female = yes
+				# 				}
+				# 				AND = {
+				# 					faith = { has_doctrine_parameter = female_dominated_law }
+				# 					is_male = yes
+				# 				}
+				# 			}						
+				# 		}
+				# 		add_character_modifier = {
+				# 			modifier = RICE_sicily_visit_baia_naughty
+				# 			years = 10
+				# 		}
+				# 	}
+				# 	# You're a faith that doesn't care about such things
+				# 	100 = {
+				# 		show_chance = no
+				# 		desc = RICE_sicily_baia_modifier.dont_care
+				# 		trigger = {
+				# 			faith = {
+				# 				NOT = { trait_is_virtue = chaste }
+				# 				OR = {
+				# 					faith = { has_doctrine = tenet_hedonistic }
+				# 					faith = { has_doctrine = tenet_carnal_exaltation }
+				# 					trait_is_virtue = lustful
+				# 				}
+				# 			}					
+				# 		}
+				# 		add_character_modifier = {
+				# 			modifier = RICE_sicily_visit_baia_naughty
+				# 			years = 10
+				# 		}
+				# 	}
+				# }
+				# if = {
+				# 	limit = {
+				# 		OR = {
+				# 			AND = {
+				# 				faith = { has_doctrine_parameter = male_dominated_law }
+				# 				is_female = yes
+				# 			}
+				# 			AND = {
+				# 				faith = { has_doctrine_parameter = female_dominated_law }
+				# 				is_male = yes
+				# 			}
+				# 		}
+				# 	}
+				# 	add_character_modifier = {
+				# 		modifier = RICE_sicily_visit_baia_naughty
+				# 		years = 10
+				# 	}
+				# }
+				# else = {
+				# 	add_character_modifier = {
+				# 		modifier = RICE_sicily_visit_baia_normal
+				# 		years = 10
+				# 	}
+				# }
+			}	
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}	
+}
 
 
 ######################################################################################

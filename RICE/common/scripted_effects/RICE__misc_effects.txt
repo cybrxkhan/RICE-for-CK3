@@ -848,6 +848,87 @@ RICE_hot_springs_visit_completed_log_entry_effect = {
 						}
 					}
 				}
+				else_if = {
+					limit = {
+						scope:host = {
+							exists = var:RICE_hot_springs_visit_special_location
+							var:RICE_hot_springs_visit_special_location = flag:baia
+						}
+					}
+					if = {
+						limit = {
+							scope:host = {
+								exists = var:RICE_hot_springs_visit_special_type
+								var:RICE_hot_springs_visit_special_type = flag:private
+							}
+						}
+						scope:host = {
+							stress_impact = {
+								base = medium_stress_impact_loss
+								lazy = miniscule_stress_impact_loss
+								calm = miniscule_stress_impact_loss
+							}	
+						}
+					}
+					else_if = {
+						limit = {
+							scope:host = {
+								exists = var:RICE_hot_springs_visit_special_type
+								var:RICE_hot_springs_visit_special_type = flag:public
+							}
+						}
+						scope:host = {
+							stress_impact = {
+								base = minor_stress_impact_loss
+								lazy = miniscule_stress_impact_loss
+								calm = miniscule_stress_impact_loss
+							}
+							add_prestige = 50
+						}
+					}
+					scope:host = {						
+						if = {
+							limit = {
+								faith = {
+									NOT = { trait_is_virtue = chaste }
+									OR = {
+										faith = { has_doctrine = tenet_hedonistic }
+										faith = { has_doctrine = tenet_carnal_exaltation }
+										trait_is_virtue = lustful
+									}
+								}
+							}
+							add_character_modifier = {
+								modifier = RICE_sicily_visit_baia_hedonist
+								years = 10
+							}
+						}
+						else_if = {
+							limit = {			
+								OR = {
+									AND = {
+										faith = { has_doctrine_parameter = male_dominated_law }
+										is_female = yes
+									}
+									AND = {
+										faith = { has_doctrine_parameter = female_dominated_law }
+										is_male = yes
+									}
+								}
+							}
+							add_character_modifier = {
+								modifier = RICE_sicily_visit_baia_naughty
+								years = 10
+							}
+						}
+						else = {
+							add_character_modifier = {
+								modifier = RICE_sicily_visit_baia_normal
+								years = 10
+							}
+						}
+					}
+				}
 				# Generic hot springs effects as a fallback
 				else = {
 					if = {
@@ -887,6 +968,46 @@ RICE_hot_springs_visit_completed_log_entry_effect = {
 					custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
 					stress_impact = {
 						base = minor_stress_impact_loss
+					}
+					if = {
+						limit = {
+							faith = {
+								NOT = { trait_is_virtue = chaste }
+								OR = {
+									faith = { has_doctrine = tenet_hedonistic }
+									faith = { has_doctrine = tenet_carnal_exaltation }
+									trait_is_virtue = lustful
+								}
+							}
+						}
+						add_character_modifier = {
+							modifier = RICE_sicily_visit_baia_hedonist
+							years = 10
+						}
+					}
+					else_if = {
+						limit = {			
+							OR = {
+								AND = {
+									faith = { has_doctrine_parameter = male_dominated_law }
+									is_female = yes
+								}
+								AND = {
+									faith = { has_doctrine_parameter = female_dominated_law }
+									is_male = yes
+								}
+							}
+						}
+						add_character_modifier = {
+							modifier = RICE_sicily_visit_baia_naughty
+							years = 10
+						}
+					}
+					else = {
+						add_character_modifier = {
+							modifier = RICE_sicily_visit_baia_normal
+							years = 10
+						}
 					}
 				}
 			}

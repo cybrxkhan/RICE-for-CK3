@@ -168,6 +168,18 @@
 		}
 	}
 
+	# Arch of Trajan
+	if = {
+		limit = {
+			title:b_benevento = {
+				title_province = { has_special_building = no }
+			}
+		}
+		title:b_benevento.title_province = {
+			add_special_building = RICE_sicily_arch_of_trajan
+		}
+	}
+
 	# Salerno School of Medicine
 	if = {
 		limit = {
@@ -176,7 +188,14 @@
 			}
 		}
 		title:b_salerno.title_province = {
-			add_special_building = RICE_sicily_salerno_medical_school
+			#add_special_building = RICE_sicily_salerno_medical_school
+			add_special_building_slot = generic_university
+			add_building = generic_university
+		}
+		title:c_salerno = {
+			add_county_modifier = {
+				modifier = RICE_sicily_salerno_medical_school_modifier
+			}
 		}
 	}
 
@@ -301,6 +320,13 @@
 				uses_supply = yes
 				inheritable = yes
 				name = RICE_aghlabid_greek_event_troops
+			}
+		}
+		character:RICE_sicily_jewish_001 = {
+			add_character_flag = blocked_from_leaving
+			trigger_event = {
+				id = sicily.0070
+				years = { 2 5 }
 			}
 		}
 	}
@@ -549,6 +575,11 @@
 	}
 
 
+	title:c_napoli = {
+		add_county_modifier = {
+			modifier = RICE_sicily_phlegraean_fields
+		}
+	}
 
 	start_struggle = {
 		struggle_type = RICE_sicily_struggle
@@ -923,6 +954,7 @@ RICE_sicily_build_admirals_bridge_effect = {
 			years = 30
 		}
 	}
+
 
 }
 
@@ -1795,10 +1827,96 @@ RICE_sicily_government_practices_effect = {
 
 
 RICE_sicily_salerno_medical_school_decision_effect = {
-	add_prestige = medium_prestige_gain
-	add_piety = medium_piety_gain
+	add_prestige = minor_prestige_gain
+	add_piety = minor_piety_gain
+	RICE_sicily_signore_latin_track_minor_gain = yes
+	RICE_sicily_signore_arabic_track_minor_gain = yes
+	RICE_sicily_signore_greek_track_minor_gain = yes
 	add_character_modifier = {
 		modifier = RICE_sicily_supported_salerno_medical_school
 		years = 10
+	}
+}
+
+
+
+RICE_sicily_visit_baia_effect = {
+    add_prestige = 50
+    if = {
+        limit = {
+            scope:activity = {
+                has_activity_option = {
+                    category = special_type
+                    option = RICE_hot_springs_visit_type_private
+                }
+            }
+        }
+        stress_impact = {
+            base = medium_stress_impact_loss
+            lazy = miniscule_stress_impact_loss
+            calm = miniscule_stress_impact_loss
+            zealous = miniscule_stress_impact_loss
+        }	
+    }
+    else_if = {
+        limit = {
+            scope:activity = {
+                has_activity_option = {
+                    category = special_type
+                    option = RICE_hot_springs_visit_type_public
+                }
+            }
+        }
+        add_prestige = 50
+        stress_impact = {
+            base = minor_stress_impact_loss
+            lazy = miniscule_stress_impact_loss
+            calm = miniscule_stress_impact_loss
+            zealous = miniscule_stress_impact_loss
+        }
+    }
+
+	if = {
+		limit = {
+			faith = {
+				NOT = { trait_is_virtue = chaste }
+				OR = {
+					faith = { has_doctrine = tenet_hedonistic }
+					faith = { has_doctrine = tenet_carnal_exaltation }
+					trait_is_virtue = lustful
+				}
+			}
+		}
+		custom_tooltip = RICE_sicily_baia_modifier.dont_care
+		add_character_modifier = {
+			modifier = RICE_sicily_visit_baia_hedonist
+			years = 10
+		}
+	}
+	else_if = {
+		limit = {			
+			OR = {
+				AND = {
+					faith = { has_doctrine_parameter = male_dominated_law }
+					is_female = yes
+				}
+				AND = {
+					faith = { has_doctrine_parameter = female_dominated_law }
+					is_male = yes
+				}
+			}
+		}
+		custom_tooltip = RICE_sicily_baia_modifier.non_dominant
+		add_character_modifier = {
+			modifier = RICE_sicily_visit_baia_naughty
+			years = 10
+		}
+	}
+	else = {
+		custom_tooltip = RICE_sicily_baia_modifier.dominant
+		add_character_modifier = {
+			modifier = RICE_sicily_visit_baia_normal
+			years = 10
+		}
 	}
 }
