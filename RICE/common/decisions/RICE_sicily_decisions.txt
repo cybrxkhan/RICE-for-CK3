@@ -496,6 +496,394 @@ RICE_sicily_stabilize_sicilian_frontier = {
 	}
 }
 
+
+
+
+#############################################
+#											#
+# MISCELLANEOUS DECISIONS  					#
+#											#
+#############################################
+
+
+
+
+RICE_sicily_admirals_bridge_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_ck2_castle_tower.dds"
+	major = yes
+	desc = RICE_sicily_admirals_bridge_decision_desc
+
+	ai_check_interval = 60
+
+	is_shown = {
+		is_landed = yes
+		has_title = title:c_palermo
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_sicily_admirals_bridge_built
+			}
+		}
+	}
+
+	is_valid = {
+		has_title = title:c_palermo
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		RICE_is_available_adult_even_if_sick_trigger = yes
+	}
+
+	cost = {
+		gold = {
+			value = major_gold_value
+		}
+		prestige = {
+			value = medium_prestige_value
+		}
+	}
+
+	effect = {
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_sicily_admirals_bridge_built
+		}
+		
+		save_scope_as = admirals_bridge_builder
+
+		show_as_tooltip = {
+			RICE_sicily_build_admirals_bridge_effect = yes
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_sicily_admirals_bridge_decision_context_tooltip
+		}
+		
+		trigger_event = sicily.8888
+
+		# add_to_list = notification_sent
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -10
+			has_trait = content
+		}
+	}
+}
+
+
+
+
+
+RICE_sicily_support_salerno_medical_school = {
+	picture = "gfx/interface/illustrations/decisions/decision_ck2_scientific_experiment.dds"
+	desc = RICE_sicily_support_salerno_medical_school_desc
+
+	ai_check_interval = 40
+	
+	cooldown = { days = 3650 }
+
+	is_shown = {
+		is_landed = yes
+		has_title = title:c_salerno
+	}
+
+	is_valid = {
+		has_title = title:c_salerno	
+		title:c_salerno = {
+			has_county_modifier = RICE_sicily_salerno_medical_school_modifier
+		}	
+		# trigger_if = {
+		# 	limit = {
+		# 		NOT = {
+		# 			title:b_salerno.title_province = {
+		# 				has_building = RICE_sicily_salerno_medical_school
+		# 			}
+		# 		}
+		# 	}
+		# 	title:b_salerno.title_province = {
+		# 		has_holding = yes
+		# 	}
+		# }
+		# trigger_else = {
+		# 	title:b_salerno.title_province = {
+		# 		has_building = RICE_sicily_salerno_medical_school
+		# 	}
+		# }
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		RICE_is_available_adult_even_if_sick_trigger = yes
+	}
+
+	minimum_cost = {
+		gold = minor_gold_value
+	}
+	
+	ai_potential = {
+		short_term_gold > minor_gold_value
+	}
+
+	effect = {
+
+		show_as_tooltip = {
+			RICE_sicily_salerno_medical_school_decision_effect = yes
+		}
+
+		custom_tooltip = RICE_sicily_support_salerno_medical_school_effect_tooltip_1
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_sicily_support_salerno_medical_school_context_tooltip
+		}
+		
+		trigger_event = sicily.8888
+
+		# add_to_list = notification_sent
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+		modifier = {
+			add = 10
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -10
+			has_trait = callous
+		}
+		modifier = {
+			add = 10
+			has_trait = generous
+		}
+		modifier = {
+			add = -10
+			has_trait = greedy
+		}
+	}
+}
+
+
+
+
+# Sponsor the Liber pantegni
+# RICE_sicily_sponsor_liber_pantegni = {
+# 	picture = "gfx/interface/illustrations/decisions/decision_RICE_european_book.dds"
+
+# 	desc = RICE_sicily_sponsor_liber_pantegni_desc
+# 	selection_tooltip = RICE_sicily_sponsor_liber_pantegni_tooltip
+# 	major = yes
+
+# 	ai_check_interval = 24
+
+# 	is_shown = {
+# 		exists = dynasty
+# 		highest_held_title_tier > tier_barony
+# 		is_landed = yes
+# 		NOT = {
+# 			is_target_in_global_variable_list = {
+# 				name = unavailable_unique_decisions
+# 				target = flag:RICE_normandy_commission_normandy_history
+# 			}
+# 		}
+# 		OR = {
+# 			AND = {
+# 				exists = struggle:RICE_normandy_struggle
+# 				OR = {
+# 					any_character_struggle = {
+# 						involvement = involved
+# 						is_struggle_type = RICE_normandy_struggle
+# 					}					
+# 					any_character_struggle = {
+# 						involvement = interloper
+# 						is_struggle_type = RICE_normandy_struggle
+# 					}
+# 				}
+# 			}
+# 			any_held_title = {
+# 				tier = tier_county
+# 				any_county_province = {
+# 					geographical_region = RICE_normandy_region	
+# 				}
+# 			}
+# 		}
+# 		# OR = {
+# 		# 	culture = culture:norman
+# 		# 	culture = {
+# 		# 		any_parent_culture_or_above = {
+# 		# 			this = culture:norman
+# 		# 		}
+# 		# 	}
+# 		# 	dynasty = {
+# 		# 		has_dynasty_modifier = RICE_normandy_rollo_family_equivalent
+# 		# 	}
+# 		# }
+# 	}
+	
+# 	is_valid = {
+# 		has_title = title:d_normandy
+# 		completely_controls = title:d_normandy
+# 		OR = {
+# 			culture = culture:norman
+# 			culture = {
+# 				any_parent_culture_or_above = {
+# 					this = culture:norman
+# 				}
+# 			}
+# 			dynasty = {
+# 				has_dynasty_modifier = RICE_normandy_rollo_family_equivalent
+# 			}
+# 		}
+# 		OR = {
+# 			prestige_level >= 4
+# 			dynasty = {
+# 				dynasty_prestige_level >= 3
+# 			}
+# 		}
+# 		OR = {
+# 			custom_tooltip = {
+# 				text = RICE_normandy_struggle_assimilation_decision_correct_phase_tt
+# 				struggle:RICE_normandy_struggle = {
+# 					is_struggle_phase = struggle_RICE_normandy_phase_acculturation
+# 				}
+# 			}	
+# 			AND = {
+# 				learning >= medium_skill_rating
+# 				prestige_level >= 3
+# 			}		
+# 		}
+# 	}
+
+# 	is_valid_showing_failures_only = {
+# 		is_available_adult = yes
+# 	}
+
+# 	effect = {		
+
+# 		culture:norman = {
+# 			save_scope_as = norman
+# 		}
+
+# 		culture:french = {
+# 			save_scope_as = french
+# 		}
+
+# 		culture:norse = {
+# 			save_scope_as = norse
+# 		}
+
+# 		#Can only happen once
+# 		add_to_global_variable_list = {
+# 			name = unavailable_unique_decisions
+# 			target = flag:RICE_normandy_commission_normandy_history
+# 		}
+
+# 		custom_tooltip = RICE_sicily_sponsor_liber_pantegni_effect_tooltip_1
+# 		custom_tooltip = RICE_sicily_sponsor_liber_pantegni_effect_tooltip_2
+# 		custom_tooltip = RICE_sicily_sponsor_liber_pantegni_effect_tooltip_3
+# 		custom_tooltip = RICE_sicily_sponsor_liber_pantegni_effect_tooltip_4
+# 		custom_tooltip = RICE_sicily_sponsor_liber_pantegni_effect_tooltip_5
+
+# 		if = {
+# 			limit = {
+# 				has_game_rule = RICE_historical_context_on
+# 			}
+# 			custom_tooltip = RICE_sicily_sponsor_liber_pantegni_context_tooltip
+# 		}
+
+# 		trigger_event = {
+# 			id = normandy.0110
+# 		}
+
+# 	}
+
+# 	cost = { 
+# 		gold = medium_gold_value # Will depend
+# 	}	
+
+# 	ai_potential = {
+# 		gold > medium_gold_value
+# 	}
+
+# 	ai_will_do = {
+# 		base = 50
+# 		modifier = {
+# 			add = -5
+# 			has_trait = content
+# 		}
+# 		modifier = {
+# 			add = 5
+# 			has_trait = ambitious
+# 		}
+# 		modifier = {
+# 			add = -5
+# 			has_trait = craven
+# 		}
+# 		modifier = {
+# 			add = 5
+# 			has_trait = brave
+# 		}
+# 		modifier = {
+# 			add = 25
+# 			# Happened late 900s IRL
+# 			current_date >= 950.1.1
+# 		}
+# 		modifier = {
+# 			add = 50
+# 			# Happened late 900s IRL
+# 			current_date >= 975.1.1
+# 		}
+# 		modifier = {
+# 			add = 75
+# 			# Happened late 900s IRL
+# 			current_date >= 1000.1.1
+# 		}
+# 		modifier = {
+# 			add = 100
+# 			# Happened late 900s IRL
+# 			current_date >= 1025.1.1
+# 		}
+# 		modifier = {
+# 			add = 100
+# 			# Happened late 900s IRL
+# 			current_date >= 1050.1.1
+# 		}
+# 	}
+# }
+
+
+
+
 #############################################
 #											#
 # MISCELLANEOUS STRUGGLE-RELATED DECISIONS  #
@@ -1041,200 +1429,4 @@ RICE_sicily_administer_frontier = {
 		}
 	}
 }
-
-
-#############################################
-#											#
-# MISCELLANEOUS DECISIONS  					#
-#											#
-#############################################
-
-
-RICE_sicily_admirals_bridge_decision = {
-	picture = "gfx/interface/illustrations/decisions/decision_ck2_castle_tower.dds"
-	major = yes
-	desc = RICE_sicily_admirals_bridge_decision_desc
-
-	ai_check_interval = 60
-
-	is_shown = {
-		is_landed = yes
-		has_title = title:c_palermo
-		NOT = {
-			is_target_in_global_variable_list = {
-				name = unavailable_unique_decisions
-				target = flag:RICE_sicily_admirals_bridge_built
-			}
-		}
-	}
-
-	is_valid = {
-		has_title = title:c_palermo
-	}
-
-	is_valid_showing_failures_only = {
-		is_adult = yes
-		RICE_is_available_adult_even_if_sick_trigger = yes
-	}
-
-	cost = {
-		gold = {
-			value = major_gold_value
-		}
-		prestige = {
-			value = medium_prestige_value
-		}
-	}
-
-	effect = {
-		#Can only happen once
-		add_to_global_variable_list = {
-			name = unavailable_unique_decisions
-			target = flag:RICE_sicily_admirals_bridge_built
-		}
-		
-		save_scope_as = admirals_bridge_builder
-
-		show_as_tooltip = {
-			RICE_sicily_build_admirals_bridge_effect = yes
-		}
-		
-		if = {
-			limit = {
-				has_game_rule = RICE_historical_context_on
-			}
-			custom_tooltip = RICE_sicily_admirals_bridge_decision_context_tooltip
-		}
-		
-		trigger_event = sicily.8888
-
-		# add_to_list = notification_sent
-	}
-
-	ai_will_do = {
-		base = 30
-		modifier = {
-			add = 10
-			has_trait = diligent
-		}
-		modifier = {
-			add = -10
-			has_trait = lazy
-		}
-		modifier = {
-			add = 10
-			has_trait = ambitious
-		}
-		modifier = {
-			add = -10
-			has_trait = content
-		}
-	}
-}
-
-
-
-
-
-RICE_sicily_support_salerno_medical_school = {
-	picture = "gfx/interface/illustrations/decisions/decision_ck2_scientific_experiment.dds"
-	desc = RICE_sicily_support_salerno_medical_school_desc
-
-	ai_check_interval = 40
-	
-	cooldown = { days = 3650 }
-
-	is_shown = {
-		is_landed = yes
-		has_title = title:c_salerno
-	}
-
-	is_valid = {
-		has_title = title:c_salerno	
-		title:c_salerno = {
-			has_county_modifier = RICE_sicily_salerno_medical_school_modifier
-		}	
-		# trigger_if = {
-		# 	limit = {
-		# 		NOT = {
-		# 			title:b_salerno.title_province = {
-		# 				has_building = RICE_sicily_salerno_medical_school
-		# 			}
-		# 		}
-		# 	}
-		# 	title:b_salerno.title_province = {
-		# 		has_holding = yes
-		# 	}
-		# }
-		# trigger_else = {
-		# 	title:b_salerno.title_province = {
-		# 		has_building = RICE_sicily_salerno_medical_school
-		# 	}
-		# }
-	}
-
-	is_valid_showing_failures_only = {
-		is_adult = yes
-		RICE_is_available_adult_even_if_sick_trigger = yes
-	}
-
-	minimum_cost = {
-		gold = minor_gold_value
-	}
-	
-	ai_potential = {
-		short_term_gold > minor_gold_value
-	}
-
-	effect = {
-
-		show_as_tooltip = {
-			RICE_sicily_salerno_medical_school_decision_effect = yes
-		}
-
-		custom_tooltip = RICE_sicily_support_salerno_medical_school_effect_tooltip_1
-		
-		if = {
-			limit = {
-				has_game_rule = RICE_historical_context_on
-			}
-			custom_tooltip = RICE_sicily_support_salerno_medical_school_context_tooltip
-		}
-		
-		trigger_event = sicily.8888
-
-		# add_to_list = notification_sent
-	}
-
-	ai_will_do = {
-		base = 30
-		modifier = {
-			add = 10
-			has_trait = diligent
-		}
-		modifier = {
-			add = -10
-			has_trait = lazy
-		}
-		modifier = {
-			add = 10
-			has_trait = compassionate
-		}
-		modifier = {
-			add = -10
-			has_trait = callous
-		}
-		modifier = {
-			add = 10
-			has_trait = generous
-		}
-		modifier = {
-			add = -10
-			has_trait = greedy
-		}
-	}
-}
-
-
-
 
