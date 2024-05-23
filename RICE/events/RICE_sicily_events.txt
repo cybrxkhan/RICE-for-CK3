@@ -435,6 +435,232 @@ sicily.0016 = {
 }
 
 
+# Admiral Bridge's decision event
+sicily.0017 = {
+	type = character_event
+	title = sicily.0017.t
+	desc = sicily.0017.desc
+	theme = RICE_theme_sicily_village
+
+	left_portrait = root
+
+
+	immediate = {
+		RICE_sicily_build_admirals_bridge_effect = yes
+	}
+
+	option = {
+		name = sicily.0017.a
+	}
+}
+
+# Sicily recruit soldier decision
+sicily.0018 = {
+	type = character_event
+	title = sicily.0018.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_sicily_soldier_type ?= flag:latin
+				}
+				desc = sicily.0018.desc.latin
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_sicily_soldier_type ?= flag:greek
+				}
+				desc = sicily.0018.desc.greek
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_sicily_soldier_type ?= flag:arabic
+				}
+				desc = sicily.0018.desc.arabic
+			}
+			desc = sicily.0018.desc.none # Fallback option
+		}
+		desc = sicily.0018.desc
+	}
+	theme = martial
+	override_background = { reference = RICE_background_sicily_interior }
+
+	right_portrait = {
+		character = root
+		animation = war_defender
+	}
+
+	immediate = {
+		# Save a potential county for the stronghold to appear in
+		if = {
+			limit = {
+				var:RICE_sicily_soldier_type ?= flag:latin
+				any_held_county = {
+					any_county_province = {
+						geographical_region = custom_sicily
+					}
+					NOT = { has_county_modifier = RICE_sicily_stronghold_latin }
+				}
+
+			}
+			random_held_county = {
+				limit = {
+					any_county_province = {
+						geographical_region = custom_sicily
+					}
+					NOT = { has_county_modifier = RICE_sicily_stronghold_latin }
+				}
+				save_scope_as = county
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_sicily_soldier_type ?= flag:greek
+				any_held_county = {
+					any_county_province = {
+						geographical_region = custom_sicily
+					}
+					NOT = { has_county_modifier = RICE_sicily_stronghold_greek }
+				}
+
+			}
+			random_held_county = {
+				limit = {
+					any_county_province = {
+						geographical_region = custom_sicily
+					}
+					NOT = { has_county_modifier = RICE_sicily_stronghold_greek }
+				}
+				save_scope_as = county
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_sicily_soldier_type ?= flag:arabic
+				any_held_county = {
+					any_county_province = {
+						geographical_region = custom_sicily
+					}
+					NOT = { has_county_modifier = RICE_sicily_stronghold_arabic }
+				}
+
+			}
+			random_held_county = {
+				limit = {
+					any_county_province = {
+						geographical_region = custom_sicily
+					}
+					NOT = { has_county_modifier = RICE_sicily_stronghold_arabic }
+				}
+				save_scope_as = county
+			}
+		}
+	}
+
+	option = {
+		name = sicily.0018.a
+		if = {
+			limit = { var:RICE_sicily_soldier_type ?= flag:latin }
+			set_variable = {
+				name = RICE_sicily_soldier_type
+				value = flag:latin
+				days = 1
+			}
+			RICE_sicily_recruit_latin_soldiers_effect = yes
+		}
+
+		else_if = {
+			limit = { var:RICE_sicily_soldier_type ?= flag:greek }
+			set_variable = {
+				name = RICE_sicily_soldier_type
+				value = flag:greek
+				days = 1
+			}
+			RICE_sicily_recruit_greek_soldiers_effect = yes
+		}
+
+		else_if = {
+			limit = { var:RICE_sicily_soldier_type ?= flag:arabic }
+			set_variable = {
+				name = RICE_sicily_soldier_type
+				value = flag:arabic
+				days = 1
+			}
+			RICE_sicily_recruit_arabic_soldiers_effect = yes
+		}
+	}
+
+	after = {
+
+		hidden_effect = {
+			if = {
+				limit = {
+					var:RICE_sicily_soldier_type ?= flag:latin
+				}
+				random = {
+					chance = RICE_sicily_latin_stronghold_appearance_value
+					send_interface_toast = {
+						type = sicily_struggle_event
+						left_icon = root
+						title = sicily.county_appears.latin_stronghold
+						scope:county = {
+							add_county_modifier = {
+								modifier = RICE_sicily_stronghold_latin
+							}
+						}
+					}	
+				}
+			}
+			else_if = {
+				limit = {
+					var:RICE_sicily_soldier_type ?= flag:greek
+				}
+				random = {
+					chance = RICE_sicily_greek_stronghold_appearance_value
+					send_interface_toast = {
+						type = sicily_struggle_event
+						left_icon = root
+						title = sicily.county_appears.greek_stronghold
+						scope:county = {
+							add_county_modifier = {
+								modifier = RICE_sicily_stronghold_greek
+							}
+						}
+					}
+				}	
+			}
+			else_if = {
+				limit = {
+					var:RICE_sicily_soldier_type ?= flag:arabic
+				}
+				random = {
+					chance = RICE_sicily_arabic_stronghold_appearance_value
+					send_interface_toast = {
+						type = sicily_struggle_event
+						left_icon = root
+						title = sicily.county_appears.arabic_stronghold
+						scope:county = {
+							add_county_modifier = {
+								modifier = RICE_sicily_stronghold_arabic
+							}
+						}
+					}
+				}	
+			}
+		}
+
+		if = {
+			limit = {
+				has_variable = RICE_sicily_soldier_type
+			}
+			remove_variable = RICE_sicily_soldier_type
+		}
+
+	}
+
+}
+
+
 ######################################################################################
 # 
 # CASUS BELLI & WARFARE EVENTS
