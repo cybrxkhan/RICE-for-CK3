@@ -455,27 +455,37 @@
 				value = flag:roger
 			}			
 			spawn_army = {
-				levies = 500
-				men_at_arms = {
-					type = mubarizun
-					stacks = 1
-				}
+				levies = 100
 				men_at_arms = {
 					type = RICE_sicily_bowmen
-					stacks = 2
+					stacks = 3
 				}
 				men_at_arms = {
 					type = light_footmen
 					stacks = 1
 				}
-				men_at_arms = {
-					type = light_horsemen
-					stacks = 2
-				}
 				location = province:2635 # Palermo
 				uses_supply = yes
 				inheritable = yes
 				name = RICE_sicily_norman_muslim_event_troops
+			}
+			spawn_army = {
+				levies = 200
+				men_at_arms = {
+					type = light_footmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = armored_footmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = RICE_norman_cavalry
+					stacks = 2
+				}
+				location = province:2619 # Trani in Apulia
+				inheritable = no
+				name = RICE_norman_spawn_event_troops
 			}
 		}
 		# Benavert and other Muslim taifa warlords of Sicily
@@ -644,9 +654,63 @@
 				}
 				save_scope_as = bari_war
 			}
+			spawn_army = {
+				levies = 500
+				men_at_arms = {
+					type = light_footmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = bowmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = armored_footmen
+					stacks = 2
+				}
+				men_at_arms = {
+					type = RICE_norman_cavalry
+					stacks = 2
+				}
+				location = province:2619 # Trani in Apulia
+				inheritable = no
+				name = RICE_norman_spawn_event_troops
+			}
 		}
 		scope:bari_war = {
 			add_defender = scope:abulchares
+		}
+		character:1140 = {
+			save_scope_as = bohemond
+		}
+		# Fix up Sichelgaita/Sikelgaita, Robert Guiscard's wife
+		character:1123 = {
+			remove_any_education_traits_effect = yes
+			RICE_remove_personality_traits_effect = yes
+			add_trait = education_martial_3
+			add_trait = physique_good_1
+			add_trait = unyielding_defender
+			# Led Norman troops in battle
+			add_trait = brave 
+			# According to the Alexiad, she was more honorable than her husband (though this might be propagandistic on Anna Komnene's part to portray the Normans as villainous)
+			add_trait = just 	
+			# Constantly by Robert Guiscard's side and assisting him	
+			add_trait = diligent
+			#add_martial_skill = 3
+			add_character_modifier = {
+				modifier = ignores_gender_army_rules
+			}
+
+			add_opinion = {
+				target = scope:bohemond
+				modifier = RICE_historical_dislike_opinion
+			}
+
+			reverse_add_opinion = {
+				target = scope:bohemond
+				modifier = RICE_historical_dislike_opinion
+			}
+
 		}
 
 
@@ -2156,5 +2220,99 @@ RICE_sicily_recruit_arabic_soldiers_effect = {
 	}
 	custom_tooltip = RICE_sicily_arabic_stronghold_appear_chance_desc
 }
+
+
+
+
+RICE_sicily_virgil_tomb_visit_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_sicily_virgil_tomb_visit_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				add_prestige = 50
+				add_piety = 50
+				if = {
+					limit = {
+						has_activity_intent = RICE_sicily_virgil_tomb_visit_miracle_intent
+					}
+					add_piety = 100
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_sicily_virgil_tomb_visit_inspiration_intent
+					}
+					add_piety = 100
+				}
+				stress_impact = {
+					base = minor_stress_impact_loss
+					zealous = miniscule_stress_impact_loss
+					humble = miniscule_stress_impact_loss
+					scholar = miniscule_stress_impact_loss
+					poet = minor_stress_impact_loss
+				}
+				if = {
+					limit = {
+						NOT = { has_character_flag = RICE_sicily_can_do_virgil_divination }
+					}
+					add_character_flag = RICE_sicily_can_do_virgil_divination
+					custom_tooltip = RICE_sicily_visited_virgils_tomb_interaction_tt
+				}
+			}
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_prestige = 50
+				add_piety = 50
+				if = {
+					limit = {
+						has_activity_intent = RICE_sicily_virgil_tomb_visit_miracle_intent
+					}
+					add_piety = 100
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_sicily_virgil_tomb_visit_inspiration_intent
+					}
+					add_piety = 100
+				}
+				stress_impact = {
+					base = minor_stress_impact_loss
+					zealous = miniscule_stress_impact_loss
+					humble = miniscule_stress_impact_loss
+					scholar = miniscule_stress_impact_loss
+					poet = minor_stress_impact_loss
+				}
+				if = {
+					limit = {
+						NOT = { has_character_flag = RICE_sicily_can_do_virgil_divination }
+					}
+					add_character_flag = RICE_sicily_can_do_virgil_divination
+					custom_tooltip = RICE_sicily_visited_virgils_tomb_interaction_tt
+				}
+			}	
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

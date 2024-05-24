@@ -9,6 +9,8 @@
 # sicily.0060-sicily.0089			Starting situation/aspiration events
 # sicily.0090-sicily.0099			Baths of Baia
 # sicily.0100-sicily.0119			Administer Frontier Decision
+# sicily.0120-sicily.0129			Virgin Tomb Visit
+# sicily.0130-sicily.0139			Palermo Tomb Visit
 # 
 ###############################################################################
 
@@ -2057,6 +2059,10 @@ sicily.0091 = {
 }
 
 
+
+
+
+
 ######################################################################################
 # 
 # ADMINISTER FRONTIER DECISION
@@ -3033,6 +3039,104 @@ sicily.0108 = {
 
 
 
+
+
+######################################################################################
+# 
+# VIRGIL TOMB VISIT
+# 
+# sicily.0110-sicily.0119
+# 
+######################################################################################
+
+# Setup activity
+sicily.0110 = {
+	type = character_event
+	title = sicily.0110.t
+	desc = sicily.0110.desc
+	theme = RICE_theme_sicily_travel
+	
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_sicily_virgil_tomb_visit
+		}
+	}
+
+	immediate = {		
+		culture:roman = {
+			save_scope_as = roman
+		}
+	}
+	
+	option = { # Ok
+		name = sicily.0110.a
+	}	
+}
+
+
+# Day of the visit to the tunnel
+sicily.0111 = {
+	type = activity_event
+	title = sicily.0111.t
+	desc = sicily.0111.desc
+	theme = RICE_theme_sicily_virgils_tomb
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	immediate = {			
+		culture:roman = {
+			save_scope_as = roman
+		}
+	}
+	
+	option = { # Relaxing
+		name = sicily.0111.a
+	}
+	
+	after = {
+		trigger_event = {
+			id = sicily.0112
+			days = { 2 5 }
+		}
+	}	
+}
+
+# Go to the chapel / reflect on Virgil
+sicily.0112 = {
+	type = activity_event
+	title = sicily.0112.t
+	desc = sicily.0112.desc
+	theme = RICE_theme_sicily_virgils_tomb
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+	
+	option = { # Relaxing
+		name = sicily.0112.a
+		RICE_sicily_virgil_tomb_visit_completed_log_entry_effect = yes
+	}
+	
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
+		}
+	}
+}
 
 
 
