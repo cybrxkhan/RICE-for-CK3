@@ -9,7 +9,7 @@
 # sicily.0060-sicily.0089			Starting situation/aspiration events
 # sicily.0090-sicily.0099			Baths of Baia
 # sicily.0100-sicily.0119			Administer Frontier Decision
-# sicily.0120-sicily.0129			Virgin Tomb Visit
+# sicily.0120-sicily.0129			Virgil Flavor
 # sicily.0130-sicily.0139			Palermo Tomb Visit
 # 
 ###############################################################################
@@ -3043,17 +3043,17 @@ sicily.0108 = {
 
 ######################################################################################
 # 
-# VIRGIL TOMB VISIT
+# VIRGIL FLAVOR
 # 
-# sicily.0110-sicily.0119
+# sicily.0120-sicily.0129
 # 
 ######################################################################################
 
 # Setup activity
-sicily.0110 = {
+sicily.0120 = {
 	type = character_event
-	title = sicily.0110.t
-	desc = sicily.0110.desc
+	title = sicily.0120.t
+	desc = sicily.0120.desc
 	theme = RICE_theme_sicily_travel
 	
 	left_portrait = {
@@ -3077,16 +3077,16 @@ sicily.0110 = {
 	}
 	
 	option = { # Ok
-		name = sicily.0110.a
+		name = sicily.0120.a
 	}	
 }
 
 
 # Day of the visit to the tunnel
-sicily.0111 = {
+sicily.0121 = {
 	type = activity_event
-	title = sicily.0111.t
-	desc = sicily.0111.desc
+	title = sicily.0121.t
+	desc = sicily.0121.desc
 	theme = RICE_theme_sicily_virgils_tomb
 	
 	right_portrait = {
@@ -3101,22 +3101,22 @@ sicily.0111 = {
 	}
 	
 	option = { # Relaxing
-		name = sicily.0111.a
+		name = sicily.0121.a
 	}
 	
 	after = {
 		trigger_event = {
-			id = sicily.0112
+			id = sicily.0122
 			days = { 2 5 }
 		}
 	}	
 }
 
 # Go to the chapel / reflect on Virgil
-sicily.0112 = {
+sicily.0122 = {
 	type = activity_event
-	title = sicily.0112.t
-	desc = sicily.0112.desc
+	title = sicily.0122.t
+	desc = sicily.0122.desc
 	theme = RICE_theme_sicily_virgils_tomb
 	
 	right_portrait = {
@@ -3125,8 +3125,223 @@ sicily.0112 = {
 	}
 	
 	option = { # Relaxing
-		name = sicily.0112.a
+		name = sicily.0122.a
 		RICE_sicily_virgil_tomb_visit_completed_log_entry_effect = yes
+	}
+	
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
+		}
+	}
+}
+
+
+
+
+######################################################################################
+# 
+# PALERMO TOMB VISIT
+# 
+# sicily.0130-sicily.0139
+# 
+######################################################################################
+
+# Setup activity
+sicily.0130 = {
+	type = character_event
+	title = sicily.0130.t
+	desc = {
+		desc = sicily.0130.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					involved_activity ?= {
+						has_activity_option = {
+							category = special_type
+							option = RICE_sicily_palermo_tomb_visit_aristotle
+						}
+					}
+				}
+				desc = sicily.0130.desc.aristotle
+			}
+			triggered_desc = {
+				trigger = {
+					involved_activity ?= {
+						has_activity_option = {
+							category = special_type
+							option = RICE_sicily_palermo_tomb_visit_galen
+						}
+					}
+				}
+				desc = sicily.0130.desc.galen
+			}
+		}
+		desc = sicily.0130.desc
+	}
+	theme = RICE_theme_sicily_travel
+	
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_sicily_palermo_tomb_visit
+		}
+	}
+
+	immediate = {		
+		culture:greek = {
+			save_scope_as = greek
+		}
+		title:c_palermo = {
+			faith = {
+				save_scope_as = palermo_faith
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = sicily.0130.a
+	}	
+}
+
+
+# Arrive in Palermo, looking for the tomb
+sicily.0131 = {
+	type = activity_event
+	title = sicily.0131.t
+	desc = {
+		desc = sicily.0131.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_sicily_palermo_tomb_visit_aristotle
+						}
+					}
+				}
+				desc = sicily.0131.desc.aristotle
+			}
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_sicily_palermo_tomb_visit_galen
+						}
+					}
+				}
+				desc = sicily.0131.desc.galen
+			}
+		}
+	}
+	theme = RICE_theme_sicily_village
+	
+	right_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+
+	immediate = {			
+		culture:greek = {
+			save_scope_as = greek
+		}
+		title:c_palermo = {
+			faith = {
+				save_scope_as = palermo_faith
+			}
+		}
+	}
+	
+	option = { # Relaxing
+		name = sicily.0131.a
+	}
+	
+	after = {
+		if = {
+			limit = {				
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_sicily_palermo_tomb_visit_aristotle
+					}
+				}
+			}
+			trigger_event = {
+				id = sicily.0132
+				days = { 2 5 }
+			}
+		}
+		else_if = {
+			limit = {				
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_sicily_palermo_tomb_visit_galen
+					}
+				}
+			}
+			trigger_event = {
+				id = sicily.0133
+				days = { 2 5 }
+			}
+		}
+	}	
+}
+
+# Go to Aristotle's coffin/tomb
+sicily.0132 = {
+	type = activity_event
+	title = sicily.0132.t
+	desc = sicily.0132.desc
+	theme = faith
+	override_icon = "gfx/interface/icons/event_types/type_learning.dds"
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # ok
+		name = sicily.0132.a
+		RICE_sicily_palermo_tomb_visit_completed_log_entry_effect = yes
+	}
+	
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
+		}
+	}
+}
+
+# Go to Galen's tomb
+sicily.0133 = {
+	type = activity_event
+	title = sicily.0133.t
+	desc = sicily.0133.desc
+	theme = RICE_theme_sicily_ancient_temple
+	override_icon = "gfx/interface/icons/event_types/type_medicine.dds"
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # ok
+		name = sicily.0133.a
+		RICE_sicily_palermo_tomb_visit_completed_log_entry_effect = yes
 	}
 	
 	after = {

@@ -2240,12 +2240,36 @@ RICE_sicily_virgil_tomb_visit_completed_log_entry_effect = {
 						has_activity_intent = RICE_sicily_virgil_tomb_visit_miracle_intent
 					}
 					add_piety = 100
+					random = {
+						chance = RICE_sicily_virgil_activity_piety_chance
+						send_interface_toast = {
+							type = sicily_struggle_event_good
+							left_icon = root
+							title = sicily.virgil.miracle
+							add_character_modifier = {
+								modifier = RICE_sicily_virgil_miracles
+								years = 10
+							}
+						}
+					}
 				}
 				else_if = {
 					limit = {
 						has_activity_intent = RICE_sicily_virgil_tomb_visit_inspiration_intent
 					}
-					add_piety = 100
+					add_prestige = 100
+					random = {
+						chance = RICE_sicily_virgil_activity_prestige_chance
+						send_interface_toast = {
+							type = sicily_struggle_event_good
+							left_icon = root
+							title = sicily.virgil.inspired
+							add_character_modifier = {
+								modifier = RICE_sicily_virgil_inspired
+								years = 10
+							}
+						}
+					}
 				}
 				stress_impact = {
 					base = minor_stress_impact_loss
@@ -2272,12 +2296,30 @@ RICE_sicily_virgil_tomb_visit_completed_log_entry_effect = {
 						has_activity_intent = RICE_sicily_virgil_tomb_visit_miracle_intent
 					}
 					add_piety = 100
+					hidden_effect = {
+						random = {
+							chance = RICE_sicily_virgil_activity_piety_chance
+							add_character_modifier = {
+								modifier = RICE_sicily_virgil_miracles
+								years = 10
+							}
+						}
+					}
 				}
 				else_if = {
 					limit = {
 						has_activity_intent = RICE_sicily_virgil_tomb_visit_inspiration_intent
 					}
-					add_piety = 100
+					add_prestige = 100
+					hidden_effect = {
+						random = {
+							chance = RICE_sicily_virgil_activity_prestige_chance
+							add_character_modifier = {
+								modifier = RICE_sicily_virgil_inspired
+								years = 10
+							}
+						}
+					}
 				}
 				stress_impact = {
 					base = minor_stress_impact_loss
@@ -2301,7 +2343,123 @@ RICE_sicily_virgil_tomb_visit_completed_log_entry_effect = {
 
 
 
-
+RICE_sicily_palermo_tomb_visit_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_sicily_virgil_tomb_visit_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				add_piety = minor_piety_gain
+				if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = special_type
+								option = RICE_sicily_palermo_tomb_visit_aristotle
+							}
+						}
+					}
+					add_character_modifier = {
+						modifier = RICE_sicily_aristotle_tomb_visit
+						years = 10
+					}
+					stress_impact = {
+						calm = minor_stress_impact_loss
+						patient = minor_stress_impact_loss
+						scholar = minor_stress_impact_loss
+						theologian = minor_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = special_type
+								option = RICE_sicily_palermo_tomb_visit_galen
+							}
+						}
+					}
+					add_character_modifier = {
+						modifier = RICE_sicily_galen_tomb_visit
+						years = 10
+					}
+					stress_impact = {
+						compassionate = minor_stress_impact_loss
+						generous = minor_stress_impact_loss
+						lifestyle_physician = minor_stress_impact_loss
+						lifestyle_herbalist = minor_stress_impact_loss
+					}
+				}
+				stress_impact = {
+					base = miniscule_stress_impact_loss
+				}
+				if = {
+					limit = {
+						has_activity_intent = RICE_sicily_palermo_tomb_visit_wonder_intent
+					}
+					add_prestige = minor_prestige_gain
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_sicily_palermo_tomb_visit_contemplation_intent
+					}
+					RICE_medium_lifestyle_experience_gain_effect = yes
+				}
+			}
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_piety = minor_piety_gain
+				if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = special_type
+								option = RICE_sicily_palermo_tomb_visit_aristotle
+							}
+						}
+					}
+					add_character_modifier = {
+						modifier = RICE_sicily_aristotle_tomb_visit
+						years = 10
+					}
+					stress_impact = {
+						calm = minor_stress_impact_loss
+						patient = minor_stress_impact_loss
+						scholar = minor_stress_impact_loss
+						theologian = minor_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = special_type
+								option = RICE_sicily_palermo_tomb_visit_galen
+							}
+						}
+					}
+					add_character_modifier = {
+						modifier = RICE_sicily_galen_tomb_visit
+						years = 10
+					}
+					stress_impact = {
+						compassionate = minor_stress_impact_loss
+						generous = minor_stress_impact_loss
+						lifestyle_physician = minor_stress_impact_loss
+						herbalist = minor_stress_impact_loss
+					}
+				}
+				stress_impact = {
+					base = miniscule_stress_impact_loss
+				}
+			}	
+		}
+	}
+}
 
 
 
