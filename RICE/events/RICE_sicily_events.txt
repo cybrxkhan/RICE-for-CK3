@@ -11,6 +11,7 @@
 # sicily.0100-sicily.0119			Administer Frontier Decision
 # sicily.0120-sicily.0129			Virgil Flavor
 # sicily.0130-sicily.0139			Palermo Tomb Visit
+# sicily.0140-sicily.0149			Salerno Medical School
 # 
 ###############################################################################
 
@@ -3356,8 +3357,222 @@ sicily.0133 = {
 
 
 
+######################################################################################
+# 
+# SALERNO MEDICAL SCHOOL
+# 
+# sicily.0140-sicily.0149
+# 
+######################################################################################
 
 
+# Support Salerno
+sicily.0140 = {
+	type = character_event
+	title = sicily.0140.t
+	desc = {
+		desc = sicily.0140.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_sicily_medical_extras_flag
+				}
+				desc = sicily.0140.desc.extras
+			}
+			desc = sicily.0140.desc.no_extras
+		}
+	}
+	theme = medicine
+	override_background = { reference = RICE_background_sicily_interior }
+	
+	right_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+
+	immediate = {		
+		# Potential extras
+		random = {
+			chance = RICE_sicily_salerno_medical_extra_chance
+			add_character_flag = {
+				flag = RICE_sicily_medical_extras_flag
+				days = 2 	# Failsafe in case the character flag isn't removed
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = sicily.0140.a
+		RICE_sicily_salerno_medical_school_decision_effect = yes
+	}
+
+	after = {
+
+		if = {
+
+			limit = {
+				has_character_flag = RICE_sicily_medical_extras_flag
+			}
+
+			remove_character_flag = RICE_sicily_medical_extras_flag
+
+			random_list = {
+				# Further character modifiers
+				10 = {
+					trigger_event = sicily.0141
+				}
+				# Further county modifiers
+				10 = {
+					trigger_event = sicily.0142
+				}
+				# Book artifact
+				10 = {
+					trigger_event = sicily.0143
+				}
+				# Physician
+				10 = {
+					trigger_event = sicily.0144
+				}
+			}
+
+		}
+
+	}
+	
+}
+
+
+# Support Salerno - extra character modifiers
+sicily.0141 = {
+	type = character_event
+	title = sicily.0141.t
+	desc = sicily.0141.desc
+	theme = medicine
+	override_background = { reference = RICE_background_sicily_interior }
+	
+	right_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+
+	
+	option = { # Ok
+		name = sicily.0141.a
+		add_character_modifier = {
+			modifier = RICE_sicily_salerno_medical_school_extra_character_modifier
+			years = 10
+		}
+	}
+
+	after = {
+
+		# Failsafe in case the character flag isn't removed
+		if = {
+			limit = {
+				has_character_flag = RICE_sicily_medical_extras_flag
+			}
+			remove_character_flag = RICE_sicily_medical_extras_flag
+		}
+
+	}
+	
+}
+
+
+# Support Salerno - extra county modifiers
+sicily.0142 = {
+	type = character_event
+	title = sicily.0142.t
+	desc = sicily.0142.desc
+	theme = medicine
+	override_background = { reference = RICE_background_sicily_interior }
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	
+	option = { # Ok
+		name = sicily.0142.a
+		capital_county = {
+			add_county_modifier = {
+				modifier = RICE_sicily_salerno_medical_school_extra_county_modifier
+				years = 10
+			}
+		}
+	}
+
+	after = {
+
+		# Failsafe in case the character flag isn't removed
+		if = {
+			limit = {
+				has_character_flag = RICE_sicily_medical_extras_flag
+			}
+			remove_character_flag = RICE_sicily_medical_extras_flag
+		}
+
+	}
+	
+}
+
+
+# Support Salerno - extra book artifact
+sicily.0143 = {
+	type = character_event
+	title = sicily.0143.t
+	desc = sicily.0143.desc
+	theme = medicine
+	override_background = { reference = RICE_background_sicily_interior }
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:salerno_medical_text_artifact
+		position = lower_center_portrait
+		trigger = { exists = scope:salerno_medical_text_artifact }
+	}	
+
+	immediate = {
+		RICE_sicily_create_salerno_medical_text_artifact_effect = yes
+	}
+	
+	option = { # Ok
+		name = sicily.0143.a
+		if = {
+			limit = {
+				exists = scope:salerno_medical_text_artifact
+			}
+			show_as_tooltip = {
+				scope:salerno_medical_text_artifact = {
+					set_owner = {
+						target = root
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+
+		# Failsafe in case the character flag isn't removed
+		if = {
+			limit = {
+				has_character_flag = RICE_sicily_medical_extras_flag
+			}
+			remove_character_flag = RICE_sicily_medical_extras_flag
+		}
+
+	}
+	
+}
+
+
+# employs_court_position
 
 
 
