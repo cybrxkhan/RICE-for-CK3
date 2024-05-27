@@ -3403,6 +3403,15 @@ sicily.0140 = {
 	
 	option = { # Ok
 		name = sicily.0140.a
+		show_as_tooltip = {
+			random = {
+				chance = RICE_sicily_salerno_medical_extra_chance
+				add_character_flag = {
+					flag = RICE_sicily_medical_extras_flag
+					days = 2 	# Failsafe in case the character flag isn't removed
+				}
+			}			
+		}
 		RICE_sicily_salerno_medical_school_decision_effect = yes
 	}
 
@@ -3430,7 +3439,7 @@ sicily.0140 = {
 					trigger_event = sicily.0143
 				}
 				# Physician
-				10 = {
+				1000 = {
 					trigger_event = sicily.0144
 				}
 			}
@@ -3553,6 +3562,132 @@ sicily.0143 = {
 						target = root
 					}
 				}
+			}
+		}
+	}
+
+	after = {
+
+		# Failsafe in case the character flag isn't removed
+		if = {
+			limit = {
+				has_character_flag = RICE_sicily_medical_extras_flag
+			}
+			remove_character_flag = RICE_sicily_medical_extras_flag
+		}
+
+	}
+	
+}
+
+
+# Support Salerno - physician character
+sicily.0144 = {
+	type = character_event
+	title = sicily.0144.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					employs_court_position = court_physician_court_position
+				}
+				desc = sicily.0144.desc.old_physician
+			}
+			desc = sicily.0144.desc.new_physician
+		}
+	}
+	theme = medicine
+	override_background = { reference = RICE_background_sicily_interior }
+	
+	left_portrait = {
+		character = scope:physician
+		animation = throne_room_bow_3
+	}
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	immediate = {
+		# Pick a random county to be the source of the physicians
+		random_list = {
+			30 = {
+				title:c_salerno = {
+					save_scope_as = county
+				}
+			}
+			70 = {
+				every_county_in_region = {
+					region = custom_sicily
+					add_to_list = sicily_counties
+				}
+				random_in_list = {
+					list = sicily_counties
+					save_scope_as = county
+				}
+			}
+		}
+		scope:county.faith = {
+			save_scope_as = sicily_faith
+		}
+		scope:county.culture = {
+			save_scope_as = sicily_culture
+		}
+		if = {
+			limit = {
+				employs_court_position = court_physician_court_position
+			}
+			random_court_position_holder = {
+				type = court_physician_court_position
+				save_scope_as = physician
+			}
+			scope:physician = {
+				if = {
+					limit = {
+						NAND = {
+						   has_trait = lifestyle_physician
+						   has_trait_xp = {
+							   trait = lifestyle_physician
+							   value >= 100
+						   }
+					   }
+					}
+					physician_lifestyle_rank_up_effect = yes
+				}
+				else = {
+					random_list = {
+						30 = {
+							add_learning_skill = 1
+						}
+						20 = {
+							add_learning_skill = 2
+						}
+						10 = {
+							add_learning_skill = 3
+						}
+					}
+				}
+			}
+		}
+		else = {
+			create_character = {
+				location = root.capital_province
+				template = RICE_sicily_salerno_physician_template
+				save_scope_as = physician
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = sicily.0144.a
+		if = {
+			limit = {
+				NOT = { employs_court_position = court_physician_court_position }
+			}
+			set_court_physician_effect = {
+				EMPLOYER = root
+				PHYSICIAN = scope:physician
 			}
 		}
 	}
