@@ -2179,6 +2179,74 @@ sicily.0101 = {
 
 
 
+# Fortifying Settlements
+sicily.0102 = {
+	type = character_event
+	title = sicily.0102.t
+	desc = sicily.0102.desc
+	theme = martial
+	override_background = { reference = RICE_background_sicily_ancient_temple }
+
+	
+	left_portrait = {
+		character = scope:soldier
+		animation = marshal
+		trigger = {
+			exists = scope:soldier
+		}
+	}	
+	right_portrait = {
+		character = root
+		animation = war_defender
+	}
+
+	immediate = {
+		random_held_county = {
+			limit = {
+				any_county_province = {
+					geographical_region = custom_sicily
+				}
+			}
+			# Counties with strongholds are more likely to be chosen
+			weight = {
+				base = 1
+				modifier = {
+					factor = 5
+					RICE_sicily_has_stronghold_trigger = yes
+				}
+			}
+			save_scope_as = county
+		}		
+		scope:county.culture = {
+			save_scope_as = sicily_culture
+		}
+		scope:county.faith = {
+			save_scope_as = sicily_faith
+		}
+		random = {
+			chance = RICE_sicily_fortify_stronghold_knight_spawn_chance
+			create_character = {
+				location = root.capital_province
+				template = RICE_sicily_knight
+				save_scope_as = soldier
+			}
+		}
+	}
+
+	option = { # Ok
+		name = sicily.0102.a
+		RICE_sicily_agenda_fortified_settlement_effect = yes
+		if = {
+			limit = {
+				exists = scope:soldier
+			}
+			add_courtier = scope:soldier
+		}
+	}
+	
+}
+
+
 # Updating Bureaucratic Records
 sicily.0103 = {
 	type = character_event

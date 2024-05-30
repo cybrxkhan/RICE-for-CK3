@@ -199,6 +199,22 @@
 		}
 	}
 
+	if = {
+		limit = {
+			game_start_date < 1225.1.1
+		}
+		if = {
+			limit = {
+				title:c_palermo = {
+					NOT = { faith = faith:ashari }
+				}
+			}
+			title:c_palermo = {
+				set_county_faith = faith:ashari
+			}
+		}
+	}
+
 
 	every_ruler = {
 		limit = {
@@ -822,6 +838,18 @@
 			game_start_date < 902.1.1
 		}
 		title:c_messina = {
+			add_county_modifier = {
+				modifier = RICE_sicily_stronghold_greek
+			}
+		}
+	}
+	
+	# Greek communities in Bari
+	if = {
+		limit = {
+			game_start_date > 850.1.1
+		}
+		title:c_bari = {
 			add_county_modifier = {
 				modifier = RICE_sicily_stronghold_greek
 			}
@@ -2024,16 +2052,46 @@ RICE_sicily_signore_greek_track_major_gain = {
 }
 
 
-RICE_sicily_agenda_port_effect = {
+RICE_sicily_agenda_fortified_settlement_effect = {
 	add_prestige = RICE_sicily_resource_gain_per_sicilian_county
+	every_county_in_region = {
+		region = custom_sicily
+		limit = {
+			holder = root
+		}
+		custom = RICE_every_county_owned_sicily
+		add_county_modifier = {
+			modifier = RICE_sicily_fortified_settlements
+			years = 10
+		}			
+	}
+	struggle:RICE_sicily_struggle ?= {
+		activate_struggle_catalyst = {
+			catalyst = catalyst_RICE_sicily_fortify_settlements
+			character = root
+		}
+	}
+}
+
+
+RICE_sicily_agenda_port_effect = {
+	add_prestige = RICE_sicily_resource_gain_per_insular_sicilian_county
 	every_county_in_region = {
 		region = RICE_insular_sicily
 		limit = {
 			holder = root
 		}
+		custom = RICE_every_county_owned_insular_sicily
 		add_county_modifier = {
 			modifier = RICE_sicily_caricatori_ports
+			years = 10
 		}			
+	}
+	struggle:RICE_sicily_struggle ?= {
+		activate_struggle_catalyst = {
+			catalyst = catalyst_RICE_sicily_improve_grain_ports
+			character = root
+		}
 	}
 }
 
@@ -2047,10 +2105,17 @@ RICE_sicily_records_effect = {
 		limit = {
 			holder = root
 		}
+		custom = RICE_every_county_owned_sicily
 		add_character_modifier = {
 			modifier = RICE_sicily_updated_bureaucratic_records
 			years = 10
 		}		
+	}
+	struggle:RICE_sicily_struggle ?= {
+		activate_struggle_catalyst = {
+			catalyst = catalyst_RICE_sicily_update_records
+			character = root
+		}
 	}	
 }
 
