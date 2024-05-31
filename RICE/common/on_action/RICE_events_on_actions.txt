@@ -623,6 +623,31 @@ RICE_yearly_global_pulse = {
 				RICE_yarsani_appearance_effect = yes
 			}
 		}
+		
+		every_county_in_region = {
+			region = custom_sicily
+			limit = {
+				holder = {
+					has_trait = RICE_sicilian_ruler
+				}
+				OR = {
+					has_county_modifier = RICE_sicily_updated_bureaucratic_records_latin
+					has_county_modifier = RICE_sicily_updated_bureaucratic_records_greek
+					has_county_modifier = RICE_sicily_updated_bureaucratic_records_arabic
+				}
+			}
+			holder = {
+				if = {
+					limit = {
+						NOT = { has_character_flag = RICE_sicily_records_bonus_flag }
+					}
+					random = {
+						chance = 99
+						trigger_event = sicily.0019
+					}
+				}
+			}
+		}
 
 
 		every_county_in_region = {
@@ -779,18 +804,27 @@ RICE_events_yearly_maintenance_pulse = {
 		if = {
 			limit = {
 				NOT = { has_global_variable = RICE_yazidi_appearance }
-			}
-			every_county_in_region = {
-				region = world_middle_east
-				holder = {
-					every_courtier_or_guest = {
-						limit = {
-							faith = faith:yazidi
-						}
-						set_character_faith = faith:kitebacilweism
-					}
+				any_courtier_or_guest = {
+					faith = faith:yazidi
 				}
 			}
+			every_courtier_or_guest = {
+				limit = {
+					faith = faith:yazidi
+				}
+				set_character_faith = faith:kitebacilweism
+			}
+			# every_county_in_region = {
+			# 	region = world_middle_east
+			# 	holder = {
+			# 		every_courtier_or_guest = {
+			# 			limit = {
+			# 				faith = faith:yazidi
+			# 			}
+			# 			set_character_faith = faith:kitebacilweism
+			# 		}
+			# 	}
+			# }
 
 			# Can't figure out a way to get rid of pool characters
 
@@ -806,7 +840,7 @@ RICE_events_yearly_maintenance_pulse = {
 			}
 			save_temporary_scope_as = county
 			random = {
-				chance = 99
+				chance = 15
 				save_scope_as = county
 				holder = {
 					save_scope_as = holder
