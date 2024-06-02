@@ -800,575 +800,861 @@ sicily.0021 = {
 # 
 ######################################################################################
 
-# add_faction_discontent
 
-# Latin Stronghold rebels
-# sicily.0030 = {
-# 	type = letter_event
-# 	sender = scope:RICE_sicily_leader
-# 	opening = "FACTION_DEMAND_RICE_sicily_latin_stronghold"
-# 	desc = {
-# 		first_valid = {
-# 			triggered_desc = {
-# 				trigger = {
-# 					NOT = {
-# 						religion = religion:christianity_religion
-# 					}
-# 				}
-# 				desc = FACTION_DEMAND_RICE_sicily_latin_stronghold_desc_infidel
-# 			}		
-# 			desc = FACTION_DEMAND_RICE_sicily_latin_stronghold_desc_non_infidel
-# 		}
-# 	}
-
-# 	trigger = {
-# 		exists = scope:faction
-# 		exists = scope:RICE_sicily_leader
-# 		scope:RICE_sicily_leader.joined_faction = scope:faction
-# 	}
-
-# 	on_trigger_fail = {
-# 		debug_log = "Latin Stronghold Faction tried to press claim (probably) without existing RICE_sicily_leader"
-# 		debug_log_scopes = yes
-# 		debug_log = "Latin Stronghold Faction error reporting complete"
-# 	}
-
-# 	option = {
-# 		name = "FACTION_DEMAND_RICE_sicily_latin_stronghold_ACCEPT"
-
-# 		# LEGITIMACY LOSS FOR ACCEPTING FACTION DEMANDS
-# 		faction_accept_demand_legitimacy_effect = yes
-
-# 		peasant_faction_demands_enforced = {FACTION = scope:faction}
-
-# 		ai_chance = {
-# 			base = 0
-# 			ai_value_modifier = {
-# 				ai_boldness = -4
-# 			}
-# 			modifier = {
-# 				add = 50
-# 				scope:faction = { faction_power >= 100 }
-# 			}
-# 			modifier = {
-# 				add = 50
-# 				scope:faction = { faction_power >= 110 }
-# 			}
-# 			modifier = {
-# 				add = 50
-# 				scope:faction = { faction_power >= 120 }
-# 			}
-# 			modifier = {
-# 				add = 50
-# 				scope:faction = { faction_power >= 130 }
-# 			}
-# 			modifier = {
-# 				add = 50
-# 				scope:faction = { faction_power >= 140 }
-# 			}
-# 			modifier = {
-# 				add = 50
-# 				scope:faction = { faction_power >= 150 }
-# 			}
-# 			modifier = {
-# 				add = -50
-# 				scope:faction.faction_target = {
-# 					is_at_war = no
-# 					primary_title.tier >= tier_kingdom
-# 				}
-# 			}
-# 			modifier = {
-# 				add = -150
-# 				scope:faction.faction_target = {
-# 					is_at_war = no
-# 					primary_title.tier >= tier_empire
-# 				}
-# 			}
-# 		}
-# 	}
-
-# 	option = {
-# 		name = "FACTION_DEMAND_RICE_sicily_latin_stronghold_REFUSE"
-
-# 		scope:faction = {
-# 			faction_start_war = {}
-			
-# 			# This needs to run after 'faction_start_war' or the troops won't spawn correctly.
-# 			faction_spawn_member_county_armies_effect = {
-# 				FACTION = scope:faction
-# 				ARMY_OWNER = scope:RICE_sicily_leader
-# 				PEASANT_ARMY_NAME = peasant_faction_event_troops
-# 			}	
-# 		}
-
-# 		ai_chance = {
-# 			base = 100
-# 			ai_value_modifier = {
-# 				ai_boldness = 4
-# 			}
-# 			modifier = {
-# 				add = 50
-# 				scope:faction = { faction_power < 90 }
-# 			}
-# 			modifier = {
-# 				add = 50
-# 				scope:faction = { faction_power < 80 }
-# 			}
-# 			modifier = {
-# 				add = 50
-# 				NOT = {
-# 					religion = religion:christianity_religion
-# 				}
-# 			}
-# 		}
-# 	}
-# }
-
-
-
-# Arab-Berber Stronghold Faction Demand
-# Based on vanilla's populist faction
-sicily.0034 = {
-	type = letter_event
-	sender = scope:peasant_leader
-	opening = {
-		desc = "FACTION_DEMAND_POPULIST"
-	}
-	desc = "FACTION_DEMAND_POPULIST_DESC"
-
-	trigger = {
-		exists = scope:faction
-		exists = scope:peasant_leader
-		scope:peasant_leader.joined_faction = scope:faction
+# Bargains with the strongholds
+sicily.0030 = {
+	type = character_event
+	title = sicily.0030.t
+	desc = sicily.0030.desc
+	theme = RICE_theme_sicily_travel
+	
+	left_portrait = {
+		character = scope:representative
+		animation = war_over_win
 	}
 
-	on_trigger_fail = {
-		debug_log = "Popular Faction tried to press claim (probably) without existing peasant_leader"
-		debug_log_scopes = yes
-		debug_log = "Popular Faction error reporting complete"
+	right_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = {
+				root = {
+					OR = {
+						has_trait = vengeful
+						has_trait = wrathful
+						has_trait = brave
+					}
+				}
+			}
+			animation = personality_vengeful
+		}
+		triggered_animation = {
+			trigger = {
+				root = {
+					OR = {
+						has_trait = paranoid
+						has_trait = shy
+						has_trait = craven
+					}
+				}
+			}
+			animation = worry
+		}
+		animation = personality_callous		
 	}
-
+	
 	immediate = {
-		every_realm_province = {
-			county = { add_to_list = remaining_counties_list }
-		}
-		scope:faction = {
-			every_faction_county_member = { remove_from_list = remaining_counties_list }
-		}
-	}
 
-	# Option A: Grant the faction independence.
-	option = {
-		name = "FACTION_DEMAND_POPULIST_ACCEPT_GRANT_INDEPENDENCE"
-		trigger = { # AI should not give the faction independence if a player is targeted by the faction.
-			NAND = {
-				scope:faction = {
-					has_variable = faction_targets_player
-				}
-				is_ai = yes
-			}
-		}
-
-		# This effect should always be placed here, _before_ all the other effects in the block.
-		trigger_event = { on_action = on_faction_demand_accepted }
-		
-		add_prestige_level = -1
+		# Save a potential county for reference
 		if = {
 			limit = {
-				dread > 0
-			}
-			add_dread = medium_dread_loss
-		}
-
-		successful_popular_revolt_outcome_effect = {
-			FACTION_LEADER = scope:peasant_leader
-			TARGET_TITLE = scope:target_title
-			SOURCE_GOVERNMENT = root
-		}
-
-		# If the faction includes ALL of our counties, notify the player that it will leave them landless!
-		if = {
-			limit = {
-				any_in_list = {
-					list = remaining_counties_list
-					count < 1
+				var:RICE_sicily_bargain_type ?= flag:latin
+				OR = {
+					any_held_county = {
+						any_county_province = {
+							geographical_region = custom_sicily
+						}
+						RICE_sicily_latin_trigger = yes
+					}		
+					any_vassal_or_below = {
+						any_held_county = {
+							any_county_province = {
+								geographical_region = custom_sicily
+							}
+							RICE_sicily_latin_trigger = yes
+						}	
+					}
 				}
 			}
-			custom_tooltip = FACTION_DEMAND_POPULIST_ACCEPT_GRANT_INDEPENCE_TT
-		}
-
-		# Struggle Catalysts.
-		# Should rename the Catalysts?
-		# if = {
-		# 	limit = {
-		# 		is_important_or_vip_struggle_character = yes
-		# 		any_character_struggle = {
-		# 			involvement = involved
-		# 			activate_struggle_catalyst_secondary_character_involvement_either_trigger = {
-		# 				CATALYST = catalyst_accepted_demand_from_faction_requesting_culture_faith_conversion
-		# 				CHAR = scope:faction_leader
-		# 			}
-		# 		}
-		# 	}
-		# 	every_character_struggle = {
-		# 		involvement = involved
-		# 		limit = {
-		# 			activate_struggle_catalyst_secondary_character_involvement_either_trigger = {
-		# 				CATALYST = catalyst_accepted_demand_from_faction_requesting_culture_faith_conversion
-		# 				CHAR = scope:faction_leader
-		# 			}
-		# 		}
-		# 		activate_struggle_catalyst = {
-		# 			catalyst = catalyst_accepted_demand_from_faction_requesting_culture_faith_conversion
-		# 			character = root
-		# 		}
-		# 	}
-		# }
-
-		hidden_effect = {
 			if = {
 				limit = {
-					exists = scope:faction
-				}
-				scope:faction = {
-					clean_revolt_county_modifiers_from_faction_members_effect = yes
-					destroy_faction = yes
-				}
-			}
-		}
-
-		ai_chance = {
-			base = 0
-			compare_modifier = { # Stronger factions increase the chance of an AI ruler capitulating; at 200% ruler army strength, this maxes out at +50% chance to accept demands.
-				value = {
-					value = scope:faction.faction_power
-					subtract = 100
-					multiply = 0.5
-				}
-				max = 50
-			}
-			compare_modifier = { # Craven rulers can get up to +37% chance to accept demands.
-				value = ai_boldness
-				multiplier = -0.5
-			}
-			modifier = {
-				factor = 0.1
-				any_ally = {
-					NOR = {
-						target_is_liege_or_above = root
-						target_is_vassal_or_below = root
+					any_held_county = {
+						any_county_province = {
+							geographical_region = custom_sicily
+						}
+						RICE_sicily_latin_trigger = yes
 					}
-					max_military_strength > root.max_military_strength
+				}
+				every_held_county = {
+					limit = {
+						any_county_province = {
+							geographical_region = custom_sicily
+						}
+						RICE_sicily_latin_trigger = yes
+					}
+					add_to_list = candidate_counties
 				}
 			}
-			compare_modifier = {
-				value = debt_level
-				multiplier = 25
-			}
-			modifier = {
-				add = -50
-				is_at_war = no
-				primary_title.tier >= tier_kingdom
-			}
-			modifier = {
-				add = -150
-				is_at_war = no
-				primary_title.tier >= tier_empire
-			}
-			
-			modifier = {
-				add = -5000
-				OR = {
-					has_title = title:e_mongol_empire
-					has_title = title:e_ilkhanate
-					has_title = title:e_chagatai
-					has_title = title:e_black_horde
-					has_title = title:e_white_horde
-					has_title = title:e_aarlud_khanate
-					has_title = title:e_togskol_khanate
-					has_title = title:e_baruun_khanate
+			if = {
+				limit = {	
+					any_vassal_or_below = {
+						any_held_county = {
+							any_county_province = {
+								geographical_region = custom_sicily
+							}
+							RICE_sicily_latin_trigger = yes
+						}	
+					}
+				}
+				every_vassal_or_below = {
+					limit = {
+						any_held_county = {
+							any_county_province = {
+								geographical_region = custom_sicily
+							}
+							RICE_sicily_latin_trigger = yes
+						}
+					}
+					every_held_county = {
+						limit = {							
+							any_county_province = {
+								geographical_region = custom_sicily
+							}
+							RICE_sicily_latin_trigger = yes
+						}
+						add_to_list = candidate_counties
+					}
 				}
 			}
-		}
-	}
-	
-	# Option B: Refuse the demand and start a war.
-	option = {
-		name = "FACTION_DEMAND_POPULIST_REFUSE"
-
-		# This effect should always be placed here, _before_ all the other effects in the block.
-		trigger_event = { on_action = on_faction_demand_rejected }
-
-		scope:faction = {
-			faction_start_war = {
-				title = scope:target_title
+			random_in_list = {
+				list = candidate_counties
+				save_scope_as = county
 			}
 		}
-		
-		custom_tooltip = FACTION_DEMAND_POPULIST_REFUSE_TT
-		
-		if = { # Send follow up event to affected vassals.
+		else_if = {
 			limit = {
-				list_size = {
-					name = popular_faction_vassal_targets
-					value > 0
+				var:RICE_sicily_bargain_type ?= flag:latin
+				any_county_in_region = {
+					region = RICE_mediterranean_and_nearby_region
+					RICE_sicily_latin_trigger = yes
 				}
+
 			}
-			every_in_list = {
-				list = popular_faction_vassal_targets
-				trigger_event = sicily.0035
+			every_county_in_region = {
+				region = RICE_mediterranean_and_nearby_region
+				limit = {
+					RICE_sicily_latin_trigger = yes
+				}
+				add_to_list = candidate_counties
+			}
+			random_in_list = {
+				list = candidate_counties
+				save_scope_as = county
 			}
 		}
-
-		ai_chance = {
-			base = 100
-			compare_modifier = { # Weaker factions increase the chance of an AI ruler refusing; at 80% army strength (minimum), this will be +20; at 200% army strength, this will max out at -50.
-				value = {			
-					value = scope:faction.faction_power
-					subtract = 100
-					multiply = -1
-				}
-				min = -50
+		else_if = {
+			limit = {
+				var:RICE_sicily_bargain_type ?= flag:latin
 			}
-			compare_modifier = { # Brave rulers get up to a 50% bonus chance to refuse.
-				value = ai_boldness
-				multiplier = -0.5
-				min = -50
+			add_character_flag = {
+				flag = RICE_sicily_bargain_no_counties
+				days = 1
 			}
-			modifier = {
-				factor = 1.5
-				any_ally = {
-					NOR = {
-						target_is_liege_or_above = root
-						target_is_vassal_or_below = root
-					}
-					max_military_strength > root.max_military_strength
-				}
+			random_list = {
+				20 = { culture:italian = { save_scope_as = sicily_culture } }
+				20 = { culture:cisalpine = { save_scope_as = sicily_culture } }
+				10 = { culture:frankish = { save_scope_as = sicily_culture } }
+				10 = { culture:castilian = { save_scope_as = sicily_culture } }
+				10 = { culture:andalusian = { save_scope_as = sicily_culture } }
+				20 = { culture:norman = { save_scope_as = sicily_culture } }
+				10 = { culture:franconian = { save_scope_as = sicily_culture } }
+				10 = { culture:dutch = { save_scope_as = sicily_culture } }
+				10 = { culture:anglo_saxon = { save_scope_as = sicily_culture } }
+				10 = { culture:catalan = { save_scope_as = sicily_culture } }
+				10 = { culture:occitan = { save_scope_as = sicily_culture } }
+				10 = { culture:saxon = { save_scope_as = sicily_culture } }
+				20 = { culture:lombard = { save_scope_as = sicily_culture } }
 			}
-			compare_modifier = {
-				value = debt_level
-				multiplier = -25
+			faith:catholic = { save_scope_as = sicily_faith }
+			capital_county = {
+				save_scope_as = county
 			}
-			modifier = {
-				add = 5000
+		}
+		else_if = {
+			limit = {
+				var:RICE_sicily_bargain_type ?= flag:greek
 				OR = {
-					has_title = title:e_mongol_empire
-					has_title = title:e_ilkhanate
-					has_title = title:e_chagatai
-					has_title = title:e_black_horde
-					has_title = title:e_white_horde
-					has_title = title:e_aarlud_khanate
-					has_title = title:e_togskol_khanate
-					has_title = title:e_baruun_khanate
+					any_held_county = {
+						any_county_province = {
+							geographical_region = custom_sicily
+						}
+						RICE_sicily_greek_trigger = yes
+					}		
+					any_vassal_or_below = {
+						any_held_county = {
+							any_county_province = {
+								geographical_region = custom_sicily
+							}
+							RICE_sicily_greek_trigger = yes
+						}	
+					}
+				}
+
+			}
+			if = {
+				limit = {
+					any_held_county = {
+						any_county_province = {
+							geographical_region = custom_sicily
+						}
+						RICE_sicily_greek_trigger = yes
+					}
+				}
+				every_held_county = {
+					limit = {
+						any_county_province = {
+							geographical_region = custom_sicily
+						}
+						RICE_sicily_greek_trigger = yes
+					}
+					add_to_list = candidate_counties
+				}
+			}
+			if = {
+				limit = {	
+					any_vassal_or_below = {
+						any_held_county = {
+							any_county_province = {
+								geographical_region = custom_sicily
+							}
+							RICE_sicily_greek_trigger = yes
+						}	
+					}
+				}
+				every_vassal_or_below = {
+					limit = {
+						any_held_county = {
+							any_county_province = {
+								geographical_region = custom_sicily
+							}
+							RICE_sicily_greek_trigger = yes
+						}
+					}
+					every_held_county = {
+						limit = {							
+							any_county_province = {
+								geographical_region = custom_sicily
+							}
+							RICE_sicily_greek_trigger = yes
+						}
+						add_to_list = candidate_counties
+					}
+				}
+			}
+			random_in_list = {
+				list = candidate_counties
+				save_scope_as = county
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_sicily_bargain_type ?= flag:greek
+				any_county_in_region = {
+					region = RICE_mediterranean_and_nearby_region
+					RICE_sicily_greek_trigger = yes
+				}
+
+			}
+			every_county_in_region = {
+				region = RICE_mediterranean_and_nearby_region
+				limit = {
+					RICE_sicily_greek_trigger = yes
+				}
+				add_to_list = candidate_counties
+			}
+			random_in_list = {
+				list = candidate_counties
+				save_scope_as = county
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_sicily_bargain_type ?= flag:greek
+			}
+			add_character_flag = {
+				flag = RICE_sicily_bargain_no_counties
+				days = 1
+			}
+			random_list = {
+				50 = { culture:greek = { save_scope_as = sicily_culture } }
+				10 = { culture:armenian = { save_scope_as = sicily_culture } }
+				10 = { culture:bulgarian = { save_scope_as = sicily_culture } }
+			}
+			faith:orthodox = { save_scope_as = sicily_faith }
+			capital_county = {
+				save_scope_as = county
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_sicily_bargain_type ?= flag:arabic
+				OR = {
+					any_held_county = {
+						any_county_province = {
+							geographical_region = custom_sicily
+						}
+						RICE_sicily_arabic_trigger = yes
+					}		
+					any_vassal_or_below = {
+						any_held_county = {
+							any_county_province = {
+								geographical_region = custom_sicily
+							}
+							RICE_sicily_arabic_trigger = yes
+						}	
+					}
+				}
+
+			}
+
+			if = {
+				limit = {
+					any_held_county = {
+						any_county_province = {
+							geographical_region = custom_sicily
+						}
+						RICE_sicily_arabic_trigger = yes
+					}
+				}
+				every_held_county = {
+					limit = {
+						any_county_province = {
+							geographical_region = custom_sicily
+						}
+						RICE_sicily_arabic_trigger = yes
+					}
+					add_to_list = candidate_counties
+				}
+			}
+			if = {
+				limit = {	
+					any_vassal_or_below = {
+						any_held_county = {
+							any_county_province = {
+								geographical_region = custom_sicily
+							}
+							RICE_sicily_arabic_trigger = yes
+						}	
+					}
+				}
+				every_vassal_or_below = {
+					limit = {
+						any_held_county = {
+							any_county_province = {
+								geographical_region = custom_sicily
+							}
+							RICE_sicily_arabic_trigger = yes
+						}
+					}
+					every_held_county = {
+						limit = {							
+							any_county_province = {
+								geographical_region = custom_sicily
+							}
+							RICE_sicily_arabic_trigger = yes
+						}
+						add_to_list = candidate_counties
+					}
+				}
+			}
+			random_in_list = {
+				list = candidate_counties
+				save_scope_as = county
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_sicily_bargain_type ?= flag:arabic
+				any_county_in_region = {
+					region = RICE_mediterranean_and_nearby_region
+					RICE_sicily_arabic_trigger = yes
+				}
+
+			}
+			every_county_in_region = {
+				region = RICE_mediterranean_and_nearby_region
+				limit = {
+					RICE_sicily_arabic_trigger = yes
+				}
+				add_to_list = candidate_counties
+			}
+			random_in_list = {
+				list = candidate_counties
+				save_scope_as = county
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_sicily_bargain_type ?= flag:arabic
+			}
+			add_character_flag = {
+				flag = RICE_sicily_bargain_no_counties
+				days = 1
+			}
+			random_list = {
+				20 = { culture:andalusian = { save_scope_as = sicily_culture } }
+				20 = { culture:maghrebi = { save_scope_as = sicily_culture } }
+				10 = { culture:butr = { save_scope_as = sicily_culture } }
+				10 = { culture:baranis = { save_scope_as = sicily_culture } }
+				10 = { culture:egyptian = { save_scope_as = sicily_culture } }
+				10 = { culture:levantine = { save_scope_as = sicily_culture } }
+				10 = { culture:yemeni = { save_scope_as = sicily_culture } }
+				10 = { culture:persian = { save_scope_as = sicily_culture } }
+				20 = { culture:siculo_arabic = { save_scope_as = sicily_culture } }
+				10 = { culture:kurdish = { save_scope_as = sicily_culture } }
+			}
+			random_list = {
+				10 = { faith:ashari = { save_scope_as = sicily_faith } }
+				10 = { faith:muwalladi = { save_scope_as = sicily_faith } }
+				10 = { faith:ismaili = { save_scope_as = sicily_faith } }
+				10 = { faith:ibadi = { save_scope_as = sicily_faith } }
+			}
+			capital_county = {
+				save_scope_as = county
+			}
+		}	
+	
+		if = {
+			limit = {
+				NOT = { has_character_flag = RICE_sicily_bargain_no_counties }
+			}
+			scope:county.faith = {
+				save_scope_as = sicily_faith
+			}		
+			scope:county.culture = {
+				save_scope_as = sicily_culture
+			}
+		}	
+
+		create_character = {
+			location = root.capital_province
+			template = RICE_stronghold_faction_leader_template
+			save_scope_as = representative
+		}
+
+		set_variable = {
+			name = bargain_amount
+			value = {
+				value = 0
+				add = {
+					integer_range = {
+						min = RICE_sicily_stronghold_bargain_min_value
+						max = RICE_sicily_stronghold_bargain_max_value
+					}
+				}
+			}
+			days = 1
+		}	
+		
+		# set_variable = {
+		# 	name = counterproposal_amount
+		# 	value = {
+		# 		value = 0
+		# 		add = {
+		# 			integer_range = {
+		# 				min = RICE_sicily_stronghold_bargain_min_value
+		# 				max = RICE_sicily_stronghold_bargain_max_value
+		# 			}
+		# 		}
+		# 	}
+		# 	days = 1
+		# }	
+
+	}
+
+	option = { # OK
+		name = sicily.0030.a
+		remove_short_term_gold = var:bargain_amount
+		RICE_sicily_bargain_strongholds_success_effect = yes
+		if = {
+			limit = {
+				has_variable = RICE_sicily_bargain_type
+			}
+			remove_variable = RICE_sicily_bargain_type
+		}
+		if = {
+			limit = {
+				has_variable = bargain_amount
+			}
+			remove_variable = bargain_amount
+		}
+		hidden_effect = {
+			scope:representative = {
+				death = {
+					death_reason = death_vanished
 				}
 			}
 		}
 	}
-	
+
+	option = { # Bargain for more if you qualify
+		name = sicily.0030.b
+		trigger = {
+			OR = {
+				AND = {
+					var:RICE_sicily_bargain_type ?= flag:latin
+					OR = {
+						has_trait_xp = { trait = RICE_sicilian_ruler track = RICE_sicilian_ruler_latin value >= 50 }
+						dynasty ?= {
+							has_dynasty_perk = RICE_sicily_legacy_3
+						}
+					}
+				}
+				AND = {
+					var:RICE_sicily_bargain_type ?= flag:greek
+					OR = {
+						has_trait_xp = { trait = RICE_sicilian_ruler track = RICE_sicilian_ruler_greek value >= 50 }
+						dynasty ?= {
+							has_dynasty_perk = RICE_sicily_legacy_3
+						}
+					}
+				}
+				AND = {
+					var:RICE_sicily_bargain_type ?= flag:arabic
+					OR = {
+						has_trait_xp = { trait = RICE_sicilian_ruler track = RICE_sicilian_ruler_arabic value >= 50 }
+						dynasty ?= {
+							has_dynasty_perk = RICE_sicily_legacy_3
+						}
+					}
+				}
+			}
+		}
+		remove_short_term_gold = var:bargain_amount
+		RICE_sicily_bargain_strongholds_success_effect = yes
+		duel = {
+			skills = { diplomacy martial stewardship intrigue learning }
+			target = scope:representative
+			10 = {
+				custom_tooltip = sicily.0030.b.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.9
+				}
+				set_variable = {
+					name = stronghold_extra_negotiation
+					value = flag:failure
+					days = 1
+				}
+			}
+			10 = {
+				custom_tooltip = sicily.0030.b.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.9
+				}
+				set_variable = {
+					name = stronghold_extra_negotiation
+					value = flag:success
+					days = 1
+				}
+			}
+		}
+		trigger_event = sicily.0031
+	}
+
+	option = { # OK
+		name = sicily.0030.c
+		RICE_sicily_bargain_strongholds_failure_effect = yes
+		if = {
+			limit = {
+				has_variable = RICE_sicily_bargain_type
+			}
+			remove_variable = RICE_sicily_bargain_type
+		}
+		if = {
+			limit = {
+				has_variable = bargain_amount
+			}
+			remove_variable = bargain_amount
+		}
+		hidden_effect = {
+			scope:representative = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
 	after = {
 		if = {
 			limit = {
-				exists = scope:faction
-				scope:faction = {
-					has_variable = faction_targets_player
-				}
+				has_variable = RICE_sicily_bargain_no_counties
 			}
-			scope:faction = {
-				remove_variable = faction_targets_player
-			}
+			remove_variable = RICE_sicily_bargain_no_counties
 		}
 	}
+
 }
 
-# Arab-Berber Stronghold Faction Demand - Affected vassals choose their action
-sicily.0035 = {
-	type = letter_event
-	sender = scope:peasant_leader
-	opening = {
-		desc = "FACTION_DEMAND_POPULIST"
-	}
-	desc = "FACTION_DEMAND_POPULIST_VASSAL_DESC"
 
-	trigger = {
-		exists = scope:faction
-		exists = scope:peasant_leader
-		scope:peasant_leader.joined_faction = scope:faction
-	}
+
+# Extra bargains with the strongholds
+sicily.0031 = {
+	type = character_event
+	title = sicily.0031.t
+	desc = sicily.0031.desc
+	theme = RICE_theme_sicily_travel
 	
+	left_portrait = {
+		character = scope:representative
+		triggered_animation = {
+			trigger = {
+				root = {
+					var:stronghold_extra_negotiation ?= flag:failure
+				}
+			}
+			animation = dismissal
+		}
+		animation = war_over_tie
+	}
+
+	right_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = {
+				root = {
+					var:stronghold_extra_negotiation ?= flag:failure
+				}
+			}
+			animation = anger
+		}
+		animation = scheme		
+	}
+
 	immediate = {
-		scope:faction.faction_war = {
-			save_scope_as = populist_war
+		if = {
+			limit = {
+				var:stronghold_extra_negotiation ?= flag:failure
+			}
+			add_prestige = -100
+			stress_impact = {
+				greedy = miniscule_stress_impact_gain
+				vengeful = miniscule_stress_impact_gain
+				wrathful = miniscule_stress_impact_gain
+			}
+		}
+		if = {
+			limit = {
+				var:stronghold_extra_negotiation ?= flag:success
+			}
+			random_list = {
+				10 = {					
+					set_variable = {
+						name = bargain_extras
+						value = flag:prestige
+						days = 1
+					}
+				}
+				10 = {					
+					set_variable = {
+						name = bargain_extras
+						value = flag:gold
+						days = 1
+					}
+				}
+				10 = {					
+					set_variable = {
+						name = bargain_extras
+						value = flag:troops
+						days = 1
+					}
+				}
+				10 = {					
+					set_variable = {
+						name = bargain_extras
+						value = flag:county
+						days = 1
+					}
+				}
+				10 = {					
+					set_variable = {
+						name = bargain_extras
+						value = flag:development
+						days = 1
+					}
+				}
+			}
 		}
 	}
-	
-	# Option A: Join the rebels if you are Arab-Berber or Muslim already
-	option = {
-		trigger = {
-			RICE_sicily_arabic_trigger = yes
-			# You cannot join the attacking side if you already are at war with another participant.
-			scope:faction.faction_war = {
-				NOT = {
-					any_war_participant = {
-						is_at_war_with = root
-					}
-				}
-			}
-			
-			# You cannot join the attacking side if it would put you against someone you are fighting another war with.
-			scope:faction.faction_war = {
-				NOT = {
-					any_war_defender = {
-						any_war_ally = {
-							this = root
-						}
-					}
-				}
-			}
-		}
-		name = "FACTION_DEMAND_POPULIST_VASSAL_JOIN_REBELS"
 
-		
-		# Change culture/faith and apply penalties if needed.
+	option = { # OK
+		name = sicily.0031.a
 		if = {
 			limit = {
-				NOT = { culture = scope:peasant_leader.culture }
+				var:stronghold_extra_negotiation ?= flag:success
 			}
-			set_culture = scope:peasant_leader.culture
-			add_prestige_level = -1
+			if = {
+				limit = {
+					var:RICE_sicily_bargain_type ?= flag:latin
+				}
+				RICE_sicily_signore_latin_track_medium_gain = yes
+			}
+			else_if = {
+				limit = {
+					var:RICE_sicily_bargain_type ?= flag:greek
+				}
+				RICE_sicily_signore_greek_track_medium_gain = yes
+			}
+			else_if = {
+				limit = {
+					var:RICE_sicily_bargain_type ?= flag:arabic
+				}
+				RICE_sicily_signore_arabic_track_medium_gain = yes
+			}
 		}
 		if = {
 			limit = {
-				NOT = { faith = scope:peasant_leader.faith }
+				var:bargain_extras ?= flag:prestige
 			}
-			set_character_faith = scope:peasant_leader.faith
-			add_piety_level = -1
+			add_prestige = { minor_prestige_gain medium_prestige_gain }
 		}
-		
-		# Join the war.
-		scope:faction.faction_war = {
-			add_attacker = root
+		else_if = {
+			limit = {
+				var:bargain_extras ?= flag:gold
+			}
+			add_gold = { 25 RICE_sicily_stronghold_bargain_min_bottom_value }
 		}
-		custom_tooltip = FACTION_DEMAND_POPULIST_VASSAL_CONVERTS_TT
-		
-		stress_impact = {
-			content = medium_stress_gain
-			craven = medium_stress_gain
-			lazy = minor_stress_gain
-		}
-		
-		ai_chance = {
-			base = 0
-			
-			# Want to convert for cultural reasons
-			modifier = {
-				add = 20
-				OR = {
-					culture = { has_cultural_pillar = heritage_berber }
-					culture = { has_cultural_pillar = heritage_arabic }
+		else_if = {
+			limit = {
+				var:bargain_extras ?= flag:troops
+			}
+			if = {
+				limit = {
+					var:RICE_sicily_bargain_type ?= flag:latin
+				}
+				if = {
+					limit = {
+						root.culture = { has_cultural_era_or_later = culture_era_high_medieval }
+					}
+					spawn_army = {
+						levies = 200
+						men_at_arms = {
+							type = picchieri
+							stacks = 1
+						}
+						men_at_arms = {
+							type = bowmen
+							stacks = 1
+						}
+						location = root.capital_province
+						inheritable = no
+						name = RICE_sicily_event_troops
+					}
+				}
+				else = {
+					spawn_army = {
+						levies = 200
+						men_at_arms = {
+							type = RICE_arimanni
+							stacks = 1
+						}
+						men_at_arms = {
+							type = bowmen
+							stacks = 1
+						}
+						location = root.capital_province
+						inheritable = no
+						name = RICE_sicily_event_troops
+					}
 				}
 			}
-			modifier = {
-				factor = 2
-				struggle:RICE_sicily_struggle ?= {
-					is_struggle_phase = struggle_RICE_sicily_phase_borderland
+			else_if = {
+				limit = {
+					var:RICE_sicily_bargain_type ?= flag:greek
+				}
+				spawn_army = {
+					levies = 200
+					men_at_arms = {
+						type = light_footmen
+						stacks = 1
+					}
+					men_at_arms = {
+						type = cataphract
+						stacks = 2
+					}
+					location = root.capital_province
+					inheritable = no
+					name = RICE_sicily_event_troops
 				}
 			}
-			modifier = {
-				factor = 2
-				has_trait = zealous
-				OR = {
-					religion = religion:islam_religion
-					religion = religion:amazigh_religion
-					religion = religion:semitic_religion
+			else_if = {
+				limit = {
+					var:RICE_sicily_bargain_type ?= flag:arabic
+				}
+				spawn_army = {
+					levies = 200
+					men_at_arms = {
+						type = mubarizun
+						stacks = 1
+					}
+					men_at_arms = {
+						type = RICE_sicily_bowmen
+						stacks = 1
+					}
+					location = root.capital_province
+					inheritable = no
+					name = RICE_sicily_event_troops
 				}
 			}
-			
-			# General modifiers
-			modifier = {
-				factor = 1.25
-				has_trait = fickle
+		}
+		else_if = {
+			limit = {
+				var:bargain_extras ?= flag:county
+			}
+			every_county_in_region = {
+				region = custom_sicily
+				limit = {
+					holder = root
+				}
+				custom = RICE_every_county_owned_sicily
+				change_county_control = minor_county_control_gain
+				change_development_progress = minor_development_progress_gain	
 			}
 		}
 	}
-	
-	# Option B: Fight alongside your liege.
-	option = {
-		name = FACTION_DEMAND_POPULIST_VASSAL_JOIN_WAR
-		
-		# You cannot join the defending side...
-		trigger = {
-			custom_tooltip = { # ... If you already are at war with another participant.
-				text = FACTION_DEMAND_POPULIST_VASSAL_JOIN_WAR_BLOCK_TT
-				scope:faction.faction_war = {
-					NOT = {
-						any_war_participant = {
-							is_at_war_with = root
-						}
-					}
-				}
+
+	after = {
+		if = {
+			limit = {
+				has_variable = RICE_sicily_bargain_type
 			}
-			custom_tooltip = { # ... If it would put you against someone you are fighting another war with.
-				text = FACTION_DEMAND_POPULIST_VASSAL_JOIN_WAR_BLOCK_TT_2
-				scope:faction.faction_war = {
-					NOT = {
-						any_war_attacker = {
-							any_war_ally = {
-								this = root
-							}
-						}
-					}
-				}
+			remove_variable = RICE_sicily_bargain_type
+		}
+		if = {
+			limit = {
+				has_variable = bargain_amount
 			}
+			remove_variable = bargain_amount
 		}
-		show_as_unavailable = {
-			OR = {
-				scope:faction.faction_war = {
-					any_war_participant = {
-						is_at_war_with = root
-					}
-				}
-				scope:faction.faction_war = {
-					any_war_attacker = {
-						any_war_ally = {
-							this = root
-						}
-					}
-				}
+		if = {
+			limit = {
+				has_variable = bargain_extras
 			}
+			remove_variable = bargain_extras
 		}
-		
-		# Join the war.
-		scope:faction.faction_war = {
-			add_defender = root
-		}
-		custom_tooltip = FACTION_DEMAND_POPULIST_VASSAL_JOIN_WAR_TT
-		
-		ai_chance = {
-			base = 100
-		}
-	}
-	
-	# Option C: Do nothing.
-	option = {
-		name = FACTION_DEMAND_POPULIST_VASSAL_TAKE_NO_SIDE
-		custom_tooltip = FACTION_DEMAND_POPULIST_VASSAL_TAKE_NO_SIDE_TT_A
-		custom_tooltip = FACTION_DEMAND_POPULIST_VASSAL_TAKE_NO_SIDE_TT_B
-		
-		ai_chance = {
-			base = 0
-			
-			modifier = {
-				add = 20
-				has_trait = craven
+		hidden_effect = {
+			scope:representative = {
+				death = {
+					death_reason = death_vanished
+				}
 			}
 		}
 	}
+
 }
+
+
+
+
+
+
+
 
 
 ######################################################################################
 # 
-# SICILY STRONGHOLDS
+# SICILY GRAIN
 # 
 # sicily.0050-sicily.0059
 # 
