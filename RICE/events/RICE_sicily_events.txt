@@ -5027,7 +5027,7 @@ sicily.0151 = {
 	
 	right_portrait = {
 		character = root
-		animation = personality_zealous
+		animation = personality_compassionate
 	}
 
 	immediate = {
@@ -5044,13 +5044,131 @@ sicily.0151 = {
 		name = sicily.0151.a
 		trigger_event = {
 			id = sicily.0152
-			days = { 4 12 }
+			days = { 3 8 }
 		}
 	}
 }
 
 
+# Go into the cave of Monte Gargano
+sicily.0152 = {
+	type = activity_event
+	title = sicily.0152.t
+	desc = sicily.0152.desc
+	theme = faith
+	override_background = { reference = fp3_cave }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Saint Michael the Healer
+		name = sicily.0152.a
+		random = {
+			chance = RICE_normandy_mont_saint_michel_chance
+			send_interface_toast = {
+				type = event_toast_effect_good
+				left_icon = ROOT
+				title = sicily.0152.a.toast
+				show_as_tooltip = {
+					add_character_modifier = {
+						modifier = RICE_sicily_gargano_michael_healer_modifier
+						years = 10
+					}					
+				}
+			}
+			hidden_effect = {
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_sicily_gargano_michael_healer_blessing_log
+						tags = { good }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = root
+						scope:host = {
+							add_character_modifier = {
+								modifier = RICE_sicily_gargano_michael_healer_modifier
+								years = 10
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Saint Michael the Warrior
+		name = sicily.0152.b
+		random = {
+			chance = RICE_normandy_mont_saint_michel_chance
+			send_interface_toast = {
+				type = event_toast_effect_good
+				left_icon = ROOT
+				title = sicily.0152.b.toast
+				show_as_tooltip = {
+					add_character_modifier = {
+						modifier = RICE_sicily_gargano_michael_warrior_modifier
+						years = 10
+					}					
+				}
+			}
+			hidden_effect = {
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_sicily_gargano_michael_warrior_blessing_log
+						tags = { good }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = root
+						scope:host = {
+							add_character_modifier = {
+								modifier = RICE_sicily_gargano_michael_warrior_modifier
+								years = 10
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
+	after = {		
+		trigger_event = {
+			id = sicily.0153
+			days = { 3 8 }
+		}
+	}
+
+}
+
+# Pilgrimage concludes
+sicily.0153 = {
+	type = activity_event
+	title = sicily.0153.t
+	desc = sicily.0153.desc
+	theme = RICE_theme_sicily_monte_gargano
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = sicily.0153.a
+		RICE_sicily_monte_gargano_pilgrimage_completed_log_effect = yes
+	}
+
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
+		}
+	}
+
+
+}
 
 
 
