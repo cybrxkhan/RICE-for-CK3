@@ -4199,7 +4199,15 @@ sicily.0104 = {
 sicily.0105 = {
 	type = character_event
 	title = sicily.0105.t
-	desc = sicily.0105.desc
+	desc = {
+		desc = sicily.0105.desc
+		triggered_desc = {
+			trigger = {
+				exists = scope:soldier
+			}
+			desc = sicily.0105.desc.soldier
+		}
+	}
 	theme = martial
 	override_background = { reference = RICE_background_sicily_ancient_temple }
 
@@ -4263,103 +4271,291 @@ sicily.0105 = {
 }
 
 
-# Attracting Immigrants
+# Arts and Sciences
 sicily.0106 = {
 	type = character_event
 	title = sicily.0106.t
 	desc = sicily.0106.desc
-	theme = RICE_theme_sicily_travel
+	theme = learning
+	override_background = { reference = RICE_background_sicily_interior }
 	
 	right_portrait = {
 		character = root
 		animation = thinking
 	}
 
+	immediate = {
+		# Get rid of variable if they have it for some reason, just in case
+		if = {
+			limit = {
+				exists = var:RICE_sicily_scholar
+			}
+			remove_variable = RICE_sicily_scholar
+		}
+	}
 	
 	option = { # Latin
 		name = sicily.0106.a
-		trigger = {
-			RICE_sicily_latin_trigger = yes	
-		}
 		RICE_sicily_signore_latin_track_medium_gain = yes
-		RICE_sicily_attract_immigrants_effect = yes
-		every_county_in_region = {
-			region = custom_sicily
-			limit = {
-				holder = root
+		RICE_sicily_sponsor_arts_sciences_effect = yes
+		custom_tooltip = sicily.0106.tooltip
+		hidden_effect = {
+			random = {
+				chance = RICE_sicily_art_science_scholar_chance
+				set_variable = {
+					name = RICE_sicily_scholar
+					value = flag:latin
+					days = 365
+				}
 			}
-			custom = RICE_every_county_owned_sicily
-			add_county_modifier = {
-				modifier = RICE_sicily_immigrants_latin
-				years = 10
-			}		
 		}
 	}
 	
 	option = { # Greek
 		name = sicily.0106.b
-		trigger = {
-			RICE_sicily_greek_trigger = yes	
-		}
 		RICE_sicily_signore_greek_track_medium_gain = yes
-		RICE_sicily_attract_immigrants_effect = yes
-		every_county_in_region = {
-			region = custom_sicily
-			limit = {
-				holder = root
+		RICE_sicily_sponsor_arts_sciences_effect = yes
+		custom_tooltip = sicily.0106.tooltip
+		hidden_effect = {
+			random = {
+				chance = RICE_sicily_art_science_scholar_chance
+				set_variable = {
+					name = RICE_sicily_scholar
+					value = flag:greek
+					days = 365
+				}
 			}
-			custom = RICE_every_county_owned_sicily
-			add_county_modifier = {
-				modifier = RICE_sicily_immigrants_greek
-				years = 10
-			}		
 		}
 	}
 	
-	option = { # Arabic
+	option = { # Arab-Berber
 		name = sicily.0106.c
-		trigger = {
-			RICE_sicily_arabic_trigger = yes	
-		}
 		RICE_sicily_signore_arabic_track_medium_gain = yes
-		RICE_sicily_attract_immigrants_effect = yes
-		every_county_in_region = {
-			region = custom_sicily
-			limit = {
-				holder = root
+		RICE_sicily_sponsor_arts_sciences_effect = yes
+		custom_tooltip = sicily.0106.tooltip
+		hidden_effect = {
+			random = {
+				chance = RICE_sicily_art_science_scholar_chance
+				set_variable = {
+					name = RICE_sicily_scholar
+					value = flag:arabic
+					days = 365
+				}
 			}
-			custom = RICE_every_county_owned_sicily
-			add_county_modifier = {
-				modifier = RICE_sicily_immigrants_arabic
-				years = 10
-			}		
 		}
 	}
-	
-	option = { # None of the above
-		name = sicily.0106.d
-		trigger = {
-			NOR = {
-				RICE_sicily_latin_trigger = yes
-				RICE_sicily_greek_trigger = yes
-				RICE_sicily_arabic_trigger = yes
-			}	
-		}
-		RICE_sicily_attract_immigrants_effect = yes
-		every_county_in_region = {
-			region = custom_sicily
+
+	after = {
+		if = {
 			limit = {
-				holder = root
+				exists = var:RICE_sicily_scholar
 			}
-			custom = RICE_every_county_owned_sicily
-			add_county_modifier = {
-				modifier = RICE_sicily_immigrants_none
-				years = 10
-			}		
+			trigger_event = {
+				id = sicily.0107
+				days = { 30 365 }
+			}
 		}
 	}
 	
 }
+
+# Arts and Sciences
+sicily.0107 = {
+	type = character_event
+	title = sicily.0107.t
+	desc = sicily.0107.desc
+	theme = learning
+	override_background = { reference = RICE_background_sicily_interior }
+	
+	left_portrait = {
+		character = scope:scholar
+		animation = thinking
+	}
+	
+	right_portrait = {
+		character = root
+		animation = admiration
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				var:RICE_sicily_scholar ?= flag:latin
+				any_county_in_region = {
+					region = RICE_mediterranean_and_nearby_region
+					RICE_sicily_latin_trigger = yes
+				}
+
+			}
+			every_county_in_region = {
+				region = RICE_mediterranean_and_nearby_region
+				limit = {
+					RICE_sicily_latin_trigger = yes
+				}
+				add_to_list = candidate_counties
+			}
+			random_in_list = {
+				list = candidate_counties
+				save_scope_as = county
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_sicily_scholar ?= flag:latin
+			}
+			random_list = {
+				20 = { culture:italian = { save_scope_as = sicily_culture } }
+				20 = { culture:cisalpine = { save_scope_as = sicily_culture } }
+				10 = { culture:frankish = { save_scope_as = sicily_culture } }
+				10 = { culture:castilian = { save_scope_as = sicily_culture } }
+				10 = { culture:andalusian = { save_scope_as = sicily_culture } }
+				20 = { culture:norman = { save_scope_as = sicily_culture } }
+				10 = { culture:franconian = { save_scope_as = sicily_culture } }
+				10 = { culture:dutch = { save_scope_as = sicily_culture } }
+				10 = { culture:anglo_saxon = { save_scope_as = sicily_culture } }
+				10 = { culture:catalan = { save_scope_as = sicily_culture } }
+				10 = { culture:occitan = { save_scope_as = sicily_culture } }
+				10 = { culture:saxon = { save_scope_as = sicily_culture } }
+				20 = { culture:lombard = { save_scope_as = sicily_culture } }
+			}
+			faith:catholic = { save_scope_as = sicily_faith }
+			capital_county = {
+				save_scope_as = county
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_sicily_scholar ?= flag:greek
+				any_county_in_region = {
+					region = RICE_mediterranean_and_nearby_region
+					RICE_sicily_greek_trigger = yes
+				}
+
+			}
+			every_county_in_region = {
+				region = RICE_mediterranean_and_nearby_region
+				limit = {
+					RICE_sicily_greek_trigger = yes
+				}
+				add_to_list = candidate_counties
+			}
+			random_in_list = {
+				list = candidate_counties
+				save_scope_as = county
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_sicily_scholar ?= flag:greek
+			}
+			random_list = {
+				50 = { culture:greek = { save_scope_as = sicily_culture } }
+				10 = { culture:armenian = { save_scope_as = sicily_culture } }
+				10 = { culture:bulgarian = { save_scope_as = sicily_culture } }
+			}
+			faith:orthodox = { save_scope_as = sicily_faith }
+			capital_county = {
+				save_scope_as = county
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_sicily_scholar ?= flag:arabic
+				any_county_in_region = {
+					region = RICE_mediterranean_and_nearby_region
+					RICE_sicily_arabic_trigger = yes
+				}
+
+			}
+			every_county_in_region = {
+				region = RICE_mediterranean_and_nearby_region
+				limit = {
+					RICE_sicily_arabic_trigger = yes
+				}
+				add_to_list = candidate_counties
+			}
+			random_in_list = {
+				list = candidate_counties
+				save_scope_as = county
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_sicily_scholar ?= flag:arabic
+			}
+			random_list = {
+				20 = { culture:andalusian = { save_scope_as = sicily_culture } }
+				20 = { culture:maghrebi = { save_scope_as = sicily_culture } }
+				10 = { culture:butr = { save_scope_as = sicily_culture } }
+				10 = { culture:baranis = { save_scope_as = sicily_culture } }
+				10 = { culture:egyptian = { save_scope_as = sicily_culture } }
+				10 = { culture:levantine = { save_scope_as = sicily_culture } }
+				10 = { culture:yemeni = { save_scope_as = sicily_culture } }
+				10 = { culture:persian = { save_scope_as = sicily_culture } }
+				20 = { culture:siculo_arabic = { save_scope_as = sicily_culture } }
+				10 = { culture:kurdish = { save_scope_as = sicily_culture } }
+			}
+			random_list = {
+				10 = { faith:ashari = { save_scope_as = sicily_faith } }
+				10 = { faith:muwalladi = { save_scope_as = sicily_faith } }
+				10 = { faith:ismaili = { save_scope_as = sicily_faith } }
+				10 = { faith:ibadi = { save_scope_as = sicily_faith } }
+			}
+			capital_county = {
+				save_scope_as = county
+			}
+		}	
+
+		scope:county.faith = {
+			save_scope_as = sicily_faith
+		}		
+		scope:county.culture = {
+			save_scope_as = sicily_culture
+		}	
+
+		create_character = {
+			location = root.capital_province
+			template = RICE_sicily_traveling_scholar_template
+			save_scope_as = scholar
+		}
+
+	}
+	
+	option = { # ok
+		name = sicily.0107.a
+		add_courtier = scope:scholar
+		if = {
+			limit = {
+				can_add_hook = {
+					target = scope:scholar
+					type = loyalty_hook
+				}
+			}
+			add_hook = {
+				target = scope:scholar
+				type = loyalty_hook
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				exists = var:RICE_sicily_scholar
+			}
+			remove_variable = RICE_sicily_scholar
+		}
+		# Make sure you can't convert them
+		hidden_effect = {
+			scope:scholar = {
+				trigger_event = RICEmisc.0002
+			}
+		}
+	}
+	
+}
+
+
 
 
 # Caricatori Ports
@@ -4496,6 +4692,104 @@ sicily.0108 = {
 	
 }
 
+
+# Attracting Immigrants
+sicily.0109 = {
+	type = character_event
+	title = sicily.0109.t
+	desc = sicily.0109.desc
+	theme = RICE_theme_sicily_travel
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	
+	option = { # Latin
+		name = sicily.0109.a
+		trigger = {
+			RICE_sicily_latin_trigger = yes	
+		}
+		RICE_sicily_signore_latin_track_medium_gain = yes
+		RICE_sicily_attract_immigrants_effect = yes
+		every_county_in_region = {
+			region = custom_sicily
+			limit = {
+				holder = root
+			}
+			custom = RICE_every_county_owned_sicily
+			add_county_modifier = {
+				modifier = RICE_sicily_immigrants_latin
+				years = 10
+			}		
+		}
+	}
+	
+	option = { # Greek
+		name = sicily.0109.b
+		trigger = {
+			RICE_sicily_greek_trigger = yes	
+		}
+		RICE_sicily_signore_greek_track_medium_gain = yes
+		RICE_sicily_attract_immigrants_effect = yes
+		every_county_in_region = {
+			region = custom_sicily
+			limit = {
+				holder = root
+			}
+			custom = RICE_every_county_owned_sicily
+			add_county_modifier = {
+				modifier = RICE_sicily_immigrants_greek
+				years = 10
+			}		
+		}
+	}
+	
+	option = { # Arabic
+		name = sicily.0109.c
+		trigger = {
+			RICE_sicily_arabic_trigger = yes	
+		}
+		RICE_sicily_signore_arabic_track_medium_gain = yes
+		RICE_sicily_attract_immigrants_effect = yes
+		every_county_in_region = {
+			region = custom_sicily
+			limit = {
+				holder = root
+			}
+			custom = RICE_every_county_owned_sicily
+			add_county_modifier = {
+				modifier = RICE_sicily_immigrants_arabic
+				years = 10
+			}		
+		}
+	}
+	
+	option = { # None of the above
+		name = sicily.0109.d
+		trigger = {
+			NOR = {
+				RICE_sicily_latin_trigger = yes
+				RICE_sicily_greek_trigger = yes
+				RICE_sicily_arabic_trigger = yes
+			}	
+		}
+		RICE_sicily_attract_immigrants_effect = yes
+		every_county_in_region = {
+			region = custom_sicily
+			limit = {
+				holder = root
+			}
+			custom = RICE_every_county_owned_sicily
+			add_county_modifier = {
+				modifier = RICE_sicily_immigrants_none
+				years = 10
+			}		
+		}
+	}
+	
+}
 
 
 
