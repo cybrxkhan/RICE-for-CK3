@@ -2012,6 +2012,174 @@ sicily.0060 = {
 }
 
 
+# Roger's Aspiration fulfilled
+sicily.0061 = {
+	type = character_event
+	title = sicily.0061.t
+	desc = {
+		desc = sicily.0061.desc
+		# Benavert's fate
+		first_valid = {
+			triggered_desc = {
+				trigger = {				
+					scope:benavert = {
+						religion = religion:christianity_religion
+					}
+				}
+				desc = sicily.0061.desc.benavert_converted
+			}
+			triggered_desc = {
+				trigger = {				
+					scope:benavert = {
+						is_alive = no
+					}
+				}
+				desc = sicily.0061.desc.benavert_dead
+			}
+		}
+		desc = sicily.0061.desc.ending
+	}
+	theme = RICE_theme_sicily_coastal_town
+
+	right_portrait = {
+		character = root
+		animation = war_over_win
+	}
+
+	lower_center_portrait = scope:benavert
+
+	immediate = {
+
+		religion:christianity_religion = { save_scope_as = christian }
+
+		character:1132 = { # Roger
+			save_scope_as = roger
+		}	
+
+		character:20829 = { # Benavert
+			save_scope_as = benavert
+		}		
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_sicily_aspiration_complete_conquest_of_sicily
+				}
+				remove_character_modifier = RICE_sicily_aspiration_complete_conquest_of_sicily
+			}
+		}
+
+		# Main Objective Reward
+		add_piety = RICE_aspiration_medium_resource_bonus
+		add_prestige = RICE_aspiration_medium_resource_bonus
+		if = {
+			limit = {
+				faith = { exists = religious_head }
+			}
+			faith.religious_head = {
+				save_scope_as = hof
+			}
+			scope:hof = {
+				add_opinion = {
+					modifier = RICE_conquered_sicily_opinion
+					target = root
+				}
+			}
+		}
+		every_held_title = {
+			custom = RICE_every_county_owned_sicily
+			limit = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = custom_sicily
+				}
+			}	
+			change_development_level = RICE_red_sea_al_umari_aspiration_dev_bonus
+		}
+
+		# Bonus Objective Reward(s)
+
+		# Have piety level 3
+		if = {
+			limit = {
+				piety_level >= 3
+			}
+			add_legitimacy = medium_legitimacy_gain
+		}
+
+		# Be the ruler of Sicily OR own at least 10 counties
+		if = {
+			limit = {
+				OR = {
+					has_title = title:d_sicily
+					sub_realm_size >= 10
+				}
+			}
+			spawn_army = {
+				men_at_arms = {
+					type = RICE_sicily_bowmen
+					stacks = 4
+				}
+				location = capital_province
+				uses_supply = yes
+				inheritable = yes
+				name = RICE_sicily_norman_muslim_event_troops
+			}
+			spawn_army = {
+				men_at_arms = {
+					type = RICE_norman_cavalry
+					stacks = 2
+				}
+				location = capital_province
+				uses_supply = yes
+				inheritable = yes
+				name = RICE_norman_spawn_event_troops
+			}
+		}
+
+		# Benavert is converted or dead
+		if = {
+			limit = {
+				scope:benavert = {
+					religion = religion:christianity_religion
+				}
+			}
+			add_piety = RICE_aspiration_large_resource_bonus
+		}
+		if = {
+			limit = {
+			}
+			add_prestige = RICE_aspiration_large_resource_bonus
+		}
+		if = {
+			limit = {
+				OR = {
+					scope:benavert = {
+						is_alive = no
+					}					
+					scope:benavert = {
+						religion = religion:christianity_religion
+					}
+				}
+			}			
+			dynasty ?= {
+				add_dynasty_prestige = RICE_aspiration_small_resource_bonus
+			}
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = sicily.0061.a
+	}
+
+}
+
 
 
 # Abu Aaron prepares to leave, ping event
@@ -5696,6 +5864,5 @@ sicily.0154 = {
 
 
 }
-
 
 
