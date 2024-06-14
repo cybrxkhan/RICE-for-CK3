@@ -2974,4 +2974,113 @@ RICE_sicily_monte_gargano_pilgrimage_completed_log_effect = {
 
 
 
+RICE_sicily_1066_muslim_aspiration_completed_effect = {
+	add_piety = RICE_aspiration_medium_resource_bonus
+	add_prestige = RICE_aspiration_medium_resource_bonus
+	if = {
+		limit = {
+			scope:uniter.faith = { exists = religious_head }
+		}
+		scope:uniter.faith.religious_head = {
+			save_scope_as = hof
+		}
+		scope:hof = {
+			add_opinion = {
+				modifier = RICE_conquered_sicily_opinion
+				target = scope:uniter
+			}
+		}
+	}
+	every_county_in_region = {
+		region = RICE_insular_sicily
+		limit = {
+			holder = root
+		}
+		change_development_level = RICE_red_sea_al_umari_aspiration_dev_bonus		
+	}
+
+	# Bonus Objective Reward(s)
+
+	# Have piety or prestige level 4
+	if = {
+		limit = {
+			OR = {
+				piety_level >= 4
+				prestige_level >= 4
+			}
+		}
+		add_legitimacy = medium_legitimacy_gain
+	}
+
+
+	# Own at least 8 counties
+	if = {
+		limit = {
+			sub_realm_size >= 8
+		}
+		spawn_army = {
+			men_at_arms = {
+				type = RICE_sicily_bowmen
+				stacks = 4
+			}
+			location = capital_province
+			uses_supply = yes
+			inheritable = yes
+			name = RICE_sicily_taifa_event_troops
+		}
+		spawn_army = {
+			men_at_arms = {
+				type = RICE_norman_cavalry
+				stacks = 2
+			}
+			location = capital_province
+			uses_supply = yes
+			inheritable = yes
+			name = RICE_norman_spawn_event_troops
+		}
+	}
+
+	# Robert/Roger is converted or dead
+	if = {
+		limit = {
+			scope:roger = {
+				religion = religion:islam_religion
+			}
+		}
+		add_piety = RICE_aspiration_medium_resource_bonus
+	}
+	if = {
+		limit = {
+			scope:roger = {
+				is_alive = no
+			}	
+		}
+		add_prestige = RICE_aspiration_medium_resource_bonus
+	}
+	if = {
+		limit = {
+			OR = {
+				scope:roger = {
+					is_alive = no
+				}					
+				scope:roger = {
+					religion = religion:islam_religion
+				}
+			}
+		}			
+		dynasty ?= {
+			add_dynasty_prestige = RICE_aspiration_small_resource_bonus
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
 

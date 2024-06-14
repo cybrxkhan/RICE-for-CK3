@@ -1886,11 +1886,28 @@ sicily.0055 = {
 
 
 
-# Benavert and other Sicilian Muslim leaders in 1066 Intro Event
+# Roger, Benavert and other Sicilian Muslim leaders in 1066 Intro Event
 sicily.0060 = {
 	type = character_event
 	title = sicily.0060.t
-	desc = sicily.0060.desc
+	desc = {
+		desc = sicily.0060.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {				
+					religion = religion:islam_religion
+				}
+				desc = sicily.0060.desc.muslim
+			}
+			triggered_desc = {
+				trigger = {				
+					religion = religion:christianity_religion
+				}
+				desc = sicily.0060.desc.christian
+			}
+			desc = sicily.0060.desc.fallback
+		}
+	}
 	theme = martial
 	override_background = { reference = RICE_background_sicily_ancient_temple }
 
@@ -2042,13 +2059,15 @@ sicily.0061 = {
 	theme = RICE_theme_sicily_coastal_town
 
 	right_portrait = {
-		character = root
+		character = scope:uniter
 		animation = war_over_win
 	}
 
 	lower_center_portrait = scope:benavert
 
 	immediate = {
+
+		save_scope_as = uniter
 
 		religion:christianity_religion = { save_scope_as = christian }
 
@@ -2061,7 +2080,14 @@ sicily.0061 = {
 		}		
 
 		play_music_cue = "mx_cue_epic_sacral_moment"
-		
+
+		struggle:RICE_sicily_struggle ?= {
+			activate_struggle_catalyst = {
+				catalyst = catalyst_RICE_sicily_historical_event_new_rulers
+				character = scope:uniter
+			}
+		}	
+
 		RICE_historical_aspiration_fulfilled_effect = yes
 
 		hidden_effect = {
@@ -2090,15 +2116,12 @@ sicily.0061 = {
 				}
 			}
 		}
-		every_held_title = {
-			custom = RICE_every_county_owned_sicily
+		every_county_in_region = {
+			region = RICE_insular_sicily
 			limit = {
-				tier = tier_county
-				any_county_province = {
-					geographical_region = custom_sicily
-				}
-			}	
-			change_development_level = RICE_red_sea_al_umari_aspiration_dev_bonus
+				holder = root
+			}
+			change_development_level = RICE_red_sea_al_umari_aspiration_dev_bonus		
 		}
 
 		# Bonus Objective Reward(s)
@@ -2148,12 +2171,15 @@ sicily.0061 = {
 					religion = religion:christianity_religion
 				}
 			}
-			add_piety = RICE_aspiration_large_resource_bonus
+			add_piety = RICE_aspiration_medium_resource_bonus
 		}
 		if = {
 			limit = {
+				scope:benavert = {
+					is_alive = no
+				}	
 			}
-			add_prestige = RICE_aspiration_large_resource_bonus
+			add_prestige = RICE_aspiration_medium_resource_bonus
 		}
 		if = {
 			limit = {
@@ -2176,6 +2202,474 @@ sicily.0061 = {
 	# Ok
 	option = {
 		name = sicily.0061.a
+	}
+
+	after = {
+		# Ping rulers of interest
+		every_ruler = {
+			limit = {
+				is_ai = no
+				NOT = { this = root }
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_mediterranean_and_nearby_region
+					}
+				}
+			}
+			trigger_event = sicily.0063
+		}
+	}
+
+}
+
+
+# Sicily Muslim rulers' Aspiration fulfilled
+sicily.0062 = {
+	type = character_event
+	title = sicily.0062.t
+	desc = {
+		desc = sicily.0062.desc.intro
+		# Roger's fate
+		first_valid = {
+			triggered_desc = {
+				trigger = {				
+					scope:roger = {
+						religion = religion:islam_religion
+					}
+				}
+				desc = sicily.0062.desc.roger_converted
+			}
+			triggered_desc = {
+				trigger = {				
+					scope:roger = {
+						is_alive = no
+					}
+				}
+				desc = sicily.0062.desc.roger_dead
+			}
+		}
+		desc = sicily.0062.desc.ending
+	}
+	theme = RICE_theme_sicily_coastal_town
+
+	right_portrait = {
+		character = scope:uniter
+		animation = war_over_win
+	}
+
+	immediate = {
+
+		add_character_flag = RICE_sicily_no_ping_event_needed
+
+		faith = {
+			save_scope_as = faith
+		}
+
+		title:d_sicily.holder = {
+			save_scope_as = uniter
+		}
+
+		
+		character:1132 = { # Roger
+			save_scope_as = roger
+		}	
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		struggle:RICE_sicily_struggle ?= {
+			activate_struggle_catalyst = {
+				catalyst = catalyst_RICE_sicily_historical_event_new_rulers
+				character = scope:uniter
+			}
+		}	
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_sicily_aspiration_reunify_sicily
+				}
+				remove_character_modifier = RICE_sicily_aspiration_reunify_sicily
+			}
+		}
+
+		# Main Objective Reward
+		if = {
+			limit = {
+				root = scope:uniter
+			}
+			RICE_sicily_1066_muslim_aspiration_completed_effect = yes
+		}
+		else = {
+			show_as_tooltip = {
+				scope:uniter = {
+					RICE_sicily_1066_muslim_aspiration_completed_effect = yes
+				}
+			}
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = sicily.0062.a
+	}
+
+
+	after = {
+		# Ping rulers of interest
+		every_ruler = {
+			limit = {
+				is_ai = no
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_mediterranean_and_nearby_region
+					}
+				}
+				NOT = { has_character_flag = RICE_sicily_no_ping_event_needed }
+			}
+			trigger_event = sicily.0063
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_sicily_no_ping_event_needed
+			}
+			remove_character_flag = RICE_sicily_no_ping_event_needed
+		}
+	}
+
+}
+
+# Notification event for the region
+sicily.0063 = {
+	type = character_event
+	title = sicily.0063.t
+	desc = sicily.0063.desc
+	theme = RICE_theme_sicily_coastal_town
+
+	right_portrait = {
+		character = scope:uniter
+		animation = war_over_win
+	}
+
+	immediate = {
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		
+		character:159193 = { # Hassan as-Samson, last Kalbid Emir
+			save_scope_as = kalbid
+		}	
+
+		if = {
+			limit = {
+				OR = {
+					any_character_struggle = {
+						involvement = involved
+						is_struggle_type = RICE_sicily_struggle
+					}					
+					any_character_struggle = {
+						involvement = interloper
+						is_struggle_type = RICE_sicily_struggle
+					}
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = custom_sicily
+						}
+					}					
+				}
+			}
+			show_as_tooltip = {
+				struggle:RICE_sicily_struggle ?= {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_sicily_historical_event_new_rulers
+						character = scope:uniter
+					}
+				}				
+			}
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = sicily.0063.a
+	}
+
+}
+
+
+
+
+# Sawdan Intro Event
+sicily.0064 = {
+	type = character_event
+	title = sicily.0064.t
+	desc = sicily.0064.desc
+	theme = martial
+	override_background = { reference = RICE_background_sicily_amalfi_coast }
+
+	left_portrait = {
+		character = scope:louis
+		animation = personality_vengeful
+	}
+	right_portrait = {
+		character = scope:sawdan
+		animation = personality_callous
+	}
+
+	immediate = {
+
+		religion:islam_religion = { save_scope_as = islam }
+		religion:christianity_religion = { save_scope_as = christian }
+
+		character:163094 = { # Sawdan
+			save_scope_as = sawdan
+		}		
+
+		character:30228 = { # Emperor Louis
+			save_scope_as = louis
+		}		
+
+		character:1700 = { # Byzantine Emperor
+			save_scope_as = emperor
+		}		
+
+		character:34014 = { # Abbasid Caliph
+			save_scope_as = abbasid
+		}		
+
+		show_as_tooltip = {	
+			scope:sawdan = {
+				add_character_modifier = {
+					modifier = RICE_sicily_aspiration_establish_islam_in_southern_italy
+				}
+			}
+		}
+	}
+
+	# Ok
+	option = {
+		name = sicily.0064.a
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = sicily.0064.tooltip
+			}
+		}
+	}
+}
+
+
+# Sawdan's Aspiration fulfilled
+sicily.0065 = {
+	type = character_event
+	title = sicily.0065.t
+	desc = sicily.0065.desc
+	theme = RICE_theme_sicily_coastal_town
+
+	right_portrait = {
+		character = scope:sawdan
+		animation = war_over_win
+	}
+
+	immediate = {
+
+		save_scope_as = sawdan
+
+		religion:islam_religion = { save_scope_as = islam }
+		religion:christianity_religion = { save_scope_as = christian }
+
+		play_music_cue = "mx_Struggle_ending_hostility"
+
+		struggle:RICE_sicily_struggle ?= {
+			activate_struggle_catalyst = {
+				catalyst = catalyst_RICE_sicily_historical_event_new_rulers
+				character = scope:sawdan
+			}
+		}	
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_sicily_aspiration_establish_islam_in_southern_italy
+				}
+				remove_character_modifier = RICE_sicily_aspiration_establish_islam_in_southern_italy
+			}
+		}
+
+		# Main Objective Reward
+		add_piety = RICE_aspiration_medium_resource_bonus
+		add_prestige = RICE_aspiration_medium_resource_bonus
+		add_legitimacy = medium_legitimacy_gain
+		spawn_army = {
+			levies = 400
+			men_at_arms = {
+				type = RICE_sicily_bowmen
+				stacks = 2
+			}
+			men_at_arms = {
+				type = mubarizun
+				stacks = 1
+			}
+			men_at_arms = {
+				type = pikemen_unit
+				stacks = 1
+			}
+			men_at_arms = {
+				type = light_footmen
+				stacks = 1
+			}
+			men_at_arms = {
+				type = light_horsemen
+				stacks = 2
+			}
+			location = capital_province
+			uses_supply = yes
+			inheritable = yes
+			name = RICE_southern_italy_intervention_event_troops
+		}
+		if = {
+			limit = {
+				faith = { exists = religious_head }
+			}
+			faith.religious_head = {
+				save_scope_as = hof
+			}
+			scope:hof = {
+				add_opinion = {
+					modifier = RICE_conquered_sicily_opinion
+					target = root
+				}
+			}
+		}
+		custom_tooltip = sicily.0065.a.tooltip
+
+		# Bonus Objective Reward(s)
+
+		# Took the Sicily soldier decision at least once
+		if = {
+			limit = {
+				has_character_flag = RICE_sawdan_sicily_soldier_decision_taken
+			}
+			add_martial_lifestyle_perk_points = 1
+		}
+
+		# Be a king or hold at least three duchy titles
+		if = {
+			limit = {
+				OR = {
+					highest_held_title_tier >= tier_kingdom
+					any_held_title = {
+						tier = tier_duchy
+						count >= 3
+					}
+				}
+			}
+			dynasty ?= {
+				add_dynasty_prestige = RICE_aspiration_large_resource_bonus
+			}
+		}
+
+		# Control Rome
+		if = {
+			limit = {
+				has_title = title:c_roma
+			}
+			add_gold = RICE_aspiration_medium_resource_bonus
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = sicily.0065.a
+	}
+
+	after = {
+		# Ping rulers of interest
+		every_ruler = {
+			limit = {
+				is_ai = no
+				NOT = { this = root }
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_mediterranean_and_nearby_region
+					}
+				}
+			}
+			trigger_event = sicily.0066
+		}
+	}
+
+}
+
+# Notification event for the region
+sicily.0066 = {
+	type = character_event
+	title = sicily.0066.t
+	desc = sicily.0066.desc
+	theme = RICE_theme_sicily_coastal_town
+
+	right_portrait = {
+		character = scope:sawdan
+		animation = war_over_win
+	}
+
+	immediate = {
+
+		play_music_cue = "mx_Struggle_ending_hostility"
+
+		if = {
+			limit = {
+				OR = {
+					any_character_struggle = {
+						involvement = involved
+						is_struggle_type = RICE_sicily_struggle
+					}					
+					any_character_struggle = {
+						involvement = interloper
+						is_struggle_type = RICE_sicily_struggle
+					}
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = custom_sicily
+						}
+					}					
+				}
+			}
+			show_as_tooltip = {
+				struggle:RICE_sicily_struggle ?= {
+					activate_struggle_catalyst = {
+						catalyst = catalyst_RICE_sicily_historical_event_new_rulers
+						character = scope:uniter
+					}
+				}				
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = sicily.0064.tooltip
+			}
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = sicily.0066.a
 	}
 
 }

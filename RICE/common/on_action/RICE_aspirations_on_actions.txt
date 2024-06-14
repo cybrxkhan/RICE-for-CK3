@@ -111,6 +111,35 @@ RICE_aspirations_pulse = {
 					trigger_event = pamir.0018
 				}
 			}
+			# Sawdan
+			# Establish Muslim Foothold in Southern Italy
+			if = {
+				limit = {
+					exists = character:163094
+					character:163094 = {
+						is_alive = yes
+						is_landed = yes
+						is_independent_ruler = yes
+						has_title = title:d_apulia
+						OR = {		
+							prestige_level >= 3
+							piety_level >= 3
+						}				
+						has_character_flag = RICE_sawdan_sicily_frontier_decision_taken
+						any_held_county = {
+							count >= 10
+							any_county_province = {
+								geographical_region = RICE_mainland_southern_italy
+							}
+						}
+						religion = religion:islam_religion
+						has_variable = RICE_historical_aspiration
+					}
+				}
+				character:163094 = {
+					trigger_event = sicily.0065
+				}
+			}
 		}
 
 
@@ -279,6 +308,39 @@ RICE_aspirations_pulse = {
 				}
 				character:1132 = {
 					trigger_event = sicily.0061
+				}
+			}
+			# Any original Muslim ruler of Sicily
+			# Reunify the Emirate of Sicily
+			if = {
+				limit = {
+					title:d_sicily.holder = {
+						is_alive = yes
+						is_landed = yes
+						completely_controls = title:d_sicily
+						prestige_level >= 3
+						piety_level >= 3
+						religion = religion:islam_religion
+						has_variable = RICE_historical_aspiration
+						NOT = { has_character_modifier = RICE_sicily_aspiration_complete_conquest_of_sicily }
+						any_held_county = {
+							any_county_province = {
+								geographical_region = RICE_insular_sicily
+							}
+						}
+					}
+				}
+				every_county_in_region = {
+					region = RICE_insular_sicily
+					holder = {
+						if = {
+							limit = {
+								NOT = { has_character_flag = RICE_no_more_ping }
+							}
+							add_character_flag = RICE_no_more_ping
+							trigger_event = sicily.0062
+						}
+					}
 				}
 			}
 		}
