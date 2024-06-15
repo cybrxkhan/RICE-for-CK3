@@ -1173,6 +1173,7 @@ RICE_sicily_end_struggle_effect = {
 		value = $FLAG$
 	}
 
+
 	# I'm too dumb to understand what this means
 	# ## For debug purposes.
 	# if = {
@@ -1183,18 +1184,34 @@ RICE_sicily_end_struggle_effect = {
 	# 	}
 	# }
 
-	every_player = {
-		limit = { RICE_sicily_does_this_player_care_about_the_sicilian_struggle = yes } # Needs to be checked before the struggle ends due to race condition issues
-		add_to_list = player_to_notify # Making a list so stuff is tiggered after the struggle ends, to make extra sure I don't break anything.
-	}
+	# every_player = {
+	# 	limit = { RICE_sicily_does_this_player_care_about_the_sicilian_struggle = yes } # Needs to be checked before the struggle ends due to race condition issues
+	# 	add_to_list = player_to_notify # Making a list so stuff is tiggered after the struggle ends, to make extra sure I don't break anything.
+	# }
 
-	every_in_list = { # Then we *actually* notify palyers, making sure the struggle has already ended
-		list = player_to_notify
+	# every_in_list = { # Then we *actually* notify palyers, making sure the struggle has already ended
+	# 	list = player_to_notify
+	# 	# limit = {
+	# 	# 	NOT = { this = root }
+	# 	# }
+	# 	trigger_event = $EVENT$
+	# }
+
+	# Ping rulers of interest
+	every_ruler = {
 		limit = {
-			NOT = { this = root }
+			is_ai = no
+			#NOT = { this = root }
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_mediterranean_and_nearby_region
+				}
+			}
 		}
 		trigger_event = $EVENT$
 	}
+
 	struggle:RICE_sicily_struggle ?= { end_struggle = $ENDING$ }
 }
 
@@ -3077,10 +3094,482 @@ RICE_sicily_1066_muslim_aspiration_completed_effect = {
 
 
 
+RICE_sicily_periphery_county_effect = {
+
+	every_county_in_region = {
+		region = custom_sicily
+		change_county_control = massive_county_control_loss
+	}
+
+	if = {
+		limit = {
+			exists = global_var:RICE_sicily_latin_dominance
+			exists = global_var:RICE_sicily_greek_dominance
+			exists = global_var:RICE_sicily_arabic_dominance
+		}
+		# There is a three-way tie
+		if = {
+			limit = {
+				global_var:RICE_sicily_latin_dominance = global_var:RICE_sicily_greek_dominance
+				global_var:RICE_sicily_latin_dominance = global_var:RICE_sicily_arabic_dominance
+			}
+			random_list = {
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_substrate_latin
+						}	
+					}
+				}
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_substrate_greek
+						}	
+					}
+				}
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_substrate_arabic
+						}	
+					}
+				}
+			}
+		}
+	
+		# Latin is highest
+		else_if = {
+			limit = {
+				global_var:RICE_sicily_latin_dominance > global_var:RICE_sicily_greek_dominance
+				global_var:RICE_sicily_latin_dominance > global_var:RICE_sicily_arabic_dominance
+			}
+			every_county_in_region = {
+				region = custom_sicily
+				add_county_modifier = {
+					modifier = RICE_sicily_substrate_latin
+				}	
+			}
+		}
+	
+		# Greek is highest
+		else_if = {
+			limit = {
+				global_var:RICE_sicily_greek_dominance > global_var:RICE_sicily_latin_dominance
+				global_var:RICE_sicily_greek_dominance > global_var:RICE_sicily_arabic_dominance
+			}
+			every_county_in_region = {
+				region = custom_sicily
+				add_county_modifier = {
+					modifier = RICE_sicily_substrate_greek
+				}	
+			}
+		}
+	
+		# Arab is highest
+		else_if = {
+			limit = {
+				global_var:RICE_sicily_arabic_dominance > global_var:RICE_sicily_latin_dominance
+				global_var:RICE_sicily_arabic_dominance > global_var:RICE_sicily_greek_dominance
+			}
+			every_county_in_region = {
+				region = custom_sicily
+				add_county_modifier = {
+					modifier = RICE_sicily_substrate_arabic
+				}	
+			}
+		}
+	
+		# There is a tie between Latin and Greek
+		else_if = {
+			limit = {
+				global_var:RICE_sicily_latin_dominance = global_var:RICE_sicily_greek_dominance
+				global_var:RICE_sicily_latin_dominance > global_var:RICE_sicily_arabic_dominance
+				global_var:RICE_sicily_greek_dominance > global_var:RICE_sicily_arabic_dominance
+			}
+			random_list = {
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_substrate_latin
+						}	
+					}
+				}
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_substrate_greek
+						}	
+					}
+				}
+			}
+		}
+	
+		# There is a tie between Latin and Arabic
+		else_if = {
+			limit = {
+				global_var:RICE_sicily_latin_dominance = global_var:RICE_sicily_arabic_dominance
+				global_var:RICE_sicily_latin_dominance > global_var:RICE_sicily_greek_dominance
+				global_var:RICE_sicily_arabic_dominance > global_var:RICE_sicily_greek_dominance
+			}
+			random_list = {
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_substrate_latin
+						}	
+					}
+				}
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_substrate_greek
+						}	
+					}
+				}
+			}
+		}
+	
+		# There is a tie between Greek and Arabic
+		else_if = {
+			limit = {
+				global_var:RICE_sicily_greek_dominance = global_var:RICE_sicily_arabic_dominance
+				global_var:RICE_sicily_greek_dominance > global_var:RICE_sicily_latin_dominance
+				global_var:RICE_sicily_arabic_dominance > global_var:RICE_sicily_latin_dominance
+			}
+			random_list = {
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_substrate_latin
+						}	
+					}
+				}
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_substrate_greek
+						}	
+					}
+				}
+			}
+		}
+	
+		# Failsafe - randomly choose between the three
+		else = {
+			random_list = {
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_substrate_latin
+						}	
+					}
+				}
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_substrate_greek
+						}	
+					}
+				}
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_substrate_arabic
+						}	
+					}
+				}
+			}
+		}
+
+		
+	}
+
+	# Failsafe - randomly choose between the three
+	else = {
+		random_list = {
+			10 = {
+				every_county_in_region = {
+					region = custom_sicily
+					add_county_modifier = {
+						modifier = RICE_sicily_substrate_latin
+					}	
+				}
+			}
+			10 = {
+				every_county_in_region = {
+					region = custom_sicily
+					add_county_modifier = {
+						modifier = RICE_sicily_substrate_greek
+					}	
+				}
+			}
+			10 = {
+				every_county_in_region = {
+					region = custom_sicily
+					add_county_modifier = {
+						modifier = RICE_sicily_substrate_arabic
+					}	
+				}
+			}
+		}	
+	}
+
+
+}
 
 
 
+RICE_sicily_imperial_county_effect = {
 
+	every_county_in_region = {
+		region = custom_sicily
+		change_development_level = minor_development_level_loss
+	}
+
+	if = {
+		limit = {
+			exists = global_var:RICE_sicily_latin_dominance
+			exists = global_var:RICE_sicily_greek_dominance
+			exists = global_var:RICE_sicily_arabic_dominance
+		}
+
+
+		# There is a three-way tie
+		if = {
+			limit = {
+				global_var:RICE_sicily_latin_dominance = global_var:RICE_sicily_greek_dominance
+				global_var:RICE_sicily_latin_dominance = global_var:RICE_sicily_arabic_dominance
+			}
+			random_list = {
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_ruling_class_latin
+						}	
+					}
+				}
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_ruling_class_greek
+						}	
+					}
+				}
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_ruling_class_arabic
+						}	
+					}
+				}
+			}
+		}
+
+		# Latin is highest
+		else_if = {
+			limit = {
+				global_var:RICE_sicily_latin_dominance > global_var:RICE_sicily_greek_dominance
+				global_var:RICE_sicily_latin_dominance > global_var:RICE_sicily_arabic_dominance
+			}
+			every_county_in_region = {
+				region = custom_sicily
+				add_county_modifier = {
+					modifier = RICE_sicily_ruling_class_latin
+				}	
+			}
+		}
+
+		# Greek is highest
+		else_if = {
+			limit = {
+				global_var:RICE_sicily_greek_dominance > global_var:RICE_sicily_latin_dominance
+				global_var:RICE_sicily_greek_dominance > global_var:RICE_sicily_arabic_dominance
+			}
+			every_county_in_region = {
+				region = custom_sicily
+				add_county_modifier = {
+					modifier = RICE_sicily_ruling_class_greek
+				}	
+			}
+		}
+
+		# Arab is highest
+		else_if = {
+			limit = {
+				global_var:RICE_sicily_arabic_dominance > global_var:RICE_sicily_latin_dominance
+				global_var:RICE_sicily_arabic_dominance > global_var:RICE_sicily_greek_dominance
+			}
+			every_county_in_region = {
+				region = custom_sicily
+				add_county_modifier = {
+					modifier = RICE_sicily_ruling_class_arabic
+				}	
+			}
+		}
+
+		# There is a tie between Latin and Greek
+		else_if = {
+			limit = {
+				global_var:RICE_sicily_latin_dominance = global_var:RICE_sicily_greek_dominance
+				global_var:RICE_sicily_latin_dominance > global_var:RICE_sicily_arabic_dominance
+				global_var:RICE_sicily_greek_dominance > global_var:RICE_sicily_arabic_dominance
+			}
+			random_list = {
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_ruling_class_latin
+						}	
+					}
+				}
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_ruling_class_greek
+						}	
+					}
+				}
+			}
+		}
+
+		# There is a tie between Latin and Arabic
+		else_if = {
+			limit = {
+				global_var:RICE_sicily_latin_dominance = global_var:RICE_sicily_arabic_dominance
+				global_var:RICE_sicily_latin_dominance > global_var:RICE_sicily_greek_dominance
+				global_var:RICE_sicily_arabic_dominance > global_var:RICE_sicily_greek_dominance
+			}
+			random_list = {
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_ruling_class_latin
+						}	
+					}
+				}
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_ruling_class_greek
+						}	
+					}
+				}
+			}
+		}
+
+		# There is a tie between Greek and Arabic
+		else_if = {
+			limit = {
+				global_var:RICE_sicily_greek_dominance = global_var:RICE_sicily_arabic_dominance
+				global_var:RICE_sicily_greek_dominance > global_var:RICE_sicily_latin_dominance
+				global_var:RICE_sicily_arabic_dominance > global_var:RICE_sicily_latin_dominance
+			}
+			random_list = {
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_ruling_class_latin
+						}	
+					}
+				}
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_ruling_class_greek
+						}	
+					}
+				}
+			}
+		}
+
+		# Failsafe - randomly choose between the three
+		else = {
+			random_list = {
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_ruling_class_latin
+						}	
+					}
+				}
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_ruling_class_greek
+						}	
+					}
+				}
+				10 = {
+					every_county_in_region = {
+						region = custom_sicily
+						add_county_modifier = {
+							modifier = RICE_sicily_ruling_class_arabic
+						}	
+					}
+				}
+			}
+		}
+
+	}
+
+
+	# Failsafe - randomly choose between the three
+	else = {
+		random_list = {
+			10 = {
+				every_county_in_region = {
+					region = custom_sicily
+					add_county_modifier = {
+						modifier = RICE_sicily_ruling_class_latin
+					}	
+				}
+			}
+			10 = {
+				every_county_in_region = {
+					region = custom_sicily
+					add_county_modifier = {
+						modifier = RICE_sicily_ruling_class_greek
+					}	
+				}
+			}
+			10 = {
+				every_county_in_region = {
+					region = custom_sicily
+					add_county_modifier = {
+						modifier = RICE_sicily_ruling_class_arabic
+					}	
+				}
+			}
+		}
+	}
+
+
+
+}
 
 
 
