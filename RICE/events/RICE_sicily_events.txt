@@ -265,6 +265,112 @@ sicily.0004 = { # Fullscreen Intro Event
 
 }
 
+# Sicily struggle Dominion Ending
+sicily.0005 = {
+	type = character_event
+	window = fullscreen_event
+	title = sicily.0005.t
+	desc = sicily.0005.desc
+	theme = diplomacy_foreign_affairs_focus
+	override_background = { reference = RICE_sicily_struggle_start }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	immediate = {
+		play_music_cue = "mx_spirit_of_the_mediterranean"
+		#struggle:RICE_sicily_struggle = { end_struggle = yes }
+		show_as_tooltip = {
+			scope:RICE_sicily_struggle_ender = {
+				RICE_sicily_ending_dominion_victor_effects = yes
+				# Use county modifiers to identify which ending was chosen
+				if = {
+					limit = {
+						any_county_in_region = {
+							region = custom_sicily
+							has_county_modifier = RICE_sicily_dominion_latin
+						}
+					}
+					RICE_sicily_struggle_ending_dominion_latin_modifier_effects = yes
+				}
+				else_if = {
+					limit = {
+						any_county_in_region = {
+							region = custom_sicily
+							has_county_modifier = RICE_sicily_dominion_greek
+						}
+					}
+					RICE_sicily_struggle_ending_dominion_greek_modifier_effects = yes
+				}
+				else_if = {
+					limit = {
+						any_county_in_region = {
+							region = custom_sicily
+							has_county_modifier = RICE_sicily_dominion_arabic
+						}
+					}
+					RICE_sicily_struggle_ending_dominion_arabic_modifier_effects = yes
+				}
+				else = {
+					RICE_sicily_struggle_ending_dominion_outsider_modifier_effects = yes
+				}
+			}
+		}
+		custom_tooltip = RICE_sicily_struggle_ending_permanent_effect_tt
+	}
+
+	option = {
+		name = sicily.0005.a
+		clicksound = "event:/DLC/FP3/SFX/UI/Notifications/Toasts/struggle_end_positive"
+	}
+
+	after = {
+		if = {
+			limit = {
+				root = scope:RICE_sicily_struggle_ender
+			}
+			RICE_sicily_end_struggle_effect = {
+				ENDING = yes
+				#EVENT = sicily.0003 # # This event ping doesn't work for some reason
+				#FLAG = flag:periphery # Doesn't work for some reason
+			}
+		}
+		else = {
+			show_as_tooltip = {				
+				RICE_sicily_end_struggle_effect = {
+					ENDING = yes
+					#EVENT = sicily.0003 # # This event ping doesn't work for some reason
+					#FLAG = flag:periphery # Doesn't work for some reason
+				}
+			}	
+		}
+	}
+
+}
+
+# Sicily struggle Crossroads Ending
+sicily.0006 = {
+	type = character_event
+	window = fullscreen_event
+	title = sicily.0006.t
+	desc = sicily.0006.desc
+	theme = diplomacy_foreign_affairs_focus
+	override_background = { reference = RICE_sicily_struggle_end_bad }
+	override_sound = { reference = "event:/DLC/FP2/SFX/UI/fp2_struggle_ui_intro_animate" }
+
+	immediate = {
+		play_music_cue = "mx_spirit_of_the_mediterranean"
+		struggle:RICE_sicily_struggle = { end_struggle = yes }
+	}
+
+	option = {
+		name = sicily.0006.a
+		clicksound = "event:/DLC/FP3/SFX/UI/Notifications/Toasts/struggle_end_positive"
+	}
+
+}
+
+
+
+
 # Restart Sicilian Struggle (Occupation)
 sicily.0010 = {
 	type = character_event
