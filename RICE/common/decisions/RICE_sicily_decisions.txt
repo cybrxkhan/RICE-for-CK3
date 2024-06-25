@@ -50,7 +50,7 @@ RICE_sicily_struggle_ending_dominion_decision = {
 			value = RICE_sicily_struggle_ending_dominion_latin
 			is_valid = {
 				RICE_sicily_latin_trigger = yes
-				has_trait_xp = { trait = RICE_sicilian_ruler track = RICE_sicilian_ruler_latin value >= 75 }
+				has_trait_xp = { trait = RICE_sicilian_ruler track = RICE_sicilian_ruler_latin value >= 25 }
 			}
 			current_description = RICE_sicily_struggle_ending_dominion_latin_desc
 			localization = RICE_sicily_struggle_ending_dominion_latin_name
@@ -65,7 +65,7 @@ RICE_sicily_struggle_ending_dominion_decision = {
 			value = RICE_sicily_struggle_ending_dominion_greek
 			is_valid = {
 				RICE_sicily_greek_trigger = yes
-				has_trait_xp = { trait = RICE_sicilian_ruler track = RICE_sicilian_ruler_greek value >= 75 }
+				has_trait_xp = { trait = RICE_sicilian_ruler track = RICE_sicilian_ruler_greek value >= 25 }
 			}
 			current_description = RICE_sicily_struggle_ending_dominion_greek_desc
 			localization = RICE_sicily_struggle_ending_dominion_greek_name
@@ -80,7 +80,7 @@ RICE_sicily_struggle_ending_dominion_decision = {
 			value = RICE_sicily_struggle_ending_dominion_arabic
 			is_valid = {
 				RICE_sicily_arabic_trigger = yes
-				has_trait_xp = { trait = RICE_sicilian_ruler track = RICE_sicilian_ruler_arabic value >= 75 }
+				has_trait_xp = { trait = RICE_sicilian_ruler track = RICE_sicilian_ruler_arabic value >= 25 }
 			}
 			current_description = RICE_sicily_struggle_ending_dominion_arabic_desc
 			localization = RICE_sicily_struggle_ending_dominion_arabic_name
@@ -94,7 +94,7 @@ RICE_sicily_struggle_ending_dominion_decision = {
 		item = {
 			value = RICE_sicily_struggle_ending_dominion_outsider
 			is_valid = {
-				dynasty_prestige_level >= 3
+				prestige_level >= 3
 				NOR = {
 					RICE_sicily_latin_trigger = yes
 					RICE_sicily_greek_trigger = yes
@@ -205,7 +205,47 @@ RICE_sicily_struggle_ending_crossroads_decision = {
 			}
 		}
 
-		completely_controls_region = custom_sicily
+		OR = {
+			AND = {
+				completely_controls_region = custom_sicily
+				custom_tooltip = {
+					text = RICE_sicily_struggle_ending_crossroads_development_lower_tt
+					NOT = {
+						capital_county.duchy = {
+							any_in_de_jure_hierarchy = {
+								tier = tier_county
+								development_level < RICE_sicily_crossroads_ending_development_level_lower
+							}
+						}
+					}
+				}
+			}
+			AND = {
+				# Have at least 60 dev in each county of your capital's de jure duchy
+				custom_tooltip = {
+					text = RICE_sicily_struggle_ending_crossroads_development_higher_tt
+					NOT = {
+						capital_county.duchy = {
+							any_in_de_jure_hierarchy = {
+								tier = tier_county
+								development_level < RICE_sicily_crossroads_ending_development_level_higher
+							}
+						}
+					}
+				}
+				calc_true_if = {
+					amount >= 2
+					completely_controls = title:d_sicily
+					completely_controls = title:d_apulia
+					completely_controls = title:d_benevento 
+					completely_controls = title:d_capua
+					completely_controls = title:d_salerno
+					completely_controls = title:d_calabria
+				}
+			}
+		}
+
+		prestige_level >= 3
 
 		dynasty ?= {
 			has_dynasty_perk = RICE_sicily_legacy_5
@@ -214,41 +254,33 @@ RICE_sicily_struggle_ending_crossroads_decision = {
 	}
 
 	effect = {
-		# if = {
-		# 	limit = { has_dlc_feature = legends }
-		# 	RICE_sri_lanka_legend_seed_struggle_ending_effect = {
-		# 		ENDER = root
-		# 		STRUGGLE = RICE_sicily_struggle
-		# 	}
-		# }
-
 		save_scope_as = RICE_sicily_struggle_ender
 
-
 		##### Major Effects #####		
-		RICE_sicily_end_struggle_effect = {
-			ENDING = yes
-			EVENT = sicily.8888
-			FLAG = flag:RICE_sicily_struggle_crossroads_ending
+		
+		set_global_variable = {
+			name = RICE_sicily_struggle_ending_crossroads
+			value = yes
 		}
-		show_as_tooltip = {
-			give_nickname = RICE_nick_stupor_mundi
-			add_piety = 1000
-			add_prestige = 1000
-			dynasty = {
-				add_dynasty_prestige = 1000
-				add_dynasty_modifier = {
-					modifier = RICE_sri_lanka_sangha_uniter_modifier
-				}
-			}
-		}
-		# Phase doctrine
-		custom_tooltip = RICE_sicily_struggle_ending_crossroads_modifier_effect_tt
-		# Relic effect
-		custom_tooltip = RICE_sicily_struggle_ending_crossroads_mechanics_effect_tt
+
+		RICE_sicily_ending_crossroads_victory_effects = yes
+		RICE_sicily_struggle_ending_crossroads_modifier_effects = yes
+
+		# Permanent Ending
+		custom_tooltip = RICE_sicily_struggle_ending_permanent_effect_tt
+	
 
 		# Trigger the ending event
-		trigger_event = sicily.8888
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:RICE_sicily_struggle_ender
+					is_ai = no
+				}
+				RICE_sicily_does_this_player_care_about_the_sicilian_struggle = yes
+			}
+			trigger_event = sicily.0006
+		}
 	}
 
 	cost = {}
