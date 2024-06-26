@@ -170,82 +170,121 @@
 				name = WAR_EFFECTS_NAME
 				# lower cost and higher gain for external wars
 				common_parameters = {
-					apply_truce_when_sending_ward = yes
-					invasion_conquest_war_cannot_be_declared = yes
-					RICE_sicily_unlocks_foothold_casus_belli = yes
+					struggle_cb_cost_minor = yes
+					truces_by_involved_or_interlopers_within_region_shorter = yes
+					involved_or_interloper_wars_in_struggle_region_cheaper_piety_costs = yes
+					involved_or_interloper_wars_in_struggle_region_cheaper_prestige_costs = yes
+					involved_or_interloper_wars_in_struggle_region_cheaper_costs = yes
 				}
 
 				involved_character_modifier = {
 					# Everyone hires soldiers, either to maintain the peace or ready for the next phase of war.
-					men_at_arms_recruitment_cost = -0.5
-					men_at_arms_maintenance = -0.25
+					mercenary_hire_cost_mult = -0.15
 					# This pumps some characters up.
 					glory_hound_ai_energy = very_high_positive_ai_value
 					glory_hound_ai_boldness = very_high_positive_ai_value
+
+					levy_reinforcement_rate = 0.1
+
+					ai_war_chance = 3
+					ai_war_cooldown = -0.25
 				}
 
 				interloper_character_modifier = {
 					# Interlopers benefit a little here too.
-					men_at_arms_recruitment_cost = -0.25
+					mercenary_hire_cost_mult = -0.05
+					levy_reinforcement_rate = 0.05
+					# But also benefit greatly from taking part personally.
+					# Get out there and do your part.
+					ai_war_chance = 2
+					ai_war_cooldown = -0.1
 				}
 			}
 
 			faith_effects = {
 				name = FAITH_EFFECTS_NAME
+
+				###### Common
+				common_parameters = {
+					cheaper_to_convert_to_struggle_faith = yes
+				}
 				
 				involved_parameters = {
-					piety_from_new_alliance = yes
-					completing_building_in_temple_gives_piety = yes
-					same_faith_friend_piety_gain = yes
+					interfaith_marriages_available_between_involved_characters = yes
+					county_faith_conversion_in_region_proceeds_slower = yes
 				}
 
 				involved_character_modifier = {
-					# The Sunni Caliphate consolidates - everyone else closes ranks too.
-					same_faith_opinion = 20
-					# Whilst bunkering down and arguing 
-					minority_different_faith_opinion = -20
+					different_faith_opinion = 5
+					opinion_of_different_faith = 5
+					faith_conversion_piety_cost_mult = -0.1
 				}
 			}
 
 			culture_effects = {
 				name = CULTURE_EFFECTS_NAME
 
+				###### Common
+				common_parameters = {
+					county_culture_conversion_in_region_proceeds_slower = yes
+				}
+
 				involved_parameters = {
 					learning_languages_gives_prestige = yes
-					granting_title_to_local_noble_gives_prestige = yes
-					gain_acceptance_when_developing_other_culture_county = yes
 					release_prisoner_diff_culture_gives_prestige = yes
+					easier_culture_hybridising_for_involved_and_interlopers = yes
+					struggle_different_culture_more_likely_to_use_minority_stance = yes
 				}
 
 				involved_character_modifier = {
-					# Solidarity within cultural blocks.
-					same_culture_opinion = 10
-					opinion_of_same_culture = 10
-					# Authority figures work to reestablish themselves.
-					cultural_head_acceptance_gain_mult = 0.5
+					different_culture_opinion = 5
+					opinion_of_different_culture = 5
+					learn_language_scheme_power_mult = 0.1
 				}
+
+				###### Interlopers
+				interloper_parameters = {
+					easier_culture_hybridising_for_involved_and_interlopers = yes
+				}
+
+				interloper_character_modifier = {
+					learn_language_scheme_power_mult = 0.05
+				}
+
 			}
 
 			other_effects = {
 				name = OTHER_EFFECTS_NAME
-				involved_parameters = {
-					struggle_unlocks_befriend_schemes_for_everyone = yes
-					unlocks_epic_commission_for_independent_rulers = yes
-					granting_independence_to_non_dejure_gives_renown = yes
-					unlocks_claim_throne_for_caliph_vassals = yes
-					less_dissolution_more_claimants = yes
 
-					# Note: this parameter doesn't _do_ anything, it's just for the tooltip.
-					## You need to manually set/clear the "struggle_block_dissolution_faction" variable on affected titles instead.
-					### We do it this way to save a bit on performance.
-					caliph_cant_be_dissolutioned = yes
+				all_county_modifier = {
+					development_growth = 0.1
+					development_growth_factor = 0.2
+					monthly_county_control_decline_add = -0.2
+					monthly_county_control_decline_factor = 0.4
+					# Lotta armed folk on the road.
+					travel_danger = 25
 				}
-				involved_character_modifier = {
-					castle_holding_build_gold_cost = -0.3
+				
+				involved_parameters = {
+					powerful_vassal_can_claim_liege_titles = yes
+					unlocks_claim_throne_for_powerful_vassals = yes
+					unlocks_truce_purchasing_interaction = yes
+					#unlocks_expedite_scheme_decision = yes
+					unlocks_buy_claim_for_all = yes
+					unlocks_demand_payments_for_all = yes
+					unlocks_incite_revolts_interaction = yes
+
+					RICE_normandy_cheaper_norse_adventurers = yes
+					RICE_normandy_cheaper_norman_adventurers = yes
+
 				}
-				interloper_parameters = {
-					less_dissolution_more_claimants = yes
+
+				involved_character_modifier = {				
+					castle_holding_build_gold_cost = -0.2
+					city_holding_build_gold_cost = -0.05
+					church_holding_build_gold_cost = -0.05
 				}
+
 			}
 
 			ending_decisions = {
@@ -336,154 +375,109 @@
 				name = WAR_EFFECTS_NAME
 				# lower cost and higher gain for external wars
 				common_parameters = {
-					RICE_sicily_unlocks_foothold_casus_belli = yes
+					struggle_clash_restricted_to_single_county = yes
+					#RICE_sicily_unlocks_foothold_casus_belli = yes
 				}
 
 				involved_parameters = {
-					install_loyalist_cb_unlocked = yes
-					offer_vassalization_removes_disloyalty = yes
-					fp3_caliph_gets_cheaper_subjugation_cb = yes
-					cheaper_incursions_vs_caliph = yes
+					unlocks_enforce_truces_interaction = yes
+					unlocks_contract_assistance_interaction = yes
+					powerful_vassal_can_claim_liege_titles = yes
+					unlocks_claim_throne_for_powerful_vassals = yes
+					unlocks_forced_vassalization_casus_belli = yes
 				}
 
 				all_county_modifier = {
-					# The region is more amenable for waging war.
-					supply_limit_mult = 1
-					levy_reinforcement_rate_friendly_territory = 1
+					levy_reinforcement_rate_friendly_territory = 0.15
 				}
 
 				involved_county_modifier = {
 					# The region is more amenable for waging war.
-					levy_size = 1
-					garrison_size = -0.5
+					levy_size = 0.2
+					garrison_size = 0.2
+					defender_holding_advantage = 6
 				}
 
 				interloper_county_modifier = {
 					# Interlopers get partial benefits for waging war.
-					levy_size = 0.5
-					garrison_size = -0.25
-				}
-
-				uninvolved_county_modifier = {
-					# Uninvolved characters shouldn't be here (lookin' at you caliphs that lose Baghdad), so they get punished.
-					levy_size = -0.5
-					garrison_size = -0.75
+					levy_size = 0.1
+					garrison_size = 0.1
+					defender_holding_advantage = 3
 				}
 
 				involved_character_modifier = {
-					# Fighting is encouraged, especially defensively.
-					same_heritage_county_advantage_add = 5
-					mercenary_hire_cost_mult = -0.25
-					# Get out there and do your part.
-					led_by_owner_extra_advantage_add = 5
-					ai_war_chance = 2
-					ai_war_cooldown = -0.25
+					men_at_arms_recruitment_cost = -0.1
+					men_at_arms_maintenance = -0.1					
 				}
 
 				interloper_character_modifier = {
-					# Interlopers'll have an easier time with hiring mercenaries.
-					mercenary_hire_cost_mult = -0.35
-					# But also benefit greatly from taking part personally.
-					# Get out there and do your part.
-					led_by_owner_extra_advantage_add = 10
-					ai_war_chance = 10
-					ai_war_cooldown = -0.5
+					men_at_arms_recruitment_cost = -0.05
+					men_at_arms_maintenance = -0.05
 				}
 			}
 
 			faith_effects = {
 				name = FAITH_EFFECTS_NAME
 
+				###### Common
+				common_parameters = {
+					county_faith_conversion_in_region_proceeds_faster = yes
+				}
+
 				involved_parameters = {
 					completing_building_in_temple_gives_piety = yes
-					demand_submission_interaction_unlocked = yes
-					piety_level_affects_vassalage_acceptance = yes
-					can_trade_piety_for_marriage_acceptance = yes
 					piety_from_converting_county = yes
 					piety_from_converting_involved_rulers = yes
+					learning_languages_gives_piety = yes
 				}
 
 				involved_character_modifier = {
-					# Zealots are ready to throw down.
-					zealot_opinion = 20
-					zealot_levy_contribution_mult = 0.5
-					zealot_tax_contribution_mult = 0.5
-					zealot_ai_vengefulness = very_high_positive_ai_value
-					zealot_ai_zeal = very_high_positive_ai_value
-					zealot_ai_boldness = high_positive_ai_value
-					church_holding_build_gold_cost = -0.3
+					faith_conversion_piety_cost_mult = 0.1
 				}
 			}
 
 			culture_effects = {
 				name = CULTURE_EFFECTS_NAME
 
+				###### Common
+				common_parameters = {
+					county_culture_conversion_in_region_proceeds_faster = yes
+				}
+
 				involved_parameters = {
 				  struggle_prestige_from_befriending_same_culture = yes
 				  struggle_prestige_install_same_culture_claimant = yes
-				  struggle_different_culture_more_likely_to_use_minority_stance = yes
+				  gain_acceptance_when_developing_other_culture_county = yes
 				}
 
 				involved_character_modifier = {
-					# Minorities within your realm want no part of whatever you're pushing.
-					minority_opinion = -10
-					minority_tax_contribution_mult = -0.5
-					minority_levy_contribution_mult = -0.5
-					minority_ai_energy = high_positive_ai_value
-					# Diff-faith minorities _especially_ have no time for you.
-					minority_different_faith_opinion = -10
+					cultural_head_fascination_mult = 0.15
 				}
+
 			}
 
 			other_effects = {
 				name = OTHER_EFFECTS_NAME
 
+				involved_parameters = {
+					completing_building_in_castle_gives_development = yes
+					unlocks_incite_revolts_interaction = yes
+				}
+
 				# We don't immediately dunk on your economics too much: you get tools to build up in the other phase + tools to wage war here, so we want characters to injure themselves because of conflicts they start first and foremost rather than nebulous regional factors.
 
 				all_county_modifier = {
-					# Not much happening economically.
-					build_speed = -0.5
-					# Lotta armed folk on the road.
-					travel_danger = 25
+					tax_mult = 0.1
+					development_growth = -0.2
+					development_growth_factor = -0.4
 				}
 
-				involved_county_modifier = {
-					# If you're at war, there's chaos at home.
-					monthly_county_control_growth_at_war_add = -0.02
+				involved_character_modifier = {				
+					castle_holding_build_gold_cost = -0.05
+					city_holding_build_gold_cost = -0.2
+					church_holding_build_gold_cost = -0.05
 				}
 
-				interloper_county_modifier = {
-					# If you're at war, there's chaos at home.
-					monthly_county_control_growth_at_war_add = -0.01
-				}
-
-				uninvolved_county_modifier = {
-					# Everyone's squabbling amongst themselves in your struggle lands.
-					monthly_county_control_growth_at_war_add = -0.03
-				}
-
-				involved_character_modifier = {
-					owned_hostile_scheme_success_chance_add = 20
-					claim_throne_scheme_power_mult = 1
-				}
-
-				involved_parameters = {
-					unlocks_abandon_hook_for_all = yes
-					unlocks_claim_throne_for_all = yes
-					fp3_sway_scheme_more_powerful = yes 
-					fp3_sway_vassals_removes_disloyalty = yes
-					empowered_vizierate = yes
-					unlocks_challenge_house_head_for_clans = yes
-					less_dissolution_more_claimants = yes
-
-					# Note: this parameter doesn't _do_ anything, it's just for the tooltip.
-					## You need to manually set/clear the "struggle_block_dissolution_faction" variable on affected titles instead.
-					### We do it this way to save a bit on performance.
-					caliph_cant_be_dissolutioned = yes
-				}
-				interloper_parameters = {
-					less_dissolution_more_claimants = yes
-				}
 			}
 
 			ending_decisions = {
@@ -503,7 +497,7 @@
 				custom_tooltip = RICE_sicily_struggle_periphery_ending_county_modifier_tt
 				custom_tooltip = RICE_sicily_struggle_periphery_ending_restart_tt
 
-				# Timer so it doesn't happen right away
+				# Timer so restarting the struggle again doesn't happen right away
 				set_global_variable = {
 					name = RICE_sicily_temporary_ending_timer
 					value = yes
@@ -556,7 +550,7 @@
 				custom_tooltip = RICE_sicily_struggle_imperial_ending_county_modifier_tt
 				custom_tooltip = RICE_sicily_struggle_imperial_ending_restart_tt
 
-				# Timer so it doesn't happen right away
+				# Timer so restarting the struggle again doesn't happen right away
 				set_global_variable = {
 					name = RICE_sicily_temporary_ending_timer
 					value = yes
