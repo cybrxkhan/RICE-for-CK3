@@ -13,6 +13,7 @@
 # sicily.0130-sicily.0139			Palermo Tomb Visit
 # sicily.0140-sicily.0149			Salerno Medical School
 # sicily.0150-sicily.0169			Monte Gargano Pilgrimage
+# sicily.0170-sicily.0179			Courtier Spawn
 # 
 ###############################################################################
 
@@ -424,6 +425,32 @@ sicily.0006 = {
 }
 
 
+
+# Year change catalyst
+sicily.0007 = {
+	hidden = yes
+	scope = none
+	scope = struggle
+
+	trigger = {
+		exists = struggle:RICE_sicily_struggle
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				exists = struggle:RICE_sicily_struggle
+			}
+			# Activate the catalyst
+			activate_struggle_catalyst = catalyst_RICE_sicily_passing_of_time
+			# Then queue the event up against for a year hence.
+			trigger_event = {
+				id = sicily.0007
+				years = 1
+			}
+		}
+	}
+}
 
 
 # Restart Sicilian Struggle (Occupation)
@@ -5957,6 +5984,8 @@ sicily.0109 = {
 			}		
 		}
 	}
+
+
 	
 }
 
@@ -6158,6 +6187,17 @@ sicily.0130 = {
 				}
 				desc = sicily.0130.desc.galen
 			}
+			triggered_desc = {
+				trigger = {
+					involved_activity ?= {
+						has_activity_option = {
+							category = special_type
+							option = RICE_sicily_palermo_tomb_visit_muslim
+						}
+					}
+				}
+				desc = sicily.0130.desc.muslim
+			}
 		}
 		desc = sicily.0130.desc
 	}
@@ -6223,6 +6263,17 @@ sicily.0131 = {
 				}
 				desc = sicily.0131.desc.galen
 			}
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_sicily_palermo_tomb_visit_muslim
+						}
+					}
+				}
+				desc = sicily.0131.desc.muslim
+			}
 		}
 	}
 	theme = RICE_theme_sicily_village
@@ -6276,6 +6327,20 @@ sicily.0131 = {
 				days = { 2 5 }
 			}
 		}
+		else_if = {
+			limit = {				
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_sicily_palermo_tomb_visit_muslim
+					}
+				}
+			}
+			trigger_event = {
+				id = sicily.0134
+				days = { 2 5 }
+			}
+		}
 	}	
 }
 
@@ -6321,6 +6386,32 @@ sicily.0133 = {
 	
 	option = { # ok
 		name = sicily.0133.a
+		RICE_sicily_palermo_tomb_visit_completed_log_entry_effect = yes
+	}
+	
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
+		}
+	}
+}
+
+# Visit the Muslim tombs
+sicily.0134 = {
+	type = activity_event
+	title = sicily.0134.t
+	desc = sicily.0134.desc
+	theme = faith
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # ok
+		name = sicily.0134.a
 		RICE_sicily_palermo_tomb_visit_completed_log_entry_effect = yes
 	}
 	
@@ -6924,3 +7015,4 @@ sicily.0154 = {
 }
 
 
+# [[Armenian courtiers in Bari???]]
