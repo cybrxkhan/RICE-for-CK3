@@ -486,7 +486,7 @@ RICE_sicily_stabilize_sicilian_frontier = {
 				has_global_variable = RICE_sicily_temporary_ending_timer
 			}
 		}
-		# Capital is NOT in Sicily
+		# Capital is in Sicily
 		custom_description = {
 			text = "RICE_sicily_capital_req"
 			root.capital_county = {
@@ -585,6 +585,156 @@ RICE_sicily_stabilize_sicilian_frontier = {
 #											#
 #############################################
 
+
+
+RICE_sicily_second_pavia_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_ck2_prospering_province.dds"
+	major = yes
+	desc = RICE_sicily_second_pavia_decision_desc
+
+	ai_check_interval = 64
+
+	is_shown = {
+		is_landed = yes
+		culture = {
+			OR = {
+				this = culture:langobard
+				any_parent_culture_or_above = {
+					this = culture:langobard
+				}
+			}
+		}
+		root.capital_county = {
+			title_province = { geographical_region = custom_sicily }
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_sicily_second_pavia_decision_flag
+			}
+		}
+	}
+
+	is_valid = {
+		is_independent_ruler = yes
+		prestige_level >= 3
+		# Not tribal - vanilla localization is bugged atm
+		custom_description = {
+			text = RICE_not_tribal_government_req
+			NOT = { government_has_flag = government_is_tribal }
+		}	
+		# Langobard or descended from Langobard culture
+		custom_description = {
+			text = RICE_lombard_culture_req
+			culture = {
+				OR = {
+					this = culture:langobard
+					any_parent_culture_or_above = {
+						this = culture:langobard
+					}
+				}
+			}
+		}		
+		custom_tooltip = {
+			text = RICE_sicily_pavia_capital_development_req
+			capital_county = {
+				development_level >= RICE_sicily_pavia_development_level
+			}
+		}	
+		# Capital is in Sicily
+		custom_description = {
+			text = "RICE_sicily_capital_req"
+			root.capital_county = {
+				title_province = { geographical_region = custom_sicily }
+			}
+		}
+		# Own at least 5 counties overall
+		sub_realm_size >= 5
+		OR = {
+			completely_controls = title:d_sicily
+			completely_controls = title:d_apulia
+			completely_controls = title:d_benevento 
+			completely_controls = title:d_capua
+			completely_controls = title:d_salerno
+			completely_controls = title:d_calabria
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	cost = { 
+		gold = { value = major_gold_value }
+	}	
+
+	ai_potential = {
+		short_term_gold > major_gold_value
+	}
+
+	effect = {
+
+		save_scope_as = second_pavia_founder
+
+		capital_county = {
+			save_scope = second_pavia
+		}
+		
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_sicily_second_pavia_decision_flag
+		}
+		
+		#custom_tooltip = RICE_sicily_second_pavia_decision_effect_tooltip_1
+		#custom_tooltip = RICE_sicily_second_pavia_decision_effect_tooltip_2	
+		
+		show_as_tooltip = {
+			RICE_sicily_second_pavia_decision_effect = yes			
+		}
+
+		# Trigger the ending event
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:second_pavia_founder
+					is_ai = no
+				}
+				OR = {
+					this = scope:second_pavia_founder
+					culture = {
+						OR = {
+							this = culture:langobard
+							any_parent_culture_or_above = {
+								this = culture:langobard
+							}
+						}
+					}
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = custom_sicily
+						}
+					}
+				}
+			}
+			trigger_event = sicily.0014
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_sicily_second_pavia_decision_context_tooltip
+		}
+
+		# add_to_list = notification_sent
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
 
 
 
