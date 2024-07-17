@@ -14,6 +14,7 @@
 # sicily.0140-sicily.0149			Salerno Medical School
 # sicily.0150-sicily.0169			Monte Gargano Pilgrimage
 # sicily.0170-sicily.0179			Courtier Spawn
+# sicily.0200-sicily.0229			Generic events
 # 
 ###############################################################################
 
@@ -7063,3 +7064,537 @@ sicily.0154 = {
 
 
 # [[Armenian courtiers in Bari???]]
+
+
+
+######################################################################################
+# 
+# GENERIC FLAVOR EVENTS
+# 
+# sicily.0200-sicily.0229 reserved
+# 
+######################################################################################
+
+
+# Locals are using other culture/religion legal courts
+sicily.0200 = {
+	type = character_event
+	title = sicily.0200.t
+	desc = sicily.0200.desc
+	theme = diplomacy
+	override_background = { reference = RICE_background_sicily_interior }
+
+	left_portrait = {
+		character = root
+		animation = stress
+	}
+	
+	
+	trigger = {
+		any_held_county = {
+			culture = root.culture
+			any_county_province = {
+				geographical_region = custom_sicily
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = -0.2
+			has_trait = just
+		}
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = sadistic
+		}
+		modifier = {
+			add = -0.2
+			has_trait = compassionate
+		}
+	}
+
+	immediate = {
+		random_held_county = {
+			limit = {		
+				culture = root.culture	
+				any_county_province = {
+					geographical_region = RICE_sardinia_region
+				}
+			}
+			save_scope_as = county
+		}
+		root.culture = {
+			save_scope_as = culture
+		}
+	}
+
+	option = { # Ok
+		name = sicily.0200.a
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_sicily_legal_opportunism_cracking_down
+				years = 10
+			}
+		}
+		if = {
+			limit = {
+				RICE_sicily_latin_culture_trigger = yes
+			}
+			RICE_sicily_signore_latin_track_minor_gain = yes
+		}
+		else_if = {
+			limit = {
+				RICE_sicily_greek_culture_trigger = yes
+			}
+			RICE_sicily_signore_greek_track_minor_gain = yes
+		}
+		else_if = {
+			limit = {
+				RICE_sicily_arabic_culture_trigger = yes
+			}
+			RICE_sicily_signore_arabic_track_minor_gain = yes
+		}
+		stress_impact = {
+			arbitrary = minor_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+			content = miniscule_stress_impact_gain
+			forgiving = miniscule_stress_impact_gain
+		}	
+	}
+
+	option = { # Ok
+		name = sicily.0200.b
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_sicily_legal_opportunism_ignoring
+				years = 10
+			}
+		}
+		if = {
+			limit = {
+				RICE_sicily_latin_culture_trigger = no
+			}
+			RICE_sicily_signore_latin_track_minor_gain = yes
+		}
+		if = {
+			limit = {
+				RICE_sicily_greek_culture_trigger = no
+			}
+			RICE_sicily_signore_greek_track_minor_gain = yes
+		}
+		if = {
+			limit = {
+				RICE_sicily_arabic_culture_trigger = no
+			}
+			RICE_sicily_signore_arabic_track_minor_gain = yes
+		}
+		stress_impact = {
+			just = minor_stress_impact_gain
+			diligent = miniscule_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sicily.0200.info
+		}
+	}
+
+}
+
+
+
+# Muslim scholar's interpretation of "Port of Holy War" (i.e. a religious boder zone) causing problems?
+sicily.0201 = {
+	type = character_event
+	window = duel_event
+	title = sicily.0201.t
+	desc = sicily.0201.desc
+	theme = diplomacy
+	override_background = { reference = RICE_background_sicily_interior }
+
+	left_portrait = {
+		character = scope:courtier
+		animation = disapproval
+	}
+
+	right_portrait = {
+		character = scope:scholar
+		animation = beg
+	}
+	
+	
+	trigger = {
+		religion = religion:islam_religion
+		any_held_county = {
+			religion = religion:islam_religion
+			any_county_province = {
+				geographical_region = custom_sicily
+			}
+		}
+		OR = {
+			any_courtier_or_guest = {
+				is_available_ai_adult = yes
+				OR = {
+					learning >= decent_skill_rating
+					has_trait = scholar
+					has_trait = theologian
+					has_trait = education_learning_3
+					has_trait = education_learning_4
+				}
+			}
+			any_vassal = {
+				is_available_ai_adult = yes
+				OR = {
+					learning >= decent_skill_rating
+					has_trait = scholar
+					has_trait = theologian
+					has_trait = education_learning_3
+					has_trait = education_learning_4
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = cyncial
+		}
+		modifier = {
+			add = -0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		random_held_title = {
+			limit = {		
+				religion = religion:islam_religion
+				any_county_province = {
+					geographical_region = custom_sicily
+				}
+			}
+			save_scope_as = county
+		}
+		scope:county.faith = {
+			save_scope_as = sicily_faith
+		}		
+		scope:county.culture = {
+			save_scope_as = sicily_culture
+		}	
+
+		create_character = {
+			location = root.capital_province
+			template = RICE_sicily_traveling_scholar_template
+			save_scope_as = scholar
+		}
+
+		scope:scholar = {
+			add_character_modifier = {
+				modifier = RICE_sicily_firebrand_legal_scholar
+			}
+		}
+
+		every_courtier_or_guest = {
+			limit = {
+				is_available_ai_adult = yes
+				OR = {
+					learning >= decent_skill_rating
+					has_trait = scholar
+					has_trait = theologian
+					has_trait = education_learning_3
+					has_trait = education_learning_4
+				}
+			}
+			add_to_list = candidate_characters
+		}
+		every_vassal = {
+			limit = {
+				is_available_ai_adult = yes
+				OR = {
+					learning >= decent_skill_rating
+					has_trait = scholar
+					has_trait = theologian
+					has_trait = education_learning_3
+					has_trait = education_learning_4
+				}
+			}
+			add_to_list = candidate_characters
+		}
+		random_in_list = {
+			list = candidate_characters
+			save_scope_as = courtier
+		}
+
+		scope:courtier = {
+			set_relation_rival = {
+				target = scope:scholar
+				reason = RICE_rival_reason_placeholder
+			}
+		}
+
+	}
+
+	option = { # Ok
+		name = sicily.0201.a
+		add_piety = 100
+		add_prestige = -100
+		scope:courtier = {
+			add_opinion = {
+				modifier = disappointed_opinion
+				target = root
+				opinion = -25
+			}
+		}
+		if = {
+			limit = {
+				can_add_hook = {
+					target = scope:entertainer
+					type = loyalty_hook
+				}
+			}
+			add_hook = {
+				target = scope:entertainer
+				type = loyalty_hook
+			}
+		}
+		add_courtier = scope:scholar
+		stress_impact = {
+			paranoid = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}	
+	}
+
+	option = { # Ok
+		name = sicily.0201.b
+		add_gold = { 25 75 }
+		scope:scholar = {
+			add_opinion = {
+				modifier = disappointed_opinion
+				target = root
+				opinion = -25
+			}
+		}
+		scope:courtier = {
+			add_opinion = {
+				modifier = pleased_opinion
+				target = root
+				opinion = 10
+			}
+		}
+		stress_impact = {
+			arbitrary = miniscule_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+		}
+		hidden_effect = {
+			scope:scholar = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+	option = { # Ok
+		name = sicily.0201.c
+		add_legitimacy = miniscule_legitimacy_gain
+		add_prestige = 50
+		add_piety = -50
+		scope:scholar = {
+			add_opinion = {
+				modifier = disappointed_opinion
+				target = root
+				opinion = -50
+			}
+		}
+		scope:courtier = {
+			add_opinion = {
+				modifier = impressed_opinion
+				target = root
+				opinion = 30
+			}
+		}
+		stress_impact = {
+			arbitrary = miniscule_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+		}
+		hidden_effect = {
+			scope:scholar = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sicily.0201.info
+		}
+	}
+
+}
+
+
+
+# You are getting slandered for being supposedly too open with other religions in Sicily
+sicily.0202 = {
+	type = character_event
+	title = sicily.0202.t
+	desc = sicily.0202.desc
+	theme = faith
+	override_background = { reference = RICE_background_sicily_travel }
+
+
+	right_portrait = {
+		character = root
+		animation = eyeroll
+	}
+	
+	
+	trigger = {
+		capital_province = {
+			geographical_region = custom_sicily
+		}
+		any_held_county = {
+			NOT = {
+				religion = root.religion
+			}
+			any_county_province = {
+				geographical_region = custom_sicily
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = cyncial
+		}
+		modifier = {
+			add = -0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+
+	option = { # Ok
+		name = sicily.0202.a
+		add_prestige = 50
+		if = {
+			limit = {
+				RICE_sicily_latin_faith_trigger = no
+			}
+			RICE_sicily_signore_latin_track_minor_gain = yes
+		}
+		if = {
+			limit = {
+				RICE_sicily_greek_faith_trigger = no
+			}
+			RICE_sicily_signore_greek_track_minor_gain = yes
+		}
+		if = {
+			limit = {
+				RICE_sicily_arabic_faith_trigger = no
+			}
+			RICE_sicily_signore_arabic_track_minor_gain = yes
+		}		
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = sicily.0202.b
+		add_piety = 50
+		if = {
+			limit = {
+				RICE_sicily_latin_faith_trigger = yes
+			}
+			RICE_sicily_signore_latin_track_minor_gain = yes
+		}
+		else_if = {
+			limit = {
+				RICE_sicily_greek_faith_trigger = yes
+			}
+			RICE_sicily_signore_greek_track_minor_gain = yes
+		}
+		else_if = {
+			limit = {
+				RICE_sicily_arabic_faith_trigger = yes
+			}
+			RICE_sicily_signore_arabic_track_minor_gain = yes
+		}		
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sicily.0202.info
+		}
+	}
+
+}
+
