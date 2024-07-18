@@ -7132,7 +7132,7 @@ sicily.0200 = {
 			limit = {		
 				culture = root.culture	
 				any_county_province = {
-					geographical_region = RICE_sardinia_region
+					geographical_region = custom_sicily
 				}
 			}
 			save_scope_as = county
@@ -7303,7 +7303,7 @@ sicily.0201 = {
 	}
 
 	immediate = {
-		random_held_title = {
+		random_held_county = {
 			limit = {		
 				religion = religion:islam_religion
 				any_county_province = {
@@ -7593,6 +7593,367 @@ sicily.0202 = {
 				has_game_rule = RICE_historical_context_on
 			}
 			custom_tooltip = sicily.0202.info
+		}
+	}
+
+}
+
+
+# Locals run your officials out of town and demand you instate their own candidates
+sicily.0203 = {
+	type = character_event
+	title = sicily.0203.t
+	desc = sicily.0203.desc
+	theme = diplomacy_foreign_affairs_focus
+	override_background = { reference = throne_room }
+
+
+	left_portrait = {
+		character = scope:leader
+		animation = personality_callous
+	}
+
+	right_portrait = {
+		character = root
+		animation = stress
+	}
+	
+	
+	trigger = {
+		# Have a capital outside Sicily, or at least two counties in Sicily
+		OR = {
+			NOT = {			
+				capital_province = {
+					geographical_region = custom_sicily
+				}
+			}
+			any_held_county = {
+				count >= 2
+				any_county_province = {
+					geographical_region = custom_sicily
+				}
+			}
+		}
+		any_held_county = {
+			any_county_province = {
+				geographical_region = custom_sicily
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = -0.2
+			has_trait = just
+		}
+		modifier = {
+			add = 0.2
+			has_trait = sadistic
+		}
+		modifier = {
+			add = -0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = -0.2
+			has_trait = humble
+		}
+	}
+
+	immediate = {
+		capital_county = {
+			save_scope_as = capital
+		}
+		random_held_county = {
+			limit = {		
+				NOT = { this = scope:capital }
+				any_county_province = {
+					geographical_region = custom_sicily
+				}
+			}
+			save_scope_as = county
+		}
+		scope:county.culture = {
+			save_scope_as = sicily_culture
+		}
+		scope:county.faith = {
+			save_scope_as = sicily_faith
+		}
+		create_character = {
+			location = root.capital_province
+			template = RICE_sicily_local_template
+			save_scope_as = leader
+		}
+	}
+
+
+	option = { # Ok
+		name = sicily.0203.a
+		add_prestige = -100
+		scope:county = {
+			change_county_control = minor_county_control_loss
+			add_county_modifier = {
+				modifier = RICE_sicily_local_officials_promoted
+				years = 10
+			}
+		}
+		if = {
+			limit = {
+				scope:county = {
+					RICE_sicily_latin_trigger = yes
+				}
+			}
+			RICE_sicily_signore_latin_track_medium_gain = yes
+		}
+		if = {
+			limit = {
+				scope:county = {
+					RICE_sicily_greek_trigger = yes
+				}
+			}
+			RICE_sicily_signore_greek_track_medium_gain = yes
+		}
+		if = {
+			limit = {
+				scope:county = {
+					RICE_sicily_arabic_trigger = yes
+				}
+			}
+			RICE_sicily_signore_arabic_track_medium_gain = yes
+		}		
+		stress_impact = {
+			ambitious = minor_stress_impact_gain
+			greedy = miniscule_stress_impact_gain
+			vengeful = miniscule_stress_impact_gain
+			wrathful = miniscule_stress_impact_gain
+		}
+		hidden_effect = {
+			scope:leader = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+	option = { # Ok
+		name = sicily.0203.b
+		# Only if you won't make the title independent
+		trigger = {
+			highest_held_title_tier >= tier_duchy
+		}
+		add_prestige = -200
+		add_legitimacy = miniscule_legitimacy_gain
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_sicily_local_officials_victory
+				years = 10
+			}
+		}
+		if = {
+			limit = {
+				scope:county = {
+					RICE_sicily_latin_trigger = yes
+				}
+			}
+			RICE_sicily_signore_latin_track_major_gain = yes
+		}
+		if = {
+			limit = {
+				scope:county = {
+					RICE_sicily_greek_trigger = yes
+				}
+			}
+			RICE_sicily_signore_greek_track_major_gain = yes
+		}
+		if = {
+			limit = {
+				scope:county = {
+					RICE_sicily_arabic_trigger = yes
+				}
+			}
+			RICE_sicily_signore_arabic_track_major_gain = yes
+		}		
+		stress_impact = {
+			ambitious = medium_stress_impact_gain
+			greedy = minor_stress_impact_gain
+			vengeful = minor_stress_impact_gain
+			wrathful = minor_stress_impact_gain
+		}
+		scope:leader = {
+			get_title = scope:county
+		}
+		create_title_and_vassal_change = {
+			type = swear_fealty
+			save_scope_as = change
+		}
+		scope:leader = {
+			change_liege = {
+				liege = root
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+	}
+
+	option = { # Ok
+		name = sicily.0203.c
+		add_prestige = 100
+		scope:county = {
+			change_county_control = medium_county_control_loss
+			add_county_modifier = {
+				modifier = RICE_sicily_local_officials_denied
+				years = 10
+			}
+		}		
+		stress_impact = {
+			content = miniscule_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+			forgiving = miniscule_stress_impact_gain
+			calm = miniscule_stress_impact_gain
+		}
+		hidden_effect = {
+			scope:leader = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sicily.0203.info
+		}
+	}
+
+}
+
+
+# Councillor suggests giving tax breaks to immigrants to attract settlers
+sicily.0204 = {
+	type = character_event
+	title = sicily.0204.t
+	desc = sicily.0204.desc
+	theme = RICE_theme_sicily_interior
+
+
+	left_portrait = scope:councillor
+
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+	
+	
+	trigger = {
+		any_held_county = {
+			any_county_province = {
+				geographical_region = custom_sicily
+			}
+		}
+		any_councillor = {
+			is_available_ai_adult = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+	}
+
+	immediate = {
+		random_councillor = {
+			limit = {
+				is_available_ai_adult = yes
+			}
+			save_scope_as = councillor
+		}
+	}
+
+
+	option = { # Ok
+		name = sicily.0204.a
+		every_county_in_region = {
+			region = custom_sicily
+			limit = {
+				holder = root
+			}
+			custom = RICE_every_county_owned_sicily
+			add_county_modifier = {
+				modifier = RICE_sicily_immigrants_tax_breaks
+				years = 10
+			}		
+		}	
+		scope:councillor = {
+			add_opinion = {
+				target = root
+				opinion = 10
+				modifier = pleased_opinion
+			}	
+		}		
+		stress_impact = {
+			greedy = miniscule_stress_impact_gain
+			paranoid = miniscule_stress_impact_gain
+			content = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = sicily.0204.b
+		scope:councillor = {
+			add_opinion = {
+				modifier = disappointed_opinion
+				target = root
+				opinion = -10
+			}	
+		}		
+		stress_impact = {
+			ambitious = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sicily.0204.info
 		}
 	}
 
