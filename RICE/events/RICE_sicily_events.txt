@@ -14,6 +14,7 @@
 # sicily.0140-sicily.0149			Salerno Medical School
 # sicily.0150-sicily.0169			Monte Gargano Pilgrimage
 # sicily.0170-sicily.0179			Courtier Spawn
+# sicily.0180-sicily.0199			Other Historical Events
 # sicily.0200-sicily.0229			Generic events
 # 
 ###############################################################################
@@ -7069,6 +7070,247 @@ sicily.0154 = {
 
 ######################################################################################
 # 
+# OTHER HISTORICAL EVENTS
+# 
+# sicily.0180-sicily.0199 reserved
+# 
+######################################################################################
+
+
+# Ayo visto lo mappamundi folksong becomes popular
+# Ping event
+sicily.0180 = {
+	type = character_event
+	hidden = yes
+
+		# Has to control at least 2 of the following duchies in Sicily
+		# Directly control 4 counties in Sicily, or have a capital in Sicily
+	trigger = {
+
+		highest_held_title_tier >= tier_kingdom
+
+		calc_true_if = {
+			amount >= 2
+			completely_controls = title:d_sicily
+			completely_controls = title:d_apulia
+			completely_controls = title:d_benevento 
+			completely_controls = title:d_capua
+			completely_controls = title:d_salerno
+			completely_controls = title:d_calabria
+		}
+
+		OR = {
+			any_held_county = {
+				count >= 4
+				any_county_province = {
+					geographical_region = custom_sicily
+				}
+			}	
+			capital_province = {
+				geographical_region = custom_sicily
+			}
+		}
+
+		root.culture = {
+			has_cultural_era_or_later = culture_era_early_medieval
+		}
+
+	}
+
+	weight_multiplier = {
+		base = 1
+		# Make it more likely to happen to a player
+		modifier = {
+			add = -3
+			is_ai = yes
+		}
+		modifier = {
+			add = 2
+			root.culture = {
+				has_cultural_era_or_later = culture_era_high_medieval
+			}
+		}
+		modifier = {
+			add = 3
+			root.culture = {
+				has_cultural_era_or_later = culture_era_late_medieval
+			}
+		}
+		modifier = {
+			add = 2
+			culture = {
+				OR = {
+					this = culture:sicilian
+					any_parent_culture_or_above = {
+						this = culture:sicilian
+					}
+					this = culture:siqilli
+					any_parent_culture_or_above = {
+						this = culture:siqilli
+					}
+				}
+			}
+		}
+		modifier = {
+			add = 2
+			capital_county = {
+				OR = {
+					culture = culture:sicilian
+					culture = {
+						any_parent_culture_or_above = {
+							this = culture:sicilian
+						}
+					}
+					culture = culture:siqilli
+					culture = {
+						any_parent_culture_or_above = {
+							this = culture:siqilli
+						}
+					}
+				}
+			}
+		}
+	}	
+
+	immediate = {
+		save_scope_as = alfonso
+		add_character_modifier = {
+			modifier = RICE_sicily_ayo_visto_lo_mappamundi_ruler_modifier
+		}
+		# hidden_effect_new_object = {
+		# 	create_artifact = {
+		# 		name = RICE_sicily_ayo_visto_lo_mappamundi_name
+		# 		description = RICE_sicily_ayo_visto_lo_mappamundi_desc
+		# 		type = miscellaneous
+		# 		visuals = RICE_music_manuscript					
+		# 		quality = 10
+		# 		wealth = 10
+		# 		modifier = RICE_sicily_ayo_visto_lo_mappamundi_modifier
+		# 		save_scope_as = ayo_visto_lo_mappamundi
+		# 		decaying = no
+		# 	}
+		# }
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:alfonso
+					any_liege_or_above = { this = scope:alfonso }
+					any_vassal_or_below = { this = scope:alfonso }
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = custom_sicily
+						}
+					}
+				}
+			}
+			trigger_event = sicily.0181
+		}
+	}
+
+}
+
+
+
+# Main event for the Ayo Visto la Mappamundi event
+sicily.0181 = {
+	type = character_event
+	title = sicily.0181.t
+	desc = {
+		desc = sicily.0181.desc
+			triggered_desc = {
+				trigger = {
+					exists = scope:ayo_visto_lo_mappamundi
+				}
+				desc = sicily.0181.desc.copy
+			}
+		desc = sicily.0181.desc.lyrics
+	}
+	theme = diplomacy
+	override_background = { reference = RICE_background_sicily_travel }
+
+	right_portrait = {
+		character = scope:alfonso
+		animation = personality_content
+	}
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:ayo_visto_lo_mappamundi
+		position = lower_center_portrait
+		trigger = { exists = scope:ayo_visto_lo_mappamundi }
+	}
+
+	immediate = {
+		# Will always get the artifact if you're a human player or the original king the song is based on
+		if = {
+			limit = {
+				OR = {
+					root = scope:alfonso
+					is_ai = no
+				}
+			}
+			hidden_effect_new_object = {
+				create_artifact = {
+					name = RICE_sicily_ayo_visto_lo_mappamundi_name
+					description = RICE_sicily_ayo_visto_lo_mappamundi_desc
+					type = miscellaneous
+					visuals = RICE_music_manuscript					
+					quality = 10
+					wealth = 10
+					modifier = RICE_sicily_ayo_visto_lo_mappamundi_modifier
+					save_scope_as = ayo_visto_lo_mappamundi
+					decaying = no
+					history = {
+						type = created_before_history
+					}
+				}
+			}			
+		}
+		else = {
+			random = {
+				chance = 25
+				hidden_effect_new_object = {
+					create_artifact = {
+						name = RICE_sicily_ayo_visto_lo_mappamundi_name
+						description = RICE_sicily_ayo_visto_lo_mappamundi_desc
+						type = miscellaneous
+						visuals = RICE_music_manuscript					
+						quality = 10
+						wealth = 10
+						modifier = RICE_sicily_ayo_visto_lo_mappamundi_modifier
+						save_scope_as = ayo_visto_lo_mappamundi
+						decaying = no
+						history = {
+							type = created_before_history
+						}
+					}
+				}	
+			}
+		}
+	}
+
+	option = { # Ok
+		name = sicily.0181.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sicily.0181.info
+		}
+	}
+
+}
+
+
+
+
+
+
+######################################################################################
+# 
 # GENERIC FLAVOR EVENTS
 # 
 # sicily.0200-sicily.0229 reserved
@@ -7319,16 +7561,19 @@ sicily.0201 = {
 			save_scope_as = sicily_culture
 		}	
 
-		create_character = {
-			location = root.capital_province
-			template = RICE_sicily_traveling_scholar_template
-			save_scope_as = scholar
-		}
-
-		scope:scholar = {
-			add_character_modifier = {
-				modifier = RICE_sicily_firebrand_legal_scholar
+		hidden_effect = {
+			create_character = {
+				location = root.capital_province
+				template = RICE_sicily_traveling_scholar_template
+				save_scope_as = scholar
 			}
+	
+			scope:scholar = {
+				add_character_modifier = {
+					modifier = RICE_sicily_firebrand_legal_scholar
+				}
+			}
+			
 		}
 
 		every_courtier_or_guest = {
@@ -7362,11 +7607,13 @@ sicily.0201 = {
 			save_scope_as = courtier
 		}
 
-		scope:courtier = {
-			set_relation_rival = {
-				target = scope:scholar
-				reason = RICE_rival_reason_placeholder
-			}
+		hidden_effect = {
+			scope:courtier = {
+				set_relation_rival = {
+					target = scope:scholar
+					reason = RICE_rival_reason_placeholder
+				}
+			}			
 		}
 
 	}
@@ -8674,6 +8921,7 @@ sicily.0209 = {
 	option = { # Ok
 		name = sicily.0209.a
 		add_legitimacy = miniscule_legitimacy_gain
+		add_prestige = -100
 		add_character_modifier = {
 			modifier = RICE_sicily_respects_traditional_laws
 			years = 10
@@ -8725,3 +8973,693 @@ sicily.0209 = {
 	}
 
 }
+
+
+# Traveler tells tales about how Sicily is seen as a dangerous land abroad
+sicily.0210 = {
+	type = character_event
+	title = sicily.0210.t
+	desc = sicily.0210.desc
+	theme = diplomacy_foreign_affairs_focus
+
+
+	left_portrait = {
+		character = scope:councillor
+		animation = personality_compassionate
+	}
+
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+	
+	
+	trigger = {
+		capital_county = {
+			title_province = { geographical_region = custom_sicily }
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+
+	option = { # Ok
+		name = sicily.0210.a
+		add_prestige = 25
+		stress_impact = {
+			arrogant = miniscule_stress_impact_gain
+			paranoid = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = sicily.0210.b
+		add_piety = 25
+		stress_impact = {
+			humble = miniscule_stress_impact_gain
+			craven = miniscule_stress_impact_gain
+		}
+	}
+
+}
+
+
+
+# Courtiers debate on whether the Baths of Baia are good or not
+sicily.0211 = {
+	type = character_event
+	title = sicily.0211.t
+	desc = sicily.0211.desc
+	theme = seduction
+	override_background = { reference = throne_room }
+
+	left_portrait = {
+		character = scope:lover
+		animation = eyeroll
+	}
+
+	right_portrait = {
+		character = scope:hater
+		animation = disapproval
+	}
+	
+	
+	trigger = {
+
+		capital_county = {
+			title_province = { geographical_region = world_europe_south_italy }
+		}
+
+		# Debate doesn't make sense for a faith that would think hedonism is good
+		NOR = {
+			faith = { has_doctrine = tenet_hedonistic }
+			faith = { has_doctrine = tenet_carnal_exaltation }
+			trait_is_virtue = lustful
+		}
+
+		# The one who likes it
+		OR = {
+			any_courtier_or_guest = {
+				is_available_ai_adult = yes
+				NOR = {
+					faith = { has_doctrine = tenet_hedonistic }
+					faith = { has_doctrine = tenet_carnal_exaltation }
+					trait_is_virtue = lustful
+				}
+				NOT = { trait = zealous }
+				NOT = { trait = chaste }
+				OR = {
+					has_trait = forgiving
+					has_trait = lustful
+					has_trait = gregarious
+					has_trait = trusting
+					has_trait = lifestyle_physician
+				}
+			}
+			any_vassal = {
+				is_available_ai_adult = yes
+				NOR = {
+					faith = { has_doctrine = tenet_hedonistic }
+					faith = { has_doctrine = tenet_carnal_exaltation }
+					trait_is_virtue = lustful
+				}
+				NOT = { trait = zealous }
+				NOT = { trait = chaste }
+				NOT = { trait = arrogant }
+				OR = {
+					has_trait = forgiving
+					has_trait = lustful
+					has_trait = gregarious
+					has_trait = trusting
+					has_trait = lifestyle_physician
+				}
+			}
+		}
+
+		# The one who hates it
+		OR = {
+			any_courtier_or_guest = {
+				is_available_ai_adult = yes
+				NOR = {
+					faith = { has_doctrine = tenet_hedonistic }
+					faith = { has_doctrine = tenet_carnal_exaltation }
+					trait_is_virtue = lustful
+				}
+				NOT = { trait = forgiving }
+				NOT = { trait = lustful }
+				NOT = { trait = gregarious }
+				NOT = { trait = trusting }
+				NOT = { trait = lifestyle_physician }
+				OR = {
+					has_trait = zealous
+					has_trait = chaste
+					has_trait = arrogant
+				}
+			}
+			any_vassal = {
+				is_available_ai_adult = yes
+				NOR = {
+					faith = { has_doctrine = tenet_hedonistic }
+					faith = { has_doctrine = tenet_carnal_exaltation }
+					trait_is_virtue = lustful
+				}
+				NOT = { trait = forgiving }
+				NOT = { trait = lustful }
+				NOT = { trait = gregarious }
+				NOT = { trait = trusting }
+				NOT = { trait = lifestyle_physician }
+				OR = {
+					has_trait = zealous
+					has_trait = chaste
+					has_trait = arrogant
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = -0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = gregarious
+		}
+	}
+
+	immediate = {
+
+		every_courtier_or_guest = {
+			limit = {
+				is_available_ai_adult = yes
+				NOR = {
+					faith = { has_doctrine = tenet_hedonistic }
+					faith = { has_doctrine = tenet_carnal_exaltation }
+					trait_is_virtue = lustful
+				}
+				NOT = { trait = zealous }
+				NOT = { trait = chaste }
+				NOT = { trait = arrogant }
+				OR = {
+					has_trait = forgiving
+					has_trait = lustful
+					has_trait = gregarious
+					has_trait = trusting
+					has_trait = lifestyle_physician
+				}
+			}
+			add_to_list = candidate_lovers
+		}
+		every_vassal = {
+			limit = {
+				is_available_ai_adult = yes
+				NOR = {
+					faith = { has_doctrine = tenet_hedonistic }
+					faith = { has_doctrine = tenet_carnal_exaltation }
+					trait_is_virtue = lustful
+				}
+				NOT = { trait = zealous }
+				NOT = { trait = chaste }
+				NOT = { trait = arrogant }
+				OR = {
+					has_trait = forgiving
+					has_trait = lustful
+					has_trait = gregarious
+					has_trait = trusting
+					has_trait = lifestyle_physician
+				}
+			}
+			add_to_list = candidate_lovers
+		}
+		random_in_list = {
+			list = candidate_lovers
+			save_scope_as = lover
+		}
+
+		every_courtier_or_guest = {
+			limit = {
+				is_available_ai_adult = yes
+				NOR = {
+					faith = { has_doctrine = tenet_hedonistic }
+					faith = { has_doctrine = tenet_carnal_exaltation }
+					trait_is_virtue = lustful
+				}
+				NOT = { trait = forgiving }
+				NOT = { trait = lustful }
+				NOT = { trait = gregarious }
+				NOT = { trait = trusting }
+				NOT = { trait = lifestyle_physician }
+				OR = {
+					has_trait = zealous
+					has_trait = chaste
+					has_trait = arrogant
+				}
+			}
+			add_to_list = candidate_haters
+		}
+		every_vassal = {
+			limit = {
+				is_available_ai_adult = yes
+				NOR = {
+					faith = { has_doctrine = tenet_hedonistic }
+					faith = { has_doctrine = tenet_carnal_exaltation }
+					trait_is_virtue = lustful
+				}
+				NOT = { trait = forgiving }
+				NOT = { trait = lustful }
+				NOT = { trait = gregarious }
+				NOT = { trait = trusting }
+				NOT = { trait = lifestyle_physician }
+				OR = {
+					has_trait = zealous
+					has_trait = chaste
+					has_trait = arrogant
+				}
+			}
+			add_to_list = candidate_haters
+		}
+		random_in_list = {
+			list = candidate_haters
+			save_scope_as = hater
+		} # RICE_disagrees_with_me_opinion
+
+		scope:lover = {
+			add_opinion = {
+				target = scope:hater
+				modifier = RICE_disagrees_with_me_opinion
+				opinion = -10
+			}
+			reverse_add_opinion = {
+				target = scope:hater
+				modifier = RICE_disagrees_with_me_opinion
+				opinion = -10
+			}		
+		}
+
+	}
+
+	option = { # Ok
+		name = sicily.0211.a
+		scope:lover = {
+			add_opinion = {
+				target = root
+				modifier = RICE_refuses_to_take_sides
+				opinion = -5
+			}		
+		}
+		scope:hater = {
+			add_opinion = {
+				target = root
+				modifier = RICE_refuses_to_take_sides
+				opinion = -5
+			}		
+		}
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+			chaste = miniscule_stress_impact_gain
+			lustful = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+			gregarious = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = sicily.0211.b
+		add_prestige = 25
+		scope:lover = {
+			add_opinion = {
+				target = root
+				modifier = RICE_agrees_with_me_opinion
+				opinion = 10
+			}		
+		}
+		scope:hater = {
+			add_opinion = {
+				target = root
+				modifier = RICE_disagrees_with_me_opinion
+				opinion = -10
+			}		
+		}
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+			chaste = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = sicily.0211.c
+		add_piety = 25
+		scope:hater = {
+			add_opinion = {
+				target = root
+				modifier = RICE_agrees_with_me_opinion
+				opinion = 10
+			}		
+		}
+		scope:lover = {
+			add_opinion = {
+				target = root
+				modifier = RICE_disagrees_with_me_opinion
+				opinion = -10
+			}		
+		}
+		stress_impact = {
+			lustful = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sicily.0211.info
+		}
+	}
+
+}
+
+
+
+# Volcanic minerals are boosting the economy
+sicily.0212 = {
+	type = character_event
+	title = sicily.0212.t
+	desc = sicily.0212.desc
+	theme = RICE_theme_sicily_countryside
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_italy_volcanism_region	
+			}
+		}	
+	}
+	
+    weight_multiplier = {
+        base = 0
+		modifier = {
+			add = {
+				every_held_title = {
+					limit = { tier = tier_county }
+					add = 1
+				}
+			}		
+		}		
+    }
+	
+	immediate = {
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_italy_volcanism_region			
+				}
+			}	
+			save_scope_as = county
+		}
+		random_list = {
+			10 = {			
+				scope:county = {
+					add_county_modifier = {
+						modifier = RICE_sicily_volcanic_minerals
+						years = 4
+					}		
+				}
+			}
+			10 = {			
+				scope:county = {
+					add_county_modifier = {
+						modifier = RICE_sicily_volcanic_minerals
+						years = 6
+					}		
+				}
+			}
+			10 = {			
+				scope:county = {
+					add_county_modifier = {
+						modifier = RICE_sicily_volcanic_minerals
+						years = 8
+					}		
+				}
+			}
+			10 = {			
+				scope:county = {
+					add_county_modifier = {
+						modifier = RICE_sicily_volcanic_minerals
+						years = 10
+					}		
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = sicily.0212.a
+	}
+
+}
+
+
+
+# Gift of Maltese fungus
+sicily.0213 = {
+	type = character_event
+	title = sicily.0213.t
+	desc = sicily.0213.desc
+	theme = diplomacy_foreign_affairs_focus
+
+
+	right_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+	
+	
+	trigger = {
+		capital_province = {
+			OR = {
+				geographical_region = world_africa_north
+				geographical_region = world_europe_west
+				geographical_region = world_europe_south
+				geographical_region = world_asia_minor
+				geographical_region = world_middle_east_jerusalem
+				geographical_region = world_middle_east_arabia
+				geographical_region = world_africa_north
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+
+	option = { # Ok
+		name = sicily.0213.a
+		add_character_modifier = {
+			modifier = RICE_sicily_maltese_fungus_gift
+			years = 10
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sicily.0213.info
+		}
+	}
+
+}
+
+
+
+# Merchants secure favorable trade deals in Maltese tongue stones
+sicily.0214 = {
+	type = character_event
+	title = sicily.0214.t
+	desc = sicily.0214.desc
+	theme = stewardship_wealth_focus
+	override_background = { reference = docks }
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			is_coastal_county = yes
+			any_county_province = {
+				OR = {
+					geographical_region = world_africa_north
+					geographical_region = world_europe_west_iberia
+					geographical_region = world_europe_west_francia
+					geographical_region = world_europe_south
+					geographical_region = world_asia_minor
+					geographical_region = world_middle_east_jerusalem
+					geographical_region = world_africa_north
+				}	
+			}
+		}	
+	}
+	
+    weight_multiplier = {
+        base = 0
+		modifier = {
+			add = {
+				every_held_title = {
+					limit = { tier = tier_county }
+					add = 1
+				}
+			}		
+		}		
+    }
+	
+	immediate = {
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				is_coastal_county = yes
+				any_county_province = {
+					OR = {
+						geographical_region = world_africa_north
+						geographical_region = world_europe_west_iberia
+						geographical_region = world_europe_west_francia
+						geographical_region = world_europe_south
+						geographical_region = world_asia_minor
+						geographical_region = world_middle_east_jerusalem
+						geographical_region = world_africa_north
+					}
+				}
+			}	
+			save_scope_as = county
+		}
+		scope:county = {
+			random_list = {
+				10 = {
+					add_county_modifier = {
+						modifier = RICE_sicily_tongue_stone_trade
+						years = 3
+					}				
+				}
+				10 = {
+					add_county_modifier = {
+						modifier = RICE_sicily_tongue_stone_trade
+						years = 6
+					}				
+				}
+				10 = {
+					add_county_modifier = {
+						modifier = RICE_sicily_tongue_stone_trade
+						years = 9
+					}				
+				}
+				10 = {
+					add_county_modifier = {
+						modifier = RICE_sicily_tongue_stone_trade
+						years = 12
+					}				
+				}
+				10 = {
+					add_county_modifier = {
+						modifier = RICE_sicily_tongue_stone_trade
+						years = 15
+					}				
+				}
+			}		
+		}
+	}
+	
+	option = { # ok
+		name = sicily.0214.a
+	}
+}
+
+
+
+
+
+
+
