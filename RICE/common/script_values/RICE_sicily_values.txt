@@ -1,4 +1,10 @@
-﻿
+﻿# Base cost values
+
+@RICE_sicily_archers_recruitment_cost = 55
+@RICE_sicily_archers_low_maint_cost = 0.2
+@RICE_sicily_archers_high_maint_cost = @[archers_low_maint_cost * high_maint_mult]
+
+
 RICE_sicily_latin_stronghold_appearance_value = {
 	value = 10
 
@@ -1342,9 +1348,9 @@ RICE_sicily_arabic_dominance_global_value = {
 
 
 
-RICE_sicily_bowmen_recruitment_cost = @[archers_recruitment_cost * 1.1]
-RICE_sicily_bowmen_low_maint_cost = @[archers_low_maint_cost * 1.1]
-RICE_sicily_bowmen_high_maint_cost = @[archers_high_maint_cost * 1.1]
+RICE_sicily_bowmen_recruitment_cost = @[RICE_sicily_archers_recruitment_cost * 1.1]
+RICE_sicily_bowmen_low_maint_cost = @[RICE_sicily_archers_low_maint_cost * 1.1]
+RICE_sicily_bowmen_high_maint_cost = @[RICE_sicily_archers_high_maint_cost * 1.1]
 
 RICE_sicily_signore_trait_xp_gain_minor = {
 	value = 1
@@ -2055,3 +2061,51 @@ RICE_sicily_crossroads_ending_development_level_higher = good_development_level
 
 RICE_sicily_pavia_development_level = 30
 
+
+RICE_sicily_foothold_cb_ai_targeting_value = {
+	value = 0.5
+	scope:attacker = {
+		# Weight up religious enemies.
+		if = {
+			limit = {
+				faith = {
+					faith_hostility_level = {
+						target = scope:defender.faith
+						value > faith_astray_level
+					}
+				}
+			}
+			add = 0.5
+		}
+		# Weight up developed realms.
+		every_in_list = {
+			list = target_titles
+			limit = { development_level >= 8 }
+			add = 0.25
+		}
+		every_in_list = {
+			list = target_titles
+			limit = {
+				any_county_province = { num_buildings >= 3 }
+			}
+			add = 0.25
+		}
+		if = {
+			limit = {
+				scope:defender = { is_at_war = yes }
+			}
+			add = 0.25
+		}
+		if = {
+			limit = {
+				NOT = {
+					scope:attacker.ai_greed = 0
+				}
+			}
+			add = {
+				value = scope:attacker.ai_greed
+				divide = 100
+			}
+		}
+	}
+}
