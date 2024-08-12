@@ -147,6 +147,74 @@ RICE_setup_after_game_start_on_actions = {
 			RICE_ghirza_amazigh_pagan_effect = yes
 		}
 
+
+
+		# WARNING EVENTS, for example improper load order or other issues players should be aware of
+		if = {
+			limit = {
+				NOT = { has_game_rule = RICE_warning_events_removed }
+			}
+
+			##############################
+			#
+			# ACTUAL WARNINGS
+			#
+			##############################
+
+			# ROA improper load order (or ROA missing or problematic somehow)
+			# Triggered when Dayaw faith has RICE's ancestor worshp rather than ROA's Spirit Guides
+			# This will only happen if RICE loads after ROA; if RICE loads before ROA, this shouldn't happen
+			if = {
+				limit = {
+					roa_is_active = yes
+					faith:dayaw = {
+						has_doctrine = tenet_ancestor_worship
+					}
+				}
+				every_player = {
+					trigger_event = RICEintro.0030
+				}
+			}
+			# TFE improper load order (or TFE missing or problematic somehow)
+			# Triggered when South Mesopotamian Pagan faith has RICE's ritual celebrations rather than TFE's Sanctity of Labor
+			# This will only happen if RICE loads after TFE; if RICE loads before TFE, this shouldn't happen
+			if = {
+				limit = {
+					exists = culture:soissons
+					faith:south_mesopotamian_pagan = {
+						has_doctrine = tenet_ritual_celebrations
+					}
+				}
+				every_player = {
+					trigger_event = RICEintro.0031
+				}
+			}
+
+
+			##############################
+			#
+			# FRIENDLY REMINDERS
+			#
+			##############################
+
+			every_player = {
+				limit = {
+					OR = {
+						religion = religion:amazigh_religion
+						religion = religion:odinala_religion
+						religion = religion:east_bantu_religion
+						religion = religion:malagasy_religion
+						religion = religion:omotic_religion
+						religion = religion:shona_religion
+						religion = religion:sidamic_religion
+					}					
+				}
+				trigger_event = RICEintro.0032
+			}
+
+			
+		}
+
 	}
 }
 
