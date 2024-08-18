@@ -73,7 +73,17 @@ RICE_normandy_struggle_ending_conquest_decision = {
 			}
 		}
 
-		prestige_level >= 3
+		
+		trigger_if = {
+			limit = {
+				root = character:140
+				is_ai = yes
+			}
+			prestige_level >= 1
+		}
+		trigger_else = {
+			prestige_level >= 3		
+		}
 
 		OR = {
 			custom_tooltip = {
@@ -115,11 +125,39 @@ RICE_normandy_struggle_ending_conquest_decision = {
 		exists = struggle:RICE_normandy_struggle
 
 		# Completely control at least 2 of the important North Atlantic duchies
-		calc_true_if = {
-			amount >= 1
-			completely_controls_region = custom_england
-			completely_controls_region = custom_west_francia_minus_mediterranean
-			completely_controls_region = RICE_greater_normandy_region
+		trigger_if = {
+			limit = {
+				root = character:140
+				#is_ai = yes
+			}
+			OR = {
+				AND = {
+					highest_held_title_tier >= tier_kingdom
+					calc_true_if = {
+						amount >= 8
+						completely_controls_region = d_bedford
+						completely_controls_region = d_northumberland
+						completely_controls_region = d_lancaster
+						completely_controls_region = d_york
+						completely_controls_region = d_norfolk
+						completely_controls_region = d_hereford
+						completely_controls_region = d_gloucester
+						completely_controls_region = d_canterbury
+						completely_controls_region = d_somerset
+						completely_controls_region = d_cornwall
+					}
+				}
+				completely_controls_region = custom_west_francia_minus_mediterranean
+				completely_controls_region = RICE_greater_normandy_region
+			}
+		}
+		trigger_else = {
+			calc_true_if = {
+				amount >= 1
+				completely_controls_region = custom_england
+				completely_controls_region = custom_west_francia_minus_mediterranean
+				completely_controls_region = RICE_greater_normandy_region
+			}			
 		}
 
 	}
@@ -163,7 +201,13 @@ RICE_normandy_struggle_ending_conquest_decision = {
 
 	ai_potential = { always = yes }
 
-	ai_will_do = { base = 100 }
+	ai_will_do = {
+		base = 100
+		modifier = {
+			add = 100
+			root = character:140
+		}
+	}
 }
 
 # Complete Assimilation Ending

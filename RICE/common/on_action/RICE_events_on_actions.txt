@@ -702,6 +702,53 @@ RICE_yearly_global_pulse = {
 			# }
 		}
 
+		# Turco-Hephthalite -> Khalaj culture shift
+		if = {
+			limit = {
+				current_date <= 1066.1.1 # No need to check this in later starts
+				NOT = { has_global_variable = khalaj_culture_creation }
+				current_date >= 800.1.1
+				# Won't trigger if there's a powerful Turco-Hephthalite ruler, or if the Turco-Hephthalite homeland has been restored
+				NOT = {
+					any_county_in_region = {
+						region = RICE_hephthalite_influence_region
+						holder = {
+							culture = culture:turco_hephthalite
+							highest_held_title_tier >= tier_kingdom
+						}
+					}
+				}
+				NOT = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:RICE_pamir_reclaim_hephthalite_homeland_done
+					}
+				}
+			}
+			random = {
+				chance = 0 # No chance the first year of play if starting in 867
+				modifier = {
+					add = 2 # 2% chance per year
+					current_date >= 900.1.1
+				}
+				modifier = {
+					add = 8 # 10% chance per year
+					current_date >= 950.1.1
+				}
+				modifier = {
+					add = 15 # 25% chance per year
+					current_date >= 1000.1.1
+				}
+				set_global_variable = {
+					name = khalaj_culture_creation
+					value = yes
+				}
+				trigger_event = {
+					id = pamir.0116
+					days = { 60 300 }
+				}
+			}
+		}
 
 	}
 }
@@ -1701,6 +1748,9 @@ RICE_events_cultural_pulse = {
 		}
 		
 		3000 = 0
+		
+		# PAMIR/ZUNIST		
+		#100 = pamir.8888		# Turco-Hephthalite
 		
 		# SICILY		
 		100 = sicily.0016		# Siculo-Arabic
