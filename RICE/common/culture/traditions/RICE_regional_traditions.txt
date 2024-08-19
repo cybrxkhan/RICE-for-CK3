@@ -2173,3 +2173,148 @@ tradition_african_agriculture = {
 		}
 	}
 }
+
+# Based on an idea by Soraya
+# Named either Marignal Tribalism or Makhazen and Siba
+tradition_RICE_berber_marignal_tribalism = {
+	category = regional
+
+	layers = { 
+		0 = intrigue
+		1 = mena
+		4 = RICE_mideast_items.dds
+	}
+
+	is_shown = {
+		has_cultural_pillar = heritage_berber
+		OR = {
+			any_culture_county = {
+				title_province = {
+					geographical_region = world_africa_sahara
+				}
+			}
+			any_culture_county = {
+				title_province = {
+					geographical_region = world_africa_north
+				}
+			}
+		}
+	}
+
+	
+	can_pick = {
+		has_cultural_pillar = heritage_berber
+		OR = {
+			any_culture_county = {
+				title_province = {
+					geographical_region = world_africa_sahara
+				}
+			}
+			any_culture_county = {
+				title_province = {
+					geographical_region = world_africa_north
+				}
+			}
+		}
+	}
+	
+	parameters = {
+		culture_can_raid_over_land_even_if_feudal = yes
+		harder_to_hybridize = yes
+		harder_to_convert_county_culture = yes
+		#disloyal_trait_more_common = yes
+	}
+	character_modifier = {
+        controlled_province_advantage = 5
+        #same_culture_opinion = 5
+        opinion_of_liege = -10
+        raid_speed = 0.1
+        hostile_county_attrition_raiding = -0.1
+        movement_speed_land_raiding = 0.1
+    }
+
+	province_modifier = {
+    #	mountains_levy_size = 0.1
+    #	desert_mountains_levy_size = 0.1
+		mountains_supply_limit_mult = 0.25
+		desert_mountains_supply_limit_mult = 0.25
+    }
+	
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_bellicose = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_stoic_or_communal_desc
+				}
+			}
+			# if = {
+			# 	limit = {
+			# 		NOT = {
+			# 			any_culture_county = {
+			# 				percent >= 0.3
+			# 				any_county_province = {
+			# 					terrain = drylands
+			# 					terrain = desert
+			# 				}
+			# 			}
+			# 		}
+			# 	}
+			# 	add = {
+			# 		value = tradition_unfulfilled_criteria_penalty
+			# 		desc = dry_percentage_desc
+			# 	}
+			# }
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	
+	ai_will_do = {
+		value = 100
+		if = {
+			limit = {
+				NOT = {
+					scope:character = {
+						any_sub_realm_county = {
+							percent >= 0.2
+							culture = scope:character.culture
+							any_county_province = {
+								OR = {
+									terrain = drylands
+									terrain = desert
+								}
+							}
+						}
+					}
+				}
+			}
+			multiply = 0.1
+		}
+		if = {
+			limit = {
+				NOR = {
+					scope:character = {
+						OR = {
+							government_has_flag = government_is_tribal
+							government_has_flag = government_is_clan #Update for FP3
+						}
+					}
+				}
+			}
+			multiply = 0
+		}
+	}
+}
