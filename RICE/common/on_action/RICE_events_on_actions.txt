@@ -702,6 +702,78 @@ RICE_yearly_global_pulse = {
 			# }
 		}
 
+		# Turco-Hephthalite -> Khalaj culture shift
+		if = {
+			limit = {
+				current_date <= 1066.1.1 # No need to check this in later starts
+				NOT = { has_global_variable = khalaj_culture_creation }
+				current_date >= 800.1.1
+				# Won't trigger if there's a powerful Turco-Hephthalite ruler, or if the Turco-Hephthalite homeland has been restored
+				NOT = {
+					any_county_in_region = {
+						region = RICE_hephthalite_influence_region
+						holder = {
+							culture = culture:turco_hephthalite
+							highest_held_title_tier >= tier_kingdom
+						}
+					}
+				}
+				NOT = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:RICE_pamir_reclaim_hephthalite_homeland_done
+					}
+				}
+				# Don't do it if the starting Turco-Hephthalite rulers (like the Zunbils) are still around
+				NOT = {
+					character:188712 ?= {
+						is_alive = yes
+					}
+				}
+				NOT = {
+					character:188710 ?= {
+						is_alive = yes
+					}
+				}
+				NOT = {
+					character:RICE_bamian_005 ?= {
+						is_alive = yes
+					}
+				}
+				NOT = {
+					character:RICE_bamian_008 ?= {
+						is_alive = yes
+					}
+				}
+			}
+			random = {
+				chance = 0 # No chance the first year of play if starting in 867
+				modifier = {
+					add = 1 # 1% chance per year
+					current_date >= 925.1.1
+				}
+				modifier = {
+					add = 2 # 2% chance per year
+					current_date >= 975.1.1
+				}
+				modifier = {
+					add = 8 # 10% chance per year
+					current_date >= 1025.1.1
+				}
+				modifier = {
+					add = 15 # 25% chance per year
+					current_date >= 1100.1.1
+				}
+				set_global_variable = {
+					name = khalaj_culture_creation
+					value = yes
+				}
+				trigger_event = {
+					id = pamir.0116
+					days = { 60 300 }
+				}
+			}
+		}
 
 	}
 }
@@ -1365,7 +1437,6 @@ RICE_events_tri_yearly_pulse = {
 		100 = sicily.0204	 			# Councillor suggests giving tax breaks to immigrants to attract settlers
 		100 = sicily.0205	 			# Earthquake tremors in Sicily, courtier tells everyone to pray to their own god
 		100 = sicily.0207	 			# Scribes don't know how to use other calendar systems in Sicily
-		100 = sicily.0208	 			# Officials in Sicily need to learn other languages
 		100 = sicily.0209	 			# Locals in Sicily worry about whether you'll uphold their traditional laws
 		100 = sicily.0212	 			# Volcanic minerals are boosting the economy
 		
@@ -1544,6 +1615,7 @@ RICE_events_five_yearly_pulse = {
 		# SICILY
 		100 = sicily.0201 	 			# Muslim scholar's interpretation of "Port of Holy War" (i.e. a religious boder zone) causing problems?
 		100 = sicily.0203 	 			# Locals run your officials out of town and demand you instate their own candidates
+		100 = sicily.0208	 			# Officials in Sicily need to learn other languages
 		100 = sicily.0213 	 			# Gift of Maltese fungus
 		100 = sicily.0214 	 			# Merchants secure favorable trade deals in Maltese tongue stones
 		
@@ -1701,6 +1773,9 @@ RICE_events_cultural_pulse = {
 		}
 		
 		3000 = 0
+		
+		# PAMIR/ZUNIST		
+		#100 = pamir.8888		# Turco-Hephthalite
 		
 		# SICILY		
 		100 = sicily.0016		# Siculo-Arabic

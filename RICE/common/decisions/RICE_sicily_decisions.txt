@@ -343,6 +343,7 @@ RICE_sicily_occupy_sicilian_frontier = {
 			has_global_variable = RICE_sicily_struggle_ending_periphery
 			has_global_variable = RICE_sicily_struggle_ending_imperial
 		}
+		NOT = { has_global_variable = RICE_sicily_struggle_resetting_temp }
 	}
 	
 	is_valid = {
@@ -396,6 +397,12 @@ RICE_sicily_occupy_sicilian_frontier = {
 
 	effect = {
 
+		set_global_variable = {
+			name = RICE_sicily_struggle_resetting_temp
+			value = yes
+			days = 1
+		}
+
 		save_scope_as = sicily_struggle_restarter
 
 		custom_tooltip = RICE_sicily_occupy_sicilian_frontier_effect_tooltip_1
@@ -413,9 +420,33 @@ RICE_sicily_occupy_sicilian_frontier = {
 			custom_tooltip = RICE_sicily_occupy_sicilian_frontier_context_tooltip
 		}
 
-		trigger_event = {
-			id = sicily.0010
+		hidden_effect = {
+			every_ruler = {
+				limit = {
+					OR = {
+						this = scope:sicily_struggle_restarter
+						any_held_title = {
+							tier = tier_county
+							any_county_province = {
+								OR = { # Is in relevant region
+									geographical_region = world_europe_south
+									geographical_region = world_europe_west_francia
+									geographical_region = world_asia_minor
+									geographical_region = world_europe_west_iberia
+									geographical_region = world_africa_north
+									geographical_region = world_africa_sahara
+									geographical_region = world_middle_east_jerusalem
+								}		
+							}
+						}
+					}
+				}
+				trigger_event = {
+					id = sicily.0010
+				}
+			}		
 		}
+
 
 	}
 
@@ -476,6 +507,7 @@ RICE_sicily_stabilize_sicilian_frontier = {
 			has_global_variable = RICE_sicily_struggle_ending_periphery
 			has_global_variable = RICE_sicily_struggle_ending_imperial
 		}
+		NOT = { has_global_variable = RICE_sicily_struggle_resetting_temp }
 	}
 	
 	is_valid = {
@@ -527,6 +559,12 @@ RICE_sicily_stabilize_sicilian_frontier = {
 
 	effect = {
 
+		set_global_variable = {
+			name = RICE_sicily_struggle_resetting_temp
+			value = yes
+			days = 1
+		}
+
 		save_scope_as = sicily_struggle_restarter
 
 		custom_tooltip = RICE_sicily_stabilize_sicilian_frontier_effect_tooltip_1
@@ -544,8 +582,31 @@ RICE_sicily_stabilize_sicilian_frontier = {
 			custom_tooltip = RICE_sicily_stabilize_sicilian_frontier_context_tooltip
 		}
 
-		trigger_event = {
-			id = sicily.0011
+		hidden_effect = {
+			every_ruler = {
+				limit = {
+					OR = {
+						this = scope:sicily_struggle_restarter
+						any_held_title = {
+							tier = tier_county
+							any_county_province = {
+								OR = { # Is in relevant region
+									geographical_region = world_europe_south
+									geographical_region = world_europe_west_francia
+									geographical_region = world_asia_minor
+									geographical_region = world_europe_west_iberia
+									geographical_region = world_africa_north
+									geographical_region = world_africa_sahara
+									geographical_region = world_middle_east_jerusalem
+								}		
+							}
+						}
+					}
+				}
+				trigger_event = {
+					id = sicily.0011
+				}
+			}		
 		}
 
 	}
@@ -963,7 +1024,7 @@ RICE_sicily_virgil_divination_decision = {
 	}
 
 	is_valid = {
-		is_available_adult = yes
+		#is_available_adult = yes
 		OR = {
 			RICE_is_greco_roman_religion_group_trigger = yes
 			AND = {			
@@ -1002,6 +1063,8 @@ RICE_sicily_virgil_divination_decision = {
 	}
 
 	effect = {
+
+		add_piety = minor_piety_gain
 
 		custom_tooltip = RICE_sicily_virgil_divination_decision_effect_tooltip_1
 		custom_tooltip = RICE_sicily_virgil_divination_decision_effect_tooltip_2
@@ -1722,7 +1785,7 @@ RICE_sicily_administer_frontier = {
 	}
 
 	cost = {
-		gold = { value = medium_gold_value }
+		gold = { value = RICE_sicily_frontier_administration_value }
 	}
 	
 	ai_potential = {
@@ -1761,7 +1824,7 @@ RICE_sicily_administer_frontier = {
 
 		}
 
-		#custom_tooltip = RICE_sicily_administer_frontier_effect_tooltip_1
+		
 
 		if = {
 			limit = { scope:RICE_sicily_frontier_agenda_government_practices = yes }
@@ -1832,6 +1895,62 @@ RICE_sicily_administer_frontier = {
 				custom_tooltip = RICE_sicily_agenda_port_effect_tt
 			}
 			trigger_event = sicily.0108
+		}
+
+		if = {
+			limit = {
+				title:c_palermo = {
+					has_county_modifier = RICE_sicily_substrate_latin
+				}
+				RICE_sicily_latin_trigger = yes
+			}
+			custom_tooltip = RICE_sicily_administer_frontier_substrate_latin_effect
+		}
+		if = {
+			limit = {
+				title:c_palermo = {
+					has_county_modifier = RICE_sicily_substrate_greek
+				}
+				RICE_sicily_greek_trigger = yes
+			}
+			custom_tooltip = RICE_sicily_administer_frontier_substrate_greek_effect
+		}
+		if = {
+			limit = {
+				title:c_palermo = {
+					has_county_modifier = RICE_sicily_substrate_arabic
+				}
+				RICE_sicily_arabic_trigger = yes
+			}
+			custom_tooltip = RICE_sicily_administer_frontier_substrate_arabic_effect
+		}
+
+		if = {
+			limit = {
+				title:c_palermo = {
+					has_county_modifier = RICE_sicily_ruling_class_latin
+				}
+				RICE_sicily_latin_trigger = yes
+			}
+			custom_tooltip = RICE_sicily_administer_frontier_ruling_class_latin_effect
+		}
+		if = {
+			limit = {
+				title:c_palermo = {
+					has_county_modifier = RICE_sicily_ruling_class_greek
+				}
+				RICE_sicily_greek_trigger = yes
+			}
+			custom_tooltip = RICE_sicily_administer_frontier_ruling_class_greek_effect
+		}
+		if = {
+			limit = {
+				title:c_palermo = {
+					has_county_modifier = RICE_sicily_ruling_class_arabic
+				}
+				RICE_sicily_arabic_trigger = yes
+			}
+			custom_tooltip = RICE_sicily_administer_frontier_ruling_class_arabic_effect
 		}
 
 	}

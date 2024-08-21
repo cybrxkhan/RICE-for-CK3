@@ -897,6 +897,139 @@ pamir.0018 = {
 }
 
 
+# Khalaj culture event
+pamir.0019 = {
+	type = character_event
+	title = pamir.0019.t
+	desc = pamir.0019.desc
+	theme = culture_change
+	override_background = { reference = RICE_background_pamir_valley }
+
+	left_portrait = root
+	
+	trigger = {
+		# Turco-Hephthalite, not Khalaj
+		culture = {
+			NOR = {
+				this = culture:khalaj
+				any_parent_culture_or_above = {
+					this = culture:khalaj
+				}
+			}
+			OR = {
+				this = culture:turco_hephthalite
+				any_parent_culture_or_above = {
+					this = culture:turco_hephthalite
+				}
+			}
+		}
+		
+		any_held_title = {
+			tier = tier_county
+			exists = holder
+			NOT = { exists = var:RICE_had_siculo_arabic_county_conversion }
+			title_province = {
+				geographical_region = RICE_hephthalite_influence_region
+			}
+			culture = {
+				NOR = {
+					this = culture:khalaj
+					any_parent_culture_or_above = {
+						this = culture:khalaj
+					}
+				}
+			}
+			culture = {
+				OR = {
+					this = culture:turco_hephthalite
+					any_parent_culture_or_above = {
+						this = culture:turco_hephthalite
+					}
+				}
+			}
+			# OR = {
+			# 	culture = { has_cultural_pillar = heritage_iranian }
+			# 	culture = { has_cultural_pillar = heritage_turkic }
+			# 	culture = { has_cultural_pillar = heritage_indo_aryan }
+			# 	culture = { has_cultural_pillar = heritage_tocharian }
+			# }
+		}		
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 2
+			culture = culture:norman
+		}
+	}
+
+	immediate = {
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				exists = holder
+				NOT = { exists = var:RICE_had_siculo_arabic_county_conversion }
+				title_province = {
+					geographical_region = custom_sicily
+				}
+				culture = {
+					NOR = {
+						this = culture:sicilian
+						any_parent_culture_or_above = {
+							this = culture:sicilian
+						}
+					}
+					NOR = {
+						this = culture:siculo_arabic
+						any_parent_culture_or_above = {
+							this = culture:siculo_arabic
+						}
+					}
+				}
+				OR = {
+					RICE_sicily_latin_trigger = yes
+					RICE_sicily_greek_trigger = yes
+					RICE_sicily_arabic_trigger = yes
+				}
+			}
+			weight = { # Try to approximate organic spread
+				base = 1
+				modifier = {
+					add = 4
+					any_neighboring_county = {
+						culture = culture:siqilli
+					}
+				}
+			}
+			save_scope_as = county_to_change
+			culture = {
+				save_scope_as = old_culture
+			}
+			set_variable = {
+				name = RICE_had_siculo_arabic_county_conversion
+				value = yes
+			}
+			# Necessary to prevent Sicilian from arising here later on
+			set_variable = {
+				name = had_sicilian_county_conversion
+				value = yes
+			}
+		}
+		culture:siqilli = {
+			save_scope_as = siculo_arabic # For loc
+		}
+		debug_log = "Converted a province to Siculo-Arabic from sicily.0016"
+	}
+
+	option = {
+		name = sicily.0016.a
+		scope:county_to_change = {
+			set_county_culture = culture:siqilli
+		}
+	}
+}
+
 
 
 ######################################################################################
@@ -4843,6 +4976,219 @@ pamir.0115 = {
 
 
 
+# Converting Turco-Hephthalite into Khalaj	
+pamir.0116 = {
+	scope = none
+	hidden = yes
+	
+	immediate = {
+		# Save scopes for player notification events.
+		culture:turco_hephthalite = { save_scope_as = turco_hephthalite }
+		culture:khalaj = {
+			# 'Hybridize' this culture by copying innovations from parent cultures. Leave traditions as defined in the database.
+			reset_culture_creation_date = yes
+			get_all_innovations_from = culture:turco_hephthalite
+			get_all_innovations_from = culture:turkish
+
+			# Save scope for player notification events.
+			save_scope_as = khalaj
+		}
+
+		# All Turco-Hephthalite counties in parts of the Eastern Iranian world, northern India, and western Tibet will convert to Khalaj
+		culture:turco_hephthalite = {
+			every_culture_county = {
+				limit = {
+					title_province = {
+						geographical_region = RICE_hephthalite_influence_region
+					}
+				}
+				add_to_list = turco_hephthalite_counties
+			}
+		}
+
+		# Convert the Turco-Hephthalite counties to Khalaj
+		every_in_list = {
+			list = turco_hephthalite_counties
+			limit = {
+				# Same-culture players get an event informing them of their county's conversion *before* it happens (for their provinces only).
+				NOT = {
+					holder = {
+						OR = {
+							AND = {
+								is_ai = no
+								culture = culture:turco_hephthalite
+								capital_province = { geographical_region = RICE_hephthalite_influence_region }
+							}
+							any_liege_or_above = {
+								is_ai = no
+								culture = culture:turco_hephthalite
+								capital_province = { geographical_region = RICE_hephthalite_influence_region }
+							}
+						}
+					}
+				}
+			}
+						
+			# All Turco-Hephthalite counties in the Eastern Iranian world, northern India, and western Tibet become Khalaj
+			convert_county_and_holder_if_in_region_effect = {
+				OLD_CULTURE = culture:turco_hephthalite
+				NEW_CULTURE = culture:khalaj
+				REGION = RICE_hephthalite_influence_region
+			}
+		}
+
+		# Send the appropraite notification event to each player.
+		every_player = {
+			if = {
+				limit = {
+					culture = culture:turco_hephthalite
+					capital_province = { geographical_region = RICE_hephthalite_influence_region }
+					any_sub_realm_county = {
+						culture = culture:turco_hephthalite
+						title_province = {
+							geographical_region = RICE_hephthalite_influence_region
+						}
+					}
+				}
+				if = {
+					limit = {
+						NOT = {
+							any_liege_or_above = {
+								is_ai = no
+							}
+						}
+					}
+					trigger_event = pamir.0117
+				}
+			}
+			else = {
+				if = {
+					limit = {
+						is_ai = no
+						save_temporary_scope_as = player
+						any_in_list = {
+							list = turco_hephthalite_counties
+							holder = {
+								is_within_diplo_range = { CHARACTER = scope:player }
+							}
+						}
+					}
+					trigger_event = pamir.0118
+				}
+			}
+		}
+	}
+}
+
+# If a player is strong enough, they can resist the culture flip for their sub-realm only.
+pamir.0117 = {
+	type = character_event
+	title = pamir.0117.t
+	desc = pamir.0117.desc
+	theme = culture_change
+	override_background = { reference = RICE_background_pamir_valley }
+	left_portrait = root
+
+	immediate = {
+		# All of turco_hephthalite turns khalaj, there is no 'splitting'.
+		culture = { save_scope_as = old_culture }
+		culture:khalaj = { save_scope_as = my_new_culture }
+		culture:hephthalite = { save_scope_as = hephthalite }
+	}
+
+	# Option 1 (Almost always the only option): Accept the culture conversion.
+	option = {
+		name = pamir.0117.a
+		show_as_tooltip = {
+			set_culture = culture:khalaj
+			every_in_list = {
+				list = turco_hephthalite_counties
+				limit = {
+					holder.top_liege = root.top_liege
+				}
+				set_county_culture = culture:khalaj
+			}
+		}
+		# Convert the Turco-Hephthalite counties to Khalaj
+		every_in_list = {
+			list = turco_hephthalite_counties
+			limit = {
+				holder.top_liege = root.top_liege
+			}	
+			# All Turco-Hephthalite counties in the Eastern Iranian world, northern India, and western Tibet become Khalaj
+			hidden_effect = {
+				convert_county_and_holder_if_in_region_effect = {
+					OLD_CULTURE = culture:turco_hephthalite
+					NEW_CULTURE = culture:khalaj
+					REGION = RICE_hephthalite_influence_region
+				}
+			}
+		}
+	}
+
+	# Option 2: I am strong enough to keep our old culture intact!
+	option = {
+		name = pamir.0117.b
+
+		# trigger = {
+		# 	custom_description = {
+		# 		text = controls_enough_culture_counties
+		# 		any_in_list = {
+		# 			list = turco_hephthalite_counties
+		# 			percent >= 0.8
+
+		# 			OR = {
+		# 				holder = root
+		# 				holder = {
+		# 					any_liege_or_above = {
+		# 						this = root
+		# 					}
+		# 				}
+		# 			}
+		# 		}
+		# 	}
+		# }
+
+		# show_as_unavailable = {
+		# 	custom_description = {
+		# 		text = controls_enough_culture_counties	
+		# 		any_in_list = {
+		# 			list = turco_hephthalite_counties
+		# 			percent < 0.8
+
+		# 			OR = {
+		# 				holder = root
+		# 				holder = {
+		# 					any_liege_or_above = {
+		# 						this = root
+		# 					}
+		# 				}
+		# 			}
+		# 		}
+		# 	}
+		# }
+
+		custom_tooltip = global_culture.custom.keep_culture
+	}
+}
+
+# As this is purely an informative event for players, it doesn't actually have any gameplay effects.
+pamir.0118 = {
+	type = character_event
+	title = pamir.0118.t
+	desc = pamir.0118.desc
+	theme = culture_change
+	override_background = { reference = RICE_background_pamir_valley }
+
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	option = {
+		name = pamir.0118.a
+	}
+}
 
 
 
