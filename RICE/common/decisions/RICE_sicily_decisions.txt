@@ -938,11 +938,11 @@ RICE_sicily_support_salerno_medical_school = {
 	}
 
 	minimum_cost = {
-		gold = minor_gold_value
+		gold = RICE_sicily_medical_salerno_decision_cost
 	}
 	
 	ai_potential = {
-		short_term_gold > minor_gold_value
+		short_term_gold > RICE_sicily_medical_salerno_decision_cost
 	}
 
 	effect = {
@@ -1504,7 +1504,17 @@ RICE_sicily_recruit_soldiers_decision = {
 		item = {
 			value = RICE_sicily_recruit_soldiers_choose_latin
 			is_valid = {	
-				has_trait_xp = { trait = RICE_sicilian_ruler track = RICE_sicilian_ruler_latin value >= 25 }	
+				trigger_if = {
+					limit = {
+						struggle:RICE_sicily_struggle ?= {
+							is_struggle_phase = struggle_RICE_sicily_phase_borderland
+						}
+					}
+					has_trait_xp = { trait = RICE_sicilian_ruler track = RICE_sicilian_ruler_latin value >= 25 }		
+				}	
+				trigger_else = {
+					has_trait_xp = { trait = RICE_sicilian_ruler track = RICE_sicilian_ruler_latin value >= 50 }
+				}	
 				custom_description = {
 					text = RICE_any_latin_trigger_or_stronghold_sicily	
 					OR = {		
@@ -1540,7 +1550,17 @@ RICE_sicily_recruit_soldiers_decision = {
 		item = {
 			value = RICE_sicily_recruit_soldiers_choose_greek
 			is_valid = {
-				has_trait_xp = { trait = RICE_sicilian_ruler track = RICE_sicilian_ruler_greek value >= 25 }
+				trigger_if = {
+					limit = {
+						struggle:RICE_sicily_struggle ?= {
+							is_struggle_phase = struggle_RICE_sicily_phase_borderland
+						}
+					}
+					has_trait_xp = { trait = RICE_sicilian_ruler track = RICE_sicilian_ruler_greek value >= 25 }	
+				}	
+				trigger_else = {
+					has_trait_xp = { trait = RICE_sicilian_ruler track = RICE_sicilian_ruler_greek value >= 50 }
+				}
 				custom_description = {
 					text = RICE_any_greek_trigger_or_stronghold_sicily	
 					OR = {		
@@ -1576,7 +1596,17 @@ RICE_sicily_recruit_soldiers_decision = {
 		item = {
 			value = RICE_sicily_recruit_soldiers_choose_arabic
 			is_valid = {
-				has_trait_xp = { trait = RICE_sicilian_ruler track = RICE_sicilian_ruler_arabic value >= 25 }				
+				trigger_if = {
+					limit = {
+						struggle:RICE_sicily_struggle ?= {
+							is_struggle_phase = struggle_RICE_sicily_phase_borderland
+						}
+					}
+					has_trait_xp = { trait = RICE_sicilian_ruler track = RICE_sicilian_ruler_arabic value >= 25 }	
+				}	
+				trigger_else = {
+					has_trait_xp = { trait = RICE_sicilian_ruler track = RICE_sicilian_ruler_arabic value >= 50 }	
+				}			
 				custom_description = {
 					text = RICE_any_arabic_trigger_or_stronghold_sicily	
 					OR = {		
@@ -1882,8 +1912,75 @@ RICE_sicily_administer_frontier = {
 		}
 
 		
-
 		if = {
+			limit = {
+				is_ai = yes
+			}
+
+			random_list = {
+				10 = {
+					trigger = {
+						diplomacy >= RICE_sicily_frontier_decision_skill_requirement
+						OR = {
+							is_married = yes
+							exists = cp:councillor_chancellor
+							exists = cp:councillor_steward
+							exists = cp:councillor_court_chaplain
+						}
+					}
+					trigger_event = sicily.0104
+				}
+				10 = {
+					trigger = {
+						martial >= RICE_sicily_frontier_decision_skill_requirement
+					}
+					trigger_event = sicily.0105
+				}
+				10 = {
+					trigger = {
+						stewardship >= RICE_sicily_frontier_decision_skill_requirement
+						OR = {
+							is_married = yes
+							exists = cp:councillor_chancellor
+							exists = cp:councillor_steward
+							exists = cp:councillor_court_chaplain
+						}
+					}
+					trigger_event = sicily.0103
+				}
+				10 = {
+					trigger = {
+						intrigue >= RICE_sicily_frontier_decision_skill_requirement
+					}
+					trigger_event = sicily.0100
+				}
+				10 = {
+					trigger = {
+						learning >= RICE_sicily_frontier_decision_skill_requirement
+					}
+					trigger_event = sicily.0106
+				}
+				# Default
+				10 = {
+					#trigger = {
+
+					#}
+					trigger_event = sicily.0109
+				}
+				10 = {
+					trigger = {
+						any_held_county = {
+							any_county_province = {
+								geographical_region = RICE_insular_sicily
+							}
+						}						
+					}
+					trigger_event = sicily.0108
+				}
+			}
+		}
+
+		else_if = {
 			limit = { scope:RICE_sicily_frontier_agenda_government_practices = yes }
 			show_as_tooltip = {
 				RICE_sicily_government_practices_effect = yes
