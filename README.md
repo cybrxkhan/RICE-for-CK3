@@ -1,13 +1,16 @@
-<img src="https://i.imgur.com/bDNlQl4.jpg">
+<img src="https://i.imgur.com/5TefFWC.jpg">
 
-## Latest Version: Version 1.12.1.a Hotfix for "Dioscorida" (Released 3/30/24, for vanilla patch 1.12.x)
+## Latest Version: Version 1.12.2 "Palermo" (Released 8/28/24, for vanilla patch 1.12.x)
 
-**Newest Flavor Pack: *South Ethiopia: The Highland Kingdoms***
+**Newest Flavor Pack: *Sicily: Where Three Worlds Met***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_“Dioscorida [Socotra] is very large but desert and marshy [...] The inhabitants are few and they live on the coast toward the north, which from this side faces the continent. They are foreigners, a mixture of Arabs and Indians and Greeks, who have emigrated to carry on trade there.”_
-_- Periplus of the Erythraean Sea, Greek navigational aid from the 1st century CE_
+_I have seen the world map_
+_And the navigational chart,_
+_But Sicily seems to me_
+_The most beautiful in this world._
+_- Ayo visto lo Mappamundi, 15th century Sicilian folk song_
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
@@ -56,6 +59,7 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 - [Rhodes: Shadow of the Colossus](https://docs.google.com/document/d/e/2PACX-1vRXCGUoynvQtA3RuaJUE9FYagIHOX4wJkyeDHRsV-cjvyyBTONIEy0oOYr3yvcUt1eG_fEHtzUgv_wA/pub)
 - [Sardinia: Reign of the Judges](https://docs.google.com/document/d/e/2PACX-1vTFqEepIES0OzohAoV1tXHwn8B95wVVu7dQoSC0wIb_-pzHF2_RxnA-pwUqTC5NvVidtmeGPpVNXlfd/pub)
 - [Siberia: People of the Reindeer](https://docs.google.com/document/d/e/2PACX-1vTOr-vq1KkHRJ_gxPOlb9brCKde3TRzN_1TVZwfPmSiIIW5TEAJGkQ0eNGwiEfvgape1pDAKau3ZcvD/pub)
+- [Sicily: Where Three Worlds Met](https://docs.google.com/document/d/1gV1yD3d3Yp73GeM30GMFGr0sXGkg0vL6mV_Vgoz3P7c/pub)
 - [Siwa: Oases of the Western Desert](https://docs.google.com/document/d/1OOXqqBEGv94IBAH-rIsjoBog1YFtVAFg_TPsuIQmhtg/pub)
 - [Socotra: Isle of Dragon's Blood](https://docs.google.com/document/d/e/2PACX-1vRs_x_9wjofcveP_yhymlL5TWPB1UdSQyi_C_M1z4dWpFg3lqHgHwGpFD2xfkf0-RdsKIlRekQsLD4s/pub)
 - [South Ethiopia: The Highland Kingdoms](https://docs.google.com/document/d/e/2PACX-1vSPq9IoWEAWlTTkrLDZVqwzYzqlngxUYq2zKr800V7TXWQDn3CBX9molZq4dtp6rPmxa_hL3nL9tRrp/pub)
@@ -72,50 +76,58 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/hQsyZ7X.jpg">
+<img src="https://i.imgur.com/D683wkk.jpg">
 
-### 1.12.1.a Hotfix for "Dioscorida"
+### 1.12.2 "Palermo"
 
-- Various decisions related to the Greenland struggle and Vinland are no longer blocked off if you have a major illness
-- Wendish Confederations and People of Boika now unlock tribal elective 
-- Changed localization for Buddhist afterlife
-- Changed Rollo’s difficulty level in the bookmarks to Easy
-- Slightly buffed the Marc’hegion MAA for Bretons
-- Fixed Nile Repentance decision still existing after it was already adapted to be an activity
-- Fixed Sinicize as a West Asian decision being available to other East Asian cultures
-- Fixed decision to change Xwedodah to cousin marriage leaving you with only two tenets; third tenet will now be Religious Law
-- Fixed possible cause of a gamebreaking/freezing event that pops up without options due to Norman code (thanks to user SpunkyGamer1900 for helping me investigate this!)
-- Miscellaneous bugfixes
-
-### 1.12.1 "Dioscorida"
-
-- Added new bookmark character in 1066: Bekele of Damot
-- Added improved bookmark map art (courtesy again of Nezaros, lead dev of the Rajas of Asia mod that expands the map into Asia)
-    - Added 12 legends:
-    - The Greenland Colony Succeeds
-    - Sunset Invasion
-    - Settlement of Vinland
-    - Reformation of Tambapanni’s Sangha
-    - A New Socotra
-    - Return of the Hephthalites
-    - The Khuzi Renaissance
-    - The Great Saharan Empire
-    - Revival of the Tuyuhun
-    - Songs of Holy Mary
-    - Guardians of the Diamond Throne
-    - Gateway to the Sahara
-- Added additional ethnicities for some of the new East African cultures for RICE+EPE
-- Expanded extent of Darada culture (per suggestions by Soraya, Rajas of Asia modder and researcher)
-- Tweaked religious setup in south Armenia and north Mesopotamia (also per Soraya’s suggestions)
-- Tweaked Kasdanianism spread in 867 (Soraya strikes again)
-- Kasdanianism, Gayomarthianism, and Behafaridism are now also involved in the Persian struggle by default
-- Moved Finnic/Uralic religion localization file to the replace folder to repress a lot of false alarm errors
-- Reduced prestige requirement for completing the Greenland struggle with the Regional Integration ending
-- Cao Yijin’s aspiration now requires him to hold the kingdom of either Guiyi or Xi Xia (as a workaround for vanilla weirdness with succession and titles)
-- Replaced Sami holy site of Hiiumaa with Akkel
-- Removed Concubine tradition from Kinh (Vietnamese)
-- Fixed the Polabian princes’ Budivoj and Henry’s alliances with King Magnus and Duke Ordulf autocancelling after a day in the 1066 start
-- Miscellaneous bugfixes
+- Added new flavor pack: **Sicily: Between Three Worlds**
+- Added 10 new European, Mediterranean, and Middle Eastern themed soundtracks
+- Added new activity option for all local pilgrimages: Votive Offerings
+- Added new travel option to Venerate at Local Shrines
+- Added a lot of French translations by various translators from Paratranz
+- Added Makhazen and Siba tradition to Baranis, replacing Granary of Africa
+- Added Khalaj culture, a divergent culture of Turco-Hephthalite, around Afghanistan and events to spawn in if playing in early start dates
+- Added Elamite namelist for Elamite and Elymaean cultures
+- Added Gissur, the father of Isleifur (Icelandic “duke” in 1066), in character history
+- Added a game rule to remove easter egg characters at game start
+- Added Swedishguy360’s easter egg character in Benavert’s court (for correctly guessing Sicily)
+- Local Pilgrimage activities are no longer allowed for faiths with the Pilgrimage Forbidden doctrine
+- William the Conqueror only requires the Early Medieval rather than High Medieval era for completing the Normandy struggle
+- Changed Tajik culture’s name to Khorasani
+- Kashmiri culture’s Equal Inheritance tradition replaced with Caravaneers
+- Darada culture’s Frequent Festivals tradition replaced with Equal Inheritance
+- Malagasy moved to Malayic heritage
+- Malagasy made a hybrid of of East African and Malayic cultures
+- Burman heritage renamed to Irrawaddy heritage
+- Rasht is now Pamiri culture at game start
+- Abdul-Hasan Al-Muddabir starts with decent stewardship and learning in the 867 start 
+- Reward troops from completing Vijayabahu’s aspiration are now inheritable and subject to supply limits
+- Struggle ending events for older struggles will now have a more appropriate sfx sound play when the option is selected
+- Tweaked language of the Vinland Realism game rules for more clarity
+- Nerfed the Founders of Normandy and Norman Conquest modifiers again by changing their Dynasty Prestige bonus to a legitimacy bonus
+- William the Conqueror (AI or player) has easier requirements to end the Normandy struggle
+- William the Conqueror AI will now generally try to end the Normandy struggle
+- Afro-Roman now has Cosmopolitan ethos
+- Afro-Roman now has African Tolerance tradition instead of Philosopher Culture
+- Decision to adopt Arctic Adaptations now has a warning about losing culture tradition if the culture is at the tradition limit
+- Increased likelihood AI will take the decision to Convene Iceland’s First Althing after time has passed
+- Made it easier for the AI to take the Historia Normannorum decision
+- Historia Normannorum now has an alternate trigger with having a high diplomacy skill
+- Fixed annual catalysts not triggering for several struggles, particularly the Normandy struggle
+- Fixed potential CTD from several activities due to being able to select wasteland as a destination
+- Fixed missing legitimacy effects for Norman adventurer and border raid CBs
+- Fixed loc error for the Free Range Pastures culture requirement
+- Fixed loc for reformed Shamsi paganism using Vedda paganism text
+- Fixed event for the Destroy the Sangha ending of the Sri Lankan struggle not triggering for other rulers
+- Fixed Iceland geyser event triggering outside of Iceland
+- Fixed some text in the Bamian Pilgrimage activity referring to Sri Pada
+- Fixed missing loc concerning building requirements for Alhambra and Santiago decisions
+- Fixed missing loc for NOT_RICE_maritime_silk_road_geographical_req
+- Fixed Oromo culture having wrong traditions for the RICE+EPE compatch
+- Fixed random event chances for Tarim Basin entertainer event being visible
+- Fixed localization issues with some god names for Omotic and Sidamic faiths
+- Fixed Terek Pass not being given to al-Kashgari when playing with ROA
+- Miscellaneous bugfixes and tweaks
 
 ## Credits
 
@@ -127,6 +139,7 @@ Special thanks in particular to:
 - B7E7 for collab and content from BlackEmperor's Africa Plus mod
 - Bonseny for the amazing VIET and RICE logos and the beautiful 3D art assets
 - Celticus for a lot of useful help and suggestions
+- Diadochi Kings mod (from CK2) for Elamite names
 - DrStein(Dupont) for revamped artwork
 - Fische for the Dragon Blood art icon and Vertimnus for donating it to me (originally made for Sinews of War)
 - George Hammond for some music ([see here](https://fanlink.to/georgehammondmusic) for more of his work)
