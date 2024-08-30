@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/5TefFWC.jpg">
 
-## Latest Version: Version 1.12.2 "Palermo" (Released 8/28/24, for vanilla patch 1.12.x)
+## Latest Version: Version 1.12.2.a Hotfix "Palermo" (Released 8/30/24, for vanilla patch 1.12.x)
 
 **Newest Flavor Pack: *Sicily: Where Three Worlds Met***
 
@@ -77,6 +77,20 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 ## Latest Changelog
 
 <img src="https://i.imgur.com/D683wkk.jpg">
+
+### 1.12.2.a Hotfix for "Palermo"
+
+- Added missing Spanish translations, courtesy of Ferchu
+- Reduced how often AI rulers do Sicilian grain character interactions
+- Implemented a hidden timer that will prevent AI rulers from spamming you with grain-related interactions too soon after each other
+- Slightly buffed the amount of special event troops Sicilian Muslim rulers get at game start in 1066
+- Reduced the chances AI will pick Experienced Whalers tradition
+- SwedishGuy360’s easter egg character is now cynical instead of stubborn
+- SwedishGuy360’s easter egg character is now heterosexual
+- Cybrxkhan’s special easter egg characters are now heterosexual
+- Fixed missing loc for the Sicilian struggle game concept
+- Fixed Sicilian struggle happening when playing with Fallen Eagle
+- Miscellaneous fixes
 
 ### 1.12.2 "Palermo"
 
