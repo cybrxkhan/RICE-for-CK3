@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/5TefFWC.jpg">
 
-## Latest Version: Version 1.12.2.a Hotfix "Palermo" (Released 8/30/24, for vanilla patch 1.12.x)
+## Latest Version: Version 1.12.2.b Hotfix "Palermo" (Released 8/31/24, for vanilla patch 1.12.x)
 
 **Newest Flavor Pack: *Sicily: Where Three Worlds Met***
 
@@ -77,6 +77,12 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 ## Latest Changelog
 
 <img src="https://i.imgur.com/D683wkk.jpg">
+
+### 1.12.2.b Hotfix for "Palermo"
+
+- AI rulers now affected by the hidden timer to reduce grain interaction spam
+- Hellenic pagans now count as the Greek world for the Sicilian struggle
+- Fixed Sawdan’s historical aspiration success condition not counting vassal-owned counties for the 8 county requirement
 
 ### 1.12.2.a Hotfix for "Palermo"
 
