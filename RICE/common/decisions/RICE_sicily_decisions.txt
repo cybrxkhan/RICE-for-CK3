@@ -682,14 +682,14 @@ RICE_sicily_second_pavia_decision = {
 	is_shown = {
 		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
 		is_landed = yes
-		culture = {
-			OR = {
-				this = culture:langobard
-				any_parent_culture_or_above = {
-					this = culture:langobard
-				}
-			}
-		}
+		# culture = {
+		# 	OR = {
+		# 		this = culture:langobard
+		# 		any_parent_culture_or_above = {
+		# 			this = culture:langobard
+		# 		}
+		# 	}
+		# }
 		root.capital_county = {
 			title_province = { geographical_region = custom_sicily }
 		}
@@ -704,23 +704,26 @@ RICE_sicily_second_pavia_decision = {
 	is_valid = {
 		is_independent_ruler = yes
 		prestige_level >= 3
+		culture = {
+			has_cultural_tradition = tradition_RICE_longbeards
+		}
 		# Not tribal - vanilla localization is bugged atm
 		custom_description = {
 			text = RICE_not_tribal_government_req
 			NOT = { government_has_flag = government_is_tribal }
 		}	
 		# Langobard or descended from Langobard culture
-		custom_description = {
-			text = RICE_lombard_culture_req
-			culture = {
-				OR = {
-					this = culture:langobard
-					any_parent_culture_or_above = {
-						this = culture:langobard
-					}
-				}
-			}
-		}		
+		# custom_description = {
+		# 	text = RICE_lombard_culture_req
+		# 	culture = {
+		# 		OR = {
+		# 			this = culture:langobard
+		# 			any_parent_culture_or_above = {
+		# 				this = culture:langobard
+		# 			}
+		# 		}
+		# 	}
+		# }		
 		custom_tooltip = {
 			text = RICE_sicily_pavia_capital_development_req
 			capital_county = {
@@ -812,6 +815,146 @@ RICE_sicily_second_pavia_decision = {
 				has_game_rule = RICE_historical_context_on
 			}
 			custom_tooltip = RICE_sicily_second_pavia_decision_context_tooltip
+		}
+
+		# add_to_list = notification_sent
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+RICE_sicily_byzantine_syracuse_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_ancient_greek_city.dds"
+	major = yes
+	desc = RICE_sicily_byzantine_syracuse_decision_desc
+
+	ai_check_interval = 64
+
+	is_shown = {
+		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+		is_landed = yes
+		OR = {
+			RICE_sicily_greek_trigger = yes
+			has_title = title:e_byzantium
+			top_liege = { has_title = title:e_byzantium }
+			has_title = title:e_roman_empire
+			top_liege = { has_title = title:e_roman_empire }
+		}
+		root.capital_county = {
+			title_province = { geographical_region = custom_sicily }
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_sicily_byzantine_syracuse_decision_flag
+			}
+		}
+	}
+
+	is_valid = {
+		RICE_sicily_greek_trigger = yes
+		OR = {
+			has_title = title:c_siracusa
+			any_vassal_or_below = { has_title = title:c_siracusa }
+		}
+		OR = {
+			has_title = title:d_sicily
+			any_liege_or_above = {
+				has_title = title:d_sicily
+			}
+		}
+		OR = {
+			completely_controls = title:d_sicily
+			any_liege_or_above = {
+				completely_controls = title:d_sicily
+			}
+		}
+		OR = {
+			has_title = title:e_byzantium
+			top_liege = { has_title = title:e_byzantium }
+			has_title = title:e_roman_empire
+			top_liege = { has_title = title:e_roman_empire }
+		}
+		# Not tribal - vanilla localization is bugged atm
+		custom_description = {
+			text = RICE_not_tribal_government_req
+			NOT = { government_has_flag = government_is_tribal }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	cost = { 
+		gold = { value = major_gold_value }
+	}	
+
+	ai_potential = {
+		short_term_gold > major_gold_value
+	}
+
+	effect = {
+
+		save_scope_as = syracuse_restorer
+
+		capital_county = {
+			save_scope_as = second_pavia
+		}
+		
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_sicily_byzantine_syracuse_decision_flag
+		}
+		
+		show_as_tooltip = {
+			RICE_sicily_byzantine_syracuse_decision_effect = yes			
+		}
+
+		# Trigger the ending event
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:syracuse_restorer
+					is_ai = no
+				}
+				OR = {
+					this = scope:syracuse_restorer
+					RICE_sicily_greek_trigger = yes
+					has_title = title:e_byzantium
+					top_liege = { has_title = title:e_byzantium }
+					has_title = title:e_roman_empire
+					top_liege = { has_title = title:e_roman_empire }
+					# any_character_struggle = {
+					# 	involvement = involved
+					# 	is_struggle_type = RICE_sicily_struggle
+					# }	
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							OR = {
+								geographical_region = world_europe_south
+								geographical_region = world_europe_west_iberia
+								geographical_region = world_africa_north
+								geographical_region = world_africa_sahara
+								geographical_region = world_asia_minor
+								geographical_region = world_europe_west_francia
+							}		
+						}
+					}
+				}
+			}
+			trigger_event = sicily.0230
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_sicily_byzantine_syracuse_decision_context_tooltip
 		}
 
 		# add_to_list = notification_sent
@@ -1138,6 +1281,7 @@ RICE_sicily_virgil_divination_decision = {
 		}
 	}
 }
+
 
 
 # Sponsor the Liber pantegni
@@ -1940,6 +2084,16 @@ RICE_sicily_administer_frontier = {
 			# 	}
 			# }
 
+		}
+
+		if = {
+			limit = {
+				has_title = title:c_siracusa
+				title:c_siracusa = {
+					has_county_modifier = RICE_sicily_syracuse_restoration
+				}
+			}
+			add_legitimacy = miniscule_legitimacy_gain
 		}
 
 		

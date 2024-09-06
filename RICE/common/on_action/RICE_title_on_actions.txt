@@ -15,6 +15,8 @@ on_title_gain = {
 	}
 }
 
+
+
 # A title is inherited by a character
 # root = the new holder
 # scope:title = the title that changes hands
@@ -52,5 +54,30 @@ on_title_gain_usurpation = {
 on_title_lost = {
 	events = {
 		yorkshire.0027	# Character loses banner of Saint John if they don't have any titles left
+	}
+}
+
+# Called when realm capital changes. It can be manual move, loss in conquest, move after inheritance,
+# move when granted a better title, becoming landed for the first time
+# root: New realm capital barony
+# scope:old_capital - previous capital barony. Can be empty, can be owned by someone else
+on_realm_capital_change = {
+	effect = {
+		# Sicilian Signore trait
+		if = {
+			limit = {
+				root = {
+					title_province = {
+						geographical_region = custom_sicily
+					}
+					holder = {
+						NOT = { has_trait = RICE_sicilian_ruler }
+					}
+				}
+			}
+			holder = {
+				add_trait = RICE_sicilian_ruler
+			}
+		}
 	}
 }
