@@ -1051,6 +1051,100 @@ RICE_sicily_admirals_bridge_decision = {
 	}
 }
 
+RICE_sicily_catania_elephant_decision = {
+	picture = "gfx/interface/illustrations/decisions/decision_RICE_ancient_greek_city.dds"
+	major = yes
+	desc = RICE_sicily_catania_elephant_decision_desc
+
+	ai_check_interval = 60
+
+	is_shown = {
+		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+		is_landed = yes
+		has_title = title:c_messina
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_sicily_catania_elephant_decision_done
+			}
+		}
+	}
+
+	is_valid = {
+		has_title = title:c_messina
+		OR = {
+			prestige_level >= 3
+			piety_level >= 3
+		}
+		culture = {
+			OR = {
+				has_cultural_era_or_later = culture_era_high_medieval
+				has_innovation = innovation_royal_prerogative
+			}
+		}
+		custom_tooltip = {
+			text = RICE_sicily_messina_development_req
+			title:c_messina = {
+				development_level >= RICE_sicily_pavia_development_level
+			}
+		}	
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		RICE_is_available_adult_even_if_sick_trigger = yes
+	}
+
+	cost = {
+		gold = {
+			value = medium_gold_value
+		}
+	}
+
+	effect = {
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_sicily_catania_elephant_decision_done
+		}
+		
+		#save_scope_as = catania_statue_builder
+
+		show_as_tooltip = {
+			RICE_sicily_catania_statue_decision_effect = yes
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_sicily_catania_elephant_decision_context_tooltip
+		}
+		
+		trigger_event = sicily.0231
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+		modifier = {
+			add = 10
+			has_trait = humble
+		}
+		modifier = {
+			add = -10
+			has_trait = arrogant
+		}
+	}
+}
+
 
 
 
