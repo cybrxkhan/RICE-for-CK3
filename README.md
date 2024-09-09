@@ -1,16 +1,13 @@
 <img src="https://i.imgur.com/5TefFWC.jpg">
 
-## Latest Version: Version 1.12.2.b Hotfix "Palermo" (Released 8/31/24, for vanilla patch 1.12.x)
+## Latest Version: Version 1.12.3 "Syracuse" (Released 9/8/24, for vanilla patch 1.12.x)
 
 **Newest Flavor Pack: *Sicily: Where Three Worlds Met***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_I have seen the world map_
-_And the navigational chart,_
-_But Sicily seems to me_
-_The most beautiful in this world._
-_- Ayo visto lo Mappamundi, 15th century Sicilian folk song_
+_“Sicily was the first of the provinces. She was the first who taught our ancestors how glorious a thing it was to rule over foreign peoples.”_
+_- Cicero (106 – 43 BCE), Roman statesman, lawyer, and thinker_
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
@@ -78,75 +75,37 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 
 <img src="https://i.imgur.com/D683wkk.jpg">
 
-### 1.12.2.b Hotfix for "Palermo"
+### 1.12.3 "Palermo"
 
-- AI rulers now affected by the hidden timer to reduce grain interaction spam
-- Hellenic pagans now count as the Greek world for the Sicilian struggle
-- Fixed Sawdan’s historical aspiration success condition not counting vassal-owned counties for the 8 county requirement
-
-### 1.12.2.a Hotfix for "Palermo"
-
-- Added missing Spanish translations, courtesy of Ferchu
-- Reduced how often AI rulers do Sicilian grain character interactions
-- Implemented a hidden timer that will prevent AI rulers from spamming you with grain-related interactions too soon after each other
-- Slightly buffed the amount of special event troops Sicilian Muslim rulers get at game start in 1066
-- Reduced the chances AI will pick Experienced Whalers tradition
-- SwedishGuy360’s easter egg character is now cynical instead of stubborn
-- SwedishGuy360’s easter egg character is now heterosexual
-- Cybrxkhan’s special easter egg characters are now heterosexual
-- Fixed missing loc for the Sicilian struggle game concept
-- Fixed Sicilian struggle happening when playing with Fallen Eagle
-- Miscellaneous fixes
-
-### 1.12.2 "Palermo"
-
-- Added new flavor pack: **Sicily: Between Three Worlds**
-- Added 10 new European, Mediterranean, and Middle Eastern themed soundtracks
-- Added new activity option for all local pilgrimages: Votive Offerings
-- Added new travel option to Venerate at Local Shrines
-- Added a lot of French translations by various translators from Paratranz
-- Added Makhazen and Siba tradition to Baranis, replacing Granary of Africa
-- Added Khalaj culture, a divergent culture of Turco-Hephthalite, around Afghanistan and events to spawn in if playing in early start dates
-- Added Elamite namelist for Elamite and Elymaean cultures
-- Added Gissur, the father of Isleifur (Icelandic “duke” in 1066), in character history
-- Added a game rule to remove easter egg characters at game start
-- Added Swedishguy360’s easter egg character in Benavert’s court (for correctly guessing Sicily)
-- Local Pilgrimage activities are no longer allowed for faiths with the Pilgrimage Forbidden doctrine
-- William the Conqueror only requires the Early Medieval rather than High Medieval era for completing the Normandy struggle
-- Changed Tajik culture’s name to Khorasani
-- Kashmiri culture’s Equal Inheritance tradition replaced with Caravaneers
-- Darada culture’s Frequent Festivals tradition replaced with Equal Inheritance
-- Malagasy moved to Malayic heritage
-- Malagasy made a hybrid of of East African and Malayic cultures
-- Burman heritage renamed to Irrawaddy heritage
-- Rasht is now Pamiri culture at game start
-- Abdul-Hasan Al-Muddabir starts with decent stewardship and learning in the 867 start 
-- Reward troops from completing Vijayabahu’s aspiration are now inheritable and subject to supply limits
-- Struggle ending events for older struggles will now have a more appropriate sfx sound play when the option is selected
-- Tweaked language of the Vinland Realism game rules for more clarity
-- Nerfed the Founders of Normandy and Norman Conquest modifiers again by changing their Dynasty Prestige bonus to a legitimacy bonus
-- William the Conqueror (AI or player) has easier requirements to end the Normandy struggle
-- William the Conqueror AI will now generally try to end the Normandy struggle
-- Afro-Roman now has Cosmopolitan ethos
-- Afro-Roman now has African Tolerance tradition instead of Philosopher Culture
-- Decision to adopt Arctic Adaptations now has a warning about losing culture tradition if the culture is at the tradition limit
-- Increased likelihood AI will take the decision to Convene Iceland’s First Althing after time has passed
-- Made it easier for the AI to take the Historia Normannorum decision
-- Historia Normannorum now has an alternate trigger with having a high diplomacy skill
-- Fixed annual catalysts not triggering for several struggles, particularly the Normandy struggle
-- Fixed potential CTD from several activities due to being able to select wasteland as a destination
-- Fixed missing legitimacy effects for Norman adventurer and border raid CBs
-- Fixed loc error for the Free Range Pastures culture requirement
-- Fixed loc for reformed Shamsi paganism using Vedda paganism text
-- Fixed event for the Destroy the Sangha ending of the Sri Lankan struggle not triggering for other rulers
-- Fixed Iceland geyser event triggering outside of Iceland
-- Fixed some text in the Bamian Pilgrimage activity referring to Sri Pada
-- Fixed missing loc concerning building requirements for Alhambra and Santiago decisions
-- Fixed missing loc for NOT_RICE_maritime_silk_road_geographical_req
-- Fixed Oromo culture having wrong traditions for the RICE+EPE compatch
-- Fixed random event chances for Tarim Basin entertainer event being visible
-- Fixed localization issues with some god names for Omotic and Sidamic faiths
-- Fixed Terek Pass not being given to al-Kashgari when playing with ROA
+- Added decision for Byzantine rulers or vassals to Restore the Glory of Syracuse
+- Added event to spawn the Sicilian Muslim poet Ibn Hamdis if playing from the 1066 start date
+- Added a couple narrative events at game start for Sawdan in 867, for players to choose his ethnic origins and focus as a ruler
+- Added decision for rulers of Messina to Affirm u Liotru as the Symbol of Catania (i.e. Catania’s famed elephant statue)
+- Added a few historical characters related to Sicily:
+    - Erchempert, a 9th century Lombard historian
+    - Barsakios, 9th century Byzantine general active in southern Italy
+    - al-Hasan ibn al-Abbas, 9th century Aghlabid general active in Sicily
+    - Agyros of Bari, an 11th century Lombard general of the Byzantines in Bari, and son of Melus of Bari
+    - Longibardopoulos, 11th century Lombard general/mercenary of the Byzantines
+    - Amatus of Monte Cassino, 11th century historian from southern Italy
+    - William of Apulia, 11th century Lombard poet and chronicler
+    - Geoffrey Malaterra, 11th century (possibly Norman) historian and monk
+- The option to attract immigrants in the decision to Manage the Sicilian Frontier now has a chance of spawning Strongholds in your territory
+- The culture and/or faith of rulers who take the decisions to revitalize/occupy the Sicilian frontier will now automatically become involved in the Sicilian struggle if they aren’t already
+- Siculo-Arabic and Afro-Roman now also wear Byzantine clothes
+- Increased the chances Frontier Raid CBs create and destroy strongholds
+- Disabled a few more Sicily decisions when run with TFE
+- Slightly nerfed control maluses during the Borderlands phase of the Sicily struggle
+- Ruling class modifiers (Imperiality ending) now reduce development rather than control
+- Substrate modifiers (Periphery ending) now reduce control rather than development
+- Removed initial dev/control hit when arriving at the Imperiality and Periphery phases of the Sicily struggle; instead, the resulting county modifiers have been buffed
+- Create a Second Pavia decision is now requires the Longbeard tradition, rather than being descended from Lombard culture
+- Create a Second Pavia decision is now visible to anyone with territory in southern Italy
+- Non-Slavic pagans are less likely to take the decision to offer gifts to Svetovit
+- Fixed Sicilian Signore trait not being given out while the Sicily struggle is not active
+- Fixed potential cause of CTDs with the Periphery/Imperiality ending phases’ interface
+- Fixed potential error with religious rights contract effect triggering for RICE-added independent rulers at game start
+- Fixed development maluses for some Sicilian content not giving maluses properly
 - Miscellaneous bugfixes and tweaks
 
 ## Credits
