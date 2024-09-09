@@ -75,7 +75,7 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 
 <img src="https://i.imgur.com/D683wkk.jpg">
 
-### 1.12.3 "Palermo"
+### 1.12.3 "Syracuse"
 
 - Added decision for Byzantine rulers or vassals to Restore the Glory of Syracuse
 - Added event to spawn the Sicilian Muslim poet Ibn Hamdis if playing from the 1066 start date
