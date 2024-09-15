@@ -15,6 +15,174 @@ namespace = breton
 
 ######################################################################################
 # 
+# MISC EVENTS
+# breton.0001-breton.0009 reserved 
+# 
+######################################################################################
+
+
+
+
+# Sawdan Intro Event
+breton.0001 = {
+	type = character_event
+	title = breton.0001.t
+	desc = breton.0001.desc
+	theme = RICE_theme_breton_castle
+
+	right_portrait = {
+		character = scope:constance
+		animation = war_defender
+	}
+
+	lower_right_portrait = scope:henry
+	lower_center_portrait = scope:geoffrey
+	lower_left_portrait = scope:conan
+
+	immediate = {
+
+		character:205740 = { # Constance of Brittany
+			save_scope_as = constance
+		}		
+
+		character:204511 = { # Geoffrey II, Duke of Brittany
+			save_scope_as = geoffrey
+		}		
+
+		character:204500 = { # Henry II
+			save_scope_as = henry
+		}		
+
+		character:205741 = { # Konan IV
+			save_scope_as = conan
+		}		
+
+		show_as_tooltip = {	
+			scope:sawdan = {
+				add_character_modifier = {
+					modifier = RICE_breton_aspiration_secure_rule_over_brittany
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = breton.0001.tooltip
+			}
+		}
+	}
+
+	# Ok
+	option = {
+		name = breton.0001.a
+	}
+
+}
+
+
+# Constance of Brittany's Aspiration fulfilled
+breton.0002 = {
+	type = character_event
+	title = breton.0002.t
+	desc = breton.0002.desc
+	theme = RICE_theme_breton_castle
+
+	right_portrait = {
+		character = scope:constance
+		animation = personality_content
+	}
+
+	immediate = {
+
+		save_scope_as = constance
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_sicily_aspiration_establish_islam_in_southern_italy
+				}
+				remove_character_modifier = RICE_sicily_aspiration_establish_islam_in_southern_italy
+			}
+		}
+
+		# Main Objective Reward
+		add_prestige = RICE_aspiration_medium_resource_bonus
+		add_legitimacy = medium_legitimacy_gain
+		dynasty ?= {
+			add_dynasty_prestige = RICE_aspiration_large_resource_bonus
+		}
+
+		# Bonus Objective Reward(s)
+
+		# Be an independent ruler
+		if = {
+			limit = {
+				is_independent_ruler = yes
+			}
+			dynasty ?= {
+				add_dynasty_prestige = RICE_aspiration_large_resource_bonus
+			}
+		}
+
+		# Have at least two king or emperor allies
+		if = {
+			limit = {
+				any_ally = {
+					highest_held_title_tier >= tier_kingdom
+					count >= 2
+				}
+			}
+			add_diplomacy_lifestyle_perk_points = 1
+		}
+
+		# Have at least 10 realm size
+		if = {
+			limit = {
+				sub_realm_size >= 10
+			}
+			spawn_army = {
+				levies = 100
+				men_at_arms = {
+					type = bowmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = pikemen_unit
+					stacks = 1
+				}
+				men_at_arms = {
+					type = light_footmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = marc_hegion
+					stacks = 2
+				}
+				location = capital_province
+				uses_supply = yes
+				inheritable = yes
+				name = event_troop_default_name
+			}
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = breton.0002.a
+	}
+
+}
+
+
+######################################################################################
+# 
 # ERECTING CALVARY
 # breton.0010-breton.0019 reserved - may return in the future for misc flavor events
 # 
