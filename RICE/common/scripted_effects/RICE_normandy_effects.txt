@@ -199,16 +199,23 @@ RICE_setup_normandy_flavor_pack_effect = {
 				target = this
 			}	
 		}
+		set_global_variable = {
+			name = RICE_normandy_struggle_started
+			value = yes
+		}
+	}
+
+	if = {
+		limit = {
+			game_start_date >= 911.1.1 # Traditional date of Rollo being given Normandy
+			game_start_date < 1076.1.1 # Norman Conquest fully "completed" in 1075 after William the Conqueror put down the Revolt of the Earls
+		}
 		start_struggle = {
 			struggle_type = RICE_normandy_struggle
 			start_phase = struggle_RICE_normandy_phase_adventure
 		}
 		struggle:RICE_normandy_struggle = {
 			trigger_event = { on_action = RICE_normandy_struggle_starting_events }
-		}
-		set_global_variable = {
-			name = RICE_normandy_struggle_started
-			value = yes
 		}
 	}
 
@@ -249,6 +256,38 @@ RICE_setup_normandy_flavor_pack_effect = {
 		add_to_global_variable_list = {
 			name = unavailable_unique_decisions
 			target = flag:RICE_normandy_saint_aubert_relics_found
+		}
+	}
+
+	if = {
+		limit = {
+			game_start_date >= 1076.1.1 # Norman Conquest fully "completed" in 1075 after William the Conqueror put down the Revolt of the Earls
+		}
+		every_culture_global = {
+			limit = {
+				has_cultural_tradition = tradition_RICE_adventurers_and_aristocrats
+			}		
+			remove_culture_tradition = tradition_RICE_adventurers_and_aristocrats
+			add_culture_tradition = tradition_RICE_adventurers_and_aristocrats_military
+			remove_variable = tradition_cooldown
+		}		
+		every_culture_global = {
+			limit = {
+				has_cultural_tradition = tradition_RICE_northmen
+			}		
+			remove_culture_tradition = tradition_RICE_northmen
+			add_culture_tradition = tradition_RICE_adventurers_and_aristocrats_military
+			remove_variable = tradition_cooldown
+		}	
+	}
+
+	if = {
+		limit = {
+			game_start_date >= 1086.1.1 # Domesday Book completed
+		}
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_normandy_domesday_book_compiled
 		}
 	}
 

@@ -481,6 +481,19 @@ RICE_setup_north_atlantic_flavor_pack_effect = {
 		}
 	}
 
+	# Skalholt school founded
+	if = {
+		limit = {
+			game_start_date >= 1075.1.1 
+		}
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_north_atlantic_established_skalholt_school
+		}
+	
+	}
+
+
 
 	# Don't know a better way to save costs for walrus hunts and expeditions to display properly on custom GUI elements, so this method will have to do
 	set_global_variable = {
@@ -674,9 +687,21 @@ RICE_setup_north_atlantic_after_game_start_effect = {
 
 
 RICE_enable_greenland_struggle_effect = {
-	start_struggle = {
-		struggle_type = RICE_greenland_struggle
-		start_phase = struggle_RICE_greenland_phase_settlement
+	if = {
+		limit = {
+			# Date of when the first Greenlandic Bishop was assigned, which I take as a good symbol of the Greenland colony "maturing"
+			game_start_date >= 1126.1.1 
+		}		
+		start_struggle = {
+			struggle_type = RICE_greenland_struggle
+			start_phase = struggle_RICE_greenland_phase_integration
+		}
+	}
+	else = {
+		start_struggle = {
+			struggle_type = RICE_greenland_struggle
+			start_phase = struggle_RICE_greenland_phase_settlement
+		}
 	}
 	struggle:RICE_greenland_struggle = {
 		trigger_event = { on_action = RICE_greenland_struggle_starting_events }
