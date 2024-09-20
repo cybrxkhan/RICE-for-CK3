@@ -1,0 +1,251 @@
+﻿###############################################################################
+# 
+# LESBOS
+# 
+# lesbos.0000-lesbos.0019			Setup events, history events, miscellaneous events and decisions
+# lesbos.0020-lesbos.0049			Kalends
+# lesbos.0050-lesbos.0069			Pirate stuff
+# lesbos.0080-lesbos.0099			Misc flavor events
+# 
+###############################################################################
+
+namespace = lesbos
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# lesbos.0000-lesbos.0019
+# 
+######################################################################################
+
+######################################################################################
+# 
+# KALENDS
+# 
+# lesbos.0020-lesbos.0039
+# 
+######################################################################################
+
+
+# Preparations for Kalends
+lesbos.0020 = {
+	type = activity_event
+	title = lesbos.0020.t
+	desc = lesbos.0020.desc
+	theme = friendly
+	override_background = { reference = relaxing_room }
+	
+	right_portrait = root
+	
+	option = { # Ok
+		name = lesbos.0020.a
+		trigger_event = { # Approximate
+			id = lesbos.0021
+			trigger_on_next_date = 1.1
+		}	
+	}
+}
+
+# Kalends begins
+lesbos.0021 = {
+	type = activity_event
+	title = lesbos.0021.t
+	desc = lesbos.0021.desc
+	theme = RICE_theme_kalends_celebration
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_banquet
+	}
+	
+	option = { # Ok
+		name = lesbos.0021.a
+	}
+
+	after = {
+		
+		# hidden_effect = {
+		# 	random = {
+		# 		chance = 25
+		# 		trigger_event = {
+		# 			id = lesbos.0024
+		# 			days = { 5 32 }
+		# 		}
+		# 	}
+		# 	random = {
+		# 		chance = 25
+		# 		trigger_event = {
+		# 			id = lesbos.0025
+		# 			days = { 5 32 }
+		# 		}
+		# 	}
+		# 	random = {
+		# 		chance = 25
+		# 		trigger_event = {
+		# 			id = lesbos.0026
+		# 			days = { 5 32 }
+		# 		}
+		# 	}
+		# 	random = {
+		# 		chance = 25
+		# 		trigger_event = {
+		# 			id = lesbos.0027
+		# 			days = { 5 32 }
+		# 		}
+		# 	}
+		# 	random = {
+		# 		chance = 25
+		# 		trigger_event = {
+		# 			id = lesbos.0028
+		# 			days = { 5 32 }
+		# 		}
+		# 	}
+		# 	random = {
+		# 		chance = 25
+		# 		trigger_event = {
+		# 			id = lesbos.0029
+		# 			days = { 5 32 }
+		# 		}
+		# 	}
+		# 	random = {
+		# 		chance = 25
+		# 		trigger_event = {
+		# 			id = lesbos.0030
+		# 			days = { 5 32 }
+		# 		}
+		# 	}
+		# 	random = {
+		# 		chance = 25
+		# 		trigger_event = {
+		# 			id = lesbos.0031
+		# 			days = { 5 32 }
+		# 		}
+		# 	}
+		# }
+
+		# Technically only a few days, but we're extending it to make events feel less spammy
+		trigger_event = {
+			id = lesbos.0022
+			days = { 15 30 }
+		}
+
+		# Gift-giving event
+		trigger_event = {
+			id = lesbos.0023
+			days = { 5 10 }
+		}
+		
+	}
+}
+
+# Kalends ends
+lesbos.0022 = {
+	type = activity_event
+	title = lesbos.0022.t
+	desc = lesbos.0022.desc
+	theme = RICE_theme_kalends_celebration
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # Fun!
+		name = lesbos.0022.a
+		RICE_roman_kalends_completed_log_entry_effect = yes
+	}
+	
+	after = {
+		scope:activity = {
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}		
+}
+
+
+
+# Gift-giving event
+lesbos.0023 = {
+	type = activity_event
+	title = lesbos.0023.t
+	desc = lesbos.0023.desc
+	theme = RICE_theme_kalends_celebration
+	
+	left_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+	
+	option = { # ok
+		name = lesbos.0023.a
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = RICE_roman_kalends_gift_type
+						option = RICE_roman_kalends_gift_small
+					}
+				}
+			}
+			add_gold = { 1 tiny_gold_value }
+		}
+		else_if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = RICE_roman_kalends_gift_type
+						option = RICE_roman_kalends_gift_medium
+					}
+				}
+			}
+			add_gold = { 1 minor_gold_value }
+		}
+		else_if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = RICE_roman_kalends_gift_type
+						option = RICE_roman_kalends_gift_large
+					}
+				}
+			}
+			add_gold = { 1 medium_gold_value }
+		}
+	}
+	
+}
+
+
+######################################################################################
+# 
+# PIRATES
+# 
+# lesbos.0050-lesbos.0069
+# 
+######################################################################################
+
+# Work together with the pirates
+lesbos.0050 = {
+	type = character_event
+	title = lesbos.0050.t
+	desc = lesbos.0050.desc
+	theme = realm
+	
+	left_portrait = root
+	
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		RICE_lesbos_add_mediterranean_pirate_den_effect = yes
+		play_music_cue = "mx_cue_combat_3"
+		custom_tooltip = lesbos.0050.tooltip
+	}
+	
+	option = { # Ok
+		name = lesbos.0050.a	
+	}
+}

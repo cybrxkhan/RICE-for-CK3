@@ -39,6 +39,87 @@
 		}
 	}
 
+	if = {
+		limit = {
+			NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+		}
+		## Add Mediterranean Pirate Bases
+		# Emirate of Crete
+		if = {
+			limit = {
+				game_start_date >= 824.1.1
+				game_start_date <= 961.1.1
+				title:b_iraklio = {
+					title_province = { has_special_building = no }
+				}
+			}
+			title:b_iraklio.title_province = {
+				add_special_building = RICE_mediterranean_pirate_den_01
+			}
+		}
+		# Narentines
+		if = {
+			limit = {
+				game_start_date < 1000.1.1
+				title:b_mokro = {
+					title_province = { has_special_building = no }
+				}
+			}
+			title:b_mokro.title_province = {
+				add_special_building = RICE_mediterranean_pirate_den_01
+			}
+		}
+		# Taifa of Denia/Mallorca
+		if = {
+			limit = {
+				game_start_date >= 1010.1.1
+				game_start_date <= 1115.1.1
+				title:b_denia = {
+					title_province = { has_special_building = no }
+				}
+			}
+			title:b_denia.title_province = {
+				add_special_building = RICE_mediterranean_pirate_den_01
+			}
+		}
+		# Italian Republics
+		# Can't put them exactly on the baronies, since those have their own special buildings
+		# So I put them in the closest barony
+		# Venice
+		if = {
+			limit = {
+				title:b_mestre = {
+					title_province = { has_special_building = no }
+				}
+			}
+			title:b_mestre.title_province = {
+				add_special_building = RICE_mediterranean_pirate_den_01
+			}
+		}
+		# Genoa
+		if = {
+			limit = {
+				title:b_savona = {
+					title_province = { has_special_building = no }
+				}
+			}
+			title:b_savona.title_province = {
+				add_special_building = RICE_mediterranean_pirate_den_01
+			}
+		}
+		# Pisa
+		if = {
+			limit = {
+				title:b_livorno = {
+					title_province = { has_special_building = no }
+				}
+			}
+			title:b_livorno.title_province = {
+				add_special_building = RICE_mediterranean_pirate_den_01
+			}
+		}
+	}
+
 	############################################################
 	#
 	# MISCELLANEOUS
@@ -67,8 +148,239 @@ RICE_pirate_decision_basic_effect = {
 
 
 
+RICE_roman_kalends_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_roman_kalends_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				capital_county = {
+					add_county_modifier = {
+						modifier = RICE_kalends_celebrated_modifier
+						years = 5
+					}
+				}
+				if = {
+					limit = {
+						has_activity_intent = RICE_roman_kalends_festive_intent
+					}
+					add_piety = RICE_roman_kalends_piety_loss
+					stress_impact = {
+						base = minor_stress_impact_loss
+						gregarious = minor_stress_impact_loss
+						gluttonous = minor_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_roman_kalends_devotion_intent
+					}
+					if = {
+						limit = {
+							scope:host = {
+								any_liege_or_above = {
+									NOT = { religion = scope:host.religion }
+								}
+							}
+						}
+						add_piety = RICE_roman_kalends_piety_double_gain
+					}
+					else = {						
+						add_piety = RICE_roman_kalends_piety_gain
+					}
+					stress_impact = {
+						base = miniscule_stress_impact_loss
+						zealous = minor_stress_impact_loss
+						diligent = minor_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_roman_kalends_generosity_intent
+					}
+					add_piety = RICE_roman_kalends_piety_loss
+					stress_impact = {
+						base = miniscule_stress_impact_loss
+						generous = minor_stress_impact_loss
+						compassionate = minor_stress_impact_loss
+					}
+				}
+				if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_roman_kalends_gift_type
+								option = RICE_roman_kalends_gift_small
+							}
+						}
+					}
+					add_prestige = RICE_roman_kalends_gift_gain_small_base
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_roman_kalends_gift_type
+								option = RICE_roman_kalends_gift_medium
+							}
+						}
+					}
+					add_prestige = RICE_roman_kalends_gift_gain_medium_base
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_roman_kalends_gift_type
+								option = RICE_roman_kalends_gift_large
+							}
+						}
+					}
+					add_prestige = RICE_roman_kalends_gift_gain_large_base
+				}
+				add_character_modifier = {
+					modifier = RICE_roman_kalends_modifier
+					years = 5
+				}
+			}
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				stress_impact = {
+					base = minor_stress_impact_loss
+				}
+				if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_roman_kalends_gift_type
+								option = RICE_roman_kalends_gift_small
+							}
+						}
+					}
+					if = {
+						limit = {
+							scope:host = {
+								has_activity_intent = RICE_roman_kalends_generosity_intent
+							}
+						}
+						add_opinion = {
+							target = scope:host
+							modifier = RICE_kalends_opinion
+							opinion = 8
+						}
+					}
+					else = {						
+						add_opinion = {
+							target = scope:host
+							modifier = RICE_kalends_opinion
+							opinion = 4
+						}
+					}
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_roman_kalends_gift_type
+								option = RICE_roman_kalends_gift_medium
+							}
+						}
+					}
+					if = {
+						limit = {
+							scope:host = {
+								has_activity_intent = RICE_roman_kalends_generosity_intent
+							}
+						}
+						add_opinion = {
+							target = scope:host
+							modifier = RICE_kalends_opinion
+							opinion = 16
+						}
+					}
+					else = {						
+						add_opinion = {
+							target = scope:host
+							modifier = RICE_kalends_opinion
+							opinion = 8
+						}
+					}
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_roman_kalends_gift_type
+								option = RICE_roman_kalends_gift_large
+							}
+						}
+					}
+					if = {
+						limit = {
+							scope:host = {
+								has_activity_intent = RICE_roman_kalends_generosity_intent
+							}
+						}
+						add_opinion = {
+							target = scope:host
+							modifier = RICE_kalends_opinion
+							opinion = 24
+						}
+					}
+					else = {						
+						add_opinion = {
+							target = scope:host
+							modifier = RICE_kalends_opinion
+							opinion = 12
+						}
+					}
+				}
+				add_character_modifier = {
+					modifier = RICE_roman_kalends_modifier
+					years = 5
+				}
+			}
+		}
+	}
+}
 
 
+
+
+
+RICE_lesbos_add_mediterranean_pirate_den_effect = {
+	capital_county = {
+		add_county_modifier = {
+			modifier = RICE_lesbos_mediterranean_pirate_infestation
+			years = 10
+		}
+	}
+	if = {
+		limit = {
+			capital_province = {
+				is_coastal = yes
+			}
+		}
+		capital_province = {
+			add_special_building = RICE_mediterranean_pirate_den_01
+		}
+	}
+	else = {
+		capital_county = {
+			random_county_province = {
+				limit = {
+					is_coastal = yes
+					has_holding = yes
+				}
+				add_special_building = RICE_mediterranean_pirate_den_01
+			}		
+		}
+	}
+}
 
 
 
