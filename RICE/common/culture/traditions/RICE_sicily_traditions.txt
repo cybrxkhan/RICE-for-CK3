@@ -230,6 +230,97 @@ tradition_RICE_mediterranean_masserie = {
 }
 
 
+tradition_RICE_contentious_colonizers = {
+	category = regional
+
+	layers = {
+		0 = intrigue
+		1 = mena
+		4 = RICE_sword_on_paper.dds
+	}
+
+	is_shown = {
+		OR = {
+			this = culture:siqilli
+			any_parent_culture_or_above = {
+				this = culture:siqilli
+			}
+		}
+	}
+	can_pick = {
+		OR = {
+			this = culture:siqilli
+			any_parent_culture_or_above = {
+				this = culture:siqilli
+			}
+		}
+	}
+	
+	parameters = {
+		#less_likely_to_force_conversion = yes
+		disloyal_trait_less_spurned = yes
+		disloyal_trait_more_common = yes
+		unlock_rice_maa_sicily_bowmen = yes	
+	}
+
+	character_modifier = {
+		different_faith_opinion = 10
+		different_culture_opinion = 10
+		#different_faith_county_opinion_mult = -0.25	
+		learn_language_scheme_power_mult = 0.15
+		legitimacy_gain_mult = -0.1
+		#same_culture_mercenary_hire_cost_mult = -0.1
+	}
+
+	county_modifier = {
+		development_growth_factor = 0.05
+		county_opinion_add = -5
+	}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_egalitarian = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_communal_egalitarian_or_stoic_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	
+	ai_will_do = {
+		value = 75
+		if = {
+			limit = { # Avoid stacking similar traditions
+				culture_tradition:tradition_culture_blending = { is_in_list = traits }
+			}
+			multiply = 0.5
+		}
+		if = {
+			limit = { # Avoid stacking similar traditions
+				culture_tradition:tradition_religion_blending = { is_in_list = traits }
+			}
+			multiply = 0.5
+		}
+	}
+}
+
+
 
 
 

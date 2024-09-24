@@ -29,6 +29,7 @@
 		#add_name_list = name_list_greek # Uses both Arabic and Greek names
 		add_culture_tradition = tradition_RICE_mediterranean_masserie
 		add_culture_tradition = tradition_RICE_between_three_worlds
+		add_culture_tradition = tradition_RICE_contentious_colonizers
 		add_innovation = innovation_RICE_mediterranean_cave_settlements
 		add_innovation = innovation_RICE_almadraba
 		remove_variable = tradition_cooldown
@@ -285,6 +286,15 @@
 					culture = { has_cultural_pillar = heritage_arabic }
 					culture = { has_cultural_pillar = heritage_byzantine }
 				}
+				
+				NOR = { # To keep ME characters from changing cultures
+					dynasty = dynasty:bedouindyn009 # Fazara
+					dynasty = dynasty:me_habashi
+					dynasty = dynasty:me_salimawid
+					this = character:maghrebi0003 # Aghlabid governor
+					this = character:ss_wali_01
+				}
+				
 			}
 			random = {
 				chance = 50
@@ -302,6 +312,12 @@
 			capital_county ?= {
 				culture = culture:siqilli
 			}
+			
+			NOR = { # To keep ME characters from changing cultures
+				dynasty = dynasty:me_sawadid
+				dynasty = dynasty:595 # Zirids
+			}
+			
 		}
 		make_siqilli_culture_effect = yes
 	}
@@ -868,6 +884,55 @@
 		character:1142 = {
 			remove_trait = hunchbacked
 			add_trait = physique_good_1
+		}
+
+		## Muslim Enhancements characters
+		# Ayyub Zirid - Emir of Sicily
+		character:baranis0027 = {
+			add_character_modifier = {
+				modifier = RICE_sicily_aspiration_reunify_sicily
+			}
+			set_variable = {
+				name = RICE_historical_aspiration
+				value = flag:benavert
+			}
+			spawn_army = {
+				levies = 800
+				men_at_arms = {
+					type = RICE_sicily_bowmen
+					stacks = 2
+				}
+				men_at_arms = {
+					type = light_footmen
+					stacks = 2
+				}
+				men_at_arms = {
+					type = mubarizun
+					stacks = 4
+				}
+				men_at_arms = {
+					type = light_horsemen
+					stacks = 4
+				}
+				location = province:2635 # Palermo
+				uses_supply = yes
+				inheritable = yes
+				name = RICE_sicily_zirid_event_troops
+			}
+		}
+		if = { # Killing off ME's version of Hamdis since he exists in RICE
+			limit = {
+				exists = character:me_hamdis_01
+				character:me_hamdis_01 = {
+					is_alive = yes
+				}
+			}
+			character:me_hamdis_01 = {
+				death = { death_reason = death_disappearance }
+			}
+			character:me_hamdis_02 = {
+				death = { death_reason = death_disappearance }
+			}
 		}
 
 
@@ -2698,9 +2763,20 @@ RICE_sicily_visit_baia_effect = {
 
 RICE_sicily_recruit_latin_soldiers_effect = {
 	RICE_sicily_signore_latin_track_medium_gain = yes
-	custom_tooltip = {
-		text = RICE_sicily_spawn_latin_mercenaries_tt
-		RICE_sicily_spawn_latin_mercenaries_effect = yes
+	if = {
+		limit = {
+			root.culture = { has_cultural_era_or_later = culture_era_high_medieval }
+		}
+		custom_tooltip = {
+			text = RICE_sicily_spawn_latin_mercenaries_tt
+			RICE_sicily_spawn_latin_mercenaries_effect = yes
+		}
+	}
+	else = {
+		custom_tooltip = {
+			text = RICE_sicily_spawn_early_latin_mercenaries_tt
+			RICE_sicily_spawn_latin_mercenaries_effect = yes
+		}
 	}
 	if = {
 		limit = {
@@ -5398,3 +5474,89 @@ RICE_sicily_almadraba_decision_effect = {
 	}
 }
 
+ME_RICE_second_taifa_inspiration_effect = {
+	title:c_palermo.holder = {
+		add_character_modifier = {
+			modifier = RICE_sicily_aspiration_reunify_sicily
+		}
+		spawn_army = {
+			levies = 400
+			men_at_arms = {
+				type = RICE_sicily_bowmen
+				stacks = 1
+			}
+			men_at_arms = {
+				type = light_footmen
+				stacks = 1
+			}
+			men_at_arms = {
+				type = mubarizun
+				stacks = 2
+			}
+			men_at_arms = {
+				type = light_horsemen
+				stacks = 2
+			}
+			location = province:2635 # Palermo
+			uses_supply = yes
+			inheritable = yes
+			name = RICE_sicily_taifa_event_troops
+		}
+	}
+	title:c_agrigento.holder = {
+		add_character_modifier = {
+			modifier = RICE_sicily_aspiration_reunify_sicily
+		}
+		spawn_army = {
+			levies = 400
+			men_at_arms = {
+				type = RICE_sicily_bowmen
+				stacks = 1
+			}
+			men_at_arms = {
+				type = light_footmen
+				stacks = 1
+			}
+			men_at_arms = {
+				type = mubarizun
+				stacks = 2
+			}
+			men_at_arms = {
+				type = light_horsemen
+				stacks = 2
+			}
+			location = province:2640 # Castrogiovanni 
+			uses_supply = yes
+			inheritable = yes
+			name = RICE_sicily_taifa_event_troops
+		}
+	}
+	title:c_siracusa.holder = {
+		add_character_modifier = {
+			modifier = RICE_sicily_aspiration_reunify_sicily
+		}
+		spawn_army = {
+			levies = 400
+			men_at_arms = {
+				type = RICE_sicily_bowmen
+				stacks = 1
+			}
+			men_at_arms = {
+				type = light_footmen
+				stacks = 1
+			}
+			men_at_arms = {
+				type = mubarizun
+				stacks = 2
+			}
+			men_at_arms = {
+				type = light_horsemen
+				stacks = 2
+			}
+			location = province:2638 # Syracuse
+			uses_supply = yes
+			inheritable = yes
+			name = RICE_sicily_taifa_event_troops
+		}
+	}
+}

@@ -506,6 +506,46 @@ sicily.0007 = {
 }
 
 
+# Catalysts for activities from traveling
+sicily.0008 = {
+	hidden = yes
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes		
+		highest_held_title_tier >= tier_county
+		exists = struggle:RICE_sicily_struggle
+		any_character_struggle = {
+			involvement = involved
+			is_struggle_type = RICE_sicily_struggle
+		}	
+		exists = involved_activity	
+	}
+
+	immediate = {
+		struggle:RICE_sicily_struggle = {
+			activate_struggle_catalyst = {
+				catalyst = catalyst_RICE_normandy_activity_travel
+				character = root
+			}
+		}
+		if = {
+			limit = {
+				involved_activity = {
+					has_activity_type = activity_hunt
+				}
+			}
+			struggle:RICE_sicily_struggle = {
+				activate_struggle_catalyst = {
+					catalyst = catalyst_RICE_normandy_hunt
+					character = root
+				}
+			}
+		}
+	}
+
+}
+
 # Restart Sicilian Struggle (Occupation)
 sicily.0010 = {
 	type = character_event
@@ -2598,6 +2638,19 @@ sicily.0060 = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {				
+					religion = religion:christianity_religion
+					title:d_sicily.holder.liege = { has_title = title:k_africa }
+				}
+				desc = sicily.0060.desc.christian_alt_ME
+			}
+			triggered_desc = {
+				trigger = {				
+					title:d_sicily.holder.liege = { has_title = title:k_africa }
+				}
+				desc = sicily.0060.desc.fallback_alt_ME
+			}
+			triggered_desc = {
+				trigger = {				
 					religion = religion:islam_religion
 				}
 				desc = sicily.0060.desc.muslim
@@ -2619,7 +2672,7 @@ sicily.0060 = {
 		animation = war_over_win
 	}
 	right_portrait = {
-		character = scope:benavert
+		character = scope:spotlight_muslim
 		animation = marshal
 	}
 
@@ -2661,24 +2714,44 @@ sicily.0060 = {
 			save_scope_as = robert
 		}		
 
-		title:c_palermo.holder = { # palermo
-			save_scope_as = palermo
-		}		
-
-		title:c_agrigento.holder = { # agrigento
-			save_scope_as = agrigento
-		}		
-
-		title:c_malta.holder = { # Palermo
+		title:c_malta.holder = { # Malta
 			save_scope_as = malta
 		}	
+
+		if = { # For Muslim Enhancements
+			limit = { title:d_sicily.holder.liege = { has_title = title:k_africa } }
+			character:baranis0027 = { # Sicilian Zirid (Ayyub ibn Tamim)
+				save_scope_as = spotlight_muslim
+			}		
+
+			character:20825 = { # African Zirid (Tamim ibn al-Mu'izz)
+				save_scope_as = zirid_father
+			}
+
+			title:k_africa.holder = { # So that the African ruler can show up in the lower right portrait and gain inspiration
+				save_scope_as = palermo
+			}	
+		}
+		else = {
+			character:20829 = { # Ibn Abbad (Benavert)
+				save_scope_as = spotlight_muslim
+			}		
+
+			title:c_palermo.holder = { # palermo
+				save_scope_as = palermo
+			}
+
+			title:c_agrigento.holder = { # agrigento
+				save_scope_as = agrigento
+			}			
 		
-		title:c_siracusa.holder = {
-			save_scope_as = syracuse
+			title:c_siracusa.holder = {
+				save_scope_as = syracuse
+			}
 		}
 
 		show_as_tooltip = {	
-			scope:benavert = {
+			scope:spotlight_muslim = {
 				add_character_modifier = {
 					modifier = RICE_sicily_aspiration_reunify_sicily
 				}
