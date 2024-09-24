@@ -253,27 +253,27 @@ RICE_pirate_mediterranean_decision = {
 			}
 		}
 		
-		### Compensate Victims
-		item = {
-			value = RICE_pirate_compensate_victims
-			is_valid = {
-				custom_description = {
-					text = RICE_pirate_mediterranean_decision_requirement_1
-					OR = {					
-						has_character_modifier = RICE_pirate_mediterranean_connections_modifier
-						any_held_county = { 
-							RICE_lesbos_has_pirate_den_trigger = yes
-						}
-					}
-				}
-			}
-			current_description = RICE_pirate_compensate_victims_desc
-			localization = RICE_pirate_compensate_victims_name
-			icon = "gfx/interface/icons/widgets/RICE_pirate_compensate_victims.dds"
-			ai_chance = {
-				value = 10
-			}
-		}
+		# ### Compensate Victims
+		# item = {
+		# 	value = RICE_pirate_compensate_victims
+		# 	is_valid = {
+		# 		custom_description = {
+		# 			text = RICE_pirate_mediterranean_decision_requirement_1
+		# 			OR = {					
+		# 				has_character_modifier = RICE_pirate_mediterranean_connections_modifier
+		# 				any_held_county = { 
+		# 					RICE_lesbos_has_pirate_den_trigger = yes
+		# 				}
+		# 			}
+		# 		}
+		# 	}
+		# 	current_description = RICE_pirate_compensate_victims_desc
+		# 	localization = RICE_pirate_compensate_victims_name
+		# 	icon = "gfx/interface/icons/widgets/RICE_pirate_compensate_victims.dds"
+		# 	ai_chance = {
+		# 		value = 10
+		# 	}
+		# }
 		
 
 	}
@@ -284,24 +284,55 @@ RICE_pirate_mediterranean_decision = {
 	
 	ai_potential = {
 		short_term_gold > medium_prestige_value
+		short_term_gold > minor_gold_value
 	}
 
 	effect = {
 
-		RICE_pirate_decision_basic_effect = yes
+		#RICE_pirate_decision_basic_effect = yes
 		
 		if = {
 			limit = {
 				is_ai = yes
 			}
 
-			random_list = {
-				10 = {
-
+			if = {
+				limit = {
+					NOR = {
+						has_character_modifier = RICE_pirate_mediterranean_connections_modifier
+						any_held_county = { 
+							RICE_lesbos_has_pirate_den_trigger = yes
+						}						
+					}
 				}
-				10 = {
+				trigger_event = lesbos.0060
+			}
 
+			else = {
+				random_list = {
+					10 = {
+						trigger_event = lesbos.0061
+					}
+					10 = {
+						trigger_event = lesbos.0062
+					}
+					10 = {
+						trigger = {
+							gold >= medium_gold_value
+						}
+						trigger_event = lesbos.0063
+					}
+					10 = {
+						trigger = {
+							gold >= RICE_pirate_ransom_min_value
+						}
+						trigger_event = lesbos.0064
+					}
+					# 10 = {
+					# 	trigger_event = lesbos.0065
+					# }
 				}
+
 			}
 		}
 
@@ -309,49 +340,58 @@ RICE_pirate_mediterranean_decision = {
 			limit = { scope:RICE_pirate_establish_relations = yes }
 			show_as_tooltip = {
 				custom_tooltip = RICE_pirate_establish_relations_effect_tooltip_1
+				RICE_mediterranean_pirates_establish_relations_effect = yes
 			}
-			trigger_event = lesbos.8888
+			trigger_event = lesbos.0060
 		}
 
 		else_if = {
 			limit = { scope:RICE_pirate_acquire_booty = yes }
 			show_as_tooltip = {
 				custom_tooltip = RICE_pirate_acquire_booty_effect_tooltip_1
+				RICE_pirates_acquire_booty_effect = yes
+				# Can't show amount as it is randomized
+				#RICE_pirates_acquire_booty_gold_effect = yes
 			}
-			trigger_event = lesbos.8888
+			trigger_event = lesbos.0061
 		}
 
 		else_if = {
 			limit = { scope:RICE_pirate_authorize_sales = yes }
 			show_as_tooltip = {
-				custom_tooltip = RICE_pirate_authorize_sales_effect_tooltip_1
+				#custom_tooltip = RICE_pirate_authorize_sales_effect_tooltip_1
+				RICE_mediterranean_pirates_authorize_sales_effect = yes	
 			}
-			trigger_event = lesbos.8888
+			trigger_event = lesbos.0062
 		}
 
 		else_if = {
 			limit = { scope:RICE_pirate_recruit_pirates = yes }
 			show_as_tooltip = {
 				custom_tooltip = RICE_pirate_recruit_pirates_effect_tooltip_1
+				RICE_pirates_recruit_pirates_effect = yes
+				# Can't show amount as it is randomized
+				#RICE_pirates_recruit_pirates_soldiers_effect = yes
 			}
-			trigger_event = lesbos.8888
+			trigger_event = lesbos.0063
 		}
 
 		else_if = {
 			limit = { scope:RICE_pirate_ransom_prisoners = yes }
 			show_as_tooltip = {
 				custom_tooltip = RICE_pirate_ransom_prisoners_effect_tooltip_1
+				RICE_mediterranean_pirates_ransom_prisoners_effect = yes	
 			}
-			trigger_event = lesbos.8888
+			trigger_event = lesbos.0064
 		}
 
-		else_if = {
-			limit = { scope:RICE_pirate_compensate_victims = yes }
-			show_as_tooltip = {
-				custom_tooltip = RICE_pirate_compensate_victims_effect_tooltip_1
-			}
-			trigger_event = lesbos.8888
-		}
+		# else_if = {
+		# 	limit = { scope:RICE_pirate_compensate_victims = yes }
+		# 	show_as_tooltip = {
+		# 		custom_tooltip = RICE_pirate_compensate_victims_effect_tooltip_1
+		# 	}
+		# 	trigger_event = lesbos.0065
+		# }
 
 		if = {
 			limit = {
