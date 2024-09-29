@@ -932,6 +932,100 @@ harran.0010 = {
 	}
 }
 
+# Ping event
+harran.0011 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+
+		set_global_variable = {
+			name = RICE_nabataean_ibn_wahshiyya_book_done
+			value = yes
+		}
+
+		save_scope_as = ibn_wahshiyya
+
+		culture:nabati = {
+			save_scope_as = nabataean
+		}
+
+		faith:south_mesopotamian_pagan = {
+			save_scope_as = kasdanian
+		}
+
+		RICE_nabataean_ibn_wahshiyya_decision_effect = yes
+
+		hidden_effect_new_object = {
+			#set_artifact_rarity_famed = yes
+			create_artifact = {
+				name = RICE_nabataean_agriculture_book_name
+				description = RICE_nabataean_agriculture_book_desc
+				type = miscellaneous
+				visuals = RICE_book_placeholder					
+				quality = 100
+				wealth = 100
+				modifier = artifact_learning_1_modifier
+				save_scope_as = nabataean_agriculture
+			}
+			scope:nabataean_agriculture = {
+				add_artifact_modifier = artifact_stewardship_1_modifier
+				add_artifact_modifier = artifact_domain_tax_mult_1_modifier
+				add_artifact_modifier = artifact_development_growth_2_modifier
+				add_artifact_modifier = artifact_build_gold_cost_2_modifier
+			}
+		}
+
+		# All rulers with Ibn Wahshiyya's diplomatic range
+		every_ruler = {
+			limit = {
+				is_playable_character = yes
+				OR = {
+					this = scope:ibn_wahshiyya
+					any_liege_or_above = { this = scope:ibn_wahshiyya }
+					any_vassal_or_below = { this = scope:ibn_wahshiyya }
+					in_diplomatic_range = scope:ibn_wahshiyya
+				}
+			}
+			trigger_event = harran.0012
+		}
+	}
+
+}
+
+# Finish writing the Nabataean Agriculture - notification event
+harran.0012 = {
+	type = character_event
+	title = harran.0012.t
+	desc = harran.0012.desc
+	theme = learning
+	
+	left_portrait = {
+		character = scope:ibn_wahshiyya
+		animation = page_flipping
+	}
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:nabataean_agriculture
+		position = lower_center_portrait
+	}
+	
+	immediate = {
+		show_as_tooltip = {
+			scope:nabataean_agriculture = {
+				set_owner = {
+					target = scope:ibn_wahshiyya
+				}
+			}
+		}
+	}
+
+	option = { # OK
+		name = harran.0012.a
+	}
+
+}
+
 
 
 
