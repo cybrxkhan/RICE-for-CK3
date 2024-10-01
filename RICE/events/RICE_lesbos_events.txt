@@ -91,64 +91,78 @@ lesbos.0021 = {
 
 	after = {
 		
-		# hidden_effect = {
-		# 	random = {
-		# 		chance = 25
-		# 		trigger_event = {
-		# 			id = lesbos.0024
-		# 			days = { 5 32 }
-		# 		}
-		# 	}
-		# 	random = {
-		# 		chance = 25
-		# 		trigger_event = {
-		# 			id = lesbos.0025
-		# 			days = { 5 32 }
-		# 		}
-		# 	}
-		# 	random = {
-		# 		chance = 25
-		# 		trigger_event = {
-		# 			id = lesbos.0026
-		# 			days = { 5 32 }
-		# 		}
-		# 	}
-		# 	random = {
-		# 		chance = 25
-		# 		trigger_event = {
-		# 			id = lesbos.0027
-		# 			days = { 5 32 }
-		# 		}
-		# 	}
-		# 	random = {
-		# 		chance = 25
-		# 		trigger_event = {
-		# 			id = lesbos.0028
-		# 			days = { 5 32 }
-		# 		}
-		# 	}
-		# 	random = {
-		# 		chance = 25
-		# 		trigger_event = {
-		# 			id = lesbos.0029
-		# 			days = { 5 32 }
-		# 		}
-		# 	}
-		# 	random = {
-		# 		chance = 25
-		# 		trigger_event = {
-		# 			id = lesbos.0030
-		# 			days = { 5 32 }
-		# 		}
-		# 	}
-		# 	random = {
-		# 		chance = 25
-		# 		trigger_event = {
-		# 			id = lesbos.0031
-		# 			days = { 5 32 }
-		# 		}
-		# 	}
-		# }
+		hidden_effect = {
+			random = {
+				chance = 25
+				trigger_event = {
+					id = lesbos.0025
+					days = { 3 28 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = lesbos.0026
+					days = { 3 28 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = lesbos.0027
+					days = { 3 28 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = lesbos.0028
+					days = { 3 28 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = lesbos.0029
+					days = { 3 28 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = lesbos.0030
+					days = { 3 28 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = lesbos.0031
+					days = { 3 28 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = lesbos.0032
+					days = { 3 28 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = lesbos.0033
+					days = { 3 28 }
+				}
+			}
+			random = {
+				chance = 25
+				trigger_event = {
+					id = lesbos.0034
+					days = { 3 28 }
+				}
+			}
+		}
 
 		# Technically only a few days, but we're extending it to make events feel less spammy
 		trigger_event = {
@@ -241,6 +255,537 @@ lesbos.0023 = {
 	}
 	
 }
+
+
+# Religious authorities disapprove
+lesbos.0025 = {
+	type = activity_event
+	title = lesbos.0025.t
+	desc = lesbos.0025.desc
+	theme = RICE_theme_kalends_celebration
+	
+	left_portrait = {
+		character = scope:chaplain
+		animation = disapproval
+	}
+	
+	right_portrait = {
+		character = root
+		animation = drink_goblet
+	}
+
+	trigger = {
+		NOT = { religion = religion:hellenism_religion }
+		any_liege_or_above = {
+			NOT = { religion = scope:host.religion }
+		}
+		cp:councillor_court_chaplain = {
+			exists = yes
+			is_available_adult = yes
+		}
+	}
+
+	immediate = {
+		cp:councillor_court_chaplain = { save_scope_as = chaplain }
+	}
+	
+	option = { # ok
+		name = lesbos.0025.a
+		add_prestige = 50
+		scope:chaplain = {
+			add_opinion = {
+				target = root
+				modifier = disappointed_opinion
+				opinion = -10
+			}
+		}
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+			chaste = miniscule_stress_impact_gain
+			shy = miniscule_stress_impact_gain
+		}
+	}
+	
+	option = { # ok
+		name = lesbos.0025.b
+		add_piety = 50
+		scope:chaplain = {
+			add_opinion = {
+				target = root
+				modifier = pleased_opinion
+				opinion = 10
+			}
+		}
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+			lustful = miniscule_stress_impact_gain
+			gregarious = miniscule_stress_impact_gain
+		}
+	}
+	
+}
+
+
+# Religious identity under other religions' rule - visit house of worship
+lesbos.0026 = {
+	type = activity_event
+	title = lesbos.0026.t
+	desc = lesbos.0026.desc
+	theme = faith
+	
+	right_portrait = {
+		character = root
+		animation = prayer
+	}
+	
+	lower_center_portrait = scope:liege
+
+	trigger = {
+		any_liege_or_above = {
+			NOT = { religion = root.religion }
+		}
+	}
+
+	immediate = {
+		random_liege_or_above = {
+			limit = {
+				NOT = { religion = root.religion }
+			}
+			save_scope_as = liege
+		}
+	}
+	
+	option = { # ok
+		name = lesbos.0026.a
+		add_piety = 25
+		stress_impact = {
+			zealous = minor_stress_impact_loss
+			diligent = miniscule_stress_impact_loss
+		}
+	}
+	
+}
+
+
+# Feasting fun
+lesbos.0027 = {
+	type = activity_event
+	title = lesbos.0027.t
+	desc = lesbos.0027.desc
+	theme = feast_activity
+	
+	right_portrait = {
+		character = root
+		animation = toast_goblet
+	}
+	
+	option = { # ok
+		name = lesbos.0027.a
+		add_prestige = 25
+		stress_impact = {
+			gluttonous = minor_stress_impact_loss
+			generous = miniscule_stress_impact_loss
+			gregarious = miniscule_stress_impact_loss
+		}
+	}
+	
+	option = { # ok
+		name = lesbos.0027.b
+		add_prestige = 25
+		stress_impact = {
+			temperate = minor_stress_impact_loss
+			patient = miniscule_stress_impact_loss
+			calm = miniscule_stress_impact_loss
+		}
+	}
+	
+}
+
+
+# Masquerade outside
+lesbos.0028 = {
+	type = activity_event
+	title = lesbos.0028.t
+	desc = lesbos.0028.desc
+	theme = RICE_theme_kalends_celebration
+	
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+	
+	option = { # ok
+		name = lesbos.0028.a
+		add_prestige = 25
+		stress_impact = {
+			shy = miniscule_stress_impact_gain
+			zealous = miniscule_stress_impact_gain
+		}
+	}
+	
+	option = { # ok
+		name = lesbos.0028.b
+		add_prestige = 50
+		add_piety = -25
+		stress_impact = {
+			shy = minor_stress_impact_gain
+			zealous = minor_stress_impact_gain
+		}
+		random_list = {
+			50 = {
+				add_character_modifier = {
+					modifier = RICE_kalends_dressed_up_as_animal
+					years = 3
+				}
+			}
+			50 = {
+				add_character_modifier = {
+					modifier = RICE_kalends_crossdressed
+					years = 3
+				}
+			}
+		}
+	}
+	
+	option = { # ok
+		name = lesbos.0028.c
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+	}
+	
+}
+
+
+# Children singing carols
+lesbos.0029 = {
+	type = activity_event
+	title = lesbos.0029.t
+	desc = lesbos.0029.desc
+	theme = RICE_theme_kalends_celebration
+	
+	right_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	
+	option = { # ok
+		name = lesbos.0029.a
+		add_piety = 15
+		stress_impact = {
+			greedy = miniscule_stress_impact_gain
+		}
+	}
+	
+	option = { # ok
+		name = lesbos.0029.b		
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 15
+			}
+		}
+		remove_short_term_gold = 15
+		add_piety = 50
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+			arbitrary = miniscule_stress_impact_gain
+		}
+	}
+	
+	option = { # ok
+		name = lesbos.0029.c
+		trigger = {
+			OR = {
+				#has_trait = sadistic
+				#has_trait = arbitrary
+				has_trait = callous
+				has_trait = arrogant
+				has_trait = greedy
+			}
+		}
+		show_as_unavailable = {
+			NOR = {
+				has_trait = callous
+				has_trait = arrogant
+				has_trait = greedy
+			}
+		}
+		trait = callous
+		trait = arrogant
+		trait = greedy
+		add_piety = -50
+		stress_impact = {
+			greedy = minor_stress_impact_loss
+			arrogant = miniscule_stress_impact_loss
+			arbitrary = miniscule_stress_impact_loss
+		}
+	}
+	
+}
+
+
+
+# Someone got sick
+lesbos.0030 = {
+	type = activity_event
+	title = lesbos.0030.t
+	desc = lesbos.0030.desc
+	theme = feast_activity
+	
+	left_portrait = {
+		character = scope:eater
+		animation = sick_stomach
+	}
+	
+	right_portrait = {
+		character = root
+		animation = shock
+	}
+
+	trigger = {
+		scope:activity = {
+			any_attending_character = {
+				RICE_activity_participant_trigger = yes
+				NOT = { has_trait = temperate }
+			}
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			random_attending_character = {
+				limit = {
+					RICE_activity_participant_trigger = yes
+					NOT = { has_trait = temperate }
+				}
+				save_scope_as = eater
+				add_character_modifier = {
+					modifier = RICE_lesbos_sick_from_kalends_feasting
+					years = 2
+				}
+			}
+		}
+	}
+	
+	option = { # ok
+		name = lesbos.0030.a
+	}
+	
+}
+
+# Thinking about gift-giving
+lesbos.0031 = {
+	type = activity_event
+	title = lesbos.0031.t
+	desc = lesbos.0031.desc
+	theme = RICE_theme_kalends_celebration
+
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+	
+	option = { # ok
+		name = lesbos.0031.a
+		add_piety = 20
+		stress_impact = {
+			greedy = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+		}
+	}
+	
+	option = { # ok
+		name = lesbos.0031.b
+		add_prestige = 20
+		stress_impact = {
+			generous = miniscule_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+			patient = miniscule_stress_impact_gain
+			content = miniscule_stress_impact_gain
+		}
+	}
+	
+}
+
+# Partying in town
+lesbos.0032 = {
+	type = activity_event
+	title = lesbos.0032.t
+	desc = lesbos.0032.desc
+	theme = RICE_theme_kalends_celebration
+
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:participant
+		animation = dancing
+		trigger = {
+			scope:activity = {
+				any_attending_character = {
+					RICE_activity_participant_trigger = yes
+				}
+			}
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				scope:activity = {
+					any_attending_character = {
+						RICE_activity_participant_trigger = yes
+					}
+				}				
+			}
+			scope:activity = {
+				random_attending_character = {
+					limit = {
+						RICE_activity_participant_trigger = yes
+					}
+					save_scope_as = participant
+				}
+			}
+		}
+	}
+	
+	option = { # ok
+		name = lesbos.0032.a
+		add_prestige = 20
+		stress_impact = {
+			shy = minor_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+		}
+	}
+	
+	option = { # ok
+		name = lesbos.0032.b
+		add_piety = 20
+		stress_impact = {
+			gregarious = minor_stress_impact_gain
+			lustful = miniscule_stress_impact_gain
+		}
+	}
+	
+}
+
+# Eating with slaves and servants
+lesbos.0033 = {
+	type = activity_event
+	title = lesbos.0033.t
+	desc = lesbos.0033.desc
+	theme = feast_activity
+
+	
+	left_portrait = {
+		character = root
+		animation = drink_goblet
+	}
+	right_portrait = {
+		character = scope:participant
+		animation = toast_goblet
+		trigger = {
+			scope:activity = {
+				any_attending_character = {
+					RICE_activity_participant_trigger = yes
+				}
+			}
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				scope:activity = {
+					any_attending_character = {
+						RICE_activity_participant_trigger = yes
+					}
+				}				
+			}
+			scope:activity = {
+				random_attending_character = {
+					limit = {
+						RICE_activity_participant_trigger = yes
+					}
+					save_scope_as = participant
+				}
+			}
+		}
+	}
+	
+	option = { # ok
+		name = lesbos.0033.a
+		add_piety = 20
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			paranoid = miniscule_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+			greedy = miniscule_stress_impact_gain
+		}
+	}
+	
+	option = { # ok
+		name = lesbos.0033.b
+		add_prestige = 20
+		stress_impact = {
+			humble = minor_stress_impact_gain
+			gregarious = miniscule_stress_impact_gain
+			compassionate = miniscule_stress_impact_gain
+			generous = miniscule_stress_impact_gain
+		}
+	}
+	
+}
+
+# Invite some foreigners nearby to join in?
+lesbos.0034 = {
+	type = activity_event
+	title = lesbos.0034.t
+	desc = lesbos.0034.desc
+	theme = RICE_theme_kalends_celebration
+
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # ok
+		name = lesbos.0034.a
+		add_piety = 20
+		stress_impact = {
+			shy = minor_stress_impact_gain
+			paranoid = miniscule_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+	
+	option = { # ok
+		name = lesbos.0034.b
+		add_prestige = 20
+		stress_impact = {
+			gregarious = minor_stress_impact_gain
+			generous = miniscule_stress_impact_gain
+			compassionate = miniscule_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+		}
+	}
+	
+}
+
+
+
+
 
 
 ######################################################################################
