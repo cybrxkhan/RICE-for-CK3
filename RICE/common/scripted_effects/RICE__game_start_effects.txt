@@ -416,7 +416,7 @@ RICE_setup_admin_government_effect = {
 			limit = {
 				exists = title:e_kara_khitai
 			}
-			title:e_kara_khitai.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
+			title:e_kara_khitai.holder ?= { RICE_convert_to_administrative_from_feudalism_game_start_khitan_effect = yes }
 		}
 		if = {
 			limit = {
@@ -428,7 +428,7 @@ RICE_setup_admin_government_effect = {
 			limit = {
 				exists = title:k_guiyi
 			}
-			title:k_guiyi.holder ?= { convert_to_administrative_from_feudalism_game_start_effect = yes }
+			title:k_guiyi.holder ?= { RICE_convert_to_administrative_from_feudalism_game_start_dunhuang_effect = yes }
 		}
 	}
 }
@@ -963,7 +963,7 @@ RICE_setup_misc_after_effect = {
 				}
 			}
 			# 100 Years
-			10 = {
+			25 = {
 				set_global_variable = {
 					name = RICE_yarsani_start_timer
 					value = yes
@@ -971,7 +971,7 @@ RICE_setup_misc_after_effect = {
 				}
 			}
 			# 150 Years
-			10 = {
+			25 = {
 				set_global_variable = {
 					name = RICE_yarsani_start_timer
 					value = yes
@@ -1345,3 +1345,100 @@ RICE_setup_override_CE_effect = {
 
 # }
 
+# Variation of vanilla's scripted effect "convert_to_administrative_from_feudalism_game_start_effect"
+# This one makes it so the Khitan's non-Chinese/Sinic/Khitan vassals remain feudal 
+RICE_convert_to_administrative_from_feudalism_game_start_khitan_effect = {
+	if = {
+		limit = { has_dlc_feature = roads_to_power }
+		# Because we run this twice, since folks can change in the lobby.
+		if = {
+			limit = {
+				NOT = { government_has_flag = government_is_administrative }
+			}
+			change_government = administrative_government
+			create_noble_family_effect = yes
+			add_to_list = estatified_list
+		}
+
+		every_vassal_or_below = {
+			limit = {
+				highest_held_title_tier >= tier_county
+				OR = {
+					culture = culture:khitan
+					culture = { has_cultural_pillar = heritage_chinese }
+					culture = { has_cultural_pillar = heritage_korean }
+					culture = { has_cultural_pillar = heritage_vietic }
+				}
+				# OR = {
+				# 	government_has_flag = government_is_feudal
+				# 	government_has_flag = government_is_clan
+				# 	government_has_flag = government_is_tribal
+				# }
+				NOR = {
+					faith.religious_head ?= this
+					liege = {
+						faith.religious_head ?= this
+						is_independent_ruler = no
+					}
+					AND = {
+						exists = scope:ignore_culture
+						culture = scope:ignore_culture
+					}
+				}
+			}
+			change_to_administrative_effect = yes
+		}
+
+	}
+
+}
+
+# Variation of vanilla's scripted effect "convert_to_administrative_from_feudalism_game_start_effect"
+# This one makes it so the Guiyi's non-Chinese/Sinic/Sogdian vassals remain feudal 
+RICE_convert_to_administrative_from_feudalism_game_start_dunhuang_effect = {
+	if = {
+		limit = { has_dlc_feature = roads_to_power }
+		# Because we run this twice, since folks can change in the lobby.
+		if = {
+			limit = {
+				NOT = { government_has_flag = government_is_administrative }
+			}
+			change_government = administrative_government
+			create_noble_family_effect = yes
+			add_to_list = estatified_list
+		}
+
+		every_vassal_or_below = {
+			limit = {
+				highest_held_title_tier >= tier_county
+				OR = {
+					culture = culture:khitan
+					culture = { has_cultural_pillar = heritage_chinese }
+					culture = { has_cultural_pillar = heritage_korean }
+					culture = { has_cultural_pillar = heritage_vietic }
+					culture = culture:sogdian
+				}
+				NOT = { culture = culture:wenmo } # They should not be admin to reflect their weird situation
+				# OR = {
+				# 	government_has_flag = government_is_feudal
+				# 	government_has_flag = government_is_clan
+				# 	government_has_flag = government_is_tribal
+				# }
+				NOR = {
+					faith.religious_head ?= this
+					liege = {
+						faith.religious_head ?= this
+						is_independent_ruler = no
+					}
+					AND = {
+						exists = scope:ignore_culture
+						culture = scope:ignore_culture
+					}
+				}
+			}
+			change_to_administrative_effect = yes
+		}
+
+	}
+
+}
