@@ -1159,42 +1159,49 @@ RICE_sicily_support_salerno_medical_school = {
 
 	is_shown = {
 		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
-		is_landed = yes
-		#has_title = title:c_salerno
-		any_held_county = {
-			any_county_province = {
-				geographical_region = custom_sicily
+		OR = {
+			AND = {
+				is_landed = yes
+				any_held_county = {
+					any_county_province = {
+						geographical_region = custom_sicily
+					}
+				}
+			}
+			AND = {				
+				is_landless_ruler = yes
+				location = {
+					geographical_region = custom_sicily
+				}
 			}
 		}
 	}
-
 	is_valid = {
-		#has_title = title:c_salerno	
-		any_held_county = {
-			any_county_province = {
-				geographical_region = custom_sicily
+		OR = {
+			AND = {
+				is_landed = yes
+				custom_description = {
+					text = RICE_own_sicily_county
+					any_held_county = {
+						any_county_province = {
+							geographical_region = custom_sicily
+						}
+					}
+				}
+			}
+			AND = {				
+				is_landless_ruler = yes
+				custom_description = {
+					text = RICE_location_sicily_county
+					location = {
+						geographical_region = custom_sicily
+					}
+				}
 			}
 		}
 		title:c_salerno = {
 			has_county_modifier = RICE_sicily_salerno_medical_school_modifier
 		}	
-		# trigger_if = {
-		# 	limit = {
-		# 		NOT = {
-		# 			title:b_salerno.title_province = {
-		# 				has_building = RICE_sicily_salerno_medical_school
-		# 			}
-		# 		}
-		# 	}
-		# 	title:b_salerno.title_province = {
-		# 		has_holding = yes
-		# 	}
-		# }
-		# trigger_else = {
-		# 	title:b_salerno.title_province = {
-		# 		has_building = RICE_sicily_salerno_medical_school
-		# 	}
-		# }
 	}
 
 	is_valid_showing_failures_only = {
@@ -1270,11 +1277,17 @@ RICE_sicily_virgil_divination_decision = {
 	cooldown = { days = 3650 }
 
 	is_shown = {
+		is_playable_character = yes
 		OR = {
 			RICE_is_greco_roman_religion_group_trigger = yes
 			AND = {
-				root.capital_county = {
-					title_province = { geographical_region = custom_roman_full_borders }
+				OR = {
+					root.capital_county ?= {
+						title_province = { geographical_region = custom_roman_full_borders }
+					}
+					domicile.domicile_location ?= {
+						geographical_region = custom_roman_full_borders
+					}
 				}
 				OR = {
 					learning >= medium_skill_rating	
@@ -1283,21 +1296,31 @@ RICE_sicily_virgil_divination_decision = {
 					has_trait = lifestyle_mystic
 				}				
 			}
-			learning >= medium_skill_rating
 			has_character_flag = RICE_sicily_can_do_virgil_divination
 		}
 	}
 
 	is_valid = {
-		#is_available_adult = yes
 		OR = {
 			RICE_is_greco_roman_religion_group_trigger = yes
-			AND = {			
+			custom_description = {
+				text = "RICE_sicily_virgil_divination_decision_activity_req"
+				has_character_flag = RICE_sicily_can_do_virgil_divination
+			}
+			AND = {		
 				# Capital is in the former Roman Empire
-				custom_description = {
-					text = "RICE_old_roman_empire_geographical_req"
-					root.capital_county = {
-						title_province = { geographical_region = custom_roman_full_borders }
+				OR = {
+					custom_description = {
+						text = "RICE_old_roman_empire_geographical_req"
+						root.capital_county ?= {
+							title_province = { geographical_region = custom_roman_full_borders }
+						}
+					}
+					custom_description = {
+						text = "RICE_old_roman_empire_domicile_geographical_req"
+						domicile.domicile_location ?= {
+							geographical_region = custom_roman_full_borders
+						}
 					}
 				}
 				OR = {
@@ -1306,10 +1329,6 @@ RICE_sicily_virgil_divination_decision = {
 					has_trait = theologian
 					has_trait = lifestyle_mystic
 				}
-			}
-			custom_description = {
-				text = "RICE_sicily_virgil_divination_decision_activity_req"
-				has_character_flag = RICE_sicily_can_do_virgil_divination
 			}
 		}
 	}

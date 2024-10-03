@@ -12,7 +12,7 @@ RICE_harran_write_scholarly_treatise = {
 		NOT = { has_global_variable = RICE_harran_neoplatonic_academy_in_athens }
 		NOT = { has_global_variable = RICE_harran_neoplatonic_academy_wandering }
 		is_ruler = yes
-		is_landed = yes
+		is_playable_character = yes
 		has_faith = faith:harranian_pagan
 	}
 	
@@ -86,17 +86,30 @@ RICE_harran_make_offerings_moon_temple = {
 				target = flag:RICE_harran_moon_temple_destroyed
 			}
 		}
-		is_ruler = yes
-		is_landed = yes
+		is_playable_character = yes
 		faith.religion = { is_in_family = rf_pagan }
 		OR = {
-			has_title = title:c_harran
-			title:c_harran = {
-				squared_distance = {
-					target = root.capital_province
-					value <= squared_distance_small
+			AND = {
+				is_landless_ruler = yes
+				title:c_harran = {
+					squared_distance = {
+						target = root.location
+						value <= squared_distance_small
+					}
+				}				
+			}
+			AND = {
+				is_landed = yes
+				OR = {
+					has_title = title:c_harran
+					title:c_harran = {
+						squared_distance = {
+							target = root.capital_province
+							value <= squared_distance_small
+						}
+					}	
 				}
-			}		
+			}	
 		}
 	}
 	
@@ -105,34 +118,37 @@ RICE_harran_make_offerings_moon_temple = {
 			text = RICE_decision_pagan_requirement
 			faith.religion = { is_in_family = rf_pagan }
 		}
-		OR = {
-			has_title = title:c_harran
-			custom_description = {
-				text = "RICE_harran_geography_req"
-				title:c_harran = {
-					squared_distance = {
-						target = root.capital_province
-						value <= squared_distance_small
-					}
-				}
-			}			
-			AND = {
+		trigger_if = {
+			limit = { is_landed = yes }
+			OR = {
+				has_title = title:c_harran
 				custom_description = {
-					text = "RICE_harran_geography_own_county_req"	
-					any_held_county = {
-						any_county_province = {
-							OR = {
-								geographical_region = world_asia_minor
-								geographical_region = world_mesopotamia
-								geographical_region = world_jazira
-								geographical_region = custom_roman_syria_palestina
-								geographical_region = RICE_khuzestan_region
+					text = "RICE_harran_geography_req"
+					title:c_harran = {
+						squared_distance = {
+							target = root.capital_province
+							value <= squared_distance_small
+						}
+					}
+				}			
+				AND = {
+					custom_description = {
+						text = "RICE_harran_geography_own_county_req"	
+						any_held_county = {
+							any_county_province = {
+								OR = {
+									geographical_region = world_asia_minor
+									geographical_region = world_mesopotamia
+									geographical_region = world_jazira
+									geographical_region = custom_roman_syria_palestina
+									geographical_region = RICE_khuzestan_region
+								}
 							}
 						}
 					}
-				}
-				piety_level >= 4
-			}		
+					piety_level >= 4
+				}		
+			}
 		}
 	}
 	
@@ -277,51 +293,31 @@ RICE_harran_patronize_the_neoplatonic_academy = {
 
 	is_shown = {
 		is_ruler = yes
-		is_landed = yes
+		is_playable_character = yes
 		highest_held_title_tier > tier_barony
 		OR = {
-			title:c_harran = {
-				squared_distance = {
-					target = root.capital_province
-					value <= squared_distance_small
-				}
-			}
-			capital_province = {
+			AND = {
+				is_landless_ruler = yes
 				OR = {
-					geographical_region = world_asia_minor
-					geographical_region = world_mesopotamia
-					geographical_region = world_jazira
-					geographical_region = custom_roman_syria_palestina
-					geographical_region = RICE_khuzestan_region
-				}
-			}	
-			any_held_county = {
-				any_county_province = {
-					OR = {
-						geographical_region = world_asia_minor
-						geographical_region = world_mesopotamia
-						geographical_region = world_jazira
-						geographical_region = custom_roman_syria_palestina
-						geographical_region = RICE_khuzestan_region
+					title:c_harran = {
+						squared_distance = {
+							target = root.location
+							value <= squared_distance_small
+						}
 					}
-				}
-			}	
-		}
-		NOT = {
-			is_target_in_global_variable_list = {
-				name = unavailable_unique_decisions
-				target = flag:RICE_harran_neoplatonic_academy_declined
+					location = {
+						OR = {
+							geographical_region = world_asia_minor
+							geographical_region = world_mesopotamia
+							geographical_region = world_jazira
+							geographical_region = custom_roman_syria_palestina
+							geographical_region = RICE_khuzestan_region
+						}
+					}
+				}				
 			}
-		}
-		NOT = { has_global_variable = RICE_harran_neoplatonic_academy_in_athens }
-		NOT = { has_global_variable = RICE_harran_neoplatonic_academy_wandering }
-	}
-	
-	is_valid = {
-		OR = {
-			has_title = title:c_harran
-			custom_description = {
-				text = "RICE_harran_geography_req"
+			AND = {
+				is_landed = yes
 				OR = {
 					title:c_harran = {
 						squared_distance = {
@@ -337,12 +333,7 @@ RICE_harran_patronize_the_neoplatonic_academy = {
 							geographical_region = custom_roman_syria_palestina
 							geographical_region = RICE_khuzestan_region
 						}
-					}			
-				}
-			}
-			AND = {
-				custom_description = {
-					text = "RICE_harran_geography_own_county_req"	
+					}	
 					any_held_county = {
 						any_county_province = {
 							OR = {
@@ -353,15 +344,68 @@ RICE_harran_patronize_the_neoplatonic_academy = {
 								geographical_region = RICE_khuzestan_region
 							}
 						}
-					}
-				}
-				OR = {
-					prestige_level >= 4
-					learning >= high_skill_rating
-					has_trait = scholar
+					}	
 				}
 			}
-
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_harran_neoplatonic_academy_declined
+			}
+		}
+		NOT = { has_global_variable = RICE_harran_neoplatonic_academy_in_athens }
+		NOT = { has_global_variable = RICE_harran_neoplatonic_academy_wandering }
+	}
+	
+	is_valid = {
+		trigger_if = {
+			limit = { is_landed = yes }
+			OR = {
+				has_title = title:c_harran
+				custom_description = {
+					text = "RICE_harran_geography_req"
+					OR = {
+						title:c_harran = {
+							squared_distance = {
+								target = root.capital_province
+								value <= squared_distance_small
+							}
+						}
+						capital_province = {
+							OR = {
+								geographical_region = world_asia_minor
+								geographical_region = world_mesopotamia
+								geographical_region = world_jazira
+								geographical_region = custom_roman_syria_palestina
+								geographical_region = RICE_khuzestan_region
+							}
+						}			
+					}
+				}
+				AND = {
+					custom_description = {
+						text = "RICE_harran_geography_own_county_req"	
+						any_held_county = {
+							any_county_province = {
+								OR = {
+									geographical_region = world_asia_minor
+									geographical_region = world_mesopotamia
+									geographical_region = world_jazira
+									geographical_region = custom_roman_syria_palestina
+									geographical_region = RICE_khuzestan_region
+								}
+							}
+						}
+					}
+					OR = {
+						prestige_level >= 4
+						learning >= high_skill_rating
+						has_trait = scholar
+					}
+				}
+	
+			}
 		}
 		OR = {
 			NOT = { has_trait = zealous }
@@ -716,8 +760,7 @@ RICE_harran_pray_to_a_planet = {
 	selection_tooltip = RICE_harran_pray_to_a_planet_tooltip
 
 	is_shown = {
-		is_ruler = yes
-		is_landed = yes
+		is_playable_character = yes
 		religion = religion:semitic_religion
 	}
 	

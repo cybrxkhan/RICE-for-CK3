@@ -12,22 +12,38 @@ RICE_tarim_basin_patronize_a_mogao_cave = {
 	is_shown = {
 		exists = dynasty # Don't want randos building this
 		NOT = { exists = var:RICE_tarim_basin_mogao_cave_type }
-		is_ruler = yes
-		is_landed = yes
+		is_landed_or_landless_administrative = yes
 		OR = {
 			AND = {
 				dynasty = {
 					has_dynasty_perk = RICE_tarim_basin_silk_road_legacy_5
 				}
-				any_directly_owned_province = {
-					OR = {
-						geographical_region = world_steppe_tarim
-						geographical_region = RICE_dunhuang_region
+				OR = {
+					domicile.domicile_location ?= {						
+						OR = {
+							geographical_region = world_steppe_tarim
+							geographical_region = RICE_dunhuang_region
+						}
+					}
+					AND = {
+						is_landed = yes
+						any_directly_owned_province = {
+							OR = {
+								geographical_region = world_steppe_tarim
+								geographical_region = RICE_dunhuang_region
+							}
+						}
 					}
 				}
 			}
-			any_directly_owned_province = {
+			domicile.domicile_location ?= {						
 				geographical_region = RICE_dunhuang_region
+			}
+			AND = {
+				is_landed = yes
+				any_directly_owned_province = {
+					geographical_region = RICE_dunhuang_region
+				}				
 			}
 			any_liege_or_above = {
 				completely_controls = title:c_shazhou
@@ -192,6 +208,8 @@ RICE_tarim_basin_reinhabit_gomati_monastery = {
 	selection_tooltip = RICE_tarim_basin_reinhabit_gomati_monastery_tooltip
 
 	is_shown = {
+		highest_held_title_tier > tier_barony
+		is_landed = yes
 		religion = religion:buddhism_religion
 		any_held_title = {
 			tier = tier_county
@@ -262,6 +280,8 @@ RICE_tarim_basin_construct_ordam_mazar = {
 	selection_tooltip = RICE_tarim_basin_construct_ordam_mazar_tooltip
 
 	is_shown = {
+		highest_held_title_tier > tier_barony
+		is_landed = yes
 		religion = religion:islam_religion
 		any_held_title = {
 			tier = tier_county
@@ -349,7 +369,10 @@ RICE_tarim_basin_compile_the_turkic_dictionary = {
 	selection_tooltip = RICE_tarim_basin_compile_the_turkic_dictionary_tooltip
 
 	is_shown = {
-		highest_held_title_tier > tier_barony
+		OR = {
+			highest_held_title_tier > tier_barony
+			has_character_modifier = RICE_tarim_basin_is_al_kashgari
+		}
 		# OR = {
 		# 	AND = {
 		# 		learning >= decent_skill_rating
@@ -503,15 +526,27 @@ RICE_reinforce_relations_silk_road_communities = {
 	desc = RICE_reinforce_relations_silk_road_communities_desc
 	
 	is_shown = {
-		highest_held_title_tier > tier_barony
-		is_landed = yes
-		any_held_title = {
-			tier = tier_county
-			any_county_province = {
-				OR = {
-					geographical_region = RICE_land_silk_road_region		
-					geographical_region = RICE_maritime_silk_road_region
-				}	
+		is_landed_or_landless_administrative = yes
+		OR = {
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					OR = {
+						geographical_region = RICE_land_silk_road_region		
+						geographical_region = RICE_maritime_silk_road_region
+					}	
+				}
+			}
+			liege = {				
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						OR = {
+							geographical_region = RICE_land_silk_road_region		
+							geographical_region = RICE_maritime_silk_road_region
+						}	
+					}
+				}
 			}
 		}
 	}
@@ -537,6 +572,28 @@ RICE_reinforce_relations_silk_road_communities = {
 					tier = tier_county
 					any_county_province = {
 						geographical_region = RICE_maritime_silk_road_region		
+					}
+				}
+			}
+			liege = {
+				custom_description = {
+					text = RICE_land_silk_road_geographical_req
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_land_silk_road_region		
+						}
+					}
+				}
+			}
+			liege = {				
+				custom_description = {
+					text = RICE_maritime_silk_road_geographical_req
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_maritime_silk_road_region		
+						}
 					}
 				}
 			}
@@ -974,7 +1031,7 @@ RICE_silk_road_community_east_asian_decision = {
 	selection_tooltip = RICE_silk_road_community_east_asian_decision_tooltip
 	
 	is_shown = {
-		is_landed = yes
+		is_landed_or_landless_administrative = yes
 		has_character_modifier = RICE_tarim_basin_east_asian_contacts
 	}
 	
@@ -1023,7 +1080,7 @@ RICE_silk_road_community_steppe_decision = {
 	selection_tooltip = RICE_silk_road_community_steppe_decision_tooltip
 	
 	is_shown = {
-		is_landed = yes
+		is_landed_or_landless_administrative = yes
 		has_character_modifier = RICE_tarim_basin_steppe_contacts
 	}
 	
@@ -1072,7 +1129,7 @@ RICE_silk_road_community_middle_eastern_decision = {
 	selection_tooltip = RICE_silk_road_community_middle_eastern_decision_tooltip
 	
 	is_shown = {
-		is_landed = yes
+		is_landed_or_landless_administrative = yes
 		has_character_modifier = RICE_tarim_basin_middle_eastern_contacts
 	}
 	
@@ -1121,7 +1178,7 @@ RICE_silk_road_community_himalayan_decision = {
 	selection_tooltip = RICE_silk_road_community_himalayan_decision_tooltip
 	
 	is_shown = {
-		is_landed = yes
+		is_landed_or_landless_administrative = yes
 		has_character_modifier = RICE_tarim_basin_himalayan_contacts
 	}
 	
@@ -1170,7 +1227,7 @@ RICE_silk_road_community_indian_decision = {
 	selection_tooltip = RICE_silk_road_community_indian_decision_tooltip
 	
 	is_shown = {
-		is_landed = yes
+		is_landed_or_landless_administrative = yes
 		has_character_modifier = RICE_tarim_basin_indian_contacts
 	}
 	
@@ -1219,7 +1276,7 @@ RICE_silk_road_community_east_african_decision = {
 	selection_tooltip = RICE_silk_road_community_east_african_decision_tooltip
 	
 	is_shown = {
-		is_landed = yes
+		is_landed_or_landless_administrative = yes
 		has_character_modifier = RICE_tarim_basin_east_african_contacts
 	}
 	
@@ -1268,7 +1325,7 @@ RICE_silk_road_community_southeast_asian_decision = {
 	selection_tooltip = RICE_silk_road_community_southeast_asian_decision_tooltip
 	
 	is_shown = {
-		is_landed = yes
+		is_landed_or_landless_administrative = yes
 		has_character_modifier = RICE_tarim_basin_southeast_asian_contacts
 	}
 	
@@ -1338,21 +1395,30 @@ RICE_iranian_sinicization = {
 	}
 	
 	is_shown = {
-		is_ruler = yes
-		any_held_title = {
-			tier = tier_county
-			any_county_province = {
-				geographical_region = RICE_land_silk_road_region		
+		is_landed_or_landless_administrative = yes
+		OR = {
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_land_silk_road_region		
+				}
+			}
+			liege = {
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_land_silk_road_region		
+					}
+				}
 			}
 		}
-		culture = {			
-			NOR = {
-				has_cultural_pillar = heritage_chinese
-				has_cultural_pillar = heritage_vietic
-				has_cultural_pillar = heritage_korean
-				has_cultural_pillar = heritage_yamato
-				has_cultural_pillar = heritage_loloish
-			}
+		NOR = {
+			culture = { has_cultural_pillar = heritage_chinese }
+			culture = { has_cultural_pillar = heritage_vietic }
+			culture = { has_cultural_pillar = heritage_korean }
+			culture = { has_cultural_pillar = heritage_yamato }
+			culture = { has_cultural_pillar = heritage_loloish }
+			culture = culture:khitan # Replace with tradition
 		}
 		culture = { has_cultural_tradition = tradition_RICE_silk_road }
 		OR = {
@@ -1380,12 +1446,17 @@ RICE_iranian_sinicization = {
 	}
 	
 	is_valid = {
-		custom_description = {
-			text = RICE_land_silk_road_geographical_req
-			any_held_title = {
-				tier = tier_county
-				any_county_province = {
-					geographical_region = RICE_land_silk_road_region		
+		trigger_if = {
+			limit = {
+				is_landed = yes
+			}
+			custom_description = {
+				text = RICE_land_silk_road_geographical_req
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_land_silk_road_region		
+					}
 				}
 			}
 		}
@@ -1402,14 +1473,13 @@ RICE_iranian_sinicization = {
 			}
 		}
 
-		culture = {			
-			NOR = {
-				has_cultural_pillar = heritage_chinese
-				has_cultural_pillar = heritage_vietic
-				has_cultural_pillar = heritage_korean
-				has_cultural_pillar = heritage_yamato
-				has_cultural_pillar = heritage_loloish
-			}
+		NOR = {
+			culture = { has_cultural_pillar = heritage_chinese }
+			culture = { has_cultural_pillar = heritage_vietic }
+			culture = { has_cultural_pillar = heritage_korean }
+			culture = { has_cultural_pillar = heritage_yamato }
+			culture = { has_cultural_pillar = heritage_loloish }
+			culture = culture:khitan # Replace with tradition
 		}
 		
 		culture = { has_cultural_tradition = tradition_RICE_silk_road }
