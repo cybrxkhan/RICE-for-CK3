@@ -7358,9 +7358,9 @@ tarim_basin.0051 = {
 				add_courtier = scope:huaiding_son_2
 				add_courtier = scope:huaiding_son_3
 				add_courtier = scope:huaiding_son_4
-				add_courtier = scope:zhu_zaiqing
+				#add_courtier = scope:zhu_zaiqing
 				add_courtier = scope:wuzhen
-				add_courtier = scope:zhang_qiu
+				#add_courtier = scope:zhang_qiu
 				add_courtier = scope:wu_anzheng
 				add_courtier = scope:valerie_jiang
 				add_courtier = scope:william_ly
@@ -7398,6 +7398,9 @@ tarim_basin.0051 = {
 		add_to_global_variable_list = {
 			name = RICE_dunhuang_tang_hostage
 			target = flag:yeeted_huaishen
+		}
+		scope:huaishen.house = {
+			set_house_head = scope:yichao
 		}
 	}
 
@@ -7446,13 +7449,21 @@ tarim_basin.0051 = {
 				add_courtier = scope:huaiding_son_2
 				add_courtier = scope:huaiding_son_3
 				add_courtier = scope:huaiding_son_4
-				add_courtier = scope:zhu_zaiqing
 				add_courtier = scope:wuzhen
-				add_courtier = scope:zhang_qiu
-				add_courtier = scope:wu_anzheng
 				add_courtier = scope:huaishen_waifu
 				add_courtier = scope:valerie_jiang
 				add_courtier = scope:william_ly
+
+				# They are not admin in Roads to Power, so they need to be moved to his court
+				if = {
+					limit = {
+						NOT = { has_dlc_feature = roads_to_power }
+					}
+					add_courtier = scope:zhu_zaiqing
+					add_courtier = scope:zhang_qiu
+					add_courtier = scope:wu_anzheng
+				}
+
 
 			}
 			character:1059714 = {
@@ -7464,23 +7475,32 @@ tarim_basin.0051 = {
 			name = RICE_dunhuang_tang_hostage
 			target = flag:yeeted_no_one
 		}
+		scope:huaishen.house = {
+			set_house_head = scope:yichao
+		}
 	}
 
 	after = {
 		character:206811 = {
 			trigger_event = tarim_basin.0052
 		}
-		scope:huaishen.house = {
-			set_house_head = scope:yichao
-		}
 		every_ruler = {
 			limit = {
 				is_ai = no
-				any_held_title = {
-					tier = tier_county
-					any_county_province = {
+				OR = {
+					top_liege = {
+						has_title = title:k_guiyi
+					}
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_dunhuang_region
+						}
+					}
+					domicile.domicile_location ?= {						
 						geographical_region = RICE_dunhuang_region
 					}
+
 				}
 			}
 			trigger_event = tarim_basin.0052
