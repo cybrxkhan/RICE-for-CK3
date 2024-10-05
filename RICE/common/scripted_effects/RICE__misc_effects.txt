@@ -944,6 +944,62 @@ RICE_hot_springs_visit_completed_log_entry_effect = {
 						}
 					}
 				}
+				else_if = {
+					limit = {
+						scope:host = {
+							exists = var:RICE_hot_springs_visit_special_location
+							var:RICE_hot_springs_visit_special_location = flag:lesbos
+						}
+					}
+					if = {
+						limit = {
+							scope:host = {
+								exists = var:RICE_hot_springs_visit_special_type
+								var:RICE_hot_springs_visit_special_type = flag:private
+							}
+						}
+						scope:host = {
+							stress_impact = {
+								base = medium_stress_impact_loss
+								lazy = miniscule_stress_impact_loss
+								calm = miniscule_stress_impact_loss
+							}	
+						}
+					}
+					else_if = {
+						limit = {
+							scope:host = {
+								exists = var:RICE_hot_springs_visit_special_type
+								var:RICE_hot_springs_visit_special_type = flag:public
+							}
+						}
+						scope:host = {
+							stress_impact = {
+								base = minor_stress_impact_loss
+								lazy = miniscule_stress_impact_loss
+								calm = miniscule_stress_impact_loss
+							}
+							add_prestige = 50
+						}
+					}
+					scope:host = {						
+						if = {
+							limit = {
+								religion = religion:hellenism_religion
+							}
+							add_character_modifier = {
+								modifier = RICE_lesbos_visit_thermi_artemis
+								years = 10
+							}
+						}
+						else = {
+							add_character_modifier = {
+								modifier = RICE_lesbos_visit_thermi_normal
+								years = 10
+							}
+						}
+					}
+				}
 				# Generic hot springs effects as a fallback
 				else = {
 					if = {

@@ -41,6 +41,165 @@ lesbos.0010 = {
 
 
 
+# Setup activity - Thermi hot springs
+lesbos.0011 = {
+	type = character_event
+	title = lesbos.0011.t
+	desc = lesbos.0011.desc
+	theme = travel
+	override_background = { reference = RICE_background_kalends_celebration } 
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_hot_springs_visit
+			activity_location.barony = title:b_mytilene
+		}
+	}
+	
+	option = { # Ok
+		name = lesbos.0011.a
+	}	
+}
+
+
+# Day of the Springs visit
+lesbos.0012 = {
+	type = activity_event
+	title = lesbos.0012.t
+	desc = {
+		desc = lesbos.0012.desc
+		triggered_desc = {
+			trigger = {
+				religion = religion:hellenism_religion
+			}
+			desc = lesbos.0012.desc.hellenic_pagan
+		}
+	}
+	theme = RICE_theme_lesbos_island
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	immediate = {
+		add_character_flag = is_naked		
+		scope:activity = {
+			activity_location = { save_scope_as = location }
+		}
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_public
+					}
+				}
+			}
+			set_variable = {
+				name = RICE_hot_springs_visit_special_type
+				value = flag:public
+				days = 1
+			}
+		}
+		else = {			
+			set_variable = {
+				name = RICE_hot_springs_visit_special_type
+				value = flag:private
+				days = 1
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = lesbos.0012.a
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_private
+					}
+				}
+			}
+			stress_impact = {
+				base = medium_stress_impact_loss
+				lazy = miniscule_stress_impact_loss
+				calm = miniscule_stress_impact_loss
+			}	
+		}
+		else_if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_hot_springs_visit_type_public
+					}
+				}
+			}
+			add_prestige = 50
+			stress_impact = {
+				base = minor_stress_impact_loss
+				lazy = miniscule_stress_impact_loss
+				calm = miniscule_stress_impact_loss
+			}
+		}
+		if = {
+			limit = {
+				religion = religion:hellenism_religion
+			}
+			add_piety = 50
+		}
+		if = {
+			limit = {
+				religion = religion:hellenism_religion
+			}
+			add_character_modifier = {
+				modifier = RICE_lesbos_visit_thermi_artemis
+				years = 10
+			}
+		}
+		else = {
+			add_character_modifier = {
+				modifier = RICE_lesbos_visit_thermi_normal
+				years = 10
+			}
+		}
+	}
+	
+	after = {
+		if = {
+			limit = { has_character_flag = is_naked }
+			remove_character_flag = is_naked
+		}
+		# RICE_hot_springs_memory_effect = yes
+		set_variable = {
+			name = RICE_hot_springs_visit_special_location
+			value = flag:lesbos
+			days = 1
+		}
+		scope:activity = {
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				stress_impact = {
+					base = minor_stress_impact_loss
+				}
+			}	
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}	
+}
+
+
 ######################################################################################
 # 
 # KALENDS
