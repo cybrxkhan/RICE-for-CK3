@@ -1033,54 +1033,75 @@ RICE_hot_springs_visit_completed_log_entry_effect = {
 							}
 						}
 					}						
-				}				
-				every_attending_character = {
-					limit = { NOT = { this = scope:host } }
-					custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
-					stress_impact = {
-						base = minor_stress_impact_loss
-					}
-					if = {
-						limit = {
-							faith = {
-								NOT = { trait_is_virtue = chaste }
-							}
-							OR = {
-								faith = { has_doctrine = tenet_hedonistic }
-								faith = { has_doctrine = tenet_carnal_exaltation }
-								faith = { trait_is_virtue = lustful }
-							}
-						}
-						add_character_modifier = {
-							modifier = RICE_sicily_visit_baia_hedonist
-							years = 10
+				}		
+				
+				# Other participants
+				if = {
+					limit = {
+						scope:host = {
+							exists = var:RICE_hot_springs_visit_special_location
+							var:RICE_hot_springs_visit_special_location = flag:siwa
 						}
 					}
-					else_if = {
-						limit = {			
-							OR = {
-								AND = {
-									faith = { has_doctrine_parameter = male_dominated_law }
-									is_female = yes
+					every_attending_character = {
+						limit = { NOT = { this = scope:host } }
+						custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+						stress_impact = {
+							base = minor_stress_impact_loss
+						}
+						if = {
+							limit = {
+								faith = {
+									NOT = { trait_is_virtue = chaste }
 								}
-								AND = {
-									faith = { has_doctrine_parameter = female_dominated_law }
-									is_male = yes
+								OR = {
+									faith = { has_doctrine = tenet_hedonistic }
+									faith = { has_doctrine = tenet_carnal_exaltation }
+									faith = { trait_is_virtue = lustful }
 								}
 							}
+							add_character_modifier = {
+								modifier = RICE_sicily_visit_baia_hedonist
+								years = 10
+							}
 						}
-						add_character_modifier = {
-							modifier = RICE_sicily_visit_baia_naughty
-							years = 10
+						else_if = {
+							limit = {			
+								OR = {
+									AND = {
+										faith = { has_doctrine_parameter = male_dominated_law }
+										is_female = yes
+									}
+									AND = {
+										faith = { has_doctrine_parameter = female_dominated_law }
+										is_male = yes
+									}
+								}
+							}
+							add_character_modifier = {
+								modifier = RICE_sicily_visit_baia_naughty
+								years = 10
+							}
 						}
-					}
-					else = {
-						add_character_modifier = {
-							modifier = RICE_sicily_visit_baia_normal
-							years = 10
+						else = {
+							add_character_modifier = {
+								modifier = RICE_sicily_visit_baia_normal
+								years = 10
+							}
 						}
 					}
 				}
+				else = {
+					every_attending_character = {
+						limit = { NOT = { this = scope:host } }
+						custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+						stress_impact = {
+							base = minor_stress_impact_loss
+						}
+					}	
+				}
+				
+
 			}
 		}
 	}
