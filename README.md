@@ -1,13 +1,13 @@
-<img src="https://i.imgur.com/5TefFWC.jpg">
+<img src="https://i.imgur.com/j5IU5DO.jpg">
 
-## Latest Version: Version 1.12.3 "Syracuse" (Released 9/8/24, for vanilla patch 1.12.x)
+## Latest Version: Version 1.13.0 "Anna Komnene" (Released 10/5/24, for vanilla patch 1.12.x)
 
-**Newest Flavor Pack: *Sicily: Where Three Worlds Met***
+**Newest Flavor Pack: *Lesbos: Island of Poets***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_“Sicily was the first of the provinces. She was the first who taught our ancestors how glorious a thing it was to rule over foreign peoples.”_
-_- Cicero (106 – 43 BCE), Roman statesman, lawyer, and thinker_
+_““The stream of Time, irresistible, ever moving, carries off and bears away all things that come to birth and plunges them into utter darkness, both deeds of no account and deeds which are mighty and worthy of commemoration.”_
+_– Anna Komnene (1083-1153), Byzantine princess and historian, in the Alexiad_
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
@@ -45,7 +45,8 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 - [Harran: The Last Hellenic Pagans](https://docs.google.com/document/d/e/2PACX-1vQOVaDq59Adp5PsNw7r8KhK9cgHMBBWGPWG085FdTKegkD8G8BFLa_e1lz8usY164B42gAVZD4D_2Rs/pub)
 - [Khuzestan: Land of the Sugar Cane](https://docs.google.com/document/d/e/2PACX-1vRI3FkOVenhxblZjwPx5v9OI_SxzK-i5DO4S4Yd2983gkrLwvoD9rSxKJ5nLai8TsMVxtCU147Km6je/pub)
 - [Khwarezm: The Oxus Borderlands](https://docs.google.com/document/d/e/2PACX-1vRb7KJnolu0twdKXwN0N6K9qZSSNxm2yyS6VroADAGod9VjUGBKf5nIh-ZzsdYr93W3XuN0MGO8OeXd/pub)
-- [Magadha: Diamond Throne of Buddhism](https://docs.google.com/document/d/e/2PACX-1vQvXP97M8x7lXYDilOlkVz-lCT0dk6Qq2R6cFyoySNv6g5mqAhIxzquf_1TeR9eEllCkA0HhpOfErnT/pub)
+- [Khwarezm: The Oxus Borderlands](https://docs.google.com/document/d/e/2PACX-1vShpMfQVVfTPIMytox_d9YgqsCv5nzE-AR6WWLlEu4UjRqFQ7ekMWISy8Wp5U1KEAhoKxcFiunqVBvF/pub)
+- [Lesbos: Island of Poets](https://docs.google.com/document/d/e/2PACX-1vQvXP97M8x7lXYDilOlkVz-lCT0dk6Qq2R6cFyoySNv6g5mqAhIxzquf_1TeR9eEllCkA0HhpOfErnT/pub)
 - [Mordvin: Along the Volga](https://docs.google.com/document/d/e/2PACX-1vSJLf-BGou98MSCHMEVO1QWEme1kKSe8CiriXgpfEUHeySTLJOsPLQobPnu_fIt-W-GqcL3VBXFqJzZ/pub)
 - [Niger Delta: Heirs of Oduduwa](https://docs.google.com/document/d/e/2PACX-1vTgW9FFORhgNKseRIGdOXnsCLe5Nee8f8dK9yQxkvWshD3ZJf5vzXhMHQKmoy3qnMEjm2kLImgExhvt/pub)
 - [Normandy: Adventurers and Aristocrats](https://docs.google.com/document/d/e/2PACX-1vSJl5JRfLjzdzwnCo6WJVG8qJ8-5htcWQ1L1PU3tMIq1Ym4HOO6fPhQ1ovarPeb_3b3pLPRhLBvgyRT/pub)
@@ -73,40 +74,110 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/D683wkk.jpg">
+<img src="https://i.imgur.com/5aPuSt7.jpg">
 
-### 1.12.3 "Syracuse"
+### 1.13.0 "Anna Komnene"
 
-- Added decision for Byzantine rulers or vassals to Restore the Glory of Syracuse
-- Added event to spawn the Sicilian Muslim poet Ibn Hamdis if playing from the 1066 start date
-- Added a couple narrative events at game start for Sawdan in 867, for players to choose his ethnic origins and focus as a ruler
-- Added decision for rulers of Messina to Affirm u Liotru as the Symbol of Catania (i.e. Catania’s famed elephant statue)
-- Added a few historical characters related to Sicily:
-    - Erchempert, a 9th century Lombard historian
-    - Barsakios, 9th century Byzantine general active in southern Italy
-    - al-Hasan ibn al-Abbas, 9th century Aghlabid general active in Sicily
-    - Agyros of Bari, an 11th century Lombard general of the Byzantines in Bari, and son of Melus of Bari
-    - Longibardopoulos, 11th century Lombard general/mercenary of the Byzantines
-    - Amatus of Monte Cassino, 11th century historian from southern Italy
-    - William of Apulia, 11th century Lombard poet and chronicler
-    - Geoffrey Malaterra, 11th century (possibly Norman) historian and monk
-- The option to attract immigrants in the decision to Manage the Sicilian Frontier now has a chance of spawning Strongholds in your territory
-- The culture and/or faith of rulers who take the decisions to revitalize/occupy the Sicilian frontier will now automatically become involved in the Sicilian struggle if they aren’t already
-- Siculo-Arabic and Afro-Roman now also wear Byzantine clothes
-- Increased the chances Frontier Raid CBs create and destroy strongholds
-- Disabled a few more Sicily decisions when run with TFE
-- Slightly nerfed control maluses during the Borderlands phase of the Sicily struggle
-- Ruling class modifiers (Imperiality ending) now reduce development rather than control
-- Substrate modifiers (Periphery ending) now reduce control rather than development
-- Removed initial dev/control hit when arriving at the Imperiality and Periphery phases of the Sicily struggle; instead, the resulting county modifiers have been buffed
-- Create a Second Pavia decision is now requires the Longbeard tradition, rather than being descended from Lombard culture
-- Create a Second Pavia decision is now visible to anyone with territory in southern Italy
-- Non-Slavic pagans are less likely to take the decision to offer gifts to Svetovit
-- Fixed Sicilian Signore trait not being given out while the Sicily struggle is not active
-- Fixed potential cause of CTDs with the Periphery/Imperiality ending phases’ interface
-- Fixed potential error with religious rights contract effect triggering for RICE-added independent rulers at game start
-- Fixed development maluses for some Sicilian content not giving maluses properly
+- Added new flavor pack – Lesbos: Island of Poets
+- Added 5 Mediterranean themed songs
+- Added many new historical landless characters in all start dates (see bottom for full list)
+- Added 4 RICE bookmarks in 1178, 3 for landed and 1 for landless
+- Added new RICE Landless bookmarks for 867 and 1066
+- Moved a few now adventurer characters from 867 and 1066’s old bookmarks to the new landless bookmarks
+- Modified some decisions, activities, interactions, etc. to be available to landless characters, sometimes if they are in the relevant geographical vicinity
+- A few RICE decisions are now available when traveling
+- Added Nabati culture to the Syriac heritage in southern Iraq in 867
+- Added Contentious Colonists tradition to the Siculo-Arabic culture, replacing Religion Blending and Culture Blending
+- Added Image of China tradition for Khitan culture
+- Added several new regional innovations: Almadraba, Monsoon Trade Routes, and Dragoman innovations 
+- Added a decision to Finance Almadraba fishing, unlocked by the Almadraba innovation
+- Horse sacrifice activity now unlocked via a special Sacred Horses doctrine that's inherited, for easier compatibility with mods seeking to add it to their faiths
+- Added Ibn Jubayr as a character in the court of the Emir of Granada in 1178
+- Added Wo Daochong, a Confucian scholar-official in Xixia, as a playable character in 1178
+- Added some changes to RICE’s Sicily code to make it run more smoothly with Muslim Enhancements (credits to iFrunx from the ME team for assistance with this)
+- Added a few new catalysts for the Sicily struggle
+- Kara-Khitai, Xia, and Guiyi now start off with Admin government if you have Roads to Power
+- Various Guiyi vassals no longer hold land but are instead noble families in Guiyi if you have Roads to Power
+- Removed fictitious ruler of Damot as a RICE bookmarked character in 1066 (superseded by the legendary Motolomi in the 1178 bookmark)
+- Decision to Collaborate with Indian Ocean pirates now gives legitimacy loss
+- Tweaked renown gain for the decision to Collaborate with Indian Ocean Pirates
+- Pirate Den and Bawarji Den buildings now give a malus to control
+- Decision to Commission a Work from Nasir Khusraw no longer requires for him to be in your court, but is now only available to Ali ibn Asad
+- Han culture now has Cultivated Sophistication instead of Water Rituals
+- Changed Khitan ethos to bureaucratic instead of communal
+- Thabit ibn Qurra’s education level buffed to level 5
+- Yarsani appearance event is more likely to happen after the Yazidi appearance event, though this is not guaranteed
+- Caucasian heritage now counts towards the Greek world of Sicily
+- Syriac heritage now counts towards the Arab-Berber world of Sicily
+- Rollo game rule and event chain has been modified slightly to account for if the player has Roads to Power (i.e. making Rollo an adventurer)
+- Added legitimacy malus to the Uncrowned by Ooni modifier, but reduced its piety and prestige malus to compensate
+- Reduced Aghlabid event troops since vanilla buffed them
+- Makhazen and Siba, Seasonal Migrators, and Bantu Migrators traditions now allow voluntary landless adventuring and increased chances of becoming landless adventurers
+- Karaism is now automatically involved in the Persian struggle
+- Rabbinism and Karaism are now automatically involved in the Iberian struggle
+- Halved control malus of the Between Three Worlds tradition
+- Tweaked vassals to be more likely to refuse demands with the Between Three Worlds and Contentious Colonizers traditions
+- Tweaked Adventurers and Aristocrats and Legacy of the Northmen traditions to have less overlap with the Audacious Cadets tradition
+- Tweaked the starting traits of Genghis Khan, his wife Borte, and his mother Hoelun
+- Removed duplicate song in Tuareg and Sus flavor packs
+- Removed Norman MAA as it was superceded by Roads to Power’s Norman MAA
+- Zhang Qiu now is friends with Zhang Huaishen in the 867 start date
+- Liberator of Dunhuang modifier now gives a Influence and Legitimacy bonus
+- Fixed old decisions to Pray for a Good Nile Flood being available (since it was replaced with the Activity version)
+- Fixed AI being able to reinforce relations with Silk Road communities it shouldn’t have access to if it doesn’t meet the geographical requirements
+- Fixed wrong loc for the decision to Recruit Soldiers from Sicily saying Palatini MAA instead of Arimanni and Picchieri MAAs when taking the Latin option in earlier and later eras respectively
+- Fixed Sicily language event triggering outside of Sicily
+- Fixed traveling for activity and hunt catalysts not triggering in the Sicily struggle
+- Fixed code for adding a university to Salerno
+- Fixed guests getting Baia-related modifiers when doing the hot springs activity outside of Baia
 - Miscellaneous bugfixes and tweaks
+
+
+## 40 New Landless Adventurers
+
+Made existing RICE characters landless adventurers:
+
+- Thabit ibn Qurra (867)
+- Hiwi al-Balkhi (867)
+- al-Kashgari (1066)
+- Ibn Nabhan (1066)
+- Nasir Khusraw (1066)
+- Longibardopoulos (1066)
+
+Made existing vanilla characters landless adventurers:
+
+- Ali Kalbid (867)
+- Fu Murong (867)
+- Ottar (Ohthere) av Hålogaland (867)
+
+Added new landless adventurers:
+
+- Plausible fictitious Korean in Dunhuang (867)
+- Ibn Wahshiyya (867)
+- Cynewulf (867) 
+- Al-Balkhi (867)
+- Eldad ha-Dani (867)
+- Wulfstan of Hedeby (867)
+- Manikkavacakar (867)
+- Tughj ibn Juff (867)
+- Azjur al-Turki (867)
+- Bartholomew Leslie (1066)
+- Chakrapani Datta (1066)
+- al-Wuhsha al-Dallala (1066)
+- Japheth ibn Bundar (1066)
+- Ibn al-Qatta’ al-Siqilli (1066)
+- Solomon ibn Ghabirol (1066)
+- Trapelicino (1178)
+- Hafsa bint al-Hajj al-Rukuniyya (1178)
+- Michael Scot (1178)
+- Oranmiyan (1178)
+- Hugo von Hildesheim (1178)
+- Guglielmo Grasso (1178)
+- Li Shichang (1178)
+- Plausible fictitious Malays in the Indian Ocean (all dates)
+- Plausible fictitious Swahili in the Indian Ocean (all dates)
+- Plausible fictitious Soninke Wangara merchant (all dates)
+
 
 ## Credits
 
@@ -138,3 +209,4 @@ Special thanks in particular to:
 - The Not So Lonely Arrikirri and Tundragrass for help on the Zunbils
 - YTnuBF for Native American ethnicities from the Amerindian Steppe Tribe mod
 
+Special thanks also to the translators who work hard to ensure the mod can be played in other languages, and various playtesters for helping me prepare the updates, including but not limited to Shatzi, O-Saft-Killer, msl229, Nezaros, Dystopianist, Patlichan, and others.
