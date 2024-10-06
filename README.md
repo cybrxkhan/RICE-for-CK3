@@ -46,7 +46,7 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 - [Khuzestan: Land of the Sugar Cane](https://docs.google.com/document/d/e/2PACX-1vRI3FkOVenhxblZjwPx5v9OI_SxzK-i5DO4S4Yd2983gkrLwvoD9rSxKJ5nLai8TsMVxtCU147Km6je/pub)
 - [Khwarezm: The Oxus Borderlands](https://docs.google.com/document/d/e/2PACX-1vRb7KJnolu0twdKXwN0N6K9qZSSNxm2yyS6VroADAGod9VjUGBKf5nIh-ZzsdYr93W3XuN0MGO8OeXd/pub)
 - [Khwarezm: The Oxus Borderlands](https://docs.google.com/document/d/e/2PACX-1vShpMfQVVfTPIMytox_d9YgqsCv5nzE-AR6WWLlEu4UjRqFQ7ekMWISy8Wp5U1KEAhoKxcFiunqVBvF/pub)
-- [Lesbos: Island of Poets](https://docs.google.com/document/d/e/2PACX-1vQvXP97M8x7lXYDilOlkVz-lCT0dk6Qq2R6cFyoySNv6g5mqAhIxzquf_1TeR9eEllCkA0HhpOfErnT/pub)
+- [Lesbos: Island of Poets](https://docs.google.com/document/d/e/2PACX-1vShpMfQVVfTPIMytox_d9YgqsCv5nzE-AR6WWLlEu4UjRqFQ7ekMWISy8Wp5U1KEAhoKxcFiunqVBvF/pub)
 - [Mordvin: Along the Volga](https://docs.google.com/document/d/e/2PACX-1vSJLf-BGou98MSCHMEVO1QWEme1kKSe8CiriXgpfEUHeySTLJOsPLQobPnu_fIt-W-GqcL3VBXFqJzZ/pub)
 - [Niger Delta: Heirs of Oduduwa](https://docs.google.com/document/d/e/2PACX-1vTgW9FFORhgNKseRIGdOXnsCLe5Nee8f8dK9yQxkvWshD3ZJf5vzXhMHQKmoy3qnMEjm2kLImgExhvt/pub)
 - [Normandy: Adventurers and Aristocrats](https://docs.google.com/document/d/e/2PACX-1vSJl5JRfLjzdzwnCo6WJVG8qJ8-5htcWQ1L1PU3tMIq1Ym4HOO6fPhQ1ovarPeb_3b3pLPRhLBvgyRT/pub)
