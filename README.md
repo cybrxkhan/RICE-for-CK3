@@ -6,7 +6,7 @@
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_““The stream of Time, irresistible, ever moving, carries off and bears away all things that come to birth and plunges them into utter darkness, both deeds of no account and deeds which are mighty and worthy of commemoration.”_
+_“The stream of Time, irresistible, ever moving, carries off and bears away all things that come to birth and plunges them into utter darkness, both deeds of no account and deeds which are mighty and worthy of commemoration.”_
 _– Anna Komnene (1083-1153), Byzantine princess and historian, in the Alexiad_
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
