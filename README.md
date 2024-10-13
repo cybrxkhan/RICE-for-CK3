@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/j5IU5DO.jpg">
 
-## Latest Version: Version 1.13.0 "Anna Komnene" (Released 10/5/24, for vanilla patch 1.12.x)
+## Latest Version: Version 1.13.0.a Hotfix for "Anna Komnene" (Released 10/12/24, for vanilla patch 1.12.x)
 
 **Newest Flavor Pack: *Lesbos: Island of Poets***
 
@@ -75,6 +75,37 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 ## Latest Changelog
 
 <img src="https://i.imgur.com/5aPuSt7.jpg">
+
+### 1.13.0.a Hotfix for "Anna Komnene"
+
+- Added game concepts for Mediterranean Pirates and RICE’s Pirates in general
+- Revised Wo Daochong’s family tree and lifespans to be more accurate by integrating changes from Eastern Etiquette (thanks also to the user 🍓白茶 for assisting with this effort)
+- Revised RICE’s cultural heritage triggers to account for more heritages as needed (thanks to Cruci for the code)
+- Added more missing Spanish and French translation, courtesy of their respective translators
+- Decision to Establish European Ivory Carving Center can now be taken in Asia Minor and the western steppes (in Europe) as well
+- Flagged Lesbos flavor pack music that’s vocal as vocal music so it will now be disabled if you have the game rule for no vocal music
+- Tweaked chances of which cultures an AI Sawdan might pick as his original culture
+- Replaced all instances of Virgilianae with Vergilianae in loc for consistency
+- Swahili culture now starts with more innovations at game start
+- Ibn Nabhan now starts in the county of Harran if he is a landless adventurer
+- Increased amount of xp gained for the Nabataean trait when doing Ibn Wahshiyya’s unique travel options
+- Slightly increased chances of gaining bonuses when doing Ibn Wahshiyya’s unique travel options
+- Adventurers can now do the interaction to request land in Normandy, not just landed rulers
+- Robert Guiscard automatically loses his truce with the ERE after the war over Bari, to prevent his scripted invasion of Epirus from vanilla unintentionally breaking this truce
+- Buffed Kara-Khitan in 1178 with castle and city holdings and more gold
+- Some Kara-Khitan counties are now Mahayana instead of Vajrayana
+- Fixed loc for the introductory event chains for Thabit ibn Qurra and Ibn Nabhan to reflect if they are landless adventurers
+- Fixed Abu Aaron’s portrait (i.e. Sawdan’s Jewish friend) in the 867 bookmark screen, which had been causing CTDs before the hot-hotfix released right after release
+- Fixed some of Ibn Nabhan’s family remaining pagan
+- Fixed several geographically restricted travel options not being available to landless adventurers, even if you’re in a correct location
+- Fixed Nabati and Khalaj cultures having no innovations at game start
+- Fixed fictitious Dunhuang rulers in 867 being unplayable if you select to play as them in game menu due to a hidden effect killing them off at game start – now, they won’t be removed if you pick them
+- Fixed broken loc in the decision to Employ African Mud Masons when playing as a tribal
+- Fixed some Mediterranean Pirate localization referring to Indian Ocean pirates
+- Fixed Japeth ibn Bundar not having his adventurer title at game start
+- Fixed decision to Commission a Work from Nasir Khusraw missing if you’re playing as Ali ibn Asad since Nasir Khusraw is a landless adventurer now
+- Fixed the Sortes Vergilianae decision not actually costing any gold
+- Miscellaneous bugfixes and tweaks
 
 ### 1.13.0 "Anna Komnene"
 
