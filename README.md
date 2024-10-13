@@ -220,8 +220,10 @@ Special thanks in particular to:
 - B7E7 for collab and content from BlackEmperor's Africa Plus mod
 - Bonseny for the amazing VIET and RICE logos and the beautiful 3D art assets
 - Celticus for a lot of useful help and suggestions
+- Cruci for grammar fixes and miscellaneous help
 - Diadochi Kings mod (from CK2) for Elamite names
 - DrStein(Dupont) for revamped artwork
+- Eastern Etiquette mod and 🍓白茶 for Chinese history improvements
 - Fische for the Dragon Blood art icon and Vertimnus for donating it to me (originally made for Sinews of War)
 - George Hammond for some music ([see here](https://fanlink.to/georgehammondmusic) for more of his work)
 - Henry for the Better Bedouin Culture mod
