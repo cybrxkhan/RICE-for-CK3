@@ -4,7 +4,7 @@
 RICE_mediterranean_collaborate_with_pirates = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_mediterranean_cove.dds" }
 	decision_group_type = major
-	ai_check_interval = 120
+	ai_check_interval = 200
 
 	desc = RICE_mediterranean_collaborate_with_pirates_desc
 	selection_tooltip = RICE_mediterranean_collaborate_with_pirates_tooltip
@@ -26,6 +26,7 @@ RICE_mediterranean_collaborate_with_pirates = {
 				RICE_lesbos_has_pirate_den_trigger = yes
 			}			
 		}
+		# AI won't do if there is already a pirate den in the realm
 	}
 	
 
@@ -96,10 +97,19 @@ RICE_mediterranean_collaborate_with_pirates = {
 	}
 
 	ai_will_do = {
-		base = 5
+		base = 1
 		modifier = {
-			add = 20
+			add = 5
 			has_trait = greedy
+		}
+		# AI won't do if there is already a pirate den in the realm
+		modifier = {
+			add = -100			
+			NOT = {
+				top_liege = {
+					any_realm_county = { RICE_lesbos_has_pirate_den_trigger = yes }
+				}			
+			}
 		}
 	}
 }

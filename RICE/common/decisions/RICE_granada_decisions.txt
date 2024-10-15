@@ -812,4 +812,180 @@ RICE_granada_admire_alhambra_gardens = {
 }
 
 
+RICE_granada_hafsa_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_thunderstorm.dds" }
+	decision_group_type = major
+	desc = RICE_granada_hafsa_decision_desc
+
+	ai_check_interval = 40
+	
+	cooldown = { years = 1 }
+
+	is_shown = {
+		has_trait = RICE_hafsa
+	}
+	
+	#is_valid_showing_failures_only = {
+	#	faith.religion = religion:christianity_religion
+	#}
+
+	is_valid = {
+		has_trait = RICE_hafsa
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		RICE_is_available_adult_even_if_sick_trigger = yes
+	}
+
+	
+	widget = {
+		gui = "decision_view_widget_generic_multichoice_with_effects"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "CHOOSE_HAFSA_ACTION"
+		show_from_start = yes
+		
+		### Insult Uthman
+		item = {
+			value = RICE_insult_uthman
+			current_description = RICE_insult_uthman_desc
+			localization = RICE_insult_uthman_name
+			icon = "gfx/interface/icons/character_interactions/icon_scheme_challenge_status.dds"
+		}
+		
+		### Eulogize Abu Ja'far
+		item = {
+			value = RICE_eulogize_abu_jafar
+			current_description = RICE_eulogize_abu_jafar_desc
+			localization = RICE_eulogize_abu_jafar_name
+			icon = "gfx/interface/icons/court_position_types/court_gardener_court_position.dds"
+		}
+		
+		### Take a Break from Poetry
+		item = {
+			value = RICE_stop_poetry
+			current_description = RICE_stop_poetry_desc
+			localization = RICE_stop_poetry_name
+			icon = "gfx/interface/icons/message_feed/stress_loss.dds"
+		}
+		
+		### Teach Others
+		item = {
+			value = RICE_teach_others
+			current_description = RICE_teach_others_desc
+			localization = RICE_teach_others_name
+			icon = "gfx/interface/icons/inspirations/book_inspiration.dds"
+		}
+
+	}
+
+	cost = {
+		prestige = { value = minor_prestige_value }
+	}
+	
+	ai_potential = {
+		prestige > minor_prestige_value
+	}
+
+	effect = {
+
+		save_scope_as = hafsa
+
+		custom_tooltip = RICE_granada_hafsa_decision_effect_tooltip_1
+
+		if = {
+			limit = {
+				is_ai = yes
+			}
+			random_list = {
+				10 = {
+					trigger_event = granada.0031
+				}
+				10 = {
+					trigger_event = granada.0032
+				}
+				10 = {
+					trigger_event = granada.0033
+				}
+				10 = {
+					trigger_event = granada.0034
+				}
+			}
+		}
+
+		else_if = {
+			limit = { scope:RICE_insult_uthman = yes }
+
+			show_as_tooltip = {
+				RICE_granada_hafsa_insult_uthman_effect = yes
+			}
+			custom_tooltip = RICE_granada_hafsa_decision_effect_tooltip_2
+
+			trigger_event = granada.0031
+
+		}
+
+		else_if = {
+			limit = { scope:RICE_eulogize_abu_jafar = yes }
+
+			show_as_tooltip = {
+				RICE_granada_hafsa_eulogize_abu_jafar_effect = yes
+			}
+			custom_tooltip = RICE_granada_hafsa_decision_effect_tooltip_3
+
+			trigger_event = granada.0032
+
+		}
+
+		else_if = {
+			limit = { scope:RICE_stop_poetry = yes }
+
+			show_as_tooltip = {
+				RICE_granada_hafsa_stop_poetry_effect = yes
+			}
+			custom_tooltip = RICE_granada_hafsa_decision_effect_tooltip_4
+
+			trigger_event = granada.0033
+
+		}
+
+		else_if = {
+			limit = { scope:RICE_teach_others = yes }
+
+			show_as_tooltip = {
+				RICE_granada_hafsa_teach_others_effect = yes
+			}
+			custom_tooltip = RICE_granada_hafsa_decision_effect_tooltip_5
+
+			trigger_event = granada.0034
+
+		}
+
+
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+		modifier = {
+			add = -30
+			# Give player a chance to do it
+			current_date <= 1000.1.1
+		}
+		modifier = {
+			add = -20
+			# Give player a chance to do it
+			current_date <= 1100.1.1
+		}
+		modifier = {
+			add = -10
+			# Give player a chance to do it
+			current_date <= 1150.1.1
+		}
+	}
+}
+
 
