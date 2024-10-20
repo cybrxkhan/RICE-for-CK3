@@ -8468,6 +8468,130 @@ sicily.0185 = {
 	}
 }
 
+
+
+# Andreas, Archbishop of Bari Intro Event
+sicily.0186 = {
+	type = character_event
+	title = sicily.0186.t
+	desc = sicily.0186.desc
+	theme = faith
+	override_background = { reference = ep3_constantinople }
+
+
+	right_portrait = {
+		character = scope:andreas
+		animation = prayer
+	}
+
+	immediate = {
+
+		character:RICE_sicily_jewish_002 = { # Andreas, former Archbishop of Bari
+			save_scope_as = andreas
+		}	
+			
+
+		show_as_tooltip = {	
+			scope:andreas = {
+				add_character_modifier = {
+					modifier = RICE_sicily_andreas_archbishop_of_bari_modifier
+				}
+				add_character_modifier = {
+					modifier = RICE_sicily_aspiration_find_jewish_refuge
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = sicily.0186.info
+			}
+		}
+	}
+
+	# Ok
+	option = {
+		name = sicily.0186.a
+	}
+
+}
+
+
+# Andreas, Archbishop of Bari's Aspiration fulfilled
+sicily.0187 = {
+	type = character_event
+	title = sicily.0187.t
+	desc = sicily.0187.desc
+	theme = faith
+	override_background = { reference = bp2_tavern_mena }
+
+	right_portrait = {
+		character = scope:andreas
+		animation = wedding_happy_cry
+	}
+
+	immediate = {
+
+		character:RICE_sicily_jewish_002 = { # Andreas, former Archbishop of Bari
+			save_scope_as = andreas
+		}	
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_sicily_aspiration_find_jewish_refuge
+				}
+				remove_character_modifier = RICE_sicily_aspiration_find_jewish_refuge
+			}
+		}
+
+		# Main Objective Reward
+		add_prestige = RICE_aspiration_large_resource_bonus
+		add_piety = RICE_aspiration_large_resource_bonus
+		add_gold = RICE_sicily_andreas_aspiration_achieved_gold_value
+
+		# Bonus Objective Reward(s)
+
+		# Have the pilgrim trait
+		if = {
+			limit = {
+				has_trait = pilgrim
+			}
+			add_piety = RICE_aspiration_small_resource_bonus
+			add_learning_lifestyle_perk_points = 1
+		}
+
+		# Have at least 3 followers/courtiers who are Jewish
+		if = {
+			limit = {
+				any_courtier = {
+					religion = religion:judaism_religion
+					NOT = { this = root }
+					NOT = { dynasty = root.dynasty }
+					NOT = { is_spouse_of = root }
+					NOT = { is_child_of = root }
+				}
+			}
+			add_piety = RICE_aspiration_large_resource_bonus
+			add_diplomacy_lifestyle_perk_points = 1
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = sicily.0187.a
+	}
+
+}
+
+
 ######################################################################################
 # 
 # GENERIC FLAVOR EVENTS
@@ -11079,6 +11203,40 @@ sicily.0232 = {
 	option = {
 		name = sicily.0232.a
 	}
+}
+
+# Get Sicilian signore trait as a landless adventurer
+sicily.0233 = {
+	type = character_event
+	title = sicily.0233.t
+	desc = sicily.0233.desc
+	theme = RICE_theme_sicily_travel
+
+	right_portrait = {
+		character = root
+		animation = survey
+	}
+
+
+	immediate = {
+		RICE_sicily_landless_get_trait_effect = yes
+	}
+
+	option = {
+		name = sicily.0233.a
+		RICE_sicily_signore_latin_track_medium_gain = yes
+	}
+
+	option = {
+		name = sicily.0233.b
+		RICE_sicily_signore_greek_track_medium_gain = yes
+	}
+
+	option = {
+		name = sicily.0233.c
+		RICE_sicily_signore_arabic_track_medium_gain = yes
+	}
+
 }
 
 
