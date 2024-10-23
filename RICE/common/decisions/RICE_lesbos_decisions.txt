@@ -50,6 +50,7 @@ RICE_mediterranean_collaborate_with_pirates = {
 				}		
 			}
 		}
+		NOT = { has_character_modifier = RICE_mediterranean_reneged_pirate_deals }
 		# custom_description = {
 		# 	text = RICE_mediterranean_collaborate_with_pirates_requirement_2
 		# 	dynasty = {
@@ -114,6 +115,95 @@ RICE_mediterranean_collaborate_with_pirates = {
 	}
 }
 
+RICE_mediterranean_renege_on_pirate_collaboration = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_ck2_society_recruitment.dds" }
+	decision_group_type = major
+	ai_check_interval = 360 # AI will rarely take this
+	
+	cooldown = { days = 3650 }
+
+	desc = RICE_mediterranean_renege_on_pirate_collaboration_desc
+	selection_tooltip = RICE_mediterranean_renege_on_pirate_collaboration_tooltip
+
+	is_shown = {
+		is_landed = yes
+		highest_held_title_tier > tier_barony
+		any_held_county = {
+			RICE_lesbos_county_has_pirate_den_trigger = yes
+		}
+	}
+	
+
+	is_valid = {
+		prestige_level >= 2
+		legitimacy_level >= 2
+		custom_description = {
+			text = RICE_mediterranean_renege_on_pirate_collaboration_req
+			any_held_county = { 
+				RICE_lesbos_county_has_pirate_den_trigger = yes
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_ruler = yes
+		is_available_adult = yes
+	}
+
+	effect = {
+		custom_tooltip = RICE_mediterranean_renege_on_pirate_collaboration_effect_tooltip_1
+		custom_tooltip = RICE_mediterranean_renege_on_pirate_collaboration_effect_tooltip_2
+		custom_tooltip = RICE_mediterranean_renege_on_pirate_collaboration_effect_tooltip_3
+		show_as_tooltip = {
+			RICE_mediterranean_renege_on_pirate_collaboration_effect = yes
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_mediterranean_collaborate_with_pirates_context_tooltip
+		}
+		trigger_event = lesbos.0051
+	}
+
+	cost = {
+		gold = RICE_mediterranean_renege_pirate_gold_cost
+		prestige = RICE_mediterranean_renege_pirate_prestige_cost
+	}
+	
+	ai_potential = {
+		short_term_gold > RICE_mediterranean_renege_pirate_gold_cost
+		prestige > RICE_mediterranean_renege_pirate_prestige_cost
+	}
+
+	ai_will_do = {
+		base = 0 # AI will generally not do this
+		modifier = {
+			add = 5
+			has_trait = just
+		}
+		modifier = {
+			add = 5
+			has_trait = compassionate
+		}
+		modifier = {
+			add = 5
+			has_trait = paranoid
+		}
+		modifier = {
+			add = -20
+			has_trait = diligent
+		}
+		# Don't do it if there's a player who's their liege
+		modifier = {
+			add = -20
+			any_liege_or_above = {
+				is_ai = no
+			}
+		}
+	}
+}
+
 RICE_pirate_mediterranean_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_mediterranean_cove.dds" }
 	desc = RICE_pirate_mediterranean_decision_desc
@@ -145,6 +235,7 @@ RICE_pirate_mediterranean_decision = {
 		# 		geographical_region = RICE_mediterranean_region
 		# 	}
 		# }
+		NOT = { has_character_modifier = RICE_mediterranean_reneged_pirate_deals }
 	}
 
 	is_valid_showing_failures_only = {
