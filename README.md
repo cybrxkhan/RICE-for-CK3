@@ -1,12 +1,12 @@
-<img src="https://i.imgur.com/j5IU5DO.jpg">
+<img src="https://i.imgur.com/uqPHsTe.jpg">
 
-## Latest Version: Version 1.13.0.a Hotfix for "Anna Komnene" (Released 10/12/24, for vanilla patch 1.12.x)
+## Latest Version: Version 1.13.1 "Alexiad" (Released 10/29/24, for vanilla patch 1.12.x)
 
 **Newest Flavor Pack: *Lesbos: Island of Poets***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_“The stream of Time, irresistible, ever moving, carries off and bears away all things that come to birth and plunges them into utter darkness, both deeds of no account and deeds which are mighty and worthy of commemoration.”_
+_“The tale of history forms a very strong bulwark against the stream of time, and to some extent checks its irresistible flow...and does not allow [events] to slip away into the abyss of oblivion.”_
 _– Anna Komnene (1083-1153), Byzantine princess and historian, in the Alexiad_
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
@@ -76,138 +76,49 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 
 <img src="https://i.imgur.com/5aPuSt7.jpg">
 
-### 1.13.0.a Hotfix for "Anna Komnene"
+### 1.13.1 "Alexiad"
 
-- Added game concepts for Mediterranean Pirates and RICE’s Pirates in general
-- Revised Wo Daochong’s family tree and lifespans to be more accurate by integrating changes from Eastern Etiquette (thanks also to the user 🍓白茶 for assisting with this effort)
-- Revised RICE’s cultural heritage triggers to account for more heritages as needed (thanks to Cruci for the code)
-- Added more missing Spanish and French translation, courtesy of their respective translators
-- Decision to Establish European Ivory Carving Center can now be taken in Asia Minor and the western steppes (in Europe) as well
-- Flagged Lesbos flavor pack music that’s vocal as vocal music so it will now be disabled if you have the game rule for no vocal music
-- Tweaked chances of which cultures an AI Sawdan might pick as his original culture
-- Replaced all instances of Virgilianae with Vergilianae in loc for consistency
-- Swahili culture now starts with more innovations at game start
-- Ibn Nabhan now starts in the county of Harran if he is a landless adventurer
-- Increased amount of xp gained for the Nabataean trait when doing Ibn Wahshiyya’s unique travel options
-- Slightly increased chances of gaining bonuses when doing Ibn Wahshiyya’s unique travel options
-- Adventurers can now do the interaction to request land in Normandy, not just landed rulers
-- Robert Guiscard automatically loses his truce with the ERE after the war over Bari, to prevent his scripted invasion of Epirus from vanilla unintentionally breaking this truce
-- Buffed Kara-Khitan in 1178 with castle and city holdings and more gold
-- Some Kara-Khitan counties are now Mahayana instead of Vajrayana
-- Fixed loc for the introductory event chains for Thabit ibn Qurra and Ibn Nabhan to reflect if they are landless adventurers
-- Fixed Abu Aaron’s portrait (i.e. Sawdan’s Jewish friend) in the 867 bookmark screen, which had been causing CTDs before the hot-hotfix released right after release
-- Fixed some of Ibn Nabhan’s family remaining pagan
-- Fixed several geographically restricted travel options not being available to landless adventurers, even if you’re in a correct location
-- Fixed Nabati and Khalaj cultures having no innovations at game start
-- Fixed fictitious Dunhuang rulers in 867 being unplayable if you select to play as them in game menu due to a hidden effect killing them off at game start – now, they won’t be removed if you pick them
-- Fixed broken loc in the decision to Employ African Mud Masons when playing as a tribal
-- Fixed some Mediterranean Pirate localization referring to Indian Ocean pirates
-- Fixed Japeth ibn Bundar not having his adventurer title at game start
-- Fixed decision to Commission a Work from Nasir Khusraw missing if you’re playing as Ali ibn Asad since Nasir Khusraw is a landless adventurer now
-- Fixed the Sortes Vergilianae decision not actually costing any gold
+- Added a lot of French and Spanish translations
+- Added Embed Yourself Into Sicilian Society decision for landless adventurers in Sicily to get the Sicilian Signore trait, as it is no longer automatically given to adventurers passing through Sicily
+- Added new aspirations for Hafsa al-Rukuniyya and Andreas the Ex-Archbishop of Bari
+- Added new Heartbroken Grief trait for Hafsa al-Rukuniyya to replace her modifier, that can be leveled up for different bonuses or maluses and upgraded to a better trait through the Process Grief decision
+- Added decisions to Renege on Pirate Collaboration in the Mediterranean and Indian Ocean which will remove Pirate Dens from your territory (except for the Bawarij Den on Socotra)
+- Added a few gloss tooltips in various parts of RICE, particularly Native American cultures to explain their endonyms/exonyms
+- Added Palapala as a remnant Pala ruler in 1178
+- Added new landless adventurers:
+    - al-Tabari (867)
+    - Ishaq ibn Kundaj (867)
+    - Ahmad ibn Rusta Isfahani (867)
+    - Al-Yaqubi (867)
+    - Andreas, (Ex-)Archbishop of Bari (1066)
+    - Geoffrey Burel (1066)
+    - Symeon Seth (1066)
+    - Audun of the Westfjords (1066)
+    - Margaret of Beverly (1178)
+    - Ali al-Harawi (1178)
+    - Bappa Beary (1178)
+    - Abd al-Latif al-Baghdadi (1178)
+- Added new landless nobles to Kara-Khitan in the 1178 bookmark:
+    - Mahmud Yalavach (later a minister for Genghis Khan and his son Ogodei)
+    - Mansur ibn Masud al-Uzgandi
+- Significantly toned down the likelihood AI will take the decisions to Collaborate with Pirates to reduce the amount of Pirate Den buildings that go around
+- Hafsa al-Rukuniyya will no longer be seduced or romanced by AI (unless she resolves her grief through the Recovery path)
+- Decision to become involved in the Greenland struggle now counts counties you and your vassals own, rather than just your directly owned counties
+- Albanian heritage now counts as the Byzantine/Greek world for the Sicilian struggle
+- Nerfed the renown bonus from the Beadmaker Guilds from the Niger Delta by changing it to a legitimacy bonus
+- Nerfed development bonus from building monasteries from the decision to Build a Local Christian Religious Building
+- Disabled certain pilgrimage activities for landless adventurers if your camp is not on the pilgrimage location as a temporary workaround to issues where the activity would get canceled in the middle of the event chain
+- Changed event backgrounds for the Life Release activity
+- Fixed certain religious activities getting canceled partway through to nonexistent conversions while playing as landless adventurers (through a temporary workaround to disable this cancelation if you’re playing as non-landed)
+- Fixed al-Kashgari’s aspiration not completing when he is landless
+- Fixed Manual Angelos bookmark admin not showing him as feudal
+- Fixed missing localization for the Wangara game concept
+- Fixed missing localization for the requirements for the activity to Visit the Crypta Neapolitana
+- Fixed missing localization when using a hook on a Sicilian grain interaction
+- Fixed landless adventurer Norman characters (such as Hrolfr/Rollo) and their followers not getting the Adventurer and Camp Follower traits when they settle in Normandy
+- Fixed Arctic Adaptations tooltip not working properly when adding it as a tradition
+- Fixed loc error with the Kola Nut game concept
 - Miscellaneous bugfixes and tweaks
-
-### 1.13.0 "Anna Komnene"
-
-- Added new flavor pack – Lesbos: Island of Poets
-- Added 5 Mediterranean themed songs
-- Added many new historical landless characters in all start dates (see bottom for full list)
-- Added 4 RICE bookmarks in 1178, 3 for landed and 1 for landless
-- Added new RICE Landless bookmarks for 867 and 1066
-- Moved a few now adventurer characters from 867 and 1066’s old bookmarks to the new landless bookmarks
-- Modified some decisions, activities, interactions, etc. to be available to landless characters, sometimes if they are in the relevant geographical vicinity
-- A few RICE decisions are now available when traveling
-- Added Nabati culture to the Syriac heritage in southern Iraq in 867
-- Added Contentious Colonists tradition to the Siculo-Arabic culture, replacing Religion Blending and Culture Blending
-- Added Image of China tradition for Khitan culture
-- Added several new regional innovations: Almadraba, Monsoon Trade Routes, and Dragoman innovations 
-- Added a decision to Finance Almadraba fishing, unlocked by the Almadraba innovation
-- Horse sacrifice activity now unlocked via a special Sacred Horses doctrine that's inherited, for easier compatibility with mods seeking to add it to their faiths
-- Added Ibn Jubayr as a character in the court of the Emir of Granada in 1178
-- Added Wo Daochong, a Confucian scholar-official in Xixia, as a playable character in 1178
-- Added some changes to RICE’s Sicily code to make it run more smoothly with Muslim Enhancements (credits to iFrunx from the ME team for assistance with this)
-- Added a few new catalysts for the Sicily struggle
-- Kara-Khitai, Xia, and Guiyi now start off with Admin government if you have Roads to Power
-- Various Guiyi vassals no longer hold land but are instead noble families in Guiyi if you have Roads to Power
-- Removed fictitious ruler of Damot as a RICE bookmarked character in 1066 (superseded by the legendary Motolomi in the 1178 bookmark)
-- Decision to Collaborate with Indian Ocean pirates now gives legitimacy loss
-- Tweaked renown gain for the decision to Collaborate with Indian Ocean Pirates
-- Pirate Den and Bawarji Den buildings now give a malus to control
-- Decision to Commission a Work from Nasir Khusraw no longer requires for him to be in your court, but is now only available to Ali ibn Asad
-- Han culture now has Cultivated Sophistication instead of Water Rituals
-- Changed Khitan ethos to bureaucratic instead of communal
-- Thabit ibn Qurra’s education level buffed to level 5
-- Yarsani appearance event is more likely to happen after the Yazidi appearance event, though this is not guaranteed
-- Caucasian heritage now counts towards the Greek world of Sicily
-- Syriac heritage now counts towards the Arab-Berber world of Sicily
-- Rollo game rule and event chain has been modified slightly to account for if the player has Roads to Power (i.e. making Rollo an adventurer)
-- Added legitimacy malus to the Uncrowned by Ooni modifier, but reduced its piety and prestige malus to compensate
-- Reduced Aghlabid event troops since vanilla buffed them
-- Makhazen and Siba, Seasonal Migrators, and Bantu Migrators traditions now allow voluntary landless adventuring and increased chances of becoming landless adventurers
-- Karaism is now automatically involved in the Persian struggle
-- Rabbinism and Karaism are now automatically involved in the Iberian struggle
-- Halved control malus of the Between Three Worlds tradition
-- Tweaked vassals to be more likely to refuse demands with the Between Three Worlds and Contentious Colonizers traditions
-- Tweaked Adventurers and Aristocrats and Legacy of the Northmen traditions to have less overlap with the Audacious Cadets tradition
-- Tweaked the starting traits of Genghis Khan, his wife Borte, and his mother Hoelun
-- Removed duplicate song in Tuareg and Sus flavor packs
-- Removed Norman MAA as it was superceded by Roads to Power’s Norman MAA
-- Zhang Qiu now is friends with Zhang Huaishen in the 867 start date
-- Liberator of Dunhuang modifier now gives a Influence and Legitimacy bonus
-- Fixed old decisions to Pray for a Good Nile Flood being available (since it was replaced with the Activity version)
-- Fixed AI being able to reinforce relations with Silk Road communities it shouldn’t have access to if it doesn’t meet the geographical requirements
-- Fixed wrong loc for the decision to Recruit Soldiers from Sicily saying Palatini MAA instead of Arimanni and Picchieri MAAs when taking the Latin option in earlier and later eras respectively
-- Fixed Sicily language event triggering outside of Sicily
-- Fixed traveling for activity and hunt catalysts not triggering in the Sicily struggle
-- Fixed code for adding a university to Salerno
-- Fixed guests getting Baia-related modifiers when doing the hot springs activity outside of Baia
-- Miscellaneous bugfixes and tweaks
-
-
-## 40 New Landless Adventurers
-
-Made existing RICE characters landless adventurers:
-
-- Thabit ibn Qurra (867)
-- Hiwi al-Balkhi (867)
-- al-Kashgari (1066)
-- Ibn Nabhan (1066)
-- Nasir Khusraw (1066)
-- Longibardopoulos (1066)
-
-Made existing vanilla characters landless adventurers:
-
-- Ali Kalbid (867)
-- Fu Murong (867)
-- Ottar (Ohthere) av Hålogaland (867)
-
-Added new landless adventurers:
-
-- Plausible fictitious Korean in Dunhuang (867)
-- Ibn Wahshiyya (867)
-- Cynewulf (867) 
-- Al-Balkhi (867)
-- Eldad ha-Dani (867)
-- Wulfstan of Hedeby (867)
-- Manikkavacakar (867)
-- Tughj ibn Juff (867)
-- Azjur al-Turki (867)
-- Bartholomew Leslie (1066)
-- Chakrapani Datta (1066)
-- al-Wuhsha al-Dallala (1066)
-- Japheth ibn Bundar (1066)
-- Ibn al-Qatta’ al-Siqilli (1066)
-- Solomon ibn Ghabirol (1066)
-- Trapelicino (1178)
-- Hafsa bint al-Hajj al-Rukuniyya (1178)
-- Michael Scot (1178)
-- Oranmiyan (1178)
-- Hugo von Hildesheim (1178)
-- Guglielmo Grasso (1178)
-- Li Shichang (1178)
-- Plausible fictitious Malays in the Indian Ocean (all dates)
-- Plausible fictitious Swahili in the Indian Ocean (all dates)
-- Plausible fictitious Soninke Wangara merchant (all dates)
 
 
 ## Credits
