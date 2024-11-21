@@ -1,13 +1,12 @@
-<img src="https://i.imgur.com/uqPHsTe.jpg">
+<img src="https://i.imgur.com/9U08K96.jpg">
 
-## Latest Version: Version 1.13.1 "Alexiad" (Released 10/29/24, for vanilla patch 1.12.x)
+## Latest Version: Version 1.14.0 "Hyecho" (Released 11/21/24, for vanilla patch 1.14.x)
 
 **Newest Flavor Pack: *Lesbos: Island of Poets***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_“The tale of history forms a very strong bulwark against the stream of time, and to some extent checks its irresistible flow...and does not allow [events] to slip away into the abyss of oblivion.”_
-_– Anna Komnene (1083-1153), Byzantine princess and historian, in the Alexiad_
+_Hyecho was an 8th century Korean Buddhist monk who traveled through much of Asia to go on pilgrimage to India, similar to the more famous Xuanzang a century before him. His travelogue, Memoir of a Pilgrimage to the Five Kingdoms of India, is a valuable source of information on various Asian and Middle Eastern cultures and polities during the early medieval period._
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
@@ -74,50 +73,28 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/5aPuSt7.jpg">
+<img src="https://i.imgur.com/bCyRmDA.jpg">
 
-### 1.13.1 "Alexiad"
+### 1.14.0 "Hyecho"
 
-- Added a lot of French and Spanish translations
-- Added Embed Yourself Into Sicilian Society decision for landless adventurers in Sicily to get the Sicilian Signore trait, as it is no longer automatically given to adventurers passing through Sicily
-- Added new aspirations for Hafsa al-Rukuniyya and Andreas the Ex-Archbishop of Bari
-- Added new Heartbroken Grief trait for Hafsa al-Rukuniyya to replace her modifier, that can be leveled up for different bonuses or maluses and upgraded to a better trait through the Process Grief decision
-- Added decisions to Renege on Pirate Collaboration in the Mediterranean and Indian Ocean which will remove Pirate Dens from your territory (except for the Bawarij Den on Socotra)
-- Added a few gloss tooltips in various parts of RICE, particularly Native American cultures to explain their endonyms/exonyms
-- Added Palapala as a remnant Pala ruler in 1178
-- Added new landless adventurers:
-    - al-Tabari (867)
-    - Ishaq ibn Kundaj (867)
-    - Ahmad ibn Rusta Isfahani (867)
-    - Al-Yaqubi (867)
-    - Andreas, (Ex-)Archbishop of Bari (1066)
-    - Geoffrey Burel (1066)
-    - Symeon Seth (1066)
-    - Audun of the Westfjords (1066)
-    - Margaret of Beverly (1178)
-    - Ali al-Harawi (1178)
-    - Bappa Beary (1178)
-    - Abd al-Latif al-Baghdadi (1178)
-- Added new landless nobles to Kara-Khitan in the 1178 bookmark:
-    - Mahmud Yalavach (later a minister for Genghis Khan and his son Ogodei)
-    - Mansur ibn Masud al-Uzgandi
-- Significantly toned down the likelihood AI will take the decisions to Collaborate with Pirates to reduce the amount of Pirate Den buildings that go around
-- Hafsa al-Rukuniyya will no longer be seduced or romanced by AI (unless she resolves her grief through the Recovery path)
-- Decision to become involved in the Greenland struggle now counts counties you and your vassals own, rather than just your directly owned counties
-- Albanian heritage now counts as the Byzantine/Greek world for the Sicilian struggle
-- Nerfed the renown bonus from the Beadmaker Guilds from the Niger Delta by changing it to a legitimacy bonus
-- Nerfed development bonus from building monasteries from the decision to Build a Local Christian Religious Building
-- Disabled certain pilgrimage activities for landless adventurers if your camp is not on the pilgrimage location as a temporary workaround to issues where the activity would get canceled in the middle of the event chain
-- Changed event backgrounds for the Life Release activity
-- Fixed certain religious activities getting canceled partway through to nonexistent conversions while playing as landless adventurers (through a temporary workaround to disable this cancelation if you’re playing as non-landed)
-- Fixed al-Kashgari’s aspiration not completing when he is landless
-- Fixed Manual Angelos bookmark admin not showing him as feudal
-- Fixed missing localization for the Wangara game concept
-- Fixed missing localization for the requirements for the activity to Visit the Crypta Neapolitana
-- Fixed missing localization when using a hook on a Sicilian grain interaction
-- Fixed landless adventurer Norman characters (such as Hrolfr/Rollo) and their followers not getting the Adventurer and Camp Follower traits when they settle in Normandy
-- Fixed Arctic Adaptations tooltip not working properly when adding it as a tradition
-- Fixed loc error with the Kola Nut game concept
+- Updated to 1.14/Wandering Nobles
+- Added new playable landless adventurers: Ishaq bin Yahuda (867), Yusuf Balasanguni (1066), Abu Ishaq Ibrahim al-Kanemi (1178)
+- Added new buildings: Dafo Temple (Ganzhou), Osun-Osogbo Sacred Grove (Ajase Ipo), Mount Hekla (Skálaholt), Orkhon Inscriptions (Karabalgasun), Tiya Megaliths (Gurage)
+- Added new decision to Purchase Ice from Yakhchals
+- Added new innovations: Skiing, Nsibidi Pictograms, Yakhchals
+- Added new travel options: Quality Skis
+- Added game rule to disable RICE’s historical landless adventurers at game start (in case it helps with performance and/or if you don’t like them), with three options: Default, Disable Fictitious (Except Player), Disable All (Except Player)
+- Gave brewing culture tradition to the Czech, Polish, Slovak, Bavarian, and Ancient Egyptian cultures
+- Changed most book artifacts like the Lusty [Culture] Maid from the miscellaneous to the journal category newly added in vanilla
+- Removed different culture and faith bonus from the Ubiquity of Poetry tradition
+- Top bar alert suggesting you establish a Greenland estate will no longer show up if you’re an adventurer, since the relevant decision can’t be taken as an adventurer
+- Amazigh paganism renamed to Yakushism, to be consistent with Fallen Eagle
+- Slightly nerfed the chances of getting gold events when doing the Trans-Saharan and Silk Road merchant options
+- Activities now have appropriate “a/an” preceding them like in vanilla
+- Fixed a LOT of typos, credits to klorpa for searching for and fixing them
+- Fixed Hafsa not taking grief decisions frequently enough
+- Fixed RICE’s MAA’s being unrecruitable as an adventurer if you have the Take the Custom Where it Comes perk
+- Fixed RICE’s Heavy Infantry and Heavy Cavalry MAA being recruitable if you have the Strength in Numbers tradition
 - Miscellaneous bugfixes and tweaks
 
 
@@ -135,10 +112,11 @@ Special thanks in particular to:
 - Diadochi Kings mod (from CK2) for Elamite names
 - DrStein(Dupont) for revamped artwork
 - Eastern Etiquette mod and 🍓白茶 for Chinese history improvements
-- Fische for the Dragon Blood art icon and Vertimnus for donating it to me (originally made for Sinews of War)
+- Fische for various building art icons and Vertimnus for donating it to me (originally made for Sinews of War)
 - George Hammond for some music ([see here](https://fanlink.to/georgehammondmusic) for more of his work)
 - Henry for the Better Bedouin Culture mod
 - KeizerHarm for UI work
+- Klorpa for fixing a lot of typos
 - Lahom for most Native American names
 - Макс for Erzya and Moksha names and info
 - Msl229 for Eastern Europe research and code
