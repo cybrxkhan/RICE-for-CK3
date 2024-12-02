@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/9U08K96.jpg">
 
-## Latest Version: Version 1.14.0 "Hyecho" (Released 11/21/24, for vanilla patch 1.14.x)
+## Latest Version: Version 1.14.0.a Hotfix for "Hyecho" (Released 12/2/24, for vanilla patch 1.14.x)
 
 **Newest Flavor Pack: *Lesbos: Island of Poets***
 
@@ -31,7 +31,9 @@ The mod folder should look something like this:
 
 ## Current Flavor Packs
 
-At the moment, the following RICE flavor packs are included in the mod. Click to view guides which cover the features included in each pack in more detail (please note some guides are unfinished and/or out of date).
+At the moment, the below RICE flavor packs are included in the mod. There is a [RICE Wiki](https://ck3.paradoxwikis.com/RICE) that goes over the mod's features, thanks to feringghithebroken for working on it!
+
+Click to view guides which cover the features in each specific pack in more detail (please note some guides are unfinished and/or out of date).
 
 - [Aachen: Charlemagne's Capital](https://docs.google.com/document/d/e/2PACX-1vQNflzrfD7oYcEYcMWDW07MsWCW-8cwIO8-JxSIm_WTnB1Ij0Dr-b3PRNu8mKmUFRXfHW3QDax2Z0DD/pub)
 - [Bamian: Valley of Light](https://docs.google.com/document/d/e/2PACX-1vRkkEsWly8Ma6TtWuE1ucsiTEGNFxRP4O-691XW02FvlHhX-02u_PVIf1LTeNx2egNEUnFuhXw6wNve/pub)
@@ -74,6 +76,17 @@ At the moment, the following RICE flavor packs are included in the mod. Click to
 ## Latest Changelog
 
 <img src="https://i.imgur.com/bCyRmDA.jpg">
+
+### 1.14.0.a Hotfix
+
+- Added English placeholder for the Polish language version of CK3 (i.e. if you play in Polish, RICE content will display in English instead of gibberish)
+- Applied West Slavic DLC clothes to Sorbian culture if the DLC is active
+- Updated RICE+EPE compatch to new EPE version
+- Updated bookmark art, especially for landless bookmarks (courtesy of Nezaros, creator of Rajas of Asia)
+- Fixed Rollo being unplayable if you don’t own or enable the Roads to Power DLC
+- Fixed a few minor non-critical discrepancies between the RICE and RICE+EPE compatch culture code
+- Fixed Asian-American easter egg culture not making use of EPE’s ethnicities and clothing if playing with EPE
+- Miscellaneous bugfixes and tweaks
 
 ### 1.14.0 "Hyecho"
 
