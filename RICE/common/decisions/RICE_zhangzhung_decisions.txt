@@ -1,4 +1,179 @@
 ﻿
+RICE_zhangzhung_adopt_new_tibetan_faith = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_ancient_himalayan_art.dds" }
+
+	decision_group_type = major
+
+	ai_check_interval = 32
+	
+	
+	cooldown = { years = 30 }
+
+	is_shown = {
+		is_landed = yes
+		faith = faith:old_bon
+	}
+
+	is_valid = {
+		faith = faith:old_bon
+	}
+	
+	is_valid_showing_failures_only = {
+		RICE_is_available_adult_even_if_sick_trigger = yes		
+	}
+	
+	widget = {
+		gui = "decision_view_widget_generic_multichoice_with_effects"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "CHOOSE_TIBETAN_FAITH"
+		show_from_start = yes
+
+		### Nangchos
+		item = {
+			value = choose_nangchos
+			is_valid = {
+				NOT = { faith = faith:lamaism }
+			}
+			current_description = choose_nangchos_desc
+			localization = choose_nangchos_name
+			icon = "gfx/interface/icons/faith/lamaism_buddhism.dds"
+			ai_chance = {
+				value = 5
+				if = {
+					limit = {
+						any_sub_realm_county = {
+							count >= 4
+							faith = faith:lamaism
+						}
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						any_sub_realm_county = {
+							count >= 2
+							faith = faith:lamaism
+						}
+					}
+					add = 5
+				}
+				if = {
+					limit = {
+						any_character_to_title_neighboring_county = {
+							exists = holder
+							holder = {
+								faith = faith:lamaism
+							}
+						}
+					}
+					add = 3
+				}
+			}
+		}
+
+		### New Bon
+		item = {
+			value = choose_new_bon
+			is_valid = {
+				NOT = { faith = faith:bon }
+			}
+			current_description = choose_new_bon_desc
+			localization = choose_new_bon_name
+			icon = "gfx/interface/icons/faith/bon.dds"
+			ai_chance = {
+				value = 5
+				if = {
+					limit = {
+						any_sub_realm_county = {
+							count >= 4
+							faith = faith:bon
+						}
+					}
+					add = 10
+				}
+				if = {
+					limit = {
+						any_sub_realm_county = {
+							count >= 2
+							faith = faith:bon
+						}
+					}
+					add = 5
+				}
+				if = {
+					limit = {
+						any_character_to_title_neighboring_county = {
+							exists = holder
+							holder = {
+								faith = faith:bon
+							}
+						}
+					}
+					add = 3
+				}
+			}
+		}
+
+	}
+
+	effect = {
+		if = {
+			limit = { scope:choose_nangchos = yes }
+			
+			if = {
+				limit = {
+					capital_county.faith = faith
+				}
+				capital_county = { set_county_faith = faith:lamaism }
+			}
+			show_as_tooltip = { set_character_faith = faith:lamaism }
+			hidden_effect = {
+				set_character_faith_with_conversion = faith:lamaism
+			}
+			faith:lamaism = {
+				change_fervor = {
+					value = 15
+					desc = fervor_gain_bon_convert
+				}
+			}
+		}
+		
+	}
+	
+	cost = {
+		piety = {
+			value = major_piety_value
+		}
+	}
+	
+	ai_potential = {
+		highest_held_title_tier >= tier_county
+		is_landed = yes
+		is_at_war = no
+	}
+
+	ai_will_do = {
+		base = 20
+		
+		modifier = {
+			add = {
+				value = ai_zeal
+				multiply = -0.5
+			}
+		}
+		
+		modifier = {
+			add = -20
+			has_trait = craven
+		}
+		
+		modifier = {
+			add = 20
+			has_trait = ambitious
+		}
+		
+	}
+}
 
 
 RICE_zhangzhung_rebuild_the_silver_castle = {
