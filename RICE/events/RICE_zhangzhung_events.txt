@@ -66,6 +66,163 @@ zhangzhung.0021 = {
 }
 
 
+# Person becomes a potential Terton
+zhangzhung.0022 = {
+	type = character_event
+	title = zhangzhung.0022.t
+	desc = zhangzhung.0022.desc
+	theme = RICE_theme_tibet_inner_altar
+
+	left_portrait = {
+		character = root
+		animation = personality_cynical
+	}
+
+	right_portrait = {
+		character = scope:nyangral
+		animation = storyteller
+	}
+
+	lower_center_portrait = {
+		character = scope:padmasambhava
+		trigger = { exists = scope:padmasambhava } # In case the game prues him for some reason, which it shouldn't since he should be saved
+	}
+
+	trigger = {
+		OR = {
+			religion = religion:bon_religion
+			#religion = religion:west_himayalan_religion
+			AND = {
+				religion = religion:buddhism_religion
+				culture = { has_cultural_pillar = heritage_tibetan }
+			}
+		}
+		any_courtier = {
+			is_available_ai_adult = yes
+			faith = root.faith
+			age >= 10
+		}
+	}
+
+	immediate = {
+		character:RICE_buddhist_001 = {
+			save_scope_as = padmasambhava
+		}
+		random_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+				faith = root.faith
+				age >= 10
+			}
+			weight = {
+				base = 10
+				# Try to pick someone young
+				modifier = {
+					age <= 40
+					add = 15
+				}
+				# But not too young
+				modifier = {
+					age >= 16
+					add = 15
+				}
+				# Try to avoid someone in your dynasty
+				modifier = {
+					dynasty = root.dynasty
+					add = -25
+				}
+				# Try to pick someone smart
+				modifier = {
+					has_trait = scholar
+					add = 5
+				}
+				modifier = {
+					has_trait = theologian
+					add = 5
+				}
+				modifier = {
+					has_trait = lifestyle_mystic
+					add = 10
+				}
+				# Try to pick someone with the right traits
+				modifier = {
+					has_trait = zealous
+					add = 5
+				}
+				modifier = {
+					has_trait = cynical
+					add = -5
+				}
+				modifier = {
+					has_trait = compassionate
+					add = 5
+				}
+				modifier = {
+					has_trait = sadistic
+					add = -5
+				}
+				modifier = {
+					has_trait = calm
+					add = 5
+				}
+				modifier = {
+					has_trait = wrathful
+					add = -5
+				}
+				modifier = {
+					has_trait = just
+					add = 5
+				}
+				modifier = {
+					has_trait = arbitrary
+					add = -5
+				}
+				modifier = {
+					has_trait = generous
+					add = 5
+				}
+				modifier = {
+					has_trait = greedy
+					add = -5
+				}
+				modifier = {
+					has_trait = temperate
+					add = 5
+				}
+				modifier = {
+					has_trait = gluttonous
+					add = -5
+				}
+			}
+			add_to_list = padmasambhava_dream_candidate	
+		}
+		random_in_list = {
+			list = padmasambhava_dream_candidate
+			save_scope_as = nyangral
+		}
+	}
+
+	option = {
+		name = zhangzhung.0022.a
+		custom_tooltip = zhangzhung.0022.a.tooltip
+	}
+
+	option = {
+		name = zhangzhung.0022.b
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = zhangzhung.0022.info
+		}
+	}
+
+}
+
+
 
 
 ######################################################################################
