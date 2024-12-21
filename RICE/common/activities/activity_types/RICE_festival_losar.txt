@@ -1,0 +1,512 @@
+﻿##################################################################
+#
+# BORROWED FROM DHARMACHAKRA/RAJAS OF ASIA WITH PERMISSION
+#
+##################################################################
+
+
+activity_RICE_festival_losar = {
+	is_shown = {
+		# RICE version will not appear if either Dharmachakra or Rajas of Asia is running
+		is_dharmachakra_loaded = no
+		highest_held_title_tier > tier_barony
+		is_playable_character = yes
+		culture = {
+			has_cultural_pillar = heritage_tibetan
+		}
+		trigger_if = {
+			limit = { is_ai = yes }
+			is_at_war = no
+			short_term_gold >= RICE_activity_cost
+		}	
+	}
+
+	can_start = {
+		custom_description = {
+			text = dharma_decision_losar_month_requirement
+			OR = {
+				current_month >= 2
+				current_month <= 3
+			}
+		}
+		culture = {
+			has_cultural_pillar = heritage_tibetan
+		}
+	}
+
+	can_start_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	is_valid = {
+		NOT = {
+			has_variable = activity_invalidated
+		}
+		scope:host = {
+			is_playable_character = yes
+			NOT = { is_incapable = yes }
+		}
+		scope:activity = {
+			OR = {
+				NOT = { has_variable = starting_faith }
+				# We could check whether the place you're going to is still a holy site in the new faith, but then that messes up all the people moving with you, so we just cancel the whole thing.
+				scope:host.faith = var:starting_faith
+			}
+		}
+	}
+
+	on_invalidated = {
+		# Host becomes unlanded
+		if = {
+			limit = {
+				scope:host = { is_playable_character = no }
+			}
+			scope:activity = {
+				activity_type = { save_scope_as = activity_type }
+			}
+			every_attending_character = {
+				trigger_event = activity_system.0320
+			}
+		}
+		if = {
+			limit = {
+				scope:host = { is_incapable = yes }
+			}
+			scope:activity = {
+				activity_type = { save_scope_as = activity_type }
+			}
+			scope:host = {
+				trigger_event = activity_system.0330
+			}
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				trigger_event = activity_system.0331
+			}
+		}
+		if = {
+			limit = {
+				NOT = { scope:host.faith = var:starting_faith }
+			}
+			scope:activity = {
+				activity_type = { save_scope_as = activity_type }
+				activity_location = { save_scope_as = location }
+			}
+			every_attending_character = {
+				trigger_event = RICEmisc.0010
+			}
+		}
+	}
+
+	on_host_death = {
+		scope:activity = {
+			set_variable = {
+				name = activity_invalidated
+			}
+		}
+	}
+
+	province_filter = capital
+	ai_province_filter = capital
+	wait_time_before_start = { days = 7 }
+
+	###################
+	# OPTIONS
+	###################
+
+	options = {
+		RICE_festival_losar_gift_type = {
+			RICE_festival_losar_gift_small = {
+				default = yes
+				ai_will_do = {
+					value = 15
+					if = {
+						limit = {
+							short_term_gold <= 100
+						}
+						add = {
+							value = 10
+						}
+					}
+					if = {
+						limit = {
+							has_trait = greedy
+						}
+						add = 10
+					}
+				}
+			}
+			RICE_festival_losar_gift_medium = {
+				cost = { 
+					gold = {
+						add = {
+							value = 0
+							desc = RICE_festival_losar_gift_amount
+							add = {
+								value = minor_gold_value
+								desc = RICE_festival_losar_gift_amount
+							}
+						}
+					}
+				}			
+				ai_will_do = {
+					value = 30
+					if = {
+						limit = {
+							short_term_gold <= minor_gold_value
+						}
+						subtract = {
+							value = 30
+						}
+					}
+					if = {
+						limit = {
+							has_trait = ambitious
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = arrogant
+						}
+						add = 5
+					}
+				}
+			}
+			RICE_festival_losar_gift_large = {
+				cost = { 
+					gold = {
+						add = {
+							value = 0
+							desc = RICE_festival_losar_gift_amount
+							add = {
+								value = medium_gold_value
+								desc = RICE_festival_losar_gift_amount
+							}
+						}
+					}
+				}			
+				ai_will_do = {
+					value = 15
+					if = {
+						limit = {
+							short_term_gold <= medium_gold_value
+						}
+						subtract = {
+							value = 15
+						}
+					}
+					if = {
+						limit = {
+							has_trait = ambitious
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = arrogant
+						}
+						add = 5
+					}
+				}
+			}
+		}
+	}
+
+	###################
+	# PHASES
+	###################
+
+	phases = {
+		RICE_festival_losar_celebration_phase = {
+			is_predefined = yes
+			
+			on_phase_active = {
+				if = {
+					limit = { this = scope:host }
+					trigger_event = zhangzhung.0070
+				}		
+			}
+			on_end = {
+			}
+		}
+	}
+
+	max_guest_arrival_delay_time = { days = 14 }
+
+	# desc is only shown in debug AI watch window
+	ai_will_do = {
+		value = 50
+		
+		if = {
+			limit = {
+				has_trait = shy
+			}
+			add = -25
+		}
+		if = {
+			limit = {
+				has_trait = gregarious
+			}
+			add = 25
+		}
+		
+		#Can you actually afford this?
+		if = {
+			limit = {
+				NOT = { can_make_expensive_purchase_trigger = { PRICE = RICE_activity_cost } }
+			}
+			add = -50
+		}
+	}
+
+	ai_check_interval = 60
+
+	ai_check_interval = 60
+
+	ai_will_select_province = {
+		value = 10
+		if = {
+			limit = {
+				this = scope:host.capital_province
+			}
+			add = {
+				value = 30
+				desc = "Capital Province preferred"
+			}
+		}
+	}
+	
+	is_location_valid = {
+		has_holding = yes
+	}
+
+	province_filter = capital
+	ai_province_filter = capital
+
+	max_province_icons = 3
+	
+	cost = {
+		gold = {
+			add = {
+				value = 0
+				add = {
+					value = RICE_activity_cost
+					desc = hunt_base_cost
+				}
+			}
+		}
+	}
+
+	ui_predicted_cost = {
+		gold = {
+			value = RICE_activity_cost
+
+			# Make it a multiple of 5 (rounded up)
+			divide = 5 
+			ceiling = yes 
+			multiply = 5
+
+			add = { # Gift
+				value = 0
+				add = minor_gold_value
+				add = medium_gold_value
+				# Divide by 3 to get the average option cost
+				divide = 3
+			}
+
+		}
+	}
+	cooldown = { days = 4380 }
+	
+	###################
+	# ACTIVITY-SPECIFIC PULSES
+	###################
+	
+	pulse_actions = {
+
+	}
+
+	on_start = {
+
+	}
+
+	on_enter_passive_state = {
+		#trigger_event = zhangzhung.0070
+	}
+
+	###################
+	# GUEST HANDLING
+	###################
+
+	max_guests = 30
+
+	guest_invite_rules = {
+		rules = {
+			# Relations.
+			2 = activity_invite_rule_lovers
+			2 = activity_invite_rule_rivals_if_appropriate
+
+			# Family.
+			3 = activity_invite_rule_extended_family
+
+			# Misc landless.
+			5 = activity_invite_rule_knights
+
+			# MP 
+			6 = activity_invite_mp
+		}
+		defaults = {
+			1 = activity_invite_rule_friends
+			1 = activity_invite_rule_close_family
+			3 = activity_invite_rule_courtiers
+			4 = activity_invite_rule_guests
+			1 = activity_invite_spouses
+		}
+	}
+
+	can_be_activity_guest = {
+		is_adult = yes
+		is_available = yes
+		in_diplomatic_range = scope:host
+		is_playable_character = no
+	}
+
+	host_intents = {
+		intents = { RICE_festival_losar_worship_intent RICE_festival_losar_reputation_intent }
+		default = RICE_festival_losar_worship_intent
+	}
+
+	guest_intents = {
+		intents = { RICE_festival_losar_worship_intent RICE_festival_losar_reputation_intent }
+		default = RICE_festival_losar_worship_intent
+	}
+
+	guest_join_chance = {
+		base = 10
+		base_activity_modifier = yes
+
+		# Scripted Modifiers
+		activity_guest_shared_ai_accept_modifier = yes
+	}
+	
+	on_complete = {
+
+	}
+
+	### Graphics
+
+
+	#Fallback
+	background = {
+		texture = "gfx/interface/illustrations/event_scenes/dharma_tibet_temple_exterior.dds"
+		environment = "environment_event_steppe"
+		ambience = "event:/SFX/Events/Backgrounds/temple_generic"
+	}
+
+	window_characters = {
+		guest = {
+			camera = camera_body
+			
+			effect = {
+				every_attending_character = {
+					limit = {
+						scope:host.location = scope:activity.activity_location
+					}
+					add_to_list = characters
+				}
+			}
+
+			scripted_animation = {
+				animation = personality_forgiving
+			}
+		}
+
+		guest = {
+			camera = camera_body	
+			effect = {
+				every_attending_character = {
+					limit = {
+						scope:host.location = scope:activity.activity_location
+					}
+					add_to_list = characters
+				}
+			}
+			scripted_animation = {
+				animation = personality_content
+			}
+		}
+		
+		host = {
+			camera = camera_body
+			
+			effect = {
+				if = {
+					limit = {
+						scope:host.location = scope:activity.activity_location
+					}
+					scope:host = {
+						add_to_list = characters
+					}
+				}
+			}
+
+			scripted_animation = {
+				animation = personality_bold
+			}
+		}
+		travel_host = {
+			camera = camera_body
+			
+			effect = {
+				if = {
+					limit = {
+						NOT = {
+							scope:host.location = scope:activity.activity_location
+						}
+					}
+					scope:host = {
+						add_to_list = characters
+					}
+				}
+			}
+
+			scripted_animation = {
+				animation = idle
+			}
+		}
+
+		guest = {
+			camera = camera_body
+			
+			effect = {
+				every_attending_character = {
+					limit = {
+						scope:host.location = scope:activity.activity_location
+					}
+					add_to_list = characters
+				}
+			}
+
+			scripted_animation = {
+				animation = personality_content
+			}
+		}
+
+		guest = {
+			camera = camera_body
+			
+			effect = {
+				every_attending_character = {
+					limit = {
+						scope:host.location = scope:activity.activity_location
+					}
+					add_to_list = characters
+				}
+			}
+
+			scripted_animation = {
+				animation = happiness
+			}
+		}
+	}
+}

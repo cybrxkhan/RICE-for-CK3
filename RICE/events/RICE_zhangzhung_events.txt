@@ -5,7 +5,8 @@
 # zhangzhung.0000-zhangzhung.0019			Setup events, history events, miscellaneous events and decisions
 # zhangzhung.0020-zhangzhung.0039			Tertons and Termas
 # zhangzhung.0040-zhangzhung.0049			Salt Expeditions/Taxes
-# zhangzhung.0050-zhangzhung.0069			Dharmachakra/Rajas of Asia Adapted Content
+# zhangzhung.0050-zhangzhung.0069			Misc Dharmachakra/Rajas of Asia Adapted Content
+# zhangzhung.0070-zhangzhung.0089			Losar Activity (Adapted from Dharmachakra/Rajas of Asia)
 # 
 ###############################################################################
 
@@ -227,7 +228,7 @@ zhangzhung.0022 = {
 
 ######################################################################################
 # 
-# DHARMACHAKRA / RAJAS OF ASIA ADAPTED CONTENT
+# MISC DHARMACHAKRA / RAJAS OF ASIA ADAPTED CONTENT
 # 
 # zhangzhung.0050-zhangzhung.0069
 # 
@@ -694,6 +695,389 @@ zhangzhung.0052 = {
 }
 
 
+######################################################################################
+# 
+# LOSAR (Adapted from Dharmachakra)
+# 
+# zhangzhung.0070-zhangzhung.0089
+# 
+######################################################################################
+
+zhangzhung.0070 = {# Losar Starts
+	type = activity_event
+	title = dharma_festivals.060.t
+	desc = dharma_festivals.060.desc
+	theme = feast_activity
+	override_background = {
+		reference = RICE_background_tibet_temple_exterior
+	}
+	
+	right_portrait = root
+	
+	option = { # Cleaning the palace
+		name = dharma_festivals.060.clean
+		add_piety = miniscule_piety_gain
+		stress_impact = {
+			shy = minor_stress_impact_gain
+			cynical = minor_stress_impact_gain
+		}
+	}
+	
+	after = {
+		trigger_event = { 
+			id = zhangzhung.0071
+			days = { 3 5 }
+		}
+	}
+
+}
+
+zhangzhung.0071 = {# Lama Losar
+	type = activity_event
+	title = dharma_festivals.061.t
+	desc = dharma_festivals.061.desc
+	theme = feast_activity
+	override_background = {
+		reference = RICE_background_tibet_inner_altar
+	}
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {# Pay Homage to your guru
+		name = dharma_festivals.061.guru
+		if = {
+			limit = { exists = cp:councillor_court_chaplain }
+			cp:councillor_court_chaplain = {
+				add_opinion = {
+					target = root
+					modifier = pious_opinion
+					opinion = 15
+				}
+			}
+		}
+		stress_impact = {
+			gregarious = miniscule_stress_impact_loss
+			zealous = miniscule_stress_impact_loss
+			humble = miniscule_stress_impact_loss
+			shy = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+			reclusive = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		trigger_event = { 
+			id = zhangzhung.0072
+			days = { 3 5 }
+		}
+	}
+
+}
+
+zhangzhung.0072 = {# King Losaar 
+	type = activity_event
+	title = dharma_festivals.062.t
+	desc = dharma_festivals.062.desc
+	theme = feast_activity
+	override_background = {
+		reference = RICE_background_tibet_inner_altar
+	}
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {# It is their due. 
+		name = dharma_festivals.062.king
+		add_gold = { 5 RICE_losar_gift_amount }
+		stress_impact = {
+			gregarious = miniscule_stress_impact_loss
+			greedy = minor_stress_impact_loss
+			generous = miniscule_stress_impact_gain
+			shy = miniscule_stress_impact_gain
+			reclusive = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		trigger_event = { 
+			id = zhangzhung.0073
+			days = { 3 5 }
+		}
+	}
+}
+
+zhangzhung.0073 = {# Give Gift to the common people 
+	type = activity_event
+	title = dharma_festivals.063.t
+	desc = dharma_festivals.063.desc
+	theme = feast_activity
+	override_background = {
+		reference = RICE_background_tibet_temple_exterior
+	}
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {# Large Gift to the People 
+		name = dharma_festivals.063.large
+		trigger = {
+			scope:activity = {
+				has_activity_option = {
+					category = RICE_festival_losar_gift_type
+					option = RICE_festival_losar_gift_large
+				}
+			}
+		}
+		add_prestige = medium_prestige_gain
+		capital_county = {
+			add_county_modifier = {
+				modifier = RICE_losar_large_gift_modifier
+				years = 3
+			}
+		}
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			improvident = minor_stress_impact_loss
+			just = minor_stress_impact_loss
+			compassionate = minor_stress_impact_loss
+			generous = minor_stress_impact_loss
+		}
+	}
+	option = {# Medium Gift to the People 
+		name = dharma_festivals.063.medium
+		trigger = {
+			scope:activity = {
+				has_activity_option = {
+					category = RICE_festival_losar_gift_type
+					option = RICE_festival_losar_gift_medium
+				}
+			}
+		}
+		add_prestige = minor_prestige_gain
+		capital_county = {
+			add_county_modifier = {
+				modifier = RICE_losar_medium_gift_modifier
+				years = 3
+			}
+		}
+		stress_impact = {
+			greedy = miniscule_stress_impact_gain
+			improvident = miniscule_stress_impact_loss
+			just = miniscule_stress_impact_loss
+			compassionate = miniscule_stress_impact_loss
+			generous = miniscule_stress_impact_loss
+		}
+	}
+	option = {# Small Gift to the People 
+		name = dharma_festivals.063.small
+		trigger = {
+			scope:activity = {
+				has_activity_option = {
+					category = RICE_festival_losar_gift_type
+					option = RICE_festival_losar_gift_small
+				}
+			}
+		}
+		capital_county = {
+			add_county_modifier = {
+				modifier = RICE_losar_small_gift_modifier
+				years = 3
+			}
+		}
+		add_prestige = miniscule_prestige_gain
+		stress_impact = {
+			greedy = minor_stress_impact_loss
+			improvident = minor_stress_impact_gain
+			just = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+		}
+	}
+
+	after = {
+		trigger_event = { 
+			id = zhangzhung.0074
+			days = { 3 5 }
+		}
+	}
+}
+
+zhangzhung.0074 = {# Choe-Kyong Losar 
+	type = activity_event
+	title = dharma_festivals.064.t
+	desc = dharma_festivals.064.desc
+	theme = feast_activity
+	override_background = {
+		reference = RICE_background_tibet_inner_altar
+	}
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {# Offer to the Meditional Deities and Boddhisattvas 
+		name = dharma_festivals.064.prayers
+		add_piety = minor_piety_gain
+		stress_impact = {
+			gregarious = miniscule_stress_impact_loss
+			zealous = miniscule_stress_impact_loss
+			shy = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		trigger_event = { 
+			id = zhangzhung.0075
+			days = { 3 5 }
+		}
+	}
+
+}
+
+zhangzhung.0075 = {# Tibetan Dances 
+	type = activity_event
+	title = dharma_festivals.065.t
+	desc = dharma_festivals.065.desc
+	theme = feast_activity
+	override_background = {
+		reference = RICE_background_tibet_temple_exterior
+	}
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {# What a wonderful Story 
+		name = dharma_festivals.065.dance
+		stress_impact = {
+			base = minor_stress_impact_loss
+		}
+	}
+
+	after = {
+		trigger_event = { 
+			id = zhangzhung.0076
+			days = { 3 5 }
+		}
+	}
+
+}
+
+zhangzhung.0076 = {# feast with the court 
+	type = activity_event
+	title = dharma_festivals.066.t
+	desc = dharma_festivals.066.desc
+	theme = feast_activity
+	override_background = {
+		reference = RICE_background_tibet_inner_altar
+	}
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	option = {# It is their due. 
+		name = dharma_festivals.066.feast
+		every_close_or_extended_family_member = {
+			limit = { is_alive = yes }
+			add_opinion = {
+				modifier = feast_pleasant_time_opinion
+				target = root
+				opinion = 5
+			}
+		}
+		every_courtier = {
+			custom = yearly.4031.b_every_courtier
+			add_opinion = {
+				modifier = feast_pleasant_time_opinion
+				target = root
+				opinion = 5
+			}
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			family_first = minor_stress_impact_loss
+		}
+	}
+
+	after = {
+		trigger_event = { 
+			id = zhangzhung.0077
+			days = { 3 5 }
+		}
+	}
+
+}
+
+zhangzhung.0077 = {# Losar concludes
+	type = activity_event
+	title = dharma_festivals.067.t
+	desc = dharma_festivals.067.desc
+	theme = faith
+	override_background = {
+		reference = RICE_background_tibet_temple_exterior
+	}	
+	left_portrait = {
+		character = root
+		animation = ecstasy
+	}
+	
+	option = {# Back Home
+		name = dharma_festivals.067.home
+		if = {
+			limit = {
+				has_activity_intent = RICE_festival_losar_worship_intent
+			}
+			add_piety = 50
+			stress_impact = {
+				zealous = minor_stress_impact_loss
+				humble = minor_stress_impact_loss
+			}
+		}
+		if = {
+			limit = {
+				has_activity_intent = RICE_festival_losar_reputation_intent
+			}
+			add_prestige = 50
+			stress_impact = {
+				zealous = minor_stress_impact_loss
+				arrogant = minor_stress_impact_loss
+			}
+		}
+		RICE_festival_losar_completed_log_entry_effect = yes
+	}
+
+	after = {
+		scope:activity = {
+			hidden_effect = { skip_activity_phase = yes }
+		}
+		# trigger_event = { 
+		# 	id = zhangzhung.0078
+		# 	days = 1
+		# }
+	}
+}
+
+# zhangzhung.0078 = {# Misc cleanup
+# 	hidden = yes	
+# 	immediate = {
+# 		RICE_festival_losar_completed_log_entry_effect = yes
+# 		scope:activity = {
+# 			hidden_effect = { skip_activity_phase = yes }
+# 		}
+# 	}
+# }
 
 
 

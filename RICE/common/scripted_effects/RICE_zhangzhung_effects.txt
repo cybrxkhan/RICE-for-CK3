@@ -806,3 +806,78 @@ make_gandhari_culture_effect = {
 		}
 	}
 }
+
+RICE_festival_losar_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = dharma_festival_losar_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+
+			scope:host = {
+				if = {
+					limit = {
+						captial_county = {
+							has_county_modifier = RICE_losar_large_gift_modifier
+						}
+					}
+					show_as_tooltip = {				
+						capital_county = {
+							add_county_modifier = {
+								modifier = RICE_losar_large_gift_modifier
+								years = 3
+							}
+						}
+					}
+				}
+				if = {
+					limit = {
+						captial_county = {
+							has_county_modifier = RICE_losar_medium_gift_modifier
+						}
+					}
+					show_as_tooltip = {				
+						capital_county = {
+							add_county_modifier = {
+								modifier = RICE_losar_medium_gift_modifier
+								years = 3
+							}
+						}
+					}
+				}
+				if = {
+					limit = {
+						captial_county = {
+							has_county_modifier = RICE_losar_small_gift_modifier
+						}
+					}
+					show_as_tooltip = {				
+						capital_county = {
+							add_county_modifier = {
+								modifier = RICE_losar_small_gift_modifier
+								years = 3
+							}
+						}
+					}
+				}
+	
+				custom_tooltip = RICE_activity_result_gained_piety
+				custom_tooltip = RICE_activity_result_gained_prestige
+
+			}
+
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT				
+				custom_tooltip = RICE_activity_result_gained_piety
+				custom_tooltip = RICE_activity_result_gained_prestige
+				hidden_effect = {
+					add_piety = 50
+					add_prestige = 50
+				}
+			}	
+		}
+	}
+}
