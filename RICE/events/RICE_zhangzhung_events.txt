@@ -41,6 +41,17 @@ zhangzhung.0001 = {
 			name = RICE_milarepa_kailash_event_happened
 			value = yes
 		}
+		religion:buddhism_religion = {
+			every_faith = {
+				limit = {
+					has_doctrine = rice_vajrayana_canon_doctrine
+				}
+				change_fervor = {
+					value = 5
+					desc = fervor_gain_RICE_milarepa_event
+				}
+			}
+		}
 		every_ruler = {
 			limit = {
 				OR = {
@@ -58,7 +69,12 @@ zhangzhung.0001 = {
 						any_held_title = {
 							tier = tier_county
 							any_county_province = {
-								geographical_region = world_himalaya
+								OR = {
+									geographical_region = world_himalaya
+									geographical_region = world_steppe_tarim
+									geographical_region = world_india_rajastan
+									geographical_region = world_india_bengal
+								}
 							}
 						}
 					}
@@ -71,6 +87,7 @@ zhangzhung.0001 = {
 							geographical_region = world_tibet
 							geographical_region = world_india
 							geographical_region = world_steppe_tarim
+							geographical_region = world_steppe_east
 						}
 					}
 				}
@@ -80,27 +97,115 @@ zhangzhung.0001 = {
 	}
 }
 
-# Supplicating at Ancient Pillars
+# Milarepa Mount Kailash notification event for everyone
 zhangzhung.0002 = {
 	type = character_event
 	title = zhangzhung.0002.t
+	window = big_event_window
 	desc = zhangzhung.0002.desc
 	theme = RICE_theme_mount_kailash
 
 	left_portrait = {
 		character = scope:naro_bonchung
-		animation = prayer
+		animation = personality_forgiving
 	}
 
 	right_portrait = {
 		character = scope:milarepa
-		animation = wedding_priest
+		animation = personality_compassionate
 	}
 
 	option = {
 		name = zhangzhung.0002.a
-		custom_tooltip = zhangzhung.0002.tooltip
+		trigger_event = zhangzhung.0003
 	}
+
+}
+# Milarepa Mount Kailash notification event for everyone
+zhangzhung.0003 = {
+	type = character_event
+	title = zhangzhung.0003.t
+	window = big_event_window
+	desc = zhangzhung.0003.desc
+	theme = RICE_theme_mount_kailash
+
+	left_portrait = {
+		character = scope:naro_bonchung
+		animation = wedding_priest
+	}
+
+	right_portrait = {
+		character = scope:milarepa
+		animation = eavesdrop
+	}
+
+	option = {
+		name = zhangzhung.0003.a
+		trigger = {
+			religion = religion:buddhism_religion
+			faith = { has_doctrine = rice_vajrayana_canon_doctrine }
+		}
+	}
+
+	option = {
+		name = zhangzhung.0003.b
+		trigger = {
+			religion = religion:bon_religion
+		}
+	}
+
+	option = {
+		name = zhangzhung.0003.c
+		trigger = {
+			NOR = {
+				religion = religion:buddhism_religion
+				religion = religion:bon_religion
+			}
+			title:b_teglakar = {
+				is_holy_site_of = root.faith
+			}
+		}
+	}
+
+	option = {
+		name = zhangzhung.0003.d
+		trigger = {
+			religion = religion:buddhism_religion
+			NOT = { faith = { has_doctrine = rice_vajrayana_canon_doctrine } }
+		}
+	}
+
+	option = {
+		name = zhangzhung.0003.e
+		trigger = {
+			NOR = {
+				religion = religion:buddhism_religion
+				religion = religion:bon_religion
+				title:b_teglakar = {
+					is_holy_site_of = root.faith
+				}
+			}
+		}
+	}
+
+	after = {
+		custom_tooltip = zhangzhung.0003.tooltip
+		show_as_tooltip = {
+			religion:buddhism_religion = {
+				every_faith = {
+					custom = RICE_every_tantric_buddhist_faith
+					limit = {
+						has_doctrine = rice_vajrayana_canon_doctrine
+					}
+					change_fervor = {
+						value = 5
+						desc = fervor_gain_RICE_milarepa_event
+					}
+				}
+			}
+		}
+	}
+	
 }
 
 # Supplicating at Ancient Pillars
