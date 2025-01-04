@@ -3,13 +3,13 @@
 # ZHANGZHUNG
 # 
 # zhangzhung.0000-zhangzhung.0019			Setup events, history events, miscellaneous events and decisions
-# zhangzhung.0020-zhangzhung.0039			Tertons and Termas
-# zhangzhung.0040-zhangzhung.0049			Salt Expeditions/Taxes
+# zhangzhung.0020-zhangzhung.0049			Tertons and Termas
 # zhangzhung.0050-zhangzhung.0069			Misc Dharmachakra/Rajas of Asia Adapted Content
 # zhangzhung.0070-zhangzhung.0089			Losar Activity (Adapted from Dharmachakra/Rajas of Asia)
-# zhangzhung.0090-zhangzhung.0099			Rewalsar Lake Pilgrimage
+# zhangzhung.0090-zhangzhung.0099			?????
 # zhangzhung.0100-zhangzhung.0119			Fulaich Flower Festival
 # zhangzhung.0120-zhangzhung.0139			Historical Characters
+# zhangzhung.0140-zhangzhung.0149			?????
 # zhangzhung.0150-zhangzhung.0199			Generic flavor events
 # 
 ###############################################################################
@@ -694,7 +694,7 @@ zhangzhung.0017 = {
 # 
 # TERTONS AND TERMAS
 # 
-# zhangzhung.0020-zhangzhung.0039
+# zhangzhung.0020-zhangzhung.0049
 # 
 ######################################################################################
 
@@ -781,8 +781,14 @@ zhangzhung.0022 = {
 	}
 
 	immediate = {
-		character:RICE_buddhist_001 = {
-			save_scope_as = padmasambhava
+		if = {
+			limit = {
+				religion = religion:buddhism_religion
+				exists = character:RICE_buddhist_001
+			}
+			character:RICE_buddhist_001 = {
+				save_scope_as = padmasambhava
+			}			
 		}
 		random_courtier = {
 			limit = {
@@ -885,15 +891,74 @@ zhangzhung.0022 = {
 
 	option = {
 		name = zhangzhung.0022.b
+		custom_tooltip = zhangzhung.0022.a.tooltip
 	}
 
 	after = {
+		scope:nyangral = {
+			add_character_modifier = {
+				modifier = RICE_terton_candidate
+				years = 25
+			}
+		}
 		if = {
 			limit = {
 				has_game_rule = RICE_historical_context_on
 			}
 			custom_tooltip = zhangzhung.0022.info
 		}
+	}
+
+}
+
+
+# Terton receives signs/visions/dreams about the location of the terma
+zhangzhung.0030 = {
+	type = character_event
+	title = zhangzhung.0030.t
+	desc = zhangzhung.0030.desc
+	theme = faith
+	override_background = { reference = RICE_background_himalayan_wilderness }
+
+	# left_portrait = {
+	# 	character = root
+	# 	animation = admiration
+	# }
+
+	right_portrait = {
+		character = scope:terton
+		animation = storyteller
+	}
+
+	lower_center_portrait = {
+		character = scope:padmasambhava
+		trigger = { exists = scope:padmasambhava } # In case the game prunes him for some reason, which it shouldn't since he should be saved
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				religion = religion:buddhism_religion
+				exists = character:RICE_buddhist_001
+			}
+			character:RICE_buddhist_001 = {
+				save_scope_as = padmasambhava
+			}
+		}
+		random_courtier = {
+			limit = {
+				OR = {
+					has_trait = RICE_terton
+					has_character_modifier = RICE_terton_candidate
+				}
+			}
+		}
+	}
+
+
+	option = {
+		name = zhangzhung.0030.a
+		custom_tooltip = zhangzhung.0030.a.tooltip
 	}
 
 }
