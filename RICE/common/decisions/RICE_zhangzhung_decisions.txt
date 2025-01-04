@@ -517,6 +517,12 @@ RICE_zhangzhung_rebuild_the_silver_castle = {
 			name = unavailable_unique_decisions
 			target = flag:RICE_zhangzhung_revived
 		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_zhangzhung_silver_castle_rebuilt
+			}
+		}
 	}
 	
 	is_valid = {
@@ -534,6 +540,11 @@ RICE_zhangzhung_rebuild_the_silver_castle = {
 	}
 
 	effect = {
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_zhangzhung_silver_castle_rebuilt
+		}
 		custom_tooltip = RICE_zhangzhung_rebuild_the_silver_castle_effect_tooltip_1
 		show_as_tooltip = {
 			RICE_zhangzhung_silver_palace_decision_effect = yes
@@ -559,6 +570,92 @@ RICE_zhangzhung_rebuild_the_silver_castle = {
 		base = 25
 	}
 }
+
+
+
+RICE_zhangzhung_zuthulpuk_monastery_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_tibetan_village.dds" }
+	decision_group_type = major
+	ai_check_interval = 48
+
+	#cooldown = { days = 10 } #1825
+	
+	desc = RICE_zhangzhung_zuthulpuk_monastery_decision_desc
+	
+	is_shown = {
+		is_playable_character = yes
+		religion = religion:buddhism_religion
+		has_global_variable = RICE_milarepa_kailash_event_happened
+		any_held_county = {
+			any_county_province = {
+				geographical_region = RICE_western_central_tibet_and_northern_india
+			}
+		}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_zhangzhung_zuthulpuk_monastery_built
+			}
+		}
+	}
+	
+	is_valid = {
+		has_title = title:c_purang
+		religion = religion:buddhism_religion
+		# OR = {
+		# 	faith = {
+		# 		has_doctrine = rice_vajrayana_canon_doctrine
+		# 	}
+		# 	AND = {
+		# 		religion = religion:buddhism_religion
+		# 		culture = {
+		# 			has_cultural_pillar = heritage_tibetan
+		# 		}
+		# 	}
+		# }
+		piety_level >= 3
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_zhangzhung_zuthulpuk_monastery_built
+		}
+		save_scope_as = zuthulpuk_builder
+		custom_tooltip = RICE_zhangzhung_zuthulpuk_monastery_decision_effect_tooltip_1
+		custom_tooltip = RICE_zhangzhung_zuthulpuk_monastery_decision_effect_tooltip_2
+		show_as_tooltip = {
+			RICE_zhangzhung_zuthulpuk_monastery_decision_effect = yes
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_zhangzhung_zuthulpuk_monastery_decision_context_tooltip
+		}
+		trigger_event = zhangzhung.0015
+	}
+
+	cost = { 
+		gold = { value = minor_gold_value } # Will depend 
+		prestige = { value = medium_prestige_value }
+	}	
+
+	ai_potential = {
+		short_term_gold > minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 25
+	}
+}
+
+
 
 RICE_zhangzhung_supplicate_ancient_pillars = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_ancient_himalayan_art.dds" }
@@ -738,78 +835,78 @@ RICE_zhangzhung_western_tibet_salt_decision = {
 	}
 }
 
-RICE_zhangzhung_eastern_tibet_salt_decision = {
-	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_salt.dds" }
-	ai_check_interval = 32
+# RICE_zhangzhung_eastern_tibet_salt_decision = {
+# 	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_salt.dds" }
+# 	ai_check_interval = 32
 	
-	cooldown = { days = 3650 } 
+# 	cooldown = { days = 3650 } 
 
-	desc = RICE_zhangzhung_eastern_tibet_salt_decision_desc
-	selection_tooltip = RICE_zhangzhung_eastern_tibet_salt_decision_tooltip
+# 	desc = RICE_zhangzhung_eastern_tibet_salt_decision_desc
+# 	selection_tooltip = RICE_zhangzhung_eastern_tibet_salt_decision_tooltip
 
-	is_shown = {
-		is_playable_character = yes
-		any_held_county = {
-			any_county_province = {
-				geographical_region = RICE_eastern_tibet_req
-			}
-		}
-	}
+# 	is_shown = {
+# 		is_playable_character = yes
+# 		any_held_county = {
+# 			any_county_province = {
+# 				geographical_region = RICE_eastern_tibet_req
+# 			}
+# 		}
+# 	}
 	
-	is_valid = {
-		custom_description = {
-			text = RICE_eastern_tibet_req_req
-			any_held_county = {
-				any_county_province = {
-					geographical_region = RICE_eastern_tibet_req
-				}
-			}
-		}
-	}
+# 	is_valid = {
+# 		custom_description = {
+# 			text = RICE_eastern_tibet_req_req
+# 			any_held_county = {
+# 				any_county_province = {
+# 					geographical_region = RICE_eastern_tibet_req
+# 				}
+# 			}
+# 		}
+# 	}
 	
-	is_valid_showing_failures_only = {
-		is_available_adult = yes
-	}
+# 	is_valid_showing_failures_only = {
+# 		is_available_adult = yes
+# 	}
 
-	effect = {
-		custom_tooltip = RICE_zhangzhung_eastern_tibet_salt_decision_effect_tooltip_1
-		if = {
-			limit = {
-				has_game_rule = RICE_historical_context_on
-			}
-			custom_tooltip = RICE_zhangzhung_eastern_tibet_salt_decision_context_tooltip
-		}
-		trigger_event = zhangzhung.8888
-	}
+# 	effect = {
+# 		custom_tooltip = RICE_zhangzhung_eastern_tibet_salt_decision_effect_tooltip_1
+# 		if = {
+# 			limit = {
+# 				has_game_rule = RICE_historical_context_on
+# 			}
+# 			custom_tooltip = RICE_zhangzhung_eastern_tibet_salt_decision_context_tooltip
+# 		}
+# 		trigger_event = zhangzhung.8888
+# 	}
 
-	cost = {
-		gold = minor_gold_value # Will depend
-	}
+# 	cost = {
+# 		gold = minor_gold_value # Will depend
+# 	}
 	
-	ai_potential = {
-		short_term_gold > minor_gold_value
-	}
+# 	ai_potential = {
+# 		short_term_gold > minor_gold_value
+# 	}
 
-	ai_will_do = {
-		base = 25
-		modifier = {
-			add = -5
-			has_trait = paranoid
-		}
-		modifier = {
-			add = 5
-			has_trait = greedy
-		}
-		modifier = {
-			add = -10
-			has_trait = content
-		}
-		modifier = {
-			add = 10
-			has_trait = ambitious
-		}
-	}
-}
+# 	ai_will_do = {
+# 		base = 25
+# 		modifier = {
+# 			add = -5
+# 			has_trait = paranoid
+# 		}
+# 		modifier = {
+# 			add = 5
+# 			has_trait = greedy
+# 		}
+# 		modifier = {
+# 			add = -10
+# 			has_trait = content
+# 		}
+# 		modifier = {
+# 			add = 10
+# 			has_trait = ambitious
+# 		}
+# 	}
+# }
 
 
 
