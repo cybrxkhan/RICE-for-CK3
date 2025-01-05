@@ -759,23 +759,14 @@ zhangzhung.0022 = {
 	}
 
 	trigger = {
-		OR = {
-			AND = {
-				OR = {
-					religion = religion:bon_religion
-					religion = religion:west_himalayan_religion
-				}
-				faith = { has_doctrine = rice_bon_deities_new_doctrine }
-			}
-			#religion = religion:west_himalayan_religion
-			AND = {
-				religion = religion:buddhism_religion
-				culture = { has_cultural_pillar = heritage_tibetan }
-			}
-		}
+		RICE_can_acess_terton_mechanics_trigger = yes
 		any_courtier = {
 			is_available_ai_adult = yes
 			faith = root.faith
+			RICE_can_acess_terton_mechanics_trigger = yes
+			NOT = {
+				has_character_flag = RICE_not_eligible_to_become_terton
+			}
 			age >= 10
 		}
 	}
@@ -794,6 +785,10 @@ zhangzhung.0022 = {
 			limit = {
 				is_available_ai_adult = yes
 				faith = root.faith
+				RICE_can_acess_terton_mechanics_trigger = yes
+				NOT = {
+					has_character_flag = RICE_not_eligible_to_become_terton
+				}
 				age >= 10
 			}
 			weight = {
@@ -814,6 +809,26 @@ zhangzhung.0022 = {
 					add = -25
 				}
 				# Try to pick someone smart
+				modifier = {
+					learning >= extremely_high_skill_rating
+					add = 10
+				}
+				modifier = {
+					learning >= high_skill_rating
+					add = 10
+				}
+				modifier = {
+					learning >= medium_skill_rating
+					add = 10
+				}
+				modifier = {
+					learning <= mediocre_skill_rating
+					add = -15
+				}
+				modifier = {
+					learning <= low_skill_rating
+					add = -15
+				}
 				modifier = {
 					has_trait = scholar
 					add = 5
@@ -911,12 +926,118 @@ zhangzhung.0022 = {
 
 }
 
-
-# Terton receives signs/visions/dreams about the location of the terma
+# Terton event chain start - Ping event for liege
 zhangzhung.0030 = {
 	type = character_event
-	title = zhangzhung.0030.t
-	desc = zhangzhung.0030.desc
+	hidden = yes
+
+	immediate = {
+		save_scope_as = terton
+		if = {
+			limit = {
+				religion = religion:buddhism_religion
+				exists = character:RICE_buddhist_001
+			}
+			character:RICE_buddhist_001 = {
+				save_scope_as = padmasambhava
+			}
+		}
+		if = {
+			limit = {
+				exists = employer
+			}
+			# If in Tibet and nearby regions, there is a chance of choosing a random province in Tibet OR a random province in your duchy
+			# if = {
+			# 	limit = {
+			# 		employer.capital_province = {
+			# 			geographical_region = RICE_basic_terton_region
+			# 		}
+			# 	}
+			# 	random_list = {
+			# 		50 = {
+			# 			random_county_in_region = {
+			# 				region = RICE_basic_terton_region
+			# 				add_to_list = candidate_counties
+			# 			}
+			# 		}
+			# 		50 = {
+			# 			employer.capital_county.duchy = {
+			# 				random_in_de_jure_hierarchy = {
+			# 					limit = {
+			# 						tier = tier_county
+			# 					}
+			# 					add_to_list = candidate_counties
+			# 				}
+			# 			}
+			# 		}
+			# 	}
+			# 	random_in_list = {
+			# 		list = candidate_counties
+			# 		weight = {
+			# 			base = 10					
+			# 			modifier = {
+			# 				add = 30
+			# 				faith = scope:terton.faith
+			# 			}
+			# 			modifier = {
+			# 				add = 20
+			# 				religion = scope:terton.faith.religion
+			# 			}
+			# 		}
+			# 		save_scope_as = target_county
+			# 	}
+			# 	scope:target_county = {
+			# 		random_county_province = {
+			# 			save_scope_as = target_province
+			# 		}
+			# 	}
+			# }
+			## Otherwise, choose a random province in your duchy
+			#else = {
+				employer.capital_county.duchy = {
+					random_in_de_jure_hierarchy = {
+						limit = {
+							tier = tier_county
+						}
+						add_to_list = candidate_counties
+					}
+				}
+				random_in_list = {
+					list = candidate_counties
+					weight = {
+						base = 10					
+						modifier = {
+							add = 30
+							faith = scope:terton.faith
+						}
+						modifier = {
+							add = 20
+							religion = scope:terton.faith.religion
+						}
+					}
+					save_scope_as = target_county
+				}
+				scope:target_county = {
+					random_county_province = {
+						save_scope_as = target_province
+					}
+				}
+			#}
+			employer = {
+				trigger_event = zhangzhung.0031
+			}
+		}
+		# If they don't have an employer for whatever reason by the time the event triggers
+		#else = {			
+		#}
+	}
+}
+
+# Terton receives signs/visions/dreams about the location of the terma
+zhangzhung.0031 = {
+	type = character_event
+	title = zhangzhung.0031.t
+	desc = zhangzhung.0031.desc
 	theme = faith
 	override_background = { reference = RICE_background_himalayan_wilderness }
 
@@ -936,34 +1057,353 @@ zhangzhung.0030 = {
 	}
 
 	immediate = {
-		if = {
-			limit = {
-				religion = religion:buddhism_religion
-				exists = character:RICE_buddhist_001
-			}
-			character:RICE_buddhist_001 = {
-				save_scope_as = padmasambhava
-			}
-		}
-		random_courtier = {
-			limit = {
-				OR = {
-					has_trait = RICE_terton
-					has_character_modifier = RICE_terton_candidate
-				}
-			}
-		}
+
 	}
 
 
 	option = {
-		name = zhangzhung.0030.a
-		custom_tooltip = zhangzhung.0030.a.tooltip
+		name = zhangzhung.0031.a
+		custom_tooltip = zhangzhung.0031.a.tooltip
+		scope:terton = {
+			# Terton flag
+			add_character_flag = {
+				flag = RICE_terton_journey_flag
+				years = 5
+			}
+			# To prevent them from somehow leaving your court while they're on the trip
+			add_character_flag = {
+				flag = blocked_from_leaving
+				years = 1
+			}
+			start_travel_plan = { 
+				destination = scope:target_province
+				return_trip = yes
+				on_arrival_event = zhangzhung.0032
+				on_travel_planner_cancel_event = zhangzhung.0040
+			}
+		}
 	}
 
 }
 
+# # Terton arrives at the destination where the terma is - Ping event for liege
+# zhangzhung.0032 = {
+# 	type = character_event
+# 	hidden = yes
 
+# 	immediate = {
+# 		save_scope_as = terton		
+# 		if = {
+# 			limit = {
+# 				exists = employer
+# 			}
+# 			employer = {
+# 				trigger_event = zhangzhung.0033
+# 			}
+# 		}
+# 	}
+# }
+
+# # Terton arrives at the destination where the terma is - liege is notified and receives appropriate gifts
+# zhangzhung.0033 = {
+# 	type = character_event
+# 	title = zhangzhung.0033.t
+# 	desc = zhangzhung.0033.desc
+# 	theme = faith
+# 	override_background = { reference = RICE_background_himalayan_wilderness }
+
+# 	# left_portrait = {
+# 	# 	character = root
+# 	# 	animation = admiration
+# 	# }
+
+# 	right_portrait = {
+# 		character = scope:terton
+# 		animation = survey_staff
+# 	}
+
+# 	immediate = {
+
+# 	}
+
+
+# 	option = {
+# 		name = zhangzhung.0033.a
+# 		custom_tooltip = zhangzhung.0033.a.tooltip
+# 	}
+
+# }
+
+# Terton arrives at the destination where the terma is - Ping event for liege
+zhangzhung.0032 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		save_scope_as = terton		
+		if = {
+			limit = {
+				exists = employer
+			}
+			random_list = {
+				60 = {
+					set_variable = {
+						name = RICE_terma_type
+						value = flag:teachings
+						days = 1
+					}
+				}
+				10 = {
+					set_variable = {
+						name = RICE_terma_type
+						value = flag:teachings_great
+						days = 1
+					}
+				}
+				10 = {
+					set_variable = {
+						name = RICE_terma_type
+						value = flag:artifact_sacred_image
+						days = 1
+					}
+				}
+				10 = {
+					set_variable = {
+						name = RICE_terma_type
+						value = flag:artifact_ritual_instrument
+						days = 1
+					}
+				}
+				10 = {
+					set_variable = {
+						name = RICE_terma_type
+						value = flag:religious_building
+						days = 1
+					}
+				}
+				10 = {
+					set_variable = {
+						name = RICE_terma_type
+						value = flag:riches
+						days = 1
+					}
+				}
+				10 = {
+					set_variable = {
+						name = RICE_terma_type
+						value = flag:artifact_scholarly_texts
+						days = 1
+					}
+				}
+				# Failure
+				30 = {
+					set_variable = {
+						name = RICE_terma_type
+						value = flag:failure
+						days = 1
+					}
+				}
+			}
+			employer = {
+				save_scope_as = terton_result_recipient
+				trigger_event = zhangzhung.0033
+			}
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_terton_journey_flag
+			}
+			remove_character_flag = RICE_terton_journey_flag
+		}
+		if = {
+			limit = {
+				has_character_flag = blocked_from_leaving
+			}
+			remove_character_flag = blocked_from_leaving
+		}
+	}
+}
+
+# Terton arrives at the destination where the terma is - liege event
+zhangzhung.0033 = {
+	type = character_event
+	title = zhangzhung.0033.t
+	window = big_event_window
+	desc = {
+		desc = zhangzhung.0033.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:terton = {
+						var:RICE_terma_type ?= flag:teachings
+					}
+				}
+				desc = zhangzhung.0033.desc.teachings
+			}
+			triggered_desc = {
+				trigger = {
+					scope:terton = {
+						var:RICE_terma_type ?= flag:teachings_great
+					}
+				}
+				desc = zhangzhung.0033.desc.teachings_great
+			}
+			triggered_desc = {
+				trigger = {
+					scope:terton = {
+						var:RICE_terma_type ?= flag:artifact_sacred_image
+					}
+				}
+				desc = zhangzhung.0033.desc.artifact_sacred_image
+			}
+			triggered_desc = {
+				trigger = {
+					scope:terton = {
+						var:RICE_terma_type ?= flag:artifact_ritual_instrument
+					}
+				}
+				desc = zhangzhung.0033.desc.artifact_ritual_instrument
+			}
+			triggered_desc = {
+				trigger = {
+					scope:terton = {
+						var:RICE_terma_type ?= flag:religious_building
+					}
+				}
+				desc = zhangzhung.0033.desc.religious_building
+			}
+			triggered_desc = {
+				trigger = {
+					scope:terton = {
+						var:RICE_terma_type ?= flag:riches
+					}
+				}
+				desc = zhangzhung.0033.desc.riches
+			}
+			triggered_desc = {
+				trigger = {
+					scope:terton = {
+						var:RICE_terma_type ?= flag:artifact_scholarly_texts
+					}
+				}
+				desc = zhangzhung.0033.desc.artifact_scholarly_texts
+			}
+			triggered_desc = {
+				trigger = {
+					scope:terton = {
+						var:RICE_terma_type ?= flag:failure
+					}
+				}
+				desc = zhangzhung.0033.desc.failure
+			}
+		}
+	}
+	theme = faith
+	override_background = { reference = RICE_background_himalayan_wilderness }
+
+	left_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = {				
+				scope:terton = {
+					var:RICE_terma_type ?= flag:failure
+				}
+			}
+			animation = disappointed
+		}
+		triggered_animation = {
+			trigger = { RICE_can_acess_terton_mechanics_trigger = no }
+			animation = personality_cynical
+		}
+		# If they are a great terton, they don't bow to you
+		triggered_animation = {
+			trigger = {
+				RICE_can_acess_terton_mechanics_trigger = yes
+				scope:terton = {				
+					has_trait_xp = {
+						trait = RICE_terton
+						value >= 75
+					}
+				}
+				NOT = {
+					has_trait = arrogant
+				}
+				NOT = {
+					has_trait = cynical
+				}
+			}
+			animation = throne_room_bow_3
+		}
+		animation = admiration
+	}
+
+	right_portrait = {
+		character = scope:terton
+		triggered_animation = {
+			trigger = {				
+				scope:terton = {
+					var:RICE_terma_type ?= flag:failure
+				}
+			}
+			animation = sadness
+		}
+		# If they are a terton of some renown, they don't bow to you
+		triggered_animation = {
+			trigger = {				
+				scope:terton = {				
+					has_trait_xp = {
+						trait = RICE_terton
+						value >= 50
+					}
+				}
+			}
+			animation = personality_compassionate
+		}
+		animation = obsequious_bow
+	}
+
+	override_effect_2d = {
+		trigger = {
+			NOT = {			
+				scope:terton = {
+					var:RICE_terma_type ?= flag:failure
+				}
+			}
+		}
+		reference = legend_glow
+	}
+
+	immediate = {
+		scope:terton = {
+			RICE_terton_conclusion_general_effects = yes
+		}
+	}
+
+	# Accept it
+	option = {
+		name = zhangzhung.0033.a
+	}
+
+	# Let them keep it
+	option = {
+		name = zhangzhung.0033.b
+	}
+
+	# Donate it
+	option = {
+		name = zhangzhung.0033.c
+	}
+
+	after = {
+		scope:terton = {					
+			if = {
+				limit = { has_variable = RICE_terma_type }
+				remove_variable = RICE_terma_type
+			}
+		}
+	}
+
+}
 
 
 ######################################################################################
