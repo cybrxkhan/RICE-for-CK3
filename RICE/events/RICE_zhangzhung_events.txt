@@ -622,7 +622,7 @@ zhangzhung.0016 = {
 	window = fullscreen_event
 	desc = zhangzhung.0016.desc
 	theme = faith
-	override_background = { reference = RICE_fullscreen_mountains }
+	override_background = { reference = RICE_tibetan_buddhist_shrine } # RICE_fullscreen_mountains
 	# override_effect_2d = {
 	# 	reference = legend_glow
 	# }
@@ -659,7 +659,7 @@ zhangzhung.0017 = {
 	window = fullscreen_event
 	desc = zhangzhung.0017.desc
 	theme = faith
-	override_background = { reference = RICE_fullscreen_mountains }
+	override_background = { reference = RICE_tibetan_buddhist_shrine } # RICE_fullscreen_mountains
 	# override_effect_2d = {
 	# 	reference = legend_glow
 	# }
@@ -678,6 +678,7 @@ zhangzhung.0017 = {
 		name = zhangzhung.0017.a
 		custom_tooltip = zhangzhung.0017.tooltip.1
 		custom_tooltip = zhangzhung.0017.tooltip.2
+		custom_tooltip = zhangzhung.0017.tooltip.3
 		if = {
 			limit = {
 				has_game_rule = RICE_historical_context_on
@@ -926,6 +927,72 @@ zhangzhung.0022 = {
 
 }
 
+# Supporting/patronizing tertons
+zhangzhung.0023 = {
+	type = character_event
+	title = zhangzhung.0023.t
+	desc = zhangzhung.0023.desc
+	theme = RICE_theme_tibet_inner_altar
+
+	left_portrait = {
+		trigger = { exists = scope:terton }
+		character = scope:terton
+		animation = personality_content
+	}
+
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	lower_center_portrait = {
+		character = scope:padmasambhava
+		trigger = { exists = scope:padmasambhava } # In case the game prues him for some reason, which it shouldn't since he should be saved
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				any_courtier = {
+					is_available_ai_adult = yes
+					RICE_is_or_can_become_terton_trigger = yes
+				}
+			}
+			random_courtier = {
+				limit = {
+					is_available_ai_adult = yes
+					RICE_is_or_can_become_terton_trigger = yes
+				}
+				save_scope_as = terton
+			}
+		}
+		if = {
+			limit = {
+				religion = religion:buddhism_religion
+				exists = character:RICE_buddhist_001
+			}
+			character:RICE_buddhist_001 = {
+				save_scope_as = padmasambhava
+			}			
+		}
+	}
+
+	option = {
+		name = zhangzhung.0023.a
+		RICE_zhangzhung_patronize_tertons_effect = yes
+	}
+
+	# after = {
+	# 	if = {
+	# 		limit = {
+	# 			has_game_rule = RICE_historical_context_on
+	# 		}
+	# 		custom_tooltip = zhangzhung.0023.info
+	# 	}
+	# }
+
+}
+
 # Terton event chain start - Ping event for liege
 zhangzhung.0030 = {
 	type = character_event
@@ -1146,10 +1213,17 @@ zhangzhung.0032 = {
 				exists = employer
 			}
 			random_list = {
-				60 = {
+				40 = {
 					set_variable = {
 						name = RICE_terma_type
-						value = flag:teachings
+						value = flag:teachings_physical
+						days = 1
+					}
+				}
+				40 = {
+					set_variable = {
+						name = RICE_terma_type
+						value = flag:teachings_internal
 						days = 1
 					}
 				}
@@ -1235,10 +1309,18 @@ zhangzhung.0033 = {
 			triggered_desc = {
 				trigger = {
 					scope:terton = {
-						var:RICE_terma_type ?= flag:teachings
+						var:RICE_terma_type ?= flag:teachings_physical
 					}
 				}
-				desc = zhangzhung.0033.desc.teachings
+				desc = zhangzhung.0033.desc.teachings_physical
+			}
+			triggered_desc = {
+				trigger = {
+					scope:terton = {
+						var:RICE_terma_type ?= flag:teachings_internal
+					}
+				}
+				desc = zhangzhung.0033.desc.teachings_internal
 			}
 			triggered_desc = {
 				trigger = {
