@@ -756,7 +756,7 @@ zhangzhung.0022 = {
 
 	lower_center_portrait = {
 		character = scope:padmasambhava
-		trigger = { exists = scope:padmasambhava } # In case the game prues him for some reason, which it shouldn't since he should be saved
+		trigger = { exists = scope:padmasambhava } # In case the game prunes him for some reason, which it shouldn't since he should be saved
 	}
 
 	trigger = {
@@ -947,7 +947,7 @@ zhangzhung.0023 = {
 
 	lower_center_portrait = {
 		character = scope:padmasambhava
-		trigger = { exists = scope:padmasambhava } # In case the game prues him for some reason, which it shouldn't since he should be saved
+		trigger = { exists = scope:padmasambhava } # In case the game prunes him for some reason, which it shouldn't since he should be saved
 	}
 
 	immediate = {
@@ -1007,7 +1007,7 @@ zhangzhung.0024 = {
 
 	lower_center_portrait = {
 		character = scope:padmasambhava
-		trigger = { exists = scope:padmasambhava } # In case the game prues him for some reason, which it shouldn't since he should be saved
+		trigger = { exists = scope:padmasambhava } # In case the game prunes him for some reason, which it shouldn't since he should be saved
 	}
 
 	immediate = {
@@ -1261,70 +1261,190 @@ zhangzhung.0032 = {
 			limit = {
 				exists = employer
 			}
+			# Determine whether there is a success or failure to begin with
 			random_list = {
-				40 = {
-					set_variable = {
-						name = RICE_terma_type
-						value = flag:teachings_physical
-						days = 1
-					}
-				}
-				40 = {
-					set_variable = {
-						name = RICE_terma_type
-						value = flag:teachings_internal
-						days = 1
-					}
-				}
-				10 = {
-					set_variable = {
-						name = RICE_terma_type
-						value = flag:teachings_great
-						days = 1
-					}
-				}
-				10 = {
-					set_variable = {
-						name = RICE_terma_type
-						value = flag:artifact_sacred_image
-						days = 1
-					}
-				}
-				10 = {
-					set_variable = {
-						name = RICE_terma_type
-						value = flag:artifact_ritual_instrument
-						days = 1
-					}
-				}
-				10 = {
-					set_variable = {
-						name = RICE_terma_type
-						value = flag:religious_building
-						days = 1
-					}
-				}
-				10 = {
-					set_variable = {
-						name = RICE_terma_type
-						value = flag:riches
-						days = 1
-					}
-				}
-				10 = {
-					set_variable = {
-						name = RICE_terma_type
-						value = flag:artifact_scholarly_texts
-						days = 1
-					}
-				}
 				# Failure
 				30 = {
+					modifier = {
+						add = -10
+						has_trait = RICE_terton								
+						has_trait_xp = {
+							trait = lifestyle_reveler
+							value >= 50
+						}
+					}
+					modifier = {
+						add = -10
+						has_trait = RICE_terton								
+						has_trait_xp = {
+							trait = lifestyle_reveler
+							value >= 100
+						}
+					}
 					set_variable = {
 						name = RICE_terma_type
 						value = flag:failure
 						days = 1
 					}
+				}
+				# Success
+				70 = {
+					modifier = {
+						add = 20
+						has_trait = RICE_terton
+					}
+					# Level of success
+					random_list = {
+						40 = {
+							modifier = {
+								add = -10
+								has_trait = RICE_terton								
+								has_trait_xp = {
+									trait = lifestyle_reveler
+									value >= 50
+								}
+							}
+							modifier = {
+								add = -10
+								has_trait = RICE_terton								
+								has_trait_xp = {
+									trait = lifestyle_reveler
+									value >= 50
+								}
+							}
+							set_variable = {
+								name = RICE_terma_recognition
+								value = flag:questioned
+								days = 1
+							}
+						}
+						40 = {
+							modifier = {
+								add = 20
+								has_trait = RICE_terton
+							}
+							modifier = {
+								add = 20
+								has_trait = RICE_terton								
+								has_trait_xp = {
+									trait = lifestyle_reveler
+									value >= 50
+								}
+							}
+							modifier = {
+								add = 20
+								has_trait = RICE_terton								
+								has_trait_xp = {
+									trait = lifestyle_reveler
+									value >= 100
+								}
+							}
+							set_variable = {
+								name = RICE_terma_recognition
+								value = flag:accepted
+								days = 1
+							}
+						}
+						20 = {
+							modifier = {
+								add = 10
+								has_trait = RICE_terton
+							}
+							modifier = {
+								add = 10
+								has_trait = RICE_terton								
+								has_trait_xp = {
+									trait = lifestyle_reveler
+									value >= 50
+								}
+							}
+							modifier = {
+								add = 10
+								has_trait = RICE_terton								
+								has_trait_xp = {
+									trait = lifestyle_reveler
+									value >= 100
+								}
+							}
+							set_variable = {
+								name = RICE_terma_recognition
+								value = flag:venerated
+								days = 1
+							}
+						}
+					}
+					# Type of Terma
+					random_list = {
+						40 = {
+							set_variable = {
+								name = RICE_terma_type
+								value = flag:teachings_physical
+								days = 1
+							}
+						}
+						40 = {
+							set_variable = {
+								name = RICE_terma_type
+								value = flag:teachings_internal
+								days = 1
+							}
+						}
+						10 = {
+							set_variable = {
+								name = RICE_terma_type
+								value = flag:teachings_great
+								days = 1
+							}
+							# Great teachings are always venerated level
+							set_variable = {
+								name = RICE_terma_quality
+								value = flag:teachings_venerated
+								days = 1
+							}
+						}
+						10 = {
+							set_variable = {
+								name = RICE_terma_type
+								value = flag:artifact_statue
+								days = 1
+							}
+						}
+						1000 = {
+							set_variable = {
+								name = RICE_terma_type
+								value = flag:artifact_sacred_image
+								days = 1
+							}
+						}
+						10 = {
+							set_variable = {
+								name = RICE_terma_type
+								value = flag:artifact_ritual_instrument
+								days = 1
+							}
+						}
+						10 = {
+							set_variable = {
+								name = RICE_terma_type
+								value = flag:religious_building
+								days = 1
+							}
+						}
+						10 = {
+							set_variable = {
+								name = RICE_terma_type
+								value = flag:riches
+								days = 1
+							}
+						}
+						10 = {
+							set_variable = {
+								name = RICE_terma_type
+								value = flag:artifact_scholarly_texts
+								days = 1
+							}
+						}
+					}					
 				}
 			}
 			employer = {
@@ -1353,7 +1473,35 @@ zhangzhung.0033 = {
 	title = zhangzhung.0033.t
 	window = big_event_window
 	desc = {
-		desc = zhangzhung.0033.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:terton = {
+						var:RICE_terma_type ?= flag:failure
+					}
+				}
+				desc = zhangzhung.0033.desc.intro.failure
+			}
+			desc = zhangzhung.0033.desc.intro
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:terton = {
+						religion = religion:bon_religion
+					}
+				}
+				desc = zhangzhung.0033.desc.intro.bon
+			}			
+			triggered_desc = {
+				trigger = {
+					scope:terton = {
+						religion = religion:buddhism_religion
+					}
+				}
+				desc = zhangzhung.0033.desc.intro.buddhist
+			}
+		}
 		first_valid = {
 			triggered_desc = {
 				trigger = {
@@ -1378,6 +1526,14 @@ zhangzhung.0033 = {
 					}
 				}
 				desc = zhangzhung.0033.desc.teachings_great
+			}
+			triggered_desc = {
+				trigger = {
+					scope:terton = {
+						var:RICE_terma_type ?= flag:artifact_statue
+					}
+				}
+				desc = zhangzhung.0033.desc.artifact_statue
 			}
 			triggered_desc = {
 				trigger = {
@@ -1426,6 +1582,33 @@ zhangzhung.0033 = {
 					}
 				}
 				desc = zhangzhung.0033.desc.failure
+			}
+		}
+		desc = zhangzhung.0033.desc.middle
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:terton = {
+						var:RICE_terma_recognition ?= flag:questioned
+					}
+				}
+				desc = zhangzhung.0033.desc.questioned
+			}
+			triggered_desc = {
+				trigger = {
+					scope:terton = {
+						var:RICE_terma_recognition ?= flag:accepted
+					}
+				}
+				desc = zhangzhung.0033.desc.accepted
+			}
+			triggered_desc = {
+				trigger = {
+					scope:terton = {
+						var:RICE_terma_recognition ?= flag:venerated
+					}
+				}
+				desc = zhangzhung.0033.desc.venerated
 			}
 		}
 	}
@@ -1492,6 +1675,21 @@ zhangzhung.0033 = {
 		}
 		animation = obsequious_bow
 	}
+	
+	lower_right_portrait = {		
+		character = scope:padmasambhava
+		trigger = {
+			exists = scope:padmasambhava # In case the game prunes him for some reason, which it shouldn't since he should be saved		
+			scope:terton = {
+				religion = religion:buddhism_religion
+			}
+		} 
+	}
+	artifact = { # To display the artifact in the event-window
+		target = scope:terma_artifact
+		position = lower_center_portrait
+		trigger = { exists = scope:terma_artifact }
+	}
 
 	override_effect_2d = {
 		trigger = {
@@ -1505,24 +1703,965 @@ zhangzhung.0033 = {
 	}
 
 	immediate = {
+		if = {
+			limit = {
+				scope:terton = {
+					religion = religion:buddhism_religion
+				}
+			}
+			character:RICE_buddhist_001 = {
+				save_scope_as = padmasambhava
+			}
+		}
 		scope:terton = {
+			location = {
+				save_scope_as = location
+			}
 			RICE_terton_conclusion_general_effects = yes
+		}
+		if = {
+			limit = {
+				scope:terton = {
+					var:RICE_terma_type ?= flag:teachings_physical
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:terton = {
+					var:RICE_terma_type ?= flag:teachings_internal
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:terton = {
+					var:RICE_terma_type ?= flag:teachings_great
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:terton = {
+					var:RICE_terma_type ?= flag:artifact_statue
+				}
+			}
+			if = {
+				limit = {					
+					scope:terton = {
+						var:RICE_terma_recognition ?= flag:questioned
+					}
+				}
+				hidden_effect_new_object = {
+					create_artifact = {
+						name = RICE_terma_statue_name
+						description = RICE_terma_statue_questioned_desc
+						type = miscellaneous
+						visuals = RICE_tibetan_statue					
+						quality = 10
+						wealth = 10
+						modifier = RICE_terma_statue_modifier_1
+						save_scope_as = terma_artifact
+						history = {
+							type = created_before_history
+						}
+					}
+					scope:terma_artifact = {
+						random = {
+							chance = 20
+							random_list = {
+								10 = {									
+									add_artifact_modifier = artifact_monthly_piety_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_learning_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_diplomacy_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_intrigue_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_learning_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_diplomacy_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_intrigue_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_stress_gain_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_zealot_vassal_opinion_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_minor_prestige_5_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_church_holding_build_speed_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_clergy_opinion_4_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_negate_health_penalty_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_scheme_resistance_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_legend_spread_mult_5_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_epidemic_resistance_3_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_legitimacy_gain_mult_3_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_travel_safety_1
+								}
+								10 = {									
+									add_artifact_modifier = artifact_general_opinion_1_modifier
+								}
+							}
+						}
+					}
+				}
+			}
+			else_if = {
+				limit = {					
+					scope:terton = {
+						var:RICE_terma_recognition ?= flag:accepted
+					}
+				}
+				hidden_effect_new_object = {
+					create_artifact = {
+						name = RICE_terma_statue_name
+						description = RICE_terma_statue_accepted_desc
+						type = miscellaneous
+						visuals = RICE_tibetan_statue					
+						quality = 45
+						wealth = 45
+						modifier = RICE_terma_statue_modifier_2
+						save_scope_as = terma_artifact
+						history = {
+							type = created_before_history
+						}
+					}
+					scope:terma_artifact = {
+						random_list = {
+							10 = {									
+								add_artifact_modifier = artifact_monthly_piety_2_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_learning_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_diplomacy_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_intrigue_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_monthly_learning_lifestyle_xp_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_monthly_diplomacy_lifestyle_xp_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_monthly_intrigue_lifestyle_xp_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_stress_gain_2_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_zealot_vassal_opinion_2_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_monthly_minor_prestige_5_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_church_holding_build_speed_add_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_clergy_opinion_4_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_negate_health_penalty_add_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_scheme_resistance_add_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_legend_spread_mult_5_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_epidemic_resistance_3_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_legitimacy_gain_mult_3_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_travel_safety_1
+							}
+							10 = {									
+								add_artifact_modifier = artifact_general_opinion_1_modifier
+							}
+						}
+						random = {
+							chance = 50
+							random_list = {
+								10 = {									
+									add_artifact_modifier = artifact_monthly_piety_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_learning_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_diplomacy_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_intrigue_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_learning_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_diplomacy_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_intrigue_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_stress_gain_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_zealot_vassal_opinion_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_minor_prestige_5_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_church_holding_build_speed_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_clergy_opinion_4_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_negate_health_penalty_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_scheme_resistance_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_legend_spread_mult_5_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_epidemic_resistance_3_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_legitimacy_gain_mult_3_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_travel_safety_1
+								}
+								10 = {									
+									add_artifact_modifier = artifact_general_opinion_1_modifier
+								}
+							}
+						}
+					}
+				}
+			}
+			else_if = {
+				limit = {					
+					scope:terton = {
+						var:RICE_terma_recognition ?= flag:venerated
+					}
+				}
+				hidden_effect_new_object = {
+					create_artifact = {
+						name = RICE_terma_statue_name
+						description = RICE_terma_statue_venerated_desc
+						type = miscellaneous
+						visuals = RICE_tibetan_statue					
+						quality = 80
+						wealth = 80
+						modifier = RICE_terma_statue_modifier_3
+						save_scope_as = terma_artifact
+						history = {
+							type = created_before_history
+						}
+					}
+					scope:terma_artifact = {
+						random_list = {
+							10 = {									
+								add_artifact_modifier = artifact_monthly_piety_2_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_learning_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_diplomacy_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_intrigue_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_monthly_learning_lifestyle_xp_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_monthly_diplomacy_lifestyle_xp_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_monthly_intrigue_lifestyle_xp_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_stress_gain_2_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_zealot_vassal_opinion_2_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_monthly_minor_prestige_5_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_church_holding_build_speed_add_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_clergy_opinion_4_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_negate_health_penalty_add_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_scheme_resistance_add_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_legend_spread_mult_5_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_epidemic_resistance_3_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_legitimacy_gain_mult_3_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_travel_safety_1
+							}
+							10 = {									
+								add_artifact_modifier = artifact_general_opinion_1_modifier
+							}
+						}
+						random = {
+							chance = 75
+							random_list = {
+								10 = {									
+									add_artifact_modifier = artifact_monthly_piety_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_learning_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_diplomacy_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_intrigue_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_learning_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_diplomacy_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_intrigue_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_stress_gain_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_zealot_vassal_opinion_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_minor_prestige_5_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_church_holding_build_speed_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_clergy_opinion_4_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_negate_health_penalty_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_scheme_resistance_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_legend_spread_mult_5_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_epidemic_resistance_3_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_legitimacy_gain_mult_3_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_travel_safety_1
+								}
+								10 = {									
+									add_artifact_modifier = artifact_general_opinion_1_modifier
+								}
+							}
+						}
+						random = {
+							chance = 40
+							random_list = {
+								10 = {									
+									add_artifact_modifier = artifact_monthly_piety_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_learning_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_diplomacy_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_intrigue_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_learning_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_diplomacy_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_intrigue_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_stress_gain_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_zealot_vassal_opinion_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_minor_prestige_5_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_church_holding_build_speed_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_clergy_opinion_4_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_negate_health_penalty_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_scheme_resistance_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_legend_spread_mult_5_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_epidemic_resistance_3_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_legitimacy_gain_mult_3_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_travel_safety_1
+								}
+								10 = {									
+									add_artifact_modifier = artifact_general_opinion_1_modifier
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:terton = {
+					var:RICE_terma_type ?= flag:artifact_sacred_image
+				}
+			}
+			if = {
+				limit = {					
+					scope:terton = {
+						var:RICE_terma_recognition ?= flag:questioned
+					}
+				}
+				hidden_effect_new_object = {
+					create_artifact = {
+						name = RICE_terma_sacred_image_name
+						description = RICE_terma_sacred_image_questioned_desc
+						type = miscellaneous
+						visuals = RICE_tibetan_thangka					
+						quality = 10
+						wealth = 10
+						modifier = RICE_terma_sacred_image_modifier_1
+						save_scope_as = terma_artifact
+						history = {
+							type = created_before_history
+						}
+					}
+					scope:terma_artifact = {
+						random = {
+							chance = 20
+							random_list = {
+								10 = {									
+									add_artifact_modifier = artifact_monthly_piety_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_learning_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_diplomacy_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_intrigue_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_learning_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_diplomacy_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_intrigue_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_stress_gain_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_zealot_vassal_opinion_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_minor_prestige_5_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_church_holding_build_speed_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_clergy_opinion_4_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_negate_health_penalty_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_scheme_resistance_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_legend_spread_mult_5_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_epidemic_resistance_3_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_legitimacy_gain_mult_3_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_travel_safety_1
+								}
+								10 = {									
+									add_artifact_modifier = artifact_general_opinion_1_modifier
+								}
+							}
+						}
+					}
+				}
+			}
+			else_if = {
+				limit = {					
+					scope:terton = {
+						var:RICE_terma_recognition ?= flag:accepted
+					}
+				}
+				hidden_effect_new_object = {
+					create_artifact = {
+						name = RICE_terma_sacred_image_name
+						description = RICE_terma_sacred_image_accepted_desc
+						type = miscellaneous
+						visuals = RICE_tibetan_thangka					
+						quality = 45
+						wealth = 45
+						modifier = RICE_terma_sacred_image_modifier_2
+						save_scope_as = terma_artifact
+						history = {
+							type = created_before_history
+						}
+					}
+					scope:terma_artifact = {
+						random_list = {
+							10 = {									
+								add_artifact_modifier = artifact_monthly_piety_2_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_learning_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_diplomacy_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_intrigue_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_monthly_learning_lifestyle_xp_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_monthly_diplomacy_lifestyle_xp_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_monthly_intrigue_lifestyle_xp_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_stress_gain_2_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_zealot_vassal_opinion_2_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_monthly_minor_prestige_5_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_church_holding_build_speed_add_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_clergy_opinion_4_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_negate_health_penalty_add_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_scheme_resistance_add_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_legend_spread_mult_5_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_epidemic_resistance_3_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_legitimacy_gain_mult_3_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_travel_safety_1
+							}
+							10 = {									
+								add_artifact_modifier = artifact_general_opinion_1_modifier
+							}
+						}
+						random = {
+							chance = 50
+							random_list = {
+								10 = {									
+									add_artifact_modifier = artifact_monthly_piety_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_learning_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_diplomacy_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_intrigue_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_learning_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_diplomacy_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_intrigue_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_stress_gain_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_zealot_vassal_opinion_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_minor_prestige_5_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_church_holding_build_speed_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_clergy_opinion_4_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_negate_health_penalty_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_scheme_resistance_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_legend_spread_mult_5_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_epidemic_resistance_3_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_legitimacy_gain_mult_3_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_travel_safety_1
+								}
+								10 = {									
+									add_artifact_modifier = artifact_general_opinion_1_modifier
+								}
+							}
+						}
+					}
+				}
+			}
+			else_if = {
+				limit = {					
+					scope:terton = {
+						var:RICE_terma_recognition ?= flag:venerated
+					}
+				}
+				hidden_effect_new_object = {
+					create_artifact = {
+						name = RICE_terma_sacred_image_name
+						description = RICE_terma_sacred_image_venerated_desc
+						type = miscellaneous
+						visuals = RICE_tibetan_thangka					
+						quality = 80
+						wealth = 80
+						modifier = RICE_terma_sacred_image_modifier_3
+						save_scope_as = terma_artifact
+						history = {
+							type = created_before_history
+						}
+					}
+					scope:terma_artifact = {
+						random_list = {
+							10 = {									
+								add_artifact_modifier = artifact_monthly_piety_2_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_learning_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_diplomacy_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_intrigue_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_monthly_learning_lifestyle_xp_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_monthly_diplomacy_lifestyle_xp_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_monthly_intrigue_lifestyle_xp_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_stress_gain_2_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_zealot_vassal_opinion_2_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_monthly_minor_prestige_5_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_church_holding_build_speed_add_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_clergy_opinion_4_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_negate_health_penalty_add_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_scheme_resistance_add_1_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_legend_spread_mult_5_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_epidemic_resistance_3_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_legitimacy_gain_mult_3_modifier
+							}
+							10 = {									
+								add_artifact_modifier = artifact_travel_safety_1
+							}
+							10 = {									
+								add_artifact_modifier = artifact_general_opinion_1_modifier
+							}
+						}
+						random = {
+							chance = 75
+							random_list = {
+								10 = {									
+									add_artifact_modifier = artifact_monthly_piety_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_learning_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_diplomacy_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_intrigue_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_learning_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_diplomacy_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_intrigue_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_stress_gain_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_zealot_vassal_opinion_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_minor_prestige_5_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_church_holding_build_speed_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_clergy_opinion_4_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_negate_health_penalty_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_scheme_resistance_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_legend_spread_mult_5_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_epidemic_resistance_3_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_legitimacy_gain_mult_3_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_travel_safety_1
+								}
+								10 = {									
+									add_artifact_modifier = artifact_general_opinion_1_modifier
+								}
+							}
+						}
+						random = {
+							chance = 40
+							random_list = {
+								10 = {									
+									add_artifact_modifier = artifact_monthly_piety_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_learning_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_diplomacy_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_intrigue_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_learning_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_diplomacy_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_intrigue_lifestyle_xp_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_stress_gain_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_zealot_vassal_opinion_2_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_monthly_minor_prestige_5_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_church_holding_build_speed_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_clergy_opinion_4_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_negate_health_penalty_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_scheme_resistance_add_1_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_legend_spread_mult_5_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_epidemic_resistance_3_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_legitimacy_gain_mult_3_modifier
+								}
+								10 = {									
+									add_artifact_modifier = artifact_travel_safety_1
+								}
+								10 = {									
+									add_artifact_modifier = artifact_general_opinion_1_modifier
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:terton = {
+					var:RICE_terma_type ?= flag:artifact_ritual_instrument
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:terton = {
+					var:RICE_terma_type ?= flag:artifact_scholarly_texts
+				}
+			}
 		}
 	}
 
 	# Accept it
 	option = {
 		name = zhangzhung.0033.a
+		RICE_terton_conclusion_accept_effects = yes
 	}
 
 	# Let them keep it
 	option = {
 		name = zhangzhung.0033.b
+		RICE_terton_conclusion_let_keep_effects = yes
 	}
 
 	# Donate it
 	option = {
 		name = zhangzhung.0033.c
+		RICE_terton_conclusion_donate_effects = yes
 	}
 
 	after = {
@@ -1530,6 +2669,12 @@ zhangzhung.0033 = {
 			if = {
 				limit = { has_variable = RICE_terma_type }
 				remove_variable = RICE_terma_type
+			}
+		}
+		scope:terton = {					
+			if = {
+				limit = { has_variable = RICE_terma_recognition }
+				remove_variable = RICE_terma_recognition
 			}
 		}
 	}
