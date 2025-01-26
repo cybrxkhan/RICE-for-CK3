@@ -783,6 +783,13 @@ RICE_yearly_global_pulse = {
 	}
 }
 
+# random_yearly_playable_pulse = {
+# 	on_actions = {
+# 		RICE_events_random_yearly_maintenance_pulse
+# 		delay = { days = { 8 288 } }
+# 	}
+# }
+
 yearly_playable_pulse = {
 	on_actions = {
 		RICE_events_yearly_maintenance_pulse
@@ -958,12 +965,10 @@ RICE_events_yearly_maintenance_pulse = {
 			}
 		}
 
-		# Trigger Terton events for player
-		# Don't trigger it for AI for performance reasons
-		# AI will be given Terton traits and such separately automatically
+		# Trigger Terton events
 		if = {
 			limit = {
-				is_ai = no
+				#is_ai = no
 				is_landed = yes
 				RICE_can_acess_terton_mechanics_trigger = yes
 				any_courtier = {
@@ -972,21 +977,42 @@ RICE_events_yearly_maintenance_pulse = {
 					RICE_is_or_can_become_terton_trigger = yes
 				}
 			}
-			every_courtier = {
-				limit = {
-					is_available_ai_adult = yes
-					RICE_can_acess_terton_mechanics_trigger = yes
-					RICE_is_or_can_become_terton_trigger = yes
+			random = {
+				chance = RICE_yearly_terma_chance
+				# Don't trigger the longer travel event chain for AI for performance reasons
+				if = {
+					limit = {
+						is_ai = no
+					}
+					RICE_start_terton_event_chain_effect = yes
 				}
-				random = {
-					chance = 25
-					trigger_event = zhangzhung.0030
+				# AI will be given Terton traits and such separately more quickly
+				else = {
+					RICE_trigger_terton_final_event_ai_effect = yes
 				}
 			}
 		}
 
-
-		
+		if = {
+			limit = {
+				is_landed = yes
+				RICE_can_acess_terton_mechanics_trigger = yes
+				has_character_modifier = RICE_zhangzhung_patronizing_tertons
+			}
+			random = {
+				chance = RICE_yearly_minor_terma_chance		
+				trigger_event = zhangzhung.0025
+			}
+		}
+		else_if = {
+			limit = {
+				has_character_modifier = RICE_zhangzhung_searching_for_termas
+			}
+			random = {
+				chance = RICE_yearly_minor_terma_self_chance		
+				trigger_event = zhangzhung.0026
+			}
+		}
 	}
 }
 
