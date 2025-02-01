@@ -220,7 +220,20 @@ zhangzhung.0003 = {
 zhangzhung.0010 = {
 	type = character_event
 	title = zhangzhung.0010.t
-	desc = zhangzhung.0010.desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					capital_county = {
+						title_province = { geographical_region = RICE_upper_tibet }
+					}
+				}
+				desc = zhangzhung.0010.desc.upper_tibet
+			}
+			desc = zhangzhung.0010.desc.outside_upper_tibet
+		}
+		desc = zhangzhung.0010.desc
+	}
 	theme = faith
 	override_background = { reference = RICE_background_zhangzhung_ruins }
 
@@ -517,16 +530,19 @@ zhangzhung.0013 = {
 	title = zhangzhung.0013.t
 	desc = {
 		desc = zhangzhung.0013.desc
-		triggered_desc = {
-			trigger = {
-				scope:zhangzhung_reviver = {
-					OR = {
-						religion = religion:bon_religion
-						religion = religion:west_himalayan_religion
+		first_valid = {	
+			triggered_desc = {
+				trigger = {
+					scope:zhangzhung_reviver = {
+						OR = {
+							religion = religion:bon_religion
+							religion = religion:west_himalayan_religion
+						}
 					}
 				}
+				desc = zhangzhung.0013.desc.bon
 			}
-			desc = zhangzhung.0013.desc.success
+			desc = zhangzhung.0013.desc.non_bon
 		}
 	}
 	theme = RICE_theme_tibet_temple_exterior
@@ -536,7 +552,22 @@ zhangzhung.0013 = {
 		animation = war_over_win
 	}
 
+	lower_left_portrait = {		
+		character = scope:last_zhangzhung
+		trigger = {
+			exists = scope:last_zhangzhung
+		} 
+	}
+
+	lower_right_portrait = {		
+		character = scope:songtsen_gampo
+		trigger = {
+			exists = scope:songtsen_gampo
+		} 
+	}
+
 	immediate = {
+		play_music_cue = mx_tibet_cue_1
 		if = {
 			limit = {
 				game_start_date > 645.1.1
@@ -584,6 +615,7 @@ zhangzhung.0014 = {
 	}
 
 	immediate = {
+		play_music_cue = mx_tibet_cue_1
 		RICE_zhangzhung_silver_palace_decision_effect = yes
 	}
 
@@ -5147,6 +5179,7 @@ zhangzhung.0121 = {
 	# Single
 	option = {
 		name = zhangzhung.0121.a
+		custom_tooltip = zhangzhung.0121.a.tooltip
 		add_prestige = 300
 		random_list = {
 			10 = {
@@ -5164,7 +5197,10 @@ zhangzhung.0121 = {
 	# Has family
 	option = {
 		name = zhangzhung.0121.b
-		RICE_generate_small_family_as_ruler = { CHARACTER = scope:dpal_dus_sgra }
+		custom_tooltip = zhangzhung.0121.b.tooltip
+		hidden_effect = {
+			RICE_generate_small_family_as_ruler = { CHARACTER = scope:dpal_dus_sgra }			
+		}
 		random_list = {
 			10 = {
 				add_trait = patient
@@ -5325,6 +5361,124 @@ zhangzhung.0130 = {
 
 
 
+
+
+
+
+######################################################################################
+# 
+# GENERIC FLAVOR EVENTS
+# 
+# zhangzhung.0150-zhangzhung.0199
+# 
+######################################################################################
+
+
+
+# Viewing a thangka at a Buddhist monastery
+zhangzhung.0150 = {
+	type = character_event
+	title = zhangzhung.0150.t
+	desc = zhangzhung.0150.desc
+	theme = RICE_theme_tibetan_hall_religious
+
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	right_portrait = {
+		character = scope:chaplain
+		animation = personality_content
+	}
+		
+	trigger = {
+		RICE_tibetan_buddhist_or_reformed_bon_trigger = yes
+		cp:councillor_court_chaplain = {
+			exists = yes
+			is_available_adult = yes
+			RICE_tibetan_buddhist_or_reformed_bon_trigger = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		cp:councillor_court_chaplain = { save_scope_as = chaplain }
+	}
+	
+
+	option = { # Ok
+		name = zhangzhung.0150.a
+		add_prestige = 25
+		stress_impact = {
+			humble = minor_stress_impact_gain
+			zealous = minor_stress_impact_gain
+			content = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = zhangzhung.0150.b
+		add_piety = 25
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			cynical = minor_stress_impact_gain
+			arbitrary = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = zhangzhung.0150.c
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 30
+			}
+		}
+		remove_short_term_gold = 30
+		add_piety = 100
+		scope:chaplain = {
+			add_opinion = {
+				target = root
+				modifier = pious_opinion
+				opinion = 10
+			}
+		}
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			cynical = minor_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+		}
+	}
+
+}
 
 
 
