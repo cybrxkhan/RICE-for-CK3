@@ -2910,3 +2910,68 @@ RICE_zhangzhung_search_for_termas_effect = {
 
 
 
+RICE_zhangzhung_kinnaur_flower_festival_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_zhangzhung_kinnaur_flower_festival_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				add_prestige = minor_prestige_gain
+				stress_impact = {
+					base = minor_stress_impact_loss
+				}
+				if = {
+					limit = {
+						has_activity_intent = RICE_zhangzhung_kinnaur_flower_festival_respect_intent
+					}
+					dynasty ?= {
+						add_dynasty_prestige = RICE_zhangzhung_kinnaur_flower_festival_dynasty_prestige_gain
+					}
+					stress_impact = {
+						zealous = minor_stress_impact_loss
+						diligent = minor_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_zhangzhung_kinnaur_flower_festival_divination_intent
+					}
+					stress_impact = {
+						ambitious = minor_stress_impact_loss
+						humble = minor_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_zhangzhung_kinnaur_flower_festival_rejoicement_intent
+					}
+					stress_impact = {
+						gregarious = minor_stress_impact_loss
+						generous = minor_stress_impact_loss
+					}
+					scope:activity = {
+						every_attending_character = {
+							limit = { NOT = { this = scope:host } }
+							custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+							add_opinion = {
+								target = root
+								modifier = RICE_kinnaur_festival_bonus_opinion
+							}
+						}						
+					}
+				}
+			}
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_piety = minor_piety_gain
+				stress_impact = {
+					base = minor_stress_impact_loss
+				}
+			}	
+		}
+	}
+}

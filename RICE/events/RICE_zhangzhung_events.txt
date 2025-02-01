@@ -5058,6 +5058,341 @@ zhangzhung.0077 = {# Losar concludes
 
 
 
+######################################################################################
+# 
+# FULAICH FLOWER FESTIVAL
+# 
+# zhangzhung.0100-zhangzhung.0119
+# 
+######################################################################################
+
+# Setup activity
+zhangzhung.0100 = {
+	type = character_event
+	title = zhangzhung.0100.t
+	desc = zhangzhung.0100.desc
+	theme = travel
+	override_background = { reference = RICE_background_himalayan_wilderness }
+	
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_zhangzhung_kinnaur_flower_festival
+		}
+	}
+	
+	option = { # Ok
+		name = zhangzhung.0100.a
+	}	
+}
+
+
+# Arrive at location, flower gatherers set out
+# Give offerings to the deceased and to the ancestors first
+zhangzhung.0101 = {
+	type = activity_event
+	title = zhangzhung.0101.t
+	desc = {
+		desc = zhangzhung.0101.desc
+		triggered_desc = {
+			trigger = {
+				exists = scope:activity.special_guest:RICE_special_guest_flower_collector
+			}
+			desc = zhangzhung.0101.desc.flower_collector
+		}
+	}
+	theme = RICE_theme_himachal_pradesh_valley
+	
+	left_portrait = {
+		character = scope:flower_collector
+		animation = personality_bold
+		trigger = {
+			exists = scope:flower_collector
+		}
+	}
+
+	right_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	immediate = {	
+		scope:activity.special_guest:RICE_special_guest_flower_collector = {
+			save_scope_as = flower_collector
+		}
+	}
+	
+	option = {
+		name = zhangzhung.0101.a
+	}
+	
+	after = {
+		trigger_event = {
+			id = zhangzhung.0102
+			days = { 3 7 }
+		}
+	}	
+}
+
+
+
+# Flower gatherers return, singing and dancing with the local deity, decorating flowers everywhere and wearing it on caps, making garlands and bouquets; offerings to ancestors
+zhangzhung.0102 = {
+	type = activity_event
+	title = zhangzhung.0102.t
+	desc = {
+		desc = zhangzhung.0102.desc		
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:activity.special_guest:RICE_special_guest_flower_collector
+				}
+				desc = zhangzhung.0102.desc.flower_collector
+			}
+			desc = zhangzhung.0102.desc.no_flower_collector
+		}
+	}
+	theme = RICE_theme_himachal_pradesh_valley
+	
+	left_portrait = {
+		character = scope:flower_collector
+		animation = personality_content
+		trigger = {
+			exists = scope:flower_collector
+		}
+	}
+
+	right_portrait = {
+		character = root
+		animation = throne_room_cheer_1
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:flower_collector
+			}					
+			scope:activity = {
+				add_activity_log_entry = {
+					key = RICE_zhangzhung_kinnaur_flower_festival_collector_returns_log
+					tags = { good }
+					# this line below adds the entry to the Effects section of the conclusion UI
+					show_in_conclusion = yes
+					character = scope:flower_collector
+					scope:flower_collector = {
+						add_piety = medium_piety_gain
+					}
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = zhangzhung.0102.a
+	}
+	
+	after = {
+		trigger_event = {
+			id = zhangzhung.0103
+			days = { 3 6 }
+		}
+	}	
+}
+
+# Sacrifice of sheep/goats, or imitations of them, as deity is brought forth in a procession
+zhangzhung.0103 = {
+	type = activity_event
+	title = zhangzhung.0103.t
+	desc = {
+		desc = zhangzhung.0103.desc		
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					faith = {
+						has_doctrine = rice_bon_deities_new_doctrine
+					}
+				}
+				desc = zhangzhung.0103.desc.new_bon
+			}
+			desc = zhangzhung.0103.desc.old_bon
+		}
+	}
+	theme = RICE_theme_tibet_outer_altar
+
+	right_portrait = {
+		character = root
+		animation = prayer
+	}
+	
+	option = {
+		name = zhangzhung.0103.a					
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_zhangzhung_kinnaur_flower_festival_collector_sacrifice_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				if = {
+					limit = {				
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_zhangzhung_kinnaur_flower_festival_sacrifice_amount
+								option = RICE_zhangzhung_kinnaur_flower_festival_sacrifice_amount_small
+							}
+						}
+					}
+					scope:host = {
+						add_piety = minor_piety_gain
+					}
+				}
+				else_if = {
+					limit = {				
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_zhangzhung_kinnaur_flower_festival_sacrifice_amount
+								option = RICE_zhangzhung_kinnaur_flower_festival_sacrifice_amount_medium
+							}
+						}
+					}
+					scope:host = {
+						add_piety = medium_piety_gain
+					}
+				}
+				else_if = {
+					limit = {				
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_zhangzhung_kinnaur_flower_festival_sacrifice_amount
+								option = RICE_zhangzhung_kinnaur_flower_festival_sacrifice_amount_large
+							}
+						}
+					}
+					scope:host = {
+						add_piety = major_piety_gain
+					}
+				}
+			}
+		}
+	}
+	
+	after = {
+		trigger_event = {
+			id = zhangzhung.0104
+			days = { 3 6 }
+		}
+	}	
+}
+
+# Oracle of the local deity makes prediction
+zhangzhung.0104 = {
+	type = activity_event
+	title = zhangzhung.0104.t
+	desc = zhangzhung.0104.desc
+	theme = RICE_theme_tibet_inner_altar
+
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	immediate = {			
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_zhangzhung_kinnaur_flower_festival_oracle_good_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					add_piety = medium_piety_gain
+				}
+				# scope:host = {
+				# 	add_character_modifier = {
+				# 		modifier = RICE_south_ethiopia_fichee_advice_diplomacy
+				# 		years = 5
+				# 	}									
+				# }
+			}
+		}	
+	}
+	
+	option = {
+		name = zhangzhung.0104.a
+	}
+	
+	after = {
+		trigger_event = {
+			id = zhangzhung.0105
+			days = { 3 6 }
+		}
+	}	
+}
+
+# Dancing at the temple of the deity
+zhangzhung.0105 = {
+	type = activity_event
+	title = zhangzhung.0105.t
+	desc = zhangzhung.0105.desc
+	theme = RICE_theme_tibet_outer_altar
+
+	right_portrait = {
+		character = root
+		animation = dancing
+	}
+	
+	option = {
+		name = zhangzhung.0104.a
+	}
+	
+	after = {
+		trigger_event = {
+			id = zhangzhung.0106
+			days = { 3 6 }
+		}
+	}	
+}
+
+# Conclusion
+zhangzhung.0106 = {
+	type = activity_event
+	title = zhangzhung.0105.t
+	desc = zhangzhung.0105.desc
+	theme = RICE_theme_himachal_pradesh_valley
+
+	right_portrait = {
+		character = root
+		animation = throne_room_applaud_1
+	}
+	
+	option = {
+		name = zhangzhung.0104.a
+		RICE_zhangzhung_kinnaur_flower_festival_completed_log_entry_effect = yes
+	}
+
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
+		}
+	}
+
+}
+
+
+
+
+
+
+
 
 ######################################################################################
 # 
