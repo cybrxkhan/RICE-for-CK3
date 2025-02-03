@@ -772,6 +772,12 @@ zhangzhung.0018 = {
 			}
 			triggered_desc = {
 				trigger = {
+					faith = faith:zhengyi
+				}
+				desc = zhangzhung.0018.desc.zhengyi
+			}
+			triggered_desc = {
+				trigger = {
 					faith = faith:nestorian
 				}
 				desc = zhangzhung.0018.desc.nestorian
@@ -788,6 +794,7 @@ zhangzhung.0018 = {
 				}
 				desc = zhangzhung.0018.desc.khurmazta
 			}
+			# Default
 			desc = zhangzhung.0018.desc.lamaism
 		}			
 	}
@@ -839,6 +846,13 @@ zhangzhung.0018 = {
 				faith = faith:shaivism
 			}
 			show_as_tooltip = { RICE_convert_from_bon_shaivism_effect = yes }
+			show_as_tooltip = { RICE_convert_from_bon_general_effect = yes }
+		}
+		else_if = {
+			limit = {
+				faith = faith:zhengyi
+			}
+			show_as_tooltip = { RICE_convert_from_bon_zhengyi_effect = yes }
 			show_as_tooltip = { RICE_convert_from_bon_general_effect = yes }
 		}
 		else_if = {
@@ -925,12 +939,37 @@ zhangzhung.0021 = {
 zhangzhung.0022 = {
 	type = character_event
 	title = zhangzhung.0022.t
-	desc = zhangzhung.0022.desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					root = scope:nyangral
+					NOT = { religion = religion:buddhism_religion }
+				}
+				desc = zhangzhung.0022.desc.self_bon
+			}
+			triggered_desc = {
+				trigger = {
+					root = scope:nyangral
+					religion = religion:buddhism_religion
+				}
+				desc = zhangzhung.0022.desc.self
+			}
+			triggered_desc = {
+				trigger = {
+					NOT = { religion = religion:buddhism_religion }
+				}
+				desc = zhangzhung.0022.desc.bon
+			}
+			desc = zhangzhung.0022.desc
+		}
+	}
 	theme = RICE_theme_tibet_inner_altar
 
 	left_portrait = {
 		character = root
 		animation = personality_cynical
+		trigger = { NOT = { root = scope:nyangral } } 
 	}
 
 	right_portrait = {
@@ -949,9 +988,9 @@ zhangzhung.0022 = {
 			is_available_ai_adult = yes
 			faith = root.faith
 			RICE_can_acess_terton_mechanics_trigger = yes
-			NOT = {
-				has_character_flag = RICE_not_eligible_to_become_terton
-			}
+			NOT = { has_character_flag = RICE_not_eligible_to_become_terton }
+			NOT = { has_character_modifier = RICE_terton_candidate }
+			NOT = { has_trait = RICE_terton }
 			age >= 10
 		}
 	}
@@ -966,126 +1005,140 @@ zhangzhung.0022 = {
 				save_scope_as = padmasambhava
 			}			
 		}
-		random_courtier = {
-			limit = {
-				is_available_ai_adult = yes
-				faith = root.faith
-				RICE_can_acess_terton_mechanics_trigger = yes
-				NOT = {
-					has_character_flag = RICE_not_eligible_to_become_terton
+		random_list = {
+			95 = {
+				every_courtier = {
+					limit = {
+						is_available_ai_adult = yes
+						faith = root.faith
+						RICE_can_acess_terton_mechanics_trigger = yes
+						NOT = { has_character_flag = RICE_not_eligible_to_become_terton }
+						NOT = { has_character_modifier = RICE_terton_candidate }
+						NOT = { has_trait = RICE_terton }
+						age >= 10
+					}
+					weight = {
+						base = 10
+						# Try to pick someone young
+						modifier = {
+							age <= 40
+							add = 15
+						}
+						# But not too young
+						modifier = {
+							age >= 16
+							add = 15
+						}
+						# Try to avoid someone in your dynasty
+						modifier = {
+							dynasty = root.dynasty
+							add = -25
+						}
+						# Try to pick someone smart
+						modifier = {
+							learning >= extremely_high_skill_rating
+							add = 10
+						}
+						modifier = {
+							learning >= high_skill_rating
+							add = 10
+						}
+						modifier = {
+							learning >= medium_skill_rating
+							add = 10
+						}
+						modifier = {
+							learning <= mediocre_skill_rating
+							add = -15
+						}
+						modifier = {
+							learning <= low_skill_rating
+							add = -15
+						}
+						modifier = {
+							has_trait = scholar
+							add = 5
+						}
+						modifier = {
+							has_trait = theologian
+							add = 5
+						}
+						modifier = {
+							has_trait = lifestyle_mystic
+							add = 10
+						}
+						# Try to pick someone with the right traits
+						modifier = {
+							has_trait = zealous
+							add = 5
+						}
+						modifier = {
+							has_trait = cynical
+							add = -5
+						}
+						modifier = {
+							has_trait = compassionate
+							add = 5
+						}
+						modifier = {
+							has_trait = sadistic
+							add = -5
+						}
+						modifier = {
+							has_trait = calm
+							add = 5
+						}
+						modifier = {
+							has_trait = wrathful
+							add = -5
+						}
+						modifier = {
+							has_trait = just
+							add = 5
+						}
+						modifier = {
+							has_trait = arbitrary
+							add = -5
+						}
+						modifier = {
+							has_trait = generous
+							add = 5
+						}
+						modifier = {
+							has_trait = greedy
+							add = -5
+						}
+						modifier = {
+							has_trait = temperate
+							add = 5
+						}
+						modifier = {
+							has_trait = gluttonous
+							add = -5
+						}
+					}
+					add_to_list = padmasambhava_dream_candidate	
 				}
-				age >= 10
+				random_in_list = {
+					list = padmasambhava_dream_candidate
+					save_scope_as = nyangral
+				}
 			}
-			weight = {
-				base = 10
-				# Try to pick someone young
-				modifier = {
-					age <= 40
-					add = 15
-				}
-				# But not too young
-				modifier = {
-					age >= 16
-					add = 15
-				}
-				# Try to avoid someone in your dynasty
-				modifier = {
-					dynasty = root.dynasty
-					add = -25
-				}
-				# Try to pick someone smart
-				modifier = {
-					learning >= extremely_high_skill_rating
-					add = 10
-				}
-				modifier = {
-					learning >= high_skill_rating
-					add = 10
-				}
-				modifier = {
-					learning >= medium_skill_rating
-					add = 10
-				}
-				modifier = {
-					learning <= mediocre_skill_rating
-					add = -15
-				}
-				modifier = {
-					learning <= low_skill_rating
-					add = -15
-				}
-				modifier = {
-					has_trait = scholar
-					add = 5
-				}
-				modifier = {
-					has_trait = theologian
-					add = 5
-				}
-				modifier = {
-					has_trait = lifestyle_mystic
-					add = 10
-				}
-				# Try to pick someone with the right traits
-				modifier = {
-					has_trait = zealous
-					add = 5
-				}
-				modifier = {
-					has_trait = cynical
-					add = -5
-				}
-				modifier = {
-					has_trait = compassionate
-					add = 5
-				}
-				modifier = {
-					has_trait = sadistic
-					add = -5
-				}
-				modifier = {
-					has_trait = calm
-					add = 5
-				}
-				modifier = {
-					has_trait = wrathful
-					add = -5
-				}
-				modifier = {
-					has_trait = just
-					add = 5
-				}
-				modifier = {
-					has_trait = arbitrary
-					add = -5
-				}
-				modifier = {
-					has_trait = generous
-					add = 5
-				}
-				modifier = {
-					has_trait = greedy
-					add = -5
-				}
-				modifier = {
-					has_trait = temperate
-					add = 5
-				}
-				modifier = {
-					has_trait = gluttonous
-					add = -5
+			# Small chance that you become the terton candidate yourself
+			5 = {
+				trigger = {					
+					is_available_ai_adult = yes
+					RICE_can_acess_terton_mechanics_trigger = yes
+					NOT = { has_character_flag = RICE_not_eligible_to_become_terton }
+					NOT = { has_character_modifier = RICE_terton_candidate }
+					NOT = { has_trait = RICE_terton }
+					age >= 10
 				}
 			}
-			add_to_list = padmasambhava_dream_candidate	
-		}
-		random_in_list = {
-			list = padmasambhava_dream_candidate
-			save_scope_as = nyangral
 		}
 		scope:nyangral = {
 			add_character_modifier = {
 				modifier = RICE_terton_candidate
-				years = 25
 			}
 		}
 	}
