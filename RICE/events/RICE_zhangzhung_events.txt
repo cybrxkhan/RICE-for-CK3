@@ -1526,7 +1526,10 @@ zhangzhung.0032 = {
 	hidden = yes
 
 	immediate = {
-		save_scope_as = terton		
+		save_scope_as = terton
+		location.county = {
+			save_scope_as = terma_county
+		}		
 		if = {
 			limit = {
 				exists = employer
@@ -1654,6 +1657,10 @@ zhangzhung.0032 = {
 					# Type of Terma
 					random_list = {
 						40 = {
+							modifier = {
+								add = 1000
+								employer = { has_character_flag = RICE_terma_teachings_physical_auto }
+							}
 							set_variable = {
 								name = RICE_terma_type
 								value = flag:teachings_physical
@@ -1661,6 +1668,10 @@ zhangzhung.0032 = {
 							}
 						}
 						40 = {
+							modifier = {
+								add = 1000
+								employer = { has_character_flag = RICE_terma_teachings_internal_auto }
+							}
 							set_variable = {
 								name = RICE_terma_type
 								value = flag:teachings_internal
@@ -1681,6 +1692,10 @@ zhangzhung.0032 = {
 						# 	}
 						# }
 						10 = {
+							modifier = {
+								add = 1000
+								employer = { has_character_flag = RICE_terma_statue_auto }
+							}
 							set_variable = {
 								name = RICE_terma_type
 								value = flag:artifact_statue
@@ -1688,6 +1703,10 @@ zhangzhung.0032 = {
 							}
 						}
 						10 = {
+							modifier = {
+								add = 1000
+								employer = { has_character_flag = RICE_terma_sacred_image_auto }
+							}
 							set_variable = {
 								name = RICE_terma_type
 								value = flag:artifact_sacred_image
@@ -1695,6 +1714,10 @@ zhangzhung.0032 = {
 							}
 						}
 						10 = {
+							modifier = {
+								add = 1000
+								employer = { has_character_flag = RICE_terma_ritual_instrument_auto }
+							}
 							set_variable = {
 								name = RICE_terma_type
 								value = flag:artifact_ritual_instrument
@@ -1702,6 +1725,17 @@ zhangzhung.0032 = {
 							}
 						}
 						10 = {
+							# Only available if you own land in the location
+							trigger = {
+								employer = {	
+									is_landed = yes
+								}
+								employer = scope:terma_county.holder
+							}	
+							modifier = {
+								add = 1000
+								employer = { has_character_flag = RICE_terma_buildings_auto }
+							}
 							set_variable = {
 								name = RICE_terma_type
 								value = flag:religious_building
@@ -1709,16 +1743,48 @@ zhangzhung.0032 = {
 							}
 						}
 						10 = {
+							modifier = {
+								add = 1000
+								employer = { has_character_flag = RICE_terma_riches_auto }
+							}
 							set_variable = {
 								name = RICE_terma_type
 								value = flag:riches
 								days = 1
 							}
+							employer = {
+								# Set the gold amount that's gained
+								set_variable = {
+									name = RICE_terton_riches_gained
+									value = {
+										integer_range = {
+											min = tiny_gold_value
+											max = medium_gold_value
+										}
+									}
+									days = 1
+								}
+							}
 						}
 						10 = {
+							modifier = {
+								add = 1000
+								employer = { has_character_flag = RICE_terma_scholarly_texts_auto }
+							}
 							set_variable = {
 								name = RICE_terma_type
 								value = flag:artifact_scholarly_texts
+								days = 1
+							}
+						}
+						10 = {
+							modifier = {
+								add = 1000
+								employer = { has_character_flag = RICE_terma_medicine_auto }
+							}
+							set_variable = {
+								name = RICE_terma_type
+								value = flag:medicine
 								days = 1
 							}
 						}
@@ -1853,6 +1919,22 @@ zhangzhung.0033 = {
 					}
 				}
 				desc = zhangzhung.0033.desc.artifact_scholarly_texts
+			}
+			triggered_desc = {
+				trigger = {
+					scope:terton = {
+						var:RICE_terma_type ?= flag:medicine
+					}
+				}
+				desc = zhangzhung.0033.desc.medicine
+			}
+			triggered_desc = {
+				trigger = {
+					scope:terton = {
+						var:RICE_terma_type ?= flag:medicine
+					}
+				}
+				desc = zhangzhung.0033.desc.medicine
 			}
 			triggered_desc = {
 				trigger = {
@@ -2064,12 +2146,28 @@ zhangzhung.0033 = {
 	# Let them keep it
 	option = {
 		name = zhangzhung.0033.b
+		trigger = {
+			# Doesn't make sense if it's a religious building
+			NOT = {				
+				scope:terton = {
+					var:RICE_terma_type ?= flag:religious_building
+				}
+			}
+		}
 		RICE_terton_conclusion_let_keep_effects = yes
 	}
 
 	# Donate it
 	option = {
 		name = zhangzhung.0033.c
+		trigger = {
+			# Doesn't make sense if it's a religious building
+			NOT = {				
+				scope:terton = {
+					var:RICE_terma_type ?= flag:religious_building
+				}
+			}
+		}
 		RICE_terton_conclusion_donate_effects = yes
 	}
 
@@ -2085,6 +2183,12 @@ zhangzhung.0033 = {
 				limit = { has_variable = RICE_terma_recognition }
 				remove_variable = RICE_terma_recognition
 			}
+		}
+		if = {
+			limit = {
+				has_variable = RICE_terton_riches_gained
+			}
+			remove_variable = RICE_terton_riches_gained
 		}
 	}
 
@@ -2307,6 +2411,14 @@ zhangzhung.0041 = {
 			triggered_desc = {
 				trigger = {
 					scope:terton = {
+						var:RICE_terma_type ?= flag:medicine
+					}
+				}
+				desc = zhangzhung.0041.desc.medicine
+			}
+			triggered_desc = {
+				trigger = {
+					scope:terton = {
 						var:RICE_terma_type ?= flag:failure
 					}
 				}
@@ -2386,6 +2498,9 @@ zhangzhung.0041 = {
 
 	immediate = {
 		save_scope_as = terton_result_recipient
+		location.county = {
+			save_scope_as = terma_county
+		}	
 		# Determine whether there is a success or failure to begin with
 		random_list = {
 			# Failure
@@ -2509,6 +2624,10 @@ zhangzhung.0041 = {
 				# Type of Terma
 				random_list = {
 					40 = {
+						modifier = {
+							add = 1000
+							has_character_flag = RICE_terma_teachings_physical_auto
+						}
 						set_variable = {
 							name = RICE_terma_type
 							value = flag:teachings_physical
@@ -2516,6 +2635,10 @@ zhangzhung.0041 = {
 						}
 					}
 					40 = {
+						modifier = {
+							add = 1000
+							has_character_flag = RICE_terma_teachings_internal_auto
+						}
 						set_variable = {
 							name = RICE_terma_type
 							value = flag:teachings_internal
@@ -2536,6 +2659,10 @@ zhangzhung.0041 = {
 					# 	}
 					# }
 					10 = {
+						modifier = {
+							add = 1000
+							has_character_flag = RICE_terma_statue_auto
+						}
 						set_variable = {
 							name = RICE_terma_type
 							value = flag:artifact_statue
@@ -2543,6 +2670,10 @@ zhangzhung.0041 = {
 						}
 					}
 					10 = {
+						modifier = {
+							add = 1000
+							has_character_flag = RICE_terma_sacred_image_auto
+						}
 						set_variable = {
 							name = RICE_terma_type
 							value = flag:artifact_sacred_image
@@ -2550,6 +2681,10 @@ zhangzhung.0041 = {
 						}
 					}
 					10 = {
+						modifier = {
+							add = 1000
+							has_character_flag = RICE_terma_ritual_instrument_auto
+						}
 						set_variable = {
 							name = RICE_terma_type
 							value = flag:artifact_ritual_instrument
@@ -2557,6 +2692,15 @@ zhangzhung.0041 = {
 						}
 					}
 					10 = {
+						# Only available if you own land in the location
+						trigger = {
+							is_landed = yes
+							scope:terma_county.holder = root
+						}	
+						modifier = {
+							add = 1000
+							has_character_flag = RICE_terma_religious_building_auto
+						}
 						set_variable = {
 							name = RICE_terma_type
 							value = flag:religious_building
@@ -2564,16 +2708,46 @@ zhangzhung.0041 = {
 						}
 					}
 					10 = {
+						modifier = {
+							add = 1000
+							has_character_flag = RICE_terma_riches_auto
+						}
 						set_variable = {
 							name = RICE_terma_type
 							value = flag:riches
 							days = 1
 						}
+						# Set the gold amount that's gained
+						set_variable = {
+							name = RICE_terton_riches_gained
+							value = {
+								integer_range = {
+									min = tiny_gold_value
+									max = medium_gold_value
+								}
+							}
+							days = 1
+						}
 					}
 					10 = {
+						modifier = {
+							add = 1000
+							has_character_flag = RICE_terma_scholarly_texts_auto
+						}
 						set_variable = {
 							name = RICE_terma_type
 							value = flag:artifact_scholarly_texts
+							days = 1
+						}
+					}
+					10 = {
+						modifier = {
+							add = 1000
+							has_character_flag = RICE_terma_medicine_auto
+						}
+						set_variable = {
+							name = RICE_terma_type
+							value = flag:medicine
 							days = 1
 						}
 					}
@@ -2652,6 +2826,16 @@ zhangzhung.0041 = {
 		else_if = {
 			limit = {
 				scope:terton = {
+					var:RICE_terma_type ?= flag:religious_building
+				}
+			}
+			hidden_effect = {
+				RICE_terma_building_preset_effect = yes
+			}
+		}
+		else_if = {
+			limit = {
+				scope:terton = {
 					var:RICE_terma_type ?= flag:artifact_scholarly_texts
 				}
 			}
@@ -2668,6 +2852,14 @@ zhangzhung.0041 = {
 	# Donate it
 	option = {
 		name = zhangzhung.0041.b
+		trigger = {
+			# Doesn't make sense if it's a religious building
+			NOT = {				
+				scope:terton = {
+					var:RICE_terma_type ?= flag:religious_building
+				}
+			}
+		}
 		RICE_terton_conclusion_donate_effects = yes
 	}
 

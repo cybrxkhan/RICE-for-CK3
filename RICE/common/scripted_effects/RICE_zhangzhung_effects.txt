@@ -2561,31 +2561,31 @@ RICE_terton_experience_gain_large = {
 RICE_terton_conclusion_general_effects = {
 	if = {
 		limit = {
-			var:RICE_terma_type ?= flag:teachings
+			var:RICE_terma_type ?= flag:teachings_physical
 		}
-		add_piety = medium_piety_gain
-		RICE_terton_experience_gain_medium = yes
+		add_piety = major_piety_gain
+		RICE_terton_experience_gain_large = yes
 	}
-	# else_if = {
-	# 	limit = {
-	# 		var:RICE_terma_type ?= flag:teachings_great
-	# 	}
-	# 	add_piety = major_piety_gain
-	# 	RICE_terton_experience_gain_large = yes
-	# }
+	else_if = {
+		limit = {
+			var:RICE_terma_type ?= flag:teachings_internal
+		}
+		add_piety = major_piety_gain
+		RICE_terton_experience_gain_large = yes
+	}
 	else_if = {
 		limit = {
 			var:RICE_terma_type ?= flag:artifact_sacred_image
 		}
-		add_piety = medium_piety_gain
-		RICE_terton_experience_gain_medium = yes
+		add_piety = minor_piety_gain
+		RICE_terton_experience_gain_small = yes
 	}
 	else_if = {
 		limit = {
 			var:RICE_terma_type ?= flag:artifact_statue
 		}
-		add_piety = medium_piety_gain
-		RICE_terton_experience_gain_medium = yes
+		add_piety = minor_piety_gain
+		RICE_terton_experience_gain_small = yes
 	}
 	else_if = {
 		limit = {
@@ -2612,8 +2612,15 @@ RICE_terton_conclusion_general_effects = {
 		limit = {
 			var:RICE_terma_type ?= flag:artifact_scholarly_texts
 		}
-		add_piety = minor_piety_gain
-		RICE_terton_experience_gain_small = yes
+		add_piety = medium_piety_gain
+		RICE_terton_experience_gain_medium = yes
+	}
+	else_if = {
+		limit = {
+			var:RICE_terma_type ?= flag:medicine
+		}
+		add_piety = medium_piety_gain
+		RICE_terton_experience_gain_medium = yes
 	}
 	else_if = {
 		limit = {
@@ -2625,7 +2632,7 @@ RICE_terton_conclusion_general_effects = {
 RICE_terton_conclusion_accept_effects = {
 	if = {
 		limit = {
-			var:RICE_terma_type ?= flag:teachings
+			var:RICE_terma_type ?= flag:teachings_physical
 		}
 		scope:terton_result_recipient = {
 			scope:terma_artifact = {
@@ -2635,18 +2642,18 @@ RICE_terton_conclusion_accept_effects = {
 			}
 		}
 	}
-	# else_if = {
-	# 	limit = {
-	# 		var:RICE_terma_type ?= flag:teachings_great
-	# 	}
-	# 	scope:terton_result_recipient = {
-	# 		scope:terma_artifact = {
-	# 			set_owner = {
-	# 				target = root
-	# 			}
-	# 		}			
-	# 	}
-	# }
+	else_if = {
+		limit = {
+			var:RICE_terma_type ?= flag:teachings_internal
+		}
+		scope:terton_result_recipient = {
+			scope:terma_artifact = {
+				set_owner = {
+					target = root
+				}
+			}			
+		}
+	}
 	else_if = {
 		limit = {
 			var:RICE_terma_type ?= flag:artifact_statue
@@ -2688,7 +2695,7 @@ RICE_terton_conclusion_accept_effects = {
 			var:RICE_terma_type ?= flag:religious_building
 		}
 		scope:terton_result_recipient = {
-			
+			RICE_terma_building_effect = yes
 		}
 	}
 	else_if = {
@@ -2696,7 +2703,7 @@ RICE_terton_conclusion_accept_effects = {
 			var:RICE_terma_type ?= flag:riches
 		}
 		scope:terton_result_recipient = {
-			
+			add_gold = scope:terton_result_recipient.var:RICE_terton_riches_gained
 		}
 	}
 	else_if = {
@@ -2713,18 +2720,26 @@ RICE_terton_conclusion_accept_effects = {
 	}
 	else_if = {
 		limit = {
-			var:RICE_terma_type ?= flag:failure
+			var:RICE_terma_type ?= flag:medicine
 		}
 		scope:terton_result_recipient = {
-			
+			RICE_terma_medicine_effect = yes			
 		}
 	}
+	# else_if = {
+	# 	limit = {
+	# 		var:RICE_terma_type ?= flag:failure
+	# 	}
+	# 	scope:terton_result_recipient = {
+			
+	# 	}
+	# }
 }
 
 RICE_terton_conclusion_let_keep_effects = {
 	if = {
 		limit = {
-			var:RICE_terma_type ?= flag:teachings
+			var:RICE_terma_type ?= flag:teachings_physical
 		}
 		scope:terton = {
 			scope:terma_artifact = {
@@ -2732,26 +2747,38 @@ RICE_terton_conclusion_let_keep_effects = {
 					target = root
 				}
 			}
+			add_opinion = {
+				target = scope:terton_result_recipient
+				modifier = pious_opinion
+				opinion = 20
+			}
 		}
 		scope:terton_result_recipient = {
-
+			add_piety = medium_piety_gain
+			add_prestige = medium_prestige_gain
 		}
 	}
-	# else_if = {
-	# 	limit = {
-	# 		var:RICE_terma_type ?= flag:teachings_great
-	# 	}
-	# 	scope:terton = {
-	# 		scope:terma_artifact = {
-	# 			set_owner = {
-	# 				target = root
-	# 			}
-	# 		}			
-	# 	}
-	# 	scope:terton_result_recipient = {
-			
-	# 	}
-	# }
+	else_if = {
+		limit = {
+			var:RICE_terma_type ?= flag:teachings_internal
+		}
+		scope:terton = {
+			scope:terma_artifact = {
+				set_owner = {
+					target = root
+				}
+			}	
+			add_opinion = {
+				target = scope:terton_result_recipient
+				modifier = pious_opinion
+				opinion = 20
+			}		
+		}
+		scope:terton_result_recipient = {
+			add_piety = medium_piety_gain
+			add_prestige = medium_prestige_gain			
+		}
+	}
 	else_if = {
 		limit = {
 			var:RICE_terma_type ?= flag:artifact_statue
@@ -2761,10 +2788,16 @@ RICE_terton_conclusion_let_keep_effects = {
 				set_owner = {
 					target = root
 				}
-			}			
+			}	
+			add_opinion = {
+				target = scope:terton_result_recipient
+				modifier = pious_opinion
+				opinion = 5
+			}		
 		}
 		scope:terton_result_recipient = {
-			
+			add_piety = miniscule_piety_gain
+			add_prestige = miniscule_prestige_gain			
 		}
 	}
 	else_if = {
@@ -2776,10 +2809,16 @@ RICE_terton_conclusion_let_keep_effects = {
 				set_owner = {
 					target = root
 				}
-			}			
+			}	
+			add_opinion = {
+				target = scope:terton_result_recipient
+				modifier = pious_opinion
+				opinion = 5
+			}				
 		}
 		scope:terton_result_recipient = {
-			
+			add_piety = miniscule_piety_gain
+			add_prestige = miniscule_prestige_gain				
 		}
 	}
 	else_if = {
@@ -2791,32 +2830,46 @@ RICE_terton_conclusion_let_keep_effects = {
 				set_owner = {
 					target = root
 				}
+			}		
+			add_opinion = {
+				target = scope:terton_result_recipient
+				modifier = pious_opinion
+				opinion = 5
 			}			
 		}
 		scope:terton_result_recipient = {
-			
+			add_piety = miniscule_piety_gain
+			add_prestige = miniscule_prestige_gain				
 		}
 	}
-	else_if = {
-		limit = {
-			var:RICE_terma_type ?= flag:religious_building
-		}
-		scope:terton = {
+	# Can't let them keep a building
+	# else_if = {
+	# 	limit = {
+	# 		var:RICE_terma_type ?= flag:religious_building
+	# 	}
+	# 	scope:terton = {
 			
-		}
-		scope:terton_result_recipient = {
-			
-		}
-	}
+	# 	}
+	# 	scope:terton_result_recipient = {
+	# 		add_piety = minor_piety_gain
+	# 		add_prestige = minor_prestige_gain				
+	# 	}
+	# }
 	else_if = {
 		limit = {
 			var:RICE_terma_type ?= flag:riches
 		}
 		scope:terton = {
-			
+			add_gold = scope:terton_result_recipient.var:RICE_terton_riches_gained	
+			add_opinion = {
+				target = scope:terton_result_recipient
+				modifier = pious_opinion
+				opinion = 5
+			}	
 		}
 		scope:terton_result_recipient = {
-			
+			add_piety = miniscule_piety_gain
+			add_prestige = miniscule_prestige_gain				
 		}
 	}
 	else_if = {
@@ -2829,47 +2882,72 @@ RICE_terton_conclusion_let_keep_effects = {
 					target = root
 				}
 			}			
+			add_opinion = {
+				target = scope:terton_result_recipient
+				modifier = pious_opinion
+				opinion = 10
+			}		
 		}
 		scope:terton_result_recipient = {
-			
+			add_piety = minor_piety_gain
+			add_prestige = minor_prestige_gain				
 		}
 	}
 	else_if = {
 		limit = {
-			var:RICE_terma_type ?= flag:failure
+			var:RICE_terma_type ?= flag:medicine
 		}
 		scope:terton = {
-			
+			RICE_terma_medicine_effect = yes		
+			add_opinion = {
+				target = scope:terton_result_recipient
+				modifier = pious_opinion
+				opinion = 10
+			}		
 		}
 		scope:terton_result_recipient = {
-			
+			add_piety = minor_piety_gain
+			add_prestige = minor_prestige_gain				
 		}
 	}
+	# else_if = {
+	# 	limit = {
+	# 		var:RICE_terma_type ?= flag:failure
+	# 	}
+	# 	scope:terton = {
+			
+	# 	}
+	# 	scope:terton_result_recipient = {
+			
+	# 	}
+	# }
 }
 
 RICE_terton_conclusion_donate_effects = {
 	if = {
 		limit = {
-			var:RICE_terma_type ?= flag:teachings
+			var:RICE_terma_type ?= flag:teachings_physical
 		}
 		hidden_effect = {
 			destroy_artifact = scope:terma_artifact
 		}
 		scope:terton_result_recipient = {
-
+			add_piety = medium_piety_gain
+			add_legitimacy = medium_legitimacy_gain
 		}
 	}
-	# else_if = {
-	# 	limit = {
-	# 		var:RICE_terma_type ?= flag:teachings_great
-	# 	}
-	# 	hidden_effect = {
-	# 		destroy_artifact = scope:terma_artifact
-	# 	}
-	# 	scope:terton_result_recipient = {
-			
-	# 	}
-	# }
+	else_if = {
+		limit = {
+			var:RICE_terma_type ?= flag:teachings_internal
+		}
+		hidden_effect = {
+			destroy_artifact = scope:terma_artifact
+		}
+		scope:terton_result_recipient = {
+			add_piety = medium_piety_gain
+			add_legitimacy = medium_legitimacy_gain			
+		}
+	}
 	else_if = {
 		limit = {
 			var:RICE_terma_type ?= flag:artifact_statue
@@ -2878,7 +2956,8 @@ RICE_terton_conclusion_donate_effects = {
 			destroy_artifact = scope:terma_artifact
 		}
 		scope:terton_result_recipient = {
-			
+			add_piety = miniscule_piety_gain
+			add_legitimacy = miniscule_legitimacy_gain			
 		}
 	}
 	else_if = {
@@ -2889,7 +2968,8 @@ RICE_terton_conclusion_donate_effects = {
 			destroy_artifact = scope:terma_artifact
 		}
 		scope:terton_result_recipient = {
-			
+			add_piety = miniscule_piety_gain
+			add_legitimacy = miniscule_legitimacy_gain				
 		}
 	}
 	else_if = {
@@ -2900,23 +2980,25 @@ RICE_terton_conclusion_donate_effects = {
 			destroy_artifact = scope:terma_artifact
 		}
 		scope:terton_result_recipient = {
-			
+			add_piety = miniscule_piety_gain
+			add_legitimacy = miniscule_legitimacy_gain				
 		}
 	}
-	else_if = {
-		limit = {
-			var:RICE_terma_type ?= flag:religious_building
-		}
-		scope:terton_result_recipient = {
+	# else_if = {
+	# 	limit = {
+	# 		var:RICE_terma_type ?= flag:religious_building
+	# 	}
+	# 	scope:terton_result_recipient = {
 			
-		}
-	}
+	# 	}
+	# }
 	else_if = {
 		limit = {
 			var:RICE_terma_type ?= flag:riches
 		}
 		scope:terton_result_recipient = {
-			
+			add_piety = miniscule_piety_gain
+			add_legitimacy = miniscule_legitimacy_gain				
 		}
 	}
 	else_if = {
@@ -2927,17 +3009,27 @@ RICE_terton_conclusion_donate_effects = {
 			destroy_artifact = scope:terma_artifact
 		}
 		scope:terton_result_recipient = {
-			
+			add_piety = minor_piety_gain
+			add_legitimacy = minor_legitimacy_gain				
 		}
 	}
 	else_if = {
 		limit = {
-			var:RICE_terma_type ?= flag:failure
+			var:RICE_terma_type ?= flag:medicine
 		}
 		scope:terton_result_recipient = {
-			
+			add_piety = minor_piety_gain
+			add_legitimacy = minor_legitimacy_gain				
 		}
 	}
+	# else_if = {
+	# 	limit = {
+	# 		var:RICE_terma_type ?= flag:failure
+	# 	}
+	# 	scope:terton_result_recipient = {
+			
+	# 	}
+	# }
 }
 
 RICE_zhangzhung_patronize_tertons_effect = {
@@ -6305,3 +6397,174 @@ RICE_create_terma_artifact_teachings_internal_effect = {
 		}
 	}
 }
+
+RICE_terma_building_preset_effect = {
+	scope:terma_county = {
+		random_list = {
+			10 = {
+				add_county_modifier = {
+					modifier = RICE_terma_county_modifier_1
+					years = 25
+				}
+			}
+			10 = {
+				add_county_modifier = {
+					modifier = RICE_terma_county_modifier_2
+					years = 25
+				}
+			}
+			10 = {
+				add_county_modifier = {
+					modifier = RICE_terma_county_modifier_3
+					years = 25
+				}
+			}
+			10 = {
+				add_county_modifier = {
+					modifier = RICE_terma_county_modifier_4
+					years = 25
+				}
+			}
+			10 = {
+				add_county_modifier = {
+					modifier = RICE_terma_county_modifier_5
+					years = 25
+				}
+			}
+			10 = {
+				add_county_modifier = {
+					modifier = RICE_terma_county_modifier_6
+					years = 25
+				}
+			}
+			10 = {
+				add_county_modifier = {
+					modifier = RICE_terma_county_modifier_7
+					years = 25
+				}
+			}
+			10 = {
+				add_county_modifier = {
+					modifier = RICE_terma_county_modifier_8
+					years = 25
+				}
+			}
+			10 = {
+				add_county_modifier = {
+					modifier = RICE_terma_county_modifier_9
+					years = 25
+				}
+			}
+		}
+	}
+}
+
+RICE_terma_building_effect = {
+	if = {
+		limit = {
+			scope:terma_county = {
+				has_county_modifier = RICE_terma_county_modifier_1
+			}
+		}
+		add_county_modifier = {
+			modifier = RICE_terma_county_modifier_1
+			years = 25
+		}
+	}
+	else_if = {
+		limit = {
+			scope:terma_county = {
+				has_county_modifier = RICE_terma_county_modifier_2
+			}
+		}
+		add_county_modifier = {
+			modifier = RICE_terma_county_modifier_2
+			years = 25
+		}
+	}
+	else_if = {
+		limit = {
+			scope:terma_county = {
+				has_county_modifier = RICE_terma_county_modifier_3
+			}
+		}
+		add_county_modifier = {
+			modifier = RICE_terma_county_modifier_3
+			years = 25
+		}
+	}
+	else_if = {
+		limit = {
+			scope:terma_county = {
+				has_county_modifier = RICE_terma_county_modifier_4
+			}
+		}
+		add_county_modifier = {
+			modifier = RICE_terma_county_modifier_4
+			years = 25
+		}
+	}
+	else_if = {
+		limit = {
+			scope:terma_county = {
+				has_county_modifier = RICE_terma_county_modifier_5
+			}
+		}
+		add_county_modifier = {
+			modifier = RICE_terma_county_modifier_5
+			years = 25
+		}
+	}
+	else_if = {
+		limit = {
+			scope:terma_county = {
+				has_county_modifier = RICE_terma_county_modifier_6
+			}
+		}
+		add_county_modifier = {
+			modifier = RICE_terma_county_modifier_6
+			years = 25
+		}
+	}
+	else_if = {
+		limit = {
+			scope:terma_county = {
+				has_county_modifier = RICE_terma_county_modifier_7
+			}
+		}
+		add_county_modifier = {
+			modifier = RICE_terma_county_modifier_7
+			years = 25
+		}
+	}
+	else_if = {
+		limit = {
+			scope:terma_county = {
+				has_county_modifier = RICE_terma_county_modifier_8
+			}
+		}
+		add_county_modifier = {
+			modifier = RICE_terma_county_modifier_8
+			years = 25
+		}
+	}
+	else_if = {
+		limit = {
+			scope:terma_county = {
+				has_county_modifier = RICE_terma_county_modifier_9
+			}
+		}
+		add_county_modifier = {
+			modifier = RICE_terma_county_modifier_9
+			years = 25
+		}
+	}
+}
+
+RICE_terma_medicine_effect = {
+	add_character_modifier = {
+		modifier = RICE_terma_medicine_modifier
+	}
+}
+
+
