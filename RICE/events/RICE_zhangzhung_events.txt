@@ -30,13 +30,57 @@ namespace = zhangzhung
 zhangzhung.0001 = {
 	hidden = yes
 
-	immediate = {	
-		character:RICE_buddhist_008 = {
-			save_scope_as = milarepa
+	immediate = {
+		if = {
+			limit = {
+				exists = character:RICE_buddhist_008
+			}	
+			character:RICE_buddhist_008 = {
+				save_scope_as = milarepa
+			}
 		}	
-		character:RICE_bon_002 = {
-			save_scope_as = naro_bonchung
-		}	
+		else = {		
+			create_character = {
+				name = "Milarepa"
+				location = root.capital_province
+				template = RICE_random_experienced_male_monk_template
+				culture = culture:bodpa
+				faith = faith:lamaism
+				save_scope_as = milarepa
+			}	
+			scope:milarepa = {				
+				add_trait = devoted
+			}
+		}
+		if = {
+			limit = {
+				exists = character:RICE_bon_002
+			}
+			character:RICE_bon_002 = {
+				save_scope_as = naro_bonchung
+			}	
+		}
+		else = {			
+			create_character = {
+				name = "naro_bonchung"
+				location = root.capital_province
+				template = RICE_random_experienced_male_monk_template
+				culture = culture:bodpa
+				faith = faith:bon
+				save_scope_as = naro_bonchung
+			}	
+			scope:naro_bonchung = {				
+				random = {
+					chance = 75
+					if = {
+						limit = {
+							NOT = { has_trait = devoted }
+						}
+						add_trait = devoted				
+					}
+				}
+			}
+		}
 		set_global_variable = {
 			name = RICE_milarepa_kailash_event_happened
 			value = yes
@@ -54,6 +98,7 @@ zhangzhung.0001 = {
 		}
 		every_ruler = {
 			limit = {
+				is_ai = no
 				OR = {
 					faith = {
 						has_doctrine = rice_vajrayana_canon_doctrine
@@ -316,7 +361,7 @@ zhangzhung.0011 = {
 		custom_tooltip = zhangzhung.0011.general.tooltip
 		trigger_event = {
 			id = zhangzhung.0012
-			#days = { 30 90 }
+			days = { 30 90 }
 		}
 	}
 
@@ -994,6 +1039,7 @@ zhangzhung.0022 = {
 	}
 
 	trigger = {
+		has_global_variable = RICE_terton_mechanic_triggered
 		RICE_can_acess_terton_mechanics_trigger = yes
 		any_courtier = {
 			is_available_ai_adult = yes
@@ -1003,6 +1049,13 @@ zhangzhung.0022 = {
 			NOT = { has_character_modifier = RICE_terton_candidate }
 			NOT = { has_trait = RICE_terton }
 			age >= 10
+		}
+	}
+	weight_multiplier = {
+		base = 1
+		modifier = { 
+			factor = 0.2
+			NOT = { has_global_variable = RICE_terton_mechanic_expands }
 		}
 	}
 
@@ -1028,6 +1081,10 @@ zhangzhung.0022 = {
 						NOT = { has_trait = RICE_terton }
 						age >= 10
 					}
+					add_to_list = padmasambhava_dream_candidate	
+				}
+				random_in_list = {
+					list = padmasambhava_dream_candidate
 					weight = {
 						base = 10
 						# Try to pick someone young
@@ -1128,10 +1185,6 @@ zhangzhung.0022 = {
 							add = -5
 						}
 					}
-					add_to_list = padmasambhava_dream_candidate	
-				}
-				random_in_list = {
-					list = padmasambhava_dream_candidate
 					save_scope_as = nyangral
 				}
 			}
@@ -1251,7 +1304,18 @@ zhangzhung.0023 = {
 zhangzhung.0024 = {
 	type = character_event
 	title = zhangzhung.0024.t
-	desc = zhangzhung.0024.desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {			
+					has_trait = RICE_terton
+				}
+				desc = zhangzhung.0024.desc.intro.terton
+			}
+			desc = zhangzhung.0024.desc.intro.not_terton
+		}
+		desc = zhangzhung.0024.desc
+	}
 	theme = RICE_theme_tibetan_hall_religious
 
 	right_portrait = {
@@ -1373,12 +1437,12 @@ zhangzhung.0030 = {
 		}
 		if = {
 			limit = {
-				exists = employer
+				exists = liege
 			}
 			# If in Tibet and nearby regions, there is a chance of choosing a random province in Tibet OR a random province in your duchy
 			# if = {
 			# 	limit = {
-			# 		employer.capital_province = {
+			# 		liege.capital_province = {
 			# 			geographical_region = RICE_basic_terton_region
 			# 		}
 			# 	}
@@ -1390,7 +1454,7 @@ zhangzhung.0030 = {
 			# 			}
 			# 		}
 			# 		50 = {
-			# 			employer.capital_county.duchy = {
+			# 			liege.capital_county.duchy = {
 			# 				random_in_de_jure_hierarchy = {
 			# 					limit = {
 			# 						tier = tier_county
@@ -1423,7 +1487,7 @@ zhangzhung.0030 = {
 			# }
 			## Otherwise, choose a random province in your duchy
 			#else = {
-				employer.capital_county.duchy = {
+				liege.capital_county.duchy = {
 					random_in_de_jure_hierarchy = {
 						limit = {
 							tier = tier_county
@@ -1448,15 +1512,18 @@ zhangzhung.0030 = {
 				}
 				scope:target_county = {
 					random_county_province = {
+						limit = {
+							NOT = { this = liege.capital_province }
+						}
 						save_scope_as = target_province
 					}
 				}
 			#}
-			employer = {
+			liege = {
 				trigger_event = zhangzhung.0031
 			}
 		}
-		# If they don't have an employer for whatever reason by the time the event triggers
+		# If they don't have an liege for whatever reason by the time the event triggers
 		#else = {			
 		#}
 	}
@@ -1466,7 +1533,41 @@ zhangzhung.0030 = {
 zhangzhung.0031 = {
 	type = character_event
 	title = zhangzhung.0031.t
-	desc = zhangzhung.0031.desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {			
+					scope:terton = {				
+						has_trait_xp = {
+							trait = RICE_terton
+							value >= 75
+						}
+					}
+				}
+				desc = zhangzhung.0031.desc.intro.great_terton
+			}
+			triggered_desc = {
+				trigger = {			
+					scope:terton = {				
+						has_trait = RICE_terton
+					}
+				}
+				desc = zhangzhung.0031.desc.intro.terton
+			}
+			desc = zhangzhung.0031.desc.intro.not_terton
+		}
+		desc = zhangzhung.0031.desc.middle
+		first_valid = {
+			triggered_desc = {
+				trigger = {			
+					religion = religion:buddhism_religion
+				}
+				desc = zhangzhung.0031.desc.buddhism
+			}
+			desc = zhangzhung.0031.desc.not_buddhism
+		}
+		desc = zhangzhung.0031.desc
+	}
 	theme = faith
 	override_background = { reference = RICE_background_himalayan_wilderness }
 
@@ -1516,6 +1617,33 @@ zhangzhung.0031 = {
 		}
 	}
 
+	option = {
+		name = zhangzhung.0031.b
+		if = {
+			limit = {
+				has_trait = zealous
+			}
+			stress_impact = {
+				zealous = minor_stress_impact_gain
+				humble = miniscule_stress_impact_gain
+			}
+		}
+		else = {
+			stress_impact = {
+				paranoid = miniscule_stress_impact_loss
+				cynical = minor_stress_impact_loss
+				callous = miniscule_stress_impact_loss
+			}
+		}		
+		scope:terton = {
+			add_opinion = {
+				target = root
+				modifier = frustrated_opinion
+				opinion = -15
+			}
+		}
+	}
+
 }
 
 
@@ -1532,7 +1660,7 @@ zhangzhung.0032 = {
 		}		
 		if = {
 			limit = {
-				exists = employer
+				exists = liege
 			}
 			# Determine whether there is a success or failure to begin with
 			random_list = {
@@ -1659,7 +1787,7 @@ zhangzhung.0032 = {
 						40 = {
 							modifier = {
 								add = 1000
-								employer = { has_character_flag = RICE_terma_teachings_physical_auto }
+								liege = { has_character_flag = RICE_terma_teachings_physical_auto }
 							}
 							set_variable = {
 								name = RICE_terma_type
@@ -1670,7 +1798,7 @@ zhangzhung.0032 = {
 						40 = {
 							modifier = {
 								add = 1000
-								employer = { has_character_flag = RICE_terma_teachings_internal_auto }
+								liege = { has_character_flag = RICE_terma_teachings_internal_auto }
 							}
 							set_variable = {
 								name = RICE_terma_type
@@ -1694,7 +1822,7 @@ zhangzhung.0032 = {
 						10 = {
 							modifier = {
 								add = 1000
-								employer = { has_character_flag = RICE_terma_statue_auto }
+								liege = { has_character_flag = RICE_terma_statue_auto }
 							}
 							set_variable = {
 								name = RICE_terma_type
@@ -1705,7 +1833,7 @@ zhangzhung.0032 = {
 						10 = {
 							modifier = {
 								add = 1000
-								employer = { has_character_flag = RICE_terma_sacred_image_auto }
+								liege = { has_character_flag = RICE_terma_sacred_image_auto }
 							}
 							set_variable = {
 								name = RICE_terma_type
@@ -1716,7 +1844,7 @@ zhangzhung.0032 = {
 						10 = {
 							modifier = {
 								add = 1000
-								employer = { has_character_flag = RICE_terma_ritual_instrument_auto }
+								liege = { has_character_flag = RICE_terma_ritual_instrument_auto }
 							}
 							set_variable = {
 								name = RICE_terma_type
@@ -1727,14 +1855,14 @@ zhangzhung.0032 = {
 						10 = {
 							# Only available if you own land in the location
 							trigger = {
-								employer = {	
+								liege = {	
 									is_landed = yes
 								}
-								employer = scope:terma_county.holder
+								liege = scope:terma_county.holder
 							}	
 							modifier = {
 								add = 1000
-								employer = { has_character_flag = RICE_terma_buildings_auto }
+								liege = { has_character_flag = RICE_terma_buildings_auto }
 							}
 							set_variable = {
 								name = RICE_terma_type
@@ -1745,14 +1873,14 @@ zhangzhung.0032 = {
 						10 = {
 							modifier = {
 								add = 1000
-								employer = { has_character_flag = RICE_terma_riches_auto }
+								liege = { has_character_flag = RICE_terma_riches_auto }
 							}
 							set_variable = {
 								name = RICE_terma_type
 								value = flag:riches
 								days = 1
 							}
-							employer = {
+							liege = {
 								# Set the gold amount that's gained
 								set_variable = {
 									name = RICE_terton_riches_gained
@@ -1769,7 +1897,7 @@ zhangzhung.0032 = {
 						10 = {
 							modifier = {
 								add = 1000
-								employer = { has_character_flag = RICE_terma_scholarly_texts_auto }
+								liege = { has_character_flag = RICE_terma_scholarly_texts_auto }
 							}
 							set_variable = {
 								name = RICE_terma_type
@@ -1780,7 +1908,7 @@ zhangzhung.0032 = {
 						10 = {
 							modifier = {
 								add = 1000
-								employer = { has_character_flag = RICE_terma_medicine_auto }
+								liege = { has_character_flag = RICE_terma_medicine_auto }
 							}
 							set_variable = {
 								name = RICE_terma_type
@@ -1791,16 +1919,10 @@ zhangzhung.0032 = {
 					}					
 				}
 			}
-			employer = {
-				save_scope_as = terton_result_recipient
+			liege = {
+				#save_scope_as = terton_result_recipient
 				trigger_event = zhangzhung.0033
 			}
-		}
-		if = {
-			limit = {
-				has_character_modifier = RICE_zhangzhung_discovering_termas
-			}
-			remove_character_modifier = RICE_zhangzhung_discovering_termas
 		}
 		# Don't remove it in case it was added by other means
 		# if = {
@@ -2076,6 +2198,7 @@ zhangzhung.0033 = {
 	}
 
 	immediate = {
+		save_scope_as = terton_result_recipient
 		if = {
 			limit = {
 				scope:terton = {
@@ -2215,12 +2338,16 @@ zhangzhung.0033 = {
 			if = {
 				limit = { has_variable = RICE_terma_type }
 				remove_variable = RICE_terma_type
-			}
-		}
-		scope:terton = {					
+			}					
 			if = {
 				limit = { has_variable = RICE_terma_recognition }
 				remove_variable = RICE_terma_recognition
+			}			
+			if = {
+				limit = {
+					has_character_modifier = RICE_zhangzhung_discovering_termas
+				}
+				remove_character_modifier = RICE_zhangzhung_discovering_termas
 			}
 		}
 		if = {
@@ -2237,7 +2364,37 @@ zhangzhung.0033 = {
 zhangzhung.0040 = {
 	type = character_event
 	title = zhangzhung.0040.t
-	desc = zhangzhung.0040.desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {			
+					has_trait_xp = {
+						trait = RICE_terton
+						value >= 75
+					}
+				}
+				desc = zhangzhung.0040.desc.intro.great_terton
+			}
+			triggered_desc = {
+				trigger = {			
+					has_trait = RICE_terton
+				}
+				desc = zhangzhung.0040.desc.intro.terton
+			}
+			desc = zhangzhung.0040.desc.intro.not_terton
+		}
+		desc = zhangzhung.0040.desc.middle
+		first_valid = {
+			triggered_desc = {
+				trigger = {			
+					religion = religion:buddhism_religion
+				}
+				desc = zhangzhung.0040.desc.buddhism
+			}
+			desc = zhangzhung.0040.desc.not_buddhism
+		}
+		desc = zhangzhung.0040.desc
+	}
 	theme = faith
 	override_background = { reference = RICE_background_himalayan_wilderness }
 
@@ -2292,6 +2449,9 @@ zhangzhung.0040 = {
 		}
 		scope:target_county = {
 			random_county_province = {
+				limit = {
+					NOT = { this = root.capital_province }
+				}
 				save_scope_as = target_province
 			}
 		}
@@ -2317,7 +2477,7 @@ zhangzhung.0040 = {
 	# Nah, I'm busy
 	option = {
 		name = zhangzhung.0040.b
-		custom_tooltip = zhangzhung.0040.b.tooltip
+		#custom_tooltip = zhangzhung.0040.b.tooltip
 		if = {
 			limit = {
 				has_trait = zealous
@@ -2815,12 +2975,6 @@ zhangzhung.0041 = {
 		}
 		if = {
 			limit = {
-				has_character_modifier = RICE_zhangzhung_discovering_termas
-			}
-			remove_character_modifier = RICE_zhangzhung_discovering_termas
-		}
-		if = {
-			limit = {
 				scope:terton = {
 					religion = religion:buddhism_religion
 				}
@@ -2949,12 +3103,16 @@ zhangzhung.0041 = {
 			if = {
 				limit = { has_variable = RICE_terma_type }
 				remove_variable = RICE_terma_type
-			}
-		}
-		scope:terton = {					
+			}					
 			if = {
 				limit = { has_variable = RICE_terma_recognition }
 				remove_variable = RICE_terma_recognition
+			}
+			if = {
+				limit = {
+					has_character_modifier = RICE_zhangzhung_discovering_termas
+				}
+				remove_character_modifier = RICE_zhangzhung_discovering_termas
 			}
 		}
 	}
@@ -4677,6 +4835,208 @@ zhangzhung.0150 = {
 
 
 
+# Padmasambhava cave - supposedly
+zhangzhung.0151 = {
+	type = character_event
+	title = zhangzhung.0151.t
+	desc = zhangzhung.0151.desc
+	theme = faith
+	override_background = { reference = RICE_background_himalayan_wilderness }
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	
+	lower_center_portrait = {
+		character = scope:padmasambhava
+		trigger = { exists = scope:padmasambhava } # In case the game prunes him for some reason, which it shouldn't since he should be saved
+	}
+	
+	trigger = {
+		#religion = religion:buddhism_religion
+		culture = { has_cultural_pillar = heritage_tibetan }
+		faith = { has_doctrine = rice_vajrayana_canon_doctrine }
+		any_held_title = {
+			tier = tier_county
+			faith = root.faith
+			any_county_province = {
+				geographical_region = RICE_greater_himalayan_region
+			}
+		}
+		exists = character:RICE_buddhist_001
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = sadistic
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = gluttonous
+		}
+	}
+
+	immediate = {
+		character:RICE_buddhist_001 = {
+			save_scope_as = padmasambhava
+		}
+		random_held_title = {			
+			limit = {
+				tier = tier_county
+				faith = root.faith
+				any_county_province = {
+					geographical_region = RICE_greater_himalayan_region
+				}
+			}
+			save_scope_as = county
+			random_list = {
+				10 = {
+					add_county_modifier = {
+						modifier = RICE_zhangzhung_padmasambhava_cave
+						years = 5
+					}
+				}
+				10 = {
+					add_county_modifier = {
+						modifier = RICE_zhangzhung_padmasambhava_cave
+						years = 10
+					}
+				}
+				10 = {
+					add_county_modifier = {
+						modifier = RICE_zhangzhung_padmasambhava_cave
+						years = 15
+					}
+				}
+				10 = {
+					add_county_modifier = {
+						modifier = RICE_zhangzhung_padmasambhava_cave
+						years = 20
+					}
+				}
+			}
+		}
+	}
+
+	option = { # Ok
+		name = zhangzhung.0151.a
+		add_piety = 25
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = zhangzhung.0151.b
+		add_prestige = 25
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+	}
+}
 
 
 
+
+
+# Rock with a giant foot on it (based on a legend about Gyalwa Gotsangpa)
+zhangzhung.0152 = {
+	type = character_event
+	title = zhangzhung.0152.t
+	desc = zhangzhung.0152.desc
+	theme = travel
+	override_background = { reference = RICE_background_himalayan_wilderness }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}	
+
+	trigger = {
+		is_location_valid_for_travel_event_on_land = yes
+		location.county.religion = root.religion
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = sadistic
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		root.location.culture = {
+			save_scope_as = culture
+		}
+		root.location.faith = {
+			save_scope_as = faith
+		}
+	}
+
+	option = { # Ok
+		name = zhangzhung.0152.a
+		add_piety = 25
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = zhangzhung.0152.b
+		add_prestige = 25
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = zhangzhung.0152.info
+		}
+	}
+
+}

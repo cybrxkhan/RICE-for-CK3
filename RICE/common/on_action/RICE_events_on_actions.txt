@@ -777,8 +777,123 @@ RICE_yearly_global_pulse = {
 			}
 		}
 
-		# Tertons
+		# Milarepa challenges the Bon masters at Mount Kailash
+		if = {
+			limit = {
+				NOT = { has_global_variable = RICE_milarepa_kailash_event_happened }
+			}			
+			random = {
+				chance = 10
+				modifier = {
+					add = 10
+					current_date >= 1070.1.1
+				}
+				modifier = {
+					add = 15
+					current_date >= 1080.1.1
+				}
+				modifier = {
+					add = 20
+					current_date >= 1090.1.1
+				}
+				modifier = {
+					add = 25
+					current_date >= 1100.1.1
+				}
+				modifier = {
+					add = 99999
+					has_global_variable = RICE_milarepa_testing_on_actions
+				}
+				title:c_purang.holder = {
+					trigger_event = zhangzhung.0001
+				}
+			}
+		}
 
+		# Terton mechanic is triggered
+		if = {
+			limit = {
+				NOT = { has_global_variable = RICE_terton_mechanic_triggered }
+			}			
+			random = {
+				chance = 5
+				modifier = {
+					add = 10
+					current_date >= 950.1.1
+				}
+				modifier = {
+					add = 15
+					current_date >= 1000.1.1
+				}
+				modifier = {
+					add = 20
+					current_date >= 1050.1.1
+				}
+				modifier = {
+					add = 25
+					current_date >= 1100.1.1
+				}
+				modifier = {
+					add = 99999
+					has_global_variable = RICE_terton_testing_on_actions
+				}
+				set_global_variable = {
+					name = RICE_terton_mechanic_triggered
+					value = yes
+				}
+				
+				every_ruler = {
+					limit = {
+						is_ai = no
+						RICE_can_acess_terton_mechanics_trigger = yes
+					}
+					trigger_event = zhangzhung.0016
+				}
+			}
+		}
+
+		# Terton mechanic expands
+		if = {
+			limit = {
+				has_global_variable = RICE_terton_mechanic_triggered
+				NOT = { has_global_variable = RICE_terton_mechanic_expands }
+			}			
+			random = {
+				chance = 5
+				modifier = {
+					add = 10
+					current_date >= 1050.1.1
+				}
+				modifier = {
+					add = 15
+					current_date >= 1100.1.1
+				}
+				modifier = {
+					add = 20
+					current_date >= 1150.1.1
+				}
+				modifier = {
+					add = 25
+					current_date >= 1200.1.1
+				}
+				modifier = {
+					add = 99999
+					has_global_variable = RICE_terton_testing_on_actions
+				}
+				set_global_variable = {
+					name = RICE_terton_mechanic_expands
+					value = yes
+				}
+				
+				every_ruler = {
+					limit = {
+						is_ai = no
+						RICE_can_acess_terton_mechanics_trigger = yes
+					}
+					trigger_event = zhangzhung.0017
+				}
+			}
+		}
 
 	}
 }
@@ -972,6 +1087,7 @@ RICE_events_yearly_maintenance_pulse = {
 		if = {
 			limit = {
 				#is_ai = no
+				has_global_variable = RICE_terton_mechanic_triggered
 				is_landed = yes
 				RICE_can_acess_terton_mechanics_trigger = yes
 				any_courtier = {
@@ -998,6 +1114,7 @@ RICE_events_yearly_maintenance_pulse = {
 		# For yourself
 		if = {
 			limit = {
+				has_global_variable = RICE_terton_mechanic_triggered
 				is_playable_character = yes
 				RICE_can_acess_terton_mechanics_trigger = yes
 				RICE_is_or_can_become_terton_trigger = yes
@@ -1021,6 +1138,7 @@ RICE_events_yearly_maintenance_pulse = {
 		# Minor terma discovery
 		if = {
 			limit = {
+				has_global_variable = RICE_terton_mechanic_triggered
 				is_landed = yes
 				RICE_can_acess_terton_mechanics_trigger = yes
 				has_character_modifier = RICE_zhangzhung_patronizing_tertons
@@ -1030,7 +1148,7 @@ RICE_events_yearly_maintenance_pulse = {
 				trigger_event = zhangzhung.0025
 			}
 		}
-		else_if = {
+		if = {
 			limit = {
 				has_character_modifier = RICE_zhangzhung_searching_for_termas
 			}
