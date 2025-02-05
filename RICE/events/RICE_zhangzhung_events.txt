@@ -4974,7 +4974,15 @@ zhangzhung.0152 = {
 
 	trigger = {
 		is_location_valid_for_travel_event_on_land = yes
+		OR = {
+			religion = religion:buddhism_religion
+			religion = religion:bon_religion
+			religion = religion:west_himalayan_religion
+		}
 		location.county.religion = root.religion
+		location = {
+			geographical_region = RICE_greater_himalayan_region
+		}
 	}
 	
 	weight_multiplier = {
@@ -5040,7 +5048,6 @@ zhangzhung.0152 = {
 	}
 
 }
-
 
 
 
@@ -5165,6 +5172,11 @@ zhangzhung.0154 = {
 	}
 	
 	trigger = {
+		OR = {
+			religion = religion:buddhism_religion
+			religion = religion:bon_religion
+			religion = religion:west_himalayan_religion
+		}
 		any_held_title = {
 			tier = tier_county
 			any_county_province = {
@@ -5319,6 +5331,15 @@ zhangzhung.0155 = {
 		}		
 	}
 
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = zhangzhung.0155.info
+		}
+	}
+
 }
 
 
@@ -5403,6 +5424,15 @@ zhangzhung.0156 = {
 		}		
 	}
 
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = zhangzhung.0156.info
+		}
+	}
+
 }
 
 
@@ -5476,3 +5506,740 @@ zhangzhung.0157 = {
 
 
 
+
+
+# Discussing the origins of Padmasambhava
+zhangzhung.0158 = {
+	type = character_event
+	title = zhangzhung.0158.t
+	desc = zhangzhung.0158.desc
+	theme = RICE_theme_tibetan_hall_religious
+
+	
+	left_portrait = {
+		character = scope:courtier_1
+		animation = dismissal
+	}
+	right_portrait = {
+		character = scope:courtier_2
+		animation = disapproval
+	}
+
+	lower_center_portrait = {
+		character = scope:padmasambhava
+		trigger = { exists = scope:padmasambhava } # In case the game prunes him for some reason, which it shouldn't since he should be saved
+	}
+
+	trigger = {	
+		exists = character:RICE_buddhist_001
+		culture = { has_cultural_pillar = heritage_tibetan }
+		faith = { has_doctrine = rice_vajrayana_canon_doctrine }
+		any_courtier = {
+			is_available_ai_adult = yes
+			count >= 2
+			culture = { has_cultural_pillar = heritage_tibetan }
+			faith = { has_doctrine = rice_vajrayana_canon_doctrine }
+		}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	immediate = {
+		every_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+				culture = { has_cultural_pillar = heritage_tibetan }
+				faith = { has_doctrine = rice_vajrayana_canon_doctrine }
+			}
+			add_to_list = courtier_candidates
+		}
+		random_in_list = {
+			list = courtier_candidates
+			save_scope_as = courtier_1
+		}
+		random_in_list = {
+			list = courtier_candidates
+			limit = {
+				exists = scope:courtier_1
+				NOT = { this = scope:courtier_1 }
+			}
+			save_scope_as = courtier_2
+		}
+		scope:courtier_1 = {
+			add_opinion = {
+				target = scope:courtier_2
+				modifier = RICE_zhangzhung_religious_argument_opinion
+			}
+		}
+		scope:courtier_2 = {
+			add_opinion = {
+				target = scope:courtier_1
+				modifier = RICE_zhangzhung_religious_argument_opinion
+			}
+		}
+	}
+
+	
+	option = { # ok
+		name = zhangzhung.0158.a
+		scope:courtier_1 = {
+			add_opinion = {
+				target = root
+				modifier = RICE_agrees_with_me_opinion
+				opinion = 10
+			}		
+		}
+		scope:courtier_2 = {
+			add_opinion = {
+				target = root
+				modifier = RICE_disagrees_with_me_opinion
+				opinion = -10
+			}		
+		}
+	}
+	
+	option = { # ok
+		name = zhangzhung.0158.b
+		scope:courtier_2 = {
+			add_opinion = {
+				target = root
+				modifier = RICE_agrees_with_me_opinion
+				opinion = 10
+			}		
+		}
+		scope:courtier_1 = {
+			add_opinion = {
+				target = root
+				modifier = RICE_disagrees_with_me_opinion
+				opinion = -10
+			}		
+		}
+	}
+
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = zhangzhung.0158.info
+		}
+	}
+	
+
+
+}
+
+
+# Musk deer imports from Tibet
+zhangzhung.0159 = {
+	type = character_event
+	title = zhangzhung.0159.t
+	desc = zhangzhung.0159.desc
+	theme = domain
+	override_background = { reference = RICE_background_himalayan_wilderness }
+	
+	right_portrait = {
+		character = root
+		animation = frontend_left_idle
+	}
+	
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = world_tibet
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	immediate = {
+		random_held_title = {			
+			limit = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = world_tibet
+				}
+			}
+			save_scope_as = county
+			scope:county = {
+				random_list = {
+					10 = {
+						add_county_modifier = {
+							modifier = RICE_zhangzhung_musk_county_modifier
+							years = 5
+						}
+					}
+					10 = {
+						add_county_modifier = {
+							modifier = RICE_zhangzhung_musk_county_modifier
+							years = 10
+						}
+					}
+					10 = {
+						add_county_modifier = {
+							modifier = RICE_zhangzhung_musk_county_modifier
+							years = 15
+						}
+					}
+					10 = {
+						add_county_modifier = {
+							modifier = RICE_zhangzhung_musk_county_modifier
+							years = 20
+						}
+					}
+				}
+			}	
+		}
+	}
+
+	option = { # Ok
+		name = zhangzhung.0159.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = zhangzhung.0159.info
+		}
+	}
+}
+
+
+
+# Dardic locals worry about merchants' purity because they are strangers
+zhangzhung.0160 = {
+	type = character_event
+	title = zhangzhung.0160.t
+	desc = zhangzhung.0160.desc
+	theme = stewardship_wealth_focus
+	override_background = { reference = RICE_background_pamir_valley }
+	
+	right_portrait = {
+		character = root
+		animation = worry
+	}
+	
+	trigger = {
+		religion = religion:peristani_religion
+		any_held_title = {
+			tier = tier_county
+			faith = root.faith
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	immediate = {
+		random_held_title = {			
+			limit = {
+				tier = tier_county
+				faith = root.faith
+			}
+			save_scope_as = county	
+		}
+	}
+
+	option = { # Ok
+		name = zhangzhung.0160.a
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_zhangzhung_impure_merchants
+				years = 10
+			}
+		}
+	}
+
+	option = { # Ok
+		name = zhangzhung.0160.b
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_zhangzhung_xenophobic_locals
+				years = 10
+			}
+		}
+	}
+
+	option = { # Ok
+		name = zhangzhung.0160.c
+		duel = {
+			skills = { diplomacy stewardship }
+			value = 11
+			10 = {
+				desc = zhangzhung.0160.c.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -1.2
+				}
+				send_interface_toast = {
+					title = zhangzhung.0160.c.failure
+					add_legitimacy = miniscule_legitimacy_loss
+					add_county_modifier = {
+						modifier = RICE_zhangzhung_impure_merchants
+						years = 10
+					}
+					add_county_modifier = {
+						modifier = RICE_zhangzhung_xenophobic_locals
+						years = 10
+					}					
+				}
+			}
+			10 = {
+				desc = zhangzhung.0160.c.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 1.2
+				}
+				send_interface_toast = {
+					title = zhangzhung.0160.c.success	
+					add_legitimacy = miniscule_legitimacy_gain			
+					add_county_modifier = {
+						modifier = RICE_zhangzhung_prosperous_village_trade
+						years = 10
+					}	
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = zhangzhung.0160.info
+		}
+	}
+}
+
+
+# Praying to a local mountain goddess in Changthang
+zhangzhung.0161 = {
+	type = character_event
+	title = zhangzhung.0161.t
+	desc = zhangzhung.0161.desc
+	theme = faith
+	override_background = { reference = RICE_background_himalayan_wilderness }
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	trigger = {
+		OR = {
+			religion = religion:buddhism_religion
+			religion = religion:bon_religion
+			religion = religion:west_himalayan_religion
+		}
+		capital_county = {
+			title_province = { geographical_region = RICE_upper_tibet }
+			OR = {
+				religion = religion:buddhism_religion
+				religion = religion:bon_religion
+				religion = religion:west_himalayan_religion
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	option = { # Ok
+		name = zhangzhung.0161.a		
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 40
+			}
+		}
+		remove_short_term_gold = 40
+		add_piety = 50
+		add_character_modifier = {
+			modifier = RICE_zhangzhung_mountain_lake_goddess_prayer
+			years = 10
+		}
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			cynical = minor_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = zhangzhung.0161.b
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			diligent = miniscule_stress_impact_gain
+		}
+	}
+
+}
+
+# Hearing about legends of mountain lakes with sightings of giant golden fish and dragons
+zhangzhung.0162 = {
+	type = character_event
+	title = zhangzhung.0162.t
+	desc = zhangzhung.0162.desc
+	theme = travel_learning
+	override_background = { reference = RICE_background_himalayan_wilderness }
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}	
+
+	trigger = {
+		is_location_valid_for_travel_event_on_land = yes
+		location = {
+			geographical_region = world_tibet
+		}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	option = { # Ok
+		name = zhangzhung.0162.a
+		add_piety = 25
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = zhangzhung.0162.b
+		add_prestige = 25
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = zhangzhung.0162.info
+		}
+	}
+
+}
+
+
+# Villagers warn of a lake ahead with brackish waters aka demons
+zhangzhung.0163 = {
+	type = character_event
+	title = zhangzhung.0163.t
+	desc = zhangzhung.0163.desc
+	theme = travel_danger
+	override_background = { reference = RICE_background_himalayan_wilderness }
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}	
+
+	trigger = {
+		is_location_valid_for_travel_event_on_land = yes
+		location = {
+			geographical_region = world_tibet
+		}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	option = { # Ok
+		name = zhangzhung.0162.a
+		stress_impact = {
+			impatient = minor_stress_impact_gain
+			wrathful = miniscule_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+		}
+		current_travel_plan = {
+			delay_travel_plan = { days = 8 }
+		}
+	}
+
+	option = { # Ok
+		name = zhangzhung.0162.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 25
+			}
+		}
+		remove_short_term_gold = 25
+		add_piety = 25
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			greedy = minor_stress_impact_gain
+			paranoid = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = zhangzhung.0163.c
+		add_prestige = 25
+		stress_impact = {
+			craven = medium_stress_impact_gain
+			zealous = minor_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+		}
+		random = {
+			chance = 45			
+			send_interface_toast = {
+				type = event_toast_effect_bad
+				left_icon = ROOT
+				title = zhangzhung.0163.c.message
+				add_character_modifier = {
+					modifier = RICE_zhangzhung_brackish_lake_demons
+					years = 10
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = zhangzhung.0163.info
+		}
+	}
+
+}
+
+
+# Had a dream where you saw a Khyung, the Tibetan mythological horned eagle
+zhangzhung.0164 = {
+	type = character_event
+	title = zhangzhung.0164.t
+	desc = zhangzhung.0164.desc
+	theme = RICE_theme_tibetan_hall_generic
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	trigger = {
+		culture = { has_cultural_pillar = heritage_tibetan }
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = sadistic
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+	}
+
+	option = { # Ok
+		name = zhangzhung.0164.a
+		add_character_modifier = {
+			modifier = RICE_zhangzhung_khyung_royal
+			years = 8
+		}
+		stress_impact = {
+			just = minor_stress_impact_loss
+			generous = miniscule_stress_impact_loss
+			ambitious = miniscule_stress_impact_loss
+			gregarious = miniscule_stress_impact_loss
+		}
+	}
+
+	option = { # Ok
+		name = zhangzhung.0164.b
+		add_character_modifier = {
+			modifier = RICE_zhangzhung_khyung_spiritual
+			years = 8
+		}
+		stress_impact = {
+			zealous = minor_stress_impact_loss
+			humble = miniscule_stress_impact_loss
+			diligent = miniscule_stress_impact_loss
+			content = miniscule_stress_impact_loss
+		}
+	}
+
+}
