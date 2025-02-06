@@ -1,12 +1,17 @@
-<img src="https://i.imgur.com/9U08K96.jpg">
+<img src="https://i.imgur.com/QuXW3Wp.jpg">
 
-## Latest Version: Version 1.14.0.a Hotfix for "Hyecho" (Released 12/2/24, for vanilla patch 1.14.x)
+## Latest Version: Version 1.14.1 "Padmasambhava" (Released 2/5/25, for vanilla patch 1.14.x)
 
-**Newest Flavor Pack: *Lesbos: Island of Poets***
+**Newest Flavor Pack: *Zhangzhung: Land of Hidden Treasures***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_Hyecho was an 8th century Korean Buddhist monk who traveled through much of Asia to go on pilgrimage to India, similar to the more famous Xuanzang a century before him. His travelogue, Memoir of a Pilgrimage to the Five Kingdoms of India, is a valuable source of information on various Asian and Middle Eastern cultures and polities during the early medieval period._
+_My father is wisdom and my mother is voidness._
+_My country is the country of Dharma._
+_I am of no caste and no creed._
+_I am sustained by perplexity; and I am here to destroy lust, anger and sloth._
+
+_– Padmasambhava, 8th century Indian tantric Buddhist master_
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
@@ -71,43 +76,44 @@ Click to view guides which cover the features in each specific pack in more deta
 - [Yazd: Abode of Worship](https://docs.google.com/document/d/e/2PACX-1vSPDkkP1PqCoPsi_HM29C5MM5L-as_SyKkmx_jNtOEqoW2mQx2APneBmbHNhi5hNePLHAxqm9QTm8y3/pub)
 - [Yazidis: People of the Peacock Angel](https://docs.google.com/document/d/e/2PACX-1vR3oN9lw2Yzsz_tGQb4sLDUPOVUjE6xhyYXvjtqnuKAJOegbo4UBuXpncgmk4s-cjEmAe8t1VvINe2h/pub)
 - [Yorkshire: To Scarborough Fair](https://docs.google.com/document/d/e/2PACX-1vQpl_JscDm-mK927vAdVA3-EUVdZ6A_htNKej7_cAKC1NcnYxHz8uvOT-bidmyLCNrfrYAsPun1QW3X/pub)
+- [Zhangzhung: Land of Hidden Treasures](https://docs.google.com/document/d/e/2PACX-1vQ389lRnsEbsFhT_5q37n546tqs0ybugbqAdtt_-ZPnRZyZjLv3ESDdx5iLJGeMehaXdruaOIYPrmsl/pub)
 
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/bCyRmDA.jpg">
+<img src="https://i.imgur.com/pbdCgoK.jpg">
 
-### 1.14.0.a Hotfix
+### 1.14.1 "Padmasambhava"
 
-- Added English placeholder for the Polish language version of CK3 (i.e. if you play in Polish, RICE content will display in English instead of gibberish)
-- Applied West Slavic DLC clothes to Sorbian culture if the DLC is active
-- Updated RICE+EPE compatch to new EPE version
-- Updated bookmark art, especially for landless bookmarks (courtesy of Nezaros, creator of Rajas of Asia)
-- Fixed Rollo being unplayable if you don’t own or enable the Roads to Power DLC
-- Fixed a few minor non-critical discrepancies between the RICE and RICE+EPE compatch culture code
-- Fixed Asian-American easter egg culture not making use of EPE’s ethnicities and clothing if playing with EPE
-- Miscellaneous bugfixes and tweaks
-
-### 1.14.0 "Hyecho"
-
-- Updated to 1.14/Wandering Nobles
-- Added new playable landless adventurers: Ishaq bin Yahuda (867), Yusuf Balasanguni (1066), Abu Ishaq Ibrahim al-Kanemi (1178)
-- Added new buildings: Dafo Temple (Ganzhou), Osun-Osogbo Sacred Grove (Ajase Ipo), Mount Hekla (Skálaholt), Orkhon Inscriptions (Karabalgasun), Tiya Megaliths (Gurage)
-- Added new decision to Purchase Ice from Yakhchals
-- Added new innovations: Skiing, Nsibidi Pictograms, Yakhchals
-- Added new travel options: Quality Skis
-- Added game rule to disable RICE’s historical landless adventurers at game start (in case it helps with performance and/or if you don’t like them), with three options: Default, Disable Fictitious (Except Player), Disable All (Except Player)
-- Gave brewing culture tradition to the Czech, Polish, Slovak, Bavarian, and Ancient Egyptian cultures
-- Changed most book artifacts like the Lusty [Culture] Maid from the miscellaneous to the journal category newly added in vanilla
-- Removed different culture and faith bonus from the Ubiquity of Poetry tradition
-- Top bar alert suggesting you establish a Greenland estate will no longer show up if you’re an adventurer, since the relevant decision can’t be taken as an adventurer
-- Amazigh paganism renamed to Yakushism, to be consistent with Fallen Eagle
-- Slightly nerfed the chances of getting gold events when doing the Trans-Saharan and Silk Road merchant options
-- Activities now have appropriate “a/an” preceding them like in vanilla
-- Fixed a LOT of typos, credits to klorpa for searching for and fixing them
-- Fixed Hafsa not taking grief decisions frequently enough
-- Fixed RICE’s MAA’s being unrecruitable as an adventurer if you have the Take the Custom Where it Comes perk
-- Fixed RICE’s Heavy Infantry and Heavy Cavalry MAA being recruitable if you have the Strength in Numbers tradition
+- Added Zhangzhung Flavor Pack: Land of Hidden Treasures
+- Added 5 Tibetan-themed soundtracks
+- Added dna for a few historical characters added by RICE
+- Added fictional Dezawist Darada rulers in Chitral in 867, 1066, 1178
+- Added semi-fictitious non-Islamic Pamiri vassals for Badakhshan in Shughnan and Wakhan in 1066
+- Renamed Buddhist vassal of the Samanids in 867 from the fictitious name to Humar, who is an attested non-Muslim ruler in the region around that time period
+- Thabit ibn Qurra’s wife is now also Syriac like he is if he chooses a Harranian wife in his event chain
+- Revamped Darada namelist with actual Dardic names and dynasties
+- Sicily struggle is now automatically started based on start date after 647 CE, rather than if Fallen Eagle is running or not (should not affect most users, only those that play with TFE or O-Saft-Killer’s 867 and 1066 submod for TFE)
+- Improved randomness of Sicilian stronghold malus events
+- Changed Hindu Shahi rulers to Gandhari culture in 867
+- Buffed victory chances in Palios from various Palio modifiers
+- Slightly buffed victory chances in Palios for players
+- Reduced control malus hit from Sicilian stronghold raids
+- There’s now some slight variety with how much control or development you might lose from Sicilian stronghold raids
+- Buffed the last two perks of the Sicilian Liminality Dynasty legacy
+- Changed defender holding bonus of the Incastellamento perk of the Sicilian Liminality Dynasty legacy to a control growth bonus
+- Chronic Ifriqyan Famines modifiers no longer last forever, instead they last for 30 years from the 1066 start date
+- Decisions to Collaborate with Pirates now clarifies that you will no longer be able to build other special buildings on the province in question
+- Fixed the Sicilian decision to support Salerno’s medical school not actually deducting gold costs
+- Fixed some RICE Dynasty Legacies not being available to adventurers
+- Fixed Siculo-Arabic culture event not properly referencing the Siculo-Arabic/Siqilli culture
+- Fixed Luxor Temple building not being available to Greco-Roman faiths even though they can take the decision to rededicate it to paganism
+- Fixed Mediterranean Pirate decision being available in the Caspian
+- Fixed “Norman Culture and Learning” dynasty modifier rewarded for the Assimilation ending of the Normandy struggle giving renown instead of a legitimacy bonus
+- Fixed Palermo being Ashari Muslim in Fallen Eagle and other mods with early start dates
+- Fixed mismatch for Budivoj/Henry and Krutoj names in aspirations
+- Fixed one of the Zhang families in Dunhuang having Zhu as their admin noble family title
+- Fixed Collaborate with Pirate decisions being available when your capital already has a special building
 - Miscellaneous bugfixes and tweaks
 
 
@@ -128,6 +134,7 @@ Special thanks in particular to:
 - Fische for various building art icons and Vertimnus for donating it to me (originally made for Sinews of War)
 - George Hammond for some music ([see here](https://fanlink.to/georgehammondmusic) for more of his work)
 - Henry for the Better Bedouin Culture mod
+- Herkles for Dharmachakra stuff and collab
 - KeizerHarm for UI work
 - Klorpa for fixing a lot of typos
 - Lahom for most Native American names
