@@ -85,15 +85,12 @@ Click to view guides which cover the features in each specific pack in more deta
 
 ### Version 1.14.1.b Hotfix for "Padmasambhava"
 
-- Khitan Empire now starts with some event troops in 1178
-- Integrated additional Spanish localization thanks to Ferchu
-- Fixed Kimshuism having only two tenets if you play Africa Plus (added Adaptive)
-- Fixed decision to choose a enlightenment deity still costing piety if you have the Assertive Deities doctrine, which is supposed to waive the cost
-- Fixed missing localization for the Kimshuism and Bonanah faiths and West Himalayan religion
-- Fixed missing localization for the Zathapuk monastery decision historical tooltip
-- Fixed the Drokpa MAA requiring the Hussar tradition
-- Fixed Divination intent of the Fulaich Flower Festival activity not having any effect
-- Fixed localization for the Divination intent of the Fulaich Flower Festival activity not showing the correct bonus to chances of gaining the oracle modifier
+- Added text clarifying that experience in the Sicilian Signore trait is gained through various mechanics related to the Sicilian Frontier struggle
+- Improved compatibility with More Bookmarks+ for the decision to Compile the First Turkic Dictionary
+- Tweaked holy site bonuses of the Kamru holy site (previously was using travel modifiers that don’t work on characters)
+- Fixed Nabati culture appearing in TFE
+- Fixed localization for Burmic priest plural in some cases
+- Fixed erroneous, oudated text saying the Marc'hegion MAA for the Bretons gets better with era
 - Miscellaneous bugfixes
 
 ### Version 1.14.1.a Hotfix for "Padmasambhava"
