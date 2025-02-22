@@ -1,0 +1,465 @@
+﻿RICE_setup_galicia2_flavor_pack_effect = {
+
+	############################################################
+	#
+	# RELIGION CHANGES
+	#
+	############################################################
+
+
+	############################################################ 
+	#
+	# CULTURE CHANGES
+	#
+	############################################################
+
+	# If starting before 900, with the appropriate rules, remove the Charismatic and Mendicant Mystics traditions from Rus culture
+	# So you can get some randomized traditions
+	if = {
+		limit = {
+			current_date < 900.1.1
+			OR = {
+				has_game_rule = RICE_rus_emergence_default
+				has_game_rule = RICE_rus_emergence_override
+			}
+		}
+		culture:russian = {
+			remove_culture_tradition = tradition_mendicant_mystics
+			remove_culture_tradition = tradition_welcoming
+			remove_variable = tradition_cooldown
+		}	
+	}
+
+	culture:russian = {
+		add_culture_tradition = tradition_brus_river_lifeblood
+		remove_variable = tradition_cooldown
+	}	
+
+	culture:ilmenian = {
+		add_culture_tradition = tradition_brus_river_lifeblood
+		remove_variable = tradition_cooldown
+	}	
+
+	culture:severian = {
+		add_culture_tradition = tradition_brus_river_lifeblood
+		remove_variable = tradition_cooldown
+	}	
+
+	culture:volhynian = {
+		remove_culture_tradition = tradition_city_keepers
+		add_culture_tradition = tradition_brus_river_lifeblood
+		remove_variable = tradition_cooldown
+	}	
+
+	culture:krivich = {
+		add_culture_tradition = tradition_brus_river_lifeblood
+		remove_variable = tradition_cooldown
+	}	
+
+	if = {
+		limit = {
+			game_start_date <= 900.1.1
+		}
+		every_county = {
+			limit = {
+				culture = { has_cultural_pillar = heritage_east_slavic }
+				title_province = {	
+					OR = {
+						geographical_region = dlc_fp1_region_eastern_adventure_targets_novgorod	
+						geographical_region = dlc_fp1_region_eastern_adventure_targets_vladimir	
+					}
+				}
+			}
+			set_county_culture = culture:ilmenian
+		}
+		every_ruler = {
+			limit = {
+				culture = { has_cultural_pillar = heritage_east_slavic }
+				NOT = { culture = culture:ilmenian }
+				capital_county ?= {
+					culture = culture:ilmenian
+				}
+			}
+			set_culture = culture:ilmenian
+			every_courtier_or_guest = {
+				limit = {
+					culture = { has_cultural_pillar = heritage_east_slavic }
+				}
+				set_culture = culture:ilmenian
+			}
+		}
+		every_county = {
+			limit = {
+				culture = { has_cultural_pillar = heritage_east_slavic }
+				title_province = {	
+					geographical_region = dlc_fp1_region_eastern_adventure_targets_white_rus	
+				}
+			}
+			set_county_culture = culture:krivich
+		}
+		every_ruler = {
+			limit = {
+				culture = { has_cultural_pillar = heritage_east_slavic }
+				NOT = { culture = culture:krivich }
+				capital_county ?= {
+					culture = culture:krivich
+				}
+			}
+			set_culture = culture:krivich
+			every_courtier_or_guest = {
+				limit = {
+					culture = { has_cultural_pillar = heritage_east_slavic }
+				}
+				set_culture = culture:krivich
+			}
+		}
+		every_county = {
+			limit = {
+				culture = { has_cultural_pillar = heritage_east_slavic }
+				title_province = {	
+					geographical_region = dlc_fp1_region_eastern_adventure_targets_ruthenia	
+				}
+			}
+			set_county_culture = culture:severian
+		}
+		every_ruler = {
+			limit = {
+				culture = { has_cultural_pillar = heritage_east_slavic }
+				NOT = { culture = culture:severian }
+				capital_county ?= {
+					culture = culture:severian
+				}
+			}
+			set_culture = culture:severian
+			every_courtier_or_guest = {
+				limit = {
+					culture = { has_cultural_pillar = heritage_east_slavic }
+				}
+				set_culture = culture:severian
+			}
+		}
+		every_county = {
+			limit = {
+				culture = { has_cultural_pillar = heritage_east_slavic }
+				title_province = {	
+					geographical_region = RICE_galicia_volhynia_region	
+				}
+			}
+			set_county_culture = culture:volhynian
+		}
+		every_ruler = {
+			limit = {
+				culture = { has_cultural_pillar = heritage_east_slavic }
+				NOT = { culture = culture:volhynian }
+				capital_county ?= {
+					culture = culture:volhynian
+				}
+			}
+			set_culture = culture:volhynian
+			every_courtier_or_guest = {
+				limit = {
+					culture = { has_cultural_pillar = heritage_east_slavic }
+				}
+				set_culture = culture:volhynian
+			}
+		}
+	}
+
+	if = {
+		limit = {
+			game_start_date <= 900.1.1
+		}
+		title:c_kozelsk = {
+			set_county_culture = culture:goliad
+			set_county_faith = faith:baltic_pagan
+		}
+		title:c_karachev = {
+			set_county_culture = culture:goliad
+			set_county_faith = faith:baltic_pagan
+		}
+		title:c_kozelsk.holder = {
+			every_courtier_or_guest = {
+				limit = {
+					is_lowborn = yes
+				}
+				random = {
+					chance = 50
+					set_culture = culture:goliad
+					set_character_faith = faith:baltic_pagan
+				}
+			}
+		}
+		title:c_odoyev.holder = {
+			every_courtier_or_guest = {
+				limit = {
+					is_lowborn = yes
+				}
+				random = {
+					chance = 50
+					set_culture = culture:goliad
+					set_character_faith = faith:baltic_pagan
+				}
+			}
+		}
+		title:c_karachev.holder = {
+			every_courtier_or_guest = {
+				limit = {
+					is_lowborn = yes
+				}
+				random = {
+					chance = 25
+					set_culture = culture:goliad
+					set_character_faith = faith:baltic_pagan
+				}
+			}
+		}
+	}
+	else = {		
+		title:c_odoyev.holder = {
+			every_courtier_or_guest = {
+				limit = {
+					is_lowborn = yes
+				}
+				random = {
+					chance = 25
+					set_culture = culture:goliad
+					set_character_faith = faith:baltic_pagan
+				}
+			}
+		}
+	}
+	title:c_mozhaysk = {
+		set_county_culture = culture:goliad
+		set_county_faith = faith:baltic_pagan
+	}
+	title:c_odoyev = {
+		set_county_culture = culture:goliad
+		set_county_faith = faith:baltic_pagan
+	}
+	if = {
+		limit = {
+			title:c_mozhaysk.holder = {
+				culture = { has_cultural_pillar = heritage_volga_finnic }
+			}
+		}
+		title:c_mozhaysk.holder = {
+			set_culture = culture:goliad
+			set_character_faith = faith:baltic_pagan
+			every_courtier_or_guest = {
+				limit = {
+					is_lowborn = yes
+					culture = { has_cultural_pillar = heritage_volga_finnic }
+				}
+				set_culture = culture:goliad
+				set_character_faith = faith:baltic_pagan
+			}
+		}
+	}
+	else = {
+		title:c_mozhaysk.holder = {
+			every_courtier_or_guest = {
+				limit = {
+					is_lowborn = yes
+					#culture = { has_cultural_pillar = heritage_volga_finnic }
+				}
+				random = {
+					chance = 25
+					set_culture = culture:goliad
+					set_character_faith = faith:baltic_pagan
+				}
+			}
+		}
+	}
+
+
+
+	############################################################
+	#
+	# HISTORY/TITLE CHANGES
+	#
+	############################################################ 
+	
+	############################################################
+	#
+	# BUILDING
+	#
+	############################################################
+
+	if = {
+		limit = {
+			current_date >= 1000.1.1
+			title:b_ushytsia = {
+				title_province = { has_special_building = no }
+			}
+		}
+		title:b_ushytsia.title_province = {
+			add_special_building = RICE_kamianets_podilskyi_castle_01
+		}
+	}
+	else_if = {
+		limit = {
+			current_date < 1000.1.1
+			title:b_ushytsia = {
+				title_province = { has_special_building = no }
+			}
+		}
+		title:b_ushytsia.title_province = {
+			add_special_building_slot = RICE_kamianets_podilskyi_castle_01
+		}		
+	}
+
+	############################################################
+	#
+	# MISCELLANEOUS
+	#
+	############################################################
+
+	if = {
+		limit = {
+			current_date >= 900.1.1
+		}
+		# Rus culture should be around starting from this date
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_rus_culture_created
+		}
+	}
+
+}
+
+
+
+
+RICE_galicia2_cochineal_decision_effect = {
+	every_county_in_region = {
+		region = RICE_european_cochineal_region
+		custom = RICE_every_cochineal_region_county
+		limit = {
+			holder = root
+		}
+		if = {
+			limit = {
+				duchy = {
+					any_de_jure_county = {
+						any_county_province = {
+							has_building_or_higher = RICE_galicia2_cochineal_industry_03
+						}
+					}
+				}
+			}
+			add_county_modifier = {
+				modifier = RICE_galicia2_cochineal_modifier_4
+				years = 10
+			}
+		}
+		else_if = {
+			limit = {
+				duchy = {
+					any_de_jure_county = {
+						any_county_province = {
+							has_building_or_higher = RICE_galicia2_cochineal_industry_02
+						}
+					}
+				}
+			}
+			add_county_modifier = {
+				modifier = RICE_galicia2_cochineal_modifier_3
+				years = 10
+			}
+		}
+		else_if = {
+			limit = {
+				duchy = {
+					any_de_jure_county = {
+						any_county_province = {
+							has_building_or_higher = RICE_galicia2_cochineal_industry_01
+						}
+					}
+				}
+			}
+			add_county_modifier = {
+				modifier = RICE_galicia2_cochineal_modifier_2
+				years = 10
+			}
+		}
+		else = {
+			add_county_modifier = {
+				modifier = RICE_galicia2_cochineal_modifier_1
+				years = 10
+			}
+		}
+	}
+}
+
+
+RICE_rus_culture_decision_effect = {
+	if = {
+		limit = {
+			capital_county = {
+				culture = { has_cultural_pillar = heritage_north_germanic }
+			}
+			culture:russian = {
+				NOT = { has_cultural_pillar = heritage_north_germanic }
+			}
+		}
+		culture:russian = {
+			set_culture_pillar = heritage_north_germanic
+		}
+	}
+	else_if = {
+		limit = {
+			capital_county = {
+				culture = { has_cultural_pillar = heritage_balto_finnic }
+			}
+			culture:russian = {
+				NOT = { has_cultural_pillar = heritage_balto_finnic }
+			}
+		}
+		culture:russian = {
+			set_culture_pillar = heritage_balto_finnic
+		}
+	}
+	else_if = {
+		limit = {
+			capital_county = {
+				culture = { has_cultural_pillar = heritage_volga_finnic }
+			}
+			culture:russian = {
+				NOT = { has_cultural_pillar = heritage_volga_finnic }
+			}
+		}
+		culture:russian = {
+			set_culture_pillar = heritage_volga_finnic
+		}
+	}
+	else_if = {
+		limit = {
+			capital_county = {
+				culture = { has_cultural_pillar = heritage_baltic }
+			}
+			culture:russian = {
+				NOT = { has_cultural_pillar = heritage_baltic }
+			}
+		}
+		culture:russian = {
+			set_culture_pillar = heritage_baltic
+		}
+	}
+	# Default
+	else_if = {
+		limit = {
+			culture:russian = {
+				NOT = { has_cultural_pillar = heritage_east_slavic }
+			}
+		}
+		culture:russian = {
+			set_culture_pillar = heritage_east_slavic
+		}
+	}
+	culture:russian = {
+		add_random_valid_tradition = root
+		add_random_valid_tradition = root
+	}
+}
+
+

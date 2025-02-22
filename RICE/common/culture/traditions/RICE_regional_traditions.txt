@@ -2652,5 +2652,75 @@ tradition_RICE_gandharan_art = {
 
 
 
+# Borrowed and adapted from Baptism of Rus
+tradition_brus_river_lifeblood = {
+	category = regional
+
+	layers = {
+		0 = steward
+		1 = western
+		4 = brus_ship_city.dds
+	}
+	
+	is_shown = {
+		has_cultural_pillar = heritage_east_slavic
+		NOR = {
+			culture_tradition:tradition_republican_legacy = { is_in_list = traits }
+			culture_tradition:tradition_maritime_mercantilism = { is_in_list = traits }
+		}
+	}
+	
+	can_pick = {
+		has_cultural_pillar = heritage_east_slavic
+	}
+	#Essentially a fusion of Republican Legacy and Maritime Mercantilism
+	parameters = {
+		trade_ports_enabled_for_tribals = yes
+		trade_ports_give_levies = yes
+		maritime_mercantilism_coastal_holdings = yes
+		#coastal_holding_bonuses = yes
+		can_make_republican_vassals = yes # The veche held some sway in Rus, most notably Republic of Novgorod
+		#republican_vassals_pay_more = yes
+		unlock_rice_portage_decision = yes
+		rice_portage_decision_bonus = yes
+	}
+	
+	character_modifier = {
+		diplomatic_range_mult = 0.10
+		#development_growth_factor = 0.10
+	}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			# River requirement.
+			if = {
+				limit = {
+					NOT = {
+						any_culture_county = {
+							percent >= 0.20
+							is_riverside_county = yes
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = river_percentage_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	
+	ai_will_do = {
+		value = 0
+	}
+}
+
 
 
