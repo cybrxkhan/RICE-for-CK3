@@ -21,6 +21,110 @@ namespace = galicia2
 # 
 ######################################################################################
 
+
+# Rus culture event - choose a language
+galicia2.0001 = {
+	type = character_event
+	title = galicia2.0001.t
+	desc = galicia2.0001.desc
+	theme = RICE_theme_slavic_gord
+
+
+	right_portrait = {
+		character = scope:rus_founder
+		animation = frontend_center_idle
+	}
+
+	immediate = {
+		RICE_rus_culture_decision_effect = yes
+	}
+
+	option = {
+		name = galicia2.0001.a
+		scope:rus_culture = {
+			set_culture_pillar = language_east_slavic
+		}
+	}
+
+	option = {
+		name = galicia2.0001.b
+		trigger = {
+			scope:original_culture = {
+				NOT = { has_cultural_pillar = language_east_slavic }
+			}
+		}
+		scope:rus_culture = {
+			set_language_from = scope:original_culture
+		}
+	}
+
+	after = {		
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:rus_founder
+					culture = { has_cultural_pillar = heritage_east_slavic }
+					culture = { has_cultural_pillar = heritage_north_germanic }
+					culture = { has_cultural_pillar = heritage_balto_finnic }
+					culture = { has_cultural_pillar = heritage_volga_finnic }
+					culture = { has_cultural_pillar = heritage_baltic }
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							OR = {
+								geographical_region = world_europe_east
+								geographical_region = world_europe_north
+								geographical_region = world_europe_steppe_west
+								geographical_region = world_europe_south_east
+								geographical_region = world_europe_asia_minor
+								geographical_region = world_europe_west_germania
+							}
+						}
+					}					
+				}
+			}
+			trigger_event = galicia2.0002
+		}
+	}
+
+}
+
+# Notification event to everyone
+galicia2.0002 = {
+	type = character_event
+	title = galicia2.0002.t
+	window = fullscreen_event
+	desc = {
+		desc = galicia2.0002.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:rus_culture = {
+						has_cultural_pillar = language_east_slavic
+					}
+				}
+				desc = galicia2.0002.desc.east_slavic
+			}
+			desc = galicia2.0002.desc.non_east_slavic
+		}
+	}
+	theme = diplomacy
+	override_background = { reference = RICE_slavic_settlement }
+
+
+	# right_portrait = {
+	# 	character = scope:rus_founder
+	# 	animation = frontend_center_idle
+	# }
+
+	option = {
+		name = galicia2.0002.a
+	}
+
+}
+
+
+
 ######################################################################################
 # 
 # ECONOMIC EVENTS (PORTAGE, COCHINEAL, ETC.)
@@ -69,7 +173,18 @@ galicia2.0040 = {
 	type = character_event
 	window = duel_event
 	title = galicia2.0040.t
-	desc = galicia2.0040.desc
+	desc = {
+		desc = galicia2.0040.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					root = scope:vladimir
+				}
+				desc = galicia2.0040.desc.vladimir
+			}
+			desc = galicia2.0040.desc.oleg
+		}
+	}
 	theme = intrigue
 	override_background = { reference = RICE_background_halych_castle }
 
@@ -84,7 +199,8 @@ galicia2.0040 = {
 		animation = aggressive_sword
 	}
 
-	lower_center_portrait = scope:yaroslav
+	#lower_left_portrait = scope:anastasia
+	#lower_right_portrait = scope:yaroslav
 
 	immediate = {
 		character:222500 = {
@@ -96,6 +212,9 @@ galicia2.0040 = {
 		character:222506 = {
 			save_scope_as = oleg
 		}
+		character:RICE_galicia2_005 = {
+			save_scope_as = anastasia
+		}
 		if = {
 			limit = {
 				root = scope:vladimir
@@ -104,7 +223,9 @@ galicia2.0040 = {
 		}
 		else = {
 			show_as_tooltip = {
-				RICE_galicia2_yaroslav_death_vladimir_effect = yes = yes
+				scope:vladimir = {
+					RICE_galicia2_yaroslav_death_vladimir_effect = yes
+				}
 			}
 		}
 

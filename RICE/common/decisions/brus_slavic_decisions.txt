@@ -1,0 +1,230 @@
+﻿####################################################
+# 
+# ADAPTED FROM BAPTISM OF RUS, with some changes
+# 
+####################################################
+
+select_personal_deity_slavic_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_slavic_gord.dds"
+	}
+	#decision_group_type = major 
+
+	desc = select_personal_deity_slavic_decision_desc
+	selection_tooltip = select_personal_deity_slavic_decision_tooltip
+
+	is_shown = {
+		# Following a valid religion & faith.
+		religion = religion:slavic_religion
+
+		# Will look at this later
+		# OR = {
+		# 	#Unrestricted option
+		# 	AND = {
+		# 		has_game_rule = rus_slavic_decision_unrestricted
+		# 			OR = {
+		# 				#A Slavic culture
+		# 				culture = {
+		# 					OR = {
+		# 						has_cultural_pillar = heritage_east_slavic
+		# 						has_cultural_pillar = heritage_west_slavic
+		# 						has_cultural_pillar = heritage_south_slavic
+		# 					}
+		# 				}
+		# 				# The original requirements
+		# 				AND = {
+		# 					# Applicable non-Slavic culture in the region
+		# 					capital_province = { geographical_region = custom_brus_kievian_rus }
+		# 					# We don't want to give Slavic cultures freebies compared to Norse. They should require a tradition to do this too.
+		# 					culture = {
+		# 						OR = {
+		# 							has_cultural_tradition = tradition_zealous_people
+		# 							has_cultural_tradition = tradition_religious_patronage
+		# 							has_cultural_tradition = tradition_fervent_temple_builders
+		# 							custom_tooltip = {
+		# 								text = brus_runestone_tt
+		# 								OR = {
+		# 									has_cultural_tradition = tradition_fp1_northern_stories
+		# 									has_cultural_tradition = tradition_runestones
+		# 								}
+		# 							}
+		# 						}
+		# 					}
+		# 				}	
+		# 		}
+		# 	}
+		# 	# Default option
+		# 	AND = {
+		# 		# Applicable non-Slavic culture in the region
+		# 		capital_province = { geographical_region = custom_brus_kievian_rus }
+		# 				# We don't want to give Slavic cultures freebies compared to Norse. They should require a tradition to do this too.
+		# 			culture = {
+		# 				OR = {
+		# 					has_cultural_tradition = tradition_zealous_people
+		# 					has_cultural_tradition = tradition_religious_patronage
+		# 					has_cultural_tradition = tradition_fervent_temple_builders
+		# 					custom_tooltip = {
+		# 						text = brus_runestone_tt
+		# 						OR = {
+		# 							has_cultural_tradition = tradition_fp1_northern_stories
+		# 							has_cultural_tradition = tradition_runestones
+		# 						}
+		# 					}
+		# 				}
+		# 		}
+		# 	}
+		# }
+		# DLC check.
+		has_fp1_dlc_trigger = yes
+		#faith = { has_doctrine_parameter = select_personal_god_active }
+	}
+
+	is_valid = {
+		# Take a look at this later
+		# trigger_if = {
+		# 	limit = {
+		# 		has_game_rule = rus_slavic_decision_unrestricted
+		# 	 }
+		# 	 culture = {
+		# 		OR = {
+		# 			has_cultural_pillar = heritage_east_slavic
+		# 			has_cultural_pillar = heritage_west_slavic
+		# 			has_cultural_pillar = heritage_south_slavic
+		# 		}
+		# 	}
+		# }
+		# trigger_else = {
+		# 	# Applicable non-Slavic culture in the region
+		# 	capital_province = { geographical_region = custom_brus_kievian_rus }
+		# 	# We don't want to give Slavic cultures freebies compared to Norse. They should require a tradition to do this too.
+		# 	culture = {
+		# 		OR = {
+		# 			has_cultural_tradition = tradition_zealous_people
+		# 			has_cultural_tradition = tradition_religious_patronage
+		# 			has_cultural_tradition = tradition_fervent_temple_builders
+		# 			custom_tooltip = {
+		# 				text = brus_runestone_tt
+		# 				OR = {
+		# 					has_cultural_tradition = tradition_fp1_northern_stories
+		# 					has_cultural_tradition = tradition_runestones
+		# 				}
+		# 			}
+		# 		}
+		# 	}
+		# }
+		# Let's change this to checking the religion/culture of the province.
+		capital_province.religion = religion:slavic_religion
+
+		# Take a look at this later
+		# custom_tooltip = {
+		# 	text = brus_capital_culture_deity_tt
+		# 	OR = {
+		# 		#Unrestricted
+		# 		AND = {
+		# 			capital_province.culture = {
+		# 				OR = {
+		# 					has_cultural_pillar = heritage_east_slavic
+		# 					has_cultural_pillar = heritage_west_slavic
+		# 					has_cultural_pillar = heritage_south_slavic
+		# 				}
+		# 			}
+		# 			has_game_rule = rus_slavic_decision_unrestricted
+		# 		}
+		# 		# Default
+		# 		capital_province.culture = { 
+		# 			OR = {
+		# 				has_cultural_tradition = tradition_zealous_people
+		# 				has_cultural_tradition = tradition_religious_patronage
+		# 				has_cultural_tradition = tradition_fervent_temple_builders
+		# 				custom_tooltip = {
+		# 					text = brus_runestone_tt
+		# 					OR = {
+		# 						has_cultural_tradition = tradition_fp1_northern_stories
+		# 						has_cultural_tradition = tradition_runestones
+		# 					}
+		# 				}
+		# 			}
+		# 		}
+		# 	}
+		# }
+		
+	}
+	is_valid_showing_failures_only = {
+		# Have to at _least_ not be in piety debt.
+		piety >= 0
+		is_available_adult = yes
+	}
+
+	cooldown = { years = 5 }
+
+	effect = {
+		# Show the possible options.
+		show_as_tooltip = {
+			random_list = {
+				desc = select_personal_deity_slavic_decision_tt
+				100 = {
+					show_chance = no
+					desc = select_personal_deity_slavic_decision.select_perun
+					add_character_modifier = bhakti_slavic_perun
+				}
+				100 = {
+					show_chance = no
+					desc = select_personal_deity_slavic_decision.select_veles
+					add_character_modifier = bhakti_slavic_veles
+				}
+				100 = {
+					show_chance = no
+					desc = select_personal_deity_slavic_decision.select_khors_dazhbog
+					add_character_modifier = bhakti_slavic_khors_dazhbog
+				}
+				100 = {
+					show_chance = no
+					desc = select_personal_deity_slavic_decision.select_stribog
+					add_character_modifier = bhakti_slavic_stribog
+				}
+				100 = {
+					show_chance = no
+					desc = select_personal_deity_slavic_decision.select_mokosh
+					add_character_modifier = bhakti_slavic_mokosh
+				}
+				100 = {
+					show_chance = no
+					desc = select_personal_deity_slavic_decision.select_simargl
+					add_character_modifier = bhakti_slavic_simargl
+				}
+			}
+		}
+		# And the actual effect.
+		trigger_event = galicia2.0010
+	}
+
+	ai_check_interval = 54
+	
+	ai_potential = {
+		piety >= minor_piety_value
+		# NOR = {
+		# 	has_character_modifier = bhakti_germanic_generic_odin
+		# 	has_character_modifier = bhakti_germanic_not_danish_ullr
+		# 	has_character_modifier = bhakti_germanic_danish_tyr
+		# 	has_character_modifier = bhakti_germanic_generic_thor
+		# 	has_character_modifier = bhakti_germanic_generic_freyr
+		# 	has_character_modifier = bhakti_slavic_perun
+		# 	has_character_modifier = bhakti_slavic_veles
+		# 	has_character_modifier = bhakti_slavic_dazhbog
+		# 	has_character_modifier = bhakti_slavic_stribog
+		# 	has_character_modifier = bhakti_slavic_svarog
+		# 	has_character_modifier = bhakti_slavic_mokosh
+		# }
+	}
+	cost = {
+		gold = {
+			value = 10
+			add = minor_gold_value
+		}
+
+		piety = 100
+	}
+	ai_will_do = {
+		base = 100
+	}
+}
