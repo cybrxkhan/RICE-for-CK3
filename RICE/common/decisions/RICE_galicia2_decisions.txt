@@ -329,13 +329,16 @@ RICE_develop_portage_routes = {
 		decision_to_second_step_button = "RICE_PORTAGE_PICK_ACTION_TYPE"
 		show_from_start = yes
 		
-		### Erect Portage Stone (Non-Christian)
+		### Erect Portage Stone (Non-Christian) (danger)
 		item = {
 			value = RICE_portage_erect_stones_nonchristian
 			is_shown = {
 				NOT = {
 					religion = religion:christianity_religion
 				}
+			}
+			is_valid = {
+				gold >= minor_gold_value
 			}
 			current_description = RICE_portage_erect_stones_nonchristian_desc
 			localization = RICE_portage_erect_stones_nonchristian_name
@@ -345,11 +348,14 @@ RICE_develop_portage_routes = {
 			}
 		}
 		
-		### Erect Portage Stone (Christian)
+		### Erect Portage Stone (Christian) (danger)
 		item = {
 			value = RICE_portage_erect_stones_christian
 			is_shown = {
 				religion = religion:christianity_religion
+			}
+			is_valid = {
+				gold >= minor_gold_value
 			}
 			current_description = RICE_portage_erect_stones_christian_desc
 			localization = RICE_portage_erect_stones_christian_name
@@ -362,6 +368,9 @@ RICE_develop_portage_routes = {
 		### Levy Boat Builders
 		item = {
 			value = RICE_portage_levy_boat_builders
+			is_valid = {
+				gold >= minor_gold_value
+			}
 			current_description = RICE_portage_levy_boat_builders_desc
 			localization = RICE_portage_levy_boat_builders_name
 			icon = "gfx/interface/icons/widgets/RICE_portage_levy_boat_builders.dds"
@@ -370,9 +379,12 @@ RICE_develop_portage_routes = {
 			}
 		}		
 		
-		### Maintain Hauling Sites
+		### Maintain Hauling Sites (danger, tax, county opinion)
 		item = {
 			value = RICE_portage_maintain_hauling_sites
+			is_valid = {
+				gold >= medium_gold_value
+			}
 			current_description = RICE_portage_maintain_hauling_sites_desc
 			localization = RICE_portage_maintain_hauling_sites_name
 			icon = "gfx/interface/icons/widgets/RICE_portage_maintain_hauling_sites.dds"
@@ -380,18 +392,6 @@ RICE_develop_portage_routes = {
 				value = 10
 			}
 		}
-		
-		### Reinforce River Forts
-		item = {
-			value = RICE_portage_reinforce_river_forts
-			current_description = RICE_portage_reinforce_river_forts_desc
-			localization = RICE_portage_reinforce_river_forts_name
-			icon = "gfx/interface/icons/widgets/RICE_portage_reinforce_river_forts.dds"
-			ai_chance = {
-				value = 10
-			}
-		}
-		
 		### Acquire Tribute
 		# item = {
 		# 	value = RICE_portage_acquire_tribute
@@ -406,6 +406,9 @@ RICE_develop_portage_routes = {
 		### Promote Merchants
 		item = {
 			value = RICE_portage_promote_merchants
+			is_valid = {
+				gold >= medium_gold_value
+			}
 			current_description = RICE_portage_promote_merchants_desc
 			localization = RICE_portage_promote_merchants_name
 			icon = "gfx/interface/icons/widgets/RICE_portage_promote_merchants.dds"
@@ -414,9 +417,27 @@ RICE_develop_portage_routes = {
 			}
 		}
 		
-		### Encourage Settlement
+		### Reinforce River Forts (control, fort level, raid)
+		item = {
+			value = RICE_portage_reinforce_river_forts
+			is_valid = {
+				gold >= major_gold_value
+			}
+			current_description = RICE_portage_reinforce_river_forts_desc
+			localization = RICE_portage_reinforce_river_forts_name
+			icon = "gfx/interface/icons/widgets/RICE_portage_reinforce_river_forts.dds"
+			ai_chance = {
+				value = 10
+			}
+		}
+		
+		
+		### Encourage Settlement (development, building)
 		item = {
 			value = RICE_portage_encourage_settlement
+			is_valid = {
+				gold >= major_gold_value
+			}
 			current_description = RICE_portage_encourage_settlement_desc
 			localization = RICE_portage_encourage_settlement_name
 			icon = "gfx/interface/icons/widgets/RICE_portage_encourage_settlement.dds"
@@ -429,12 +450,123 @@ RICE_develop_portage_routes = {
 	}
 
 	effect = {
-		custom_tooltip = RICE_develop_portage_routes_effect_tooltip_1
-		custom_tooltip = RICE_develop_portage_routes_effect_tooltip_2
+		
+		# show_as_tooltip = {
+		# 	RICE_develop_portage_routes_general_effect = yes
+		# }
 
-		show_as_tooltip = {
-			RICE_develop_portage_routes_effect = yes
+		if = {
+			limit = {
+				is_ai = yes
+			}
+
+			random_list = {
+				# Erect Portage Stones
+				10 = {
+					trigger = {
+						NOT = { religion = religion:christianity_religion }
+					}
+					trigger_event = galicia2.0021
+				}
+				# Erect Portage Crosses
+				10 = {
+					trigger = {
+						religion = religion:christianity_religion
+					}
+					trigger_event = galicia2.0022
+				}
+				### Levy Boat Builders
+				10 = {
+					trigger_event = galicia2.0023
+				}
+				### Maintain Hauling Sites
+				10 = {
+					trigger = {
+						gold >= medium_gold_value
+					}
+					trigger_event = galicia2.0024
+				}
+				### Promote Merchants
+				10 = {
+					trigger = {
+						gold >= medium_gold_value
+					}
+					trigger_event = galicia2.0025
+				}
+				### Reinforce River Forts
+				10 = {
+					trigger = {
+						gold >= major_gold_value
+					}
+					trigger_event = galicia2.0026
+				}
+				### Encourage Settlement
+				10 = {
+					trigger = {
+						gold >= major_gold_value
+					}
+					trigger_event = galicia2.0027
+				}
+			}
 		}
+
+		else_if = {
+			limit = { scope:RICE_portage_erect_stones_nonchristian = yes }
+			show_as_tooltip = {
+				RICE_portage_erect_stones_nonchristian_effect = yes
+			}
+			trigger_event = galicia2.0021
+		}
+
+		else_if = {
+			limit = { scope:RICE_portage_erect_stones_christian = yes }
+			show_as_tooltip = {
+				RICE_portage_erect_stones_christian_effect = yes
+			}
+			trigger_event = galicia2.0022
+		}
+
+		else_if = {
+			limit = { scope:RICE_portage_levy_boat_builders = yes }
+			show_as_tooltip = {
+				RICE_portage_levy_boat_builders_effect = yes
+			}
+			trigger_event = galicia2.0023
+		}
+
+		else_if = {
+			limit = { scope:RICE_portage_maintain_hauling_sites = yes }
+			show_as_tooltip = {
+				RICE_portage_maintain_hauling_sites_effect = yes
+			}
+			trigger_event = galicia2.0024
+		}
+
+		else_if = {
+			limit = { scope:RICE_portage_promote_merchants = yes }
+			show_as_tooltip = {
+				RICE_portage_promote_merchants_effect = yes
+			}
+			trigger_event = galicia2.0025
+		}
+
+		else_if = {
+			limit = { scope:RICE_portage_reinforce_river_forts = yes }
+			show_as_tooltip = {
+				RICE_portage_reinforce_river_forts_effect = yes
+			}
+			trigger_event = galicia2.0026
+		}
+
+		else_if = {
+			limit = { scope:RICE_portage_encourage_settlement = yes }
+			show_as_tooltip = {
+				RICE_portage_encourage_settlement_effect = yes
+			}
+			trigger_event = galicia2.0027
+		}
+	
+
 
 		if = {
 			limit = {
@@ -449,11 +581,11 @@ RICE_develop_portage_routes = {
 	}
 
 	cost = {
-		gold = RICE_activity_cost
+		gold = minor_gold_value
 	}
 
 	ai_potential = {
-		short_term_gold > RICE_activity_cost
+		short_term_gold > minor_gold_value
 	}
 
 	ai_will_do = {
