@@ -124,6 +124,519 @@ galicia2.0002 = {
 }
 
 
+# Volga-Dnieper Merchant Spawn event
+galicia2.0010 = {
+	type = character_event
+	title = galicia2.0010.t
+	desc = galicia2.0010.desc	
+	theme = stewardship_wealth_focus
+	override_background = { reference = throne_room }
+	
+	
+	right_portrait = {
+		character = scope:RICE_volga_dnieper_merchant_spawn
+		animation = steward
+	}
+	
+	trigger = {
+		capital_province = {
+			geographical_region = RICE_volga_dnieper_trade_region
+		}
+		NOT = { has_character_flag = RICE_volga_dnieper_merchant_guaranteed_spawn } # It's already guaranteed to spawn so no need to have it happen
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = -0.4
+			has_character_flag = RICE_volga_dnieper_already_spawned_merchant
+		}
+		modifier = {
+			add = 1.1
+			culture = { has_cultural_tradition = tradition_brus_river_lifeblood }
+		}
+		# modifier = {
+		# 	add = 0.75
+		# 	has_character_flag = RICE_trans_saharan_networking_boost_tiny
+		# }
+		# modifier = {
+		# 	add = 1
+		# 	has_character_flag = RICE_trans_saharan_networking_boost_small
+		# }
+		# modifier = {
+		# 	add = 1.33
+		# 	has_character_flag = RICE_trans_saharan_networking_boost_medium
+		# }
+		# modifier = {
+		# 	add = 1.66
+		# 	has_character_flag = RICE_trans_saharan_networking_boost_large
+		# }
+		# modifier = {
+		# 	add = 2
+		# 	has_character_flag = RICE_trans_saharan_networking_boost_huge
+		# }
+	}
+
+	immediate = {
+		capital_province = { save_scope_as = capital_province } #For loc.
+		add_character_flag = RICE_volga_dnieper_already_spawned_merchant
+		every_county_in_region = {
+			region = RICE_volga_dnieper_trade_merchant_region
+			add_to_list = merchant_counties
+		}
+		random_in_list = {
+			list = merchant_counties
+			weight = {
+				base = 100
+				modifier = {
+					add = -40
+					title_province = { has_holding_type = tribal_holding }
+				}
+				modifier = {
+					add = 20
+					any_county_province = {
+						has_holding_type = city_holding
+					}
+				}
+				modifier = {
+					add = 40
+					any_county_province = {
+						OR = {
+							#geographical_region = world_europe_east # Should emphasize outsiders
+							geographical_region = world_europe_north
+							geographical_region = world_europe_south_east
+							geographical_region = world_steppe_west
+							geographical_region = world_asia_minor
+							geographical_region = world_middle_east_jerusalem
+							geographical_region = world_middle_east_arabia
+						}
+					}
+				}
+				modifier = {
+					add = -40
+					culture = { has_same_culture_heritage = root.culture }
+				}
+			}
+			save_scope_as = home_county
+		}
+		scope:home_county.culture = {
+			save_scope_as = culture
+		}
+		scope:home_county.faith = {
+			save_scope_as = faith
+		}
+		create_character = {
+			location = root.location
+			template = RICE_volga_dnieper_merchant_template
+			save_scope_as = RICE_volga_dnieper_merchant_spawn
+			culture = scope:culture
+			faith = scope:faith
+		}
+
+		random_list = {
+			10 = {				
+				set_variable = {
+					name = RICE_volga_dnieper_trade_good_type
+					value = flag:amber
+					days = 1
+				}
+			}
+			10 = {
+				set_variable = {
+					name = RICE_volga_dnieper_trade_good_type
+					value = flag:honey
+					days = 1
+				}
+			}
+			10 = {
+				set_variable = {
+					name = RICE_volga_dnieper_trade_good_type
+					value = flag:slaves
+					days = 1
+				}
+			}
+			10 = {
+				set_variable = {
+					name = RICE_volga_dnieper_trade_good_type
+					value = flag:furs
+					days = 1
+				}
+			}
+			10 = {
+				set_variable = {
+					name = RICE_volga_dnieper_trade_good_type
+					value = flag:weapons
+					days = 1
+				}
+			}
+			10 = {
+				set_variable = {
+					name = RICE_volga_dnieper_trade_good_type
+					value = flag:ivory
+					days = 1
+				}
+			}
+			10 = {
+				set_variable = {
+					name = RICE_volga_dnieper_trade_good_type
+					value = flag:textiles
+					days = 1
+				}
+			}
+			10 = {
+				set_variable = {
+					name = RICE_volga_dnieper_trade_good_type
+					value = flag:coins
+					days = 1
+				}
+			}
+			10 = {				
+				set_variable = {
+					name = RICE_volga_dnieper_trade_good_type
+					value = flag:spices
+					days = 1
+				}
+			}
+			10 = {
+				trigger = {
+					faith_forbids_alcohol_trigger = no
+				}
+				set_variable = {
+					name = RICE_volga_dnieper_trade_good_type
+					value = flag:wines
+					days = 1
+				}
+			}
+			10 = {
+				set_variable = {
+					name = RICE_volga_dnieper_trade_good_type
+					value = flag:art
+					days = 1
+				}
+			}
+		}
+
+
+	}
+
+	# Okay
+	option = {
+		name = galicia2.0010.a
+		add_prestige = -150
+		pay_short_term_gold = {
+			target = scope:RICE_volga_dnieper_merchant_spawn
+			gold = medium_gold_value
+		}
+		add_courtier = scope:RICE_volga_dnieper_merchant_spawn
+		RICE_volga_dnieper_trade_deal_modifier_effect = yes
+		hidden_effect = {
+			random = {
+				chance = 50
+				RICE_generate_small_family = { CHARACTER = scope:RICE_volga_dnieper_merchant_spawn }
+			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 10
+				has_trait = greedy
+			}
+			modifier = {
+				add = 10
+				has_trait = ambitious
+			}
+		}
+	}
+
+	# Don't stay, but create a trade deal
+	option = {
+		name = galicia2.0010.b
+		pay_short_term_gold = {
+			target = scope:RICE_volga_dnieper_merchant_spawn
+			gold = medium_gold_value
+		}
+		RICE_volga_dnieper_trade_deal_modifier_effect = yes
+		hidden_effect = {
+			random = {
+				chance = 75
+				scope:RICE_volga_dnieper_merchant_spawn = {
+					death = {
+						death_reason = death_disappearance
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 40
+			modifier = {
+				add = 10
+				has_trait = greedy
+			}
+			modifier = {
+				add = 10
+				has_trait = ambitious
+			}
+		}
+	}
+
+	# Not interested
+	option = {
+		name = galicia2.0010.c
+		hidden_effect = {
+			random = {
+				chance = 75
+				scope:RICE_volga_dnieper_merchant_spawn = {
+					death = {
+						death_reason = death_disappearance
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 25
+		}
+	}
+	
+	after = {					
+		if = {
+			limit = { has_variable = RICE_volga_dnieper_trade_good_type }
+			remove_variable = RICE_volga_dnieper_trade_good_type
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_sri_lanka_vijayabahu_built_irrigation_tank
+			}
+			remove_character_flag = RICE_sri_lanka_vijayabahu_built_irrigation_tank
+		}	
+	}
+}
+
+
+# Encounter Trans-Saharan merchants
+galicia2.0011 = {
+	type = character_event
+	title = galicia2.0011.t
+	desc = galicia2.0011.desc
+	theme = travel_stewardship
+	
+	left_portrait = root
+	right_portrait = scope:merchant
+
+	trigger = {
+		current_travel_plan = {
+			any_entourage_character = {
+				count >= 1 
+				NOT = { this = root }
+				has_trait = RICE_volga_dnieper_merchant
+			}
+		}
+	}
+
+	immediate = {
+		current_travel_plan = {
+			random_entourage_character = {
+				limit = {
+					NOT = { this = root }
+					has_trait = RICE_volga_dnieper_merchant
+				}
+				save_scope_as = merchant
+			}
+		}		
+	}
+
+	option = { # OK
+		name = galicia2.0011.a
+		add_gold = { 10 50 }
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+		}
+
+		if = {
+			limit = {
+				OR = {
+					var:RICE_volga_dnieper_merchant_success_count >= 10
+					# dynasty ?= {
+					# 	has_dynasty_perk = RICE_trans_saharan_trade_legacy_5
+					# }
+				}
+				NOT = { has_trait = RICE_volga_dnieper_merchant }
+			}
+			random = {
+				chance = RICE_volga_dnieper_merchant_trait_chance
+				add_trait = RICE_volga_dnieper_merchant
+				custom_tooltip = RICE_volga_dnieper_merchant_trait_gain_tooltip
+			}
+		}
+		if = {
+			limit = {
+				has_trait = RICE_volga_dnieper_merchant
+			}
+			add_trait_xp = {
+				trait = RICE_volga_dnieper_merchant
+				value = { 1 5 } 
+			}
+		}
+
+		hidden_effect = {
+			if = {
+				limit = {
+					NOT = { exists = var:RICE_volga_dnieper_merchant_success_count }
+				}
+				set_variable = {
+					name = RICE_volga_dnieper_merchant_success_count
+					value = 1
+				}
+			}
+			else = {
+				change_variable = {
+					name = RICE_volga_dnieper_merchant_success_count
+					add = 1
+				}		
+			}
+		}
+
+		if = {
+			limit = {
+				NOR = {
+					var:RICE_volga_dnieper_merchant_success_count >= 10
+					# dynasty ?= {
+					# 	has_dynasty_perk = RICE_trans_saharan_trade_legacy_5
+					# }
+				}
+			}
+			custom_tooltip = RICE_trans_saharan_number_of_successes_tooltip
+		}
+	}
+
+	option = { # OK
+		name = galicia2.0011.b
+		duel = {
+			skills = { diplomacy stewardship }
+			value = decent_skill_rating
+			# Success.
+			30 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 2.5
+					min = -49
+				}
+				custom_tooltip = galicia2.0011.b.success
+				show_as_tooltip = {
+					if = {
+						limit = {
+							OR = {
+								var:RICE_volga_dnieper_merchant_success_count >= 10
+								# dynasty ?= {
+								# 	has_dynasty_perk = RICE_trans_saharan_trade_legacy_5
+								# }
+							}
+							NOT = { has_trait = RICE_volga_dnieper_merchant }
+						}
+						random = {
+							chance = RICE_volga_dnieper_merchant_trait_chance
+							add_trait = RICE_volga_dnieper_merchant
+							custom_tooltip = RICE_volga_dnieper_merchant_trait_gain_tooltip
+						}
+					}
+					if = {
+						limit = {
+							has_trait = RICE_volga_dnieper_merchant
+						}
+						add_trait_xp = {
+							trait = RICE_volga_dnieper_merchant
+							value = { 1 5 } 
+						}
+					}
+				}
+				hidden_effect = {
+					send_interface_toast = {
+						type = event_toast_effect_good
+						title = galicia2.0011.b.success
+						left_icon = root
+						add_gold = { 50 150 }
+						if = {
+							limit = {
+								OR = {
+									var:RICE_volga_dnieper_merchant_success_count >= 10
+									# dynasty ?= {
+									# 	has_dynasty_perk = RICE_trans_saharan_trade_legacy_5
+									# }
+								}
+								NOT = { has_trait = RICE_volga_dnieper_merchant }
+							}
+							random = {
+								chance = RICE_volga_dnieper_merchant_trait_chance
+								add_trait = RICE_volga_dnieper_merchant
+								custom_tooltip = RICE_volga_dnieper_merchant_trait_gain_tooltip
+							}
+						}
+						if = {
+							limit = {
+								has_trait = RICE_volga_dnieper_merchant
+							}
+							add_trait_xp = {
+								trait = RICE_volga_dnieper_merchant
+								value = { 1 5 } 
+							}
+						}
+					}	
+					if = {
+						limit = {
+							NOT = { exists = var:RICE_volga_dnieper_merchant_success_count }
+						}
+						set_variable = {
+							name = RICE_volga_dnieper_merchant_success_count
+							value = 1
+						}
+					}
+					else = {
+						change_variable = {
+							name = RICE_volga_dnieper_merchant_success_count
+							add = 1
+						}		
+					}					
+				}
+			}
+			# Failure.
+			70 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -2.5
+					min = -49
+				}
+				custom_tooltip = galicia2.0011.b.failure
+				hidden_effect = {
+					send_interface_toast = {
+						type = event_toast_effect_bad
+						title = galicia2.0011.b.failure
+						left_icon = root
+						add_prestige = -100
+					}					
+				}
+			}
+		}
+		if = {
+			limit = {
+				NOR = {
+					var:RICE_volga_dnieper_merchant_success_count >= 10
+					# dynasty ?= {
+					# 	has_dynasty_perk = RICE_trans_saharan_trade_legacy_5
+					# }
+				}
+			}
+			custom_tooltip = RICE_volga_dnieper_number_of_successes_tooltip
+		}		
+	}
+
+}
+
+
+
+
+
+
+
+
 
 ######################################################################################
 # 
@@ -304,7 +817,228 @@ galicia2.0027 = {
 ######################################################################################
 
 
+# Oleg Yaroslavich intro
+galicia2.0030 = {
+	type = character_event
+	title = galicia2.0030.t
+	desc = galicia2.0030.desc
+	theme = intrigue
+	override_background = { reference = RICE_background_halych_castle }
 
+	left_portrait = {
+		character = scope:vladimir
+		animation = war_attacker
+	}
+	right_portrait = {
+		character = scope:oleg
+		animation = war_defender
+	}
+
+	lower_right_portrait = scope:yaroslav
+	lower_left_portrait = scope:anastasia
+
+	immediate = {
+
+		character:222506 = { # Oleg
+			save_scope_as = oleg
+		}		
+		character:222504 = { # Vladimir
+			save_scope_as = vladimir
+		}		
+		character:222500 = { # Yaroslav big brain
+			save_scope_as = yaroslav
+		}		
+		character:RICE_galicia2_005 = { # Anastasia
+			save_scope_as = anastasia
+		}
+		
+		scope:vladimir = {		
+			set_relation_rival = {
+				target = scope:oleg
+				reason = RICE_rival_galicia2_brotherly_competition
+			}
+		}
+
+		show_as_tooltip = {
+			character:222506 = {
+				add_character_modifier = {
+					modifier = RICE_galicia2_aspiration_secure_rule_against_galician_boyars
+				}
+			}
+		}
+	}
+
+	# Ok
+	option = {
+		name = galicia2.0030.a
+	}
+}
+
+
+
+# Oleg Yaroslavich Aspiration Fulfilled
+galicia2.0031 = {
+	type = character_event
+	title = galicia2.0031.t
+	desc = galicia2.0031.desc
+	theme = intrigue
+	override_background = { reference = RICE_background_halych_castle }
+
+	right_portrait = {
+		character = scope:oleg
+		animation = war_over_win
+	}
+
+	lower_right_portrait = scope:vladimir
+
+	immediate = {
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		character:222506 = { # Oleg
+			save_scope_as = oleg
+		}		
+		character:222504 = { # Vladimir
+			save_scope_as = vladimir
+		}		
+		# character:222500 = { # Yaroslav big brain
+		# 	save_scope_as = 222500
+		# }		
+		# character:RICE_galicia2_005 = { # Anastasia
+		# 	save_scope_as = anastasia
+		# }
+
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_galicia2_aspiration_secure_rule_against_galician_boyars
+				}
+				remove_character_modifier = RICE_galicia2_aspiration_secure_rule_against_galician_boyars
+			}
+		}
+
+		# Main Objective Reward
+		add_legitimacy = medium_legitimacy_gain
+		add_prestige = RICE_aspiration_large_resource_bonus
+		add_intrigue_lifestyle_perk_points = 1
+		if = {
+			limit = {
+				has_character_modifier = RICE_galicia2_oleg_negative_modifier
+			}
+			remove_character_modifier = RICE_galicia2_oleg_negative_modifier
+		}
+
+		# Bonus Objective Reward(s)
+		if = {
+			limit = {
+				piety_level >= 3
+			}
+			add_diplomacy_lifestyle_perk_points = 1
+		}
+		if = {
+			limit = {
+				legitimacy_level >= 5
+			}
+			spawn_army = {
+				name = event_troop_default_name
+				levies = 350
+				men_at_arms = {
+					type = light_footmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = bowmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = druzhina
+					stacks = 2
+				}
+				men_at_arms = {
+					type = pikemen_unit
+					stacks = 1
+				}
+				men_at_arms = {
+					type = light_horsemen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = armored_horsemen
+					stacks = 1
+				}
+				location = root.capital_province
+				origin = root.capital_province
+			}
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = galicia2.0031.a
+		add_character_modifier = {
+			modifier = RICE_galicia2_oleg_positive_modifier_1
+		}
+	}
+
+	# Ok
+	option = {
+		name = galicia2.0031.b
+		add_character_modifier = {
+			modifier = RICE_galicia2_oleg_positive_modifier_2
+		}
+	}
+
+	# Ok
+	option = {
+		name = galicia2.0031.c
+		add_character_modifier = {
+			modifier = RICE_galicia2_oleg_positive_modifier_3
+		}
+	}
+
+
+}
+
+
+
+
+# Roman Mstislavich intro
+galicia2.0032 = {
+	type = character_event
+	title = galicia2.0032.t
+	desc = galicia2.0032.desc
+	theme = martial
+	override_background = { reference = RICE_background_halych_castle }
+
+	
+	right_portrait = {
+		character = scope:roman
+		animation = marshal
+	}
+
+	immediate = {
+
+		character:222520 = { # Roman Mstislavich
+			save_scope_as = roman
+		}		
+		
+		show_as_tooltip = {
+			character:222520 = {
+				add_character_modifier = {
+					modifier = RICE_galicia2_aspiration_unify_galicia_and_volhynia
+				}
+			}
+		}
+	}
+
+	# Ok
+	option = {
+		name = galicia2.0032.a
+	}
+}
 
 
 
