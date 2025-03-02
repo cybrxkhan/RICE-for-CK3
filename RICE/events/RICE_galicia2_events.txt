@@ -26,7 +26,20 @@ namespace = galicia2
 galicia2.0001 = {
 	type = character_event
 	title = galicia2.0001.t
-	desc = galicia2.0001.desc
+	desc = {
+		desc = galicia2.0001.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:original_culture = {
+						NOT = { has_cultural_pillar = language_east_slavic }
+					}
+				}
+				desc = galicia2.0001.desc.non_east_slavic
+			}
+			desc = galicia2.0001.desc.east_slavic
+		}
+	}
 	theme = RICE_theme_slavic_gord
 
 
@@ -59,6 +72,13 @@ galicia2.0001 = {
 	}
 
 	after = {		
+		show_as_tooltip = {
+			set_culture = culture:russian
+		}
+		hidden_effect = {
+			make_rus_culture_effect = yes		
+			
+		}		
 		every_ruler = {
 			limit = {
 				OR = {
@@ -117,12 +137,77 @@ galicia2.0002 = {
 	# 	animation = frontend_center_idle
 	# }
 
+	immediate = {
+		scope:rus_founder = {
+			show_as_tooltip = {
+				RICE_rus_culture_decision_character_effect = yes
+			}
+		}
+		custom_tooltip = RICE_rus_culture_decision_effect_tooltip_5
+	}
+
 	option = {
 		name = galicia2.0002.a
 	}
 
+	after = {
+		if = {
+			limit = {
+				is_landed = yes
+				RICE_rus_progenitor_culture_trigger = yes
+				capital_province = {
+					geographical_region = ghw_region_russia
+				}
+			}
+			trigger_event = galicia2.0003
+		}
+	}
+
 }
 
+
+# Choosing to be Rus or not
+galicia2.0003 = {
+	type = character_event
+	title = galicia2.0003.t
+	desc = galicia2.0003.desc
+	theme = RICE_theme_slavic_gord
+
+
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	option = {
+		name = galicia2.0003.a
+		show_as_tooltip = {
+			set_culture = culture:russian
+		}
+		hidden_effect = {
+			make_rus_culture_effect = yes			
+		}	
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 20
+				has_trait = ambitious
+			}
+			modifier = {
+				add = 20
+				root.culture = { has_same_culture_heritage = scope:rus_culture }
+			}
+		}
+	}
+
+	option = {
+		name = galicia2.0003.b	
+		ai_chance = {
+			base = 50
+		}
+	}
+
+}
 
 # Volga-Dnieper Merchant Spawn event
 galicia2.0010 = {
@@ -1047,12 +1132,13 @@ galicia2.0032 = {
 galicia2.0033 = {
 	type = character_event
 	title = galicia2.0033.t
+	window = big_event_window
 	desc = {
 		desc = galicia2.0033.desc
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					exists = scope:princess
+					scope:wife.dynasty = scope:emperor.dynasty
 				}
 				desc = galicia2.0033.desc.princess
 			}
@@ -1062,12 +1148,20 @@ galicia2.0033 = {
 	theme = diplomacy_foreign_affairs_focus
 	override_background = { reference = RICE_background_halych_castle }
 
-	right_portrait = {
-		character = scope:oleg
-		animation = war_over_win
+	left_portrait = {
+		character = scope:emperor
+		animation = acknowledging
 	}
 
-	lower_right_portrait = scope:vladimir
+	right_portrait = {
+		character = scope:roman
+		animation = personality_bold
+	}
+
+	lower_right_portrait = {
+		character = scope:wife
+		trigger = { exists = scope:wife }
+	}
 
 	immediate = {
 
@@ -1163,6 +1257,8 @@ galicia2.0033 = {
 	# Ok
 	option = {
 		name = galicia2.0033.a
+		add_legitimacy = medium_legitimacy_gain
+		add_prestige = RICE_aspiration_small_resource_bonus
 		divorce_effect = {
 			DIVORCER = root
 			DIVORCEE = scope:old_spouse
@@ -1177,14 +1273,17 @@ galicia2.0033 = {
 	option = {
 		name = galicia2.0033.b
 		trigger = {
-			exists = old_spouse
+			exists = scope:old_spouse
 		}
 		scope:old_spouse = {
 			add_opinion = {
 				modifier = relieved_opinion
 				target = root
-				opinion = 5
+				opinion = 10
 			}
+		}
+		scope:emperor = {
+			trigger_event = galicia2.0036
 		}
 	}
 
@@ -1192,7 +1291,7 @@ galicia2.0033 = {
 	option = {
 		name = galicia2.0033.c
 		trigger = {
-			NOT = { exists = old_spouse }
+			NOT = { exists = scope:old_spouse }
 		}
 		scope:emperor = {
 			trigger_event = galicia2.0036
@@ -1207,7 +1306,16 @@ galicia2.0033 = {
 galicia2.0034 = {
 	type = character_event
 	title = galicia2.0034.t
-	desc = galicia2.0034.desc
+	window = big_event_window
+	desc = {
+		desc = galicia2.0034.desc
+		triggered_desc = {
+			trigger = {
+				exists = scope:princess
+			}
+			desc = galicia2.0034.desc.princess
+		}
+	}
 	theme = diplomacy_foreign_affairs_focus
 
 	left_portrait = {
@@ -1242,35 +1350,41 @@ galicia2.0034 = {
 
 		if = {
 			limit = {
-				any_dynasty_member = {
-					is_playable_character = no
-					is_female = yes
-					is_married = no
-					is_betrothed = no
-					can_marry_trigger = yes
-					age >= 16
-					age <= 42
-					# Don't want to steal people from a player's court
-					liege = {
-						is_ai = yes
+				exists = dynasty
+				dynasty = {
+					any_dynasty_member = {
+						is_playable_character = no
+						is_female = yes
+						is_married = no
+						is_betrothed = no
+						can_marry_trigger = yes
+						age >= 16
+						age <= 42
+						# Don't want to steal people from a player's court, unless it is the Roman Emperor themselves
+						liege = {
+							is_ai = yes
+							NOT = { has_title = title:e_byzantium }
+						}
 					}
 				}
 			}
-			every_dynasty_member = {
-				limit = {
-					is_playable_character = no
-					is_female = yes
-					is_married = no
-					is_betrothed = no
-					can_marry_trigger = yes
-					age >= 16
-					age <= 40
-					# Don't want to steal people from a player's court
-					liege = {
-						is_ai = yes
-					}					
+			dynasty = {
+				every_dynasty_member = {
+					limit = {
+						is_playable_character = no
+						is_female = yes
+						is_married = no
+						is_betrothed = no
+						can_marry_trigger = yes
+						age >= 16
+						age <= 42
+						liege = {
+							is_ai = yes
+							NOT = { has_title = title:e_byzantium }
+						}				
+					}
+					add_to_list = princess_candidates
 				}
-				add_to_list = princess_candidates
 			}
 			random_in_list = {
 				list = princess_candidates
@@ -1283,8 +1397,13 @@ galicia2.0034 = {
 					}
 					# Make someone more directly related to you more likely
 					modifier = {
-						is_close_or_extended_family_of = root
-						add = 25
+						is_close_or_extended_family_of = scope:emperor
+						add = 20
+					}
+					# Make someone more directly related to you more likely
+					modifier = {
+						is_close_family_of = scope:emperor
+						add = 20
 					}
 					# Someone with diplomatic skills is a better candidate
 					modifier = {
@@ -1310,7 +1429,7 @@ galicia2.0034 = {
 					# Someone with attractive traits
 					modifier = {
 						has_trait = beauty_good
-						add = 5
+						add = 15
 					}
 					modifier = {
 						has_trait = beauty_bad
@@ -1354,7 +1473,8 @@ galicia2.0034 = {
 						# Don't want to steal people from a player's court
 						liege = {
 							is_ai = yes
-						}					
+						}		
+						is_lowborn = no			
 					}
 					add_to_list = noble_candidates
 				}
@@ -1371,6 +1491,13 @@ galicia2.0034 = {
 					# Make someone more directly related to you more likely
 					modifier = {
 						is_close_or_extended_family_of = root
+						add = 50
+					}
+					# Prioritize women whose family owns some territory
+					modifier = {
+						any_close_or_extended_family_member = {
+							is_landed_or_landless_administrative = yes
+						}
 						add = 50
 					}
 					# Someone with diplomatic skills is a better candidate
@@ -1397,7 +1524,7 @@ galicia2.0034 = {
 					# Someone with attractive traits
 					modifier = {
 						has_trait = beauty_good
-						add = 5
+						add = 15
 					}
 					modifier = {
 						has_trait = beauty_bad
@@ -1454,6 +1581,10 @@ galicia2.0034 = {
 			}
 		}
 		custom_tooltip = galicia2.0034.tooltip
+		# AI tends to favor doing this option
+		ai_chance = {
+			base = 175
+		}
 	}
 
 	# Send the noblewoman
@@ -1480,6 +1611,9 @@ galicia2.0034 = {
 			}
 		}
 		custom_tooltip = galicia2.0034.tooltip
+		ai_chance = {
+			base = 25
+		}
 	}
 
 	# Don't send anyone
@@ -1515,6 +1649,7 @@ galicia2.0034 = {
 galicia2.0035 = {
 	type = character_event
 	title = galicia2.0035.t
+	window = big_event_window
 	desc = galicia2.0035.desc
 	theme = diplomacy_foreign_affairs_focus
 
@@ -1545,7 +1680,19 @@ galicia2.0035 = {
 galicia2.0036 = {
 	type = character_event
 	title = galicia2.0036.t
-	desc = galicia2.0036.desc
+	window = big_event_window
+	desc = {
+		desc = galicia2.0036.desc
+			triggered_desc = {
+				trigger = {
+					scope:roman = {
+						is_married = yes
+					}
+				}
+				desc = galicia2.0036.desc.wife
+			}
+			desc = galicia2.0036.desc.conclusion
+	}
 	theme = diplomacy_foreign_affairs_focus
 
 	left_portrait = {

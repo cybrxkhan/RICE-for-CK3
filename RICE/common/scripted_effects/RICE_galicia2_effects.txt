@@ -526,7 +526,108 @@ RICE_galicia2_cochineal_decision_effect = {
 }
 
 
+RICE_rus_culture_decision_character_effect = {
+	add_prestige = major_prestige_gain
+	add_character_modifier = {
+		modifier = RICE_rus_founder_modifier
+	}
+}
+
+make_rus_culture_effect = {
+	#Convert your, and your whole family's, culture
+	set_culture = culture:russian
+	if = {
+		limit = {
+			exists = capital_county # Has at least one county
+		}
+		capital_county = {
+			set_county_culture = culture:russian
+		}
+	}
+	every_county_in_region = {
+		region = ghw_region_russia
+		limit = {
+			holder = root
+		}
+		random = {
+			chance = 30
+			set_county_culture = culture:russian
+		}
+	}	
+	if = {
+		limit = {
+			is_married = yes
+			any_spouse = { is_landed = no }
+		}
+		every_spouse = {
+			limit = {
+				RICE_rus_progenitor_culture_trigger = yes
+			}
+			set_culture = culture:russian
+		}
+	}
+	if = {
+		limit = {
+			any_close_family_member = {
+				is_landed = no
+			}
+		}
+		every_close_family_member = {
+			custom = all_family_members
+			limit = {
+				is_landed = no
+				RICE_rus_progenitor_culture_trigger = yes
+			}
+			set_culture = culture:russian
+		}
+	}
+
+	#Convert appropriate vassals, and their family
+	if = {
+		limit = {
+			any_courtier = {
+				is_ai = yes
+				RICE_rus_progenitor_culture_trigger = yes
+			}	
+		}
+		every_courtier = {
+			limit = {
+				is_ai = yes
+				RICE_rus_progenitor_culture_trigger = yes
+			}
+			set_culture = culture:russian
+			hidden_effect = {
+				if = {
+					limit = { any_spouse = { is_landed = no } }
+					every_spouse = {
+						limit = {							
+							RICE_rus_progenitor_culture_trigger = yes
+						}
+						set_culture = culture:russian
+					}
+				}
+				if = {
+					limit = {
+						any_close_family_member = {
+							is_landed = no							
+							RICE_rus_progenitor_culture_trigger = yes
+						}
+					}
+					every_close_family_member = {
+						limit = {
+							is_landed = no
+							RICE_rus_progenitor_culture_trigger = yes
+						}
+						set_culture = culture:russian
+					}
+				}
+			}
+		}
+	}
+}
+
 RICE_rus_culture_decision_effect = {
+	RICE_rus_culture_decision_character_effect = yes
 	if = {
 		limit = {
 			capital_county = {
