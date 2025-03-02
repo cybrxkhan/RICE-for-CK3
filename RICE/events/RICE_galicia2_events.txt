@@ -1042,6 +1042,534 @@ galicia2.0032 = {
 
 
 
+
+# Roman Mstislavich/Roman the Great Aspiration Fulfilled
+galicia2.0033 = {
+	type = character_event
+	title = galicia2.0033.t
+	desc = {
+		desc = galicia2.0033.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:princess
+				}
+				desc = galicia2.0033.desc.princess
+			}
+			desc = galicia2.0033.desc.noble
+		}
+	}
+	theme = diplomacy_foreign_affairs_focus
+	override_background = { reference = RICE_background_halych_castle }
+
+	right_portrait = {
+		character = scope:oleg
+		animation = war_over_win
+	}
+
+	lower_right_portrait = scope:vladimir
+
+	immediate = {
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_galicia2_aspiration_unify_galicia_and_volhynia
+				}
+				remove_character_modifier = RICE_galicia2_aspiration_unify_galicia_and_volhynia
+			}
+		}
+
+		# Main Objective Reward
+		add_legitimacy = medium_legitimacy_gain
+		add_prestige = RICE_aspiration_large_resource_bonus
+		add_diplomacy_lifestyle_perk_points = 1
+		scope:roman = {
+			add_opinion = {
+				modifier = event_negotiated_alliance_opinion
+				target = scope:emperor
+			}
+			reverse_add_opinion = {
+				modifier = event_negotiated_alliance_opinion
+				target = scope:emperor
+			}
+			create_alliance = {
+				target = scope:emperor
+				allied_through_owner = scope:roman
+				allied_through_target = scope:emperor
+			}
+		}
+
+		# Bonus Objective Reward(s)
+		if = {
+			limit = {
+				completely_controls = title:c_kiev
+			}
+			add_martial_lifestyle_perk_points = 1
+		}
+		if = {
+			limit = {
+				legitimacy_level >= 5
+			}
+			spawn_army = {
+				name = event_troop_default_name
+				levies = 350
+				men_at_arms = {
+					type = light_footmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = bowmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = druzhina
+					stacks = 2
+				}
+				men_at_arms = {
+					type = pikemen_unit
+					stacks = 1
+				}
+				men_at_arms = {
+					type = light_horsemen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = armored_horsemen
+					stacks = 1
+				}
+				location = root.capital_province
+				origin = root.capital_province
+			}
+		}
+
+		# Possibly divorce wife
+		if = {
+			limit = {
+				allowed_more_spouses = no
+				is_married = yes
+			}
+			random_spouse = {
+				save_scope_as = old_spouse
+			}
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = galicia2.0033.a
+		divorce_effect = {
+			DIVORCER = root
+			DIVORCEE = scope:old_spouse
+		}
+		marry = scope:wife
+		scope:emperor = {
+			trigger_event = galicia2.0035
+		}
+	}
+
+	# Ok
+	option = {
+		name = galicia2.0033.b
+		trigger = {
+			exists = old_spouse
+		}
+		scope:old_spouse = {
+			add_opinion = {
+				modifier = relieved_opinion
+				target = root
+				opinion = 5
+			}
+		}
+	}
+
+	# Ok
+	option = {
+		name = galicia2.0033.c
+		trigger = {
+			NOT = { exists = old_spouse }
+		}
+		scope:emperor = {
+			trigger_event = galicia2.0036
+		}
+	}
+
+
+}
+
+
+# Roman the Great aspiration fulfilled - ping event to the Byzantine Emperor
+galicia2.0034 = {
+	type = character_event
+	title = galicia2.0034.t
+	desc = galicia2.0034.desc
+	theme = diplomacy_foreign_affairs_focus
+
+	left_portrait = {
+		character = scope:emperor
+		animation = emotion_thinking_scepter
+	}
+
+	right_portrait = {
+		character = scope:roman
+		animation = personality_bold
+	}
+
+	lower_left_portrait = {
+		character = scope:noble
+		trigger = { exists = scope:noble }
+	}
+
+	lower_right_portrait = {
+		character = scope:princess
+		trigger = { exists = scope:princess }
+	}
+
+	immediate = {
+
+		play_music_cue = "mx_the_rus_merchant_ship"
+
+		save_scope_as = emperor
+
+		character:222520 = {
+			save_scope_as = roman
+		}
+
+		if = {
+			limit = {
+				any_dynasty_member = {
+					is_playable_character = no
+					is_female = yes
+					is_married = no
+					is_betrothed = no
+					can_marry_trigger = yes
+					age >= 16
+					age <= 42
+					# Don't want to steal people from a player's court
+					liege = {
+						is_ai = yes
+					}
+				}
+			}
+			every_dynasty_member = {
+				limit = {
+					is_playable_character = no
+					is_female = yes
+					is_married = no
+					is_betrothed = no
+					can_marry_trigger = yes
+					age >= 16
+					age <= 40
+					# Don't want to steal people from a player's court
+					liege = {
+						is_ai = yes
+					}					
+				}
+				add_to_list = princess_candidates
+			}
+			random_in_list = {
+				list = princess_candidates
+				weight = {
+					base = 50
+					# Try to pick someone younger
+					modifier = {
+						age <= 30
+						add = 10
+					}
+					# Make someone more directly related to you more likely
+					modifier = {
+						is_close_or_extended_family_of = root
+						add = 25
+					}
+					# Someone with diplomatic skills is a better candidate
+					modifier = {
+						learning >= extremely_high_skill_rating
+						add = 5
+					}
+					modifier = {
+						learning >= high_skill_rating
+						add = 5
+					}
+					modifier = {
+						learning >= medium_skill_rating
+						add = 5
+					}
+					modifier = {
+						learning <= mediocre_skill_rating
+						add = -5
+					}
+					modifier = {
+						learning <= low_skill_rating
+						add = -5
+					}
+					# Someone with attractive traits
+					modifier = {
+						has_trait = beauty_good
+						add = 5
+					}
+					modifier = {
+						has_trait = beauty_bad
+						add = -15
+					}
+				}
+				save_scope_as = princess
+			}
+		}
+
+		if = {
+			limit = {
+				any_vassal_or_below = {
+					any_courtier = {
+						is_playable_character = no
+						is_female = yes
+						is_married = no
+						is_betrothed = no
+						can_marry_trigger = yes
+						age >= 16
+						age <= 42
+						# Don't want to steal people from a player's court
+						liege = {
+							is_ai = yes
+						}
+						is_lowborn = no
+					}
+				}
+			}
+			
+			every_vassal_or_below = {
+				every_courtier = {
+					limit = {
+						is_playable_character = no
+						is_female = yes
+						is_married = no
+						is_betrothed = no
+						can_marry_trigger = yes
+						age >= 16
+						age <= 40
+						# Don't want to steal people from a player's court
+						liege = {
+							is_ai = yes
+						}					
+					}
+					add_to_list = noble_candidates
+				}
+			}
+			random_in_list = {
+				list = noble_candidates
+				weight = {
+					base = 50
+					# Try to pick someone younger
+					modifier = {
+						age <= 30
+						add = 10
+					}
+					# Make someone more directly related to you more likely
+					modifier = {
+						is_close_or_extended_family_of = root
+						add = 50
+					}
+					# Someone with diplomatic skills is a better candidate
+					modifier = {
+						learning >= extremely_high_skill_rating
+						add = 5
+					}
+					modifier = {
+						learning >= high_skill_rating
+						add = 5
+					}
+					modifier = {
+						learning >= medium_skill_rating
+						add = 5
+					}
+					modifier = {
+						learning <= mediocre_skill_rating
+						add = -5
+					}
+					modifier = {
+						learning <= low_skill_rating
+						add = -5
+					}
+					# Someone with attractive traits
+					modifier = {
+						has_trait = beauty_good
+						add = 5
+					}
+					modifier = {
+						has_trait = beauty_bad
+						add = -15
+					}
+				}
+				save_scope_as = noble
+			}
+		}
+
+		# If there is no valid noblewoman, generate one
+		else = {
+			create_character = {
+				location = root.location
+				template = RICE_byzantine_noblewoman_template
+				save_scope_as = noble
+			}
+		}
+
+
+	}
+
+	# Send the princess
+	option = {
+		name = galicia2.0034.a
+		trigger = {
+			exists = scope:princess
+		}
+		scope:princess = {
+			save_scope_as = wife
+		}
+		show_as_tooltip = {
+			scope:roman = {
+				add_opinion = {
+					modifier = event_negotiated_alliance_opinion
+					target = scope:emperor
+				}
+				reverse_add_opinion = {
+					modifier = event_negotiated_alliance_opinion
+					target = scope:emperor
+				}
+				create_alliance = {
+					target = scope:emperor
+					allied_through_owner = scope:roman
+					allied_through_target = scope:emperor
+				}
+			}
+		}
+		hidden_effect = {
+			scope:noble = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+		custom_tooltip = galicia2.0034.tooltip
+	}
+
+	# Send the noblewoman
+	option = {
+		name = galicia2.0034.b
+		scope:noble = {
+			save_scope_as = wife
+		}
+		show_as_tooltip = {
+			scope:roman = {
+				add_opinion = {
+					modifier = event_negotiated_alliance_opinion
+					target = scope:emperor
+				}
+				reverse_add_opinion = {
+					modifier = event_negotiated_alliance_opinion
+					target = scope:emperor
+				}
+				create_alliance = {
+					target = scope:emperor
+					allied_through_owner = scope:roman
+					allied_through_target = scope:emperor
+				}
+			}
+		}
+		custom_tooltip = galicia2.0034.tooltip
+	}
+
+	# Don't send anyone
+	# option = {
+	# 	name = galicia2.0034.c
+	# 	trigger = {
+	# 		is_ai = no
+	# 		scope:roman = {
+	# 			is_ai = no
+	# 		}
+	# 	}
+	# 	hidden_effect = {
+	# 		scope:noble = {
+	# 			death = {
+	# 				death_reason = death_vanished
+	# 			}
+	# 		}
+	# 	}
+	# }
+
+	after = {
+		scope:roman = {
+			trigger_event = galicia2.0033
+		}
+	}
+
+
+}
+
+
+
+# Emperor is notified that Roman has decided to marry the offered princess/noble
+galicia2.0035 = {
+	type = character_event
+	title = galicia2.0035.t
+	desc = galicia2.0035.desc
+	theme = diplomacy_foreign_affairs_focus
+
+	left_portrait = {
+		character = scope:emperor
+		animation = scepter
+	}
+
+	right_portrait = {
+		character = scope:roman
+		animation = obsequious_bow
+	}
+
+	lower_right_portrait = {
+		character = scope:wife
+		trigger = { exists = scope:wife }
+	}
+
+	
+	# Ok
+	option = {
+		name = galicia2.0035.a
+	}
+}
+
+
+# Emperor is notified that Roman has decided not to marry the offered princess/noble
+galicia2.0036 = {
+	type = character_event
+	title = galicia2.0036.t
+	desc = galicia2.0036.desc
+	theme = diplomacy_foreign_affairs_focus
+
+	left_portrait = {
+		character = scope:emperor
+		animation = scepter
+	}
+
+	right_portrait = {
+		character = scope:roman
+		animation = obsequious_bow
+	}
+
+	lower_right_portrait = {
+		character = scope:wife
+		trigger = { exists = scope:wife }
+	}
+
+	
+	# Ok
+	option = {
+		name = galicia2.0036.a
+	}
+}
+
 # Yaroslav dies
 galicia2.0040 = {
 	type = character_event
