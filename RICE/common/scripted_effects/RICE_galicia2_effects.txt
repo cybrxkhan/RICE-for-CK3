@@ -932,3 +932,55 @@ RICE_volga_dnieper_trade_deal_modifier_effect = {
 	}
 }
 
+
+RICE_galicia2_kupala_night_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_galicia2_kupala_night_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+
+			scope:host = {
+				
+				add_prestige = 100
+				if = {
+					limit = {					
+						NOT = { religion = { is_in_family = rf_pagan } }
+						NOT = { faith = { has_doctrine = tenet_unreformed_syncretism } }
+						NOT = { faith = { has_doctrine = doctrine_pluralism_pluralistic } }
+					}
+					add_piety = -100
+				}
+				stress_impact = {
+					base = minor_stress_impact_loss
+					gregarious = minor_stress_impact_loss
+					lustful = miniscule_stress_impact_loss
+					lazy = miniscule_stress_impact_loss
+					humble = miniscule_stress_impact_loss
+					generous = miniscule_stress_impact_loss
+				}
+				if = {
+					limit = {
+						any_sub_realm_county = {
+							tier = tier_county
+							has_county_modifier = RICE_kupala_night_county_modifier
+						}
+					}
+					custom_tooltip = RICE_activity_result_kupala_night_county_modifier
+				}
+
+			}
+
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				custom_tooltip = RICE_activity_result_gained_prestige
+				hidden_effect = {
+					add_prestige = 50
+				}
+			}	
+		}
+	}
+}

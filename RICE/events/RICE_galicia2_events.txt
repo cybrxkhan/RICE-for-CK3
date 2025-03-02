@@ -1172,3 +1172,597 @@ galicia2.0040 = {
 
 
 
+######################################################################################
+# 
+# KUPALA NIGHT
+# 
+# galicia2.0050-galicia2.0069
+# 
+######################################################################################
+
+
+# Kupala Night preparations
+galicia2.0050 = {
+	type = activity_event
+	title = galicia2.0050.t
+	desc = {
+		desc = galicia2.0050.desc
+		triggered_desc = {
+			trigger = {
+				NOT = { religion = { is_in_family = rf_pagan } }
+				NOT = { faith = { has_doctrine = tenet_unreformed_syncretism } }
+				NOT = { faith = { has_doctrine = doctrine_pluralism_pluralistic } }
+			}
+			desc = galicia2.0050.desc.non_pagan
+		}	
+	}
+	theme = RICE_theme_slavic_gord
+	
+	right_portrait = root
+	
+	option = { # Ok
+		name = galicia2.0050.a
+		trigger_event = {
+			id = galicia2.0051
+			days = { 3 5 }
+		}	
+	}
+}
+
+
+# Kupala Night starts - bathing to clean oneself
+galicia2.0051 = {
+	type = activity_event
+	title = galicia2.0051.t
+	desc = galicia2.0051.desc
+	theme = RICE_theme_kupala_river
+	
+	right_portrait = root
+	
+	immediate = {
+		add_character_flag = is_naked
+	}
+
+	option = { # Ok
+		name = galicia2.0051.a
+		trigger_event = {
+			id = galicia2.0052
+			days = { 4 6 }
+		}	
+	}
+	after = {
+		if = {
+			limit = { has_character_flag = is_naked }
+			remove_character_flag = is_naked
+		}
+		if = {
+			limit = {
+				has_activity_intent = RICE_galicia2_kupala_night_herb_gathering_intent
+			}
+			trigger_event = {
+				id = galicia2.0055
+				days = { 2 3 }
+			}
+		}
+		else = {
+			hidden_effect = {
+				random = {
+					chance = 20
+					trigger_event = {
+						id = galicia2.0055
+						days = { 2 3 }
+					}	
+				}				
+			}
+		}
+	}
+}
+
+
+# Kupala Night - bonfire
+galicia2.0052 = {
+	type = activity_event
+	title = galicia2.0052.t
+	desc = {
+		desc = galicia2.0052.desc
+		triggered_desc = {
+			trigger = {
+				exists = scope:jumper
+			}
+			desc = galicia2.0052.desc.lover
+		}	
+	}
+	theme = RICE_theme_kupala_river
+	override_background = { reference = bp1_bonfire }
+	
+	left_portrait = {
+		character = scope:jumper
+		animation = flirtation_left
+		trigger = {
+			exists = scope:jumper
+		}
+	}	
+
+	right_portrait = {
+		character = root
+		animation = throne_room_cheer_1
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				is_healthy = yes
+				age <= 35
+				scope:activity = {
+					any_attending_character = {
+						age <= 35
+						OR = {
+							is_consort_of = root
+							has_relation_lover = root
+							has_relation_soulmate = root
+						}
+					}
+				}				
+			}
+			scope:activity = {
+				random_attending_character = {
+					limit = {
+						age <= 35
+						OR = {
+							is_consort_of = root
+							has_relation_lover = root
+							has_relation_soulmate = root
+						}
+					}
+					save_scope_as = jumper
+				}
+			}
+		}		
+	}
+	
+	option = { # Ok
+		name = galicia2.0052.a	
+	}
+	
+	option = { # Try to jump over the bonfire yourself
+		name = galicia2.0052.b
+		trigger = {
+			exists = scope:jumper
+		}
+		add_prestige = 50
+		scope:jumper = {
+			add_prestige = 50
+			add_opinion = {
+				target = root
+				modifier = love_opinion
+				opinion = 5
+			}
+			reverse_add_opinion = {
+				target = root
+				modifier = love_opinion
+				opinion = 5
+			}
+			random = {
+				chance = 10
+				increase_wounds_no_death_effect = { REASON = burned }
+			}	
+		}
+		random = {
+			chance = 10
+			increase_wounds_no_death_effect = { REASON = burned }
+		}	
+	}
+
+	after = {		
+		trigger_event = {
+			id = galicia2.0053
+			days = { 3 5 }
+		}
+	}
+
+}
+
+# Kupala Night - search for the flowers?
+galicia2.0053 = {
+	type = activity_event
+	title = galicia2.0053.t
+	desc = galicia2.0053.desc
+	theme = RICE_theme_kupala_river
+	override_background = { reference = bp1_bonfire }
+	
+	right_portrait = {
+		character = root
+		animation = throne_room_cheer_1
+	}
+	
+	option = { # Will just chill here with others
+		name = galicia2.0053.a
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			lazy = miniscule_stress_impact_loss
+			content = miniscule_stress_impact_loss
+		}	
+	}
+	
+	option = { # Go search for the flowers
+		name = galicia2.0053.b
+		stress_impact = {
+			brave = minor_stress_impact_loss
+			lustful = miniscule_stress_impact_loss
+		}	
+		custom_tooltip = galicia2.0053.b.tooltip
+		hidden_effect = {
+			random = {
+				chance = 1
+				modifier = {
+					add = 7
+					has_activity_intent = RICE_galicia2_kupala_night_herb_gathering_intent
+				}	
+				modifier = {
+					add = 7					
+					has_character_flag = RICE_kupala_night_serious_fern_flower_searcher
+				}	
+				trigger_event = galicia2.0056
+			}		
+			if = {
+				limit = {
+					scope:activity = {
+						any_attending_character = {
+							OR = {
+								is_consort_of = root
+								has_relation_lover = root
+								has_relation_soulmate = root
+							}
+						}
+					}				
+				}
+				random = {
+					chance = 50
+					trigger_event = galicia2.0057
+				}
+			}
+			# if = {
+			# 	limit = {
+			# 		OR = {
+			# 			has_sexuality = heterosexual
+			# 			has_sexuality = bisexual
+			# 		}
+			# 	}
+			# 	random = {
+			# 		chance = 10
+			# 		trigger_event = galicia2.0057
+			# 	}	
+			# }
+		}
+	}
+
+	after = {		
+		trigger_event = {
+			id = galicia2.0054
+			days = { 3 5 }
+		}
+	}
+
+}
+
+
+# Kupala Night - bonfire dies down, celebrations conclude
+galicia2.0054 = {
+	type = activity_event
+	title = galicia2.0054.t
+	desc = galicia2.0054.desc
+	theme = RICE_theme_kupala_river
+	override_background = { reference = bp1_bonfire }
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Ok
+		name = galicia2.0054.a
+		every_held_title = {
+			custom = RICE_every_county
+			limit = {
+				tier = tier_county			
+			}
+			random = {
+				chance = 33
+				add_county_modifier = {
+					modifier = RICE_kupala_night_county_modifier
+					years = 10
+				}
+			}
+		}
+		RICE_galicia2_kupala_night_completed_log_entry_effect = yes
+	}
+	
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_kupala_night_serious_fern_flower_searcher
+			}
+			remove_character_flag = RICE_kupala_night_serious_fern_flower_searcher
+		}
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
+		}
+	}
+
+}
+
+# Kupala Night - searching for herbs
+galicia2.0055 = {
+	type = activity_event
+	title = galicia2.0055.t
+	desc = galicia2.0055.desc
+	theme = RICE_theme_kupala_river
+	
+	left_portrait = {
+		character = root
+		animation = survey
+	}
+	
+	option = { # Ok
+		name = galicia2.0055.a	
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_galicia2_kupala_night_found_searching_for_herbs_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host	
+				stress_impact = {
+					base = minor_stress_impact_loss
+					content = miniscule_stress_impact_loss
+					gregarious = miniscule_stress_impact_loss
+				}
+				scope:host = {
+					if = {
+						limit = {
+							has_activity_intent = RICE_galicia2_kupala_night_herb_gathering_intent
+						}
+						add_prestige = 50
+					}
+					add_character_modifier = {
+						modifier = RICE_kupala_night_herbs_modifier
+						years = 10
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Take it seriously (increase chances of finding the fern flower)
+		name = galicia2.0055.b
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_galicia2_kupala_night_found_searching_for_herbs_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host	
+				scope:host = {
+					if = {
+						limit = {
+							has_activity_intent = RICE_galicia2_kupala_night_herb_gathering_intent
+						}
+						add_prestige = 50
+					}
+					add_character_modifier = {
+						modifier = RICE_kupala_night_herbs_modifier
+						years = 10
+					}
+				}
+			}
+		}
+		add_character_flag = {
+			flag = RICE_kupala_night_serious_fern_flower_searcher
+			days = 15
+		}
+		custom_tooltip = galicia2.0055.b.tooltip
+	}
+
+}
+
+# Kupala Night - found the fern flower
+galicia2.0056 = {
+	type = activity_event
+	title = galicia2.0056.t
+	desc = galicia2.0056.desc
+	theme = RICE_theme_kupala_river
+	override_background = { reference = bp1_bonfire }
+	override_effect_2d = {
+		reference = legend_glow
+	}
+	
+	right_portrait = {
+		character = root
+		animation = stunned
+	}
+
+	immediate = {		
+		play_music_cue = mx_cue_touching_moment
+	}
+	
+	option = { # Found the fern flower
+		name = galicia2.0056.a
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_galicia2_kupala_night_found_fern_flower_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host	
+				scope:host = {
+					if = {
+						limit = {
+							faith.religion = { is_in_family = rf_pagan }
+						}
+						add_piety = major_piety_gain
+					}
+					add_character_modifier = {
+						modifier = RICE_galicia2_found_fern_flower
+						years = 25
+					}
+				}
+			}
+		}
+	}
+
+}
+
+# Kupala Night - amorous encounter with consort or lover
+galicia2.0057 = {
+	type = activity_event
+	title = galicia2.0057.t
+	desc = galicia2.0057.desc
+	theme = seduction
+	override_background = { reference = bp1_bonfire }
+	
+	left_portrait = {
+		character = scope:lover
+		animation = flirtation_left
+	}
+	
+	right_portrait = {
+		character = root
+		animation = flirtation
+	}
+
+	immediate = {
+
+		scope:activity = {
+			random_attending_character = {
+				limit = {
+					OR = {
+						is_consort_of = root
+						has_relation_lover = root
+						has_relation_soulmate = root
+					}
+				}
+				save_scope_as = lover
+			}
+		}	
+
+	}
+	
+	option = { # Nice
+		name = galicia2.0057.a
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_galicia2_kupala_night_amorous_encounter_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host	
+				custom_tooltip = galicia2.0057.a.tooltip
+				scope:host = {
+					stress_impact = {
+						base = miniscule_stress_impact_loss
+						lustful = minor_stress_impact_loss
+						gregarious = miniscule_stress_impact_loss
+					}
+				}
+				scope:lover = {
+					add_opinion = {
+						target = root
+						modifier = love_opinion
+						opinion = 10
+					}
+					reverse_add_opinion = {
+						target = root
+						modifier = love_opinion
+						opinion = 10
+					}
+					stress_impact = {
+						base = miniscule_stress_impact_loss
+						lustful = minor_stress_impact_loss
+						gregarious = miniscule_stress_impact_loss
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Focus on finding flowers
+		name = galicia2.0057.b
+		add_prestige = minor_prestige_gain
+		stress_impact = {
+			lustful = minor_stress_impact_gain
+			gregarious = miniscule_stress_impact_gain
+		}
+		scope:lover = {
+			add_opinion = {
+				target = root
+				modifier = disappointed_opinion
+				opinion = -10
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				is_female = yes
+				age <= 45
+				is_pregnant = no
+			}
+			random_list = {
+				#Actually pregnant
+				50 = {
+					modifier = {
+						add = 25
+						fertility >= high_fertility
+					}
+					make_pregnant = {
+						father = scope:lover 
+					}
+				}
+				#Not pregnant
+				50 = {
+					modifier = {
+						add = 25
+						fertility <= low_fertility
+					}
+					#nothing	
+				}	
+			}
+		}
+		else_if = {
+			limit = {
+				scope:lover = {
+					is_female = yes					
+					age <= 45
+					is_pregnant = no
+				}
+			}
+			random_list = {
+				#Actually pregnant
+				50 = {
+					modifier = {
+						add = 25
+						fertility >= high_fertility
+					}
+					scope:lover = {
+						make_pregnant = {
+							father = root
+						}
+					}
+				}
+				#Not pregnant
+				50 = {
+					modifier = {
+						add = 25
+						fertility <= low_fertility
+					}
+					#nothing	
+				}	
+			}			
+		}
+	}
+
+}
+
