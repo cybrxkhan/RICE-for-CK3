@@ -2441,3 +2441,520 @@ galicia2.0057 = {
 
 }
 
+
+
+
+######################################################################################
+# 
+# GENERIC FLAVOR EVENTS
+# 
+# galicia2.0080-galicia2.0099
+# 
+######################################################################################
+
+
+
+# People are still doing the pagan practice of cremating the dead even after Christianization (or another region)
+galicia2.0080 = {
+	type = character_event
+	title = galicia2.0080.t
+	desc = galicia2.0080.desc
+	theme = RICE_theme_slavic_gord
+	override_icon = { reference = "gfx/interface/icons/event_types/type_illness.dds" }
+
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	right_portrait = {
+		character = scope:chaplain
+		animation = disapproval
+	}
+		
+	trigger = {
+		culture_has_slavic_heritage_pillar_trigger = yes
+		cp:councillor_court_chaplain = {
+			exists = yes
+			is_available_adult = yes
+			faith = root.faith
+		}
+		NOT = { religion = religion:slavic_religion }
+		faith = {
+			NOR = {
+				has_doctrine_parameter = cremation_funeral
+				has_doctrine = unreformed_faith_doctrine
+				has_doctrine = tenet_unreformed_syncretism
+			}
+		}
+		any_held_title = {
+			tier = tier_county
+			culture_has_slavic_heritage_pillar_trigger = yes
+			religion = root.religion
+			faith = {
+				NOR = {
+					has_doctrine_parameter = cremation_funeral
+					has_doctrine = unreformed_faith_doctrine
+					has_doctrine = tenet_unreformed_syncretism
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = -0.2
+			has_trait = humble
+		}
+	}
+
+	immediate = {
+		cp:councillor_court_chaplain = { save_scope_as = chaplain }
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				culture_has_slavic_heritage_pillar_trigger = yes
+				religion = root.religion
+				faith = {
+					NOR = {
+						has_doctrine_parameter = cremation_funeral
+						has_doctrine = unreformed_faith_doctrine
+						has_doctrine = tenet_unreformed_syncretism
+					}
+				}
+			}
+			save_scope_as = county
+		}
+	}
+	
+
+	option = { # Ok
+		name = galicia2.0080.a
+		add_piety = 50
+		stress_impact = {
+			content = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+			forgiving = miniscule_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+		}
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_galicia2_cremation_crackdown
+				years = 20
+			}
+		}
+	}
+
+	option = { # Ok
+		name = galicia2.0080.b
+		add_prestige = 50
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			diligent = miniscule_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_galicia2_cremation_continued
+				years = 20
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = galicia2.0080.info
+		}
+	}
+
+}
+
+
+
+# Galicia-Volhynia school of architecture - bring in artisans from another part of Europe?
+galicia2.0081 = {
+	type = character_event
+	title = galicia2.0081.t
+	desc = galicia2.0081.desc
+	theme = RICE_theme_halych_castle
+
+	right_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+		
+	trigger = {
+		culture = { has_cultural_pillar = heritage_east_slavic }
+		capital_county = {
+			title_province = { geographical_region = RICE_galicia_volhynia_region }
+		}
+		current_date >= 1100.1.1
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+	}
+
+	immediate = {
+		random_county_in_region = {
+			region = ghw_region_central_european
+			limit = {
+				NOT = { holder = root }
+			}
+			save_scope_as = county
+		}
+		scope:county.culture = {
+			save_scope_as = culture
+		}
+	}
+	
+
+	option = { # Ok
+		name = galicia2.0081.a
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		add_prestige = 50
+		capital_county = {
+			add_county_modifier = {
+				modifier = RICE_galicia2_galicia_volhynia_architecture_modifier
+				years = 20
+			}
+		}
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = galicia2.0081.a
+		stress_impact = {
+			ambitious = minor_stress_impact_gain
+			diligent = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = galicia2.0081.info
+		}
+	}
+
+}
+
+
+# Ignorant envoy does to understand how cochineal is produced and why it is rare
+galicia2.0082 = {
+	type = character_event
+	title = galicia2.0082.t
+	desc = galicia2.0082.desc
+	theme = RICE_theme_halych_castle
+
+	right_portrait = {
+		character = root
+		animation = personality_callous
+	}
+		
+	trigger = {		
+		any_held_title = {
+			tier = tier_county			
+			any_county_province = {
+				geographical_region = RICE_european_cochineal_poland_region
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+	}
+	
+
+	option = { # Ok
+		name = galicia2.0082.a
+		add_character_modifier = {
+			modifier = RICE_galicia2_cochineal_explainer
+			years = 10
+		}
+		stress_impact = {
+			shy = minor_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+			paranoid = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = galicia2.0082.b
+		add_character_modifier = {
+			modifier = RICE_galicia2_suspicious_of_cochineal_merchants
+			years = 10
+		}
+		stress_impact = {
+			forgiving = minor_stress_impact_gain
+			just = miniscule_stress_impact_gain
+			trusting = miniscule_stress_impact_gain
+		}
+	}
+
+
+}
+
+
+
+# East Slav hears about Ibn Fadlan's account of their ancestors
+galicia2.0083 = {
+	type = character_event
+	title = galicia2.0083.t
+	desc = galicia2.0083.desc
+	theme = RICE_theme_slavic_gord
+
+	right_portrait = {
+		character = root
+		animation = laugh
+	}
+		
+	trigger = {		
+		any_held_title = {
+			tier = tier_county			
+			any_county_province = {
+				geographical_region = RICE_european_cochineal_poland_region
+			}
+		}
+		culture = { has_cultural_pillar = heritage_east_slavic }
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+	}
+	
+
+	option = { # Ok
+		name = galicia2.0083.a
+		add_piety = 50
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			arbitrary = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = galicia2.0082.b
+		add_prestige = 25
+		add_piety = 25
+		stress_impact = {
+			wrathful = minor_stress_impact_gain
+			just = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = galicia2.0082.c
+		add_prestige = 50
+		stress_impact = {
+			forgiving = minor_stress_impact_gain
+			trusting = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = galicia2.0083.info
+		}
+	}
+
+}
+
+
+# Eat hogweed soup, an ancestor of borscht
+galicia2.0084 = {
+	type = character_event
+	title = galicia2.0084.t
+	desc = galicia2.0084.desc
+	theme = travel
+	override_background = { reference = RICE_background_volhynia_countryside }
+	
+	right_portrait = root
+
+	trigger = {
+		is_location_valid_for_travel_event_on_land = yes
+		location.county.culture = {
+			culture = { has_cultural_pillar = heritage_east_slavic }
+		}
+		location = {
+			OR = {
+				geographical_region = world_europe_east
+				geographical_region = world_steppe_west
+			}
+		}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = sadistic
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		root.location.culture = {
+			save_scope_as = culture
+		}
+	}
+
+	option = { # Ok
+		name = galicia2.0084.a
+		add_piety = 25
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			gluttonous = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = galicia2.0084.b
+		add_prestige = 25
+		stress_impact = {
+			humble = minor_stress_impact_gain
+			temperate = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = galicia2.0084.info
+		}
+	}
+
+}
