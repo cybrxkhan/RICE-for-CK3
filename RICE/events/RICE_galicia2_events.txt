@@ -716,8 +716,90 @@ galicia2.0011 = {
 }
 
 
+#################################
+# Choose Personal Deity
+# by Artem Samarsky	
+# Adapted from Baptism of Rus
+#################################
+galicia2.0012 = {
+	type = character_event
+	title = galicia2.0012.t
+	desc = galicia2.0012.desc
+	theme = faith
+	override_background = { reference = RICE_outdoors_pagan_altar_background }
 
-
+	left_portrait = {
+		character = root
+		animation = prayer
+	}
+	# Perun
+	option = {
+		name = galicia2.0012.perun
+		custom_tooltip = galicia2.0012.perun.tt
+		trigger = {
+			NOT = { has_character_modifier = bhakti_slavic_perun }
+		}
+		set_bhakti_slavic_effect = { BHAKTI = bhakti_slavic_perun }
+	}
+	# Veles
+	option = {
+		name = galicia2.0012.veles
+		custom_tooltip = galicia2.0012.veles.tt
+		trigger = {
+			NOT = { has_character_modifier = bhakti_slavic_veles }
+		}
+		set_bhakti_slavic_effect = { BHAKTI = bhakti_slavic_veles }
+	}
+	# Dazhbog
+	option = {
+		name = galicia2.0012.khors_dazhbog
+		custom_tooltip = galicia2.0012.khors_dazhbog.tt
+		trigger = {
+			NOT = { has_character_modifier = bhakti_slavic_khors_dazhbog }
+		}
+		set_bhakti_slavic_effect = { BHAKTI = bhakti_slavic_khors_dazhbog }
+	}
+	#Stribog
+	option = {
+		name = galicia2.0012.stribog
+		custom_tooltip = galicia2.0012.stribog.tt
+		trigger = {
+			NOT = { has_character_modifier = bhakti_slavic_stribog }
+		}
+		set_bhakti_slavic_effect = { BHAKTI = bhakti_slavic_stribog }
+	}
+	# Mokosh
+	option = {
+		name = galicia2.0012.mokosh
+		custom_tooltip = galicia2.0012.mokosh.tt
+		trigger = {
+			NOT = { has_character_modifier = bhakti_slavic_mokosh }
+		}
+		set_bhakti_slavic_effect = { BHAKTI = bhakti_slavic_mokosh }
+	}
+	# Simargl
+	option = {
+		name = galicia2.0012.simargl
+		custom_tooltip = galicia2.0012.simargl.tt
+		trigger = {
+			NOT = { has_character_modifier = bhakti_slavic_simargl }
+		}
+		set_bhakti_slavic_effect = { BHAKTI = bhakti_slavic_simargl }
+	}
+	# Opt-Out
+	option = {
+		name = galicia2.0012.optout
+		flavor = galicia2.0012.flavor
+		add_gold = {
+			value = 15
+			add = minor_gold_value
+		}
+		add_piety = 100
+		ai_chance = {
+			base = 0
+		}		
+	}
+}
 
 
 
@@ -2360,6 +2442,67 @@ galicia2.0057 = {
 				}
 			}
 		}
+
+		hidden_effect = {
+			if = {
+				limit = {
+					is_female = yes
+					age <= 45
+					is_pregnant = no
+				}
+				random_list = {
+					#Actually pregnant
+					50 = {
+						modifier = {
+							add = 25
+							fertility >= high_fertility
+						}
+						make_pregnant = {
+							father = scope:lover 
+						}
+					}
+					#Not pregnant
+					50 = {
+						modifier = {
+							add = 25
+							fertility <= low_fertility
+						}
+						#nothing	
+					}	
+				}
+			}
+			else_if = {
+				limit = {
+					scope:lover = {
+						is_female = yes					
+						age <= 45
+						is_pregnant = no
+					}
+				}
+				random_list = {
+					#Actually pregnant
+					50 = {
+						modifier = {
+							add = 25
+							fertility >= high_fertility
+						}
+						scope:lover = {
+							make_pregnant = {
+								father = root
+							}
+						}
+					}
+					#Not pregnant
+					50 = {
+						modifier = {
+							add = 25
+							fertility <= low_fertility
+						}
+						#nothing	
+					}	
+				}			
+			}
+		}
 	}
 	
 	option = { # Focus on finding flowers
@@ -2378,66 +2521,7 @@ galicia2.0057 = {
 		}
 	}
 
-	after = {
-		if = {
-			limit = {
-				is_female = yes
-				age <= 45
-				is_pregnant = no
-			}
-			random_list = {
-				#Actually pregnant
-				50 = {
-					modifier = {
-						add = 25
-						fertility >= high_fertility
-					}
-					make_pregnant = {
-						father = scope:lover 
-					}
-				}
-				#Not pregnant
-				50 = {
-					modifier = {
-						add = 25
-						fertility <= low_fertility
-					}
-					#nothing	
-				}	
-			}
-		}
-		else_if = {
-			limit = {
-				scope:lover = {
-					is_female = yes					
-					age <= 45
-					is_pregnant = no
-				}
-			}
-			random_list = {
-				#Actually pregnant
-				50 = {
-					modifier = {
-						add = 25
-						fertility >= high_fertility
-					}
-					scope:lover = {
-						make_pregnant = {
-							father = root
-						}
-					}
-				}
-				#Not pregnant
-				50 = {
-					modifier = {
-						add = 25
-						fertility <= low_fertility
-					}
-					#nothing	
-				}	
-			}			
-		}
-	}
+	
 
 }
 
