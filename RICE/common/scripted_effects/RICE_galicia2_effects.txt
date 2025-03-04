@@ -993,7 +993,15 @@ RICE_setup_rus_counties_effect = {
 
 	if = {
 		limit = {
-			NOT = { has_game_rule = RICE_rus_emergence_default }
+			OR = {
+				NOT = { has_game_rule = RICE_rus_emergence_default }
+				has_global_variable = CE_is_loaded
+				# If Severian culture exists anywhere, meaning a mod like Baptism of Rus is being used
+				any_county_in_region = {
+					region = world_europe_east
+					culture = culture:severian
+				}
+			}
 		}
 		#Can only happen once
 		add_to_global_variable_list = {
@@ -1009,6 +1017,13 @@ RICE_setup_rus_counties_effect = {
 				has_game_rule = RICE_rus_emergence_default
 				has_game_rule = RICE_rus_emergence_partial
 			}
+			NOT = {
+				any_county_in_region = {
+					region = world_europe_east
+					culture = culture:severian
+				}
+			}
+			NOT = { has_global_variable = CE_is_loaded }
 		}
 		every_county = {
 			limit = {
