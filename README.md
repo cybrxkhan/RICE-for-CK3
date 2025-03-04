@@ -1,17 +1,13 @@
-<img src="https://i.imgur.com/QuXW3Wp.jpg">
+<img src="https://i.imgur.com/CeUcm0f.jpg">
 
-## Latest Version: Version 1.14.1.b Hotfix for "Padmasambhava" (Released 2/16/25, for vanilla patch 1.14.x)
+## Latest Version: Version 1.14.2 "Rus" (Released 3/4/25, for vanilla patch 1.14.x)
 
-**Newest Flavor Pack: *Zhangzhung: Land of Hidden Treasures***
+**Newest Flavor Pack: *Galicia-Volhynia: Borderlands of the Red Rus***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_My father is wisdom and my mother is voidness._
-_My country is the country of Dharma._
-_I am of no caste and no creed._
-_I am sustained by perplexity; and I am here to destroy lust, anger and sloth._
-
-_– Padmasambhava, 8th century Indian tantric Buddhist master_
+_"I have seen the Rus as they came on their merchant journeys and encamped by the Itil. I have never seen more perfect physical specimens, tall as date palms, blond and ruddy."_
+_- Ibn Fadlan, 10th century Arab explorer_
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
@@ -46,6 +42,7 @@ Click to view guides which cover the features in each specific pack in more deta
 - [Brittany: The Western Duchy](https://docs.google.com/document/d/e/2PACX-1vTzGuR_ffwqfpm6rwh27hq71K4Fs35pcLZioPLbHulhHn2ZV25SD2HrGipPofvBYngi5S_O4Yino4Y7/pub)
 - [Chios: Isle of Mastic](https://docs.google.com/document/d/1Lu4cGXN7hSaDtYd_wsXKbjAeIOYMoYVuum6zfYfBc_k/pub)
 - [Galicia: The Way of Saint James](https://docs.google.com/document/d/e/2PACX-1vRZSjZ2kqKE7-do03KlArEXVylNpYqP2ptS4Eg5EWWFYMRrxN7qAEaX6gG3H0ChMT_YR1AAg7BCbb1c/pub)
+- [Galicia-Volhynia: Borderlands of Red Rus](https://cybrxkhansmods.godaddysites.com/)
 - [Granada: Memories of the Alhambra](https://docs.google.com/document/d/e/2PACX-1vSFZFsesbXB3S4L2cgOfu_IYL6WzxbzLjzps4qGizN-8avV7Wvi99A5V8K-oq4IiiILonH_e85kIAgy/pub)
 - [Guanche: The Fortunate Isles](https://docs.google.com/document/d/e/2PACX-1vSs5DoK_1Hux5Uqe8cZp9qKdClxq_8W6PF3Rdejo8hR_C3mn1_qd166bbpw096x0DtwBGTBHC8aQYTO/pub)
 - [Harran: The Last Hellenic Pagans](https://docs.google.com/document/d/e/2PACX-1vQOVaDq59Adp5PsNw7r8KhK9cgHMBBWGPWG085FdTKegkD8G8BFLa_e1lz8usY164B42gAVZD4D_2Rs/pub)
@@ -81,64 +78,22 @@ Click to view guides which cover the features in each specific pack in more deta
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/pbdCgoK.jpg">
+<img src="https://i.imgur.com/ryNWhlx.jpg">
 
-### Version 1.14.1.b Hotfix for "Padmasambhava"
+### Version 1.14.2 "Rus"
 
-- Added text clarifying that experience in the Sicilian Signore trait is gained through various mechanics related to the Sicilian Frontier struggle
-- Improved compatibility with More Bookmarks+ for the decision to Compile the First Turkic Dictionary
-- Tweaked holy site bonuses of the Kamru holy site (previously was using travel modifiers that don’t work on characters)
-- Fixed Nabati culture appearing in TFE
-- Fixed localization for Burmic priest plural in some cases
-- Fixed erroneous, oudated text saying the Marc'hegion MAA for the Bretons gets better with era
-- Miscellaneous bugfixes
-
-### Version 1.14.1.a Hotfix for "Padmasambhava"
-
-- Khitan Empire now starts with some event troops in 1178
-- Integrated additional Spanish localization thanks to Ferchu
-- Fixed Kimshuism having only two tenets if you play Africa Plus (added Adaptive)
-- Fixed decision to choose a enlightenment deity still costing piety if you have the Assertive Deities doctrine, which is supposed to waive the cost
-- Fixed missing localization for the Kimshuism and Bonanah faiths and West Himalayan religion
-- Fixed missing localization for the Zathapuk monastery decision historical tooltip
-- Fixed the Drokpa MAA requiring the Hussar tradition
-- Fixed Divination intent of the Fulaich Flower Festival activity not having any effect
-- Fixed localization for the Divination intent of the Fulaich Flower Festival activity not showing the correct bonus to chances of gaining the oracle modifier
-- Miscellaneous bugfixes
-
-### 1.14.1 "Padmasambhava"
-
-- Added Zhangzhung Flavor Pack: Land of Hidden Treasures
-- Added 5 Tibetan-themed soundtracks
-- Added dna for a few historical characters added by RICE
-- Added fictional Dezawist Darada rulers in Chitral in 867, 1066, 1178
-- Added semi-fictitious non-Islamic Pamiri vassals for Badakhshan in Shughnan and Wakhan in 1066
-- Renamed Buddhist vassal of the Samanids in 867 from the fictitious name to Humar, who is an attested non-Muslim ruler in the region around that time period
-- Thabit ibn Qurra’s wife is now also Syriac like he is if he chooses a Harranian wife in his event chain
-- Revamped Darada namelist with actual Dardic names and dynasties
-- Sicily struggle is now automatically started based on start date after 647 CE, rather than if Fallen Eagle is running or not (should not affect most users, only those that play with TFE or O-Saft-Killer’s 867 and 1066 submod for TFE)
-- Improved randomness of Sicilian stronghold malus events
-- Changed Hindu Shahi rulers to Gandhari culture in 867
-- Buffed victory chances in Palios from various Palio modifiers
-- Slightly buffed victory chances in Palios for players
-- Reduced control malus hit from Sicilian stronghold raids
-- There’s now some slight variety with how much control or development you might lose from Sicilian stronghold raids
-- Buffed the last two perks of the Sicilian Liminality Dynasty legacy
-- Changed defender holding bonus of the Incastellamento perk of the Sicilian Liminality Dynasty legacy to a control growth bonus
-- Chronic Ifriqyan Famines modifiers no longer last forever, instead they last for 30 years from the 1066 start date
-- Decisions to Collaborate with Pirates now clarifies that you will no longer be able to build other special buildings on the province in question
-- Fixed the Sicilian decision to support Salerno’s medical school not actually deducting gold costs
-- Fixed some RICE Dynasty Legacies not being available to adventurers
-- Fixed Siculo-Arabic culture event not properly referencing the Siculo-Arabic/Siqilli culture
-- Fixed Luxor Temple building not being available to Greco-Roman faiths even though they can take the decision to rededicate it to paganism
-- Fixed Mediterranean Pirate decision being available in the Caspian
-- Fixed “Norman Culture and Learning” dynasty modifier rewarded for the Assimilation ending of the Normandy struggle giving renown instead of a legitimacy bonus
-- Fixed Palermo being Ashari Muslim in Fallen Eagle and other mods with early start dates
-- Fixed mismatch for Budivoj/Henry and Krutoj names in aspirations
-- Fixed one of the Zhang families in Dunhuang having Zhu as their admin noble family title
-- Fixed Collaborate with Pirate decisions being available when your capital already has a special building
+- Added Galicia-Volhynia Flavor Pack
+- Added 6 soundtracks for the Galicia-Volhynia Flavor Pack, 2 for the Mordvin Flavor Pack, and 2 for the Siberia Flavor Pack
+- Added new loc specifying which struggle you have to be part of for struggle ending decisions to avoid confusion, since vanilla won’t fix only referring to the Persian struggle for whatever reason and it’s been too long
+- Added Iron Forest as a special cavalry MAA for cultures with the Image of China tradition (aka the Khitan)
+- Khitan Emperor in 1178 now starts with some Iron Forest in his starting bonus army
+- Ostyak/Khanty culture now starts with the Siberian Survivalism tradition
+- Ugro-Permian heritage now has access to the Siberian Survivalism tradition
+- Allowed interlopers in the Normandy struggle to do the Outsider’s Yoke ending decision if they meet a legitimacy requirement
+- Made Guiyi the de jure liege of Guazhou, Ganzhou, and Aksay in 867, and de jure part of the Empire of Tibet, as a temporary stop gap measure to fix issues with Admin government when Guiyi is a titular title
+- Fixed legend from founding the Tuareg Empire of Air referencing the Tuyuhun Kingdom instead
+- Fixed potential bug where a Silk Road merchant spawns with Akom faith if it’s from the steppe community
 - Miscellaneous bugfixes and tweaks
-
 
 ## Credits
 
@@ -162,6 +117,7 @@ Special thanks in particular to:
 - Klorpa for fixing a lot of typos
 - Lahom for most Native American names
 - Макс for Erzya and Moksha names and info
+- Meat Plague for content from the Baptism of Rus mod
 - Msl229 for Eastern Europe research and code
 - Naatturi for content from the Ukonusko Overhaul mod
 - Nezaros for religion and bookmark art
