@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/CeUcm0f.jpg">
 
-## Latest Version: Version 1.14.2 "Rus" (Released 3/4/25, for vanilla patch 1.14.x)
+## Latest Version: Version 1.14.2.a Hotfix for "Rus" (Released 3/7/25, for vanilla patch 1.14.x)
 
 **Newest Flavor Pack: *Galicia-Volhynia: Borderlands of the Red Rus***
 
@@ -79,6 +79,19 @@ Click to view guides which cover the features in each specific pack in more deta
 ## Latest Changelog
 
 <img src="https://i.imgur.com/ryNWhlx.jpg">
+
+### Version 1.14.2.a Hotfix for "Rus"
+
+- Added failsafe for make sure Rus emergence decision doesn’t appear if Rus culture already exists on map (due to other mods or game rules, for example)
+- Buffed language learning bonus for merchant traits slightly
+- Tweaked how Volhynian culture is placed on the map in 867
+- Tweaked Slavic idol effect slightly to avoid duplicate entries in the script if using Baptism of Rus
+- Made AI even less likely to take the decisions to collaborate with pirates now (they rarely do anyhow)
+- Mendicant Mystics tradition will no longer be removed from Rus culture if starting with the Vanilla or Partial game rules for the Rus Emergence decision/event
+- Fixed vassals not being more likely to connect to Rus culture when taking the decision to form Rus culture
+- Fixed intro text referring to Zhangzhung flavor pack
+- Fixed Slavic idol decision refunding you more gold than its cost if you decide not to go through with it
+- Miscellaneous bugfixes and tweaks
 
 ### Version 1.14.2 "Rus"
 
