@@ -152,6 +152,87 @@ yorkshire.0010 = {
 				text = yorkshire.0010.info
 			}
 		}
+		trigger_event = {
+			id = yorkshire.0011
+			days = { 365 3650 }
+		}
+	}
+
+}
+
+# Margaret of Beverley gets her cooking pot helmet
+yorkshire.0011 = {
+	type = character_event
+	title = yorkshire.0011.t
+	desc = yorkshire.0011.desc
+	theme = martial
+	override_background = { reference = RICE_jerusalem_background }
+
+	right_portrait = {
+		character = scope:margaret
+		animation = throne_room_one_handed_passive_1
+	}
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:artifact
+		position = lower_center_portrait
+	}
+	
+	trigger = {
+		religion = religion:christianity_religion
+		NOT = {
+			has_character_flag = RICE_yorkshire_margaret_got_her_helmet
+		}
+	}
+	
+	immediate = {
+
+		save_scope_as = margaret
+
+		add_character_flag = RICE_yorkshire_margaret_got_her_helmet
+
+		hidden_effect_new_object = {
+			create_artifact = {
+				name = RICE_yorkshire_margaret_helmet_name
+				description = RICE_yorkshire_margaret_helmet_desc
+				visuals = crown
+				type = helmet				
+				quality = 90
+				wealth = 90
+				modifier = RICE_yorkshire_margaret_helmet_modifier
+				save_scope_as = artifact
+				#decaying = no
+			}
+		}
+
+	}
+
+	option = { # Keep it
+		name = yorkshire.0011.a
+		add_prestige = medium_prestige_loss
+		show_as_tooltip = {
+			scope:artifact = {
+				set_owner = {
+					target = root
+				}
+			}
+		}
+	}
+
+	option = { # Don't keep it
+		name = yorkshire.0011.b
+		destroy_artifact = scope:artifact
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = yorkshire.0011.info
+			}
+		}
 	}
 
 }
