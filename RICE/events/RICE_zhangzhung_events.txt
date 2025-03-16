@@ -6,7 +6,7 @@
 # zhangzhung.0020-zhangzhung.0049			Tertons and Termas
 # zhangzhung.0050-zhangzhung.0069			Misc Dharmachakra/Rajas of Asia Adapted Content
 # zhangzhung.0070-zhangzhung.0089			Losar Activity (Adapted from Dharmachakra/Rajas of Asia)
-# zhangzhung.0090-zhangzhung.0099			?????
+# zhangzhung.0090-zhangzhung.0099			Glacier Marriage Activity
 # zhangzhung.0100-zhangzhung.0119			Fulaich Flower Festival
 # zhangzhung.0120-zhangzhung.0139			Historical Characters
 # zhangzhung.0140-zhangzhung.0149			?????
@@ -3973,6 +3973,216 @@ zhangzhung.0077 = {# Losar concludes
 # 		}
 # 	}
 # }
+
+
+
+######################################################################################
+# 
+# GLACIER MARRIAGE
+# 
+# zhangzhung.0090-zhangzhung.0099
+# 
+######################################################################################
+
+
+
+# Setup activity
+zhangzhung.0090 = {
+	type = character_event
+	title = zhangzhung.0090.t
+	desc = zhangzhung.0090.desc
+	theme = faith
+	override_background = { reference = RICE_background_himalayan_wilderness }
+	
+	right_portrait = root
+
+	immediate = {
+		scope:activity = {
+			activity_location = {
+				save_scope_as = location
+			}
+		}
+		scope:location.county.culture = {
+			save_scope_as = culture
+		}
+	}
+	
+	option = { # Ok
+		name = zhangzhung.0090.a
+	}	
+
+	after = {
+		trigger_event = {
+			id = zhangzhung.0091
+			days = { 3 7 }
+		}
+	}	
+
+}
+
+
+
+# Glacier marriage
+zhangzhung.0091 = {
+	type = character_event
+	title = zhangzhung.0091.t
+	desc = zhangzhung.0091.desc
+	theme = marriage
+	override_background = { reference = RICE_background_himalayan_wilderness }
+	
+	right_portrait = {
+		character = root
+		animation = personality_forgiving
+	}
+	
+	option = { # Ok
+		name = zhangzhung.0091.a
+	}	
+
+	after = {
+		trigger_event = {
+			id = zhangzhung.0092
+			days = { 3 7 }
+		}
+	}	
+
+}
+
+
+
+# Glacier marriage
+zhangzhung.0092 = {
+	type = character_event
+	title = zhangzhung.0092.t
+	desc = zhangzhung.0092.desc
+	theme = marriage
+	override_background = { reference = RICE_background_himalayan_wilderness }
+	
+	right_portrait = {
+		character = root
+		animation = prayer
+	}
+
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = {
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_glacier_marriage_sacrifice_amount
+							option = RICE_glacier_marriage_sacrifice_amount_large
+						}
+					}
+				}
+				random_list = {
+					20 = {
+						scope:activity.activity_location.county = {
+							add_county_modifier = {
+								modifier = RICE_glacier_marriage_modifier_large
+								years = 10
+							}			
+						}
+					}
+					20 = {
+						scope:activity.activity_location.county = {
+							add_county_modifier = {
+								modifier = RICE_glacier_marriage_modifier_medium
+								years = 10
+							}			
+						}
+					}
+					20 = {
+						scope:activity.activity_location.county = {
+							add_county_modifier = {
+								modifier = RICE_glacier_marriage_modifier_small
+								years = 10
+							}			
+						}
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_glacier_marriage_sacrifice_amount
+							option = RICE_glacier_marriage_sacrifice_amount_medium
+						}
+					}
+				}
+				random_list = {
+					10 = {
+						scope:activity.activity_location.county = {
+							add_county_modifier = {
+								modifier = RICE_glacier_marriage_modifier_large
+								years = 10
+							}			
+						}
+					}
+					20 = {
+						scope:activity.activity_location.county = {
+							add_county_modifier = {
+								modifier = RICE_glacier_marriage_modifier_medium
+								years = 10
+							}			
+						}
+					}
+					30 = {
+						scope:activity.activity_location.county = {
+							add_county_modifier = {
+								modifier = RICE_glacier_marriage_modifier_small
+								years = 10
+							}			
+						}
+					}
+				}
+			}
+			else = {
+				random_list = {
+					10 = {
+						scope:activity.activity_location.county = {
+							add_county_modifier = {
+								modifier = RICE_glacier_marriage_modifier_large
+								years = 10
+							}			
+						}
+					}
+					20 = {
+						scope:activity.activity_location.county = {
+							add_county_modifier = {
+								modifier = RICE_glacier_marriage_modifier_medium
+								years = 10
+							}			
+						}
+					}
+					30 = {
+						scope:activity.activity_location.county = {
+							add_county_modifier = {
+								modifier = RICE_glacier_marriage_modifier_small
+								years = 10
+							}			
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	option = {
+		name = zhangzhung.0092.a
+		RICE_glacier_marriage_completed_log_entry_effect = yes
+	}
+
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
+		}
+	}
+
+
+}
 
 
 

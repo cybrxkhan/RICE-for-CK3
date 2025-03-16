@@ -6640,3 +6640,112 @@ RICE_terma_medicine_effect = {
 }
 
 
+RICE_glacier_marriage_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_glacier_marriage_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+
+			if = {
+				limit = {
+					scope:activity.activity_location.county = {
+						has_county_modifier = RICE_glacier_marriage_modifier_large
+					}
+				}
+				show_as_tooltip = {				
+					scope:activity.activity_location.county = {
+						add_county_modifier = {
+							modifier = RICE_glacier_marriage_modifier_large
+							years = 10
+						}
+					}
+				}
+			}
+
+			if = {
+				limit = {
+					scope:activity.activity_location.county = {
+						has_county_modifier = RICE_glacier_marriage_modifier_medium
+					}
+				}
+				show_as_tooltip = {				
+					scope:activity.activity_location.county = {
+						add_county_modifier = {
+							modifier = RICE_glacier_marriage_modifier_medium
+							years = 10
+						}
+					}
+				}
+			}
+
+			if = {
+				limit = {
+					scope:activity.activity_location.county = {
+						has_county_modifier = RICE_glacier_marriage_modifier_small
+					}
+				}
+				show_as_tooltip = {				
+					scope:activity.activity_location.county = {
+						add_county_modifier = {
+							modifier = RICE_glacier_marriage_modifier_small
+							years = 10
+						}
+					}
+				}
+			}
+
+
+			scope:host = {
+	
+				if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_glacier_marriage_sacrifice_amount
+								option = RICE_glacier_marriage_sacrifice_amount_large
+							}
+						}
+					}
+					add_piety = RICE_glacier_marriage_base_piety_large
+					add_prestige = RICE_glacier_marriage_base_prestige_large
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_glacier_marriage_sacrifice_amount
+								option = RICE_glacier_marriage_sacrifice_amount_medium
+							}
+						}
+					}
+					add_piety = RICE_glacier_marriage_base_piety_medium
+					add_prestige = RICE_glacier_marriage_base_prestige_medium
+				}
+				else = {
+					add_piety = RICE_glacier_marriage_base_piety_small
+					add_prestige = RICE_glacier_marriage_base_prestige_small
+				}
+
+			}
+
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_piety = RICE_glacier_marriage_base_piety_small
+				add_prestige = RICE_glacier_marriage_base_prestige_small
+			}	
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
