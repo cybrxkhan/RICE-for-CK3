@@ -984,7 +984,10 @@ RICE_setup_rus_counties_effect = {
 	if = {
 		limit = {
 			current_date < 965.1.1
-			has_game_rule = RICE_rus_emergence_default
+			OR = {
+				has_game_rule = RICE_rus_emergence_default
+				has_game_rule = RICE_rus_emergence_override
+			}
 		}
 		culture:russian = {
 			remove_culture_tradition = tradition_mendicant_mystics
@@ -997,11 +1000,17 @@ RICE_setup_rus_counties_effect = {
 		limit = {
 			OR = {
 				NOT = { has_game_rule = RICE_rus_emergence_default }
-				has_global_variable = CE_is_loaded
-				# If Severian culture exists anywhere, meaning a mod like Baptism of Rus is being used
-				any_county_in_region = {
-					region = world_europe_east
-					culture = culture:severian
+				AND = {
+					has_global_variable = CE_is_loaded
+					NOT = { has_game_rule = RICE_rus_emergence_override }
+				}
+				AND = {
+					# If Severian culture exists anywhere, meaning a mod like Baptism of Rus is being used
+					any_county_in_region = {
+						region = world_europe_east
+						culture = culture:severian
+					}
+					NOT = { has_game_rule = RICE_rus_emergence_override }
 				}
 			}
 		}
@@ -1019,14 +1028,21 @@ RICE_setup_rus_counties_effect = {
 			OR = {
 				has_game_rule = RICE_rus_emergence_default
 				has_game_rule = RICE_rus_emergence_partial
+				has_game_rule = RICE_rus_emergence_override
 			}
-			NOT = {
-				any_county_in_region = {
-					region = world_europe_east
-					culture = culture:severian
+			OR = {
+				has_game_rule = RICE_rus_emergence_override
+				NOT = {
+					any_county_in_region = {
+						region = world_europe_east
+						culture = culture:severian
+					}
 				}
 			}
-			NOT = { has_global_variable = CE_is_loaded }
+			OR = {
+				NOT = { has_global_variable = CE_is_loaded }
+				has_game_rule = RICE_rus_emergence_override
+			}
 		}
 		every_county = {
 			limit = {
