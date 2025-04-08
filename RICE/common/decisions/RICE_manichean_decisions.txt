@@ -1,0 +1,588 @@
+﻿
+
+
+
+# Influence the Future of the Uyghur Manichean Church
+RICE_uyghur_manichean_church_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_manichean.dds" }
+	decision_group_type = major
+	ai_check_interval = 48
+
+	#cooldown = { days = 10 } #1825
+	
+	desc = RICE_uyghur_manichean_church_decision_desc
+	
+	is_shown = {
+		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+		is_playable_character = yes
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_uyghur_manichean_church_decision_done
+			}
+		}
+		OR = {
+			culture = culture:uyghur
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:uyghur
+				}
+			}
+		}
+		faith = faith:manichean
+	}
+	
+	is_valid = {
+		is_landed = yes
+		is_independent_ruler = yes
+		highest_held_title_tier >= tier_kingdom
+		faith = faith:manichean
+		piety_level >= 2
+		OR = {
+			culture = culture:uyghur
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:uyghur
+				}
+			}
+		}
+		# Any county follows another religion besides Manicheism
+		any_realm_province = {
+			county = {
+				NOT = {
+					faith = faith:manichean
+				}
+			}
+		}
+		# Need to control some of the Uyghur Silk Road lands
+		calc_true_if = {
+			amount >= 3
+			#Tarim
+			completely_controls = title:d_kashgar   
+			completely_controls = title:d_khotan
+			completely_controls = title:d_karashar
+			completely_controls = title:d_charkliq
+			# Dzungaria
+			completely_controls = title:d_kara_khoja
+			completely_controls = title:d_altay
+			completely_controls = title:d_gurbantunggut
+			completely_controls = title:d_naiman_gobi
+			# Zhetysu
+			completely_controls = title:d_xia
+			completely_controls = title:d_wuluhai
+			completely_controls = title:d_zhenfan
+			completely_controls = title:d_liangzhou
+			completely_controls = title:d_shanzhou
+			completely_controls = title:d_qilin
+			completely_controls = title:d_ganzhou
+			completely_controls = title:d_yijinai
+			completely_controls = title:d_guiyi
+			completely_controls = title:d_aksay
+			# Zhetysu
+			# completely_controls = title:d_zhetysu
+			# completely_controls = title:d_alakol
+			# completely_controls = title:d_tarbagatai
+			# completely_controls = title:d_ili-alatau
+		}
+
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+
+	widget = {
+		gui = "decision_view_widget_RICE_manichean_uyghur_decision"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "RICE_manichean_uyghur_decision_PICK_TYPE"
+		show_from_start = yes
+		
+		### Support Manichean Church
+		item = {
+			value = RICE_manichean_uyghur_decision_support
+			current_description = RICE_manichean_uyghur_decision_support_desc
+			localization = RICE_manichean_uyghur_decision_support_name
+			icon = "gfx/interface/icons/message_feed/religious.dds"
+			ai_chance = {
+				value = 10
+			}
+		}
+		
+		### Reform Manichean Church
+		item = {
+			value = RICE_manichean_uyghur_decision_reform
+			current_description = RICE_manichean_uyghur_decision_reform_desc
+			localization = RICE_manichean_uyghur_decision_reform_name
+			icon = "gfx/interface/icons/message_feed/contract.dds"
+			ai_chance = {
+				value = 30
+			}
+		}
+		
+		### Abandon the Manichean Church
+		item = {
+			value = RICE_manichean_uyghur_decision_abandon
+			current_description = RICE_manichean_uyghur_decision_abandon_desc
+			localization = RICE_manichean_uyghur_decision_abandon_name
+			icon = "gfx/interface/icons/scheme_types/icon_scheme_challenge_status.dds"
+			ai_chance = {
+				value = 60
+			}
+		}
+		
+		# ### Reject Manichean Church
+		# item = {
+		# 	value = RICE_manichean_uyghur_decision_shabuhragan
+		# 	current_description = RICE_manichean_uyghur_decision_shabuhragan_desc
+		# 	localization = RICE_manichean_uyghur_decision_shabuhragan_name
+		# 	icon = "gfx/interface/icons/scheme_types/icon_scheme_steal_back_artifact.dds"
+		# 	ai_chance = {
+		# 		value = 10
+		# 	}
+		# }
+
+	}
+
+	effect = {
+		capital_county = {
+			faith = {
+				save_scope_as = capital_faith
+			}
+		}
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_uyghur_manichean_church_decision_done
+		}
+		save_scope_as = uyghur_leader
+		show_as_tooltip = {
+			RICE_manichean_uyghur_decision_abandon_effect = yes
+		}
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_uyghur_manichean_church_decision_context_tooltip
+		}
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # Will depend 
+		piety = major_piety_gain
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 25
+	}
+}
+
+RICE_manichean_manuscript_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_manichean.dds" }
+	ai_check_interval = 48
+	
+	cooldown = { days = 3650 } 
+
+	desc = RICE_manichean_manuscript_decision_desc
+	selection_tooltip = RICE_manichean_manuscript_decision_tooltip
+
+	is_shown = {
+		#is_landed_or_landless_administrative = yes
+		is_playable_character = yes
+		faith = { has_doctrine = rice_light_purification_doctrine }
+	}
+	
+	is_valid = {
+		faith = { has_doctrine = rice_light_purification_doctrine }
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+
+	widget = {
+		gui = "decision_view_widget_RICE_manichean_manuscript_decision"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "RICE_MANICHEAN_MANUSCRIPT_PICK_TYPE"
+		show_from_start = yes
+		
+		### Seven Treatises (seven scriptures personally written by Mani)
+		item = {
+			value = RICE_manichean_manuscript_seven_treatises
+			current_description = RICE_manichean_manuscript_seven_treatises_desc
+			localization = RICE_manichean_manuscript_seven_treatises_name
+			icon = "gfx/interface/icons/event_types/type_legends.dds"
+			ai_chance = {
+				value = 10
+			}
+		}
+		
+		### Shabuhragan
+		item = {
+			value = RICE_manichean_manuscript_shabuhragan
+			current_description = RICE_manichean_manuscript_shabuhragan_desc
+			localization = RICE_manichean_manuscript_shabuhragan_name
+			icon = "gfx/interface/icons/event_types/type_majesty.dds"
+			ai_chance = {
+				value = 10
+			}
+		}
+		
+		### Arzhang (Book of Pictures, drawn by Mani)
+		item = {
+			value = RICE_manichean_manuscript_arzhang
+			current_description = RICE_manichean_manuscript_arzhang_desc
+			localization = RICE_manichean_manuscript_arzhang_name
+			icon = "gfx/interface/icons/event_types/type_inspiration.dds"
+			ai_chance = {
+				value = 10
+			}
+		}
+		
+		### Kephalaia (analogous to Islamic Hadith or Jewish Talmud)
+		item = {
+			value = RICE_manichean_manuscript_kephalaia
+			current_description = RICE_manichean_manuscript_kephalaia_desc
+			localization = RICE_manichean_manuscript_kephalaia_name
+			icon = "gfx/interface/icons/event_types/type_journey.dds"
+			ai_chance = {
+				value = 10
+			}
+		}
+		
+		### Hymn Book
+		item = {
+			value = RICE_manichean_manuscript_hymn_book
+			current_description = RICE_manichean_manuscript_hymn_book_desc
+			localization = RICE_manichean_manuscript_hymn_book_name
+			icon = "gfx/interface/icons/event_types/type_faith.dds"
+			ai_chance = {
+				value = 10
+			}
+		}
+		
+		### Confessional Texts
+		item = {
+			value = RICE_manichean_manuscript_confessional_texts
+			current_description = RICE_manichean_manuscript_confessional_texts_desc
+			localization = RICE_manichean_manuscript_confessional_texts_name
+			icon = "gfx/interface/icons/event_types/type_memory_negative.dds"
+			ai_chance = {
+				value = 10
+			}
+		}
+		
+		### Parables and Tales
+		item = {
+			value = RICE_manichean_manuscript_parables_and_tales
+			current_description = RICE_manichean_manuscript_parables_and_tales_desc
+			localization = RICE_manichean_manuscript_parables_and_tales_name
+			icon = "gfx/interface/icons/event_types/type_chivalry.dds"
+			ai_chance = {
+				value = 10
+			}
+		}
+		
+		### Other Religions' Text (a duty as described by Mani)
+		item = {
+			value = RICE_manichean_manuscript_other_religions_texts
+			current_description = RICE_manichean_manuscript_other_religions_texts_desc
+			localization = RICE_manichean_manuscript_other_religions_texts_name
+			icon = "gfx/interface/icons/event_types/type_learning.dds"
+			ai_chance = {
+				value = 10
+			}
+		}
+
+	}
+
+	effect = {
+		show_as_tooltip = {
+			RICE_manichean_manuscript_decision_effect = yes
+		}
+		custom_tooltip = RICE_manichean_manuscript_decision_effect_tooltip_1
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_manichean_manuscript_decision_context_tooltip
+		}
+		trigger_event = manichean.8888
+	}
+
+	minimum_cost = {
+		gold = minor_gold_value # Will depend
+	}
+	
+	ai_potential = {
+		short_term_gold > minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 25
+		modifier = {
+			add = -5
+			has_trait = cynical
+		}
+		modifier = {
+			add = 5
+			has_trait = zealous
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+	}
+}
+
+
+RICE_manichean_confession_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_manichean.dds" }
+	ai_check_interval = 32
+	
+	cooldown = { days = 365 } 
+
+	desc = RICE_manichean_confession_decision_desc
+	selection_tooltip = RICE_manichean_confession_decision_tooltip
+
+	is_shown = {
+		is_playable_character = yes
+		faith = { has_doctrine = rice_light_purification_doctrine }
+	}
+	
+	is_valid = {
+		faith = { has_doctrine = rice_light_purification_doctrine }
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		show_as_tooltip = {
+			RICE_manichean_confession_decision_effect = yes
+		}
+		custom_tooltip = RICE_manichean_confession_decision_effect_tooltip_1
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_manichean_confession_decision_context_tooltip
+		}
+		trigger_event = manichean.8888
+	}
+
+	minimum_cost = {
+		gold = minor_gold_value # Will depend
+	}
+	
+	ai_potential = {
+		short_term_gold > minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 25
+		modifier = {
+			add = -5
+			has_trait = cynical
+		}
+		modifier = {
+			add = 5
+			has_trait = zealous
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+	}
+}
+
+RICE_gnostic_alms_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_heavenly_light.dds" }
+	ai_check_interval = 32
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					faith = faith:mandeaism
+				}
+				desc = RICE_gnostic_alms_decision_mandaean
+			}
+			triggered_desc = {
+				trigger = {
+					faith = { has_doctrine = rice_light_purification_doctrine }
+				}
+				desc = RICE_gnostic_alms_decision_manichean
+			}
+			desc = RICE_gnostic_alms_decision
+		}
+	}
+	
+	cooldown = { days = 3650 } 
+
+	desc = RICE_gnostic_alms_decision_desc
+	selection_tooltip = RICE_gnostic_alms_decision_tooltip
+
+	is_shown = {
+		is_playable_character = yes
+		OR = {
+			religion = religion:dualism_religion
+			faith = { has_doctrine = has_doctrine = tenet_gnosticism }
+		}
+	}
+	
+	is_valid = {
+		OR = {
+			religion = religion:dualism_religion
+			faith = { has_doctrine = has_doctrine = tenet_gnosticism }
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		show_as_tooltip = {
+			RICE_gnostic_alms_decision_effect = yes
+		}
+		custom_tooltip = RICE_gnostic_alms_decision_effect_tooltip_1
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_gnostic_alms_decision_context_tooltip
+		}
+		trigger_event = manichean.8888
+	}
+
+	minimum_cost = {
+		gold = minor_gold_value # Will depend
+	}
+	
+	ai_potential = {
+		short_term_gold > minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 25
+		modifier = {
+			add = -5
+			has_trait = cynical
+		}
+		modifier = {
+			add = 5
+			has_trait = zealous
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+		modifier = {
+			add = -10
+			has_trait = greedy
+		}
+		modifier = {
+			add = 10
+			has_trait = generous
+		}
+		modifier = {
+			add = -10
+			has_trait = callous
+		}
+		modifier = {
+			add = 10
+			has_trait = compassionate
+		}
+	}
+}
+
+
+
+
+
+RICE_manichean_lin_deng_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_chinese_temple.dds" }
+	ai_check_interval = 32
+	
+	cooldown = { days = 1825 } 
+
+	desc = RICE_manichean_lin_deng_decision_desc
+	selection_tooltip = RICE_manichean_lin_deng_decision_tooltip
+
+	is_shown = {
+		is_playable_character = yes
+		culture = { has_cultural_pillar = heritage_chinese }
+		faith = { has_doctrine = rice_light_purification_doctrine }
+		# In the future, will be doable in Fujian
+	}
+	
+	is_valid = {
+		culture = { has_cultural_pillar = heritage_chinese }
+		faith = { has_doctrine = rice_light_purification_doctrine }
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		show_as_tooltip = {
+			RICE_manichean_lin_deng_decision_effect = yes
+		}
+		custom_tooltip = RICE_manichean_lin_deng_decision_effect_tooltip_1
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_manichean_lin_deng_decision_context_tooltip
+		}
+		trigger_event = manichean.8888
+	}
+
+	cost = {
+		gold = minor_gold_value # Will depend
+		piety = medium_piety_gain
+	}
+	
+	ai_potential = {
+		short_term_gold > minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 25
+		modifier = {
+			add = -5
+			has_trait = cynical
+		}
+		modifier = {
+			add = 5
+			has_trait = zealous
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+	}
+}

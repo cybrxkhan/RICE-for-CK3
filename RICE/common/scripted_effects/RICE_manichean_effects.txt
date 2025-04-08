@@ -1,0 +1,194 @@
+﻿RICE_setup_manichean_flavor_pack_effect = {
+
+	############################################################
+	#
+	# DNA
+	#
+	############################################################
+
+	############################################################
+	#
+	# RELIGION CHANGES
+	#
+	############################################################
+
+	faith:manichean = {		
+		remove_doctrine = rice_food_purification_doctrine	
+		add_doctrine = rice_light_purification_doctrine	
+		# Mani preached that magic was bad
+		if = {
+			limit = { has_doctrine = doctrine_witchcraft_accepted }
+			remove_doctrine = doctrine_witchcraft_accepted
+			add_doctrine = doctrine_witchcraft_crime
+		}
+		if = {
+			limit = { has_doctrine = doctrine_clerical_marriage_allowed }
+			remove_doctrine = doctrine_clerical_marriage_allowed
+			add_doctrine = doctrine_clerical_marriage_disallowed
+		}
+		remove_doctrine = tenet_esotericism	
+		add_doctrine = tenet_monasticism	
+	}
+
+	# Uyghur Manichean remnants in the 11th century, since it is attested as surviving into at least the early 11th century
+	if = {
+		limit = {
+			game_start_date >= 954.1.1
+			game_start_date <= 1100.1.1
+			roa_is_active = no # Rajas of Asia has their own setup
+		}
+		title:c_yangjibaliq = {
+			set_county_faith = faith:manichean
+		}
+		title:c_yangjibaliq.holder = {
+			every_courtier_or_guest = {
+				limit = {
+					is_lowborn = yes
+					culture = culture:uyghur
+				}
+				random = {
+					chance = 25
+					set_character_faith = faith:manichean
+				}
+			}
+		}
+	}
+
+	############################################################ 
+	#
+	# CULTURE CHANGES
+	#
+	############################################################ 
+
+	culture:uyghur = {
+		remove_culture_tradition = tradition_caravaneers
+		add_culture_tradition = tradition_RICE_silk_road
+		remove_culture_tradition = tradition_charitable
+		add_culture_tradition = tradition_RICE_scribes_of_the_steppe
+		remove_variable = tradition_cooldown
+	}
+
+	culture:yughur = {
+		add_culture_tradition = tradition_RICE_scribes_of_the_steppe
+		remove_variable = tradition_cooldown
+	}
+
+	culture:assyrian = {
+		add_culture_tradition = tradition_RICE_royal_physicians
+		remove_variable = tradition_cooldown
+	}
+
+	############################################################
+	#
+	# HISTORY/TITLE CHANGES
+	#
+	############################################################ 
+
+	
+	############################################################
+	#
+	# BUILDING
+	#
+	############################################################
+
+	############################################################
+	#
+	# MISCELLANEOUS
+	#
+	############################################################
+
+	# Rough estimate for when the Uyghurs started converting to Buddhism
+	if = {
+		limit = {
+			current_date >= 980.1.1
+		}
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_uyghur_manichean_church_decision_done
+		}
+	}
+
+	# Manichean Archegos is still around in earlier start dates
+	# Final possibly attested Archegos I cound find was from early 11th century
+	if = {
+		limit = {
+			current_date < 1050.1.1
+			
+		}
+		RICE_manichean_change_archegos_capital_to_baghdad_effect = yes
+		if = {
+			limit = {
+				NOT = { exists = title:d_manichean.holder }
+			}
+			title:c_kufa.holder = {
+				RICE_manichean_create_archegos_effect = yes
+			}
+		}
+	}
+
+}
+
+
+RICE_manichean_uyghur_decision_abandon_effect = {
+	custom_tooltip = RICE_manichean_uyghur_decision_abandon_effect_1
+	custom_tooltip = RICE_manichean_uyghur_decision_abandon_effect_2
+	custom_tooltip = RICE_manichean_uyghur_decision_abandon_effect_3
+	every_county_in_region = {
+		region = RICE_former_uyghur_influence_region
+		custom = RICE_every_county_in_former_uyghur_influence_region
+		add_county_modifier = {
+			modifier = RICE_manichean_uyghur_manicheism_decline
+			years = 100
+		}
+	}
+	faith:manichean = {
+		change_fervor = {
+			value = -15
+			desc = fervor_loss_RICE_manichean_declining_elite_support
+		}
+		add_doctrine = special_doctrine_rice_doctrine_late_manicheism
+	}
+}
+
+RICE_manichean_create_archegos_effect = {
+	hidden_effect = {
+		create_character = {
+			gender = male
+			faith = faith:manichean
+			culture = culture:assyrian
+			employer = root
+			template = religious_leader_character
+			random_traits = yes
+			save_scope_as = new_archegos
+			dynasty = generate
+		}
+	}
+	create_title_and_vassal_change = {
+		type = returned
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	title:d_manichean = {
+		change_title_holder = {
+			holder = scope:new_archegos
+			change = scope:change
+		}
+	}
+	resolve_title_and_vassal_change = scope:change
+}
+
+RICE_manichean_change_archegos_capital_to_baghdad_effect = {
+	title:d_manichean = { set_capital_county = title:c_kufa } # Kufa is where ancient Babylon was
+}
+
+RICE_manichean_change_archegos_capital_to_samarkand_effect = {
+	title:d_manichean = { set_capital_county = title:c_samarkand }
+	faith:manichean = {
+		change_fervor = {
+			value = -10
+			desc = fervor_loss_RICE_manichean_archegos_flee
+		}
+	}
+}
+
+

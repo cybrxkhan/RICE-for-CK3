@@ -1,0 +1,142 @@
+﻿###############################################################################
+# 
+# MANICHEAN
+# 
+# manichean.0000-manichean.0019			Setup events, history events, miscellaneous events and decisions
+# manichean.0020-manichean.0029			Minor decisions
+# manichean.0030-manichean.0049			Bema Festival
+# manichean.0050-manichean.0069			Manuscript decision
+# manichean.0070-manichean.0079			Pilgrimage to Bezeklik
+# manichean.0080-manichean.0089			Pilgrimage to Dunhuang
+# manichean.0080-manichean.0099			Misc historical stuff
+# manichean.0100-manichean.0129			Generic flavor events
+# 
+###############################################################################
+
+namespace = manichean
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# manichean.0000-manichean.0019
+# 
+######################################################################################
+
+
+# Move the Archegos to Samarkand
+manichean.0004 = {
+	type = character_event
+	orphan = yes 
+	window = fullscreen_event
+	title = manichean.0004.t
+	desc = manichean.0004.desc
+	theme = faith
+	override_background = { reference = fp3_fullscreen_sunder }
+
+	immediate = {
+		title:e_arabia.holder = {
+			save_scope_as = caliph
+		}
+		title:d_manichean.holder = {
+			save_scope_as = archegos
+		}
+		title:c_samarkand = {
+			save_scope_as = county
+		}
+		title:c_kufa = {
+			save_scope_as = babylon
+		}
+	}
+	
+	option = { # Ok
+		name = manichean.0004.a
+		trigger = {
+			faith = { has_doctrine = rice_light_purification_doctrine }
+		}		
+	}
+	
+	option = { # Ok
+		name = manichean.0004.b
+		trigger = {
+			NOT = { faith = { has_doctrine = rice_light_purification_doctrine } }
+		}	
+	}
+
+	after = {
+		RICE_manichean_change_archegos_capital_to_samarkand_effect = yes
+		custom_tooltip = manichean.0004.tooltip
+	}
+
+}
+
+# Set up Archaegos
+manichean.0005 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		RICE_manichean_create_archegos_effect = yes
+	}
+
+}
+
+# Mani Sealstone Artifact
+manichean.0006 = {
+	type = character_event
+	orphan = yes 
+	title = manichean.0006.t
+	desc = manichean.0006.desc
+	theme = faith
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:RICE_manichean_mani_sealstone
+		position = lower_center_portrait
+	}
+
+	immediate = {
+		save_scope_as = discoverer
+		faith:manichean = {
+			save_scope_as = manichean_faith
+		}
+		culture:assyrian = {
+			save_scope_as = syriac_culture
+		}
+
+		hidden_effect_new_object = {
+			create_artifact = {	
+				name = RICE_manichean_mani_sealstone_name
+				description = RICE_manichean_mani_sealstone_desc
+				type = regalia_simple
+				template = RICE_manichean_relic_template
+				visuals = RICE_manichean_mani_sealstone
+				quality = 100
+				wealth = 100
+				modifier = RICE_manichean_mani_sealstone_modifier
+				decaying = no
+				save_scope_as = RICE_manichean_mani_sealstone
+				history = {
+					type = created_before_history
+				}
+			}
+		}
+	}
+	
+	option = { # keep it
+		name = manichean.0006.a
+		show_as_tooltip = {
+			scope:RICE_manichean_mani_sealstone = {
+				set_owner = {
+					target = root
+				}
+			}
+		}
+	}
+	
+	option = { # don't keep it
+		name = manichean.0006.b
+		destroy_artifact = scope:RICE_manichean_mani_sealstone
+	}
+
+}
+
