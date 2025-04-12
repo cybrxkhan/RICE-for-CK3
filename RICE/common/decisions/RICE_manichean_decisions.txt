@@ -181,6 +181,201 @@ RICE_uyghur_manichean_church_decision = {
 	}
 }
 
+
+RICE_persecute_manicheans_in_mesopotamia = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_ck2_catching_a_heretic.dds" }
+	decision_group_type = major
+	desc = RICE_persecute_manicheans_in_mesopotamia_desc
+
+	ai_check_interval = 48
+
+	is_shown = {
+		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+		is_landed = yes
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_manichean_persecution_happened
+			}
+		}
+
+		any_held_county = {
+			any_county_province = {
+				geographical_region = world_middle_east
+			}
+		}
+		
+		NOT = { religion = religion:dualism_religion }
+
+
+
+	}
+
+	is_valid = {
+
+		custom_description = {
+			text = RICE_archegos_exists_req
+			exists = title:d_manichean.holder
+		}
+
+		custom_description = {
+			text = RICE_vassals_or_below_exists_req
+			# No Manichean vassals in your empire
+			NOT = {
+				any_vassal_or_below = {
+					faith = {
+						has_doctrine = rice_light_purification_doctrine
+					}
+				}
+			}
+		}
+		
+		NOT = { religion = religion:dualism_religion }
+		
+		# Needs to be a ruler of some level of power
+		is_independent_ruler = yes
+		OR = {
+			highest_held_title_tier >= tier_kingdom
+			any_held_title = { is_head_of_faith = yes }
+		}
+
+		
+		custom_description = {
+			text = RICE_you_or_vassal_own_kufa_req
+			OR = {
+				has_title = title:c_kufa
+				any_vassal_or_below = {
+					has_title = title:c_kufa
+				}
+			}
+		}
+
+
+		
+
+		# title:c_kufa.holder = {
+		# 	NOT = {
+		# 		faith = { has_doctrine = rice_light_purification_doctrine }
+		# 	}
+		# }
+
+		# Need to control some of Mesopotamia
+		calc_true_if = {
+			amount >= 3
+			completely_controls = title:d_samarra
+			completely_controls = title:d_kurdistan
+			completely_controls = title:d_wasit
+			completely_controls = title:d_kufa
+			completely_controls = title:d_basra
+			completely_controls = title:d_baghdad
+		}
+
+
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		RICE_is_available_adult_even_if_sick_trigger = yes
+	}
+
+	cost = {
+		gold = {
+			value = medium_gold_value
+		}
+	}
+
+	effect = {
+
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_manichean_persecution_happened
+		}
+
+		save_scope_as = persecutor
+
+		show_as_tooltip = {
+			RICE_persecute_manicheans_in_mesopotamia_effect = yes
+		}
+
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_persecute_manicheans_in_mesopotamia_context_tooltip
+		}
+
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:persecutor	
+					any_liege_or_above = { this = scope:persecutor }
+					faith = {
+						has_doctrine = rice_light_purification_doctrine
+					}
+					any_held_county = {
+						any_county_province = {
+							OR = {
+								geographical_region = world_middle_east
+								geographical_region = world_asia_minor
+								geographical_region = world_africa_north_west
+								geographical_region = world_europe_south_east
+							}
+						}
+					}
+				}
+			}
+			trigger_event = manichean.0004
+		}
+
+	}
+
+	ai_will_do = {
+		base = 25
+
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+
+		modifier = {
+			add = 10
+			has_trait = zealous
+		}
+		modifier = {
+			add = -10
+			has_trait = compassionate
+		}
+
+		modifier = {
+			add = 15
+			# Happened in the early 10th century under al-Muqtadir
+			current_date >= 890.1.1
+		}
+		modifier = {
+			add = 15
+			# Happened in the early 10th century under al-Muqtadir
+			current_date >= 910.1.1
+		}
+		modifier = {
+			add = 15
+			# Happened in the early 10th century under al-Muqtadir
+			current_date >= 930.1.1
+		}
+		modifier = {
+			add = 15
+			# Happened in the early 10th century under al-Muqtadir
+			current_date >= 950.1.1
+		}
+
+	}
+}
+
 RICE_manichean_manuscript_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_manichean.dds" }
 	ai_check_interval = 48
@@ -529,14 +724,26 @@ RICE_manichean_lin_deng_decision = {
 
 	is_shown = {
 		is_playable_character = yes
-		culture = { has_cultural_pillar = heritage_chinese }
-		faith = { has_doctrine = rice_light_purification_doctrine }
+		OR = {
+			culture = { has_cultural_pillar = heritage_chinese }
+			has_trait = RICE_disciple_of_lin_deng
+		}
+		OR = {
+			faith = { has_doctrine = rice_light_purification_doctrine }
+			has_trait = RICE_disciple_of_lin_deng
+		}
 		# In the future, will be doable in Fujian
 	}
 	
 	is_valid = {
-		culture = { has_cultural_pillar = heritage_chinese }
-		faith = { has_doctrine = rice_light_purification_doctrine }
+		OR = {
+			culture = { has_cultural_pillar = heritage_chinese }
+			has_trait = RICE_disciple_of_lin_deng
+		}
+		OR = {
+			faith = { has_doctrine = rice_light_purification_doctrine }
+			has_trait = RICE_disciple_of_lin_deng
+		}
 	}
 	
 	is_valid_showing_failures_only = {

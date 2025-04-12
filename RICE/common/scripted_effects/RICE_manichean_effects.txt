@@ -13,8 +13,8 @@
 	############################################################
 
 	faith:manichean = {		
-		remove_doctrine = rice_food_purification_doctrine	
-		add_doctrine = rice_light_purification_doctrine	
+		#remove_doctrine = rice_food_purification_doctrine	
+		#add_doctrine = rice_light_purification_doctrine	
 		# Mani preached that magic was bad
 		if = {
 			limit = { has_doctrine = doctrine_witchcraft_accepted }
@@ -96,6 +96,17 @@
 	# MISCELLANEOUS
 	#
 	############################################################
+
+	# Rough estimate for when the Manichean persecution by al-Muqtadir happened
+	if = {
+		limit = {
+			current_date >= 908.1.1
+		}
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_manichean_persecution_happened
+		}
+	}
 
 	# Rough estimate for when the Uyghurs started converting to Buddhism
 	if = {
@@ -194,13 +205,41 @@ RICE_manichean_change_archegos_capital_to_turfan_effect = {
 }
 
 RICE_manichean_change_archegos_capital_to_samarkand_effect = {
+	custom_tooltip = manichean.0004.tooltip
 	title:d_manichean = { set_capital_county = title:c_samarkand }
 	faith:manichean = {
 		change_fervor = {
-			value = -10
+			value = -15
 			desc = fervor_loss_RICE_manichean_archegos_flee
 		}
 	}
 }
 
 
+RICE_persecute_manicheans_in_mesopotamia_effect = {
+	add_character_modifier = {
+		modifier = RICE_manichean_persecutor_of_zindiqs
+	}
+	add_piety = major_piety_gain
+	add_gold = 250
+	RICE_manichean_change_archegos_capital_to_samarkand_effect = yes
+	# Every county in your realm that is Manichean in Mesopotamia converts to your faith
+	every_county_in_region = {
+		region = world_mesopotamia
+		limit = {
+			holder.top_liege = root
+			NOT = {
+				holder = {					
+					faith = {
+						has_doctrine = rice_light_purification_doctrine
+					}	
+				}
+			}
+			faith = {
+				has_doctrine = rice_light_purification_doctrine
+			}	
+		}
+		custom = RICE_every_manichean_county_owned_or_vassal_mesopotamia
+		set_county_faith = root.faith	
+	}
+}
