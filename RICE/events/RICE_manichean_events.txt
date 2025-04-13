@@ -24,10 +24,63 @@ namespace = manichean
 ######################################################################################
 
 
+# Restore Manicheism in Mesopotamia
+manichean.0001 = {
+	type = character_event
+	window = fullscreen_event
+	title = manichean.0001.t
+	desc = manichean.0001.desc
+	theme = faith
+	override_background = { reference = fp3_fullscreen_rekindle }
+
+	immediate = {
+		title:d_manichean.holder = {
+			save_scope_as = archegos
+		}
+		title:c_kufa = {
+			save_scope_as = babylon
+		}
+		if = {
+			limit = {
+				root = scope:manichean_reviver
+			}
+			RICE_revive_manicheism_in_mesopotamia_effect = yes
+			# Discover the sealstone of Mani
+			trigger_event = {
+				id = manichean.0006
+				days = { 365 3650 }
+			}
+		}
+		else = {
+			show_as_tooltip = {
+				scope:manichean_reviver = {
+					RICE_revive_manicheism_in_mesopotamia_effect = yes					
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = manichean.0001.a
+		trigger = {
+			faith = { has_doctrine = rice_light_purification_doctrine }
+		}		
+	}
+	
+	option = { # Ok
+		name = manichean.0001.b
+		trigger = {
+			NOT = { faith = { has_doctrine = rice_light_purification_doctrine } }
+		}	
+	}
+
+}
+
+
+
 # Persecution by the caliphs / Move the Archegos to Samarkand
 manichean.0004 = {
 	type = character_event
-	orphan = yes 
 	window = fullscreen_event
 	title = manichean.0004.t
 	desc = manichean.0004.desc
@@ -89,23 +142,42 @@ manichean.0005 = {
 # Mani Sealstone Artifact
 manichean.0006 = {
 	type = character_event
-	orphan = yes 
 	title = manichean.0006.t
 	desc = manichean.0006.desc
 	theme = faith
+	override_background = { reference = RICE_background_khuzestan_farmland }
+
+	right_portrait = {
+		character = scope:discoverer
+		animation = admiration
+	}
 
 	artifact = { # To display the artifact in the event-window
 		target = scope:RICE_manichean_mani_sealstone
 		position = lower_center_portrait
 	}
 
+	trigger = {
+		NOT = { has_global_variable = RICE_mani_sealstone_found }
+		faith = { has_doctrine = rice_light_purification_doctrine }
+	}
+
 	immediate = {
+		set_global_variable = {
+			name = RICE_mani_sealstone_found
+			value = yes
+		}
 		save_scope_as = discoverer
+		play_music_cue = "mx_cue_epic_sacral_moment"
 		faith:manichean = {
 			save_scope_as = manichean_faith
 		}
 		culture:assyrian = {
 			save_scope_as = syriac_culture
+		}
+		random_county_in_region = {
+			region = world_mesopotamia
+			save_scope_as = county
 		}
 
 		hidden_effect_new_object = {
@@ -129,7 +201,59 @@ manichean.0006 = {
 	
 	option = { # keep it
 		name = manichean.0006.a
+		add_piety = 500
 		show_as_tooltip = {
+			scope:RICE_manichean_mani_sealstone = {
+				set_owner = {
+					target = root
+				}
+			}
+		}
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:discoverer
+					faith = {
+						has_doctrine = rice_light_purification_doctrine
+					}
+				}
+			}
+			trigger_event = manichean.0007
+		}
+	}
+	
+	# option = { # don't keep it
+	# 	name = manichean.0006.b
+	# 	destroy_artifact = scope:RICE_manichean_mani_sealstone
+	# }
+
+}
+
+
+
+# Notification event for Manichean Seal stone discovery
+# TerrainTypeCountyScope
+# IndefiniteBodyOfWater_Static
+manichean.0007 = {
+	type = character_event
+	title = manichean.0007.t
+	desc = manichean.0007.desc
+	theme = faith
+	override_background = { reference = RICE_background_khuzestan_farmland }
+
+	right_portrait = {
+		character = scope:discoverer
+		animation = admiration
+	}
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:RICE_manichean_mani_sealstone
+		position = lower_center_portrait
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			add_piety = 500
 			scope:RICE_manichean_mani_sealstone = {
 				set_owner = {
 					target = root
@@ -138,10 +262,8 @@ manichean.0006 = {
 		}
 	}
 	
-	option = { # don't keep it
-		name = manichean.0006.b
-		destroy_artifact = scope:RICE_manichean_mani_sealstone
+	option = { # Ok
+		name = manichean.0007.a
 	}
 
 }
-

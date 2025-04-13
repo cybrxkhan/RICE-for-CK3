@@ -29,14 +29,14 @@ RICE_uyghur_manichean_church_decision = {
 				}
 			}
 		}
-		faith = faith:manichean
+		faith = { has_doctrine = rice_light_purification_doctrine }
 	}
 	
 	is_valid = {
 		is_landed = yes
 		is_independent_ruler = yes
 		highest_held_title_tier >= tier_kingdom
-		faith = faith:manichean
+		faith = { has_doctrine = rice_light_purification_doctrine }
 		piety_level >= 2
 		OR = {
 			culture = culture:uyghur
@@ -50,7 +50,7 @@ RICE_uyghur_manichean_church_decision = {
 		any_realm_province = {
 			county = {
 				NOT = {
-					faith = faith:manichean
+					faith = { has_doctrine = rice_light_purification_doctrine }
 				}
 			}
 		}
@@ -207,7 +207,12 @@ RICE_persecute_manicheans_in_mesopotamia = {
 		
 		NOT = { religion = religion:dualism_religion }
 
-
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_manichean_revival_happened
+			}
+		}
 
 	}
 
@@ -219,7 +224,7 @@ RICE_persecute_manicheans_in_mesopotamia = {
 		}
 
 		custom_description = {
-			text = RICE_vassals_or_below_exists_req
+			text = RICE_manichean_vassals_or_below_exists_req
 			# No Manichean vassals in your empire
 			NOT = {
 				any_vassal_or_below = {
@@ -371,6 +376,153 @@ RICE_persecute_manicheans_in_mesopotamia = {
 			add = 15
 			# Happened in the early 10th century under al-Muqtadir
 			current_date >= 950.1.1
+		}
+
+	}
+}
+
+RICE_revive_manicheism_in_mesopotamia = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_manichean.dds" }
+	decision_group_type = major
+	desc = RICE_revive_manicheism_in_mesopotamia_desc
+
+	ai_check_interval = 48
+
+	is_shown = {
+		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+		is_playable_character = yes
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_manichean_revival_happened
+			}
+		}
+
+		# any_held_county = {
+		# 	any_county_province = {
+		# 		geographical_region = world_middle_east
+		# 	}
+		# }
+		
+		faith = { has_doctrine = rice_light_purification_doctrine }
+
+
+
+	}
+
+	is_valid = {
+
+		is_landed = yes
+		faith = { has_doctrine = rice_light_purification_doctrine }
+		
+		# Needs to be a ruler of some level of power
+		is_independent_ruler = yes
+		highest_held_title_tier >= tier_kingdom
+		
+		custom_description = {
+			text = RICE_you_or_vassal_own_kufa_req
+			OR = {
+				has_title = title:c_kufa
+				any_vassal_or_below = {
+					has_title = title:c_kufa
+				}
+			}
+		}
+
+		# Need to control some of Mesopotamia
+		calc_true_if = {
+			amount >= 4
+			completely_controls = title:d_samarra
+			completely_controls = title:d_kurdistan
+			completely_controls = title:d_wasit
+			completely_controls = title:d_kufa
+			completely_controls = title:d_basra
+			completely_controls = title:d_baghdad
+		}
+
+
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		RICE_is_available_adult_even_if_sick_trigger = yes
+	}
+
+	cost = {
+		gold = {
+			value = medium_gold_value
+		}
+	}
+
+	effect = {
+
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_manichean_revival_happened
+		}
+
+		save_scope_as = manichean_reviver
+
+		show_as_tooltip = {
+			RICE_revive_manicheism_in_mesopotamia_effect = yes
+		}
+
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_revive_manicheism_in_mesopotamia_context_tooltip
+		}
+
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:manichean_reviver	
+					any_liege_or_above = { this = scope:manichean_reviver }
+					faith = {
+						has_doctrine = rice_light_purification_doctrine
+					}
+					any_held_county = {
+						any_county_province = {
+							OR = {
+								geographical_region = world_middle_east
+								geographical_region = world_asia_minor
+								geographical_region = world_africa_north
+								geographical_region = world_africa_east
+								geographical_region = world_europe_south
+								geographical_region = world_india
+								geographical_region = world_steppe
+							}
+						}
+					}
+				}
+			}
+			trigger_event = manichean.0001
+		}
+
+	}
+
+	ai_will_do = {
+		base = 25
+
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+
+		modifier = {
+			add = 10
+			has_trait = zealous
+		}
+		modifier = {
+			add = -10
+			has_trait = cynical
 		}
 
 	}
@@ -635,14 +787,14 @@ RICE_gnostic_alms_decision = {
 		is_playable_character = yes
 		OR = {
 			religion = religion:dualism_religion
-			faith = { has_doctrine = has_doctrine = tenet_gnosticism }
+			faith = { has_doctrine = tenet_gnosticism }
 		}
 	}
 	
 	is_valid = {
 		OR = {
 			religion = religion:dualism_religion
-			faith = { has_doctrine = has_doctrine = tenet_gnosticism }
+			faith = { has_doctrine = tenet_gnosticism }
 		}
 	}
 	
@@ -717,7 +869,7 @@ RICE_manichean_lin_deng_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_chinese_temple.dds" }
 	ai_check_interval = 32
 	
-	cooldown = { days = 1825 } 
+	cooldown = { days = 3650 } 
 
 	desc = RICE_manichean_lin_deng_decision_desc
 	selection_tooltip = RICE_manichean_lin_deng_decision_tooltip
