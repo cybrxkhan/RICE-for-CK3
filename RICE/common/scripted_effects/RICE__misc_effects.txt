@@ -1313,6 +1313,10 @@ RICE_local_pilgrimage_generic_host_effect = {
 				NOT = { has_trait = pilgrim }
 			}
 			add_trait = pilgrim
+			add_trait_xp = { 
+				trait = pilgrim 
+				value = 10
+			}
 		}
 		else_if = {
 			limit = {
@@ -1409,6 +1413,135 @@ RICE_local_pilgrimage_generic_host_effect = {
 			}
 		}
 	}
+	else_if = {
+		limit = {
+			scope:activity = {
+				has_activity_option = {
+					category = special_type
+					option = RICE_local_pilgrimage_type_performance
+				}
+			}
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+		if = {
+			limit = {
+				NOT = { has_trait = pilgrim }
+			}
+			add_trait = pilgrim
+		}
+		else_if = {
+			limit = {
+				has_trait_xp = { 
+					trait = pilgrim 
+					value < 100  #TODO_CD_EP2 standardize less than MAX
+				}
+			}
+			add_trait_xp = { 
+				trait = pilgrim 
+				value = 5
+			}
+		}
+	}
+
+	if = {
+		limit = {
+			scope:activity = {
+				has_activity_option = {
+					category = special_type
+					option = RICE_local_pilgrimage_type_performance
+				}
+			}
+		}
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = RICE_local_pilgrimage_memorialization_type
+						option = RICE_local_pilgrimage_memorialization_type_small
+					}
+				}
+			}
+			add_prestige = RICE_local_pilgrimage_memorialization_prestige_gain_small
+			add_legitimacy = RICE_very_miniscule_legitimacy_gain
+		}
+		else_if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = RICE_local_pilgrimage_memorialization_type
+						option = RICE_local_pilgrimage_memorialization_type_medium
+					}
+				}
+			}
+			add_prestige = RICE_local_pilgrimage_memorialization_prestige_gain_medium
+			dynasty ?= {
+				add_dynasty_prestige = miniscule_dynasty_prestige_gain
+			}
+			add_legitimacy = miniscule_legitimacy_gain
+		}
+		else_if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = RICE_local_pilgrimage_memorialization_type
+						option = RICE_local_pilgrimage_memorialization_type_large
+					}
+				}
+			}
+			add_prestige = RICE_local_pilgrimage_memorialization_prestige_gain_large
+			dynasty ?= {
+				add_dynasty_prestige = minor_dynasty_prestige_gain
+			}
+			add_legitimacy = minor_legitimacy_gain
+		}
+	}
+	else = {
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = RICE_local_pilgrimage_memorialization_type
+						option = RICE_local_pilgrimage_memorialization_type_small
+					}
+				}
+			}
+			add_prestige = RICE_local_pilgrimage_memorialization_prestige_gain_small
+			add_legitimacy = RICE_very_miniscule_legitimacy_gain
+		}
+		else_if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = RICE_local_pilgrimage_memorialization_type
+						option = RICE_local_pilgrimage_memorialization_type_medium
+					}
+				}
+			}
+			add_prestige = RICE_local_pilgrimage_memorialization_prestige_gain_medium
+			dynasty ?= {
+				add_dynasty_prestige = miniscule_dynasty_prestige_gain
+			}
+			add_legitimacy = miniscule_legitimacy_gain
+		}
+		else_if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = RICE_local_pilgrimage_memorialization_type
+						option = RICE_local_pilgrimage_memorialization_type_large
+					}
+				}
+			}
+			add_prestige = RICE_local_pilgrimage_memorialization_prestige_gain_large
+			dynasty ?= {
+				add_dynasty_prestige = minor_dynasty_prestige_gain
+			}
+			add_legitimacy = minor_legitimacy_gain
+		}
+	}
+
 }
 
 RICE_local_pilgrimage_generic_guest_effect = {
