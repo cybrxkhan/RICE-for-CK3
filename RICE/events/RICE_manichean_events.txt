@@ -309,6 +309,260 @@ manichean.0008 = {
 }
 
 
+# Powerful Uyghur leader supports the Manichean Church in trouble
+manichean.0010 = {
+	type = character_event
+	title = manichean.0010.t
+	desc = manichean.0010.desc
+	theme = faith
+	override_background = { reference = RICE_background_iranian_throne_room }
+
+	right_portrait = {
+		character = scope:uyghur_leader
+		animation = personality_zealous
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		if = {
+			limit = {
+				root = scope:uyghur_leader
+			}
+			RICE_manichean_uyghur_decision_support_effect = yes
+		}
+		else = {
+			show_as_tooltip = {
+				scope:uyghur_leader = {
+					RICE_manichean_uyghur_decision_support_effect = yes					
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = manichean.0010.a
+		trigger = {
+			faith = { has_doctrine = rice_light_purification_doctrine }
+		}		
+	}
+	
+	option = { # Ok
+		name = manichean.0010.b
+		trigger = {
+			NOT = { faith = { has_doctrine = rice_light_purification_doctrine } }
+		}	
+	}
+
+}
+
+
+# Powerful Uyghur leader reforms the Manichean Church in trouble
+manichean.0011 = {
+	type = character_event
+	title = manichean.0011.t
+	desc = manichean.0011.desc
+	theme = faith
+	override_background = { reference = RICE_background_iranian_throne_room }
+
+	right_portrait = {
+		character = scope:uyghur_leader
+		animation = personality_bold
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		if = {
+			limit = {
+				root = scope:uyghur_leader
+			}
+			RICE_manichean_uyghur_decision_reform_effect = yes
+		}
+		else = {
+			show_as_tooltip = {
+				scope:uyghur_leader = {
+					RICE_manichean_uyghur_decision_reform_effect = yes					
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = manichean.0011.a
+		trigger = {
+			faith = { has_doctrine = rice_light_purification_doctrine }
+		}		
+	}
+	
+	option = { # Ok
+		name = manichean.0011.b
+		trigger = {
+			NOT = { faith = { has_doctrine = rice_light_purification_doctrine } }
+		}	
+	}
+
+}
+
+
+# Powerful Uyghur leader abandons the Manichean Church in trouble
+manichean.0012 = {
+	type = character_event
+	title = manichean.0012.t
+	desc = manichean.0012.desc
+	theme = faith
+	override_background = { reference = RICE_background_iranian_throne_room }
+
+	right_portrait = {
+		character = scope:uyghur_leader
+		animation = personality_bold
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+		if = {
+			limit = {
+				root = scope:uyghur_leader
+			}
+			RICE_manichean_uyghur_decision_reform_effect = yes
+		}
+		else = {
+			show_as_tooltip = {
+				scope:uyghur_leader = {
+					RICE_manichean_uyghur_decision_reform_effect = yes					
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = manichean.0012.a
+		trigger = {
+			faith = { has_doctrine = rice_light_purification_doctrine }
+		}		
+	}
+	
+	option = { # Ok
+		name = manichean.0012.b
+		trigger = {
+			NOT = { faith = { has_doctrine = rice_light_purification_doctrine } }
+		}	
+	}
+
+	after = {
+		if = {
+			limit = {
+				root = scope:uyghur_leader
+				scope:uyghur_leader = {
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_former_uyghur_influence_region
+						}
+						faith = {
+							NOT = {
+								has_doctrine = rice_light_purification_doctrine
+							}
+						}
+					}
+				}
+			}
+			trigger_event = manichean.0013
+		}
+	}
+
+}
+
+
+# Powerful Uyghur leader considers converting to a different faith
+manichean.0013 = {
+	type = character_event
+	title = manichean.0013.t
+	desc = manichean.0013.desc
+	theme = faith
+	override_background = { reference = RICE_background_iranian_throne_room }
+
+	left_portrait = {
+		character = scope:chaplain		
+		trigger = {
+			exists = scope:chaplain
+		}
+		triggered_animation = {
+			trigger = {
+				root = {
+					OR = {
+						has_trait = vengeful
+						has_trait = wrathful
+						has_trait = brave
+						has_trait = zealous
+						has_trait = honest
+					}
+				}
+			}
+			animation = rage
+		}
+		triggered_animation = {
+			trigger = {
+				root = {
+					OR = {
+						has_trait = cynical
+						has_trait = arbitrary
+						has_trait = content
+					}
+				}
+			}
+			animation = eyeroll
+		}
+		animation = beg
+	}
+
+	right_portrait = {
+		character = scope:uyghur_leader
+		animation = personality_cynical
+	}
+
+	immediate = {
+		if = {
+			limit = {			
+				cp:councillor_court_chaplain = {
+					exists = yes
+					is_available_adult = yes
+				}
+			}
+			cp:councillor_court_chaplain = { save_scope_as = chaplain }
+		}
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_former_uyghur_influence_region
+				}
+				faith = {
+					NOT = {
+						has_doctrine = rice_light_purification_doctrine
+					}
+				}
+			}
+			save_scope_as = county
+		}
+		scope:county.faith = {
+			save_scope_as = new_faith
+		}
+	}
+	
+	option = { # Ok
+		name = manichean.0013.a
+		set_character_faith_with_conversion = faith:new_faith
+	}
+	
+	option = { # Ok
+		name = manichean.0013.b
+		custom_tooltip = manichean.0013.b.tooltip # Tell player they can still take the decision to convert to another faith if they want to
+	}
+
+}
+
+
+
+
 ######################################################################################
 # 
 # MINOR DECISIONS

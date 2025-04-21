@@ -6,7 +6,7 @@
 RICE_uyghur_manichean_church_decision = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_manichean.dds" }
 	decision_group_type = major
-	ai_check_interval = 48
+	ai_check_interval = 36
 
 	#cooldown = { days = 10 } #1825
 	
@@ -37,7 +37,7 @@ RICE_uyghur_manichean_church_decision = {
 		is_independent_ruler = yes
 		highest_held_title_tier >= tier_kingdom
 		faith = { has_doctrine = rice_light_purification_doctrine }
-		piety_level >= 2
+		piety_level >= 3
 		OR = {
 			culture = culture:uyghur
 			culture = {
@@ -47,13 +47,23 @@ RICE_uyghur_manichean_church_decision = {
 			}
 		}
 		# Any county follows another religion besides Manicheism
-		any_realm_province = {
-			county = {
-				NOT = {
-					faith = { has_doctrine = rice_light_purification_doctrine }
+		# any_realm_province = {
+		# 	county = {
+		# 		NOT = {
+		# 			faith = { has_doctrine = rice_light_purification_doctrine }
+		# 		}
+		# 	}
+		# }
+
+		custom_description = {
+			text = RICE_former_uyghur_influence_region_capital_req
+			capital_county = {
+				any_county_province = {
+					geographical_region = RICE_former_uyghur_influence_region
 				}
 			}
 		}
+
 		# Need to control some of the Uyghur Silk Road lands
 		calc_true_if = {
 			amount >= 3
@@ -156,9 +166,53 @@ RICE_uyghur_manichean_church_decision = {
 			target = flag:RICE_uyghur_manichean_church_decision_done
 		}
 		save_scope_as = uyghur_leader
-		show_as_tooltip = {
-			RICE_manichean_uyghur_decision_abandon_effect = yes
+
+		# AI will tend towards abandoning the Church, but not necessarily
+		if = {
+			limit = {
+				is_ai = yes
+			}
+
+			random_list = {
+				# Support
+				10 = {
+					trigger_event = manichean.0010
+				}
+				# Reform
+				10 = {
+					trigger_event = manichean.0011
+				}
+				# Abandon
+				10 = {
+					trigger_event = manichean.0012
+				}
+			}
 		}
+
+		else_if = {
+			limit = { scope:RICE_manichean_uyghur_decision_support = yes }
+			show_as_tooltip = {
+				RICE_manichean_uyghur_decision_support_effect = yes
+			}
+			trigger_event = manichean.0010
+		}
+
+		else_if = {
+			limit = { scope:RICE_manichean_uyghur_decision_reform = yes }
+			show_as_tooltip = {
+				RICE_manichean_uyghur_decision_reform_effect = yes
+			}
+			trigger_event = manichean.0011
+		}
+
+		else_if = {
+			limit = { scope:RICE_manichean_uyghur_decision_abandon = yes }
+			show_as_tooltip = {
+				RICE_manichean_uyghur_decision_abandon_effect = yes
+			}
+			trigger_event = manichean.0012
+		}
+
 		if = {
 			limit = {
 				has_game_rule = RICE_historical_context_on
@@ -867,12 +921,13 @@ RICE_manichean_manuscript_decision = {
 		trigger_event = manichean.8888
 	}
 
-	minimum_cost = {
-		gold = minor_gold_value # Will depend
+	cost = {
+		gold = RICE_manichean_minor_gold_value # Will depend
+		prestige = medium_prestige_value
 	}
 	
 	ai_potential = {
-		short_term_gold > minor_gold_value
+		short_term_gold > RICE_manichean_minor_gold_value
 	}
 
 	ai_will_do = {
@@ -934,11 +989,11 @@ RICE_manichean_confession_decision = {
 	}
 
 	minimum_cost = {
-		gold = minor_gold_value # Will depend
+		gold = RICE_manichean_minor_gold_value # Will depend
 	}
 	
 	ai_potential = {
-		short_term_gold > minor_gold_value
+		short_term_gold > RICE_manichean_minor_gold_value
 	}
 
 	ai_will_do = {
@@ -1122,12 +1177,12 @@ RICE_manichean_lin_deng_decision = {
 	}
 
 	cost = {
-		gold = minor_gold_value # Will depend
+		gold = RICE_manichean_minor_gold_value # Will depend
 		piety = medium_piety_gain
 	}
 	
 	ai_potential = {
-		short_term_gold > minor_gold_value
+		short_term_gold > RICE_manichean_minor_gold_value
 	}
 
 	ai_will_do = {
