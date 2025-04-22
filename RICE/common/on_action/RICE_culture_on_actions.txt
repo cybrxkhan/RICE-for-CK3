@@ -53,16 +53,19 @@ on_culture_change_RICE = {
 				name = unavailable_unique_decisions
 				target = flag:flag_formed_normandy_decision
 			}
-			set_global_variable = {
-				name = RICE_normandy_struggle_started
-				value = yes
-			}
-			start_struggle = {
-				struggle_type = RICE_normandy_struggle
-				start_phase = struggle_RICE_normandy_phase_adventure
-			}
-			struggle:RICE_normandy_struggle = {
-				trigger_event = { on_action = RICE_normandy_struggle_starting_events }
+			if = {
+				limit = { has_game_rule = RICE_struggle_normandy_toggle_on }
+				set_global_variable = {
+					name = RICE_normandy_struggle_started
+					value = yes
+				}
+				start_struggle = {
+					struggle_type = RICE_normandy_struggle
+					start_phase = struggle_RICE_normandy_phase_adventure
+				}
+				struggle:RICE_normandy_struggle ?= {
+					trigger_event = { on_action = RICE_normandy_struggle_starting_events }
+				}
 			}
 			add_to_global_variable_list = {
 				name = RICE_normandy_rollo_list
@@ -96,7 +99,7 @@ on_culture_change_RICE = {
 					}
 				}
 			}
-			struggle:RICE_normandy_struggle = {
+			struggle:RICE_normandy_struggle ?= {
 				every_involved_ruler = {
 					limit = {
 						is_alive = yes

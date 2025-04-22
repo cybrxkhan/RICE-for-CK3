@@ -994,109 +994,114 @@ RICE_setup_sri_lanka_flavor_pack_effect = {
 
 RICE_setup_sri_lanka_after_game_start_effect = {
 
-
-	# Starting Sri Lankan struggle phase based on game rule
+	
 	if = {
-		limit = {
-			has_game_rule = RICE_sri_lanka_starting_phase_accumulation
-		}
-		start_struggle = {
-			struggle_type = RICE_sri_lanka_struggle
-			start_phase = struggle_RICE_sri_lanka_phase_degeneration
-		}
-		# Won't start on any other phase but the predefined starting phase
-		struggle:RICE_sri_lanka_struggle = {
-			change_struggle_phase = struggle_RICE_sri_lanka_phase_accumulation
-		}
-	}
-	else_if = {
-		limit = {
-			has_game_rule = RICE_sri_lanka_starting_phase_purification
-		}
-		start_struggle = {
-			struggle_type = RICE_sri_lanka_struggle
-			start_phase = struggle_RICE_sri_lanka_phase_degeneration
-		}
-		# Won't start on any other phase but the predefined starting phase
-		struggle:RICE_sri_lanka_struggle = {
-			change_struggle_phase = struggle_RICE_sri_lanka_phase_purification
-		}
-	}
-	else_if = {
-		limit = {
-			has_game_rule = RICE_sri_lanka_starting_phase_degeneration
-		}
-		start_struggle = {
-			struggle_type = RICE_sri_lanka_struggle
-			start_phase = struggle_RICE_sri_lanka_phase_degeneration
-		}
-	}
-	else_if = {
-		limit = {
-			has_game_rule = RICE_sri_lanka_starting_phase_random
-		}
-		start_struggle = {
-			struggle_type = RICE_sri_lanka_struggle
-			start_phase = struggle_RICE_sri_lanka_phase_degeneration
-		}
-		random_list = {
-			10 = {
-				# Stay in Degeneration, you degenerates
-			}
-			10 = {
-				# Won't start on any other phase but the predefined starting phase
-				struggle:RICE_sri_lanka_struggle = {
-					change_struggle_phase = struggle_RICE_sri_lanka_phase_purification
-				}
-			}
-			10 = {
-				# Won't start on any other phase but the predefined starting phase
-				struggle:RICE_sri_lanka_struggle = {
-					change_struggle_phase = struggle_RICE_sri_lanka_phase_accumulation
-				}
-			}
-		}
-	}
-	else = {
-		# Although Parākramabāhu's reign is traditionally seen as the start of Mahavihara's triumph over the other Buddhist schools, recent scholarship has questioned this.
-		# It appears the reality was Mahavihara became the predominant force in Sri Lanka, but sectarianism did not end yet
+		limit = { has_game_rule = RICE_struggle_sri_lanka_toggle_on }		
+		# Starting Sri Lankan struggle phase based on game rule
 		if = {
 			limit = {
-				game_start_date >= 1150.1.1
+				has_game_rule = RICE_sri_lanka_starting_phase_accumulation
 			}
 			start_struggle = {
 				struggle_type = RICE_sri_lanka_struggle
 				start_phase = struggle_RICE_sri_lanka_phase_degeneration
 			}
 			# Won't start on any other phase but the predefined starting phase
-			struggle:RICE_sri_lanka_struggle = {
+			struggle:RICE_sri_lanka_struggle ?= {
+				change_struggle_phase = struggle_RICE_sri_lanka_phase_accumulation
+			}
+		}
+		else_if = {
+			limit = {
+				has_game_rule = RICE_sri_lanka_starting_phase_purification
+			}
+			start_struggle = {
+				struggle_type = RICE_sri_lanka_struggle
+				start_phase = struggle_RICE_sri_lanka_phase_degeneration
+			}
+			# Won't start on any other phase but the predefined starting phase
+			struggle:RICE_sri_lanka_struggle ?= {
 				change_struggle_phase = struggle_RICE_sri_lanka_phase_purification
 			}
 		}
 		else_if = {
 			limit = {
-				game_start_date >= 990.1.1
+				has_game_rule = RICE_sri_lanka_starting_phase_degeneration
 			}
 			start_struggle = {
 				struggle_type = RICE_sri_lanka_struggle
 				start_phase = struggle_RICE_sri_lanka_phase_degeneration
+			}
+		}
+		else_if = {
+			limit = {
+				has_game_rule = RICE_sri_lanka_starting_phase_random
+			}
+			start_struggle = {
+				struggle_type = RICE_sri_lanka_struggle
+				start_phase = struggle_RICE_sri_lanka_phase_degeneration
+			}
+			random_list = {
+				10 = {
+					# Stay in Degeneration, you degenerates
+				}
+				10 = {
+					# Won't start on any other phase but the predefined starting phase
+					struggle:RICE_sri_lanka_struggle ?= {
+						change_struggle_phase = struggle_RICE_sri_lanka_phase_purification
+					}
+				}
+				10 = {
+					# Won't start on any other phase but the predefined starting phase
+					struggle:RICE_sri_lanka_struggle ?= {
+						change_struggle_phase = struggle_RICE_sri_lanka_phase_accumulation
+					}
+				}
 			}
 		}
 		else = {
-			start_struggle = {
-				struggle_type = RICE_sri_lanka_struggle
-				start_phase = struggle_RICE_sri_lanka_phase_degeneration
+			# Although Parākramabāhu's reign is traditionally seen as the start of Mahavihara's triumph over the other Buddhist schools, recent scholarship has questioned this.
+			# It appears the reality was Mahavihara became the predominant force in Sri Lanka, but sectarianism did not end yet
+			if = {
+				limit = {
+					game_start_date >= 1150.1.1
+				}
+				start_struggle = {
+					struggle_type = RICE_sri_lanka_struggle
+					start_phase = struggle_RICE_sri_lanka_phase_degeneration
+				}
+				# Won't start on any other phase but the predefined starting phase
+				struggle:RICE_sri_lanka_struggle ?= {
+					change_struggle_phase = struggle_RICE_sri_lanka_phase_purification
+				}
 			}
-			# Won't start on any other phase but the predefined starting phase
-			struggle:RICE_sri_lanka_struggle = {
-				change_struggle_phase = struggle_RICE_sri_lanka_phase_accumulation
+			else_if = {
+				limit = {
+					game_start_date >= 990.1.1
+				}
+				start_struggle = {
+					struggle_type = RICE_sri_lanka_struggle
+					start_phase = struggle_RICE_sri_lanka_phase_degeneration
+				}
 			}
+			else = {
+				start_struggle = {
+					struggle_type = RICE_sri_lanka_struggle
+					start_phase = struggle_RICE_sri_lanka_phase_degeneration
+				}
+				# Won't start on any other phase but the predefined starting phase
+				struggle:RICE_sri_lanka_struggle ?= {
+					change_struggle_phase = struggle_RICE_sri_lanka_phase_accumulation
+				}
+			}
+		}
+
+		struggle:RICE_sri_lanka_struggle ?= {
+			trigger_event = { on_action = RICE_sri_lanka_struggle_starting_events }
 		}
 	}
 
-	struggle:RICE_sri_lanka_struggle = {
-		trigger_event = { on_action = RICE_sri_lanka_struggle_starting_events }
-	}
+
 
 	# Starting Sri Lankan Monastery Prominence based on game rule
 	if = {
@@ -1275,7 +1280,7 @@ RICE_setup_sri_lanka_after_game_start_effect = {
 			add_trait = RICE_mahavihara_trait
 		}
 	}
-	struggle:RICE_sri_lanka_struggle = {
+	struggle:RICE_sri_lanka_struggle ?= {
 		random_involved_ruler = {
 			limit = {
 				is_ai = yes
@@ -1441,7 +1446,7 @@ RICE_sri_lanka_struggle_land_grant_buddhist_effect = {
 				}
 			}
 		}
-		struggle:RICE_sri_lanka_struggle = {
+		struggle:RICE_sri_lanka_struggle ?= {
 			activate_struggle_catalyst = {
 				catalyst = catalyst_RICE_sri_lanka_land_grants_buddhist
 				character = root
@@ -1465,7 +1470,7 @@ RICE_sri_lanka_struggle_land_grant_non_buddhist_effect = {
 				}
 			}
 		}
-		struggle:RICE_sri_lanka_struggle = {
+		struggle:RICE_sri_lanka_struggle ?= {
 			activate_struggle_catalyst = {
 				catalyst = catalyst_RICE_sri_lanka_land_grants_non_buddhist
 				character = root
@@ -1618,7 +1623,7 @@ RICE_sri_lanka_struggle_ending_phase_effect = {
 	if = {
 		limit = {
 			exists = struggle:RICE_sri_lanka_struggle
-			struggle:RICE_sri_lanka_struggle = {
+			struggle:RICE_sri_lanka_struggle ?= {
 				is_struggle_phase = struggle_RICE_sri_lanka_phase_degeneration
 			}
 		}
@@ -1635,7 +1640,7 @@ RICE_sri_lanka_struggle_ending_phase_effect = {
 	else_if = {
 		limit = {
 			exists = struggle:RICE_sri_lanka_struggle
-			struggle:RICE_sri_lanka_struggle = {
+			struggle:RICE_sri_lanka_struggle ?= {
 				is_struggle_phase = struggle_RICE_sri_lanka_phase_accumulation
 			}
 		}
@@ -1652,7 +1657,7 @@ RICE_sri_lanka_struggle_ending_phase_effect = {
 	else_if = {
 		limit = {
 			exists = struggle:RICE_sri_lanka_struggle
-			struggle:RICE_sri_lanka_struggle = {
+			struggle:RICE_sri_lanka_struggle ?= {
 				is_struggle_phase = struggle_RICE_sri_lanka_phase_purification
 			}
 		}
@@ -3191,7 +3196,7 @@ RICE_sri_lanka_struggle_irrigation_tank_small_effect = {
 				is_struggle_type = RICE_sri_lanka_struggle
 			}
 		}
-		struggle:RICE_sri_lanka_struggle = {
+		struggle:RICE_sri_lanka_struggle ?= {
 			activate_struggle_catalyst = {
 				catalyst = catalyst_RICE_irrigation_tank_small
 				character = root
@@ -3242,7 +3247,7 @@ RICE_sri_lanka_struggle_irrigation_tank_medium_effect = {
 				is_struggle_type = RICE_sri_lanka_struggle
 			}
 		}
-		struggle:RICE_sri_lanka_struggle = {
+		struggle:RICE_sri_lanka_struggle ?= {
 			activate_struggle_catalyst = {
 				catalyst = catalyst_RICE_irrigation_tank_medium
 				character = root
@@ -3293,7 +3298,7 @@ RICE_sri_lanka_struggle_irrigation_tank_large_effect = {
 				is_struggle_type = RICE_sri_lanka_struggle
 			}
 		}
-		struggle:RICE_sri_lanka_struggle = {
+		struggle:RICE_sri_lanka_struggle ?= {
 			activate_struggle_catalyst = {
 				catalyst = catalyst_RICE_irrigation_tank_large
 				character = root
@@ -3344,7 +3349,7 @@ RICE_sri_lanka_struggle_irrigation_tank_huge_effect = {
 				is_struggle_type = RICE_sri_lanka_struggle
 			}
 		}
-		struggle:RICE_sri_lanka_struggle = {
+		struggle:RICE_sri_lanka_struggle ?= {
 			activate_struggle_catalyst = {
 				catalyst = catalyst_RICE_irrigation_tank_huge
 				character = root
@@ -3650,7 +3655,7 @@ RICE_sri_lanka_relic_veneration_completed_log_entry_effect = {
 							is_struggle_type = RICE_sri_lanka_struggle
 						}
 					}
-					struggle:RICE_sri_lanka_struggle = {
+					struggle:RICE_sri_lanka_struggle ?= {
 						activate_struggle_catalyst = {
 							catalyst = catalyst_RICE_sri_lanka_relic_veneration
 							character = scope:host
@@ -3756,7 +3761,7 @@ RICE_sri_lanka_local_deities_misc_effect = {
 				is_struggle_type = RICE_sri_lanka_struggle
 			}
 		}
-		struggle:RICE_sri_lanka_struggle = {
+		struggle:RICE_sri_lanka_struggle ?= {
 			activate_struggle_catalyst = {
 				catalyst = catalyst_RICE_sri_lanka_local_deity_worshipped
 				character = root
@@ -3844,7 +3849,7 @@ RICE_sri_lanka_sri_pada_pilgrimage_completed_log_entry_effect = {
 							is_struggle_type = RICE_sri_lanka_struggle
 						}
 					}
-					struggle:RICE_sri_lanka_struggle = {
+					struggle:RICE_sri_lanka_struggle ?= {
 						activate_struggle_catalyst = {
 							catalyst = catalyst_RICE_sri_lanka_pilgrimage_sri_pada
 							character = root
@@ -4329,7 +4334,7 @@ RICE_sri_lanka_annual_prominence_values_change_effect = {
 	if = {
 		limit = {
 			exists = struggle:RICE_sri_lanka_struggle
-			struggle:RICE_sri_lanka_struggle = {
+			struggle:RICE_sri_lanka_struggle ?= {
 				is_struggle_phase = struggle_RICE_sri_lanka_phase_purification
 			}
 		}
@@ -4370,7 +4375,7 @@ RICE_sri_lanka_annual_prominence_values_change_effect = {
 	else_if = {
 		limit = {
 			exists = struggle:RICE_sri_lanka_struggle
-			struggle:RICE_sri_lanka_struggle = {
+			struggle:RICE_sri_lanka_struggle ?= {
 				is_struggle_phase = struggle_RICE_sri_lanka_phase_accumulation
 			}
 		}
@@ -4411,7 +4416,7 @@ RICE_sri_lanka_annual_prominence_values_change_effect = {
 	else_if = {
 		limit = {
 			exists = struggle:RICE_sri_lanka_struggle
-			struggle:RICE_sri_lanka_struggle = {
+			struggle:RICE_sri_lanka_struggle ?= {
 				is_struggle_phase = struggle_RICE_sri_lanka_phase_degeneration
 			}
 		}
@@ -4653,15 +4658,15 @@ RICE_sri_lanka_new_culture_or_faith_involvement_effect = {
 	add_prestige = 150
 	if = {
 		limit = {
-			NOT = { struggle:RICE_sri_lanka_struggle = { is_culture_involved_in_struggle = root.culture } }
+			NOT = { struggle:RICE_sri_lanka_struggle ?= { is_culture_involved_in_struggle = root.culture } }
 		}
-		struggle:RICE_sri_lanka_struggle = { set_culture_as_involved = root.culture }
+		struggle:RICE_sri_lanka_struggle ?= { set_culture_as_involved = root.culture }
 	}
 	if = {
 		limit = {
-			NOT = { struggle:RICE_sri_lanka_struggle = { is_faith_involved_in_struggle = root.faith } }
+			NOT = { struggle:RICE_sri_lanka_struggle ?= { is_faith_involved_in_struggle = root.faith } }
 		}
-		struggle:RICE_sri_lanka_struggle = { set_faith_as_involved = root.faith }
+		struggle:RICE_sri_lanka_struggle ?= { set_faith_as_involved = root.faith }
 	}
 	if = {
 		limit = {

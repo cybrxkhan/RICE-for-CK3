@@ -562,6 +562,41 @@ manichean.0013 = {
 
 
 
+# Bokut intro event
+manichean.0014 = {
+	type = character_event
+	title = manichean.0014.t
+	desc = manichean.0014.desc
+	theme = RICE_theme_tarim_basin_town
+
+	right_portrait = {
+		character = root
+		animation = bow_idle
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			add_character_modifier = {
+				modifier = RICE_manichean_aspiration_reclaim_uyghur_power_in_qocho
+			}
+		}
+	}
+
+	option = { # Ok
+		name = manichean.0014.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = manichean.0014.info
+		}
+	}
+
+}
+
 
 ######################################################################################
 # 
@@ -698,25 +733,221 @@ manichean.0031 = {
 # 
 ######################################################################################
 
-
+# Manuscript - will you do it yourself or not?
 manichean.0050 = {
 	type = character_event
 	title = manichean.0050.t
 	desc = manichean.0050.desc
-	theme = faith
-	override_background = { reference = study }
+	theme = learning
 
 	right_portrait = {
 		character = root
 		animation = thinking
 	}
 
+	immediate = {
+		# If you're doing another religious text, figure out what type it is
+		if = {
+			limit = {
+				var:RICE_manichean_manuscript_type ?= flag:other_religions_texts
+			}
+			if = {
+				limit = {
+					# If you own a title with a non-Manichean faith, pick that
+					any_held_title = {
+						tier = county
+						NOT = { faith = { has_doctrine = special_doctrine_rice_doctrine_late_manicheism_abandon } }
+						NOT = { faith = { has_doctrine = unreformed_faith_doctrine } }
+					}
+				}
+				random_held_title = {
+					limit = {
+						tier = county
+						NOT = { faith = { has_doctrine = special_doctrine_rice_doctrine_late_manicheism_abandon } }
+						NOT = { faith = { has_doctrine = unreformed_faith_doctrine } }
+					}
+					add_to_list = other_faith_candidates
+				}
+				random_in_list = {
+					list = other_faith_candidates
+					weight = {
+						base = 10
+						modifier = {
+							any_county_province = {
+								has_holding = yes
+							}
+							add = 10
+						}
+						modifier = {
+							OR = {
+								faith.religion = religion:christianity_religion
+								faith.religion = religion:buddhism_religion
+								faith.religion = religion:zoroastrianism_religion
+								faith.religion = religion:judaism_religion
+								faith.religion = religion:taoism_religion
+							}
+							add = 30
+						}
+					}
+					save_scope_as = other_faith
+				}
+			}
+			# If you don't own one, choose one in the appropriate region
+			# Starting with Europe = Christianity
+			else_if = {
+				limit = {
+					capital_county = {
+						title_province = { 
+							OR = {
+								geographical_region = world_europe
+								geographical_region = world_asia_minor
+							}
+						}
+					}
+				}
+				religion:christianity_religion = {
+					random_faith = {
+						save_scope_as = other_faith
+					}
+				}
+			}
+			# North Africa/eastern steppes = Judaism
+			else_if = {
+				limit = {
+					capital_county = {
+						title_province = { 
+							geographical_region = world_africa
+						}
+					}
+				}
+				religion:judaism_religion = {
+					random_faith = {
+						save_scope_as = other_faith
+					}
+				}
+			}
+			# Middle East = Zoroastrianism
+			else_if = {
+				limit = {
+					capital_county = {
+						title_province = { 
+							geographical_region = world_middle_east
+						}
+					}
+				}
+				religion:zoroastrianism_religion = {
+					random_faith = {
+						save_scope_as = other_faith
+					}
+				}
+			}
+			# India/Central Asia = Buddhism
+			else_if = {
+				limit = {
+					capital_county = {
+						title_province = { 
+							OR = {
+								geographical_region = world_india
+								geographical_region = world_steppe
+								geographical_region = world_tibet
+								geographical_region = world_burma
+							}
+						}
+					}
+				}
+				religion:buddhism_religion = {
+					random_faith = {
+						save_scope_as = other_faith
+					}
+				}
+			}
+			# If for some reason you don't meet these criteria
+			else = {
+				random_list = {
+					10 = {
+						religion:christianity_religion = {
+							random_faith = {
+								save_scope_as = other_faith
+							}
+						}
+					}
+					10 = {
+						religion:judaism_religion = {
+							random_faith = {
+								save_scope_as = other_faith
+							}
+						}
+					}
+					10 = {
+						religion:zoroastrianism_religion = {
+							random_faith = {
+								save_scope_as = other_faith
+							}
+						}
+					}
+					10 = {
+						religion:buddhism_religion = {
+							random_faith = {
+								save_scope_as = other_faith
+							}
+						}
+					}
+					10 = {
+						religion:taoism_religion = {
+							random_faith = {
+								save_scope_as = other_faith
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 	option = { # Ok
-		name = manichean.0050.a
+		name = manichean.0050.a			
+		set_variable = {
+			name = RICE_manichean_manuscript_author
+			value = flag:other
+			days = 730 # A little over one year just in case
+		}
 	}
 
 	option = { # Ok
 		name = manichean.0050.b
+		trigger = {
+			faith = { has_doctrine = special_doctrine_rice_doctrine_late_manicheism_abandon }
+			learning >= mediocre_skill_rating # 8			
+		}
+		skill = learning
+		show_as_unavailable = {
+			learning < mediocre_skill_rating # 8
+		}		
+		set_variable = {
+			name = RICE_manichean_manuscript_author
+			value = flag:self
+			days = 730 # A little over one year just in case
+		}
+		add_character_modifier = {
+			modifier = RICE_manichean_writing_manuscript
+		}
+	}
+
+	option = { # Ok
+		name = manichean.0050.b
+		trigger = {
+			NOT = { faith = { has_doctrine = special_doctrine_rice_doctrine_late_manicheism_abandon } }
+			learning >= decent_skill_rating # 12		
+		}
+		skill = learning
+		show_as_unavailable = {
+			learning < decent_skill_rating # 12
+		}	
+		set_variable = {
+			name = RICE_manichean_manuscript_author
+			value = flag:self
+			days = 730 # A little over one year just in case
+		}
 		add_character_modifier = {
 			modifier = RICE_manichean_writing_manuscript
 		}
@@ -724,6 +955,232 @@ manichean.0050 = {
 
 	after = {
 		custom_tooltip = manichean.0050.tooltip
+		if = {
+			limit = {
+				var:RICE_manichean_manuscript_type ?= flag:seven_treatises
+			}
+			trigger_event = manichean.0051
+			# trigger_event = {
+			# 	id = manichean.0051
+			# 	days = { 30 365 }
+			# }
+		}
+		else_if = {
+			limit = {
+				var:RICE_manichean_manuscript_type ?= flag:shabuhragan
+			}
+			trigger_event = manichean.0052
+			# trigger_event = {
+			# 	id = manichean.0052
+			# 	days = { 30 365 }
+			# }
+		}
+		else_if = {
+			limit = {
+				var:RICE_manichean_manuscript_type ?= flag:arzhang
+			}
+			trigger_event = manichean.0053
+			# trigger_event = {
+			# 	id = manichean.0053
+			# 	days = { 30 365 }
+			# }
+		}
+		else_if = {
+			limit = {
+				var:RICE_manichean_manuscript_type ?= flag:kephalaia
+			}
+			trigger_event = manichean.0054
+			# trigger_event = {
+			# 	id = manichean.0054
+			# 	days = { 30 365 }
+			# }
+		}
+		else_if = {
+			limit = {
+				var:RICE_manichean_manuscript_type ?= flag:hymn_book
+			}
+			trigger_event = manichean.0055
+			# trigger_event = {
+			# 	id = manichean.0055
+			# 	days = { 30 365 }
+			# }
+		}
+		else_if = {
+			limit = {
+				var:RICE_manichean_manuscript_type ?= flag:confessional_texts
+			}
+			trigger_event = manichean.0056
+			# trigger_event = {
+			# 	id = manichean.0056
+			# 	days = { 30 365 }
+			# }
+		}
+		else_if = {
+			limit = {
+				var:RICE_manichean_manuscript_type ?= flag:parables_and_tales
+			}
+			trigger_event = manichean.0057
+			# trigger_event = {
+			# 	id = manichean.0057
+			# 	days = { 30 365 }
+			# }
+		}
+		else_if = {
+			limit = {
+				var:RICE_manichean_manuscript_type ?= flag:other_religions_texts
+			}
+			trigger_event = manichean.0058
+			# trigger_event = {
+			# 	id = manichean.0058
+			# 	days = { 30 365 }
+			# }
+		}
+	}
+
+}
+
+# Manuscript - will you do it yourself or not?
+manichean.0051 = {
+	type = character_event
+	title = manichean.0050.t
+	desc = manichean.0050.desc
+	theme = learning
+
+	right_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = {
+				var:RICE_manichean_manuscript_author ?= flag:self
+			}
+			animation = happy_teacher
+		}
+		animation = personality_content
+	}
+
+	artifact = { # To display the artifact in the event-window
+        target = scope:RICE_manichean_manuscript_artifact
+        position = lower_center_portrait
+    }
+
+	trigger = {
+		faith = { has_doctrine = rice_light_purification_doctrine }
+	}
+
+	#Trigger if converted to another faith
+	on_trigger_fail = { 
+		trigger_event = manichean.0059
+	}
+
+	immediate = {
+		RICE_manichean_manuscript_general_effect = yes
+		random_list = {
+			60 = {
+				hidden_effect_new_object = {
+					create_artifact = {	
+						name = RICE_manichean_artifact_seven_treatises_name
+						description = RICE_manichean_artifact_seven_treatises_desc
+						type = journal
+						template = RICE_manichean_manuscript_template
+						visuals = RICE_manichean_manuscript
+						quality = 15
+						wealth = 15
+						modifier = artifact_VIET_manichean_manuscript_seven_treatises_modifier_1
+						decaying = no
+						save_scope_as = RICE_manichean_manuscript_artifact
+						history = {
+							type = created_before_history
+						}
+					}
+					scope:RICE_manichean_manuscript_artifact = {
+						set_variable = RICE_manichean_artifact_seven_treatises_variable
+					}
+				}
+			}
+			45 = {
+				hidden_effect_new_object = {
+					create_artifact = {	
+						name = RICE_manichean_artifact_seven_treatises_name
+						description = RICE_manichean_artifact_seven_treatises_desc
+						type = journal
+						template = RICE_manichean_manuscript_template
+						visuals = RICE_manichean_manuscript
+						quality = 30
+						wealth = 30
+						modifier = artifact_VIET_manichean_manuscript_seven_treatises_modifier_2
+						#max_durability = 40
+						decaying = no
+						save_scope_as = RICE_manichean_manuscript_artifact
+						history = {
+							type = created_before_history
+						}
+					}
+					scope:RICE_manichean_manuscript_artifact = {
+						set_variable = RICE_manichean_artifact_seven_treatises_variable
+					}
+				}
+			}
+			30 = {
+				hidden_effect_new_object = {
+					create_artifact = {	
+						name = RICE_manichean_artifact_seven_treatises_name
+						description = RICE_manichean_artifact_seven_treatises_desc
+						type = journal
+						template = RICE_manichean_manuscript_template
+						visuals = RICE_manichean_manuscript
+						quality = 65
+						wealth = 65
+						modifier = artifact_VIET_manichean_manuscript_seven_treatises_modifier_3
+						#max_durability = 40
+						decaying = no
+						save_scope_as = RICE_manichean_manuscript_artifact
+						history = {
+							type = created_before_history
+						}
+					}
+					scope:RICE_manichean_manuscript_artifact = {
+						set_variable = RICE_manichean_artifact_seven_treatises_variable
+					}
+				}
+			}
+			15 = {
+				hidden_effect_new_object = {
+					create_artifact = {	
+						name = RICE_manichean_artifact_seven_treatises_name
+						description = RICE_manichean_artifact_seven_treatises_desc
+						type = journal
+						template = RICE_manichean_manuscript_template
+						visuals = RICE_manichean_manuscript
+						quality = 95
+						wealth = 95
+						modifier = artifact_VIET_manichean_manuscript_seven_treatises_modifier_4
+						#max_durability = 40
+						decaying = no
+						save_scope_as = RICE_manichean_manuscript_artifact
+						history = {
+							type = created_before_history
+						}
+					}
+					scope:RICE_manichean_manuscript_artifact = {
+						set_variable = RICE_manichean_artifact_seven_treatises_variable
+					}
+				}
+			}
+		}
+	}
+
+	option = { # Ok
+		name = manichean.0050.a
+		show_as_tooltip = {
+			scope:RICE_manichean_manuscript_artifact = {
+				set_owner = {
+					target = root
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_manichean_manuscript_event_chain_cleanup_effect = yes
 	}
 
 }
@@ -763,6 +1220,9 @@ manichean.0090 = {
 		}
 		show_as_tooltip = {
 			add_trait = RICE_disciple_of_lin_deng
+			add_character_modifier = {
+				modifier = RICE_manichean_aspiration_continue_lin_dengs_legacy
+			}
 		}
 	}
 

@@ -515,7 +515,7 @@ RICE_setup_north_atlantic_flavor_pack_effect = {
 			value = yes
 		}
 		RICE_enable_greenland_struggle_effect = yes
-		struggle:RICE_greenland_struggle = { set_culture_as_involved = culture:greenlandic }	
+		struggle:RICE_greenland_struggle ?= { set_culture_as_involved = culture:greenlandic }	
 		character:RICE_north_atlantic_001 = {
 			make_unprunable = yes
 			add_to_global_variable_list = {
@@ -539,7 +539,7 @@ RICE_setup_north_atlantic_flavor_pack_effect = {
 			name = RICE_north_atlantic_vinland_discovered
 			value = yes
 		}
-		#struggle:RICE_greenland_struggle = { set_culture_as_involved = culture:vinlandic }	
+		#struggle:RICE_greenland_struggle ?= { set_culture_as_involved = culture:vinlandic }	
 		character:RICE_north_atlantic_002 = {
 			make_unprunable = yes
 			add_to_global_variable_list = {
@@ -755,22 +755,25 @@ RICE_setup_north_atlantic_after_game_start_effect = {
 
 
 RICE_enable_greenland_struggle_effect = {	
-	start_struggle = {
-		struggle_type = RICE_greenland_struggle
-		start_phase = struggle_RICE_greenland_phase_settlement
-	}
 	if = {
-		limit = {
-			# Date of when the first Greenlandic Bishop was assigned, which I take as a good symbol of the Greenland colony "maturing"
-			game_start_date >= 1126.1.1 
+		limit = { has_game_rule = RICE_struggle_greenland_toggle_on }
+		start_struggle = {
+			struggle_type = RICE_greenland_struggle
+			start_phase = struggle_RICE_greenland_phase_settlement
 		}
-		# Won't start on any other phase but the predefined starting phase
-		struggle:RICE_greenland_struggle = {
-			change_struggle_phase = struggle_RICE_greenland_phase_integration
+		if = {
+			limit = {
+				# Date of when the first Greenlandic Bishop was assigned, which I take as a good symbol of the Greenland colony "maturing"
+				game_start_date >= 1126.1.1 
+			}
+			# Won't start on any other phase but the predefined starting phase
+			struggle:RICE_greenland_struggle ?= {
+				change_struggle_phase = struggle_RICE_greenland_phase_integration
+			}
 		}
-	}
-	struggle:RICE_greenland_struggle = {
-		trigger_event = { on_action = RICE_greenland_struggle_starting_events }
+		struggle:RICE_greenland_struggle ?= {
+			trigger_event = { on_action = RICE_greenland_struggle_starting_events }
+		}
 	}
 }
 
@@ -894,7 +897,7 @@ RICE_greenland_annual_values_calculator_effect = {
 		if = {
 			limit = {
 				exists = struggle:RICE_greenland_struggle
-				struggle:RICE_greenland_struggle = {
+				struggle:RICE_greenland_struggle ?= {
 					is_struggle_phase = struggle_RICE_greenland_phase_settlement
 				}				
 			}
@@ -1014,7 +1017,7 @@ RICE_greenland_annual_values_calculator_effect = {
 				OR = {
 					AND = {						
 						exists = struggle:RICE_greenland_struggle
-						struggle:RICE_greenland_struggle = {
+						struggle:RICE_greenland_struggle ?= {
 							is_struggle_phase = struggle_RICE_greenland_phase_integration
 						}
 					}
@@ -1190,7 +1193,7 @@ RICE_greenland_annual_values_calculator_effect = {
 		else_if = {
 			limit = {
 				exists = struggle:RICE_greenland_struggle
-				struggle:RICE_greenland_struggle = {
+				struggle:RICE_greenland_struggle ?= {
 					is_struggle_phase = struggle_RICE_greenland_phase_subsistence
 				}				
 			}
@@ -1362,7 +1365,7 @@ RICE_greenland_annual_values_calculator_effect = {
 		else_if = {
 			limit = {
 				exists = struggle:RICE_greenland_struggle
-				struggle:RICE_greenland_struggle = {
+				struggle:RICE_greenland_struggle ?= {
 					is_struggle_phase = struggle_RICE_greenland_phase_marginalization
 				}				
 			}
@@ -1660,7 +1663,7 @@ RICE_greenland_values_restart_calculator_effect = {
 		}
 		if = {
 			limit = {
-				struggle:RICE_greenland_struggle = {
+				struggle:RICE_greenland_struggle ?= {
 					OR = {
 						is_struggle_phase = struggle_RICE_greenland_phase_settlement
 						is_struggle_phase = struggle_RICE_greenland_phase_integration
@@ -1685,7 +1688,7 @@ RICE_greenland_values_restart_calculator_effect = {
 		}
 		if = {
 			limit = {
-				struggle:RICE_greenland_struggle = {
+				struggle:RICE_greenland_struggle ?= {
 					OR = {
 						is_struggle_phase = struggle_RICE_greenland_phase_settlement
 						is_struggle_phase = struggle_RICE_greenland_phase_integration
@@ -2155,7 +2158,7 @@ RICE_north_atlantic_incorporate_inuit_ideas_effect = {
 		limit = {
 			exists = struggle:RICE_greenland_struggle
 		}
-		struggle:RICE_greenland_struggle = {
+		struggle:RICE_greenland_struggle ?= {
 			activate_struggle_catalyst = catalyst_RICE_incorporate_inuit_ideas
 		}
 	}
@@ -3056,7 +3059,7 @@ RICE_greenland_struggle_ending_culture_list_effect = {
 		limit = {
 			#TODO_CD_FP2 (JP) check if this can be more performant, every_struggle_culture would be better
 			save_temporary_scope_as = this_culture
-			struggle:RICE_greenland_struggle = { is_culture_involved_in_struggle = scope:this_culture }
+			struggle:RICE_greenland_struggle ?= { is_culture_involved_in_struggle = scope:this_culture }
 			#culture_number_of_counties > 0
 		}
 		save_scope_as = culture_scope
@@ -3276,7 +3279,7 @@ RICE_give_vinland_viability_effect = {
 
 RICE_greenland_new_culture_involvement_effect = {
 	add_prestige = 250
-	struggle:RICE_greenland_struggle = { set_culture_as_involved = root.culture }
+	struggle:RICE_greenland_struggle ?= { set_culture_as_involved = root.culture }
 	custom_tooltip = RICE_north_atlantic_make_culture_involved_in_greenland_effect_tooltip_1
 	change_global_variable = {
 		name = RICE_greenland_resilience
@@ -3284,7 +3287,7 @@ RICE_greenland_new_culture_involvement_effect = {
 	}
 	if = {
 		limit = {
-			struggle:RICE_greenland_struggle = { is_faith_involved_in_struggle = root.faith }
+			struggle:RICE_greenland_struggle ?= { is_faith_involved_in_struggle = root.faith }
 		}
 		if = {
 			limit = {
@@ -3295,7 +3298,7 @@ RICE_greenland_new_culture_involvement_effect = {
 					modifier = RICE_north_atlantic_greenland_family_estate
 				}
 			}
-			struggle:RICE_greenland_struggle = {
+			struggle:RICE_greenland_struggle ?= {
 				activate_struggle_catalyst = {
 					catalyst = catalyst_RICE_establish_estate_greenland
 					character = root
@@ -3308,7 +3311,7 @@ RICE_greenland_new_culture_involvement_effect = {
 
 RICE_greenland_new_faith_involvement_effect = {
 	add_piety = 250
-	struggle:RICE_greenland_struggle = { set_faith_as_involved = root.faith }
+	struggle:RICE_greenland_struggle ?= { set_faith_as_involved = root.faith }
 	custom_tooltip = RICE_north_atlantic_make_faith_involved_in_greenland_effect_tooltip_1
 	change_global_variable = {
 		name = RICE_greenland_networks
@@ -3316,7 +3319,7 @@ RICE_greenland_new_faith_involvement_effect = {
 	}
 	if = {
 		limit = {
-			struggle:RICE_greenland_struggle = { is_culture_involved_in_struggle = root.culture }
+			struggle:RICE_greenland_struggle ?= { is_culture_involved_in_struggle = root.culture }
 		}
 		if = {
 			limit = {
@@ -3327,7 +3330,7 @@ RICE_greenland_new_faith_involvement_effect = {
 					modifier = RICE_north_atlantic_greenland_family_estate
 				}
 			}
-			struggle:RICE_greenland_struggle = {
+			struggle:RICE_greenland_struggle ?= {
 				activate_struggle_catalyst = {
 					catalyst = catalyst_RICE_establish_estate_greenland
 					character = root

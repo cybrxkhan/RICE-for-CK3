@@ -1113,12 +1113,15 @@
 			#NOT = { exists = culture:soissons }
 			game_start_date >= 647.1.1 # Start of the Arab conquest of Maghreb, setting the stage for Sicily's geopolitical situation
 		}
-		start_struggle = {
-			struggle_type = RICE_sicily_struggle
-			start_phase = struggle_RICE_sicily_phase_borderland
-		}
-		struggle:RICE_sicily_struggle = {
-			trigger_event = { on_action = RICE_sicily_struggle_starting_events }
+		if = {
+			limit = { has_game_rule = RICE_struggle_sicily_toggle_on }
+			start_struggle = {
+				struggle_type = RICE_sicily_struggle
+				start_phase = struggle_RICE_sicily_phase_borderland
+			}
+			struggle:RICE_sicily_struggle ?= {
+				trigger_event = { on_action = RICE_sicily_struggle_starting_events }
+			}
 		}
 	}
 	
@@ -5512,7 +5515,7 @@ RICE_sicily_almadraba_decision_effect = {
 				is_struggle_type = RICE_sicily_struggle
 			}
 		}
-		struggle:RICE_sicily_struggle = {
+		struggle:RICE_sicily_struggle ?= {
 			activate_struggle_catalyst = {
 				catalyst = catalyst_RICE_sicily_almadraba_fishing
 				character = root
