@@ -7,7 +7,8 @@
 # tarim_basin.0040-tarim_basin.0049			Silk Road Entertainers flavor events
 # tarim_basin.0050-tarim_basin.0099			Dunhuang
 #	tarim_basin.0050-tarim_basin.0069			Dunhuang history and Crescent Lake Decision
-#	tarim_basin.0070-tarim_basin.0099			Mogao Caves
+#	tarim_basin.0070-tarim_basin.0089			Mogao Caves
+#	tarim_basin.0090-tarim_basin.0099			Pilgrimage to Dunhuang/Mogao
 # tarim_basin.0100-tarim_basin.0149			Tocharians
 #	tarim_basin.0100-tarim_basin.0109			Stage Animal Fights to Predict the Harvest
 # tarim_basin.0150-tarim_basin.0199			Khotanese
@@ -17,7 +18,8 @@
 #	tarim_basin.0200-tarim_basin.0209			Al-Kashgari/Compile First Turkic Dictionary
 #	tarim_basin.0210-tarim_basin.0229			Ordam Mazar Festival
 #	tarim_basin.0240-tarim_basin.0249			Miscellaneous Decisions/Events
-# tarim_basin.0250-tarim_basin.0299			Generic events
+# tarim_basin.0250-tarim_basin.0279			Generic events
+# tarim_basin.0280-tarim_basin.0289			Pilgrimage to Bezeklik
 # 
 # 
 ###############################################################################
@@ -9434,6 +9436,138 @@ tarim_basin.0086 = {
 }
 
 
+##################################################################
+# 
+# PILGRIMAGE TO DUNHUANG/MOGAO
+# tarim_basin.0090-0099 reserved
+# 
+##################################################################
+
+# Make preparations to begin the pilgrimage
+tarim_basin.0090 = {
+	type = character_event
+	title = tarim_basin.0090.t
+	desc = tarim_basin.0090.desc
+	theme = travel_pilgrimage
+	override_background = { reference = RICE_background_tarim_basin_landscape }
+	
+	right_portrait = root
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_tarim_basin_mogao_pilgrimage
+		}
+	}
+	
+	immediate = {
+		faith = {
+			save_scope_as = faith
+		}
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0090.a
+	}
+}
+
+
+
+# Arrive in Mogao
+tarim_basin.0091 = {
+	type = activity_event
+	title = tarim_basin.0091.t
+	desc = tarim_basin.0091.desc
+	theme = RICE_theme_dunhuang_mogao_caves
+	
+	right_portrait = {
+		character = root
+		animation = holding_staff
+	}
+
+	immediate = {
+		title:b_mogao = {
+			save_scope_as = mogao
+		}
+		faith = {
+			save_scope_as = faith
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0091.a
+		trigger_event = {
+			id = tarim_basin.0092
+			days = { 3 8 }
+		}
+	}
+}
+
+
+# Pray at the caves
+tarim_basin.0092 = {
+	type = activity_event
+	title = tarim_basin.0092.t
+	desc = tarim_basin.0092.desc
+	theme = RICE_theme_dunhuang_mogao_caves
+	
+	right_portrait = {
+		character = root
+		animation = prayer
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0092.a
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0092.b
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0092.c
+	}
+
+	after = {		
+		trigger_event = {
+			id = tarim_basin.0093
+			days = { 3 8 }
+		}
+	}
+
+}
+
+
+# Pilgrimage concludes
+tarim_basin.0093 = {
+	type = activity_event
+	title = tarim_basin.0093.t
+	desc = tarim_basin.0093.desc
+	theme = RICE_theme_dunhuang_mogao_caves
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0093.a
+		RICE_tarim_basin_mogao_pilgrimage_completed_log_effect = yes
+	}
+
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
+		}
+	}
+
+
+}
 
 ######################################################################################
 # 
@@ -14244,3 +14378,138 @@ tarim_basin.0270 = {
 
 
 
+
+
+
+##################################################################
+# 
+# PILGRIMAGE TO BEZEKLIK CAVES
+# tarim_basin.0280-0089 reserved
+# 
+##################################################################
+
+# Make preparations to begin the pilgrimage
+tarim_basin.0280 = {
+	type = character_event
+	title = tarim_basin.0280.t
+	desc = tarim_basin.0280.desc
+	theme = travel_pilgrimage
+	override_background = { reference = RICE_background_tarim_basin_landscape }
+	
+	right_portrait = root
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_tarim_basin_bezeklik_pilgrimage
+		}
+	}
+	
+	immediate = {
+		faith = {
+			save_scope_as = faith
+		}
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0280.a
+	}
+}
+
+
+
+# Arrive in Bezeklik
+tarim_basin.0281 = {
+	type = activity_event
+	title = tarim_basin.0281.t
+	desc = tarim_basin.0281.desc
+	theme = RICE_theme_dunhuang_mogao_caves
+	
+	right_portrait = {
+		character = root
+		animation = holding_staff
+	}
+
+	immediate = {
+		title:b_mogao = {
+			save_scope_as = mogao
+		}
+		faith = {
+			save_scope_as = faith
+		}
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0281.a
+		trigger_event = {
+			id = tarim_basin.0282
+			days = { 3 8 }
+		}
+	}
+}
+
+
+# Pray at the caves
+tarim_basin.0282 = {
+	type = activity_event
+	title = tarim_basin.0282.t
+	desc = tarim_basin.0282.desc
+	theme = RICE_theme_dunhuang_mogao_caves
+	
+	right_portrait = {
+		character = root
+		animation = prayer
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0282.a
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0282.b
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0282.c
+	}
+
+	after = {		
+		trigger_event = {
+			id = tarim_basin.0283
+			days = { 3 8 }
+		}
+	}
+
+}
+
+
+# Pilgrimage concludes
+tarim_basin.0283 = {
+	type = activity_event
+	title = tarim_basin.0283.t
+	desc = tarim_basin.0283.desc
+	theme = RICE_theme_dunhuang_mogao_caves
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = tarim_basin.0283.a
+		RICE_tarim_basin_bezeklik_pilgrimage_completed_log_effect = yes
+	}
+
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
+		}
+	}
+
+
+}
