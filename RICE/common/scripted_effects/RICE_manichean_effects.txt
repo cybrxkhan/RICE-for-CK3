@@ -930,3 +930,174 @@ RICE_manichean_lin_deng_decision_effect = {
 RICE_manichean_manuscript_general_effect = {
 	RICE_lin_deng_add_trait_xp_medium = yes
 }
+
+
+RICE_manichean_bema_festival_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_manichean_bema_festival_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+
+			scope:host = {
+				if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_manichean_bema_festival_fasting_length_type
+								option = RICE_manichean_bema_festival_fasting_length_type_month
+							}
+						}
+					}
+					stress_impact = {
+						base = medium_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_manichean_bema_festival_fasting_length_type
+								option = RICE_manichean_bema_festival_fasting_length_type_week
+							}
+						}
+					}
+					stress_impact = {
+						base = minor_stress_impact_loss
+					}
+				}
+				else = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_manichean_bema_festival_fasting_length_type
+								option = RICE_manichean_bema_festival_fasting_length_type_day
+							}
+						}
+					}
+					stress_impact = {
+						base = miniscule_stress_impact_loss
+					}
+				}
+				if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_manichean_bema_festival_fruit_alms_type
+								option = RICE_manichean_bema_festival_fruit_alms_type_large
+							}
+						}
+					}
+					add_piety = RICE_manichean_bema_festival_base_piety_large
+					add_prestige = RICE_manichean_bema_festival_base_prestige_large
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_manichean_bema_festival_fruit_alms_type
+								option = RICE_manichean_bema_festival_fruit_alms_type_medium
+							}
+						}
+					}
+					add_piety = RICE_manichean_bema_festival_base_piety_medium
+					add_prestige = RICE_manichean_bema_festival_base_prestige_medium
+				}
+				else = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_manichean_bema_festival_fruit_alms_type
+								option = RICE_manichean_bema_festival_fruit_alms_type_small
+							}
+						}
+					}
+					add_piety = RICE_manichean_bema_festival_base_piety_small
+					add_prestige = RICE_manichean_bema_festival_base_prestige_small
+				}
+				if = {
+					limit = {
+						has_activity_intent = RICE_manichean_bema_festival_liberation_intent
+					}
+					add_prestige = minor_prestige_gain
+					every_courtier = {
+						limit = {
+							faith = root.faith
+							is_clergy = yes
+						}					
+						add_opinion = {
+							target = root
+							modifier = pious_opinion
+							opinion = 10
+						}			
+					}
+					every_vassal = {
+						limit = {
+							faith = root.faith
+							is_clergy = yes
+						}					
+						add_opinion = {
+							target = root
+							modifier = pious_opinion
+							opinion = 10
+						}			
+					}
+					stress_impact = {
+						ambitious = miniscule_stress_impact_loss
+						diligent = miniscule_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_manichean_bema_festival_spiritual_guidance_intent
+					}
+					RICE_major_lifestyle_experience_gain_effect = yes
+					add_legitimacy = minor_legitimacy_gain
+					stress_impact = {
+						patient = miniscule_stress_impact_loss
+						content = miniscule_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_manichean_bema_festival_confession_intent
+					}
+					add_piety = minor_piety_gain
+					stress_impact = {
+						honest = miniscule_stress_impact_loss
+						humble = miniscule_stress_impact_loss
+					}
+				}
+				every_attending_character = {
+					limit = { NOT = { this = scope:host } }
+					custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+					add_piety = RICE_manichean_bema_festival_base_piety_small
+					add_prestige = RICE_manichean_bema_festival_base_prestige_small
+					stress_impact = {
+						base = miniscule_stress_impact_loss
+					}
+				}	
+			}
+		}
+	}
+}
+
+RICE_manichean_fast_health_malus_effect = {		
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_manichean_fast_health_malus_effect_log
+			tags = { bad }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = scope:host
+			scope:host = {		
+				add_character_modifier = {
+					modifier = RICE_manichean_fast_health_malus_modifier
+					years = 3
+				}
+			}
+		}
+	}
+}

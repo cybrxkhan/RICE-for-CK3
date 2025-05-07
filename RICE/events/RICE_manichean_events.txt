@@ -665,7 +665,7 @@ manichean.0021 = {
 ######################################################################################
 
 
-# Bema Festival preparations
+# Bema Festival preparations - Start fasting for the Bema Festival
 manichean.0030 = {
 	type = activity_event
 	title = manichean.0030.t
@@ -677,15 +677,54 @@ manichean.0030 = {
 	
 	option = { # Ok
 		name = manichean.0030.a
-		trigger_event = {
-			id = manichean.0031
-			days = { 3 5 }
-		}	
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = RICE_manichean_bema_festival_fasting_length_type
+						option = RICE_manichean_bema_festival_fasting_length_type_month
+					}
+				}
+			}
+			trigger_event = {
+				id = manichean.0031
+				days = 30
+			}
+		}
+		else_if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = RICE_manichean_bema_festival_fasting_length_type
+						option = RICE_manichean_bema_festival_fasting_length_type_week
+					}
+				}
+			}
+			trigger_event = {
+				id = manichean.0031
+				days = 7
+			}
+		}
+		else = {
+			# Have it trigger as a failsafe in case you don't have a length option for some reason
+			# limit = {
+			# 	scope:activity = {
+			# 		has_activity_option = {
+			# 			category = RICE_manichean_bema_festival_fasting_length_type
+			# 			option = RICE_manichean_bema_festival_fasting_length_type_day
+			# 		}
+			# 	}
+			# }
+			trigger_event = {
+				id = manichean.0031
+				days = 1
+			}
+		}
 	}
 }
 
 
-# Bema Festival - temp event
+# Fasting done - prepare for the ceremony
 manichean.0031 = {
 	type = activity_event
 	title = manichean.0031.t
@@ -693,18 +732,138 @@ manichean.0031 = {
 	theme = faith
 	override_background = { reference = relaxing_room }
 	
-	right_portrait = root
+	right_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+
+	immediate = {
+		random = {
+			chance = RICE_manichean_fast_health_malus_chance
+			RICE_manichean_fast_health_malus_effect = yes
+		}
+	}
+	
+	option = { # Ok
+		name = manichean.0031.a
+		trigger_event = {
+			id = manichean.0032
+			days = { 3 5 }
+		}	
+	}
+}
+
+
+# Ceremony begins - start prayers and rituals, confess your sins!
+manichean.0032 = {
+	type = activity_event
+	title = manichean.0032.t
+	desc = manichean.0032.desc
+	theme = RICE_theme_manichean_bema_festival
+	
+	right_portrait = {
+		character = root
+		animation = prayer
+	}
+	
+	option = { # Ok
+		name = manichean.0032.a
+		trigger_event = {
+			id = manichean.0033
+			days = { 3 5 }
+		}	
+	}
+}
+
+
+# Ceremony begins - weep for Mani, who has come back to us to absolve us of our sins
+manichean.0033 = {
+	type = activity_event
+	title = manichean.0033.t
+	desc = manichean.0033.desc
+	theme = RICE_theme_manichean_bema_festival
+	
+	right_portrait = {
+		character = root
+		animation = crying
+	}
 
 	immediate = {
 		RICE_manichean_bema_festival_lose_sin_effect = yes
 	}
 	
 	option = { # Ok
-		name = manichean.0030.a
-		# trigger_event = {
-		# 	id = manichean.0032
-		# 	days = { 3 5 }
-		# }	
+		name = manichean.0033.a
+		trigger_event = {
+			id = manichean.0034
+			days = { 3 5 }
+		}	
+	}
+}
+
+# Ceremony begins - listen to the sermons by the Elect
+manichean.0034 = {
+	type = activity_event
+	title = manichean.0034.t
+	desc = manichean.0034.desc
+	theme = RICE_theme_manichean_bema_festival
+	
+	left_portrait = {
+		character = scope:chaplain
+		animation = wedding_priest
+		trigger = {
+			exists = scope:chaplain
+		}
+	}	
+
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				exists = cp:councillor_court_chaplain
+			}
+			cp:councillor_court_chaplain ?= { save_scope_as = chaplain }
+		}
+	}
+	
+	option = { # Ok
+		name = manichean.0034.a
+		# if = {
+		# 	limit = {
+		# 		has_activity_intent = RICE_manichean_bema_festival_spiritual_guidance_intent
+		# 	}
+		# 	custom_tooltip = manichean.0034.a.guaranteed.tooltip
+		# }
+		# else = {
+		# 	random = {
+		# 		chance = 33
+		# 		custom_tooltip = manichean.0034.a.chance.tooltip
+		# 	}
+		# }
+		trigger_event = {
+			id = manichean.0035
+			days = { 3 5 }
+		}	
+	}
+}
+
+
+# Bema Festival - end event
+manichean.0035 = {
+	type = activity_event
+	title = manichean.0035.t
+	desc = manichean.0035.desc
+	theme = RICE_theme_manichean_bema_festival
+	
+	right_portrait = root
+	
+	option = { # Ok
+		name = manichean.0035.a
+		RICE_manichean_bema_festival_completed_log_entry_effect = yes
 	}
 
 	after = {
