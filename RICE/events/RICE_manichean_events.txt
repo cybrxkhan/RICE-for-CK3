@@ -758,12 +758,25 @@ manichean.0031 = {
 manichean.0032 = {
 	type = activity_event
 	title = manichean.0032.t
-	desc = manichean.0032.desc
+	desc = {
+		desc = manichean.0032.desc.intro
+		triggered_desc = {
+			trigger = {
+				has_character_flag = RICE_manichean_bema_festival_lost_sin_flag
+			}
+			desc = manichean.0032.desc.local
+		}
+		desc = manichean.0032.desc.conclusion
+	}
 	theme = RICE_theme_manichean_bema_festival
 	
 	right_portrait = {
 		character = root
 		animation = prayer
+	}
+
+	immediate = {
+		RICE_manichean_bema_festival_determine_lose_sin_effect = yes
 	}
 	
 	option = { # Ok
@@ -773,39 +786,23 @@ manichean.0032 = {
 			days = { 3 5 }
 		}	
 	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_manichean_bema_festival_lost_sin_flag
+			}
+			remove_character_flag = RICE_manichean_bema_festival_lost_sin_flag
+		}
+	}
 }
 
 
-# Ceremony begins - weep for Mani, who has come back to us to absolve us of our sins
+# Ceremony begins - listen to the sermons by the Elect
 manichean.0033 = {
 	type = activity_event
 	title = manichean.0033.t
 	desc = manichean.0033.desc
-	theme = RICE_theme_manichean_bema_festival
-	
-	right_portrait = {
-		character = root
-		animation = crying
-	}
-
-	immediate = {
-		RICE_manichean_bema_festival_lose_sin_effect = yes
-	}
-	
-	option = { # Ok
-		name = manichean.0033.a
-		trigger_event = {
-			id = manichean.0034
-			days = { 3 5 }
-		}	
-	}
-}
-
-# Ceremony begins - listen to the sermons by the Elect
-manichean.0034 = {
-	type = activity_event
-	title = manichean.0034.t
-	desc = manichean.0034.desc
 	theme = RICE_theme_manichean_bema_festival
 	
 	left_portrait = {
@@ -836,16 +833,16 @@ manichean.0034 = {
 		# 	limit = {
 		# 		has_activity_intent = RICE_manichean_bema_festival_spiritual_guidance_intent
 		# 	}
-		# 	custom_tooltip = manichean.0034.a.guaranteed.tooltip
+		# 	custom_tooltip = manichean.0033.a.guaranteed.tooltip
 		# }
 		# else = {
 		# 	random = {
 		# 		chance = 33
-		# 		custom_tooltip = manichean.0034.a.chance.tooltip
+		# 		custom_tooltip = manichean.0033.a.chance.tooltip
 		# 	}
 		# }
 		trigger_event = {
-			id = manichean.0035
+			id = manichean.0034
 			days = { 3 5 }
 		}	
 	}
@@ -853,16 +850,16 @@ manichean.0034 = {
 
 
 # Bema Festival - end event
-manichean.0035 = {
+manichean.0034 = {
 	type = activity_event
-	title = manichean.0035.t
-	desc = manichean.0035.desc
+	title = manichean.0034.t
+	desc = manichean.0034.desc
 	theme = RICE_theme_manichean_bema_festival
 	
 	right_portrait = root
 	
 	option = { # Ok
-		name = manichean.0035.a
+		name = manichean.0034.a
 		RICE_manichean_bema_festival_completed_log_entry_effect = yes
 	}
 
@@ -1075,12 +1072,11 @@ manichean.0050 = {
 	option = { # Ok
 		name = manichean.0050.b
 		trigger = {
-			faith = { has_doctrine = special_doctrine_rice_doctrine_late_manicheism_abandon }
-			learning >= mediocre_skill_rating # 8			
+			learning >= RICE_manichean_manuscript_learning_req_value # 8 (mediocre_skill_rating) if has the special doctrine, 12 (decent_skill_rating) otherwise/normally			
 		}
 		skill = learning
 		show_as_unavailable = {
-			learning < mediocre_skill_rating # 8
+			learning < RICE_manichean_manuscript_learning_req_value
 		}		
 		set_variable = {
 			name = RICE_manichean_manuscript_author
@@ -1092,28 +1088,7 @@ manichean.0050 = {
 			days = 365
 		}
 	}
-
-	option = { # Ok
-		name = manichean.0050.b
-		trigger = {
-			NOT = { faith = { has_doctrine = special_doctrine_rice_doctrine_late_manicheism_abandon } }
-			learning >= decent_skill_rating # 12		
-		}
-		skill = learning
-		show_as_unavailable = {
-			learning < decent_skill_rating # 12
-		}	
-		set_variable = {
-			name = RICE_manichean_manuscript_author
-			value = flag:self
-			days = 730 # A little over one year just in case
-		}
-		add_character_modifier = {
-			modifier = RICE_manichean_writing_manuscript
-			days = 365
-		}
-	}
-
+	
 	after = {
 		custom_tooltip = manichean.0050.tooltip
 		if = {
@@ -1205,7 +1180,6 @@ manichean.0051 = {
 	type = character_event
 	title = manichean.0051.t
 	desc = {
-		desc = manichean.0051.desc.intro
 		first_valid = {
 			triggered_desc = {
 				trigger = {
@@ -1220,7 +1194,7 @@ manichean.0051 = {
 				desc = manichean.0051.desc.other
 			}
 		}
-		desc = manichean.0051.desc.conclusion
+		desc = manichean.0051.desc
 	}
 	theme = learning
 
@@ -1262,7 +1236,7 @@ manichean.0051 = {
 						visuals = RICE_manichean_manuscript
 						quality = 15
 						wealth = 15
-						modifier = artifact_VIET_manichean_manuscript_seven_treatises_modifier_1
+						modifier = artifact_RICE_manichean_manuscript_seven_treatises_modifier_1
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
 						history = {
@@ -1284,7 +1258,7 @@ manichean.0051 = {
 						visuals = RICE_manichean_manuscript
 						quality = 30
 						wealth = 30
-						modifier = artifact_VIET_manichean_manuscript_seven_treatises_modifier_2
+						modifier = artifact_RICE_manichean_manuscript_seven_treatises_modifier_2
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -1307,7 +1281,7 @@ manichean.0051 = {
 						visuals = RICE_manichean_manuscript
 						quality = 65
 						wealth = 65
-						modifier = artifact_VIET_manichean_manuscript_seven_treatises_modifier_3
+						modifier = artifact_RICE_manichean_manuscript_seven_treatises_modifier_3
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -1330,7 +1304,7 @@ manichean.0051 = {
 						visuals = RICE_manichean_manuscript
 						quality = 95
 						wealth = 95
-						modifier = artifact_VIET_manichean_manuscript_seven_treatises_modifier_4
+						modifier = artifact_RICE_manichean_manuscript_seven_treatises_modifier_4
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -1370,22 +1344,21 @@ manichean.0052 = {
 	type = character_event
 	title = manichean.0052.t
 	desc = {
-		desc = manichean.0052.desc.intro
 		first_valid = {
 			triggered_desc = {
 				trigger = {
 					var:RICE_manichean_manuscript_author ?= flag:self
 				}
-				desc = manichean.0052.desc.self
+				desc = manichean.0051.desc.self
 			}
 			triggered_desc = {
 				trigger = {
 					var:RICE_manichean_manuscript_author ?= flag:other
 				}
-				desc = manichean.0052.desc.other
+				desc = manichean.0051.desc.other
 			}
 		}
-		desc = manichean.0052.desc.conclusion
+		desc = manichean.0052.desc
 	}
 	theme = learning
 
@@ -1427,7 +1400,7 @@ manichean.0052 = {
 						visuals = RICE_manichean_manuscript
 						quality = 15
 						wealth = 15
-						modifier = artifact_VIET_manichean_manuscript_shabuhragan_modifier_1
+						modifier = artifact_RICE_manichean_manuscript_shabuhragan_modifier_1
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
 						history = {
@@ -1449,7 +1422,7 @@ manichean.0052 = {
 						visuals = RICE_manichean_manuscript
 						quality = 30
 						wealth = 30
-						modifier = artifact_VIET_manichean_manuscript_shabuhragan_modifier_2
+						modifier = artifact_RICE_manichean_manuscript_shabuhragan_modifier_2
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -1472,7 +1445,7 @@ manichean.0052 = {
 						visuals = RICE_manichean_manuscript
 						quality = 65
 						wealth = 65
-						modifier = artifact_VIET_manichean_manuscript_shabuhragan_modifier_3
+						modifier = artifact_RICE_manichean_manuscript_shabuhragan_modifier_3
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -1495,7 +1468,7 @@ manichean.0052 = {
 						visuals = RICE_manichean_manuscript
 						quality = 95
 						wealth = 95
-						modifier = artifact_VIET_manichean_manuscript_shabuhragan_modifier_4
+						modifier = artifact_RICE_manichean_manuscript_shabuhragan_modifier_4
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -1535,22 +1508,21 @@ manichean.0053 = {
 	type = character_event
 	title = manichean.0053.t
 	desc = {
-		desc = manichean.0053.desc.intro
 		first_valid = {
 			triggered_desc = {
 				trigger = {
 					var:RICE_manichean_manuscript_author ?= flag:self
 				}
-				desc = manichean.0053.desc.self
+				desc = manichean.0051.desc.self
 			}
 			triggered_desc = {
 				trigger = {
 					var:RICE_manichean_manuscript_author ?= flag:other
 				}
-				desc = manichean.0053.desc.other
+				desc = manichean.0051.desc.other
 			}
 		}
-		desc = manichean.0053.desc.conclusion
+		desc = manichean.0053.desc
 	}
 	theme = learning
 
@@ -1592,7 +1564,7 @@ manichean.0053 = {
 						visuals = RICE_manichean_manuscript
 						quality = 15
 						wealth = 15
-						modifier = artifact_VIET_manichean_manuscript_arzhang_modifier_1
+						modifier = artifact_RICE_manichean_manuscript_arzhang_modifier_1
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
 						history = {
@@ -1614,7 +1586,7 @@ manichean.0053 = {
 						visuals = RICE_manichean_manuscript
 						quality = 30
 						wealth = 30
-						modifier = artifact_VIET_manichean_manuscript_arzhang_modifier_2
+						modifier = artifact_RICE_manichean_manuscript_arzhang_modifier_2
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -1637,7 +1609,7 @@ manichean.0053 = {
 						visuals = RICE_manichean_manuscript
 						quality = 65
 						wealth = 65
-						modifier = artifact_VIET_manichean_manuscript_arzhang_modifier_3
+						modifier = artifact_RICE_manichean_manuscript_arzhang_modifier_3
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -1660,7 +1632,7 @@ manichean.0053 = {
 						visuals = RICE_manichean_manuscript
 						quality = 95
 						wealth = 95
-						modifier = artifact_VIET_manichean_manuscript_arzhang_modifier_4
+						modifier = artifact_RICE_manichean_manuscript_arzhang_modifier_4
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -1700,22 +1672,21 @@ manichean.0054 = {
 	type = character_event
 	title = manichean.0054.t
 	desc = {
-		desc = manichean.0054.desc.intro
 		first_valid = {
 			triggered_desc = {
 				trigger = {
 					var:RICE_manichean_manuscript_author ?= flag:self
 				}
-				desc = manichean.0054.desc.self
+				desc = manichean.0051.desc.self
 			}
 			triggered_desc = {
 				trigger = {
 					var:RICE_manichean_manuscript_author ?= flag:other
 				}
-				desc = manichean.0054.desc.other
+				desc = manichean.0051.desc.other
 			}
 		}
-		desc = manichean.0054.desc.conclusion
+		desc = manichean.0054.desc
 	}
 	theme = learning
 
@@ -1757,7 +1728,7 @@ manichean.0054 = {
 						visuals = RICE_manichean_manuscript
 						quality = 15
 						wealth = 15
-						modifier = artifact_VIET_manichean_manuscript_kephalaia_modifier_1
+						modifier = artifact_RICE_manichean_manuscript_kephalaia_modifier_1
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
 						history = {
@@ -1779,7 +1750,7 @@ manichean.0054 = {
 						visuals = RICE_manichean_manuscript
 						quality = 30
 						wealth = 30
-						modifier = artifact_VIET_manichean_manuscript_kephalaia_modifier_2
+						modifier = artifact_RICE_manichean_manuscript_kephalaia_modifier_2
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -1802,7 +1773,7 @@ manichean.0054 = {
 						visuals = RICE_manichean_manuscript
 						quality = 65
 						wealth = 65
-						modifier = artifact_VIET_manichean_manuscript_kephalaia_modifier_3
+						modifier = artifact_RICE_manichean_manuscript_kephalaia_modifier_3
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -1825,7 +1796,7 @@ manichean.0054 = {
 						visuals = RICE_manichean_manuscript
 						quality = 95
 						wealth = 95
-						modifier = artifact_VIET_manichean_manuscript_kephalaia_modifier_4
+						modifier = artifact_RICE_manichean_manuscript_kephalaia_modifier_4
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -1865,22 +1836,21 @@ manichean.0055 = {
 	type = character_event
 	title = manichean.0055.t
 	desc = {
-		desc = manichean.0055.desc.intro
 		first_valid = {
 			triggered_desc = {
 				trigger = {
 					var:RICE_manichean_manuscript_author ?= flag:self
 				}
-				desc = manichean.0055.desc.self
+				desc = manichean.0051.desc.self
 			}
 			triggered_desc = {
 				trigger = {
 					var:RICE_manichean_manuscript_author ?= flag:other
 				}
-				desc = manichean.0055.desc.other
+				desc = manichean.0051.desc.other
 			}
 		}
-		desc = manichean.0055.desc.conclusion
+		desc = manichean.0055.desc
 	}
 	theme = learning
 
@@ -1922,7 +1892,7 @@ manichean.0055 = {
 						visuals = RICE_manichean_manuscript
 						quality = 15
 						wealth = 15
-						modifier = artifact_VIET_manichean_manuscript_hymn_book_modifier_1
+						modifier = artifact_RICE_manichean_manuscript_hymn_book_modifier_1
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
 						history = {
@@ -1944,7 +1914,7 @@ manichean.0055 = {
 						visuals = RICE_manichean_manuscript
 						quality = 30
 						wealth = 30
-						modifier = artifact_VIET_manichean_manuscript_hymn_book_modifier_2
+						modifier = artifact_RICE_manichean_manuscript_hymn_book_modifier_2
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -1967,7 +1937,7 @@ manichean.0055 = {
 						visuals = RICE_manichean_manuscript
 						quality = 65
 						wealth = 65
-						modifier = artifact_VIET_manichean_manuscript_hymn_book_modifier_3
+						modifier = artifact_RICE_manichean_manuscript_hymn_book_modifier_3
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -1990,7 +1960,7 @@ manichean.0055 = {
 						visuals = RICE_manichean_manuscript
 						quality = 95
 						wealth = 95
-						modifier = artifact_VIET_manichean_manuscript_hymn_book_modifier_4
+						modifier = artifact_RICE_manichean_manuscript_hymn_book_modifier_4
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -2031,22 +2001,21 @@ manichean.0056 = {
 	type = character_event
 	title = manichean.0056.t
 	desc = {
-		desc = manichean.0056.desc.intro
 		first_valid = {
 			triggered_desc = {
 				trigger = {
 					var:RICE_manichean_manuscript_author ?= flag:self
 				}
-				desc = manichean.0056.desc.self
+				desc = manichean.0051.desc.self
 			}
 			triggered_desc = {
 				trigger = {
 					var:RICE_manichean_manuscript_author ?= flag:other
 				}
-				desc = manichean.0056.desc.other
+				desc = manichean.0051.desc.other
 			}
 		}
-		desc = manichean.0056.desc.conclusion
+		desc = manichean.0056.desc
 	}
 	theme = learning
 
@@ -2088,7 +2057,7 @@ manichean.0056 = {
 						visuals = RICE_manichean_manuscript
 						quality = 15
 						wealth = 15
-						modifier = artifact_VIET_manichean_manuscript_confessional_texts_modifier_1
+						modifier = artifact_RICE_manichean_manuscript_confessional_texts_modifier_1
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
 						history = {
@@ -2110,7 +2079,7 @@ manichean.0056 = {
 						visuals = RICE_manichean_manuscript
 						quality = 30
 						wealth = 30
-						modifier = artifact_VIET_manichean_manuscript_confessional_texts_modifier_2
+						modifier = artifact_RICE_manichean_manuscript_confessional_texts_modifier_2
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -2133,7 +2102,7 @@ manichean.0056 = {
 						visuals = RICE_manichean_manuscript
 						quality = 65
 						wealth = 65
-						modifier = artifact_VIET_manichean_manuscript_confessional_texts_modifier_3
+						modifier = artifact_RICE_manichean_manuscript_confessional_texts_modifier_3
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -2156,7 +2125,7 @@ manichean.0056 = {
 						visuals = RICE_manichean_manuscript
 						quality = 95
 						wealth = 95
-						modifier = artifact_VIET_manichean_manuscript_confessional_texts_modifier_4
+						modifier = artifact_RICE_manichean_manuscript_confessional_texts_modifier_4
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -2196,22 +2165,21 @@ manichean.0057 = {
 	type = character_event
 	title = manichean.0057.t
 	desc = {
-		desc = manichean.0057.desc.intro
 		first_valid = {
 			triggered_desc = {
 				trigger = {
 					var:RICE_manichean_manuscript_author ?= flag:self
 				}
-				desc = manichean.0057.desc.self
+				desc = manichean.0051.desc.self
 			}
 			triggered_desc = {
 				trigger = {
 					var:RICE_manichean_manuscript_author ?= flag:other
 				}
-				desc = manichean.0057.desc.other
+				desc = manichean.0051.desc.other
 			}
 		}
-		desc = manichean.0057.desc.conclusion
+		desc = manichean.0057.desc
 	}
 	theme = learning
 
@@ -2253,7 +2221,7 @@ manichean.0057 = {
 						visuals = RICE_manichean_manuscript
 						quality = 15
 						wealth = 15
-						modifier = artifact_VIET_manichean_manuscript_parables_and_tales_modifier_1
+						modifier = artifact_RICE_manichean_manuscript_parables_and_tales_modifier_1
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
 						history = {
@@ -2275,7 +2243,7 @@ manichean.0057 = {
 						visuals = RICE_manichean_manuscript
 						quality = 30
 						wealth = 30
-						modifier = artifact_VIET_manichean_manuscript_parables_and_tales_modifier_2
+						modifier = artifact_RICE_manichean_manuscript_parables_and_tales_modifier_2
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -2298,7 +2266,7 @@ manichean.0057 = {
 						visuals = RICE_manichean_manuscript
 						quality = 65
 						wealth = 65
-						modifier = artifact_VIET_manichean_manuscript_parables_and_tales_modifier_3
+						modifier = artifact_RICE_manichean_manuscript_parables_and_tales_modifier_3
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -2321,7 +2289,7 @@ manichean.0057 = {
 						visuals = RICE_manichean_manuscript
 						quality = 95
 						wealth = 95
-						modifier = artifact_VIET_manichean_manuscript_parables_and_tales_modifier_4
+						modifier = artifact_RICE_manichean_manuscript_parables_and_tales_modifier_4
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -2361,22 +2329,21 @@ manichean.0058 = {
 	type = character_event
 	title = manichean.0058.t
 	desc = {
-		desc = manichean.0058.desc.intro
 		first_valid = {
 			triggered_desc = {
 				trigger = {
 					var:RICE_manichean_manuscript_author ?= flag:self
 				}
-				desc = manichean.0058.desc.self
+				desc = manichean.0051.desc.self
 			}
 			triggered_desc = {
 				trigger = {
 					var:RICE_manichean_manuscript_author ?= flag:other
 				}
-				desc = manichean.0058.desc.other
+				desc = manichean.0051.desc.other
 			}
 		}
-		desc = manichean.0058.desc.conclusion
+		desc = manichean.0058.desc
 	}
 	theme = learning
 
@@ -2418,7 +2385,7 @@ manichean.0058 = {
 						visuals = RICE_manichean_manuscript
 						quality = 15
 						wealth = 15
-						modifier = artifact_VIET_manichean_manuscript_parables_and_tales_modifier_1
+						modifier = artifact_RICE_manichean_manuscript_parables_and_tales_modifier_1
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
 						history = {
@@ -2440,7 +2407,7 @@ manichean.0058 = {
 						visuals = RICE_manichean_manuscript
 						quality = 30
 						wealth = 30
-						modifier = artifact_VIET_manichean_manuscript_parables_and_tales_modifier_2
+						modifier = artifact_RICE_manichean_manuscript_parables_and_tales_modifier_2
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -2463,7 +2430,7 @@ manichean.0058 = {
 						visuals = RICE_manichean_manuscript
 						quality = 65
 						wealth = 65
-						modifier = artifact_VIET_manichean_manuscript_parables_and_tales_modifier_3
+						modifier = artifact_RICE_manichean_manuscript_parables_and_tales_modifier_3
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact
@@ -2486,7 +2453,7 @@ manichean.0058 = {
 						visuals = RICE_manichean_manuscript
 						quality = 95
 						wealth = 95
-						modifier = artifact_VIET_manichean_manuscript_parables_and_tales_modifier_4
+						modifier = artifact_RICE_manichean_manuscript_parables_and_tales_modifier_4
 						#max_durability = 40
 						decaying = no
 						save_scope_as = RICE_manichean_manuscript_artifact

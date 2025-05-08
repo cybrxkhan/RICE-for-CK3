@@ -385,6 +385,10 @@ RICE_revive_manicheism_in_mesopotamia_effect = {
 RICE_manichean_bema_festival_determine_lose_sin_effect = {	
 	random = {
 		chance = RICE_manichean_bema_festival_lose_sin_chance
+		add_character_flag = {
+			flag = RICE_manichean_bema_festival_lost_sin_flag
+			days = 1
+		}
 		RICE_manichean_bema_festival_lose_sin_effect = yes
 	}
 }
@@ -648,13 +652,13 @@ RICE_manichean_confession_decision_effect = {
 		limit = {
 			any_equipped_character_artifact = { has_variable = RICE_manichean_artifact_shabuhragan_variable }
 		}
-		add_prestige = miniscule_prestige_gain
+		add_prestige = minor_prestige_gain
 	}
 	if = {
 		limit = {
 			any_equipped_character_artifact = { has_variable = RICE_manichean_artifact_kephalaia_variable }
 		}
-		add_piety = miniscule_piety_gain
+		add_piety = minor_piety_gain
 	}
 	if = {
 		limit = {
@@ -942,6 +946,7 @@ RICE_manichean_bema_festival_completed_log_entry_effect = {
 			character = root
 
 			scope:host = {
+				# Fast Length Bonsues
 				if = {
 					limit = {
 						scope:activity = {
@@ -981,6 +986,7 @@ RICE_manichean_bema_festival_completed_log_entry_effect = {
 						base = miniscule_stress_impact_loss
 					}
 				}
+				# Fruit Alms Bonuses
 				if = {
 					limit = {
 						scope:activity = {
@@ -1017,6 +1023,7 @@ RICE_manichean_bema_festival_completed_log_entry_effect = {
 					add_piety = RICE_manichean_bema_festival_base_piety_small
 					add_prestige = RICE_manichean_bema_festival_base_prestige_small
 				}
+				# Intent Bonuses
 				if = {
 					limit = {
 						has_activity_intent = RICE_manichean_bema_festival_liberation_intent
@@ -1070,6 +1077,41 @@ RICE_manichean_bema_festival_completed_log_entry_effect = {
 						humble = miniscule_stress_impact_loss
 					}
 				}
+				# Artifact Bonuses
+				if = {
+					limit = {
+						any_equipped_character_artifact = { has_variable = RICE_manichean_artifact_arzhang_variable }
+					}
+					every_attending_character = {
+						limit = { NOT = { this = scope:host } }
+						custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT	
+						add_opinion = {
+							target = scope:host
+							modifier = RICE_arzhang_opinion
+						}
+					}
+				}
+				if = {
+					limit = {
+						any_equipped_character_artifact = { has_variable = RICE_manichean_artifact_hymn_book_variable }
+					}
+					add_legitimacy = minor_legitimacy_gain
+				}
+				if = {
+					limit = {
+						any_equipped_character_artifact = { has_variable = RICE_manichean_artifact_confessional_texts_variable }
+					}
+					stress_impact = {
+						base = minor_stress_impact_loss
+					}
+				}
+				if = {
+					limit = {
+						any_equipped_character_artifact = { has_variable = RICE_manichean_artifact_parables_and_tales_variable }
+					}
+					RICE_minor_lifestyle_experience_gain_effect = yes
+				}
+				# Other attendee bonuses
 				every_attending_character = {
 					limit = { NOT = { this = scope:host } }
 					custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
@@ -1092,10 +1134,15 @@ RICE_manichean_fast_health_malus_effect = {
 			# this line below adds the entry to the Effects section of the conclusion UI
 			show_in_conclusion = yes
 			character = scope:host
-			scope:host = {		
-				add_character_modifier = {
-					modifier = RICE_manichean_fast_health_malus_modifier
-					years = 3
+			scope:host = {
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					left_icon = scope:host
+					title = manichean.0031.a.toast
+					add_character_modifier = {
+						modifier = RICE_manichean_fast_health_malus_modifier
+						years = 3
+					}
 				}
 			}
 		}
