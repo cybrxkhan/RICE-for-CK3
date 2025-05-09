@@ -50,6 +50,12 @@ manichean.0001 = {
 				id = manichean.0006
 				days = { 365 3650 }
 			}
+			# Timer to prevent other rulers from finding the sealstone of Mani
+			set_global_variable = {
+				name = RICE_manichean_sealstone_timer
+				value = yes
+				days = 3650
+			}
 		}
 		else = {
 			show_as_tooltip = {
@@ -139,7 +145,7 @@ manichean.0005 = {
 
 }
 
-# Mani Sealstone Artifact
+# Mani Sealstone Artifact is recovered
 manichean.0006 = {
 	type = character_event
 	title = manichean.0006.t
@@ -159,7 +165,27 @@ manichean.0006 = {
 
 	trigger = {
 		NOT = { has_global_variable = RICE_mani_sealstone_found }
+		NOT = { has_global_variable = RICE_manichean_sealstone_timer }
 		faith = { has_doctrine = rice_light_purification_doctrine }
+		# This is always available to the reviver of Manicheism in Mesopotamia
+		OR = {
+			has_character_flag = RICE_manichean_mesopotamia_reviver_flag
+			capital_county ?= {
+				title_province = { 
+					OR = {
+						geographical_region = world_middle_east
+						geographical_region = world_asia_minor
+						geographical_region = world_europe_south_east
+						geographical_region = world_africa_north_east
+					}
+				}
+			}
+		}
+		OR = {
+			has_character_flag = RICE_manichean_mesopotamia_reviver_flag
+			is_ai = no
+			is_independent_ruler = yes
+		}
 	}
 
 	immediate = {
@@ -215,6 +241,16 @@ manichean.0006 = {
 					this = scope:discoverer
 					faith = {
 						has_doctrine = rice_light_purification_doctrine
+					}
+					capital_county ?= {
+						title_province = { 
+							OR = {
+								geographical_region = world_middle_east
+								geographical_region = world_asia_minor
+								geographical_region = world_europe_south_east
+								geographical_region = world_africa_north_east
+							}
+						}
 					}
 				}
 			}
@@ -551,11 +587,29 @@ manichean.0013 = {
 	option = { # Ok
 		name = manichean.0013.a
 		set_character_faith_with_conversion = scope:new_faith
+		ai_chance = {
+			base = 25
+			modifier = {
+				add = 25
+				has_trait = cynical
+			}
+			modifier = {
+				add = 25
+				has_trait = ambitious
+			}
+		}
 	}
 	
 	option = { # Ok
 		name = manichean.0013.b
 		custom_tooltip = manichean.0013.b.tooltip # Tell player they can still take the decision to convert to another faith if they want to
+		ai_chance = {
+			base = 75
+			modifier = {
+				add = 25
+				has_trait = zealous
+			}
+		}
 	}
 
 }
@@ -593,6 +647,77 @@ manichean.0014 = {
 			}
 			custom_tooltip = manichean.0014.info
 		}
+	}
+
+}
+
+
+
+
+
+
+# Powerful Uyghur leader considers converting to a different faith
+manichean.0016 = {
+	type = character_event
+	title = manichean.0016.t
+	desc = manichean.0016.desc
+	theme = faith
+	override_background = { reference = RICE_background_iranian_throne_room }
+
+	left_portrait = {
+		character = scope:chaplain		
+		trigger = {
+			exists = scope:chaplain
+		}
+		triggered_animation = {
+			trigger = {
+				scope:chaplain = {
+					OR = {
+						has_trait = vengeful
+						has_trait = wrathful
+						has_trait = brave
+						has_trait = zealous
+						has_trait = honest
+					}
+				}
+			}
+			animation = rage
+		}
+		triggered_animation = {
+			trigger = {
+				scope:chaplain = {
+					OR = {
+						has_trait = cynical
+						has_trait = arbitrary
+						has_trait = content
+					}
+				}
+			}
+			animation = eyeroll
+		}
+		animation = beg
+	}
+
+	right_portrait = {
+		character = scope:uyghur_leader
+		animation = personality_cynical
+	}
+
+	immediate = {
+		if = {
+			limit = {			
+				cp:councillor_court_chaplain = {
+					exists = yes
+					is_available_adult = yes
+				}
+			}
+			cp:councillor_court_chaplain = { save_scope_as = chaplain }
+		}
+	}
+	
+	option = { # Ok
+		name = manichean.0016.a
+		set_character_faith_with_conversion = scope:new_faith
 	}
 
 }
