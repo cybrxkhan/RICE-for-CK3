@@ -623,7 +623,7 @@ manichean.0014 = {
 
 	right_portrait = {
 		character = root
-		animation = bow_idle
+		animation = war_attacker
 	}
 
 	immediate = {
@@ -646,6 +646,169 @@ manichean.0014 = {
 			custom_tooltip = manichean.0014.info
 		}
 	}
+
+}
+
+
+
+# Bokut Aspiration Fulfilled
+manichean.0015 = {
+	type = character_event
+	title = manichean.0015.t
+	desc = manichean.0015.desc
+	theme = RICE_theme_tarim_basin_town
+
+	right_portrait = {
+		character = scope:bokut
+		animation = war_over_win
+	}
+
+	immediate = {
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		character:302972 = { # bokut
+			save_scope_as = bokut
+		}	
+		
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_manichean_aspiration_reclaim_uyghur_power_in_qocho
+				}
+				remove_character_modifier = RICE_manichean_aspiration_reclaim_uyghur_power_in_qocho
+			}
+		}
+
+		# Main Objective Reward
+		add_legitimacy = medium_legitimacy_gain
+		add_prestige = RICE_aspiration_large_resource_bonus
+		spawn_army = {
+			levies = 300
+			men_at_arms = {
+				type = nomadic_riders
+				stacks = 2
+			}
+			men_at_arms = {
+				type = heavy_horse_archers
+				stacks = 1
+			}
+			men_at_arms = {
+				type = nomad_lancers
+				stacks = 1
+			}
+			men_at_arms = {
+				type = steppe_raiders
+				stacks = 2
+			}
+			men_at_arms = {
+				type = horse_archers
+				stacks = 2
+			}
+			location = root.capital_province
+			uses_supply = yes
+			inheritable = yes
+			name = RICE_ugyhur_bokut_event_troops
+		}
+		every_county_in_region = {
+			region = RICE_greater_qocho_region
+			custom = RICE_every_county_in_greater_qocho_region
+			change_development_level = RICE_red_sea_al_umari_aspiration_dev_bonus	
+		}
+
+		# Bonus Objective Reward(s)
+		if = {
+			limit = {
+				OR = {
+					has_title = title:k_khotan
+					NOT = { exists = title:k_khotan.holder }
+					any_vassal_or_below = {
+						has_title = title:k_khotan
+					}
+					any_tributary = {
+						has_title = title:k_khotan
+					}
+				}
+			}
+			spawn_army = {
+				levies = 500
+				men_at_arms = {
+					type = nomadic_riders
+					stacks = 1
+				}
+				men_at_arms = {
+					type = steppe_raiders
+					stacks = 1
+				}
+				men_at_arms = {
+					type = horse_archers
+					stacks = 1
+				}
+				men_at_arms = {
+					type = ayyar
+					stacks = 2
+				}
+				location = root.capital_province
+				uses_supply = yes
+				inheritable = yes
+				name = RICE_khotan_bokut_event_troops
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_title = title:k_guiyi
+					NOT = { exists = title:k_guiyi.holder }
+					any_vassal_or_below = {
+						has_title = title:k_guiyi
+					}
+					any_tributary = {
+						has_title = title:k_guiyi
+					}
+				}
+			}
+			spawn_army = {
+				levies = 500
+				men_at_arms = {
+					type = pikemen_unit
+					stacks = 1
+				}
+				men_at_arms = {
+					type = armored_footmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = chu_ko_nu
+					stacks = 3
+				}
+				location = root.capital_province
+				uses_supply = yes
+				inheritable = yes
+				name = RICE_guiyi_bokut_event_troops
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_character_modifier = RICE_manichean_uyghur_decision_support_character_modifier
+					has_character_modifier = RICE_manichean_uyghur_decision_reform_character_modifier
+					has_character_modifier = RICE_manichean_uyghur_decision_abandon_character_modifier
+				}
+			}
+			dynasty ?= {
+				add_dynasty_prestige = RICE_aspiration_large_resource_bonus
+			}
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = manichean.0015.a
+	}
+
 
 }
 
@@ -2763,7 +2926,7 @@ manichean.0090 = {
 	type = character_event
 	title = manichean.0090.t
 	desc = manichean.0090.desc
-	theme = faith
+	theme = RICE_theme_manichean_bema_festival
 
 	left_portrait = {
 		character = scope:lin_deng
@@ -2797,6 +2960,35 @@ manichean.0090 = {
 				has_game_rule = RICE_historical_context_on
 			}
 			custom_tooltip = manichean.0090.info
+		}
+	}
+
+}
+
+# Lin Deng decision
+manichean.0092 = {
+	type = character_event
+	title = manichean.0092.t
+	desc = manichean.0092.desc
+	theme = RICE_theme_manichean_bema_festival
+
+	right_portrait = {
+		character = root
+		animation = prayer
+	}
+
+
+	option = { # Ok
+		name = manichean.0092.a
+	}
+
+	after = {
+		# For Chen Pingshan's aspiration
+		if = {
+			limit = {
+				root = character:RICE_chinese_manichean_002
+			}
+			add_character_flag = RICE_chen_pingshan_did_lin_deng_decision
 		}
 	}
 
