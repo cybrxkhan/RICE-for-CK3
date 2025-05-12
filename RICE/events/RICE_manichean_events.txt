@@ -62,6 +62,7 @@ manichean.0001 = {
 				}
 			}
 		}
+		RICE_manichean_show_new_revival_tenet = yes
 	}
 	
 	option = { # Ok
@@ -76,6 +77,175 @@ manichean.0001 = {
 		trigger = {
 			NOT = { faith = { has_doctrine = rice_light_purification_doctrine } }
 		}	
+	}
+
+}
+
+# Decide whether to abandon monasticism or not
+manichean.0002 = {
+	type = character_event
+	title = manichean.0002.t
+	desc = manichean.0002.desc
+	theme = RICE_theme_manichean_bema_festival
+
+	right_portrait = {
+		character = scope:manichean_reviver
+		animation = thinking
+	}
+	
+	option = { # keep it
+		name = manichean.0002.a
+		custom_tooltip = manichean.0002.a.tooltip
+	}
+	
+	option = { # change it it
+		name = manichean.0002.b
+		custom_tooltip = manichean.0002.b.tooltip
+		if = {
+			limit = {
+				faith = { NOT = { has_doctrine = tenet_adaptive } }
+			}
+			faith = {
+				remove_doctrine = tenet_monasticism
+				add_doctrine = tenet_adaptive
+			}
+			set_variable = {
+				name = RICE_manichean_faith_change
+				value = flag:adaptive
+			}
+		}
+		else_if = {
+			limit = {
+				faith = { NOT = { has_doctrine = tenet_esotericism } }
+			}
+			faith = {
+				remove_doctrine = tenet_monasticism
+				add_doctrine = tenet_esotericism
+			}
+			set_variable = {
+				name = RICE_manichean_faith_change
+				value = flag:esotericism
+			}
+		}
+		else_if = {
+			limit = {
+				faith = { NOT = { has_doctrine = tenet_mendicant_preachers } }
+			}
+			faith = {
+				remove_doctrine = tenet_monasticism
+				add_doctrine = tenet_mendicant_preachers
+			}
+			set_variable = {
+				name = RICE_manichean_faith_change
+				value = flag:mendicant_preachers
+			}
+		}
+		else_if = {
+			limit = {
+				faith = { NOT = { has_doctrine = tenet_asceticism } }
+			}
+			faith = {
+				remove_doctrine = tenet_monasticism
+				add_doctrine = tenet_asceticism
+			}
+			set_variable = {
+				name = RICE_manichean_faith_change
+				value = flag:asceticism
+			}
+		}
+		else_if = {
+			limit = {
+				faith = { NOT = { has_doctrine = tenet_pacifism } }
+			}
+			faith = {
+				remove_doctrine = tenet_monasticism
+				add_doctrine = tenet_pacifism
+			}
+			set_variable = {
+				name = RICE_manichean_faith_change
+				value = flag:pacifism
+			}
+		}
+		else_if = {
+			limit = {
+				faith = { NOT = { has_doctrine = tenet_astrology } }
+			}
+			faith = {
+				remove_doctrine = tenet_monasticism
+				add_doctrine = tenet_astrology
+			}
+			set_variable = {
+				name = RICE_manichean_faith_change
+				value = flag:astrology
+			}
+		}
+		else_if = {
+			limit = {
+				faith = { NOT = { has_doctrine = tenet_communion } }
+			}
+			faith = {
+				remove_doctrine = tenet_monasticism
+				add_doctrine = tenet_communion
+			}
+			set_variable = {
+				name = RICE_manichean_faith_change
+				value = flag:communion
+			}
+		}
+		else_if = {
+			limit = {
+				faith = { NOT = { has_doctrine = tenet_literalism } }
+			}
+			faith = {
+				remove_doctrine = tenet_monasticism
+				add_doctrine = tenet_literalism
+			}
+			set_variable = {
+				name = RICE_manichean_faith_change
+				value = flag:literalism
+			}
+		}
+		else_if = {
+			limit = {
+				faith = { NOT = { has_doctrine = tenet_reincarnation } }
+			}
+			faith = {
+				remove_doctrine = tenet_monasticism
+				add_doctrine = tenet_reincarnation
+			}
+			set_variable = {
+				name = RICE_manichean_faith_change
+				value = flag:reincarnation
+			}
+		}
+	}
+
+	after = {
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:manichean_reviver	
+					any_liege_or_above = { this = scope:manichean_reviver }
+					faith = {
+						has_doctrine = rice_light_purification_doctrine
+					}
+					any_held_county = {
+						any_county_province = {
+							OR = {
+								geographical_region = world_middle_east
+								geographical_region = world_asia_minor
+								geographical_region = world_africa_north
+								geographical_region = world_africa_east
+								geographical_region = world_europe_south
+								geographical_region = world_india
+								geographical_region = world_steppe
+							}
+						}
+					}
+				}
+			}
+			trigger_event = manichean.0001
+		}
 	}
 
 }
