@@ -1,12 +1,13 @@
-<img src="https://i.imgur.com/kPxkNuS.jpg">
+<img src="https://i.imgur.com/kOFlwnp.jpg">
 
-## Latest Version: Version 1.15.0 "Ladakh" (Released 3/28/25, for vanilla patch 1.15.x)
+## Latest Version: Version 1.16.0 "Buddha of Light" (Released 5/18/25, for vanilla patch 1.16.x)
 
-**Newest Flavor Pack: *Galicia-Volhynia: Borderlands of the Red Rus***
+**Newest Flavor Pack: *Manicheism: The Religion of Light***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_Ladakh is a region straddling eastern Kashmir and western Tibet. Historically, it was located at a strategic crossroads between many different civilizations, kingdoms, and religions._
+_Please recite: purity, light, power, wisdom, the supreme perfect truth, Mani the Buddha of Light._
+_- Inscription dated to 1445 CE at Cao’an Temple, China, one of the few intact Manichean temples_
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
@@ -49,6 +50,7 @@ Click to view guides which cover the features in each specific pack in more deta
 - [Khwarezm: The Oxus Borderlands](https://docs.google.com/document/d/e/2PACX-1vRb7KJnolu0twdKXwN0N6K9qZSSNxm2yyS6VroADAGod9VjUGBKf5nIh-ZzsdYr93W3XuN0MGO8OeXd/pub)
 - [Khwarezm: The Oxus Borderlands](https://docs.google.com/document/d/e/2PACX-1vShpMfQVVfTPIMytox_d9YgqsCv5nzE-AR6WWLlEu4UjRqFQ7ekMWISy8Wp5U1KEAhoKxcFiunqVBvF/pub)
 - [Lesbos: Island of Poets](https://docs.google.com/document/d/e/2PACX-1vShpMfQVVfTPIMytox_d9YgqsCv5nzE-AR6WWLlEu4UjRqFQ7ekMWISy8Wp5U1KEAhoKxcFiunqVBvF/pub)
+- Manicheism: Religion of Light
 - [Mordvin: Along the Volga](https://docs.google.com/document/d/e/2PACX-1vSJLf-BGou98MSCHMEVO1QWEme1kKSe8CiriXgpfEUHeySTLJOsPLQobPnu_fIt-W-GqcL3VBXFqJzZ/pub)
 - [Niger Delta: Heirs of Oduduwa](https://docs.google.com/document/d/e/2PACX-1vTgW9FFORhgNKseRIGdOXnsCLe5Nee8f8dK9yQxkvWshD3ZJf5vzXhMHQKmoy3qnMEjm2kLImgExhvt/pub)
 - [Normandy: Adventurers and Aristocrats](https://docs.google.com/document/d/e/2PACX-1vSJl5JRfLjzdzwnCo6WJVG8qJ8-5htcWQ1L1PU3tMIq1Ym4HOO6fPhQ1ovarPeb_3b3pLPRhLBvgyRT/pub)
@@ -77,38 +79,43 @@ Click to view guides which cover the features in each specific pack in more deta
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/kPxkNuS.jpg">
+<img src="https://i.imgur.com/1lf6jVR.jpg">
 
-### Version 1.15.0 "Ladakh"
+### Version 1.16.0 "Buddha of Light"
 
-- Added Glacier Marriage Activity
-- Added innovations: Glacier Grafting, Netsang Relationships
-- Added Azjur al-Turki (867) and Margaret of Beverley (1178) as bookmarked landless characters, along with their own starting flavor events and unique modifiers
-- Added unique helmet artifact for Margaret of Beverley: Cooking Pot Helmet
-- Added preset dna/appearance for Margaret of Beverley and her brother Thomas
-- Added preset COAs for Margaret of Beverley and Azjur al-Turki
-- Added inaccessible placeholder innovations in the code (for future proofing save game compatibility issues when adding innovations mid-game)
-- Added a Host Palio Race struggle catalyst for the Sicily Struggle
-- Added game rule to override other mods’ East Slavic/Rus culture setup if you prefer RICE’s setup instead of other mods like Baptism of Rus
-- Tweaked starting stats of Azjur al-Turki and Margaret of Beverley
-- When the Sicilian struggle restarts, any cultures or faiths with at least one ruler who owns a county in the Sicily struggle region will become automatically involved (as a stopgap measure to fix how cultures/faiths previously in the struggle don’t become re-involved when the struggle restarts)
-- Tweaked Tarim Basin history setup to have better compatibility with the HM Invasion Expand mod
-- Medical School of Salerno modifier will now be placed in Salerno even if another mod adds in a unique building (otherwise, the associated decision wouldn’t have worked)
-- Removed the Liminality dynasty perk struggle catalyst from the Sicily Struggle
-- Land of Towns tradition now enables travel along major rivers (non-Baptism of Rus version)
-- Expanded Skiing region and innovations to various parts and cultures of Siberia and Eastern Europe
-- Natkokwe/Burmese paganism no longer added to the map if playing with More Bookmarks Plus for better compatibility
-- Turco-Hephthalite changed to Turko-Hephthalite to be consistent with vanilla culture names which use “Turko” rather than “Turco”
-- Japheth ibn Bundar and his father (Bundar) now start with the Silk Road merchant traits
-- Tweaked language of the requirement to control various duchies for the Decision to Restore the Tuyuhun Kingdom to look less messy
-- Highest rank of the Merchant traits now increase max language learning schemes instead of a bonus to language schemes
-- Fixed Bundar not being Japheth ibn Bundar’s father
-- Fixed Encourage Settlement option of the Volga-Dnieper trade decision no longer displaying culture/faith conversion text erroneously by hiding it
-- Fixed Volga-Dnieper trade travel option potentially creating a merchant with a Silk Road merchant trait instead of the Volga-Dnieper trait
-- Fixed “weight = { base 10 }” in RICE_harran_events, RICE_sicily_events, RICE_socotra_events and RICE_tarim_basin_events
-- Fixed missing piety/prestige rewards/values from the Fulaich Festival activity
-- Fixed missing loc for the Elamite and Chamic namelists
-- Miscellaneous bugfixes and tweaks
+- Added new bookmarked landed characters with aspirations:
+    - Bokut Bilga (867)
+    - Yelu Yingxin (1066)
+    - Chen Pingshan (1066)
+- Added new landless characters for each start date:
+    - Mardan-Farrukh (867)
+    - Ibn Wahab (867)
+    - Chen Pingshan (1066)
+    - Shingqo Sheli Tutung (1066)
+    - Zhao Weiyi (1066)
+    - Tatatunga (1178)
+- Added 3 soundtracks for various regions in Asia
+- Added game rule to disable RICE’s struggles (Warning: Please be aware this may lead to struggle-related content not working properly or unpredictable game behavior.)
+- Split eastern 867 and 1066 bookmarks into two (MidEastern and Eastern), partly in preparation for All Under Heaven
+- Western Liao are no longer administrative in 1178, to be consistent with vanilla making them nomads
+- Li Shichang, Mahmud Yalavach, and Mansur ibn Mahmud al-Uzgandi are now adventurers in 1178 (once PI releases All Under Heaven along with the special admin gov’t for the Liao, they’ll be made admin vassals of Liao again)
+- Purification doctrines are now also available to non-Dualist faiths with the Gnostic tenet
+- Added Religious Patronage tradition to French culture (if there’s an available tradition slot)
+- Added Agrarian tradition to the Severian culture so it is consistent with the traditions given to Ilmenians and Volhynians from vanilla 
+- Added a few remnant Slavic pagan counties in East Slavic lands in 1066 and to a much lesser extent 1178
+- Vanilla’s Tribes of the North tradition has been added to RICE’s Siberian cultures if you have the Khans of the Steppe DLC
+- Removed Genghis Khan as a bookmarked character since he’s now a vanilla bookmarked character
+- Tweaked starting army of the Western Liao to include some of vanilla’s new nomad MAAs
+- Decision to Alter the Shrine of Santiago can no longer be taken if you have the forbidden pilgrimage doctrine
+- Revamped some decision art, credits to DrStein(Selva)
+- Removed ability to do the Silk Road decision if your liege has counties in the Silk Road region (to prevent, for instance, someone in Sardinia ruled by the ERE from taking it since the Emperor has counties in the Levant)
+- Nerfed the Akhtarveniks tradition
+- May have fixed Rus override game rule not working if you enabled it, not sure if the fix works however
+- Fixed Votive Offerings not being available as an activity option for the local pilgrimage to Tapama Djenepo’s tomb
+- Fixed some RICE adventurer titles not being destroyed if game rule to remove RICE adventurers is on
+- Fixed Maganoist faith (i.e. Sidama paganism) having a different name if it is reformed
+- Fixed potential source of error log errors from non-landed rulers converting to other faiths at game start
+- Miscellaneous bugfixes
 
 ## Credits
 
@@ -124,6 +131,7 @@ Special thanks in particular to:
 - Diadochi Kings mod (from CK2) for Elamite names
 - DrStein(Dupont) for revamped artwork
 - Eastern Etiquette mod and 🍓白茶 for Chinese history improvements
+- Eclipsed Crown mod for various Asian history and collab
 - Fische for various building art icons and Vertimnus for donating it to me (originally made for Sinews of War)
 - George Hammond for some music ([see here](https://fanlink.to/georgehammondmusic) for more of his work)
 - Henry for the Better Bedouin Culture mod
@@ -132,7 +140,7 @@ Special thanks in particular to:
 - Klorpa for fixing a lot of typos
 - Lahom for most Native American names
 - Макс for Erzya and Moksha names and info
-- Meat Plague for content from the Baptism of Rus mod
+- Meat Plague for content from the Baptism of Rus and Manichean Tweaks mods
 - Msl229 for Eastern Europe research and code
 - Naatturi for content from the Ukonusko Overhaul mod
 - Nezaros for religion and bookmark art
