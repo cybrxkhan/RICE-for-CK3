@@ -7322,9 +7322,14 @@ tarim_basin.0051 = {
 		}
 	}
 	
+	# CAUSING CTDs for some reason due to set_player_character even though it worked fine before
+	# Disabled for players for now as a stopgap measure
 	# Play as Yichao, Huaishen leaves
 	option = {
 		name = tarim_basin.0051.b
+		trigger = {
+			is_ai = yes
+		}
 		hidden_effect = {
 			scope:yichao = {
 				get_title = title:c_changma # Weird quirk to ensure Yichao keeps Shazhou and not Huaishen's heir
@@ -7340,24 +7345,19 @@ tarim_basin.0051 = {
 				add_pressed_claim = title:c_toksun
 				add_pressed_claim = title:c_kara_khoja
 
-				add_courtier = scope:huaiding_son_1
-				add_courtier = scope:huaiding_son_2
-				add_courtier = scope:huaiding_son_3
-				add_courtier = scope:huaiding_son_4
+				#add_courtier = scope:huaiding_son_1
+				#add_courtier = scope:huaiding_son_2
+				#add_courtier = scope:huaiding_son_3
+				#add_courtier = scope:huaiding_son_4
 				#add_courtier = scope:zhu_zaiqing
-				add_courtier = scope:wuzhen
+				#add_courtier = scope:wuzhen
 				#add_courtier = scope:zhang_qiu
-				add_courtier = scope:wu_anzheng
-				add_courtier = scope:valerie_jiang
-				add_courtier = scope:william_ly
+				#add_courtier = scope:wu_anzheng
+				#add_courtier = scope:valerie_jiang
+				#add_courtier = scope:william_ly
 			}
 		}
-		if = {
-			limit = {
-				is_ai = no
-			}
-			set_player_character = scope:yichao	
-		}
+		set_player_character = scope:yichao
 		hidden_effect = {
 			scope:huaishen = {
 				every_character_artifact = {
@@ -7365,9 +7365,9 @@ tarim_basin.0051 = {
 				}
 			}
 		}
-		scope:huaishen.house = {
-			set_house_head = scope:yichao
-		}
+		# scope:huaishen.house = {
+		# 	set_house_head = scope:yichao
+		# }
 		hidden_effect = {			
 			scope:huaishen = {
 				death = {
@@ -7390,9 +7390,14 @@ tarim_basin.0051 = {
 		}
 	}
 
+	# CAUSING CTDs for some reason due to set_player_character even though it worked fine before
+	# Disabled for players for now as a stopgap measure
 	# Play as Yichao, no one leaves
 	option = {
 		name = tarim_basin.0051.c
+		trigger = {
+			is_ai = yes
+		}
 		hidden_effect = {
 			scope:yichao = {
 				get_title = title:c_changma # Weird quirk to ensure Yichao keeps Shazhou and not Huaishen's heir
@@ -7401,12 +7406,7 @@ tarim_basin.0051 = {
 				get_title = title:c_shazhou
 			}
 		}
-		if = {
-			limit = {
-				is_ai = no
-			}
-			set_player_character = scope:yichao	
-		}
+		set_player_character = scope:yichao
 		hidden_effect = {
 			scope:huaishen = {
 				every_character_artifact = {
@@ -7475,9 +7475,9 @@ tarim_basin.0051 = {
 			name = RICE_dunhuang_tang_hostage
 			target = flag:yeeted_no_one
 		}
-		scope:huaishen.house = {
-			set_house_head = scope:yichao
-		}
+		# scope:huaishen.house = {
+		# 	set_house_head = scope:yichao
+		# }
 
 		hidden_effect = {
 			if = {
@@ -7494,6 +7494,16 @@ tarim_basin.0051 = {
 	}
 
 	after = {
+		# if = {
+		# 	limit = {
+		# 		is_ai = no
+		# 		# scope:yichao = {
+		# 		# 	has_title = title:k_guiyi
+		# 		# }
+		# 	}
+		# 	add_character_flag = RICE_tarim_basin_mark_for_guiyi_ruler_switch
+		# 	#trigger_event = tarim_basin.0055
+		# }
 		character:206811 = {
 			trigger_event = tarim_basin.0052
 		}
@@ -7605,6 +7615,16 @@ tarim_basin.0052 = {
 		}
 		RICE_dunhuang_intro_history_context_effect = yes
 	}
+
+	# after = {
+	# 	if = {
+	# 		limit = {
+	# 			has_character_flag = RICE_tarim_basin_mark_for_guiyi_ruler_switch
+	# 		}
+	# 		trigger_event = tarim_basin.0055
+	# 	}
+	# }
+
 }
 
 
@@ -7681,6 +7701,21 @@ tarim_basin.0054 = {
 }
 
 
+# Character switch event
+tarim_basin.0055 = {
+	type = character_event
+	hidden = yes
+	
+	immediate = {
+		if = {
+			limit = {
+				has_character_flag = RICE_tarim_basin_mark_for_guiyi_ruler_switch
+			}
+			remove_character_flag = RICE_tarim_basin_mark_for_guiyi_ruler_switch
+		}
+		set_player_character = title:k_guiyi.holder
+	}
+}
 
 # Death of Zhang Yichao (if he left)
 # tarim_basin.0055 = {
