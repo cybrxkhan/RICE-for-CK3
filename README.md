@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/kOFlwnp.jpg">
 
-## Latest Version: Version 1.16.0 "Buddha of Light" (Released 5/18/25, for vanilla patch 1.16.x)
+## Latest Version: Version 1.16.0.a Hotfix for "Buddha of Light" (Released 5/20/25, for vanilla patch 1.16.x)
 
 **Newest Flavor Pack: *Manicheism: The Religion of Light***
 
@@ -80,6 +80,16 @@ Click to view guides which cover the features in each specific pack in more deta
 ## Latest Changelog
 
 <img src="https://i.imgur.com/1lf6jVR.jpg">
+
+### Version 1.16.0.a Hotfix for "Buddha of Light"
+
+- Added some missing Spanish localization, courtesy of Ferchu
+- Added event when creating a new faith with Gnosticism that previously didn’t have it to choose its purification doctrine
+- All faiths with the Liberation of Light doctrine now also start with The Hidden Light doctrine in later start dates
+- Increased cooldown for the Manichean confession decision to three years
+- Temporary fix for potential CTD when playing as Zhang Huaishen in 867 and choosing to send yourself as a Tang hostage, or not sending anyone, by disabling those options for players
+- Fixed missing localization for the historical context tooltip of the Bezeklik Pilgrimage
+- Fixed newly created faiths not losing or gaining purification doctrines as appropriate when removing or adding the Gnostic tenet
 
 ### Version 1.16.0 "Buddha of Light"
 
