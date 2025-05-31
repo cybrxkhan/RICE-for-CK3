@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/kOFlwnp.jpg">
 
-## Latest Version: Version 1.16.0.a Hotfix for "Buddha of Light" (Released 5/20/25, for vanilla patch 1.16.x)
+## Latest Version: Version 1.16.0.b Hotfix for "Buddha of Light" (Released 5/31/25, for vanilla patch 1.16.x)
 
 **Newest Flavor Pack: *Manicheism: The Religion of Light***
 
@@ -80,6 +80,17 @@ Click to view guides which cover the features in each specific pack in more deta
 ## Latest Changelog
 
 <img src="https://i.imgur.com/1lf6jVR.jpg">
+
+### Version 1.16.0.b Hotfix for "Buddha of Light"
+
+- Munya activities can now be taken anywhere if you have the Munya tradition
+- Made AI more likely to take the decision to create Rus culture after a certain timeframe after game start
+- Made AI more likely to take the decision to influence the future of Uyghur Manicheism after a certain timeframe after game start
+- Tamil culture now starts with the Refined Poetry tradition
+- Changed Amazigh religion funeral doctrine
+- Fixed missing localization for DeathDeityHerHim in many RICE religions
+- Fixed missing localization for some Mari pagan religious loc
+- Miscellaneous bugfixes
 
 ### Version 1.16.0.a Hotfix for "Buddha of Light"
 
