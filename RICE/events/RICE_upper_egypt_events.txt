@@ -42,7 +42,7 @@ upper_egypt.0001 = {
 		animation = personality_honorable
 	}	
 	right_portrait = {
-		character = scope:ibn_tulun_son
+		character = scope:subject
 		animation = personality_callous
 	}
 	lower_left_portrait = scope:shukayr
@@ -55,120 +55,268 @@ upper_egypt.0001 = {
 		}
 		character:extra_tulunids_1 = {
 			save_scope_as = ibn_tulun_son
+			save_scope_as = subject
+		}
+		if = { # custom character - this can be the player which can also become admin
+			limit = { title:k_egypt.holder != character:163115 }
+			title:k_egypt.holder = {
+				save_scope_as = ibn_tulun
+			}
+			scope:ibn_tulun.player_heir ?= {
+				save_scope_as = ibn_tulun_son
+				save_scope_as = subject
+			}
 		}
 		character:RICE_upper_egypt_008 = {
 			save_scope_as = shukayr
+			if = {
+				limit = { is_ai = no }
+				save_scope_as = subject
+			}
 		}
 		character:RICE_upper_egypt_010 = {
 			save_scope_as = al_mudabbir
+			if = {
+				limit = { is_ai = no }
+				save_scope_as = subject
+			}
 		}
 		character:RICE_upper_egypt_012 = {
 			save_scope_as = al_tabataba
+			if = {
+				limit = { is_ai = no }
+				save_scope_as = subject
+			}
 		}
 		character:RICE_upper_egypt_013 = {
 			save_scope_as = al_sufi
+			if = {
+				limit = { is_ai = no }
+				save_scope_as = subject
+			}
 		}
 		character:RICE_upper_egypt_015 = {
 			save_scope_as = al_farghani
+			if = {
+				limit = { is_ai = no }
+				save_scope_as = subject
+			}
 		}
 		character:RICE_upper_egypt_016 = {
 			save_scope_as = al_kan
+			if = {
+				limit = { is_ai = no }
+				save_scope_as = subject
+			}
 		}
 		character:RICE_upper_egypt_017 = {
 			save_scope_as = al_madharai
+			if = {
+				limit = { is_ai = no }
+				save_scope_as = subject
+			}
 		}
-		
 	}
 	
 	option = {
-		name = upper_egypt.0001.a
-		if = {
-			limit = {
-				has_game_rule = RICE_historical_context_on
-			}
-			# al-Tabataba
-			if = {
-				limit = {
-					this = character:RICE_upper_egypt_012
-				}
-				custom_description_no_bullet = {
-					text = upper_egypt.0001.tooltip.al_tabataba
-				}
-			}
-			# al-Sufi
-			else_if = {
-				limit = {
-					OR = {
-						this = character:RICE_upper_egypt_013
-						this = character:RICE_upper_egypt_014
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { this = scope:ibn_tulun_son }
+						desc = upper_egypt.0001.b
 					}
-				}
-				custom_description_no_bullet = {
-					text = upper_egypt.0001.tooltip.al_sufi
-				}
-			}
-			# al-Kan
-			else_if = {
-				limit = {
-					this = character:RICE_upper_egypt_016
-				}
-				custom_description_no_bullet = {
-					text = upper_egypt.0001.tooltip.al_kan
-				}
-			}
-			# al-Madhara'i
-			else_if = {
-				limit = {
-					this = character:RICE_upper_egypt_017
-				}
-				custom_description_no_bullet = {
-					text = upper_egypt.0001.tooltip.al_madharai
-				}
-			}
-			# al-Abbas, Ibn Tulun's eldest son
-			else_if = {
-				limit = {
-					this = character:extra_tulunids_1
-				}
-				custom_description_no_bullet = {
-					text = upper_egypt.0001.tooltip.ibn_tulun_son
-				}
-			}
-			# Shukayr
-			else_if = {
-				limit = {
-					this = character:RICE_upper_egypt_008
-				}
-				custom_description_no_bullet = {
-					text = upper_egypt.0001.tooltip.shukayr
-				}
-			}
-			# al-Mudabbir
-			else_if = {
-				limit = {
-					this = character:RICE_upper_egypt_010
-				}
-				custom_description_no_bullet = {
-					text = upper_egypt.0001.tooltip.al_mudabbir
-				}
-			}
-			# al-Farghani
-			else_if = {
-				limit = {
-					this = character:RICE_upper_egypt_015
-				}
-				custom_description_no_bullet = {
-					text = upper_egypt.0001.tooltip.al_farghani
-				}
-			}
-			# Default
-			else = {
-				custom_description_no_bullet = {
-					text = upper_egypt.0001.tooltip.ibn_tulun
+					triggered_desc = {
+						trigger = { this = scope:shukayr }
+						desc = upper_egypt.0001.c
+					}
+					triggered_desc = {
+						trigger = { this = scope:al_mudabbir }
+						desc = upper_egypt.0001.d
+					}
+					desc = upper_egypt.0001.a
 				}
 			}
 		}
-	}	
+		flavor = {
+			first_valid = {
+				triggered_desc = {
+					trigger = { this = character:RICE_upper_egypt_012 }
+					desc = upper_egypt.0001.tooltip.al_tabataba
+				}
+				triggered_desc = {
+					trigger = { OR = {
+						this = character:RICE_upper_egypt_013
+						this = character:RICE_upper_egypt_014
+					} }
+					desc = upper_egypt.0001.tooltip.al_sufi
+				}
+				triggered_desc = {
+					trigger = { this = character:RICE_upper_egypt_016 }
+					desc = upper_egypt.0001.tooltip.al_kan
+				}
+				triggered_desc = {
+					trigger = { this = character:RICE_upper_egypt_017 }
+					desc = upper_egypt.0001.tooltip.al_madharai
+				}
+				triggered_desc = {
+					trigger = { this = character:extra_tulunids_1 }
+					desc = upper_egypt.0001.tooltip.al_kan
+				}
+				triggered_desc = {
+					trigger = { this = character:RICE_upper_egypt_008 }
+					desc = upper_egypt.0001.tooltip.shukayr
+				}
+				triggered_desc = {
+					trigger = { this = character:RICE_upper_egypt_010 }
+					desc = upper_egypt.0001.tooltip.al_mudabbir
+				}
+				triggered_desc = {
+					trigger = { this = character:RICE_upper_egypt_015 }
+					desc = upper_egypt.0001.tooltip.al_farghani
+				}
+				desc = upper_egypt.0001.tooltip.ibn_tulun
+			}
+		}
+		# al-Tabataba
+		if = {
+			limit = {
+				this = scope:al_tabataba
+				is_landed = yes
+			}
+			flavor = upper_egypt.0001.tooltip.al_tabataba
+			add_internal_flag = special
+			# scope:al_tabataba ?= {
+				create_title_and_vassal_change = {
+					type = independency
+					save_scope_as = going_independent
+					add_claim_on_loss = no
+				}
+				becomes_independent = {
+					change = scope:going_independent
+				}
+				resolve_title_and_vassal_change = scope:going_independent	
+			# }
+		}
+		# al-Sufi
+		else_if = {
+			# limit = {
+			# 	OR = {
+			# 		this = character:RICE_upper_egypt_013
+			# 		this = character:RICE_upper_egypt_014
+			# 	}
+			# }
+			limit = {
+				this = scope:al_sufi
+				is_landed = yes
+			}
+			add_internal_flag = special
+			# scope:al_sufi ?= {
+				create_title_and_vassal_change = {
+					type = independency
+					save_scope_as = going_independent
+					add_claim_on_loss = no
+				}
+				becomes_independent = {
+					change = scope:going_independent
+				}
+				resolve_title_and_vassal_change = scope:going_independent
+			# }
+		}
+		fallback = yes
+	}
+	option = {
+		name = "I like this side of the river"
+		trait = loyal
+		trigger = {
+			is_landed = yes
+			top_liege = scope:ibn_tulun
+			NOT = { this = scope:ibn_tulun }
+		}
+		add_trait = loyal
+		if = {
+			limit = {
+				# is_governor = yes
+				scope:ibn_tulun ?= {
+					government_has_flag = government_is_administrative
+				} 
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_held_title = { is_noble_family_title = yes }
+					}
+				}
+				create_noble_family_effect = yes
+			}
+			#RICE_setup_new_granted_ruler_bonuses_effect does not add extra influence, add xp instead?
+			increase_governance_effect = { VALUE = age }
+		}
+		else_if = {
+			limit = {
+				culture != scope:ibn_tulun.culture
+			}
+			primary_title ?= {
+				save_scope_as = landed_title
+			}
+			culture = {
+				change_cultural_acceptance = {
+					target = scope:ibn_tulun.culture
+					value =	auto_grant_county_cultural_acceptance_impact
+					desc = cultural_acceptance_gain_auto_granted_county
+				}
+			}
+		}
+		#add/create independence/populist faction if available?
+		ai_chance = { base = 0 }
+	}
+	option = {
+		name = "Let my people go"
+		trait = disloyal
+		trigger = {
+			is_landed = yes
+			NOT = { this = scope:ibn_tulun }
+			top_liege = scope:ibn_tulun
+			# NOR = {
+			# 	culture = top_liege.culture
+			# 	#state_faith check?
+			# 	faith = top_liege.faith 
+			# 	#already the default option
+			# 	this = scope:al_tabataba
+			# 	this = scope:al_sufi
+			# }
+		}
+		if = {
+			limit = {
+				scope:ibn_tulun ?= {
+					government_has_flag = government_is_administrative
+				} 
+			}
+			remove_trait = governor
+			add_trait = disloyal
+		}
+		else_if = {
+			limit = {
+				culture != scope:ibn_tulun.culture
+			}
+			primary_title ?= {
+				save_scope_as = landed_title
+			}
+			culture = {
+				change_cultural_acceptance = {
+					target = scope:ibn_tulun.culture
+					value = revoke_title_culture_acceptance_impact
+					desc = cultural_acceptance_loss_revokation
+				}
+			}
+		}
+
+		break_subject_contract_and_establish_tributary_effect = {
+			SUZERAIN = scope:ibn_tulun
+			TRIBUTARY = this
+		}
+		ai_chance = { base = 0 }
+	}
 }
 
 
