@@ -320,12 +320,12 @@
 		}
 
 		# Muhammad ibn al-Faraj al-Farghani - give governorship of Barca
-		character:RICE_upper_egypt_015 = {
-			get_title = title:c_tobruk
-			get_title = title:c_derna
-			get_title = title:d_cyrenaica
-			RICE_setup_new_granted_ruler_bonuses_effect = yes
-		}
+		# character:RICE_upper_egypt_015 = {
+		# 	get_title = title:c_tobruk
+		# 	get_title = title:c_derna
+		# 	get_title = title:d_cyrenaica
+		# 	RICE_setup_new_granted_ruler_bonuses_effect = yes
+		# }
 
 		# 'Abd al-Kan - give fayyum
 		character:RICE_upper_egypt_016 = {
@@ -362,6 +362,13 @@
 		}
 		resolve_title_and_vassal_change = scope:going_independent	
 
+		# Tweak al-farghani traits
+		character:al-farghani_1 = {
+			RICE_remove_education_traits_effect = yes
+			#RICE_remove_personality_traits_effect = yes
+			add_trait = education_martial_3
+			set_culture = culture:sogdian # al-Farghani was from Ferghana most likely, but is depicted as Levantine in vanilla
+		}
 	}
 
 }
@@ -1381,3 +1388,60 @@ RICE_upper_egypt_visit_aswan_temples_completed_log_entry_effect = {
 	}
 }
 
+
+# Effects to run if Egypt is set up as an admin realm
+RICE_upper_egypt_admin_egypt_after_game_start_effect = {
+	if = {
+		limit = {
+			has_game_rule = historicity_extra_admin_egypt_historic_always
+		}
+		title:k_egypt.holder ?= {
+			every_vassal_or_below = {
+				limit = {
+					exists = dynasty
+					highest_held_title_tier >= tier_county 
+					house.house_head = {
+						NOT = {
+							any_held_title = { is_noble_family_title = yes }
+						}
+					}
+				}
+				create_noble_family_effect = yes
+				every_held_county = {
+					add_to_list = titles
+				}
+			}
+		}
+		every_in_list = {
+			list = titles
+			title:k_egypt.holder = {
+				get_title = prev
+			}
+		}
+		if = {
+			limit = {
+				game_start_date = 867.1.1
+			}
+			if = {
+				limit = {
+					title:d_al-wahat.holder ?= {
+						has_trait = governor
+					}
+				}
+				title:d_al-wahat.holder = {
+					remove_trait = governor
+				}
+			}
+			if = {
+				limit = {
+					title:c_bahriya.holder ?= {
+						NOT = { government_has_flag = government_is_clan }
+					}
+				}
+				title:c_bahriya.holder = {
+					change_government = clan_government
+				}
+			}
+		}
+	}
+}
