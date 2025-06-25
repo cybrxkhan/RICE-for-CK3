@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/kOFlwnp.jpg">
 
-## Latest Version: Version 1.16.1 "Cao'an" (Released 6/17/25, for vanilla patch 1.16.x)
+## Latest Version: Version 1.16.1.a Hotfix for "Cao'an" (Released 6/24/25, for vanilla patch 1.16.x)
 
 **Newest Flavor Pack: *Manicheism: The Religion of Light***
 
@@ -81,24 +81,21 @@ Click to view guides which cover the features in each specific pack in more deta
 
 <img src="https://i.imgur.com/1lf6jVR.jpg">
 
-### Version 1.16.1 "Cao'an"
+### Version 1.16.1.a Hotfix for "Cao'an"
 
-- Added RICE-specific decision groups to visually categorize many of RICE’s decisions
-- Added traditions to various African cultures which only had 2 traditions
-- Disabled some history, culture, and religion changes when running RICE with Dharmachakra, to ensure better consistency between the two mods
-- Changed West Himalayan religion to share deity localization with Bon, rather than Mundhumism
-- Hephthalite culture now has Devoted Horsemanship if Khans of the Steppe DLC is detected instead of Malleable Invasions
-- Khalaj culture now has Frontier Warriors instead of Futuwaa tradition if Legacy of Persia DLC is detected
-- Changthang Nomads, Cattle Kraals, and Bantu Migrators traditions now provides bonuses related to nomads/herds
-- Munya Estates tradition is now available for hybrid/divergent cultures outside of Iberia if the parent culture has it
-- Tweaked the Egyptian intro event in 867 to avoid various weird situations, especially related to Admin gov’t (thanks to the user “a” for the code!)
-- Removed duplicate al-Farghani character from RICE in 867 Egypt
-- Fixed Munya Estates tradition not being viewable in a lot of circumstances
-- Fixed missing loc for RICE_manichean_fast_health_malus_modifier
-- Fixed references to RICE’s old Norman Cavalry in loc, it should refer to Conrois now
-- Fixed potential source of (harmless?) errors in the error logs in the Tarim Basin event code due to counties without cultures after the Roads to Power DLC 
-- Fixed game concept icons for Helluland and Markland using the other’s icons incorrectly (how did I not notice that after almost 3 years?)
-- Fixed possible loc bug for the Buddhist decision to build a holy site
+- Carantanian culture now starts with Forest Folk tradition
+- Nepali culture now starts with Caravaneers tradition
+- Kirati culture now starts with Hit and Run and Stand and Fight traditions
+- Kirati culture now has stoic ethos
+- Suebi culture now starts with Esteemed Hospitality and Prolific Hunters traditions
+- Changed j_khd01_RICE_marriage_triggers to refer to parameters rather than doctrines/traditions for greater compatibility
+- In-game flagging of Greenland/Vinland expeditions will now automatically expire after several years as a failsafe for edge cases where this doesn’t happen 
+- Fixed issue with appoint expedition leader interaction appearing when during Grand Expeditions or Vinland colonization (it should only appear for minor expeditions)
+- Fixed Hephthalite heritage not being Serindian when running TFE with RICE
+- Fixed missing placeholder loc for decision groups for non-English languages
+- Fixed Hephthalites/Turco-Hephthalites not being given relevant traditions when running RICE with TFE
+- Fixed localization issues with the 867 intro event for Egypt
+- Fixed Shingqo Sheli Tutung learning other languages after he dies in the history code
 - Miscellaneous bugfixes
 
 ## Credits
