@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/kOFlwnp.jpg">
 
-## Latest Version: Version 1.16.1.a Hotfix for "Cao'an" (Released 6/24/25, for vanilla patch 1.16.x)
+## Latest Version: Version 1.16.1.b Hotfix for "Cao'an" (Released 6/28/25, for vanilla patch 1.16.x)
 
 **Newest Flavor Pack: *Manicheism: The Religion of Light***
 
@@ -81,22 +81,15 @@ Click to view guides which cover the features in each specific pack in more deta
 
 <img src="https://i.imgur.com/1lf6jVR.jpg">
 
-### Version 1.16.1.a Hotfix for "Cao'an"
+### Version 1.16.1.b Hotfix for "Cao'an"
 
-- Carantanian culture now starts with Forest Folk tradition
-- Nepali culture now starts with Caravaneers tradition
-- Kirati culture now starts with Hit and Run and Stand and Fight traditions
-- Kirati culture now has stoic ethos
-- Suebi culture now starts with Esteemed Hospitality and Prolific Hunters traditions
-- Changed j_khd01_RICE_marriage_triggers to refer to parameters rather than doctrines/traditions for greater compatibility
-- In-game flagging of Greenland/Vinland expeditions will now automatically expire after several years as a failsafe for edge cases where this doesn’t happen 
-- Fixed issue with appoint expedition leader interaction appearing when during Grand Expeditions or Vinland colonization (it should only appear for minor expeditions)
-- Fixed Hephthalite heritage not being Serindian when running TFE with RICE
-- Fixed missing placeholder loc for decision groups for non-English languages
-- Fixed Hephthalites/Turco-Hephthalites not being given relevant traditions when running RICE with TFE
-- Fixed localization issues with the 867 intro event for Egypt
-- Fixed Shingqo Sheli Tutung learning other languages after he dies in the history code
-- Miscellaneous bugfixes
+- Added missing Spanish localization
+- Added Joachim of Fiore as a courtier in Sicily in 1178
+- Tweaked holy sites for off-map African faiths
+- Replaced the icon for Modimoism (Sotho-Tswana paganism)
+- Removed some placeholder non-Oromo names from the female Oromo namelist
+- Fix to account for edge cases where the interaction to ask someone to be expedition leader could refer to two expeditions
+- Fixed missing code for Oromo names
 
 ## Credits
 
