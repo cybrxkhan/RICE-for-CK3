@@ -1,0 +1,917 @@
+﻿activity_RICE_nubia_banganarti_pilgrimage = {
+	is_shown = {
+		highest_held_title_tier > tier_barony
+		is_playable_character = yes
+		OR = {
+			title:c_dongola = {
+				squared_distance = {
+					target = root.capital_province
+					value <= squared_distance_large
+				}
+			}
+			capital_province ?= {
+				geographical_region = world_africa_east
+			}
+			has_title = title:c_dongola # c_dongola is where b_old_dongola is
+		}
+		religion = religion:christianity_religion
+		trigger_if = {
+			limit = {
+				is_ai = yes
+			}
+			is_at_war = no
+			short_term_gold >= RICE_activity_cost
+		}	
+		trigger_if = {
+			limit = {
+				is_landed = no
+			}
+			domicile.domicile_location ?= {
+				this = title:b_old_dongola.title_province
+			}
+		}
+	}
+
+	can_start = {
+		religion = religion:christianity_religion
+		NOT = { faith = { has_doctrine = doctrine_pilgrimage_forbidden } }
+	}
+
+	can_start_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	is_valid = {
+		NOT = {
+			has_variable = activity_invalidated
+		}
+		scope:host = {
+			is_playable_character = yes
+			NOT = { is_incapable = yes }
+		}
+		# If no one shows up
+		# trigger_if = {
+		# 	limit = {
+		# 		is_current_phase_active = yes
+		# 	}
+		# 	has_attending_activity_guests = yes
+		# }
+		# Converting mid-activity is a big no-no.
+		scope:activity = {
+			OR = {
+				NOT = { has_variable = starting_faith }
+				# We could check whether the place you're going to is still a holy site in the new faith, but then that messes up all the people moving with you, so we just cancel the whole thing.
+				scope:host.faith = var:starting_faith
+			}
+		}
+	}
+
+	on_invalidated = {
+		# Host becomes unlanded
+		if = {
+			limit = {
+				scope:host = { is_playable_character = no }
+			}
+			scope:activity = {
+				activity_type = { save_scope_as = activity_type }
+			}
+			every_attending_character = {
+				trigger_event = activity_system.0320
+			}
+		}
+		if = {
+			limit = {
+				scope:host = { is_incapable = yes }
+			}
+			scope:activity = {
+				activity_type = { save_scope_as = activity_type }
+			}
+			scope:host = {
+				trigger_event = activity_system.0330
+			}
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				trigger_event = activity_system.0331
+			}
+		}
+		# if = { # No one shows up
+		# 	limit = {
+		# 		has_attending_activity_guests = no
+		# 	}
+		# 	scope:activity = {
+		# 		activity_type = { save_scope_as = activity_type }
+		# 		activity_location = { save_scope_as = location }
+		# 	}
+		# 	scope:host = { trigger_event = activity_system.0100 }
+		# }
+		# Host converted to a different faith
+		# Could check to see if new faith allows for this kind of shenanigans, but it's easier to just do it broadly like this
+		if = {
+			limit = {
+				NOT = { scope:host.faith = var:starting_faith }
+				scope:host = { is_landed = yes } # Temporary solution to issue where landless adventurers get cancelled from doing the activity partway through
+			}
+			scope:activity = {
+				activity_type = { save_scope_as = activity_type }
+				activity_location = { save_scope_as = location }
+			}
+			every_attending_character = {
+				trigger_event = RICEmisc.0010
+			}
+		}
+	}
+
+	on_host_death = {
+		scope:activity = {
+			set_variable = {
+				name = activity_invalidated
+			}
+		}
+	}
+
+	province_filter = all
+	ai_province_filter = domicile_realm
+	wait_time_before_start = { days = 30 }
+
+	###################
+	# OPTIONS
+	###################
+
+	special_option_category = special_type
+
+	options = {
+		#########
+		# TYPE OF VISIT
+		#########
+		special_type = {
+			RICE_local_pilgrimage_type_devotion = {
+				default = yes	
+				ai_will_do = {
+					value = 10
+					if = {
+						limit = {
+							has_trait = zealous
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = diligent
+						}
+						add = 5
+					}
+				}
+			}
+			RICE_local_pilgrimage_type_observance = {		
+				ai_will_do = {
+					value = 10
+					if = {
+						limit = {
+							has_trait = just
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = humble
+						}
+						add = 5
+					}
+				}
+			}
+			RICE_local_pilgrimage_type_vacation = {		
+				ai_will_do = {
+					value = 10
+					if = {
+						limit = {
+							has_trait = lazy
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = gregarious
+						}
+						add = 5
+					}
+				}
+			}
+			RICE_local_pilgrimage_type_performance = {		
+				ai_will_do = {
+					value = 10
+					if = {
+						limit = {
+							has_trait = arrogant
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = ambitious
+						}
+						add = 5
+					}
+				}
+			}
+		}
+
+
+		#########################
+		#
+		# VOTIVE OFFERINGS
+		#
+		#########################
+		RICE_local_pilgrimage_votive_offering_type = {
+			RICE_local_pilgrimage_votive_offering_type_small = {
+				default = yes
+				ai_will_do = {
+					value = 15
+					if = {
+						limit = {
+							short_term_gold <= 100
+						}
+						add = {
+							value = 10
+						}
+					}
+					if = {
+						limit = {
+							has_trait = greedy
+						}
+						add = 10
+					}
+				}
+			}
+			RICE_local_pilgrimage_votive_offering_type_medium = {
+				cost = { 
+					gold = {
+						add = {
+							value = 0
+							desc = RICE_local_pilgrimage_votive_offering_amount
+							add = {
+								value = minor_gold_value
+								desc = RICE_local_pilgrimage_votive_offering_amount
+							}
+						}
+					}
+				}			
+				ai_will_do = {
+					value = 30
+					if = {
+						limit = {
+							short_term_gold <= minor_gold_value
+						}
+						subtract = {
+							value = 30
+						}
+					}
+					if = {
+						limit = {
+							has_trait = ambitious
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = zealous
+						}
+						add = 5
+					}
+				}
+			}
+			RICE_local_pilgrimage_votive_offering_type_large = {
+				cost = { 
+					gold = {
+						add = {
+							value = 0
+							desc = RICE_local_pilgrimage_votive_offering_amount
+							add = {
+								value = medium_gold_value
+								desc = RICE_local_pilgrimage_votive_offering_amount
+							}
+						}
+					}
+				}			
+				ai_will_do = {
+					value = 15
+					if = {
+						limit = {
+							short_term_gold <= medium_gold_value
+						}
+						subtract = {
+							value = 15
+						}
+					}
+					if = {
+						limit = {
+							has_trait = ambitious
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = zealous
+						}
+						add = 5
+					}
+				}
+			}
+		}
+
+		
+
+		#########################
+		#
+		# MEMORALIZATION
+		#
+		#########################
+		RICE_local_pilgrimage_memorialization_type = {
+			RICE_local_pilgrimage_memorialization_type_small = {
+				default = yes
+				ai_will_do = {
+					value = 15
+					if = {
+						limit = {
+							short_term_gold <= 100
+						}
+						add = {
+							value = 10
+						}
+					}
+					if = {
+						limit = {
+							has_trait = greedy
+						}
+						add = 10
+					}
+				}
+			}
+			RICE_local_pilgrimage_memorialization_type_medium = {
+				cost = { 
+					gold = {
+						add = {
+							value = 0
+							desc = RICE_local_pilgrimage_memorialization_amount
+							add = {
+								value = minor_gold_value
+								desc = RICE_local_pilgrimage_memorialization_amount
+							}
+						}
+					}
+				}			
+				ai_will_do = {
+					value = 30
+					if = {
+						limit = {
+							short_term_gold <= minor_gold_value
+						}
+						subtract = {
+							value = 30
+						}
+					}
+					if = {
+						limit = {
+							has_trait = ambitious
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = arrogant
+						}
+						add = 5
+					}
+				}
+			}
+			RICE_local_pilgrimage_memorialization_type_large = {
+				cost = { 
+					gold = {
+						add = {
+							value = 0
+							desc = RICE_local_pilgrimage_memorialization_amount
+							add = {
+								value = medium_gold_value
+								desc = RICE_local_pilgrimage_memorialization_amount
+							}
+						}
+					}
+				}			
+				ai_will_do = {
+					value = 15
+					if = {
+						limit = {
+							short_term_gold <= medium_gold_value
+						}
+						subtract = {
+							value = 15
+						}
+					}
+					if = {
+						limit = {
+							has_trait = ambitious
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = arrogant
+						}
+						add = 5
+					}
+				}
+			}
+		}	
+
+
+	}
+
+	###################
+	# PHASES
+	###################
+
+	phases = {
+		RICE_local_pilgrimage_pilgrimage_phase = {
+			is_predefined = yes
+			
+			on_phase_active = {
+				if = {
+					limit = {
+						this = scope:host
+					}
+					scope:host = { trigger_event = nubia.8888 }
+				}		
+			}
+			on_end = {
+				# Run conclusion stuff here
+				# if = {
+				# 	limit = { this = scope:host }
+				# 	scope:activity = { progress_activity_phase_after = { weeks = 2 } }
+				# }
+			}
+		}
+	}
+
+	max_guest_arrival_delay_time = { months = 1 }
+
+	# desc is only shown in debug AI watch window
+	ai_will_do = {
+		value = 50
+		
+		if = {
+			limit = {
+				has_trait = cynical
+			}
+			add = -25
+		}
+		if = {
+			limit = {
+				has_trait = zealous
+			}
+			add = 25
+		}
+		
+		#Can you actually afford this?
+		if = {
+			limit = {
+				NOT = { can_make_expensive_purchase_trigger = { PRICE = RICE_activity_cost } }
+			}
+			add = -50
+		}
+
+	}
+
+	ai_check_interval = 60
+
+	ai_will_select_province = {
+		value = 10
+		# if = {
+		# 	limit = {
+		# 		this = scope:host.capital_province
+		# 	}
+		# 	add = {
+		# 		value = 30
+		# 		desc = "Capital Province preferred"
+		# 	}
+		# }
+	}
+	
+	is_location_valid = {
+		barony ?= title:b_old_dongola
+	}
+
+
+	max_province_icons = 1
+
+	province_score = {
+		add = 0
+		# Actual location
+		if = {
+			limit = {
+				county ?= title:c_dongola
+			}
+			add = 100
+		}
+	}
+	
+	cost = {
+		gold = {
+			add = {
+				value = 0
+				add = {
+					value = RICE_activity_cost
+					desc = hunt_base_cost
+				}
+			}
+		}
+	}
+
+	ui_predicted_cost = {
+		gold = {
+			value = RICE_activity_cost
+
+			# Make it a multiple of 5 (rounded up)
+			divide = 5 
+			ceiling = yes 
+			multiply = 5
+		}
+	}
+	cooldown = { days = 3650 }
+	
+	###################
+	# ACTIVITY-SPECIFIC PULSES
+	###################
+	
+	pulse_actions = {
+
+	}
+
+	on_start = {
+		# Check what faith the pilgrimage is supposed to be for.
+		set_variable = {
+			name = starting_faith
+			value = scope:host.faith
+		}
+	}
+
+	on_enter_passive_state = {
+		
+	}
+
+	###################
+	# GUEST HANDLING
+	###################
+
+	max_guests = 10
+
+	guest_invite_rules = {
+		rules = {
+			# Relations.
+			2 = activity_invite_rule_lovers
+			2 = activity_invite_rule_rivals_if_appropriate
+
+			# Family.
+			3 = activity_invite_rule_extended_family
+
+			# Misc landless.
+			5 = activity_invite_rule_knights
+
+			# MP 
+			6 = activity_invite_mp
+		}
+		defaults = {
+			1 = activity_invite_rule_friends
+			1 = activity_invite_rule_close_family
+			3 = activity_invite_rule_courtiers
+			4 = activity_invite_rule_guests
+			1 = activity_invite_spouses
+		}
+	}
+
+	can_be_activity_guest = {
+		faith.religion = scope:host.faith.religion
+		is_adult = yes
+		is_available = yes
+		in_diplomatic_range = scope:host
+		is_playable_character = no
+	}
+
+	host_intents = {
+		intents = { RICE_local_pilgrimage_worship_intent RICE_local_pilgrimage_model_intent RICE_local_pilgrimage_curiosity_intent }
+		default = RICE_local_pilgrimage_worship_intent
+	}
+
+	guest_intents = {
+		intents = { RICE_local_pilgrimage_worship_intent RICE_local_pilgrimage_model_intent RICE_local_pilgrimage_curiosity_intent }
+		default = RICE_local_pilgrimage_worship_intent
+	}
+
+	guest_join_chance = {
+		base = 10
+		base_activity_modifier = yes
+
+		# Scripted Modifiers
+		activity_guest_shared_ai_accept_modifier = yes
+	}
+	
+	on_complete = {
+		# if = {
+		# 	limit = { this = scope:host }
+		# 	create_character_memory = {
+		# 		type = RICE_nubia_banganarti_pilgrimage_host_memory
+		# 	}
+		# 	#scope:host = {
+		# 	#	RICE_nubia_banganarti_pilgrimage_completed_log_entry_effect = yes
+		# 	#}
+		# }
+		# else = {			
+		# 	create_character_memory = {
+		# 		type = RICE_nubia_banganarti_pilgrimage_guest_memory
+		# 		participants = {
+		# 			host = scope:host
+		# 		}
+		# 	}
+		# }
+	}
+
+	### Graphics
+	# map_entity = {
+	# 	trigger = {
+	# 		activity_location.culture = {
+	# 			OR = {
+	# 				has_graphical_mena_culture_group_trigger = yes
+	# 				has_graphical_steppe_culture_group_trigger = yes
+	# 				has_graphical_african_culture_group_trigger = yes
+	# 			}
+	# 		}
+	# 	}
+	# 	reference = "building_mena_feast_01_entity"
+	# }
+
+	# map_entity = {
+	# 	trigger = {
+	# 		activity_location.culture = {
+	# 			has_graphical_india_culture_group_trigger = yes
+	# 		}
+	# 	}
+	# 	reference = "building_indian_feast_01_entity"
+	# }
+	
+	# map_entity = "building_western_feast_01_entity"
+
+	# Travel
+	# background = {
+	# 	trigger = {
+	# 		scope:host = {
+	# 			has_character_flag = RICE_socotra_poetry_contest_almost_done
+	# 		}
+	# 	}
+	# 	texture = "gfx/interface/illustrations/event_scenes/market_east.dds"
+	# 	environment = "environment_event_market_east"
+	# 	ambience = "event:/SFX/Events/Backgrounds/town_market_middleeastern_day"
+	# }
+
+	#################
+	#
+	# TRAVEL
+	#
+	#################
+
+	# Travel
+	background = {
+		trigger = {
+			NOT = { scope:host.location = scope:activity.activity_location }
+			scope:host.location = {
+				#graphical_plains_trigger = yes
+				exists = province_owner
+			}
+		}
+		texture = "gfx/interface/illustrations/event_scenes/RICE_tarim_basin_town.dds"
+		environment = "environment_event_market_east"
+		ambience = "event:/SFX/Events/Backgrounds/desert_day"
+	}
+
+	background = {
+		trigger = {
+			NOT = { scope:host.location = scope:activity.activity_location }
+			scope:host.location = {
+				#graphical_plains_trigger = yes
+				NOT = { exists = province_owner }
+			}
+		}
+		texture = "gfx/interface/illustrations/event_scenes/RICE_tarim_basin_landscape.dds"
+		environment = "environment_event_desert"
+		ambience = "event:/SFX/Events/Backgrounds/desert_day"
+	}
+
+	#################
+	#
+	# ARRIVED
+	#
+	#################
+
+	#Fallback
+	background = {
+		texture = "gfx/interface/illustrations/event_scenes/RICE_dunhuang_mogao_caves.dds"
+		environment = "environment_event_temple"
+		ambience = "event:/SFX/Events/Backgrounds/temple_generic"
+	}
+
+
+	window_characters = {
+
+		guest = {
+			camera = camera_body
+			
+			effect = {
+				every_attending_character = {
+					limit = {
+						scope:host.location = scope:activity.activity_location
+					}
+					add_to_list = characters
+				}
+			}
+
+			scripted_animation = {
+				triggered_animation = {
+					trigger = {
+						scope:character = {
+							has_trait = zealous
+						}
+					}
+					animation = { personality_zealous personality_honorable }
+				}
+				triggered_animation = {
+					trigger = {
+						scope:character = {
+							OR = {
+								has_trait = cynical
+								has_trait = lazy
+							}
+						}
+					}
+					animation = { boredom eyeroll }
+				}
+				animation = personality_content
+			}
+		}
+
+		guest = {
+			camera = camera_body
+			
+			effect = {
+				every_attending_character = {
+					limit = {
+						scope:host.location = scope:activity.activity_location
+					}
+					add_to_list = characters
+				}
+			}
+
+			scripted_animation = {
+				triggered_animation = {
+					trigger = {
+						scope:character = {
+							has_trait = zealous
+						}
+					}
+					animation = { personality_zealous personality_honorable }
+				}
+				triggered_animation = {
+					trigger = {
+						scope:character = {
+							OR = {
+								has_trait = cynical
+								has_trait = lazy
+							}
+						}
+					}
+					animation = { boredom eyeroll }
+				}
+				animation = personality_compassionate
+			}
+		}
+		
+		host = {
+			camera = camera_body
+			
+			effect = {
+				if = {
+					limit = {
+						scope:host.location = scope:activity.activity_location
+					}
+					scope:host = {
+						add_to_list = characters
+					}
+				}
+			}
+
+			scripted_animation = {
+				triggered_animation = {
+					trigger = {
+						scope:character = {
+							OR = {
+								has_trait = cynical
+								has_trait = lazy
+							}
+						}
+					}
+					animation = { boredom eyeroll }
+				}
+				animation = personality_zealous
+			}
+		}
+		
+		travel_host = {
+			camera = camera_body
+			
+			effect = {
+				if = {
+					limit = {
+						NOT = {
+							scope:host.location = scope:activity.activity_location
+						}
+					}
+					scope:host = {
+						add_to_list = characters
+					}
+				}
+			}
+
+			scripted_animation = {
+				animation = jockey_walk
+			}
+		}
+
+		guest = {
+			camera = camera_body
+			
+			effect = {
+				every_attending_character = {
+					limit = {
+						scope:host.location = scope:activity.activity_location
+					}
+					add_to_list = characters
+				}
+			}
+
+			scripted_animation = {
+				triggered_animation = {
+					trigger = {
+						scope:character = {
+							has_trait = zealous
+						}
+					}
+					animation = { personality_zealous personality_honorable }
+				}
+				triggered_animation = {
+					trigger = {
+						scope:character = {
+							OR = {
+								has_trait = cynical
+								has_trait = lazy
+							}
+						}
+					}
+					animation = { boredom eyeroll }
+				}
+				animation = personality_forgiving
+			}
+		}
+
+		guest = {
+			camera = camera_body
+			
+			effect = {
+				every_attending_character = {
+					limit = {
+						scope:host.location = scope:activity.activity_location
+					}
+					add_to_list = characters
+				}
+			}
+
+			scripted_animation = {
+				triggered_animation = {
+					trigger = {
+						scope:character = {
+							has_trait = zealous
+						}
+					}
+					animation = { personality_zealous personality_honorable }
+				}
+				triggered_animation = {
+					trigger = {
+						scope:character = {
+							OR = {
+								has_trait = cynical
+								has_trait = lazy
+							}
+						}
+					}
+					animation = { boredom eyeroll }
+				}
+				animation = personality_honorable
+			}
+		}
+	}
+}

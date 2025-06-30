@@ -1,0 +1,385 @@
+﻿RICE_nubia_baqt_situation = {
+	
+	is_unique = yes # It can only exist once in the world
+
+	gui_window_name = "window_RICE_baqt_situation"
+	gui_participation_window_name = "window_situation_participation"
+	map_mode = sub_regions
+
+
+	##################################################
+	# Regions
+	##################################################
+	sub_regions = {
+		egypt = {
+			icon = "gfx/interface/icons/situations/baqt_region_egypt.dds"
+			map_color = { 255 208 28 } # 200 169 58
+			geographical_regions = { ghw_region_egypt }
+		}
+		nubia = {
+			icon = "gfx/interface/icons/situations/baqt_region_nubia.dds"
+			map_color = { 58 28 25 } # 
+			geographical_regions = { RICE_greater_nubia_region }
+		}
+	}
+	
+	##################################################
+	# On Actions
+	##################################################
+	# on_monthly = {
+	# }
+
+	##################################################
+	# Groups
+	##################################################
+	participant_groups = {
+		RICE_nubia_baqt_nubian_christian_rulers = {
+			icon = "gfx/interface/icons/situations/group_RICE_nubian_christian_rulers.dds"
+
+			require_capital_in_sub_region = yes
+			is_character_valid = {
+				RICE_baqt_nubian_christian_trigger = yes
+				highest_held_title_tier >= tier_county
+			}
+
+			on_join = {
+				trigger_event = nubia.0001
+			}
+			# on_leave = {
+			# 	trigger_event = debug_situation.0004
+			# }
+
+			map_color = { 128 52 58 }
+		}
+		RICE_nubia_baqt_muslim_rulers = {
+			icon = "gfx/interface/icons/court_position_types/chief_qadi_court_position.dds"
+
+			require_capital_in_sub_region = yes
+			is_character_valid = {
+				RICE_baqt_egyptian_muslim_trigger = yes
+				highest_held_title_tier >= tier_county
+			}
+
+			on_join = {
+				trigger_event = nubia.0001
+			}
+			# on_leave = {
+			# 	trigger_event = debug_situation.0004
+			# }
+
+			map_color = { 25 180 118 }
+		}
+		RICE_nubia_baqt_coptic_rulers = {
+			icon = "gfx/interface/icons/situations/RICE_nubia_baqt_coptic_rulers.dds"
+
+			require_capital_in_sub_region = yes
+			is_character_valid = {
+				RICE_baqt_egyptian_coptic_trigger = yes
+				highest_held_title_tier >= tier_county
+			}
+
+			on_join = {
+				trigger_event = nubia.0001
+			}
+			# on_leave = {
+			# 	trigger_event = debug_situation.0004
+			# }
+
+			map_color = { 208 205 85 }
+		}
+	}
+	
+	##################################################
+	# Phases
+	##################################################
+	start_phase = baqt_stability
+
+	phases = {
+		baqt_stability = {
+			icon = "gfx/interface/icons/situations/baqt_stability.dds"
+			illustration = "gfx/interface/illustrations/decisions/decision_RICE_middle_eastern_river_village.dds"
+
+			on_start = {
+				scope:situation_sub_region = {
+					every_situation_sub_region_participant = {
+						trigger_event = debug_situation.0001
+					}
+				}
+			}
+			on_end = {
+				scope:situation_sub_region = {
+					every_situation_sub_region_participant = {
+						trigger_event = debug_situation.0002
+					}
+				}
+			}
+
+
+			max_duration = { days = 10 }
+			max_duration_next_phase = weighted_random_points
+
+			future_phases = {
+				baqt_stability = {
+					takeover_type = points
+					takeover_points = 1000
+
+					catalysts = {
+						catalyst_situation_RICE_baqt_activity = major_struggle_catalyst_gain
+					}
+				}
+				baqt_incapacity = {
+					takeover_type = points
+					takeover_points = 1000
+
+					catalysts = {
+						catalyst_situation_RICE_baqt_muslim_war_attacker = major_struggle_catalyst_gain
+						catalyst_situation_RICE_baqt_nubian_christian_war_attacker = major_struggle_catalyst_gain
+						catalyst_situation_RICE_baqt_coptic_war_attacker = major_struggle_catalyst_gain
+					}
+				}
+				baqt_ascendancy = {
+					takeover_type = points
+					takeover_points = 1000
+
+					catalysts = {
+						catalyst_situation_RICE_baqt_muslim_war_attacker = major_struggle_catalyst_gain
+						catalyst_situation_RICE_baqt_nubian_christian_war_attacker = major_struggle_catalyst_gain
+						catalyst_situation_RICE_baqt_coptic_war_attacker = major_struggle_catalyst_gain
+					}
+				}
+			}
+
+			modifier_sets = {
+				RICE_baqt_situation_effect_set_baqt = {
+					icon = "gfx/interface/icons/situations/baqt_effects.dds"
+
+					all = {
+						character_modifier = {
+							tax_mult = 0.1
+						}
+					}
+
+					RICE_nubia_baqt_nubian_christian_rulers = {
+						character_modifier = {
+							monthly_prestige = 0.01
+						}
+					}
+
+					RICE_nubia_baqt_muslim_rulers = {
+						character_modifier = {
+							monthly_prestige = 0.01
+						}
+					}
+
+					RICE_nubia_baqt_coptic_rulers = {
+						character_modifier = {
+							monthly_prestige = 0.01
+						}
+					}
+				}
+				RICE_baqt_situation_effect_set_other = {
+					icon = "gfx/interface/icons/situations/baqt_other_effects.dds"
+
+					RICE_nubia_baqt_nubian_christian_rulers = {
+						character_modifier = {
+							monthly_prestige = 0.01
+						}
+					}
+
+					RICE_nubia_baqt_muslim_rulers = {
+						character_modifier = {
+							monthly_prestige = 0.01
+						}
+					}
+
+					RICE_nubia_baqt_coptic_rulers = {
+						character_modifier = {
+							monthly_prestige = 0.01
+						}
+					}
+				}
+			}
+		}
+
+		baqt_incapacity = {
+			icon = "gfx/interface/icons/situations/baqt_incapacity.dds"
+			illustration = "gfx/interface/illustrations/decisions/decision_desert_journey.dds"
+
+			max_duration = { days = 30 }
+			max_duration_next_phase = weighted_random_points
+
+			future_phases = {
+				baqt_stability = {
+					takeover_type = points
+					takeover_points = 1000
+
+					catalysts = {
+						catalyst_situation_RICE_baqt_activity = major_struggle_catalyst_gain
+					}
+				}
+				baqt_incapacity = {
+					takeover_type = points
+					takeover_points = 1000
+
+					catalysts = {
+						catalyst_situation_RICE_baqt_muslim_war_attacker = major_struggle_catalyst_gain
+						catalyst_situation_RICE_baqt_nubian_christian_war_attacker = major_struggle_catalyst_gain
+						catalyst_situation_RICE_baqt_coptic_war_attacker = major_struggle_catalyst_gain
+					}
+				}
+				baqt_ascendancy = {
+					takeover_type = points
+					takeover_points = 1000
+
+					catalysts = {
+						catalyst_situation_RICE_baqt_muslim_war_attacker = major_struggle_catalyst_gain
+						catalyst_situation_RICE_baqt_nubian_christian_war_attacker = major_struggle_catalyst_gain
+						catalyst_situation_RICE_baqt_coptic_war_attacker = major_struggle_catalyst_gain
+					}
+				}
+			}
+
+			modifier_sets = {
+				RICE_baqt_situation_effect_set_baqt = {
+					icon = "gfx/interface/icons/situations/baqt_effects.dds"
+
+					all = {
+						character_modifier = {
+							tax_mult = 0.1
+						}
+					}
+
+					RICE_nubia_baqt_nubian_christian_rulers = {
+						character_modifier = {
+							monthly_prestige = 0.01
+						}
+					}
+
+					RICE_nubia_baqt_muslim_rulers = {
+						character_modifier = {
+							monthly_prestige = 0.01
+						}
+					}
+
+					RICE_nubia_baqt_coptic_rulers = {
+						character_modifier = {
+							monthly_prestige = 0.01
+						}
+					}
+				}
+				RICE_baqt_situation_effect_set_other = {
+					icon = "gfx/interface/icons/situations/baqt_other_effects.dds"
+
+					RICE_nubia_baqt_nubian_christian_rulers = {
+						character_modifier = {
+							monthly_prestige = 0.01
+						}
+					}
+
+					RICE_nubia_baqt_muslim_rulers = {
+						character_modifier = {
+							monthly_prestige = 0.01
+						}
+					}
+
+					RICE_nubia_baqt_coptic_rulers = {
+						character_modifier = {
+							monthly_prestige = 0.01
+						}
+					}
+				}
+			}
+		}
+
+		baqt_ascendancy = {
+			icon = "gfx/interface/icons/situations/baqt_ascendancy.dds"
+			illustration = "gfx/interface/illustrations/decisions/decision_mediterranean_throne_room.dds"
+
+			max_duration = { days = 30 }
+			max_duration_next_phase = weighted_random_points
+
+			future_phases = {
+				baqt_stability = {
+					takeover_type = points
+					takeover_points = 1000
+
+					catalysts = {
+						catalyst_situation_RICE_baqt_activity = major_struggle_catalyst_gain
+					}
+				}
+				baqt_incapacity = {
+					takeover_type = points
+					takeover_points = 1000
+
+					catalysts = {
+						catalyst_situation_RICE_baqt_muslim_war_attacker = major_struggle_catalyst_gain
+						catalyst_situation_RICE_baqt_nubian_christian_war_attacker = major_struggle_catalyst_gain
+						catalyst_situation_RICE_baqt_coptic_war_attacker = major_struggle_catalyst_gain
+					}
+				}
+				baqt_ascendancy = {
+					takeover_type = points
+					takeover_points = 1000
+
+					catalysts = {
+						catalyst_situation_RICE_baqt_muslim_war_attacker = major_struggle_catalyst_gain
+						catalyst_situation_RICE_baqt_nubian_christian_war_attacker = major_struggle_catalyst_gain
+						catalyst_situation_RICE_baqt_coptic_war_attacker = major_struggle_catalyst_gain
+					}
+				}
+			}
+
+			modifier_sets = {
+				RICE_baqt_situation_effect_set_baqt = {
+					icon = "gfx/interface/icons/situations/baqt_effects.dds"
+
+					all = {
+						character_modifier = {
+							tax_mult = 0.1
+						}
+					}
+
+					RICE_nubia_baqt_nubian_christian_rulers = {
+						character_modifier = {
+							monthly_prestige = 0.01
+						}
+					}
+
+					RICE_nubia_baqt_muslim_rulers = {
+						character_modifier = {
+							monthly_prestige = 0.01
+						}
+					}
+
+					RICE_nubia_baqt_coptic_rulers = {
+						character_modifier = {
+							monthly_prestige = 0.01
+						}
+					}
+				}
+				RICE_baqt_situation_effect_set_other = {
+					icon = "gfx/interface/icons/situations/baqt_other_effects.dds"
+
+					RICE_nubia_baqt_nubian_christian_rulers = {
+						character_modifier = {
+							monthly_prestige = 0.01
+						}
+					}
+
+					RICE_nubia_baqt_muslim_rulers = {
+						character_modifier = {
+							monthly_prestige = 0.01
+						}
+					}
+
+					RICE_nubia_baqt_coptic_rulers = {
+						character_modifier = {
+							monthly_prestige = 0.01
+						}
+					}
+				}
+			}
+		}
+
+	}
+}

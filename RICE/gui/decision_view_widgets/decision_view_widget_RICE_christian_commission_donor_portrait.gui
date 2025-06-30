@@ -1,0 +1,84 @@
+# Required controller: decision_option_list_controller
+# We should have one unified file for all the two-step decisions in the game,
+# which make the text in text_label_center something you can set in script. But alas, here we are
+
+vbox = {
+	name = "decision_view_widget_RICE_christian_commission_donor_portrait"
+	layoutpolicy_horizontal = expanding
+	layoutpolicy_vertical = expanding
+	ignoreinvisible = yes
+
+	margin_top = 10
+	spacing = 10
+
+	text_multi = { 
+		layoutpolicy_horizontal = expanding
+		#layoutpolicy_vertical = expanding
+		text = "RICE_christian_commission_donor_portrait_select_text" 
+		max_width = 520
+		align = center
+	}
+
+	hbox = {
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+
+		scrollbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			blockoverride "scrollbox_content" {
+				vbox = {
+					datamodel = "[DecisionViewWidgetOptionList.GetEntries]"
+					spacing = 6
+
+					item = { RICE_christian_commission_donor_portrait_Item = {} }
+				}
+			}
+
+			blockoverride "scrollbox_background_fade" {}
+		}
+	}
+}
+
+types PetitionLiegeTypes
+{
+	type RICE_christian_commission_donor_portrait_Item = button_standard {
+		size = { 450 70 }
+		margin = { 10 10 }
+
+		onclick = "[DecisionViewWidgetOptionList.OnSelect(Entry.Self)]"
+		enabled = "[Entry.IsEnabled]"
+		tooltip = "[Entry.GetTooltip]"
+		down = "[Entry.IsSelected]"
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			spacing = 10
+			margin_left = 10
+
+			icon = {
+				name = "petition_icon"
+				size = { 45 45 }
+				texture = "[Entry.GetIcon]"
+			}
+
+			vbox = {
+				name = "petition_info"
+
+				layoutpolicy_vertical = expanding
+				margin_bottom = 5
+
+				text_single = {
+					name = "petition_type"
+					text = "[Entry.GetName]"
+					max_width = 250
+					align = left
+				}
+			}
+
+			expand = {}
+		}
+	}
+}
