@@ -629,8 +629,8 @@ nubia.0061 = {
 	after = {
 		# Ask al-Umari to join your side
 		trigger_event = {
-			event = nubia.0062
-			months = { 3 6 }
+			id = nubia.0062
+			#months = { 3 6 }
 		}
 	}
 
@@ -641,8 +641,9 @@ nubia.0061 = {
 nubia.0062 = {
 	type = character_event
 	title = nubia.0062.t
+	window = duel_event
 	desc = nubia.0062.desc
-	theme = martial
+	theme = corruption
 	override_background = { reference = RICE_background_egypt_desert }
 	
 	left_portrait = {
@@ -746,71 +747,10 @@ nubia.0062 = {
 		# Georgios asks al-Umari to join his side
 		scope:georgios = {
 			trigger_event = {
-				event = nubia.0063
+				id = nubia.0063
 				#months = { 4 12 }
 			}			
 		}
-	}
-
-}
-
-
-# al-Umari contemplates Niuty and Georgios' offers
-nubia.0064 = {
-	type = character_event
-	title = nubia.0064.t
-	desc = nubia.0064.desc
-	theme = martial
-	override_background = { reference = RICE_background_egypt_desert }
-	
-	
-	right_portrait = {
-		character = scope:umari
-		animation = personality_dishonorable
-	}
-
-	lower_left_portrait = {
-		character = scope:georgios
-		trigger = { exists = scope:georgios }
-	}
-
-	lower_right_portrait = {
-		character = scope:niuty
-		trigger = { exists = scope:niuty }
-	}
-
-	immediate = {
-					random_character_war = {
-				limit = {
-					using_cb = claim_cb
-					primary_attacker = scope:task_contract_employer
-					primary_defender = scope:task_contract_target
-				}
-				save_scope_as = task_contract_war
-			}
-	}
-
-	# Support Niuty
-	option = {
-		name = nubia.0064.a
-	}
-
-	# Support Georgios
-	option = {
-		name = nubia.0064.b
-	}
-
-	# Support neither
-	option = {
-		name = nubia.0064.c
-	}
-
-	after = {
-		# al-Umari makes his choice
-		# trigger_event = {
-		# 	event = nubia.0064
-		# 	days = { 10 25 }
-		# }
 	}
 
 }
@@ -820,8 +760,9 @@ nubia.0064 = {
 nubia.0063 = {
 	type = character_event
 	title = nubia.0063.t
+	window = duel_event
 	desc = nubia.0063.desc
-	theme = martial
+	theme = corruption
 	override_background = { reference = RICE_background_egypt_desert }
 	
 	left_portrait = {
@@ -890,14 +831,277 @@ nubia.0063 = {
 	}
 
 	after = {
-		# al-Umari makes his choice
-		trigger_event = {
-			event = nubia.0064
-			days = { 10 25 }
+		scope:umari = {
+			# al-Umari makes his choice
+			trigger_event = {
+				id = nubia.0064
+				#days = { 10 25 }
+			}
 		}
 	}
 
 }
+
+
+# al-Umari contemplates Niuty and Georgios' offers
+nubia.0064 = {
+	type = character_event
+	title = nubia.0064.t
+	desc = nubia.0064.desc
+	theme = martial
+	override_background = { reference = RICE_background_egypt_desert }
+	
+	
+	right_portrait = {
+		character = scope:umari
+		animation = personality_dishonorable
+	}
+
+	lower_left_portrait = {
+		character = scope:georgios
+		trigger = { exists = scope:georgios }
+	}
+
+	lower_right_portrait = {
+		character = scope:niuty
+		trigger = { exists = scope:niuty }
+	}
+
+	immediate = {
+		scope:niuty = {
+			random_character_war = {
+				limit = {
+					any_war_attacker = { this = scope:niuty }
+					any_war_defender = { this = scope:georgios }
+				}
+				save_scope_as = niuty_rebellion_war
+			}
+		}
+	}
+
+	# Support Niuty
+	option = {
+		name = nubia.0064.a
+		if = {
+			limit = {
+				scope:niuty = {
+					var:RICE_umari_offer ?= flag:gold
+				}
+			}
+			add_gold = 50
+		}
+		else_if = {
+			limit = {
+				scope:niuty = {
+					var:RICE_umari_offer ?= flag:big_gold
+				}
+			}
+			add_gold = 200
+		}
+		scope:niuty_rebellion_war = { add_attacker = scope:umari }
+		scope:niuty = {
+			add_opinion = {
+				modifier = RICE_opinion_al_umari_useful_bandit
+				target = root
+			}
+			trigger_event = nubia.0065
+		}
+		scope:georgios = {
+			add_opinion = {
+				modifier = RICE_opinion_al_umari_treacherous_bandit
+				target = root
+			}
+			trigger_event = nubia.0065
+		}
+	}
+
+	# Support Georgios
+	option = {
+		name = nubia.0064.b
+		if = {
+			limit = {
+				scope:georgios = {
+					var:RICE_umari_offer ?= flag:gold
+				}
+			}
+			add_gold = 50
+		}
+		else_if = {
+			limit = {
+				scope:georgios = {
+					var:RICE_umari_offer ?= flag:big_gold
+				}
+			}
+			add_gold = 200
+		}
+		scope:niuty_rebellion_war = { add_defender = scope:umari }
+		scope:niuty = {
+			add_opinion = {
+				modifier = RICE_opinion_al_umari_treacherous_bandit
+				target = root
+			}
+			trigger_event = nubia.0066
+		}
+		scope:georgios = {
+			add_opinion = {
+				modifier = RICE_opinion_al_umari_useful_bandit
+				target = root
+			}
+			trigger_event = nubia.0066
+		}
+	}
+
+	# Support neither
+	option = {
+		name = nubia.0064.c
+	}
+
+	after = {
+		custom_tooltip = nubia.0064 # The victor of the war might still attack you after
+	}
+
+}
+
+
+
+# Georgios and Niuty are notified that al-Umari sided with Niuty
+nubia.0065 = {
+	type = character_event
+	title = nubia.0065.t
+	desc = nubia.0065.desc
+	theme = martial
+	override_background = { reference = RICE_background_egypt_desert }
+	
+	
+	right_portrait = {
+		character = scope:umari
+		animation = war_attacker
+	}
+
+	lower_left_portrait = {
+		character = scope:georgios
+		trigger = { exists = scope:georgios }
+	}
+
+	lower_right_portrait = {
+		character = scope:niuty
+		trigger = { exists = scope:niuty }
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			scope:umari = {
+				if = {
+					limit = {
+						scope:niuty = {
+							var:RICE_umari_offer ?= flag:gold
+						}
+					}
+					add_gold = 50
+				}
+				else_if = {
+					limit = {
+						scope:niuty = {
+							var:RICE_umari_offer ?= flag:big_gold
+						}
+					}
+					add_gold = 200
+				}
+			}
+			scope:niuty_rebellion_war = { add_attacker = scope:umari }
+			scope:niuty = {
+				add_opinion = {
+					modifier = RICE_opinion_al_umari_useful_bandit
+					target = root
+				}
+			}
+			scope:georgios = {
+				add_opinion = {
+					modifier = RICE_opinion_al_umari_treacherous_bandit
+					target = root
+				}
+			}			
+		}
+	}
+
+	# Ok
+	option = {
+		name = nubia.0065.a
+		custom_tooltip = nubia.0064 # The victor of the war might still attack al-Umari after
+	}
+
+}
+
+
+
+# Georgios and Niuty are notified that al-Umari sided with Georgios
+nubia.0066 = {
+	type = character_event
+	title = nubia.0066.t
+	desc = nubia.0066.desc
+	theme = martial
+	override_background = { reference = RICE_background_egypt_desert }
+	
+	
+	right_portrait = {
+		character = scope:umari
+		animation = war_attacker
+	}
+
+	lower_left_portrait = {
+		character = scope:georgios
+		trigger = { exists = scope:georgios }
+	}
+
+	lower_right_portrait = {
+		character = scope:niuty
+		trigger = { exists = scope:niuty }
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			scope:umari = {
+				if = {
+					limit = {
+						scope:georgios = {
+							var:RICE_umari_offer ?= flag:gold
+						}
+					}
+					add_gold = 50
+				}
+				else_if = {
+					limit = {
+						scope:georgios = {
+							var:RICE_umari_offer ?= flag:big_gold
+						}
+					}
+					add_gold = 200
+				}
+			}
+			scope:niuty_rebellion_war = { add_defender = scope:umari }
+			scope:niuty = {
+				add_opinion = {
+					modifier = RICE_opinion_al_umari_treacherous_bandit
+					target = root
+				}
+			}
+			scope:georgios = {
+				add_opinion = {
+					modifier = RICE_opinion_al_umari_useful_bandit
+					target = root
+				}
+			}		
+		}
+	}
+
+	# ok
+	option = {
+		name = nubia.0066.a
+		custom_tooltip = nubia.0064 # The victor of the war might still attack al-Umari after
+	}
+
+}
+
 
 
 
