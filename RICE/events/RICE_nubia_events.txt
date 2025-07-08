@@ -450,7 +450,7 @@ nubia.0060 = {
 		character:dongola0011d = {
 			save_scope_as = niuty
 			spawn_army = {
-				levies = 1000
+				levies = 500
 				men_at_arms = {
 					type = archers_of_the_nile
 					stacks = 4
@@ -575,7 +575,7 @@ nubia.0061 = {
 			}
 			character:dongola0011d = {
 				spawn_army = {
-					levies = 1000
+					levies = 500
 					men_at_arms = {
 						type = archers_of_the_nile
 						stacks = 4
@@ -626,8 +626,278 @@ nubia.0061 = {
 		}
 	}
 
+	after = {
+		# Ask al-Umari to join your side
+		trigger_event = {
+			event = nubia.0062
+			months = { 3 6 }
+		}
+	}
+
 }
 
+
+# Niuty makes an offer to al-Umari
+nubia.0062 = {
+	type = character_event
+	title = nubia.0062.t
+	desc = nubia.0062.desc
+	theme = martial
+	override_background = { reference = RICE_background_egypt_desert }
+	
+	left_portrait = {
+		character = scope:umari
+		animation = scheme
+	}
+	
+	right_portrait = {
+		character = scope:niuty
+		animation = bribing
+	}
+
+	lower_center_portrait = {
+		character = scope:georgios
+		trigger = { exists = scope:georgios }
+	}
+
+	trigger = {
+		# Make sure your war with Georgios is still ongoing and that neither of you are at war with al-Umari
+		is_at_war_with = scope:georgios
+		scope:georgios = {
+			is_alive = yes
+			has_title = title:k_nubia
+			NOT = {
+				is_at_war_with = scope:umari
+			}
+		}
+		NOT = {
+			is_at_war_with = scope:umari
+		}
+	}
+
+	# If you are at war with al-Umari for some reason, but still at war with Georgios and Georgios isn't at war with al-Umari, punt to Georgios
+	on_trigger_fail = {
+		if = {
+			limit = {
+				is_at_war_with = scope:georgios
+				scope:georgios = {
+					is_alive = yes
+					has_title = title:k_nubia
+					NOT = {
+						is_at_war_with = scope:umari
+					}
+				}				
+			}
+			trigger_event = nubia.0063
+		}
+	}
+
+	# immediate = {
+	# }
+
+	# no gift
+	option = {
+		name = nubia.0062.a
+		custom_tooltip = nubia.0062.a.tooltip
+		set_variable = {
+			name = RICE_umari_offer
+			value = flag:nothing
+			days = 30
+		}
+	}
+
+	# gold
+	option = {
+		name = nubia.0062.b
+		# trigger = {
+		# 	OR = {
+		# 		is_ai = no
+		# 		short_term_gold >= 50			
+		# 	}
+		# }
+		remove_short_term_gold = 50
+		custom_tooltip = nubia.0062.b.tooltip
+		set_variable = {
+			name = RICE_umari_offer
+			value = flag:gold
+			days = 30
+		}
+	}
+
+	# gold
+	option = {
+		name = nubia.0062.b
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 100			
+			}
+		}
+		remove_short_term_gold = 200
+		custom_tooltip = nubia.0062.c.tooltip
+		set_variable = {
+			name = RICE_umari_offer
+			value = flag:big_gold
+			days = 30
+		}
+	}
+
+	after = {
+		# Georgios asks al-Umari to join his side
+		scope:georgios = {
+			trigger_event = {
+				event = nubia.0063
+				#months = { 4 12 }
+			}			
+		}
+	}
+
+}
+
+
+# al-Umari contemplates Niuty and Georgios' offers
+nubia.0064 = {
+	type = character_event
+	title = nubia.0064.t
+	desc = nubia.0064.desc
+	theme = martial
+	override_background = { reference = RICE_background_egypt_desert }
+	
+	
+	right_portrait = {
+		character = scope:umari
+		animation = personality_dishonorable
+	}
+
+	lower_left_portrait = {
+		character = scope:georgios
+		trigger = { exists = scope:georgios }
+	}
+
+	lower_right_portrait = {
+		character = scope:niuty
+		trigger = { exists = scope:niuty }
+	}
+
+	immediate = {
+					random_character_war = {
+				limit = {
+					using_cb = claim_cb
+					primary_attacker = scope:task_contract_employer
+					primary_defender = scope:task_contract_target
+				}
+				save_scope_as = task_contract_war
+			}
+	}
+
+	# Support Niuty
+	option = {
+		name = nubia.0064.a
+	}
+
+	# Support Georgios
+	option = {
+		name = nubia.0064.b
+	}
+
+	# Support neither
+	option = {
+		name = nubia.0064.c
+	}
+
+	after = {
+		# al-Umari makes his choice
+		# trigger_event = {
+		# 	event = nubia.0064
+		# 	days = { 10 25 }
+		# }
+	}
+
+}
+
+
+# Georgios makes an offer to al-Umari
+nubia.0063 = {
+	type = character_event
+	title = nubia.0063.t
+	desc = nubia.0063.desc
+	theme = martial
+	override_background = { reference = RICE_background_egypt_desert }
+	
+	left_portrait = {
+		character = scope:umari
+		animation = scheme
+	}
+	
+	right_portrait = {
+		character = scope:georgios
+		animation = bribing
+	}
+
+	lower_center_portrait = {
+		character = scope:niuty
+		trigger = { exists = scope:niuty }
+	}
+
+	# immediate = {
+	# }
+
+	# no gift
+	option = {
+		name = nubia.0063.a
+		custom_tooltip = nubia.0063.a.tooltip
+		set_variable = {
+			name = RICE_umari_offer
+			value = flag:nothing
+			days = 30
+		}
+	}
+
+	# gold
+	option = {
+		name = nubia.0063.b
+		# trigger = {
+		# 	OR = {
+		# 		is_ai = no
+		# 		short_term_gold >= 50			
+		# 	}
+		# }
+		remove_short_term_gold = 50
+		custom_tooltip = nubia.0063.b.tooltip
+		set_variable = {
+			name = RICE_umari_offer
+			value = flag:gold
+			days = 30
+		}
+	}
+
+	# gold
+	option = {
+		name = nubia.0063.b
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 100			
+			}
+		}
+		remove_short_term_gold = 200
+		custom_tooltip = nubia.0063.c.tooltip
+		set_variable = {
+			name = RICE_umari_offer
+			value = flag:big_gold
+			days = 30
+		}
+	}
+
+	after = {
+		# al-Umari makes his choice
+		trigger_event = {
+			event = nubia.0064
+			days = { 10 25 }
+		}
+	}
+
+}
 
 
 
@@ -985,6 +1255,14 @@ nubia.0100 = {
 	right_portrait = {
 		character = root
 		animation = personality_content
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			add_character_modifier = {
+				modifier = RICE_nubia_aspiration_spread_stories_tribe_of_dan
+			}			
+		}
 	}
 
 	# Stay Yemeni Jewish
