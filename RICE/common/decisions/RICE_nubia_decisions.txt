@@ -172,6 +172,247 @@ RICE_nubia_rebuild_banganarti_church = {
 }
 
 
+RICE_nubia_bestow_kanz_al_dawla = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_muslim_scholar.dds" }
+	decision_group_type = major
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					is_independent_ruler = no
+					has_title = title:d_eastern_desert
+				}
+				desc = RICE_nubia_bestow_kanz_al_dawla_desc_self
+			}
+			desc = RICE_nubia_bestow_kanz_al_dawla_desc
+		}
+	}
+
+	ai_check_interval = 48
+
+	is_shown = {
+		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+		NOT = { has_global_variable = RICE_kanz_al_dawla_active }
+		is_landed = yes
+		OR = {
+			AND = {
+				is_independent_ruler = no
+				has_title = title:d_eastern_desert
+				RICE_egyptian_involved_in_baqt_trigger = yes
+				any_liege_or_above = {
+					RICE_egyptian_involved_in_baqt_trigger = yes
+				}
+			}
+			AND = {
+				is_independent_ruler = yes
+				RICE_egyptian_involved_in_baqt_trigger = yes
+				any_vassal_or_below = {
+					has_title = title:d_eastern_desert
+					RICE_egyptian_involved_in_baqt_trigger = yes
+				}
+			}
+		}
+		OR = {
+			religion = religion:islam_religion
+			culture_has_west_asian_heritage_pillar_trigger = yes
+			culture_has_mena_heritage_pillar_trigger = yes
+		}
+	}
+
+	is_valid = {
+		OR = {
+			AND = {
+				is_independent_ruler = no
+				has_title = title:d_eastern_desert
+				RICE_egyptian_involved_in_baqt_trigger = yes
+				any_liege_or_above = {
+					RICE_egyptian_involved_in_baqt_trigger = yes
+				}
+			}
+			AND = {
+				is_independent_ruler = yes
+				RICE_egyptian_involved_in_baqt_trigger = yes
+				any_vassal_or_below = {
+					has_title = title:d_eastern_desert
+					RICE_egyptian_involved_in_baqt_trigger = yes
+				}
+			}
+		}
+		OR = {
+			religion = religion:islam_religion
+			culture_has_west_asian_heritage_pillar_trigger = yes
+			culture_has_mena_heritage_pillar_trigger = yes
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_available = yes
+	}
+
+	cost = {
+		gold = {
+			value = medium_gold_value
+		}
+		prestige = {
+			value = medium_prestige_value
+		}
+	}
+
+	effect = {
+
+		if = {
+			limit = {
+				is_independent_ruler = no
+				has_title = title:d_eastern_desert
+			}
+			save_scope_as = receiver
+		}
+		else = {
+			save_scope_as = bestower
+		}
+
+		
+		custom_tooltip = RICE_nubia_bestow_kanz_al_dawla_effect_tooltip_1
+
+		show_as_tooltip = {
+			RICE_nubia_bestow_kanz_al_dawla_effect = yes
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_nubia_bestow_kanz_al_dawla_context_tooltip
+		}
+		
+		
+		trigger_event = nubia.8888
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = trusting
+		}
+		modifier = {
+			add = -10
+			has_trait = paranoid
+		}
+		modifier = {
+			add = 10
+			has_trait = generous
+		}
+		modifier = {
+			add = -10
+			has_trait = greedy
+		}
+		modifier = {
+			add = -20
+			# Happened roughly around 1000 IRL
+			current_date <= 950.1.1
+		}
+		modifier = {
+			add = 10
+			# Happened roughly around 1000 IRL
+			current_date > 1000.1.1
+		}
+		modifier = {
+			add = 20
+			# Happened roughly around 1000 IRL
+			current_date > 1050.1.1
+		}
+		modifier = {
+			add = 30
+			# Happened roughly around 1000 IRL
+			current_date > 1100.1.1
+		}
+	}
+}
+
+RICE_nubia_revoke_kanz_al_dawla = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_muslim_scholar.dds" }
+	decision_group_type = major
+	desc = RICE_nubia_revoke_kanz_al_dawla_desc
+
+	ai_check_interval = 48
+
+	is_shown = {
+		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+		has_global_variable = RICE_kanz_al_dawla_active
+		is_landed = yes
+		any_vassal_or_below = {
+			has_title = title:d_eastern_desert
+			RICE_egyptian_involved_in_baqt_trigger = yes
+		}
+	}
+
+	is_valid = {
+		any_vassal_or_below = {
+			has_title = title:d_eastern_desert
+			RICE_egyptian_involved_in_baqt_trigger = yes
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_available = yes
+	}
+
+	cost = {
+		gold = {
+			value = medium_gold_value
+		}
+		prestige = {
+			value = medium_prestige_value
+		}
+	}
+
+	effect = {
+
+		save_scope_as = revoker
+
+		
+		custom_tooltip = RICE_nubia_revoke_kanz_al_dawla_effect_tooltip_1
+
+		show_as_tooltip = {
+			RICE_nubia_revoke_kanz_al_dawla_effect = yes
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_nubia_revoke_kanz_al_dawla_context_tooltip
+		}
+		
+		
+		trigger_event = nubia.8888
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = paranoid
+		}
+		modifier = {
+			add = -10
+			has_trait = trusting
+		}
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -10
+			has_trait = content
+		}
+	}
+}
+
+
 # RICE_nubia_repaint_banganarti = {
 # 	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_nubia.dds" }
 
