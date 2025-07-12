@@ -10,7 +10,7 @@
 # nubia.0080-nubia.0099			Culture events and decisions
 # nubia.0100-nubia.0119			Eldad ha-Dani/Danite stuff
 # nubia.0120-nubia.0139			Other Historical Aspirations
-# nubia.0160-nubia.0179			Historical Events/Characters/Flavor
+# nubia.0140-nubia.0159			Eparch Marianos slave fugitive event chain
 # 
 ###############################################################################
 
@@ -1783,4 +1783,339 @@ nubia.0126 = {
 	}
 
 }
+
+
+
+######################################################################################
+# 
+# EPARCH MARIANOS SLAVE FUGITIVE EVENT CHAIN
+# 
+# nubia.0140-nubia.0159
+# 
+######################################################################################
+
+
+# Teniellasi reports the escaped slaves to Marianos
+nubia.0140 = {
+	type = character_event
+	title = nubia.0140.t
+	desc = nubia.0140.desc
+	theme = martial_authority_focus
+	override_background = { reference = RICE_background_nubia_dongola_building }
+
+	left_portrait = {
+		character = scope:marianos
+		animation = stress
+	}
+
+	right_portrait = {
+		character = scope:teniellasi
+		animation = worry
+	}
+
+	lower_center_portrait = scope:mena
+
+	trigger = {
+		has_title = title:d_nobatia
+		NOT = { has_title = title:c_qurta }
+		exists = title:c_qurta.holder
+		OR = {
+			AND = {				
+				game_start_date = 1066.9.15
+				character:RICE_nubia_misc_007 ?= {
+					is_alive = yes
+				}
+			}
+			any_courtier = {
+				is_available_ai_adult = yes
+			}
+		}
+		character:RICE_nubia_misc_007 = {
+			is_alive = yes
+		}
+	}
+
+	immediate = {
+		title:d_nobatia.holder = {
+			save_scope_as = marianos
+		}
+		title:c_qurta.holder = {
+			save_scope_as = mena
+		}
+		if = {
+			limit = {
+				game_start_date = 1066.9.15
+				character:RICE_nubia_misc_007 ?= {
+					is_alive = yes
+				}
+			}
+			character:RICE_nubia_misc_007 = {
+				save_scope_as = teniellasi
+			}
+		}
+		# Randomly choose a courtier
+		else = {
+			random_courtier = {
+				limit = {
+					is_available_ai_adult = yes
+				}
+				save_scope_as = teniellasi
+			}
+		}
+	}
+
+	option = { # I'll take on the case
+		name = nubia.0140.a
+		stress_impact = {
+			lazy = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+		}
+		scope:teniellasi = {
+			add_opinion = {
+				modifier = relieved_opinion
+				target = scope:marianos
+				opinion = 10
+			}
+		}
+		custom_tooltip = nubia.0140.a.tooltip
+		trigger_event = nubia.0141
+	}
+
+	option = { # I have no time for this
+		name = nubia.0140.b
+		stress_impact = {
+			diligent = minor_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+			just = miniscule_stress_impact_gain
+		}
+		add_prestige = medium_prestige_loss
+		scope:teniellasi = {
+			add_opinion = {
+				modifier = angry_opinion
+				target = scope:marianos
+				opinion = -40
+			}
+		}
+		add_character_modifier = {
+			modifier = RICE_nubia_marianos_focused_on_other_work
+			years = 5
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}			
+			custom_tooltip = nubia.0140.info
+		}
+	}
+
+}
+
+
+# Marianos decides who to send to Mena to notify him of the situation
+nubia.0141 = {
+	type = character_event
+	title = nubia.0141.t
+	desc = nubia.0141.desc
+	theme = stewardship_domain_focus
+
+	left_portrait = {
+		character = scope:marianos
+		animation = war_over_tie
+	}
+
+	right_portrait = {
+		character = scope:angelosinkouda
+		animation = obsequious_bow
+	}
+
+	lower_left_portrait = scope:teniellasi
+	lower_right_portrait = scope:mena
+
+	immediate = {
+		# Find Angelosinkouda, the historical writer of the letter
+		if = {
+			limit = {
+				character:RICE_nubia_misc_008 ?= {
+					is_alive = yes
+					is_courtier_of = scope:marianos
+				}
+			}
+			character:RICE_nubia_misc_008 = {
+				save_scope_as = angelosinkouda
+			}
+		}
+		# If Angelosinkouda doesn't exist, create a new equivalent official
+		else = {
+			add_character_flag = {
+				flag = RICE_had_to_create_scribe
+				days = 365
+			}
+			create_character = {
+				template = administrator_character
+				gender_female_chance = root_faith_dominant_gender_adjusted_female_chance
+				dynasty = none
+				location = root.location
+				faith = root.location.faith
+				culture = root.location.culture
+				save_scope_as = angelosinkouda
+			}
+		}
+		title:c_qurta.holder.capital_province = {
+			save_scope_as = target_province
+		}
+	}
+
+	option = { # Send a low-ranking official
+		name = nubia.0141.a
+		custom_tooltip = nubia.0141.a.tooltip
+	}
+
+	option = { # Send Angelosinkouda
+		name = nubia.0141.b
+		if = {
+			limit = {
+				scope:angelosinkouda = {
+					NOT = { is_courtier_of = root }
+				}
+			}
+			add_courtier = scope:angelosinkouda
+		}
+		scope:angelosinkouda = {
+			start_travel_plan = { 
+				destination = scope:target_province
+				return_trip = yes
+				on_arrival_event = nubia.0142
+			}
+		}
+		custom_tooltip = nubia.0141.b.tooltip
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}			
+			custom_tooltip = nubia.0141.info
+		}
+	}
+
+}
+
+
+
+# Mena receives the letter from Marianos through Angelosinkouda
+# Ping event
+nubia.0142 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				title:c_qurta.holder.top_liege = scope:marianos.top_liege
+			}
+			title:c_qurta.holder = {
+				trigger_event = nubia.0144
+			}
+		}
+		# Letter was unable to arrive for some reason
+		else = {
+			scope:marianos = {
+				trigger_event = nubia.0143
+			}
+		}
+	}
+}
+
+# Marianos is notified that Mena did not receive the letter
+nubia.0143 = {
+	type = character_event
+	title = nubia.0143.t
+	desc = nubia.0143.desc
+	theme = stewardship_domain_focus
+
+	left_portrait = {
+		character = scope:mena
+		animation = disappointed
+	}
+
+	right_portrait = {
+		character = scope:angelosinkouda
+		animation = shame
+	}
+
+	option = {
+		name = nubia.0143.a
+	}
+
+}
+
+# Mena receives Angelosinkouda
+nubia.0144 = {
+	type = character_event
+	title = nubia.0144.t
+	desc = nubia.0144.desc
+	theme = stewardship_domain_focus
+
+	left_portrait = {
+		character = scope:mena
+		animation = war_over_tie
+	}
+
+	right_portrait = {
+		character = scope:angelosinkouda
+		animation = obsequious_bow
+	}
+
+	lower_left_portrait = scope:teniellasi
+	lower_right_portrait = scope:marianos
+
+	immediate = {
+		save_scope_as = mena # Re-save scope in case the ruler has changed
+	}
+
+	option = { # Read the letter
+		name = nubia.0144.a
+		custom_tooltip = nubia.0144.a.tooltip
+		trigger_event = nubia.0145
+	}
+
+}
+
+
+# Read the letter
+nubia.0145 = {
+	type = letter_event
+	opening = {
+		desc = nubia.0145.opening
+	}
+	desc = nubia.0145.desc
+	sender = scope:marianos
+
+	option = { # Mena is not interested in helping
+		name = nubia.0145.a
+		custom_tooltip = nubia.0145.a.tooltip
+		scope:marianos = {
+			trigger_event = nubia.0146
+		}
+	}
+
+	option = { # Mena will help
+		name = nubia.0145.a
+		custom_tooltip = nubia.0145.a.tooltip
+		scope:marianos = {
+			trigger_event = nubia.0147
+		}
+		trigger_event = nubia.0148
+	}
+
+}
+
+
+
+
+
 
