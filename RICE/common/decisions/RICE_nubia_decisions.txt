@@ -197,7 +197,7 @@ RICE_nubia_bestow_kanz_al_dawla = {
 		OR = {
 			AND = {
 				is_independent_ruler = no
-				has_title = title:d_eastern_desert
+				has_title = title:c_aswan
 				RICE_egyptian_involved_in_baqt_trigger = yes
 				any_liege_or_above = {
 					RICE_egyptian_involved_in_baqt_trigger = yes
@@ -207,7 +207,7 @@ RICE_nubia_bestow_kanz_al_dawla = {
 				is_independent_ruler = yes
 				RICE_egyptian_involved_in_baqt_trigger = yes
 				any_vassal_or_below = {
-					has_title = title:d_eastern_desert
+					has_title = title:c_aswan
 					RICE_egyptian_involved_in_baqt_trigger = yes
 				}
 			}
@@ -223,7 +223,7 @@ RICE_nubia_bestow_kanz_al_dawla = {
 		OR = {
 			AND = {
 				is_independent_ruler = no
-				has_title = title:d_eastern_desert
+				has_title = title:c_aswan
 				RICE_egyptian_involved_in_baqt_trigger = yes
 				any_liege_or_above = {
 					RICE_egyptian_involved_in_baqt_trigger = yes
@@ -233,7 +233,7 @@ RICE_nubia_bestow_kanz_al_dawla = {
 				is_independent_ruler = yes
 				RICE_egyptian_involved_in_baqt_trigger = yes
 				any_vassal_or_below = {
-					has_title = title:d_eastern_desert
+					has_title = title:c_aswan
 					RICE_egyptian_involved_in_baqt_trigger = yes
 				}
 			}
@@ -264,12 +264,18 @@ RICE_nubia_bestow_kanz_al_dawla = {
 		if = {
 			limit = {
 				is_independent_ruler = no
-				has_title = title:d_eastern_desert
+				has_title = title:c_aswan
 			}
 			save_scope_as = receiver
+			top_liege = {
+				save_scope_as = bestower
+			}
 		}
 		else = {
 			save_scope_as = bestower
+			title:c_aswan.holder = {
+				save_scope_as = receiver
+			}
 		}
 
 		
@@ -586,13 +592,21 @@ RICE_baqt_frontier_decision = {
 
 	ai_check_interval = 36
 
-	cooldown = { days = 3650 } 
+	cooldown = { days = 1825 } 
 
 	is_shown = {
 		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
 		is_playable_character = yes
 		any_character_situation = {
 			this = situation:RICE_nubia_baqt_situation
+		}
+		any_held_county = {
+			any_county_province = {
+				OR = {
+					geographical_region = RICE_nubia_frontier
+					geographical_region = RICE_egypt_frontier
+				}
+			}
 		}
 	}
 	
@@ -601,18 +615,12 @@ RICE_baqt_frontier_decision = {
 			this = situation:RICE_nubia_baqt_situation
 		}
 		# You need to be involved in the Baqt situation
-		# You are the Duke of Nobatia or their liege, and control at least one county along the Nubian frontier
+		# You are the Duke of Nobatia and control at least one county along the Nubian frontier
 		# OR
-		# You are the Duke of al-Said or their liege, and control at least one county along the Egyptian frontier
+		# You are the Count of Aswan and control at least one county along the Egyptian frontier
 		OR = {
-			AND = {
-				RICE_nubia_northern_frontier_manager_trigger = yes
-				NOT = { has_global_variable = RICE_nubia_frontier_policy_in_effect }
-			}
-			AND = {
-				RICE_egypt_southern_frontier_manager_trigger = yes
-				NOT = { has_global_variable = RICE_egypt_frontier_policy_in_effect }
-			}
+			RICE_nubia_northern_frontier_manager_trigger = yes
+			RICE_egypt_southern_frontier_manager_trigger = yes
 		}
 	}
 
@@ -621,63 +629,87 @@ RICE_baqt_frontier_decision = {
 	}
 
 
+
+	# Delegate Responsibilities
+
 	widget = {
 		gui = "decision_view_widget_RICE_baqt_frontier_decision"
 		controller = decision_option_list_controller
 		decision_to_second_step_button = "RICE_BAQT_FRONTIER_DECISION_PICK_TYPE"
 		show_from_start = yes
 		
-		### Encourage Egyptian Presence
+		### Diplomacy: Correspond with Counterpart
 		item = {
-			value = RICE_baqt_frontier_encourage_egyptians
-			is_valid = {
-				RICE_nubia_northern_frontier_manager_trigger = yes
-			}
-			current_description = RICE_baqt_frontier_encourage_egyptians_desc
-			localization = RICE_baqt_frontier_encourage_egyptians_name
-			icon = "gfx/interface/icons/widgets/RICE_zoroastrian_siyavash.dds"
-			ai_chance = {
-				value = 10
-			}
-		}
-
-		### Discourage Egyptian Presence
-		item = {
-			value = RICE_baqt_frontier_discourage_egyptians
-			is_valid = {
-				RICE_nubia_northern_frontier_manager_trigger = yes
-			}
-			current_description = RICE_baqt_frontier_discourage_egyptians_desc
-			localization = RICE_baqt_frontier_discourage_egyptians_name
-			icon = "gfx/interface/icons/widgets/RICE_zoroastrian_siyavash.dds"
+			value = RICE_baqt_frontier_correpsondence
+			current_description = RICE_baqt_frontier_correpsondence_desc
+			localization = RICE_baqt_frontier_correpsondence_name
+			icon = "gfx/interface/icons/scheme_types/icon_scheme_befriend.dds"
 			ai_chance = {
 				value = 10
 			}
 		}
 		
-		### Encourage Nubian Presence
+		### Martial: Fortify the Border
 		item = {
-			value = RICE_baqt_frontier_encourage_nubians
-			is_valid = {
-				RICE_egypt_southern_frontier_manager_trigger = yes
-			}
-			current_description = RICE_baqt_frontier_encourage_nubians_desc
-			localization = RICE_baqt_frontier_encourage_nubians_name
-			icon = "gfx/interface/icons/widgets/RICE_zoroastrian_siyavash.dds"
+			value = RICE_baqt_frontier_fortify
+			current_description = RICE_baqt_frontier_fortify_desc
+			localization = RICE_baqt_frontier_fortify_name
+			icon = "gfx/interface/icons/vassal_directives/improve_development.dds"
 			ai_chance = {
 				value = 10
 			}
 		}
-
-		### Discourage Nubian Presence
+		
+		### Stewardship: Oversee Land Sales
 		item = {
-			value = RICE_baqt_frontier_discourage_nubians
-			is_valid = {
-				RICE_egypt_southern_frontier_manager_trigger = yes
+			value = RICE_baqt_frontier_land_sales
+			current_description = RICE_baqt_frontier_land_sales_desc
+			localization = RICE_baqt_frontier_land_sales_name
+			icon = "gfx/interface/icons/scheme_types/icon_dispute_border.dds"
+			ai_chance = {
+				value = 10
 			}
-			current_description = RICE_baqt_frontier_discourage_nubians_desc
-			localization = RICE_baqt_frontier_discourage_nubians_name
-			icon = "gfx/interface/icons/widgets/RICE_zoroastrian_siyavash.dds"
+		}
+		
+		### Intrigue: Scrutinize Travelers
+		item = {
+			value = RICE_baqt_frontier_scrutinize
+			current_description = RICE_baqt_frontier_scrutinize_desc
+			localization = RICE_baqt_frontier_scrutinize_name
+			icon = "gfx/interface/icons/activities/activity_survey.dds"
+			ai_chance = {
+				value = 10
+			}
+		}
+		
+		### Learning: Report to Superiors
+		item = {
+			value = RICE_baqt_frontier_report
+			current_description = RICE_baqt_frontier_report_desc
+			localization = RICE_baqt_frontier_report_name
+			icon = "gfx/interface/icons/court_position_types/chronicler_court_position.dds"
+			ai_chance = {
+				value = 10
+			}
+		}
+		
+		### Welcome Cross-Border Traffic
+		item = {
+			value = RICE_baqt_frontier_traffic_positive
+			current_description = RICE_baqt_frontier_traffic_positive_desc
+			localization = RICE_baqt_frontier_traffic_positive_name
+			icon = "gfx/interface/icons/court_position_types/travel_leader_court_position.dds"
+			ai_chance = {
+				value = 10
+			}
+		}
+		
+		### Discourage Cross-Border Traffic
+		item = {
+			value = RICE_baqt_frontier_traffic_negative
+			current_description = RICE_baqt_frontier_traffic_negative_desc
+			localization = RICE_baqt_frontier_traffic_negative_name
+			icon = "gfx/interface/icons/icon_dread.dds"
 			ai_chance = {
 				value = 10
 			}
