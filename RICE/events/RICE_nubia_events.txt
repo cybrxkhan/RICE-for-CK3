@@ -5,12 +5,13 @@
 # nubia.0000-nubia.0019			Setup events, history events, miscellaneous events and decisions
 # nubia.0020-nubia.0029			Minor decisions
 # nubia.0030-nubia.0039			Nile Flood & Related Decisions
-# nubia.0040-nubia.0059			Baqt
+# nubia.0040-nubia.0059			Baqt Exchange
 # nubia.0060-nubia.0079			Niuty's Rebellion Event Chain
 # nubia.0080-nubia.0099			Culture events and decisions
 # nubia.0100-nubia.0119			Eldad ha-Dani/Danite stuff
 # nubia.0120-nubia.0139			Other Historical Aspirations
 # nubia.0140-nubia.0159			Eparch Marianos slave fugitive event chain
+# nubia.0160-nubia.0179			Baqt Frontier Administration Decision 
 # 
 ###############################################################################
 
@@ -66,6 +67,35 @@ nubia.0001 = {
 }
 
 
+# Change Lord of the Mountain trait
+nubia.0010 = {
+	hidden = yes
+	
+	trigger = {
+		scope:title = title:d_nobatia
+		NOT = { has_trait = RICE_lord_of_the_mountain }
+	}
+	
+	immediate = {
+		add_trait = RICE_lord_of_the_mountain		
+	}
+}
+
+# Change Governor of Aswan trait
+nubia.0011 = {
+	hidden = yes
+	
+	trigger = {
+		scope:title = title:c_aswan
+		NOT = { has_trait = RICE_governor_of_aswan }
+	}
+	
+	immediate = {
+		add_trait = RICE_governor_of_aswan		
+	}
+}
+
+
 
 ######################################################################################
 # 
@@ -104,7 +134,7 @@ nubia.0020 = {
 
 ######################################################################################
 # 
-# BAQT
+# BAQT EXCHANGE
 # 
 # nubia.0040-nubia.0059
 # 
@@ -383,7 +413,6 @@ nubia.0041 = {
 	# }
 
 }
-
 
 
 
@@ -1920,6 +1949,7 @@ nubia.0141 = {
 	title = nubia.0141.t
 	desc = nubia.0141.desc
 	theme = stewardship_domain_focus
+	override_background = { reference = RICE_background_nile_private_courtyard }
 
 	left_portrait = {
 		character = scope:marianos
@@ -2116,6 +2146,545 @@ nubia.0145 = {
 
 
 
+######################################################################################
+# 
+# BAQT FRONTIER ADMINISTRATION DECISION
+# 
+# nubia.0160-nubia.0179
+# 
+######################################################################################
+
+
+# Diplomacy: Correspond with Counterpart
+# Decide what to send to the other party
+nubia.0160 = {
+	type = character_event
+	title = nubia.0160.t
+	desc = nubia.0160.desc
+	theme = diplomacy_foreign_affairs_focus
+	# override_background = {
+	# 	trigger = { has_title = title:d_nobatia }
+	# 	reference = RICE_background_nile_private_courtyard
+	# }
+	# override_background = {
+	# 	trigger = { NOT = { has_title = title:d_nobatia } }
+	# 	reference = RICE_background_nile_private_courtyard
+	# }
+	override_background = { reference = RICE_background_nile_private_courtyard }
+	
+	left_portrait = {
+		character = scope:giver
+		animation = chancellor
+	}
+
+	lower_center_portrait = scope:receiver
+
+	immediate = {
+		save_scope_as = giver
+		if = {
+			limit = {				
+				has_title = title:d_nobatia
+				exists = title:c_aswan.holder
+			}
+			title:c_aswan.holder = {
+				save_scope_as = receiver
+			}
+		}
+		else_if = {
+			limit = {				
+				has_title = title:c_aswan
+				exists = title:d_nobatia.holder
+			}
+			title:d_nobatia.holder = {
+				save_scope_as = receiver
+			}
+		}
+	}
+
+	# Ordinary message
+	option = {
+		name = nubia.0160.a
+	}
+
+	# Send a gift
+	# Amount depends on the title tier of the other party
+	option = {
+		name = nubia.0160.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= RICE_egypt_nubia_frontier_gift_amount
+			}
+		}
+		remove_short_term_gold = RICE_egypt_nubia_frontier_gift_amount
+		show_as_tooltip = {
+			scope:receiver = {
+				add_gold = RICE_egypt_nubia_frontier_gift_amount_receiver
+			}
+		}
+		add_character_flag = {
+			flag = RICE_nubia_correspondence_give_gift
+			days = 1
+		}
+		custom_tooltip = nubia.0160.b.tooltip
+	}
+
+	after = {
+		custom_tooltip = RICE_baqt_frontier_correpsondence_effect_1_tt
+		scope:receiver = {
+			trigger_event = nubia.0161
+		}
+	}
+
+}
+
+
+
+# Read the letter
+nubia.0161 = {
+	type = character_event
+	title = nubia.0161.t
+	desc = nubia.0161.desc
+	theme = diplomacy_foreign_affairs_focus
+	# override_background = {
+	# 	trigger = { has_title = title:d_nobatia }
+	# 	reference = RICE_background_nile_private_courtyard
+	# }
+	# override_background = {
+	# 	trigger = { NOT = { has_title = title:d_nobatia } }
+	# 	reference = RICE_background_nile_private_courtyard
+	# }
+	override_background = { reference = RICE_background_nile_private_courtyard }
+	
+	left_portrait = {
+		character = scope:receiver
+		animation = chancellor
+	}
+
+	lower_center_portrait = scope:giver
+
+	# Send positive message back
+	option = {
+		name = nubia.0161.a
+		custom_tooltip = nubia.0161.a.tooltip
+		ai_chance = {
+			base = 50
+			modifier = {
+				add = 50
+				scope:giver = {
+					has_character_flag = RICE_nubia_correspondence_give_gift
+				}
+			}
+			modifier = {
+				add = 10
+				has_trait = gregarious
+			}
+			modifier = {
+				add = 10
+				has_trait = diligent
+			}
+			modifier = {
+				add = 10
+				has_trait = trusting
+			}
+			modifier = {
+				add = 10
+				scope:giver = {
+					has_trait = gregarious
+				}
+			}
+			modifier = {
+				add = 10
+				scope:giver = {
+					has_trait = compassionate
+				}
+			}
+			modifier = {
+				add = 10
+				scope:giver = {
+					has_trait = generous
+				}
+			}
+			modifier = {
+				add = 25
+				scope:giver = {
+					diplomacy >= high_skill_rating
+				}
+			}
+			modifier = {
+				add = 25
+				scope:giver = {
+					diplomacy >= medium_skill_rating
+				}
+			}
+		}
+		scope:giver = {
+			trigger_event = nubia.0162
+		}
+	}
+
+	# Send negative message back
+	option = {
+		name = nubia.0161.b
+		custom_tooltip = nubia.0161.a.tooltip
+		ai_chance = {
+			base = 50
+			modifier = {
+				add = 10
+				has_trait = arbitrary
+			}
+			modifier = {
+				add = 10
+				has_trait = paranoid
+			}
+			modifier = {
+				add = 10
+				has_trait = eccentric
+			}
+			modifier = {
+				add = 10
+				scope:giver = {
+					has_trait = shy
+				}
+			}
+			modifier = {
+				add = 10
+				scope:giver = {
+					OR = {
+						has_trait = sadistic
+						has_trait = callous
+					}
+				}
+			}
+			modifier = {
+				add = 10
+				scope:giver = {
+					has_trait = arbitrary
+				}
+			}
+			modifier = {
+				add = 25
+				scope:giver = {
+					diplomacy <= mediocre_skill_rating
+				}
+			}
+			modifier = {
+				add = 25
+				scope:giver = {
+					diplomacy <= low_skill_rating
+				}
+			}
+		}
+		scope:giver = {
+			trigger_event = nubia.0163
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_trait = RICE_lord_of_the_mountain
+			}
+			add_trait_xp = {
+				trait = RICE_lord_of_the_mountain
+				value = RICE_baqt_border_trait_small_xp_gain
+			}
+		}
+		if = {
+			limit = {
+				has_trait = RICE_governor_of_aswan
+			}
+			add_trait_xp = {
+				trait = RICE_governor_of_aswan
+				value = RICE_baqt_border_trait_small_xp_gain
+			}
+		}
+		if = {
+			limit = {
+				scope:giver = {
+					has_character_flag = RICE_nubia_correspondence_give_gift
+				}
+			}
+			add_gold = RICE_egypt_nubia_frontier_gift_amount_receiver
+		}
+	}
+
+}
+
+# The receiver likes the correspondence
+nubia.0162 = {
+	type = character_event
+	title = nubia.0162.t
+	desc = nubia.0162.desc
+	theme = diplomacy_foreign_affairs_focus
+	override_background = { reference = RICE_background_nile_valley }
+	
+	left_portrait = {
+		character = scope:receiver
+		animation = personality_compassionate
+	}
+	
+	right_portrait = {
+		character = scope:giver
+		animation = personality_content
+	}
+
+	immediate = {
+		scope:receiver = {
+			show_as_tooltip = {
+				if = {
+					limit = {
+						has_trait = RICE_lord_of_the_mountain
+					}
+					add_trait_xp = {
+						trait = RICE_lord_of_the_mountain
+						value = RICE_baqt_border_trait_small_xp_gain
+					}
+				}
+				if = {
+					limit = {
+						has_trait = RICE_governor_of_aswan
+					}
+					add_trait_xp = {
+						trait = RICE_governor_of_aswan
+						value = RICE_baqt_border_trait_small_xp_gain
+					}
+				}
+			}
+		}
+	}
+
+	# Determine how much success
+	option = {
+		name = nubia.0162.a
+		duel = {
+			skill = diplomacy
+			value = average_skill_rating
+			10 = {
+				custom_tooltip = nubia.0162.a.small_success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.9
+				}
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = nubia.0162.a.small_success
+					add_prestige = minor_prestige_gain
+					if = {
+						limit = {
+							has_trait = RICE_lord_of_the_mountain
+						}
+						add_trait_xp = {
+							trait = RICE_lord_of_the_mountain
+							value = RICE_baqt_border_trait_medium_xp_gain
+						}
+					}
+					if = {
+						limit = {
+							has_trait = RICE_governor_of_aswan
+						}
+						add_trait_xp = {
+							trait = RICE_governor_of_aswan
+							value = RICE_baqt_border_trait_medium_xp_gain
+						}
+					}
+					scope:giver = {
+						add_opinion = {
+							modifier = RICE_opinion_baqt_correspondence_good
+							target = scope:receiver
+							opinion = 5
+						}
+						reverse_add_opinion = {
+							modifier = RICE_opinion_baqt_correspondence_good
+							target = scope:receiver
+							opinion = 5
+						}
+					}
+				}	
+			}
+			10 = {
+				custom_tooltip = nubia.0162.a.large_success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.9
+				}
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = nubia.0162.a.large_success
+					add_prestige = minor_prestige_gain
+					if = {
+						limit = {
+							has_trait = RICE_lord_of_the_mountain
+						}
+						add_trait_xp = {
+							trait = RICE_lord_of_the_mountain
+							value = RICE_baqt_border_trait_medium_xp_gain
+						}
+					}
+					if = {
+						limit = {
+							has_trait = RICE_governor_of_aswan
+						}
+						add_trait_xp = {
+							trait = RICE_governor_of_aswan
+							value = RICE_baqt_border_trait_medium_xp_gain
+						}
+					}
+					scope:giver = {
+						add_opinion = {
+							modifier = RICE_opinion_baqt_correspondence_good
+							target = scope:receiver
+							opinion = 10
+						}
+						reverse_add_opinion = {
+							modifier = RICE_opinion_baqt_correspondence_good
+							target = scope:receiver
+							opinion = 10
+						}
+						progress_towards_friend_effect = {
+							CHARACTER = scope:receiver
+							OPINION = default_friend_opinion
+							REASON = RICE_nubia_egypt_border_governors_reason_good
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_nubia_correspondence_give_gift
+			}
+			remove_character_flag = RICE_nubia_correspondence_give_gift
+		}
+	}
+
+}
+
+# The receiver doesn't like the correspondence
+nubia.0163 = {
+	type = character_event
+	title = nubia.0163.t
+	desc = nubia.0163.desc
+	theme = diplomacy_foreign_affairs_focus
+	override_background = { reference = RICE_background_nile_valley }
+	
+	left_portrait = {
+		character = scope:receiver
+		animation = sadness
+	}
+	
+	right_portrait = {
+		character = scope:giver
+		animation = disapproval
+	}
+
+	immediate = {
+		scope:receiver = {
+			show_as_tooltip = {
+				if = {
+					limit = {
+						has_trait = RICE_lord_of_the_mountain
+					}
+					add_trait_xp = {
+						trait = RICE_lord_of_the_mountain
+						value = RICE_baqt_border_trait_small_xp_gain
+					}
+				}
+				if = {
+					limit = {
+						has_trait = RICE_governor_of_aswan
+					}
+					add_trait_xp = {
+						trait = RICE_governor_of_aswan
+						value = RICE_baqt_border_trait_small_xp_gain
+					}
+				}
+			}
+		}
+	}
+
+	# Determine how much failure
+	option = {
+		name = nubia.0163.a
+		duel = {
+			skill = diplomacy
+			value = average_skill_rating
+			10 = {
+				custom_tooltip = nubia.0163.a.large_failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.9
+				}
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					left_icon = ROOT
+					title = nubia.0163.a.large_failure
+					add_prestige = medium_prestige_loss
+					scope:giver = {
+						add_opinion = {
+							modifier = RICE_opinion_baqt_correspondence_bad
+							target = scope:receiver
+							opinion = -10
+						}
+						reverse_add_opinion = {
+							modifier = RICE_opinion_baqt_correspondence_bad
+							target = scope:receiver
+							opinion = -10
+						}
+					}
+				}	
+			}
+			10 = {
+				custom_tooltip = nubia.0163.a.small_failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.9
+				}
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					left_icon = ROOT
+					title = nubia.0163.a.small_failure
+					add_prestige = minor_prestige_loss
+					scope:giver = {
+						add_opinion = {
+							modifier = RICE_opinion_baqt_correspondence_bad
+							target = scope:receiver
+							opinion = -5
+						}
+						reverse_add_opinion = {
+							modifier = RICE_opinion_baqt_correspondence_bad
+							target = scope:receiver
+							opinion = -5
+						}
+						random = {
+							chance = 25
+							progress_towards_rival_effect = {
+								CHARACTER = scope:receiver
+								OPINION = default_rival_opinion
+								REASON = RICE_nubia_egypt_border_governors_reason_bad
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_nubia_correspondence_give_gift
+			}
+			remove_character_flag = RICE_nubia_correspondence_give_gift
+		}
+	}
+
+}
 
 
 
