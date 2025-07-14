@@ -221,16 +221,6 @@
 		}
 
 
-		character:RICE_nubia_misc_002 = {
-			get_title = title:c_batn_al-hajar
-			get_title = title:c_faras
-			save_scope_as = mariankuda
-			RICE_setup_new_granted_ruler_bonuses_effect = yes
-		}
-		# character:31720 = {
-		# 	save_scope_as = makurian_king
-		# }
-
 		create_title_and_vassal_change = {
 			type = swear_fealty
 			save_scope_as = change
@@ -243,6 +233,13 @@
 		}
 		resolve_title_and_vassal_change = scope:change
 
+
+		# Mariankuda
+		character:RICE_nubia_misc_002 = {
+			get_title = title:c_batn_al-hajar
+			save_scope_as = mariankuda
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+		}
 		create_title_and_vassal_change = {
 			type = swear_fealty
 			save_scope_as = change
@@ -255,6 +252,43 @@
 		}
 		resolve_title_and_vassal_change = scope:change
 
+		# Kyros, bishop of Faras
+		character:RICE_nubia_misc_016 = {
+			get_title = title:c_faras
+			save_scope_as = bishop_kyros
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+		}
+		create_title_and_vassal_change = {
+			type = swear_fealty
+			save_scope_as = change
+		}
+		scope:bishop_kyros = {
+			change_liege = {
+				liege = scope:nobatia_eparch
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+
+		# Paulos, a meizoteros attested in the 9th century, epitaph from Kalabsha
+		character:RICE_nubia_misc_017 = {
+			get_title = title:c_kalabsha
+			save_scope_as = meizoteros_paulos
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+		}
+		create_title_and_vassal_change = {
+			type = swear_fealty
+			save_scope_as = change
+		}
+		scope:meizoteros_paulos = {
+			change_liege = {
+				liege = scope:nobatia_eparch
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+
+		# Prince Georgios
 		character:dongola0011 = {
 			get_title = title:c_abwab
 			save_scope_as = prince_georgios
@@ -291,6 +325,7 @@
 		}
 		resolve_title_and_vassal_change = scope:change
 
+		# Prince Zacharias
 		character:dongola0011c = {
 			get_title = title:c_atbara
 			save_scope_as = prince_zacharias
@@ -2427,6 +2462,39 @@
 	title:k_nubia = { set_coa = k_nubia_new }
 
 
+	# Set the Situation Phase in start dates (if it differs from the normal Stability)
+	# Fatimid Civil War / al-Shidda al-ʿUẓma (“Great Calamity:”)
+	# Starting in 1054 during the first famine, ending in 1076 when Badr al-Jamali restores order
+	if = {
+		limit = {
+			game_start_date >= 1054.1.1
+			game_start_date <= 1076.1.1
+		}
+		situation:RICE_nubia_baqt_situation = {
+			every_situation_sub_region = {
+				limit = {
+					situation_sub_region_has_county = title:c_cairo
+				}
+				change_phase = { phase = baqt_instability }
+			}
+		}
+	}
+	# Medieval Nubia in decline starting in the 1200s
+	# Starting in c. 1220 with the initial raid and possible end of Alodia's power by "Damadim" (probably Nilotic) tribes
+	if = {
+		limit = {
+			game_start_date >= 1220.1.1
+		}
+		situation:RICE_nubia_baqt_situation = {
+			every_situation_sub_region = {
+				limit = {
+					situation_sub_region_has_county = title:c_dongola
+				}
+				change_phase = { phase = baqt_instability }
+			}
+		}
+	}
+
 	# Fatimids had suffered from several poor Nile floods, according to Nilometer records
 	# if = {
 	# 	limit = {
@@ -2511,7 +2579,7 @@ RICE_nubia_start_baqt_situation_effect = {
 		}
 		sub_region = {
 			key = nubia
-			start_phase = baqt_incapacity
+			start_phase = baqt_instability
 			map_color = { 255 232 100 }
 			geographical_regions = { RICE_greater_nubia_region }
 		}
