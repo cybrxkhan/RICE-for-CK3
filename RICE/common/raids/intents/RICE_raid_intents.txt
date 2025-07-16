@@ -1,0 +1,83 @@
+﻿### Brief: Raid Intent
+#
+# on_return_raid_loot triggers when returning raid loot
+# scope:raid_loot is the loot that you gained from the raid
+# scope:raider is the character owning the raiding army
+#
+# The following modifiers are available for raid intents:
+# raid_speed
+# movement_speed_land_raiding
+# hostile_county_attrition_raiding
+# max_loot_mult
+#
+# The default intent will be the first available intent for characters
+#
+
+RICE_cattle_raid_intent_nomadic = {
+	on_return_raid_loot = {
+		scope:raider = {
+			send_interface_message = {
+				type = event_raid_good
+				title = raiding.0011.t
+
+				right_icon = root.army_commander
+				add_gold = {
+					value = scope:raid_loot
+					multiply = 0.5
+				}
+				domicile ?= {
+					change_herd = {
+						value = scope:raid_loot
+						multiply = 2
+					}
+				}
+			}
+		}
+	}
+
+	modifier = { 
+		raid_speed = -0.2
+		max_loot_mult = 3
+		movement_speed_land_raiding = -0.25
+		hostile_county_attrition_raiding = -1
+	}
+
+	ai_will_do = {
+		value = 10
+	}
+
+	is_shown = {
+		government_has_flag = government_is_nomadic
+		culture = { has_cultural_parameter = unlock_rice_cattle_raid_intent }
+	}
+}
+
+RICE_cattle_raid_intent = {
+	on_return_raid_loot = {
+		scope:raider = {
+			send_interface_message = {
+				type = event_raid_good
+				title = raiding.0011.t
+
+				right_icon = root.army_commander
+				add_gold = scope:raid_loot
+				add_prestige = scope:raid_loot
+			}
+		}
+	}
+
+	modifier = { 
+		raid_speed = -0.1
+		max_loot_mult = 3
+		movement_speed_land_raiding = -0.5
+		hostile_county_attrition_raiding = -1
+	}
+
+	ai_will_do = {
+		value = 10
+	}
+
+	is_shown = {
+		culture = { has_cultural_parameter = unlock_rice_cattle_raid_intent }
+	}
+}
