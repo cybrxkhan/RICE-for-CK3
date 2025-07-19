@@ -504,6 +504,18 @@ RICE_setup_admin_government_effect = {
 			}
 			title:k_guiyi.holder ?= { RICE_convert_to_administrative_from_feudalism_game_start_dunhuang_effect = yes }
 		}
+		# if = {
+		# 	limit = {
+		# 		exists = title:k_alodia
+		# 	}
+		# 	title:k_alodia.holder ?= { RICE_convert_to_administrative_from_feudalism_game_start_nubia_effect = yes }
+		# }
+		# if = {
+		# 	limit = {
+		# 		exists = title:k_nubia
+		# 	}
+		# 	title:k_nubia.holder ?= { RICE_convert_to_administrative_from_feudalism_game_start_nubia_effect = yes }
+		# }
 	}
 }
 
@@ -2275,6 +2287,67 @@ RICE_convert_to_administrative_from_feudalism_game_start_dunhuang_effect = {
 						culture = { has_cultural_pillar = heritage_vietic }
 						culture = culture:sogdian
 					}
+					house.house_head = {
+						NOT = {
+							any_held_title = { is_noble_family_title = yes }
+						}
+					}
+				}
+				create_noble_family_effect = yes
+			}
+		}
+
+	}
+
+}
+
+# Variation of vanilla's scripted effect "convert_to_administrative_from_feudalism_game_start_effect" for Nubian kingdoms
+# This one makes it so the Makuria and Alodia's pagan vassals remain non-Admin 
+RICE_convert_to_administrative_from_feudalism_game_start_nubia_effect = {
+	if = {
+		limit = { has_dlc_feature = roads_to_power }
+		# Because we run this twice, since folks can change in the lobby.
+		if = {
+			limit = {
+				NOT = { government_has_flag = government_is_administrative }
+			}
+			change_government = administrative_government
+			add_to_list = estatified_list
+		}
+
+		if = {
+			limit = {
+				house.house_head = {
+					NOT = {
+						any_held_title = { is_noble_family_title = yes }
+					}
+				}
+			}
+			create_noble_family_effect = yes
+		}
+
+		every_vassal_or_below = {
+			limit = {
+				NOT = { government_has_flag = government_is_theocracy }
+				highest_held_title_tier >= tier_county
+				NOT = { faith.religion = { is_in_family = rf_pagan } }
+				NOR = {
+					faith.religious_head ?= this
+					liege = {
+						faith.religious_head ?= this
+						is_independent_ruler = no
+					}
+					AND = {
+						exists = scope:ignore_culture
+						culture = scope:ignore_culture
+					}
+				}
+			}
+			change_to_administrative_effect = yes
+			if = {
+				limit = {
+					primary_title.tier = tier_county
+					NOT = { faith.religion = { is_in_family = rf_pagan } }
 					house.house_head = {
 						NOT = {
 							any_held_title = { is_noble_family_title = yes }
