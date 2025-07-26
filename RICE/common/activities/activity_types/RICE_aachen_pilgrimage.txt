@@ -31,14 +31,6 @@
 			is_at_war = no
 			short_term_gold >= RICE_activity_cost
 		}	
-		trigger_if = {
-			limit = {
-				is_landed = no
-			}
-			domicile.domicile_location ?= {
-				this = title:b_aachen.title_province
-			}
-		}
 	}
 
 	can_start = {
@@ -48,27 +40,38 @@
 			text = RICE_aachen_pilgrimage_inspiration_req
 			RICE_has_aachen_treasury_modifier_trigger = no
 		}
-		OR = {
-			custom_description = {
-				text = RICE_aachen_close_req
-				title:c_aachen = {
-					squared_distance = {
-						target = root.capital_province
-						value <= squared_distance_small
+		trigger_if = {
+			limit = { is_landless_adventurer = no }
+			OR = {
+				custom_description = {
+					text = RICE_aachen_close_req
+					title:c_aachen = {
+						squared_distance = {
+							target = root.capital_province
+							value <= squared_distance_small
+						}
+					}
+				}
+				custom_description = {
+					text = RICE_aachen_pilgrimage_long_distance_req
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:RICE_aachen_charlemagne_remains_transferred
+					}
+					capital_province = {
+						OR = {
+							geographical_region = world_europe_west_francia
+							geographical_region = world_europe_west_germania
+						}
 					}
 				}
 			}
+		}
+		trigger_else = {
 			custom_description = {
-				text = RICE_aachen_pilgrimage_long_distance_req
-				is_target_in_global_variable_list = {
-					name = unavailable_unique_decisions
-					target = flag:RICE_aachen_charlemagne_remains_transferred
-				}
-				capital_province = {
-					OR = {
-						geographical_region = world_europe_west_francia
-						geographical_region = world_europe_west_germania
-					}
+				text = RICE_aachen_in_aachen_req
+				domicile.domicile_location ?= {
+					this = title:b_aachen.title_province
 				}
 			}
 		}
