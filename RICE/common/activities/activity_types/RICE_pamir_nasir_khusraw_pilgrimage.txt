@@ -23,28 +23,31 @@
 			is_at_war = no
 			short_term_gold >= RICE_activity_cost
 		}	
-		trigger_if = {
-			limit = {
-				is_landed = no
-			}
-			domicile.domicile_location ?= {
-				this = title:b_jerm.title_province
-			}
-		}
 	}
 
 	can_start = {
 		religion = religion:islam_religion
 		NOT = { faith = { has_doctrine = doctrine_pilgrimage_forbidden } }
-		OR = {
-			has_title = title:c_badakhshan
-			custom_description = {
-				text = RICE_pamir_nasir_khusraw_pilgrimage_distance_req
-				title:c_badakhshan = {
-					squared_distance = {
-						target = root.capital_province
-						value <= squared_distance_medium
+		trigger_if = {
+			limit = { is_landless_adventurer = no }
+			OR = {
+				has_title = title:c_badakhshan
+				custom_description = {
+					text = RICE_pamir_nasir_khusraw_pilgrimage_distance_req
+					title:c_badakhshan = {
+						squared_distance = {
+							target = root.capital_province
+							value <= squared_distance_medium
+						}
 					}
+				}
+			}
+		}
+		trigger_else = {
+			custom_description = {
+				text = RICE_pamir_in_jerm_req
+				domicile.domicile_location ?= {
+					this = title:b_jerm.title_province
 				}
 			}
 		}

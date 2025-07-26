@@ -22,35 +22,38 @@
 			is_at_war = no
 			short_term_gold >= RICE_activity_cost
 		}	
-		trigger_if = {
-			limit = {
-				is_landed = no
-			}
-			domicile.domicile_location ?= {
-				this = title:b_avranches.title_province
-			}
-		}
 	}
 
 	can_start = {
 		religion = religion:christianity_religion
 		NOT = { faith = { has_doctrine = doctrine_pilgrimage_forbidden } }
-		OR = {
-			has_title = title:c_avranches
-			custom_description = {
-				text = RICE_normandy_avranches_distance_req
-				OR = {
-					title:b_avranches = {
-						squared_distance = {
-							target = root.capital_province
-							value <= squared_distance_medium
+		trigger_if = {
+			limit = { is_landless_adventurer = no }
+			OR = {
+				has_title = title:c_avranches
+				custom_description = {
+					text = RICE_normandy_avranches_distance_req
+					OR = {
+						title:b_avranches = {
+							squared_distance = {
+								target = root.capital_province
+								value <= squared_distance_medium
+							}
+						}
+						capital_province = {
+							geographical_region = world_europe_west_francia
 						}
 					}
-					capital_province = {
-						geographical_region = world_europe_west_francia
-					}
+				}	
+			}
+		}
+		trigger_else = {
+			custom_description = {
+				text = RICE_normandy_in_avranches_req
+				domicile.domicile_location ?= {
+					this = title:b_avranches.title_province
 				}
-			}	
+			}
 		}
 	}
 

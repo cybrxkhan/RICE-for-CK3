@@ -3,10 +3,21 @@
 		highest_held_title_tier > tier_barony
 		is_playable_character = yes
 		RICE_is_greco_roman_religion_group_trigger = yes
-		any_held_title = {
-			tier = tier_county
-			any_county_province = {
-				geographical_region = RICE_greater_egypt	
+		OR = {
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_greater_egypt	
+				}
+			}
+			AND = {
+				is_landless_adventurer = yes
+				title:b_kharga = {
+					squared_distance = {
+						target = root.capital_province
+						value <= squared_distance_large
+					}
+				}
 			}
 		}
 		trigger_if = {
@@ -21,12 +32,23 @@
 	can_start = {
 		RICE_is_greco_roman_religion_group_trigger = yes
 		NOT = { faith = { has_doctrine = doctrine_pilgrimage_forbidden } }
-		custom_description = {
-			text = RICE_greater_egypt_geographical_req
-			any_held_title = {
-				tier = tier_county
-				any_county_province = {
-					geographical_region = RICE_greater_egypt	
+		trigger_if = {
+			limit = { is_landless_adventurer = no }
+			custom_description = {
+				text = RICE_greater_egypt_geographical_req
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_greater_egypt	
+					}
+				}
+			}
+		}
+		trigger_else = {
+			custom_description = {
+				text = RICE_siwa_in_kharga_req
+				domicile.domicile_location ?= {
+					this = title:b_kharga.title_province
 				}
 			}
 		}

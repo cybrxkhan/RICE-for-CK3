@@ -10,6 +10,15 @@
 				}
 			}
 			completely_controls = title:c_khotan
+			AND = {
+				is_landless_adventurer = yes
+				title:b_khotan = {
+					squared_distance = {
+						target = root.capital_province
+						value <= squared_distance_large
+					}
+				}
+			}
 		}
 		religion = religion:buddhism_religion
 		NOT = { has_global_variable = RICE_tarim_basin_khotan_eight_protectors_abandoned }
@@ -34,17 +43,28 @@
 				religion = religion:buddhism_religion
 			}
 		}
-		OR = {
-			custom_description = {
-				text = RICE_greater_khotan_area_geographical_req
-				any_held_title = {
-					tier = tier_county
-					any_county_province = {
-						geographical_region = RICE_greater_khotan_area				
+		trigger_if = {
+			limit = { is_landless_adventurer = no }
+			OR = {
+				custom_description = {
+					text = RICE_greater_khotan_area_geographical_req
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_greater_khotan_area				
+						}
 					}
 				}
+				completely_controls = title:c_khotan
 			}
-			completely_controls = title:c_khotan
+		}
+		trigger_else = {
+			custom_description = {
+				text = RICE_tarim_basin_in_khotan_req
+				domicile.domicile_location ?= {
+					this = title:b_khotan.title_province
+				}
+			}
 		}
 		# Duh
 		NOT = {

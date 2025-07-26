@@ -15,7 +15,7 @@
 			title:c_east_riding = {
 				squared_distance = {
 					target = root.capital_province
-					value <= squared_distance_small
+					value <= squared_distance_medium
 				}
 			}
 			# AND = {
@@ -47,57 +47,60 @@
 			is_at_war = no
 			short_term_gold >= RICE_activity_cost
 		}	
-		trigger_if = {
-			limit = {
-				is_landed = no
-			}
-			domicile.domicile_location ?= {
-				this = title:b_cottingham.title_province
-			}
-		}
 	}
 
 	can_start = {
 		religion = religion:christianity_religion
 		NOT = { faith = { has_doctrine = doctrine_pilgrimage_forbidden } }
-		OR = {
-			custom_description = {
-				text = RICE_yorkshire_beverley_pilgrimage_distance_req
-				title:c_east_riding = {
-					squared_distance = {
-						target = root.capital_province
-						value <= squared_distance_small
+		trigger_if = {
+			limit = { is_landless_adventurer = no }
+			OR = {
+				custom_description = {
+					text = RICE_yorkshire_beverley_pilgrimage_distance_req
+					title:c_east_riding = {
+						squared_distance = {
+							target = root.capital_province
+							value <= squared_distance_small
+						}
 					}
 				}
+				# AND = {
+				# 	OR = {
+				# 		culture = { has_cultural_pillar = heritage_west_germanic }
+				# 		culture = culture:norman
+				# 		custom_description = {
+				# 			text = RICE_decision_norman_culture_requirement
+				# 			culture = {
+				# 				any_parent_culture_or_above = {
+				# 					this = culture:norman
+				# 				}
+				# 			}
+				# 		}
+				# 	}
+					custom_description = {
+						text = RICE_yorkshire_beverley_pilgrimage_english_culture_req
+						capital_province = {
+							OR = {
+								geographical_region = world_europe_west_britannia
+								geographical_region = world_europe_west_francia
+								geographical_region = custom_frisia	
+							}
+						}	
+					}			
+				#}
+				has_title = title:c_lincolnshire
+				has_title = title:c_west_riding
+				has_title = title:c_east_riding
+				has_title = title:c_north_riding	
 			}
-			# AND = {
-			# 	OR = {
-			# 		culture = { has_cultural_pillar = heritage_west_germanic }
-			# 		culture = culture:norman
-			# 		custom_description = {
-			# 			text = RICE_decision_norman_culture_requirement
-			# 			culture = {
-			# 				any_parent_culture_or_above = {
-			# 					this = culture:norman
-			# 				}
-			# 			}
-			# 		}
-			# 	}
-				custom_description = {
-					text = RICE_yorkshire_beverley_pilgrimage_english_culture_req
-					capital_province = {
-						OR = {
-							geographical_region = world_europe_west_britannia
-							geographical_region = world_europe_west_francia
-							geographical_region = custom_frisia	
-						}
-					}	
-				}			
-			#}
-			has_title = title:c_lincolnshire
-			has_title = title:c_west_riding
-			has_title = title:c_east_riding
-			has_title = title:c_north_riding	
+		}
+		trigger_else = {
+			custom_description = {
+				text = RICE_yorkshire_in_cottingham_req
+				domicile.domicile_location ?= {
+					this = title:b_cottingham.title_province
+				}
+			}
 		}
 	}
 
