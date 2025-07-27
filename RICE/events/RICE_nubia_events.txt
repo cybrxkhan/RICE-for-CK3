@@ -199,6 +199,72 @@ nubia.0020 = {
 }
 
 
+# Commission donor portrait
+# By Cybrxkhan
+nubia.0021 = {
+	type = character_event
+	title = nubia.0021.t
+	desc = {
+		desc = nubia.0021.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_donor_portrait_type = flag:self
+				}
+				desc = nubia.0021.desc.self
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_donor_portrait_type = flag:family
+				}
+				desc = nubia.0021.desc.family
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_donor_portrait_type = flag:clergy
+				}
+				desc = nubia.0021.desc.clergy
+			}
+		}
+	}
+	theme = faith
+	
+	left_portrait = {
+		character = scope:chaplain
+		animation = idle
+		trigger = {
+			exists = scope:chaplain
+		}
+	}	
+
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	immediate = {
+		# Court Chaplain should only appear if they're also Christian, and don't follow a religion with Aniconism
+		if = {
+			limit = {
+				#exists = cp:councillor_court_chaplain
+				cp:councillor_court_chaplain ?= {
+					religion = religion:christianity_religion
+					NOT = { faith = { has_doctrine = tenet_aniconism } }
+				}
+			}
+			cp:councillor_court_chaplain = { save_scope_as = chaplain }
+		}
+	}
+
+	# Ok
+	option = {
+		name = nubia.0021.a
+		RICE_christian_commission_donor_portrait_effect = yes
+	}
+
+}
+
+
 
 ######################################################################################
 # 
@@ -1714,6 +1780,9 @@ nubia.0103 = {
 	immediate = {
 		RICE_eldad_ha_dani_decision_effect = yes
 	}
+
+	# Serpent: Martial, Intrigue, Prowess
+	# Justice: Diplomacy, Stewardship, Learning
 
 	# Ok
 	option = {

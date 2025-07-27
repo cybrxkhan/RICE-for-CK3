@@ -3066,55 +3066,6 @@ RICE_nubia_baqt_recipient_give_effect = {
 }
 
 
-RICE_christian_commission_donor_portrait_effect = {
-	add_piety = 100
-	add_prestige = 100
-	add_legitimacy = minor_legitimacy_gain
-}
-
-RICE_christian_donor_portrait_self_effect = {
-	add_prestige = 100
-	add_legitimacy = 100
-}
-
-RICE_christian_donor_portrait_family_effect = {
-	dynasty ?= {
-		add_dynasty_prestige = 100
-	}
-	every_close_family_member = {
-		custom = RICE_all_close_family_members_same_religion
-		limit = {
-			religion = religion:christianity_religion
-		}
-		add_opinion = {
-			target = root
-			modifier = RICE_opinion_commissioned_portrait
-		}
-	}
-}
-
-RICE_christian_donor_portrait_clergy_effect = {
-	add_piety = 100
-	cp:councillor_court_chaplain ?= {		
-		add_opinion = {
-			target = root
-			modifier = RICE_opinion_commissioned_portrait
-		}
-	}
-	every_courtier = {
-		custom = RICE_all_clergy
-		limit = {
-			religion = religion:christianity_religion
-			is_clergy = yes
-			NOT = { this = cp:councillor_court_chaplain }
-		}
-		add_opinion = {
-			target = root
-			modifier = RICE_opinion_commissioned_portrait
-		}
-	}
-}
-
 
 
 RICE_setup_non_optional_nubian_flavor_events_effect = {
@@ -3788,4 +3739,158 @@ RICE_spawn_badr_al_jamali_fatimid_troops = {
 		name = RICE_fatimid_african_troops
 	}
 }
+RICE_christian_commission_donor_portrait_effect = {
+	RICE_christian_commission_donor_portrait_base_effect = yes
+	if = {
+		limit = {
+			var:RICE_donor_portrait_type ?= flag:self
+		}
+		RICE_christian_donor_portrait_self_effect = yes
+	}
+	else_if = {
+		limit = {
+			var:RICE_donor_portrait_type ?= flag:family
+		}
+		RICE_christian_donor_portrait_family_effect = yes
+	}
+	else_if = {
+		limit = {
+			var:RICE_donor_portrait_type ?= flag:clergy
+		}
+		RICE_christian_donor_portrait_clergy_effect = yes
+	}
+}
+
+RICE_christian_commission_donor_portrait_base_effect = {
+	add_legitimacy = RICE_donor_portrait_base_legitimacy_gain
+	add_prestige = RICE_donor_portrait_base_prestige_gain
+	add_piety = RICE_donor_portrait_base_piety_gain
+	every_courtier = {
+		limit = {
+			faith = { has_doctrine = tenet_aniconism }
+		}
+		custom = RICE_all_courtiers_and_vassals_not_aniconism
+		add_opinion = {
+			target = ROOT
+			modifier = RICE_opinion_disapproves_commissioned_portrait
+		}
+	}
+	# Hide this because the every_courtier above covers vassals in its loc text
+	hidden_effect = {		
+		every_vassal = {
+			limit = {
+				faith = { has_doctrine = tenet_aniconism }
+			}
+			add_opinion = {
+				target = ROOT
+				modifier = RICE_opinion_disapproves_commissioned_portrait
+			}
+		}
+	}
+}
+
+RICE_christian_donor_portrait_self_effect = {
+	add_legitimacy = RICE_donor_portrait_base_legitimacy_gain
+	add_prestige = RICE_donor_portrait_base_prestige_gain
+}
+
+RICE_christian_donor_portrait_family_effect = {
+	dynasty ?= {
+		add_dynasty_prestige = RICE_donor_portrait_base_dynasty_prestige_gain
+	}
+	every_close_family_member = {
+		limit = {
+			religion = religion:christianity_religion
+			NOT = { faith = { has_doctrine = tenet_aniconism } }
+		}
+		custom = RICE_christian_close_family_not_aniconism
+		add_opinion = {
+			target = ROOT
+			modifier = RICE_opinion_commissioned_portrait
+		}
+	}
+	# every_close_family_member = {
+	# 	limit = {
+	# 		religion = religion:christianity_religion
+	# 		faith = { has_doctrine = tenet_aniconism }
+	# 	}
+	# 	custom = RICE_all_close_family_members_same_religion_yes_aniconism
+	# 	add_opinion = {
+	# 		target = ROOT
+	# 		modifier = RICE_opinion_disapproves_commissioned_portrait
+	# 	}
+	# }
+}
+
+RICE_christian_donor_portrait_clergy_effect = {
+	add_piety = RICE_donor_portrait_base_piety_gain
+	cp:councillor_court_chaplain = {
+		add_opinion = {
+			target = ROOT
+			modifier = RICE_opinion_commissioned_portrait
+		}
+	}
+	every_courtier = {
+		limit = {
+			NOT = { this = cp:councillor_court_chaplain }
+			is_clergy = yes
+			religion = religion:christianity_religion
+			NOT = { faith = { has_doctrine = tenet_aniconism } }
+		}
+		custom = RICE_all_clergy_not_aniconism
+		add_opinion = {
+			target = ROOT
+			modifier = RICE_opinion_commissioned_portrait
+		}
+	}
+	# Hide this because the every_courtier above covers vassals in its loc text
+	hidden_effect = {
+		every_vassal = {
+			limit = {
+				NOT = { this = cp:councillor_court_chaplain }
+				is_clergy = yes
+				religion = religion:christianity_religion
+				NOT = { faith = { has_doctrine = tenet_aniconism } }
+			}
+			add_opinion = {
+				target = ROOT
+				modifier = RICE_opinion_commissioned_portrait
+			}
+		}		
+	}
+	# every_courtier = {
+	# 	limit = {
+	# 		NOT = { this = cp:councillor_court_chaplain }
+	# 		is_clergy = yes
+	# 		religion = religion:christianity_religion
+	# 		faith = { has_doctrine = tenet_aniconism }
+	# 	}
+	# 	custom = RICE_all_clergy_yes_aniconism
+	# 	add_opinion = {
+	# 		target = ROOT
+	# 		modifier = RICE_opinion_disapproves_commissioned_portrait
+	# 	}
+	# }
+	# # Hide this because the every_courtier above covers vassals in its loc text
+	# hidden_effect = {
+	# 	every_vassal = {
+	# 		limit = {
+	# 			NOT = { this = cp:councillor_court_chaplain }
+	# 			is_clergy = yes
+	# 			religion = religion:christianity_religion
+	# 			faith = { has_doctrine = tenet_aniconism }
+	# 		}
+	# 		add_opinion = {
+	# 			target = ROOT
+	# 			modifier = RICE_opinion_disapproves_commissioned_portrait
+	# 		}
+	# 	}
+	# }
+}
+
+
+
+
+
+
 

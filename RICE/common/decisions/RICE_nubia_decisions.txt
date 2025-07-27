@@ -1294,7 +1294,8 @@ RICE_christian_commission_donor_portrait = {
 	effect = {
 
 		show_as_tooltip = {
-			RICE_christian_commission_donor_portrait_effect = yes
+			# Show base effect only
+			RICE_christian_commission_donor_portrait_base_effect = yes
 		}
 
 				# AI will tend towards abandoning the Church, but not necessarily
@@ -1303,24 +1304,38 @@ RICE_christian_commission_donor_portrait = {
 				is_ai = yes
 			}
 
-			# random_list = {
-			# 	# Support
-			# 	10 = {
-			# 		trigger_event = manichean.0010
-			# 	}
-			# 	# Reform
-			# 	10 = {
-			# 		trigger_event = manichean.0011
-			# 	}
-			# 	# Abandon
-			# 	10 = {
-			# 		trigger_event = manichean.0012
-			# 	}
-			# }
+			random_list = {
+				10 = {
+					set_variable = {
+						name = RICE_donor_portrait_type
+						value = flag:self
+						days = 1
+					}
+				}
+				10 = {
+					set_variable = {
+						name = RICE_donor_portrait_type
+						value = flag:family
+						days = 1
+					}
+				}
+				10 = {
+					set_variable = {
+						name = RICE_donor_portrait_type
+						value = flag:clergy
+						days = 1
+					}
+				}
+			}
 		}
 
 		else_if = {
 			limit = { scope:RICE_christian_donor_portrait_self = yes }
+			set_variable = {
+				name = RICE_donor_portrait_type
+				value = flag:self
+				days = 1
+			}
 			show_as_tooltip = {
 				RICE_christian_donor_portrait_self_effect = yes
 			}
@@ -1328,6 +1343,11 @@ RICE_christian_commission_donor_portrait = {
 
 		else_if = {
 			limit = { scope:RICE_christian_donor_portrait_family = yes }
+			set_variable = {
+				name = RICE_donor_portrait_type
+				value = flag:family
+				days = 1
+			}
 			show_as_tooltip = {
 				RICE_christian_donor_portrait_family_effect = yes
 			}
@@ -1335,6 +1355,11 @@ RICE_christian_commission_donor_portrait = {
 
 		else_if = {
 			limit = { scope:RICE_christian_donor_portrait_clergy = yes }
+			set_variable = {
+				name = RICE_donor_portrait_type
+				value = flag:clergy
+				days = 1
+			}
 			show_as_tooltip = {
 				RICE_christian_donor_portrait_clergy_effect = yes
 			}
@@ -1350,17 +1375,17 @@ RICE_christian_commission_donor_portrait = {
 		}
 
 		trigger_event = {
-			id = nubia.8888
+			id = nubia.0021
 		}
 	}
 
 	cost = { 
-		gold = { value = RICE_activity_cost } # Will depend 
+		gold = { value = medium_gold_value } # Will depend 
 		#prestige = { value = medium_prestige_value } 
 	}	
 
 	ai_potential = {
-		short_term_gold >= RICE_activity_cost
+		short_term_gold >= medium_gold_value
 	}
 
 	ai_will_do = {
