@@ -3,10 +3,21 @@
 		highest_held_title_tier > tier_barony
 		is_playable_character = yes
 		faith.religion = { is_in_family = rf_pagan }
-		any_held_title = {
-			tier = tier_county
-			any_county_province = {
-				geographical_region = RICE_greater_egypt	
+		OR = {
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_greater_egypt	
+				}
+			}
+			AND = {
+				is_landless_adventurer = yes
+				title:b_siwa = {
+					squared_distance = {
+						target = root.capital_province
+						value <= squared_distance_large
+					}
+				}
 			}
 		}
 		trigger_if = {
@@ -23,12 +34,23 @@
 			text = RICE_decision_pagan_requirement
 			faith.religion = { is_in_family = rf_pagan }
 		}
-		custom_description = {
-			text = RICE_greater_egypt_geographical_req
-			any_held_title = {
-				tier = tier_county
-				any_county_province = {
-					geographical_region = RICE_greater_egypt	
+		trigger_if = {
+			limit = { is_landless_adventurer = no }
+			custom_description = {
+				text = RICE_greater_egypt_geographical_req
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = RICE_greater_egypt	
+					}
+				}
+			}
+		}
+		trigger_else = {
+			custom_description = {
+				text = RICE_siwa_in_siwa_req
+				domicile.domicile_location ?= {
+					this = title:b_siwa.title_province
 				}
 			}
 		}

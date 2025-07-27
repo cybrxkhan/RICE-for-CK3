@@ -22,35 +22,38 @@
 			is_at_war = no
 			short_term_gold >= RICE_activity_cost
 		}
-		trigger_if = {
-			limit = {
-				is_landed = no
-			}
-			domicile.domicile_location ?= {
-				this = title:b_vieste.title_province
-			}
-		}			
 	}
 
 	can_start = {
 		religion = religion:christianity_religion
 		NOT = { faith = { has_doctrine = doctrine_pilgrimage_forbidden } }
-		OR = {
-			has_title = title:c_foggia
-			custom_description = {
-				text = RICE_sicily_gargano_distance_req
-				OR = {
-					title:b_vieste = {
-						squared_distance = {
-							target = root.capital_province
-							value <= squared_distance_large
+		trigger_if = {
+			limit = { is_landless_adventurer = no }
+			OR = {
+				has_title = title:c_foggia
+				custom_description = {
+					text = RICE_sicily_gargano_distance_req
+					OR = {
+						title:b_vieste = {
+							squared_distance = {
+								target = root.capital_province
+								value <= squared_distance_large
+							}
+						}
+						capital_province = {
+							geographical_region = world_europe_south_italy
 						}
 					}
-					capital_province = {
-						geographical_region = world_europe_south_italy
-					}
+				}	
+			}
+		}
+		trigger_else = {
+			custom_description = {
+				text = RICE_sicily_in_vieste_req
+				domicile.domicile_location ?= {
+					this = title:b_vieste.title_province
 				}
-			}	
+			}
 		}
 	}
 
@@ -507,7 +510,7 @@
 	}
 	
 	is_location_valid = {
-			barony ?= title:b_vieste
+		barony ?= title:b_vieste
 	}
 
 	max_province_icons = 1
