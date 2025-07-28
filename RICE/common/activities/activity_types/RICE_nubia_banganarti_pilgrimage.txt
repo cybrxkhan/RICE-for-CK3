@@ -6,11 +6,28 @@
 			title:c_dongola = {
 				squared_distance = {
 					target = root.capital_province
-					value <= squared_distance_large
+					value <= squared_distance_medium
 				}
 			}
-			capital_province ?= {
-				geographical_region = world_africa_east
+			AND = {
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_nubia_banganarti_rebuilt
+				}
+				OR = {					
+					title:c_dongola = {
+						squared_distance = {
+							target = root.capital_province
+							value <= squared_distance_large
+						}
+					}
+					capital_province ?= {
+						OR = {
+							geographical_region = world_africa_north_east
+							geographical_region = world_africa_east
+						}
+					}
+				}		
 			}
 			has_title = title:c_dongola # c_dongola is where b_old_dongola is
 		}
@@ -35,6 +52,51 @@
 	can_start = {
 		religion = religion:christianity_religion
 		NOT = { faith = { has_doctrine = doctrine_pilgrimage_forbidden } }
+		trigger_if = {
+			limit = { is_landless_adventurer = no }
+			OR = {
+				has_title = title:c_dongola
+				custom_description = {
+					text = RICE_dongola_close_req
+					OR = {
+						title:c_dongola = {
+							squared_distance = {
+								target = root.capital_province
+								value <= squared_distance_medium
+							}
+						}
+						AND = {
+							is_target_in_global_variable_list = {
+								name = unavailable_unique_decisions
+								target = flag:RICE_nubia_banganarti_rebuilt
+							}
+							OR = {					
+								title:c_dongola = {
+									squared_distance = {
+										target = root.capital_province
+										value <= squared_distance_large
+									}
+								}
+								capital_province ?= {
+									OR = {
+										geographical_region = world_africa_north_east
+										geographical_region = world_africa_east
+									}
+								}
+							}		
+						}
+					}
+				}
+			}
+		}
+		trigger_else = {
+			custom_description = {
+				text = RICE_domicile_in_dongola_req
+				domicile.domicile_location ?= {
+					this = title:b_old_dongola.title_province
+				}
+			}
+		}
 	}
 
 	can_start_showing_failures_only = {
@@ -422,6 +484,153 @@
 			}
 		}	
 
+		#########################
+		#
+		# DREAM INCUBATION (Unique to the Banganarti pilgrimage)
+		#
+		#########################
+		RICE_nubia_banganarti_pilgrimage_dream_incubation_type = {
+			RICE_nubia_banganarti_pilgrimage_dream_incubation_type_none = {
+				default = yes
+				ai_will_do = {
+					value = 15
+					if = {
+						limit = {
+							short_term_gold <= minor_gold_value
+						}
+						add = {
+							value = 10
+						}
+					}
+					if = {
+						limit = {
+							has_trait = greedy
+						}
+						add = 10
+					}
+				}
+			}
+			RICE_nubia_banganarti_pilgrimage_dream_incubation_type_small = {
+				cost = { 
+					gold = {
+						add = {
+							value = 0
+							desc = RICE_nubia_banganarti_pilgrimage_dream_incubation_amount
+							add = {
+								value = minor_gold_value
+								desc = RICE_nubia_banganarti_pilgrimage_dream_incubation_amount
+							}
+						}
+					}
+				}			
+				ai_will_do = {
+					value = 30
+					if = {
+						limit = {
+							short_term_gold <= minor_gold_value
+						}
+						subtract = {
+							value = 30
+						}
+					}
+					if = {
+						limit = {
+							has_trait = ambitious
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = arrogant
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_any_illness = yes
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_any_debilitating_illness = yes
+						}
+						add = 25
+					}
+					if = {
+						limit = {
+							has_permanent_physical_injury = yes
+						}
+						add = 10
+					}
+				}
+			}
+			RICE_nubia_banganarti_pilgrimage_dream_incubation_type_large = {
+				is_valid = {
+					custom_tooltip = {
+						text = RICE_nubia_banganarti_rebuilt_req
+						is_target_in_global_variable_list = {
+							name = unavailable_unique_decisions
+							target = flag:RICE_nubia_banganarti_rebuilt
+						}
+					}
+				}
+				cost = { 
+					gold = {
+						add = {
+							value = 0
+							desc = RICE_nubia_banganarti_pilgrimage_dream_incubation_amount
+							add = {
+								value = medium_gold_value
+								desc = RICE_nubia_banganarti_pilgrimage_dream_incubation_amount
+							}
+						}
+					}
+				}			
+				ai_will_do = {
+					value = 15
+					if = {
+						limit = {
+							short_term_gold <= medium_gold_value
+						}
+						subtract = {
+							value = 15
+						}
+					}
+					if = {
+						limit = {
+							has_trait = ambitious
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_trait = arrogant
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_any_illness = yes
+						}
+						add = 5
+					}
+					if = {
+						limit = {
+							has_any_debilitating_illness = yes
+						}
+						add = 25
+					}
+					if = {
+						limit = {
+							has_permanent_physical_injury = yes
+						}
+						add = 10
+					}
+				}
+			}
+		}	
+
 
 	}
 
@@ -438,7 +647,7 @@
 					limit = {
 						this = scope:host
 					}
-					scope:host = { trigger_event = nubia.8888 }
+					scope:host = { trigger_event = nubia.0181 }
 				}		
 			}
 			on_end = {
@@ -677,28 +886,87 @@
 	#################
 
 	# Travel
+	# RICE_background_red_sea_beach
 	background = {
 		trigger = {
 			NOT = { scope:host.location = scope:activity.activity_location }
-			scope:host.location = {
-				#graphical_plains_trigger = yes
-				exists = province_owner
+			scope:host.location = {				
+				geographical_region = RICE_greater_darfur
 			}
 		}
-		texture = "gfx/interface/illustrations/event_scenes/RICE_tarim_basin_town.dds"
-		environment = "environment_event_market_east"
-		ambience = "event:/SFX/Events/Backgrounds/desert_day"
+		texture = "gfx/interface/illustrations/event_scenes/RICE_nubia_nuba_savanna_village.dds"
+		environment = "environment_event_farms"
+		ambience = "event:/SFX/Events/Backgrounds/townmarket_day_tribal_pagan"
 	}
-
+	# RICE_background_red_sea_beach
+	background = {
+		trigger = {
+			NOT = { scope:host.location = scope:activity.activity_location }
+			scope:host.location = {				
+				OR = {
+					is_coastal = yes
+					is_sea_province = yes
+				}
+			}
+		}
+		texture = "gfx/interface/illustrations/event_scenes/RICE_red_sea_beach.dds"
+		environment = "environment_event_desert"
+		ambience = "event:/DLC/FP1/SFX/Events/event_beached_longships"
+	}
+	# RICE_background_nile_valley
 	background = {
 		trigger = {
 			NOT = { scope:host.location = scope:activity.activity_location }
 			scope:host.location = {
-				#graphical_plains_trigger = yes
-				NOT = { exists = province_owner }
+				geographical_region = RICE_nile_river_valley_without_ethiopia
+				NOR = {
+					has_holding_type = city_holding
+					has_holding_type = castle_holding
+				}
 			}
 		}
-		texture = "gfx/interface/illustrations/event_scenes/RICE_tarim_basin_landscape.dds"
+		texture = "gfx/interface/illustrations/event_scenes/RICE_nile_valley.dds"
+		environment = "environment_event_farms"
+		ambience = "event:/SFX/Events/Backgrounds/castle_garden_day"
+	}
+	# RICE_background_nubia_dongola_building
+	# background = {
+	# 	trigger = {
+	# 		NOT = { scope:host.location = scope:activity.activity_location }
+	# 		scope:host.location = {
+	# 			geographical_region = RICE_greater_nubia_region
+	# 			OR = {
+	# 				has_holding_type = city_holding
+	# 				has_holding_type = castle_holding
+	# 			}
+	# 		}
+	# 	}
+	# 	texture = "gfx/interface/illustrations/event_scenes/RICE_nubia_dongola_building.dds"
+	# 	environment = "environment_event_market_east"
+	# 	ambience = "event:/SFX/Events/Backgrounds/fields_farms_day"
+	# }
+	# RICE_background_egypt_village
+	background = {
+		trigger = {
+			NOT = { scope:host.location = scope:activity.activity_location }
+			scope:host.location = {
+				geographical_region = ghw_region_egypt
+				OR = {
+					has_holding_type = city_holding
+					has_holding_type = castle_holding
+				}
+			}
+		}
+		texture = "gfx/interface/illustrations/event_scenes/RICE_egypt_village.dds"
+		environment = "environment_event_garden"
+		ambience = "event:/SFX/Events/Backgrounds/town_market_middleeastern_day"
+	}
+	# Fallback - RICE_background_egypt_desert
+	background = {
+		trigger = {
+			NOT = { scope:host.location = scope:activity.activity_location }
+		}
+		texture = "gfx/interface/illustrations/event_scenes/RICE_egypt_desert.dds"
 		environment = "environment_event_desert"
 		ambience = "event:/SFX/Events/Backgrounds/desert_day"
 	}
@@ -711,9 +979,9 @@
 
 	#Fallback
 	background = {
-		texture = "gfx/interface/illustrations/event_scenes/RICE_dunhuang_mogao_caves.dds"
-		environment = "environment_event_temple"
-		ambience = "event:/SFX/Events/Backgrounds/temple_generic"
+		texture = "gfx/interface/illustrations/event_scenes/RICE_nubia_dongola_building.dds"
+		environment = "environment_event_market_east"
+		ambience = "event:/SFX/Events/Backgrounds/fields_farms_day"
 	}
 
 

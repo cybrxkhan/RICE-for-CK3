@@ -119,9 +119,11 @@ RICE_nubia_rebuild_banganarti_church = {
 			target = flag:RICE_nubia_banganarti_rebuilt
 		}
 
-		save_scope_as = banganarti_rebuilder
+		save_scope_as = rebuilder
 		
 		custom_tooltip = RICE_nubia_rebuild_banganarti_church_effect_tooltip_1
+		custom_tooltip = RICE_nubia_rebuild_banganarti_church_effect_tooltip_2
+		custom_tooltip = RICE_nubia_rebuild_banganarti_church_effect_tooltip_3
 
 		show_as_tooltip = {
 			RICE_nubia_rebuild_banganarti_church_effect = yes
@@ -134,8 +136,30 @@ RICE_nubia_rebuild_banganarti_church = {
 			custom_tooltip = RICE_nubia_rebuild_banganarti_church_context_tooltip
 		}
 		
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:rebuilder	
+					any_liege_or_above = { this = scope:rebuilder }
+					any_vassal_or_below = { this = scope:rebuilder }
+					AND = {
+						religion = religion:christianity_religion
+						any_held_county = {
+							any_county_province = {
+								OR = {
+									geographical_region = world_africa_north_east
+									geographical_region = world_africa_east
+									geographical_region = world_middle_east_jerusalem
+								}
+							}
+						}
+					}
+				}
+			}
+			trigger_event = nubia.0013
+		}		
+
 		
-		trigger_event = nubia.8888
 	}
 
 	ai_will_do = {
@@ -337,166 +361,6 @@ RICE_nubia_bestow_kanz_al_dawla = {
 	}
 }
 
-# RICE_nubia_revoke_kanz_al_dawla = {
-# 	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_egypt_nubia_border.dds" }
-# 	decision_group_type = major
-# 	desc = RICE_nubia_revoke_kanz_al_dawla_desc
-
-# 	ai_check_interval = 48
-
-# 	is_shown = {
-# 		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
-# 		has_global_variable = RICE_kanz_al_dawla_active
-# 		is_landed = yes
-# 		any_vassal_or_below = {
-# 			has_title = title:d_eastern_desert
-# 			RICE_egyptian_involved_in_baqt_trigger = yes
-# 		}
-# 	}
-
-# 	is_valid = {
-# 		any_vassal_or_below = {
-# 			has_title = title:d_eastern_desert
-# 			RICE_egyptian_involved_in_baqt_trigger = yes
-# 		}
-# 	}
-
-# 	is_valid_showing_failures_only = {
-# 		is_adult = yes
-# 		is_available = yes
-# 	}
-
-# 	cost = {
-# 		gold = {
-# 			value = medium_gold_value
-# 		}
-# 		prestige = {
-# 			value = medium_prestige_value
-# 		}
-# 	}
-
-# 	effect = {
-
-# 		save_scope_as = revoker
-
-		
-# 		custom_tooltip = RICE_nubia_revoke_kanz_al_dawla_effect_tooltip_1
-
-# 		show_as_tooltip = {
-# 			RICE_nubia_revoke_kanz_al_dawla_effect = yes
-# 		}
-		
-# 		if = {
-# 			limit = {
-# 				has_game_rule = RICE_historical_context_on
-# 			}
-# 			custom_tooltip = RICE_nubia_revoke_kanz_al_dawla_context_tooltip
-# 		}
-		
-		
-# 		trigger_event = nubia.8888
-# 	}
-
-# 	ai_will_do = {
-# 		base = 30
-# 		modifier = {
-# 			add = 10
-# 			has_trait = paranoid
-# 		}
-# 		modifier = {
-# 			add = -10
-# 			has_trait = trusting
-# 		}
-# 		modifier = {
-# 			add = 10
-# 			has_trait = ambitious
-# 		}
-# 		modifier = {
-# 			add = -10
-# 			has_trait = content
-# 		}
-# 	}
-# }
-
-
-# RICE_nubia_repaint_banganarti = {
-# 	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_nubia.dds" }
-
-# 	desc = RICE_nubia_repaint_banganarti_desc
-
-# 	ai_check_interval = 36
-
-# 	#cooldown = { days = 3650 } # Can only do it once in your lifetime
-
-# 	is_shown = {
-# 		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
-# 		is_playable_character = yes
-# 		religion = religion:christianity_religion
-# 		has_character_flag = RICE_nubia_already_repainted_banganarti
-# 	}
-	
-# 	is_valid = {
-# 		religion = religion:christianity_religion
-# 		is_independent_ruler = yes
-# 		completely_controls = title:c_dongola
-# 		highest_held_title_tier >= tier_duchy
-# 		custom_description = {
-# 			text = RICE_greater_nubia_region_capital_req
-# 			capital_county = {
-# 				any_county_province = {
-# 					geographical_region = RICE_greater_nubia_region
-# 				}
-# 			}
-# 		}
-# 		custom_description = {
-# 			text = RICE_nubia_repaint_banganarti_predecessor_req
-# 			has_variable = RICE_nubia_appropriate_predecessor
-# 		}
-# 	}
-
-# 	is_valid_showing_failures_only = {
-# 		is_available_adult = yes
-# 	}
-
-# 	effect = {
-
-# 		show_as_tooltip = {
-# 			RICE_nubia_repaint_banganarti_effect = yes
-# 		}
-
-# 		if = {
-# 			limit = {
-# 				has_game_rule = RICE_historical_context_on
-# 			}
-# 			custom_tooltip = RICE_nubia_repaint_banganarti_context_tooltip
-# 		}
-
-# 		trigger_event = {
-# 			id = nubia.0021
-# 		}
-# 	}
-
-# 	cost = { 
-# 		gold = { value = RICE_activity_cost } # Will depend 
-# 		#prestige = { value = medium_prestige_value } 
-# 	}	
-
-# 	ai_potential = {
-# 		short_term_gold >= RICE_activity_cost
-# 	}
-
-# 	ai_will_do = {
-# 		base = 40
-# 		modifier = {
-# 			add = 10
-# 			has_trait = zealous
-# 		}
-# 		modifier = {
-# 			add = -10
-# 			has_trait = cynical
-# 		}
-# 	}
-# }
 
 
 RICE_nubia_update_list_of_faras_bishops = {
@@ -550,16 +414,21 @@ RICE_nubia_update_list_of_faras_bishops = {
 			RICE_nubia_update_list_of_faras_bishops_effect = yes
 		}
 
+		save_scope_as = updater
+
 		if = {
 			limit = {
 				has_game_rule = RICE_historical_context_on
 			}
 			custom_tooltip = RICE_nubia_update_list_of_faras_bishops_context_tooltip
 		}
-
-		trigger_event = {
-			id = nubia.8888
+		every_ruler = {
+			limit = {
+				completely_controls = title:c_faras
+			}
+			trigger_event = nubia.0022
 		}
+
 	}
 
 	cost = { 

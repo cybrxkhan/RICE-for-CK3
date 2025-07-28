@@ -12,6 +12,7 @@
 # nubia.0120-nubia.0139			Other Historical Aspirations
 # nubia.0140-nubia.0159			Eparch Marianos slave fugitive event chain
 # nubia.0160-nubia.0179			Baqt Frontier Administration Decision 
+# nubia.0180-nubia.0199			Pilgrimage to Banganarti
 # 
 ###############################################################################
 
@@ -170,6 +171,45 @@ nubia.0012 = {
 }
 
 
+
+# Rebuilding Banganarti Church
+nubia.0013 = {
+	type = character_event
+	title = nubia.0013.t
+	desc = nubia.0013.desc
+	theme = RICE_theme_nubia_church_interior
+
+	right_portrait = {
+		character = scope:rebuilder
+		animation = personality_zealous
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_ck3_vocal_maintheme"
+		if = {
+			limit = {
+				root = scope:rebuilder
+			}
+			RICE_nubia_rebuild_banganarti_church_effect = yes
+		}
+		else = {
+			show_as_tooltip = {
+				RICE_nubia_rebuild_banganarti_church_effect = yes
+			}
+		}
+		custom_tooltip = RICE_nubia_rebuild_banganarti_church_effect_tooltip_1
+		custom_tooltip = RICE_nubia_rebuild_banganarti_church_effect_tooltip_2
+		custom_tooltip = RICE_nubia_rebuild_banganarti_church_effect_tooltip_3
+	}
+	
+	option = { # Ok
+		name = nubia.0013.a
+	}
+
+}
+
+
+
 ######################################################################################
 # 
 # MINOR DECISIONS
@@ -268,6 +308,69 @@ nubia.0021 = {
 	}
 
 }
+
+
+# Update the list of Faras Bishops - notification event to updater and anyone controlling Faras but is not updater (i.e. vassal)
+nubia.0022 = {
+	type = character_event
+	title = nubia.0022.t
+	desc = {
+		
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					root = scope:updater
+				}
+				desc = nubia.0022.desc.updater
+			}
+			desc = nubia.0022.desc.not_updater
+		}
+	}
+	theme = RICE_theme_nubia_church_interior
+	
+	left_portrait = {
+		character = scope:chaplain
+		animation = wedding_priest
+		trigger = {
+			exists = scope:chaplain
+		}
+	}	
+
+	right_portrait = {
+		character = scope:updater
+		animation = personality_zealous
+	}
+	
+	immediate = {
+		# Court Chaplain should only appear if they're also Christian
+		if = {
+			limit = {
+				cp:councillor_court_chaplain ?= {
+					religion = religion:christianity_religion
+				}
+			}
+			cp:councillor_court_chaplain = { save_scope_as = chaplain }
+		}
+	}
+	
+	# Ok
+	option = {
+		name = nubia.0022.a
+		if = {
+			limit = {
+				root = scope:updater
+			}
+			RICE_nubia_update_list_of_faras_bishops_effect = yes
+		}
+		else = {
+			show_as_tooltip = {				
+				RICE_nubia_update_list_of_faras_bishops_effect = yes
+			}
+		}
+	}
+
+}
+
 
 
 
@@ -2843,6 +2946,441 @@ nubia.0163 = {
 	}
 
 }
+
+
+
+##################################################################
+# 
+# PILGRIMAGE TO BANGANARTI
+# nubia.0180-0199 reserved
+# 
+##################################################################
+
+# Make preparations to begin the pilgrimage
+nubia.0180 = {
+	type = character_event
+	title = nubia.0180.t
+	desc = nubia.0180.desc
+	theme = travel_pilgrimage
+	override_background = { reference = RICE_background_nile_travel }
+	
+	left_portrait = {
+		character = root
+		animation = holding_staff
+	}
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_nubia_banganarti_pilgrimage
+		}
+	}
+	
+	immediate = {
+		faith = {
+			save_scope_as = faith
+		}
+		religion:christianity_religion = { save_scope_as = christian }
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+	
+	option = { # Ok
+		name = nubia.0180.a
+	}
+}
+
+
+# Arrive in Banganarti, settle in the guesthouses
+nubia.0181 = {
+	type = activity_event
+	title = nubia.0181.t
+	desc = nubia.0181.desc
+	theme = faith
+	override_background = {
+		event_background = RICE_background_nubia_dongola_building
+	}
+	
+	right_portrait = {
+		character = root
+		animation = survey_staff
+	}
+
+	immediate = {
+		title:b_old_dongola = {
+			save_scope_as = dongola
+		}
+		faith = {
+			save_scope_as = faith
+		}
+		religion:christianity_religion = { save_scope_as = christian }
+	}
+	
+	option = { # Ok
+		name = nubia.0181.a
+		trigger_event = {
+			id = nubia.0182
+			days = { 3 8 }
+		}
+	}
+}
+
+
+# Go to Banganarti church
+nubia.0182 = {
+	type = activity_event
+	title = nubia.0182.t
+	desc = nubia.0182.desc
+	theme = faith
+	override_background = { event_background = RICE_background_nubia_dongola_building }
+	
+	left_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = nubia.0182.a
+		trigger_event = {
+			id = nubia.0183
+			days = { 3 8 }
+		}
+	}
+}
+
+# Pray at Banganarti church
+nubia.0183 = {
+	type = activity_event
+	title = nubia.0183.t
+	desc = nubia.0183.desc
+	theme = RICE_theme_nubia_church_interior
+	
+	right_portrait = {
+		character = root
+		animation = prayer
+	}
+	
+	option = { # Ok
+		name = nubia.0183.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				NOT = {
+					scope:activity = {
+						has_activity_option = {
+							category = RICE_nubia_banganarti_pilgrimage_dream_incubation_type
+							option = RICE_nubia_banganarti_pilgrimage_dream_incubation_type_none
+						}
+					}
+				}				
+			}
+			trigger_event = {
+				id = nubia.0185
+				days = { 3 8 }
+			}
+		}
+		else = {
+			trigger_event = {
+				id = nubia.0184
+				days = { 3 8 }
+			}
+		}
+	}
+
+}
+
+# Pilgrimage concludes
+nubia.0184 = {
+	type = activity_event
+	title = nubia.0184.t
+	desc = nubia.0184.desc
+	theme = faith
+	override_background = { event_background = RICE_background_nubia_dongola_building }
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+	
+	option = { # Ok
+		name = nubia.0184.a
+		RICE_nubia_banganarti_pilgrimage_completed_log_effect = yes
+	}
+
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
+		}
+	}
+}
+
+# Staying at guesthouses for over a month; trying to see if you get a dream
+nubia.0185 = {
+	type = activity_event
+	title = nubia.0185.t
+	desc = nubia.0185.desc
+	theme = faith
+	override_background = { event_background = RICE_background_nubia_dongola_building }
+	
+	right_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	
+	option = { # Ok
+		name = nubia.0185.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = RICE_nubia_banganarti_pilgrimage_dream_incubation_type
+						option = RICE_nubia_banganarti_pilgrimage_dream_incubation_type_large
+					}
+				}			
+			}
+			custom_tooltip = nubia.0185.a.long_stay
+			trigger_event = {
+				id = nubia.0185
+				months = 3
+			}
+		}
+		else = {
+			custom_tooltip = nubia.0185.a.short_stay
+			trigger_event = {
+				id = nubia.0184
+				months = 1
+			}
+		}
+	}
+}
+
+# Results of the dream incubation
+nubia.0186 = {
+	type = activity_event
+	title = nubia.0186.t
+	desc = {
+		desc = nubia.0186.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:host = {
+						OR = {
+							has_character_modifier = RICE_banganarti_health_dream
+							has_character_modifier = RICE_banganarti_prophetic_dream
+							has_character_modifier = RICE_banganarti_inspiring_dream
+						}
+					}
+				}
+				desc = nubia.0186.desc.success
+			}
+			desc = nubia.0186.desc.no_success
+		}
+	}
+	theme = faith
+	override_background = { event_background = RICE_background_nubia_dongola_building }
+	
+	right_portrait = {
+		character = root
+		animation = personality_bold
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = RICE_nubia_banganarti_pilgrimage_dream_incubation_type
+						option = RICE_nubia_banganarti_pilgrimage_dream_incubation_type_large
+					}
+				}			
+			}
+			random = {
+				chance = RICE_banganarti_pilgrimage_dream_incubation_large_chance
+				random_list = {
+					10 = {
+						modifier = {
+							add = 5
+							has_any_illness = yes
+						}
+						modifier = {
+							add = 10
+							has_any_debilitating_illness = yes
+						}
+						modifier = {
+							add = 10
+							has_permanent_physical_injury = yes
+						}
+						scope:activity = {
+							add_activity_log_entry = {
+								key = RICE_nubia_banganarti_dream_success_log
+								tags = { good }
+								# this line below adds the entry to the Effects section of the conclusion UI
+								show_in_conclusion = yes
+								character = root
+								scope:host = {
+									add_character_modifier = {
+										modifier = RICE_banganarti_health_dream
+										years = 10
+									}
+								}
+							}
+						}
+					}
+					10 = {
+						scope:activity = {
+							add_activity_log_entry = {
+								key = RICE_nubia_banganarti_dream_success_log
+								tags = { good }
+								# this line below adds the entry to the Effects section of the conclusion UI
+								show_in_conclusion = yes
+								character = root
+								scope:host = {
+									add_character_modifier = {
+										modifier = RICE_banganarti_prophetic_dream
+										years = 10
+									}
+								}
+							}
+						}
+					}
+					10 = {
+						scope:activity = {
+							add_activity_log_entry = {
+								key = RICE_nubia_banganarti_dream_success_log
+								tags = { good }
+								# this line below adds the entry to the Effects section of the conclusion UI
+								show_in_conclusion = yes
+								character = root
+								scope:host = {
+									add_character_modifier = {
+										modifier = RICE_banganarti_inspiring_dream
+										years = 10
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		else = {
+			random = {
+				chance = RICE_banganarti_pilgrimage_dream_incubation_small_chance
+				random_list = {
+					10 = {
+						modifier = {
+							add = 5
+							has_any_illness = yes
+						}
+						modifier = {
+							add = 10
+							has_any_debilitating_illness = yes
+						}
+						modifier = {
+							add = 10
+							has_permanent_physical_injury = yes
+						}
+						scope:activity = {
+							add_activity_log_entry = {
+								key = RICE_nubia_banganarti_dream_success_log
+								tags = { good }
+								# this line below adds the entry to the Effects section of the conclusion UI
+								show_in_conclusion = yes
+								character = root
+								scope:host = {
+									add_character_modifier = {
+										modifier = RICE_banganarti_health_dream
+										years = 10
+									}
+								}
+							}
+						}
+					}
+					10 = {
+						scope:activity = {
+							add_activity_log_entry = {
+								key = RICE_nubia_banganarti_dream_success_log
+								tags = { good }
+								# this line below adds the entry to the Effects section of the conclusion UI
+								show_in_conclusion = yes
+								character = root
+								scope:host = {
+									add_character_modifier = {
+										modifier = RICE_banganarti_prophetic_dream
+										years = 10
+									}
+								}
+							}
+						}
+					}
+					10 = {
+						scope:activity = {
+							add_activity_log_entry = {
+								key = RICE_nubia_banganarti_dream_success_log
+								tags = { good }
+								# this line below adds the entry to the Effects section of the conclusion UI
+								show_in_conclusion = yes
+								character = root
+								scope:host = {
+									add_character_modifier = {
+										modifier = RICE_banganarti_inspiring_dream
+										years = 10
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}	
+		if = {
+			limit = {
+				NOR = {
+					has_character_modifier = RICE_banganarti_health_dream
+					has_character_modifier = RICE_banganarti_prophetic_dream
+					has_character_modifier = RICE_banganarti_inspiring_dream
+				}
+			}
+			scope:activity = {
+				add_activity_log_entry = {
+					key = RICE_nubia_banganarti_dream_failure_log
+					tags = { bad }
+					# this line below adds the entry to the Effects section of the conclusion UI
+					show_in_conclusion = yes
+					character = root
+					# scope:host = {
+					# 	custom_tooltip = nubia.0186.a.failure
+					# }
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = nubia.0186.a
+	}
+
+	after = {
+		trigger_event = {
+			id = nubia.0184
+			days = { 3 8 }
+		}
+	}
+}
+
+
+
+
+
+
 
 
 
