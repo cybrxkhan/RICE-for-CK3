@@ -944,10 +944,31 @@
 		}
 		resolve_title_and_vassal_change = scope:change
 
+		# Staurophoros
+		# Military and official in Nobatia holding various titles, including possibly being a naval commander
+		character:RICE_nubia_misc_012 = {
+			get_title = title:c_batn_al-hajar
+			save_scope_as = staurophoros
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+		}
+
+		create_title_and_vassal_change = {
+			type = swear_fealty
+			save_scope_as = change
+		}
+		scope:staurophoros = {
+			change_liege = {
+				liege = scope:nobatia_eparch
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+
 		# Son of Mashshouda Isminna whose name is not known
 		# Held the title of choiakishshil, possibly in Nobatia
 		character:RICE_nubia_misc_014 = {
-			get_title = title:c_batn_al-hajar
+			get_title = title:c_sai
+			#get_title = title:c_batn_al-hajar
 			save_scope_as = mashshouda_isminna_son
 			RICE_setup_new_granted_ruler_bonuses_effect = yes
 		}
@@ -958,7 +979,7 @@
 		}
 		scope:mashshouda_isminna_son = {
 			change_liege = {
-				liege = scope:nobatia_eparch
+				liege = scope:makurian_king
 				change = scope:change
 			}
 		}
@@ -3542,8 +3563,28 @@ RICE_nubia_rebuild_banganarti_church_effect = {
 	}
 }
 
-# Testing
-RICE_eldad_ha_dani_decision_effect = {
+
+RICE_eldad_ha_dani_decision_success_effect = {
+	if = {
+		limit = {
+			var:RICE_eldad_ha_dani_story_type ?= flag:fanciful_tales
+		}
+		add_trait_xp = {
+			trait = RICE_the_danite
+			track = RICE_the_danite_serpent
+			value = RICE_the_danite_trait_medium_xp_gain
+		}
+	}
+	else_if = {
+		limit = {
+			var:RICE_eldad_ha_dani_story_type ?= flag:informative_commentary			
+		}
+		add_trait_xp = {
+			trait = RICE_the_danite
+			track = RICE_the_danite_justice
+			value = RICE_the_danite_trait_medium_xp_gain
+		}
+	}
     promoted_legend = {
 		save_scope_as = danite_legend
 	}
@@ -3555,8 +3596,48 @@ RICE_eldad_ha_dani_decision_effect = {
 				add_legend_spread = scope:danite_legend
 			}
 		}
-    }
-	
+    }	
+}
+
+RICE_eldad_ha_dani_decision_failure_effect = {
+	if = {
+		limit = {
+			var:RICE_eldad_ha_dani_story_type ?= flag:fanciful_tales
+		}
+		add_trait_xp = {
+			trait = RICE_the_danite
+			track = RICE_the_danite_serpent
+			value = RICE_the_danite_trait_small_xp_gain
+		}
+	}
+	else_if = {
+		limit = {
+			var:RICE_eldad_ha_dani_story_type ?= flag:informative_commentary			
+		}
+		add_trait_xp = {
+			trait = RICE_the_danite
+			track = RICE_the_danite_justice
+			value = RICE_the_danite_trait_small_xp_gain
+		}
+	}
+}
+
+RICE_eldad_ha_dani_end_decision_effect = {
+	location.barony = {
+		set_variable = {
+			name = RICE_danite_decision_done
+			value = yes
+			years = 5
+		}
+	}
+	if = {
+		limit = { has_variable = RICE_eldad_ha_dani_reception }
+		remove_variable = RICE_eldad_ha_dani_reception
+	}	
+	if = {
+		limit = { has_variable = RICE_eldad_ha_dani_story_type }
+		remove_variable = RICE_eldad_ha_dani_story_type
+	}	
 }
 
 RICE_nubia_bestow_kanz_al_dawla_effect = {

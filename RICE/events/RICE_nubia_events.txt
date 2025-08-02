@@ -1850,7 +1850,7 @@ nubia.0101 = {
 
 }
 
-# Introduction event - version for everyone else who starts with the trait
+# Introduction event - version for everyone else who starts with the trait as a failsafe
 nubia.0102 = {
 	type = character_event
 	title = nubia.0102.t
@@ -1903,11 +1903,139 @@ nubia.0103 = {
 
 	right_portrait = {
 		character = root
-		animation = personality_content
+		animation = storyteller
 	}
 
 	immediate = {
-		RICE_eldad_ha_dani_decision_effect = yes
+		set_variable = {
+			name = RICE_eldad_ha_dani_reception
+			value = {
+				value = 0
+				add = {
+					integer_range = {
+						min = 1
+						max = 100
+					}
+				}
+			}
+			days = 1
+		}
+		#RICE_eldad_ha_dani_decision_effect = yes
+	}
+
+	# Serpent: Martial, Intrigue, Prowess
+	# Justice: Diplomacy, Stewardship, Learning
+
+	# Serpent - fanciful tales
+	option = {
+		name = nubia.0103.a
+		set_variable = {
+			name = RICE_eldad_ha_dani_story_type
+			value = flag:fanciful_tales
+			days = 1
+		}
+		random_list = { # add = var:team_b_ptv
+			50 = {
+				#show_chance = no
+				modifier = {
+					add = 15
+					var:RICE_eldad_ha_dani_reception >= 55 # Slightly Enthusiastic Reception
+				}
+				modifier = {
+					add = 15
+					var:RICE_eldad_ha_dani_reception >= 70 # Somewhat Enthusiastic Reception
+				}
+				modifier = {
+					add = 15
+					var:RICE_eldad_ha_dani_reception >= 85 # Very Enthusiastic Reception
+				}
+				desc = nubia.0103.success
+				trigger_event = nubia.0104
+			}
+			50 = {
+				#show_chance = no
+				modifier = {
+					add = 15
+					var:RICE_eldad_ha_dani_reception <= 45 # Slightly Skeptical Reception
+				}
+				modifier = {
+					add = 15
+					var:RICE_eldad_ha_dani_reception <= 30 # Somewhat Skeptical Reception
+				}
+				modifier = {
+					add = 15
+					var:RICE_eldad_ha_dani_reception <= 15 # Very Skeptical Reception
+				}
+				desc = nubia.0103.failure
+				trigger_event = nubia.0105
+			}
+		}
+	}
+
+	# Justice - informative commentary
+	option = {
+		name = nubia.0103.b
+		set_variable = {
+			name = RICE_eldad_ha_dani_story_type
+			value = flag:informative_commentary
+			days = 1
+		}
+		random_list = {
+			50 = {
+				#show_chance = no
+				modifier = {
+					add = 15
+					var:RICE_eldad_ha_dani_reception <= 45 # Slightly Skeptical Reception
+				}
+				modifier = {
+					add = 15
+					var:RICE_eldad_ha_dani_reception <= 30 # Somewhat Skeptical Reception
+				}
+				modifier = {
+					add = 15
+					var:RICE_eldad_ha_dani_reception <= 15 # Very Skeptical Reception
+				}
+				desc = nubia.0103.success
+				trigger_event = nubia.0104
+			}
+			50 = {
+				#show_chance = no
+				modifier = {
+					add = 15
+					var:RICE_eldad_ha_dani_reception >= 55 # Slightly Enthusiastic Reception
+				}
+				modifier = {
+					add = 15
+					var:RICE_eldad_ha_dani_reception >= 70 # Somewhat Enthusiastic Reception
+				}
+				modifier = {
+					add = 15
+					var:RICE_eldad_ha_dani_reception >= 85 # Very Enthusiastic Reception
+				}
+				desc = nubia.0103.failure
+				trigger_event = nubia.0105
+			}
+		}
+	}
+
+
+}
+
+# Eldad ha-Dani - success
+nubia.0104 = {
+	type = character_event
+	title = nubia.0104.t
+	desc = nubia.0104.desc
+	theme = legend
+	override_background = { reference = tavern }
+
+	right_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+
+	immediate = {
+		RICE_eldad_ha_dani_decision_success_effect = yes
 	}
 
 	# Serpent: Martial, Intrigue, Prowess
@@ -1915,9 +2043,43 @@ nubia.0103 = {
 
 	# Ok
 	option = {
-		name = nubia.0103.a
+		name = nubia.0104.a
 	}
 
+	after = {		
+		RICE_eldad_ha_dani_end_decision_effect = yes
+	}
+
+}
+
+# Eldad ha-Dani - failure
+nubia.0105 = {
+	type = character_event
+	title = nubia.0105.t
+	desc = nubia.0105.desc
+	theme = legend
+	override_background = { reference = tavern }
+
+	right_portrait = {
+		character = root
+		animation = sadness
+	}
+
+	immediate = {
+		RICE_eldad_ha_dani_decision_failure_effect = yes
+	}
+
+	# Serpent: Martial, Intrigue, Prowess
+	# Justice: Diplomacy, Stewardship, Learning
+
+	# Ok
+	option = {
+		name = nubia.0105.a
+	}
+
+	after = {		
+		RICE_eldad_ha_dani_end_decision_effect = yes
+	}
 
 }
 
