@@ -1,7 +1,7 @@
 ﻿activity_RICE_hot_springs_visit = {
 	is_shown = {
 		highest_held_title_tier > tier_barony
-		is_landed = yes # is_playable_character = yes
+		is_playable_character = yes
 		# any_realm_county = {
 		# 	title_province = {
 		# 		geographical_region = RICE_hot_springs_region
@@ -96,7 +96,7 @@
 		}
 	}
 
-	province_filter = top_realm
+	province_filter = all
 	ai_province_filter = domicile_realm
 
 	province_description = {
@@ -367,7 +367,22 @@
 	
 	# Anywhere
 	is_location_valid = {
-
+		trigger_if = {
+			limit = {
+				scope:host = {
+					is_landless_adventurer = no
+				}
+			}
+			save_temporary_scope_as = checked_location
+			scope:host.top_liege ?= {
+				any_realm_province = {
+					this = scope:checked_location
+				}
+			}
+		}
+		trigger_else = {
+			this = scope:host.capital_province
+		}
 	}
 
 	max_province_icons = 3

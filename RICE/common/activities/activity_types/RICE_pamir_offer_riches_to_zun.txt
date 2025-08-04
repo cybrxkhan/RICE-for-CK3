@@ -1,11 +1,17 @@
 ﻿activity_RICE_pamir_offer_riches_to_zun = {
 	is_shown = {
 		highest_held_title_tier > tier_barony
-		is_landed = yes # is_playable_character = yes
+		is_playable_character = yes
 		religion = religion:zunism_religion
-		is_target_in_global_variable_list = {
-			name = unavailable_unique_decisions
-			target = flag:RICE_pamir_zun_idol_has_been_restored
+		OR = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_pamir_zun_idol_has_been_restored
+			}
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_pamir_zun_idol_has_been_restored_aruna
+			}
 		}
 		capital_province = {
 			OR = {
@@ -43,14 +49,49 @@
 				}
 			}		
 		}
-		custom_description = {
-			text = RICE_pamir_zun_offer_riches_region_req
-			capital_province = {
-				OR = {
-					geographical_region = world_india
-					geographical_region = world_middle_east_persia
-					geographical_region = world_tibet
-					geographical_region = world_steppe_tarim
+		trigger_if = {
+			limit = { is_landless_adventurer = no }
+			custom_description = {
+				text = RICE_pamir_zun_offer_riches_region_req
+				capital_province = {
+					OR = {
+						geographical_region = world_india
+						geographical_region = world_middle_east_persia
+						geographical_region = world_tibet
+						geographical_region = world_steppe_tarim
+					}
+				}
+			}
+		}
+		trigger_else = {
+			OR = {
+				trigger_if = {
+					limit = {
+						is_target_in_global_variable_list = {
+							name = unavailable_unique_decisions
+							target = flag:RICE_pamir_zun_idol_has_been_restored
+						}
+					}
+					custom_description = {
+						text = RICE_pamir_in_zamindawar_req
+						domicile.domicile_location ?= {
+							this = title:b_zamindawar.title_province
+						}
+					}
+				}
+				trigger_if = {
+					limit = {
+						is_target_in_global_variable_list = {
+							name = unavailable_unique_decisions
+							target = flag:RICE_pamir_zun_idol_has_been_restored_aruna
+						}
+					}
+					custom_description = {
+						text = RICE_pamir_in_kabul_req
+						domicile.domicile_location ?= {
+							this = title:b_kabul.title_province
+						}
+					}
 				}
 			}
 		}
@@ -148,7 +189,7 @@
 		}
 	}
 
-	province_filter = top_realm
+	province_filter = all
 	ai_province_filter = domicile_realm
 	wait_time_before_start = { days = 7 }
 
@@ -302,25 +343,35 @@
 	}
 	
 	is_location_valid = {
-		OR = {
-			trigger_if = {
-				limit = {
-					is_target_in_global_variable_list = {
-						name = unavailable_unique_decisions
-						target = flag:RICE_pamir_zun_idol_has_been_restored
-					}
+		trigger_if = {
+			limit = {
+				scope:host = {
+					is_landless_adventurer = no
 				}
-				barony ?= title:b_zamindawar
 			}
-			trigger_if = {
-				limit = {
-					is_target_in_global_variable_list = {
-						name = unavailable_unique_decisions
-						target = flag:RICE_pamir_zun_idol_has_been_restored_aruna
+			OR = {
+				trigger_if = {
+					limit = {
+						is_target_in_global_variable_list = {
+							name = unavailable_unique_decisions
+							target = flag:RICE_pamir_zun_idol_has_been_restored
+						}
 					}
+					barony ?= title:b_zamindawar
 				}
-				barony ?= title:b_kabul
+				trigger_if = {
+					limit = {
+						is_target_in_global_variable_list = {
+							name = unavailable_unique_decisions
+							target = flag:RICE_pamir_zun_idol_has_been_restored_aruna
+						}
+					}
+					barony ?= title:b_kabul
+				}
 			}
+		}
+		trigger_else = {
+			this = scope:host.capital_province
 		}
 	}
 
