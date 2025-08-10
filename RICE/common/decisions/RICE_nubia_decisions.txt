@@ -1594,3 +1594,106 @@ RICE_nubia_tebeldi_trees_decision = {
 
 
 
+
+RICE_nubia_lake_oracle_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_mountain_valley.dds" }
+	ai_check_interval = 32
+	decision_group_type = RICE_religious	
+	cooldown = { days = 3650 } 
+
+	desc = RICE_nubia_lake_oracle_decision_desc
+	selection_tooltip = RICE_nubia_lake_oracle_decision_tooltip
+
+	is_shown = {
+		is_playable_character = yes
+		OR = {
+			religion = religion:darfur_religion
+			culture = {
+				has_cultural_tradition = tradition_RICE_darfur_mountain_palaces
+			}
+		}
+	}
+	
+	is_valid = {
+		OR = {
+			religion = religion:darfur_religion
+			culture = {
+				has_cultural_tradition = tradition_RICE_darfur_mountain_palaces
+			}
+		}
+		trigger_if = {
+			limit = { is_landless_adventurer = no }
+			custom_description = {
+				text = RICE_any_realm_highland_province_req
+				any_realm_province = {
+					OR = {
+						terrain = hills
+						terrain = mountains
+						terrain = desert_mountains
+					}
+				}
+			}
+		}
+		trigger_else = {
+			custom_description = {
+				text = RICE_domicile_highland_province_req
+				domicile.domicile_location ?= {
+					OR = {
+						terrain = hills
+						terrain = mountains
+						terrain = desert_mountains
+					}
+				}
+			}
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		show_as_tooltip = {
+			RICE_nubia_lake_oracle_decision_effect = yes
+		}
+		custom_tooltip = RICE_nubia_lake_oracle_decision_effect_tooltip_1
+		custom_tooltip = RICE_nubia_lake_oracle_decision_effect_tooltip_2
+		custom_tooltip = RICE_nubia_lake_oracle_decision_effect_tooltip_3
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_nubia_lake_oracle_decision_context_tooltip
+		}
+		trigger_event = nubia.0024
+	}
+
+	cost = {
+		gold = minor_gold_value # Will depend
+		piety = medium_piety_gain
+	}
+	
+	ai_potential = {
+		short_term_gold > minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 25
+		modifier = {
+			add = -5
+			has_trait = cynical
+		}
+		modifier = {
+			add = 5
+			has_trait = zealous
+		}
+		modifier = {
+			add = -10
+			has_trait = content
+		}
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+	}
+}

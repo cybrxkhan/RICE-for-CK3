@@ -393,6 +393,123 @@ nubia.0023 = {
 
 }
 
+# Mountain Lake Oracle - Choose who to send
+nubia.0024 = {
+	type = character_event
+	title = nubia.0024.t
+	desc = nubia.0024.desc
+	theme = RICE_theme_nubia_nuba_savanna_village
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+	
+	lower_left_portrait = {
+		character = scope:courtier
+		trigger = { exists = scope:courtier }
+	}
+	
+	lower_right_portrait = {
+		character = scope:clergy
+		trigger = { exists = scope:clergy }
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				is_landless_adventurer = no
+			}
+			random_realm_province = {
+				limit = {
+					OR = {
+						terrain = hills
+						terrain = mountains
+						terrain = desert_mountains
+					}
+				}
+				save_scope_as = lake_oracle_province
+			}
+		}
+		random_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+				is_clergy = no
+				OR = {
+					religion = religion:darfur_religion
+					culture = {
+						has_cultural_tradition = tradition_RICE_darfur_mountain_palaces
+					}
+				}
+			}	
+			save_scope_as = courtier		
+		}
+		random_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+				is_clergy = yes
+				OR = {
+					religion = religion:darfur_religion
+					culture = {
+						has_cultural_tradition = tradition_RICE_darfur_mountain_palaces
+					}
+				}
+			}	
+			save_scope_as = clergy		
+		}
+	}
+
+	# Send a servant/minor official
+	option = {
+		name = nubia.0024.a
+	}
+
+	# Send a courtier
+	option = {
+		name = nubia.0024.b
+		trigger = {
+			exists = scope:courtier
+		}
+		add_piety = minor_piety_loss
+		custom_tooltip = nubia.0024.b.tooltip
+		scope:courtier = {
+			# To prevent them from somehow leaving your court while they're on the trip
+			add_character_flag = {
+				flag = blocked_from_leaving
+				years = 1
+			}
+			start_travel_plan = { 
+				destination = scope:lake_oracle_province
+				return_trip = yes
+				on_arrival_event = nubia.0025
+			}
+		}
+	}
+
+	# Send a clergy
+	option = {
+		name = nubia.0024.c
+		trigger = {
+			exists = scope:clergy
+		}
+		add_piety = medium_piety_loss
+		custom_tooltip = nubia.0024.c.tooltip
+		scope:clergy = {
+			# To prevent them from somehow leaving your court while they're on the trip
+			add_character_flag = {
+				flag = blocked_from_leaving
+				years = 1
+			}
+			start_travel_plan = { 
+				destination = scope:lake_oracle_province
+				return_trip = yes
+				on_arrival_event = nubia.0025
+			}
+		}
+	}
+
+}
+
 
 
 
