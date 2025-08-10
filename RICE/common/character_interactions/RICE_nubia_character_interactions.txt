@@ -2764,3 +2764,744 @@ RICE_nubia_baqt_demand_payment = {
 
 }
 
+
+
+
+
+# RICE_cattle_compensation_demand = {
+# 	interface_priority = 30
+# 	category = interaction_category_diplomacy
+# 	common_interaction = yes
+# 	icon = RICE_cattle_compensation_demand
+
+# 	desc = RICE_cattle_compensation_demand_desc
+
+	
+# 	greeting = positive
+# 	notification_text = RICE_cattle_compensation_demand_interaction_notification
+# 	popup_on_receive = yes
+# 	ai_maybe = yes
+
+# 	ai_targets = {
+# 		ai_recipients = peer_vassals
+# 		max = 5
+# 	}
+# 	ai_targets = {
+# 		ai_recipients = neighboring_rulers_including_tributary_borders
+# 		max = 5
+# 	}
+# 	ai_targets = {
+# 		ai_recipients = vassals
+# 		max = 5
+# 	}
+# 	ai_targets = {
+# 		ai_recipients = courtiers
+# 		max = 5
+# 	}
+# 	ai_targets = {
+# 		ai_recipients = liege
+# 	}
+# 	ai_target_quick_trigger = {
+# 		adult = yes
+# 	}
+# 	ai_frequency = 48
+	
+# 	cooldown = { years = 3 }
+# 	cooldown_against_recipient = { years = 5 }
+	
+# 	is_shown = {
+# 		scope:actor = {	
+# 			is_ruler = yes
+# 			culture = { has_cultural_parameter = unlock_rice_cattle_economy_interactions }
+# 		}
+# 		scope:recipient = {
+# 			is_ruler = yes
+# 			culture = { has_cultural_parameter = unlock_rice_cattle_economy_interactions }
+# 		}
+
+# 	}
+	
+# 	is_valid = {
+# 		scope:recipient = {
+# 			gold >= medium_gold_value
+# 		}
+# 		scope:actor = {
+# 			culture = { has_cultural_parameter = unlock_rice_cattle_economy_interactions }
+# 		}
+# 		scope:recipient = {
+# 			culture = { has_cultural_parameter = unlock_rice_cattle_economy_interactions }
+# 		}
+# 	}
+
+# 	# Ask for gold
+# 	send_option = {
+# 		# is_valid = {
+# 		# 	scope:actor = {
+# 		# 		NOT = { government_has_flag = government_is_nomadic }
+# 		# 	}
+# 		# 	scope:recipient = {
+# 		# 		NOT = { government_has_flag = government_is_nomadic }
+# 		# 	}
+# 		# }
+# 		flag = gold
+# 		localization = RICE_cattle_compensation_gold
+# 	}
+
+# 	# Ask for herd
+# 	send_option = {
+# 		is_valid = {
+# 			scope:actor = {
+# 				government_has_flag = government_is_nomadic
+# 			}
+# 			scope:recipient = {
+# 				government_has_flag = government_is_nomadic
+# 			}
+# 		}
+# 		flag = herd
+# 		localization = RICE_cattle_compensation_herd
+# 	}
+
+# 	# Ask for hook
+# 	send_option = {
+# 		is_valid = {
+# 			scope:actor = {
+# 				can_add_hook = {
+# 					target = scope:recipient
+# 					type = RICE_cattle_compensation_hook
+# 				}
+# 			}
+# 		}
+# 		flag = hook
+# 		localization = RICE_cattle_compensation_hook
+# 	}
+
+# 	# Ask for truce
+# 	send_option = {
+# 		is_valid = {
+# 			scope:actor = {
+# 				NOT = { has_truce = scope:recipient }
+# 			}
+# 			scope:recipient = {
+# 				NOT = { has_truce = scope:actor }
+# 			}
+# 		}
+# 		flag = truce
+# 		localization = RICE_cattle_compensation_truce
+# 	}
+
+# 	# Ask for an end to a rivalry
+# 	send_option = {
+# 		is_valid = {
+# 			scope:actor = {
+# 				OR = {
+# 					has_relation_rival = scope:recipient
+# 					has_relation_nemesis = scope:recipient
+# 				}
+# 			}
+# 		}
+# 		flag = end_rivalry
+# 		localization = RICE_cattle_compensation_end_rivalry
+# 	}
+
+# 	send_options_exclusive = yes
+	
+# 	on_accept = {
+# 		if = {
+# 			limit = {
+# 				scope:gold = yes
+# 			}
+# 			scope:recipient = {
+# 				pay_short_term_gold = {
+# 					target = scope:actor
+# 					gold = minor_gold_value
+# 				}
+# 				add_opinion = {
+# 					target = scope:actor
+# 					modifier = RICE_opinion_cattle_compensation_demand_receiver
+# 					opinion = -10
+# 				}
+# 			}
+# 		}
+# 		else_if = {
+# 			limit = {
+# 				scope:herd = yes
+# 			}
+# 			scope:recipient = {
+# 				pay_herd = {
+# 					target = scope:recipient
+# 					value = domicile.herd_gift_value
+# 				}
+# 			}
+# 		}
+# 		else_if = {
+# 			limit = {
+# 				scope:hook = yes
+# 			}
+# 			scope:recipient = {
+# 				add_hook = {
+# 					target = scope:actor
+# 					type = RICE_cattle_compensation_hook
+# 				}
+# 			}
+# 		}
+# 		else_if = {
+# 			limit = {
+# 				scope:truce = yes
+# 			}
+# 			scope:recipient = {
+# 				add_truce_both_ways = {
+# 					character = scope:actor
+# 					days = purchase_truce_interaction_truce_days_small_value
+# 					name = RICE_cattle_compensation_truce_purchased
+# 				}
+# 			}
+# 		}
+# 		else_if = {
+# 			limit = {
+# 				scope:end_rivalry = yes
+# 			}
+# 			if = {
+# 				limit = {
+# 					scope:actor = { has_relation_rival = scope:recipient }
+# 				}
+# 				scope:recipient = {
+# 					remove_relation_rival = scope:actor
+# 				}
+# 			}
+# 			else_if = {
+# 				limit = {
+# 					scope:actor = { has_relation_nemesis = scope:recipient }
+# 				}
+# 				scope:recipient = {
+# 					remove_relation_nemesis = scope:actor
+# 				}
+# 			}
+# 		}
+# 		scope:actor = {
+# 			add_prestige = minor_prestige_gain
+# 			stress_impact = {
+# 				vengeful = minor_stress_impact_gain
+# 				forgiving = minor_stress_impact_loss
+# 			}
+# 		}
+# 		scope:recipient = {
+# 			add_prestige = minor_prestige_gain
+# 			stress_impact = {
+# 				paranoid = minor_stress_impact_gain
+# 				trusting = minor_stress_impact_loss
+# 			}
+# 			stress_impact = {
+# 				greedy = minor_stress_impact_gain
+# 				generous = minor_stress_impact_loss
+# 			}
+# 		}
+# 	}
+
+# 	ai_accept = {
+# 		base = 25
+
+# 		# Based on their Skills
+# 		modifier = { 
+# 			add = {
+# 				value = scope:recipient.diplomacy
+# 				multiply = 1.5
+# 				max = 50
+# 			}
+# 			OR = {
+# 				scope:textiles = yes
+# 				scope:exotic_beasts = yes
+# 			}
+# 			desc = HAS_DIPLOMACY_SKILL_REASON
+# 		}
+# 		modifier = { 
+# 			add = {
+# 				value = scope:recipient.martial
+# 				multiply = 1.5
+# 				max = 50
+# 			}
+# 			OR = {
+# 				scope:foodstuffs = yes
+# 				scope:metals = yes
+# 			}
+# 			desc = HAS_MARTIAL_SKILL_REASON
+# 		}
+# 		modifier = { 
+# 			add = {
+# 				value = scope:recipient.stewardship
+# 				multiply = 1.5
+# 				max = 50
+# 			}
+# 			OR = {
+# 				scope:olive_oil = yes
+# 				scope:ebony = yes
+# 			}
+# 			desc = HAS_STEWARDSHIP_SKILL_REASON
+# 		}
+# 		modifier = { 
+# 			add = {
+# 				value = scope:recipient.intrigue
+# 				multiply = 1.5
+# 				max = 50
+# 			}
+# 			OR = {
+# 				scope:wine = yes
+# 				scope:slaves = yes
+# 			}
+# 			desc = HAS_INTRIGUE_SKILL_REASON
+# 		}
+# 		modifier = { 
+# 			add = {
+# 				value = scope:recipient.learning
+# 				multiply = 1.5
+# 				max = 50
+# 			}
+# 			OR = {
+# 				scope:glass = yes
+# 				scope:ivory = yes
+# 			}
+# 			desc = HAS_LEARNING_SKILL_REASON
+# 		}
+# 		modifier = { 
+# 			add = {
+# 				value = scope:recipient.prowess
+# 				multiply = 1.5
+# 				max = 50
+# 			}
+# 			OR = {
+# 				scope:horses = yes
+# 				scope:animal_skins = yes
+# 			}
+# 			desc = HAS_PROWESS_SKILL_REASON
+# 		}
+
+# 		# Based on your Skills
+# 		modifier = { 
+# 			add = {
+# 				value = scope:actor.diplomacy
+# 				multiply = 0.75
+# 				max = 50
+# 			}
+# 			OR = {
+# 				scope:textiles = yes
+# 				scope:exotic_beasts = yes
+# 			}
+# 			desc = DIPLOMACY_SKILL_REASON
+# 		}
+# 		modifier = { 
+# 			add = {
+# 				value = scope:actor.martial
+# 				multiply = 0.75
+# 				max = 50
+# 			}
+# 			OR = {
+# 				scope:foodstuffs = yes
+# 				scope:metals = yes
+# 			}
+# 			desc = MARTIAL_SKILL_REASON
+# 		}
+# 		modifier = { 
+# 			add = {
+# 				value = scope:actor.stewardship
+# 				multiply = 0.75
+# 				max = 50
+# 			}
+# 			OR = {
+# 				scope:olive_oil = yes
+# 				scope:ebony = yes
+# 			}
+# 			desc = STEWARDSHIP_SKILL_REASON
+# 		}
+# 		modifier = { 
+# 			add = {
+# 				value = scope:actor.intrigue
+# 				multiply = 0.75
+# 				max = 50
+# 			}
+# 			OR = {
+# 				scope:wine = yes
+# 				scope:slaves = yes
+# 			}
+# 			desc = INTRIGUE_SKILL_REASON
+# 		}
+# 		modifier = { 
+# 			add = {
+# 				value = scope:actor.learning
+# 				multiply = 0.75
+# 				max = 50
+# 			}
+# 			OR = {
+# 				scope:glass = yes
+# 				scope:ivory = yes
+# 			}
+# 			desc = LEARNING_SKILL_REASON
+# 		}
+# 		modifier = { 
+# 			add = {
+# 				value = scope:actor.prowess
+# 				multiply = 0.75
+# 				max = 50
+# 			}
+# 			OR = {
+# 				scope:horses = yes
+# 				scope:animal_skins = yes
+# 			}
+# 			desc = PROWESS_SKILL_REASON
+# 		}
+
+# 		# AI take opinion into account, but reduced so they'll at least occasionally accept from folks they dislike.
+# 		opinion_modifier = {
+# 			who = scope:recipient
+# 			opinion_target = scope:actor
+# 			multiplier = 0.8
+# 			desc = AI_OPINION_REASON
+# 		}
+
+# 		#Relations & relatives (with actor)
+
+# 		modifier = {
+# 			has_relation_friend = scope:actor
+# 			add = 20
+# 			desc = AI_YOUR_FRIEND
+# 		}
+
+# 		modifier = {
+# 			this.dynasty.dynast = scope:actor
+# 			add = 10
+# 			desc = AI_YOU_ARE_THE_DYNAST
+# 		}
+
+# 		modifier = {
+# 			this.house.house_head = scope:actor
+# 			add = 10
+# 			desc = AI_YOU_ARE_THE_HOUSE_HEAD
+# 		}
+
+# 		modifier = {
+# 			is_spouse_of = scope:actor
+# 			add = 25
+# 			desc = AI_YOUR_SPOUSE
+# 		}
+
+# 		#Relations & relatives (with host)
+# 		modifier = {
+# 			exists = liege
+# 			has_relation_lover = liege
+# 			add = 25
+# 			desc = AI_THEIR_LOVER
+# 		}
+
+# 		# Honor always plays a factor.
+# 		modifier = {
+# 			add = {
+# 				value = ai_honor
+# 				multiply = 0.3
+# 			}
+# 			NOT = { ai_honor = 0 }
+# 			desc = AI_VALUE_MODIFIER_HONOR
+# 		}
+
+# 		#Make less likely that they accept if they are of another culture
+# 		modifier = {
+# 			add = -5
+# 			trigger = {
+# 				scope:actor = {
+# 					culture = { has_same_culture_heritage = scope:recipient.culture }
+# 					NOT = { has_same_culture_as = scope:recipient }
+# 				}
+# 			}
+# 			desc = AI_NOT_CULTURE
+# 		}
+		
+# 		modifier = {
+# 			add = -10
+# 			trigger = {
+# 				scope:actor = {
+# 					NOT = { culture = { has_same_culture_heritage = scope:recipient.culture } }
+# 				}
+# 			}
+# 			desc = AI_NOT_CULTURE
+# 		}
+	   
+
+# 		#Less likely if they don't like other religion
+# 		modifier = {
+# 			add = {
+# 				value = -5
+# 				if = {
+# 					limit = {
+# 						scope:recipient.faith = {
+# 							faith_hostility_level = {
+# 								target = scope:actor.faith
+# 								value >= faith_hostile_level
+# 							}
+# 						}
+# 					}
+# 					subtract = 5
+# 				}
+# 				if = {
+# 					limit = {
+# 						scope:recipient.faith = {
+# 							faith_hostility_level = {
+# 								target = scope:actor.faith
+# 								value >= faith_evil_level
+# 							}
+# 						}
+# 					}
+# 					subtract = 5
+# 				}
+# 			}
+# 			trigger = {
+# 				NOT = { scope:recipient.faith = scope:actor.faith }
+# 			}
+# 			desc = AI_RELIGION
+# 		}
+
+# 	   # TRAITS
+# 	   modifier = {
+# 			add = 15
+# 			scope:recipient = {
+# 				has_trait = generous
+# 			}
+# 			desc = RICE_interaction_recipient_generous_acceptance
+# 		}
+# 	   modifier = {
+# 		   add = 15
+# 		   scope:recipient = {
+# 			   has_trait = greedy
+# 		   }
+# 		   desc = RICE_interaction_recipient_greedy_acceptance
+# 	   }
+
+# 		# Ambitious AI like freedom.
+# 		modifier = {
+# 			add = -25
+# 			has_trait = ambitious
+# 			desc = PT_AI_LIKES_FREEDOM_TO_WAR_REASON
+# 		}
+# 		# Pacifist AI are happy to avoid war.
+# 		modifier = {
+# 			add = 25
+# 			faith = { has_doctrine_parameter = pacifist_opinion_active }
+# 			desc = PT_AI_IS_PACIFIST_FAITH
+# 		}
+# 		modifier = {
+# 			add = 25
+# 			culture = { has_cultural_parameter = reduced_cost_for_conversion_to_pacifist_faith }
+# 			desc = PT_AI_IS_PACIFIST_CULTURE
+# 		}
+
+# 				# War likeliness.
+# 		## This is primarily intended to mitigate conquest, invasion, and religious CBs, so we don't account for them.
+# 		## Scope:recipient has some claim to scope:actor's lands.
+# 		modifier = {
+# 			add = -20
+# 			any_claim = {
+# 				count = 1
+# 				exists = holder
+# 				holder = scope:actor
+# 			}
+# 			desc = PT_AI_PERSONALLY_CLAIMS_YOUR_LAND
+# 		}
+
+# 		## Scope:recipient has decent claim to scope:actor's lands.
+# 		modifier = {
+# 			add = -40
+# 			OR = {
+# 				any_claim = {
+# 					count >= 2
+# 					exists = holder
+# 					holder = scope:actor
+# 				}
+# 				any_claim = {
+# 					count = 1
+# 					exists = holder
+# 					holder = scope:actor
+# 					save_temporary_scope_as = claim_temp
+# 					scope:recipient = { has_strong_claim_on = scope:claim_temp }
+# 				}
+# 			}
+# 			desc = PT_AI_PERSONALLY_CLAIMS_YOUR_LAND
+# 		}
+
+# 		## Scope:recipient has strong claim to scope:actor's lands.
+# 		modifier = {
+# 			add = -60
+# 			any_claim = {
+# 				count >= 2
+# 				exists = holder
+# 				holder = scope:actor
+# 				save_temporary_scope_as = claim_temp
+# 				scope:recipient = { has_strong_claim_on = scope:claim_temp }
+# 			}
+# 			desc = PT_AI_PERSONALLY_CLAIMS_YOUR_LAND
+# 		}
+
+# 				## Scope:recipient can de jure grab your land.
+# 		### Dukes don't take much.
+# 		modifier = {
+# 			add = -30
+# 			highest_held_title_tier = tier_duchy
+# 			purchase_truce_interaction_recipient_can_de_jure_war_actor_trigger = yes
+# 			scope:actor = {
+# 				any_sub_realm_county = {
+# 					count >= 3
+# 					any_this_title_or_de_jure_above = { holder = scope:actor }
+# 				}
+# 			}
+# 			desc = PT_AI_DE_JURE_CLAIMS_YOUR_LAND
+# 		}
+# 		### Kings need a lot more.
+# 		modifier = {
+# 			add = -30
+# 			highest_held_title_tier = tier_kingdom
+# 			purchase_truce_interaction_recipient_can_de_jure_war_actor_trigger = yes
+# 			scope:actor = {
+# 				any_sub_realm_county = {
+# 					count >= 10
+# 					any_this_title_or_de_jure_above = { holder = scope:actor }
+# 				}
+# 			}
+# 			desc = PT_AI_DE_JURE_CLAIMS_YOUR_LAND
+# 		}
+# 		### Emperors take quite a bit to get fussed.
+# 		modifier = {
+# 			add = -30
+# 			highest_held_title_tier = tier_empire
+# 			purchase_truce_interaction_recipient_can_de_jure_war_actor_trigger = yes
+# 			scope:actor = {
+# 				any_sub_realm_county = {
+# 					count >= 20
+# 					any_this_title_or_de_jure_above = { holder = scope:actor }
+# 				}
+# 			}
+# 			desc = PT_AI_DE_JURE_CLAIMS_YOUR_LAND
+# 		}
+
+# 		# Relative power.
+# 		## Scope:actor has far fewer levies than scope:recipient.
+# 		modifier = {
+# 			add = -30
+# 			scope:actor.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_far_weaker_value
+# 			desc = PT_AI_RECIPIENT_IS_MUCH_STRONGER
+# 		}
+# 		## Scope:actor has fewer levies than scope:recipient.
+# 		modifier = {
+# 			add = -10
+# 			scope:actor.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_far_weaker_value
+# 			scope:actor.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_somewhat_weaker_value
+# 			desc = PT_AI_RECIPIENT_IS_SOMEWHAT_STRONGER
+# 		}
+# 		## Scope:actor has roughly equal levies with scope:recipient.
+# 		modifier = {
+# 			add = 10
+# 			scope:actor.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_somewhat_weaker_value
+# 			scope:actor.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_somewhat_stronger_value
+# 			desc = PT_AI_RECIPIENT_IS_ROUGHLY_EQUAL
+# 		}
+# 		## Scope:actor has more levies than scope:recipient.
+# 		modifier = {
+# 			add = 25
+# 			scope:actor.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_somewhat_stronger_value
+# 			scope:actor.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_far_stronger_value
+# 			desc = PT_AI_RECIPIENT_IS_SOMEWHAT_WEAKER
+# 		}
+# 		## Scope:actor has far more levies than scope:recipient.
+# 		modifier = {
+# 			add = 50
+# 			scope:actor.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_far_stronger_value
+# 			desc = PT_AI_RECIPIENT_IS_MUCH_WEAKER
+# 		}
+
+# 		# AI value mod
+# 		ai_value_modifier = {
+# 			ai_greed = 0.5
+# 			ai_boldness = 0.25
+# 			min = 0
+# 			max = 25
+# 		}
+
+#     }
+
+# 	ai_potential = {
+# 		is_playable_character = yes
+# 		is_at_war = no
+# 		is_imprisoned = no
+# 	}
+
+# 	ai_will_do = {
+# 		base = 60
+# 		# Some personalities & traits just don't want to fight.
+# 		## Cravens (who aren't also ambitious).
+# 		modifier = {
+# 			add = 25
+# 			has_trait = craven
+# 			NOT = { has_trait = ambitious }
+# 		}
+# 		## Those with chronically low boldness (who aren't also ambitious).
+# 		modifier = {
+# 			add = 25
+# 			ai_boldness <= very_high_negative_ai_value
+# 			NOT = { has_trait = ambitious }
+# 		}
+# 		## Pacifists.
+# 		modifier = {
+# 			add = 25
+# 			faith = { has_doctrine_parameter = pacifist_opinion_active }
+# 		}
+# 		modifier = {
+# 			add = 25
+# 			culture = { has_cultural_parameter = reduced_cost_for_conversion_to_pacifist_faith }
+# 		}
+# 		## Wrathful or ambitious characters don't like to bother.
+# 		modifier = {
+# 			add = -25
+# 			has_trait = ambitious
+# 		}
+# 		modifier  = {
+# 			add = -25
+# 			has_trait = wrathful
+# 		}
+# 		## Arbitrary characters don't get truces to begin with.
+# 		modifier = {
+# 			add = -50
+# 			has_trait = arbitrary
+# 		}
+# 		## We deliberately avoid warlike faiths *not* doing it; there's plenty of examples of such bought truces amongst these faiths, so we let them keep at it if they match other criteria.
+# 		# Various gradients of having money to burn.
+# 		## You've got a goodly amount stashed away.
+# 		modifier = {
+# 			add = 50
+# 			can_make_expensive_purchase_trigger = { PRICE = purchase_truce_interaction_medium_sum }
+# 		}
+# 		## You're somewhat loaded.
+# 		modifier = {
+# 			add = 50
+# 			can_make_expensive_purchase_trigger = { PRICE = purchase_truce_interaction_major_sum }
+# 		}
+# 		## You're absolutely loaded.
+# 		modifier = {
+# 			add = 50
+# 			can_make_expensive_purchase_trigger = { PRICE = purchase_truce_interaction_massive_sum }
+# 		}
+# 		# Force checks.
+# 		## Try to buy truces from somewhat stronger realms...
+# 		modifier = {
+# 			add = 50
+# 			scope:recipient.max_military_strength >= scope:actor.purchase_truce_interaction_recipient_somewhat_stronger_value
+# 		}
+# 		## ... and much stronger realms.
+# 		modifier = {
+# 			add = 50
+# 			scope:recipient.max_military_strength >= scope:actor.purchase_truce_interaction_recipient_far_stronger_value
+# 		}
+# 		## Don't buy truces from people who are likely going to be dead soon, or if you yourself will die soon, since they'll be wasted.
+# 		modifier = {
+# 			factor = 0
+# 			OR = {
+# 				health <= poor_health
+# 				scope:recipient = { health <= poor_health }
+# 			}
+# 		}
+# 	}
+
+# }
