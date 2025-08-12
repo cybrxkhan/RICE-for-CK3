@@ -75,9 +75,172 @@ RICE_eldad_ha_dani_decision = {
 	}
 }
 
+
+RICE_nubia_sudanese_culture_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_nubia.dds" }
+	decision_group_type = RICE_nile_situations_major
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					culture = { has_cultural_pillar = heritage_east_african }
+				}
+				desc = RICE_nubia_sudanese_culture_decision_east_african_desc
+			}
+			triggered_desc = {
+				trigger = {
+					culture = { has_cultural_pillar = heritage_arabic }
+				}
+				desc = RICE_nubia_sudanese_culture_decision_arabic_desc
+			}
+			desc = RICE_nubia_sudanese_culture_decision_neutral_desc
+		}
+	}
+
+	ai_check_interval = 48
+
+	is_shown = {
+		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+		is_playable_character = yes
+		any_held_county = {
+			any_county_province = {
+				OR = {
+					geographical_region = ghw_region_egypt
+					geographical_region = RICE_greater_nubia_region
+				}
+			}
+		}	
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_sudanese_culture_founded
+			}
+		}
+	}
+
+	is_valid = {
+		prestige_level >= 3
+		OR = {
+			sub_realm_size >= 25
+			AND = {
+				highest_held_title_tier >= tier_kingdom
+				sub_realm_size >= 10
+			}
+		}
+		OR = {
+			AND = {
+				culture = { has_cultural_pillar = heritage_east_african }
+				custom_description = {
+					text = RICE_ghw_region_egypt_region_capital_req
+					capital_county = {
+						any_county_province = {
+							geographical_region = ghw_region_egypt
+						}
+					}
+				}
+			}
+			AND = {
+				culture = { has_cultural_pillar = heritage_arabic }
+				custom_description = {
+					text = RICE_greater_nubia_region_capital_req
+					capital_county = {
+						any_county_province = {
+							geographical_region = RICE_greater_nubia_region
+						}
+					}
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_available = yes
+	}
+
+	cost = {
+		gold = {
+			value = medium_gold_value
+		}
+		prestige = {
+			value = medium_prestige_value
+		}
+	}
+
+	effect = {
+
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_sudanese_culture_founded
+		}
+
+		culture:sudanese = {
+			save_scope_as = culture
+		}
+
+		save_scope_as = sudanese_ruler
+		
+		# custom_tooltip = RICE_nubia_sudanese_culture_decision_effect_tooltip_1
+		# custom_tooltip = RICE_nubia_sudanese_culture_decision_effect_tooltip_2
+		# custom_tooltip = RICE_nubia_sudanese_culture_decision_effect_tooltip_3
+
+		show_as_tooltip = {
+			RICE_nubia_sudanese_culture_decision_effect = yes
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_nubia_sudanese_culture_decision_context_tooltip
+		}
+		
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:sudanese_ruler	
+					any_liege_or_above = { this = scope:sudanese_ruler }
+					any_vassal_or_below = { this = scope:sudanese_ruler }
+					any_held_county = {
+						any_county_province = {
+							OR = {
+								geographical_region = world_africa_north_east
+								geographical_region = world_africa_east
+								geographical_region = world_middle_east_jerusalem
+							}
+						}
+					}
+				}
+			}
+			trigger_event = nubia.0014
+		}		
+
+		
+	}
+
+	ai_will_do = {
+		base = 5
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 10
+			# Make it likelier to happen late game
+			current_date > 1250.1.1
+		}
+		modifier = {
+			add = 10
+			# Make it likelier to happen late game
+			current_date > 1350.1.1
+		}
+	}
+}
+
 RICE_nubia_rebuild_banganarti_church = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_nubia.dds" }
-	decision_group_type = major
+	decision_group_type = RICE_nile_situations_major
 	desc = RICE_nubia_rebuild_banganarti_church_desc
 
 	ai_check_interval = 48
@@ -218,7 +381,7 @@ RICE_nubia_rebuild_banganarti_church = {
 
 RICE_nubia_bestow_kanz_al_dawla = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_egypt_nubia_border.dds" }
-	decision_group_type = major
+	decision_group_type = RICE_nile_situations_major
 	desc = {
 		first_valid = {
 			triggered_desc = {

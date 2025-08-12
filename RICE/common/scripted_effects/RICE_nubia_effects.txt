@@ -2458,10 +2458,10 @@
 		remove_variable = tradition_cooldown
 	}	
 
-	culture:sudanese = {
-		add_culture_tradition = tradition_RICE_heirs_of_kush
-		remove_variable = tradition_cooldown
-	}
+	# culture:sudanese = {
+	# 	add_culture_tradition = tradition_RICE_heirs_of_kush
+	# 	remove_variable = tradition_cooldown
+	# }
 
 	culture:nuba = {
 		add_culture_tradition = tradition_RICE_nuba_sports_competitions
@@ -4122,6 +4122,222 @@ RICE_coptic_saint_catherine_pilgrimage_completed_log_effect = {
 				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
 				RICE_local_pilgrimage_generic_guest_effect = yes
 			}	
+		}
+	}
+}
+
+
+RICE_nubia_sudanese_culture_decision_effect = {
+	dynasty ?= {
+		add_dynasty_prestige = medium_dynasty_prestige_gain
+	}
+	if = {
+		limit = {
+			culture = { has_cultural_pillar = heritage_east_african }
+		}
+		culture:sudanese = {
+			set_culture_pillar = heritage_east_african
+			set_culture_pillar = language_sudanic
+			add_culture_tradition = tradition_RICE_heirs_of_kush
+			remove_variable = tradition_cooldown
+		}
+		custom_tooltip = RICE_nubia_sudanese_culture_decision_effect_tooltip_1_east_african
+		situation:RICE_nubia_baqt_situation = {
+			situation_sub_region:egypt = {
+				trigger_situation_catalyst = catalyst_situation_RICE_baqt_major_historical_event_insufficiency
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			culture = { has_cultural_pillar = heritage_arabic }
+		}
+		culture:sudanese = {
+			set_culture_pillar = heritage_arabic
+			set_culture_pillar = language_arabic
+			add_culture_tradition = tradition_RICE_children_of_the_nile
+			remove_variable = tradition_cooldown
+		}
+		custom_tooltip = RICE_nubia_sudanese_culture_decision_effect_tooltip_1_arabic
+		situation:RICE_nubia_baqt_situation = {
+			situation_sub_region:nubia = {
+				trigger_situation_catalyst = catalyst_situation_RICE_baqt_major_historical_event_insufficiency
+			}
+		}
+	}
+	show_as_tooltip = {
+		set_culture = culture:sudanese
+		capital_county = {
+			set_county_culture = culture_sudanese
+		}
+	}
+	hidden_effect = {
+		make_sudanese_culture_restricted_effect = yes		
+	}
+}
+
+
+make_sudanese_culture_restricted_effect = {
+	#Convert your, and your whole family's, culture
+	set_culture = culture:sudanese
+	capital_county = {
+		set_county_culture = culture_sudanese
+	}
+	if = {
+		limit = {
+			any_spouse = {
+				is_landed = no
+				OR = {
+					culture = { has_cultural_pillar = heritage_arabic }
+					culture = { has_cultural_pillar = heritage_east_african }
+				}
+			}
+		}
+		every_spouse = {
+			limit = {
+				is_landed = no				
+				OR = {
+					culture = { has_cultural_pillar = heritage_arabic }
+					culture = { has_cultural_pillar = heritage_east_african }
+				}
+			}
+			set_culture = culture:sudanese
+		}
+	}
+	if = {
+		limit = {
+			any_close_family_member = {
+				is_landed = no				
+				OR = {
+					culture = { has_cultural_pillar = heritage_arabic }
+					culture = { has_cultural_pillar = heritage_east_african }
+				}
+			}
+		}
+		every_close_family_member = {
+			custom = all_family_members
+			limit = {
+				is_landed = no				
+				OR = {
+					culture = { has_cultural_pillar = heritage_arabic }
+					culture = { has_cultural_pillar = heritage_east_african }
+				}
+			}
+			set_culture = culture:sudanese
+		}
+	}
+
+	#Convert appropriate vassals, and their family
+	# if = {
+	# 	limit = {
+	# 		any_vassal = {			
+	# 			culture = { has_cultural_pillar = heritage_volga_finnic }
+	# 		}
+	# 	}
+	# 	every_vassal = {
+	# 		limit = {
+	# 			culture = { has_cultural_pillar = heritage_volga_finnic }
+	# 		}
+	# 		set_culture = culture:sudanese
+	# 		hidden_effect = {
+	# 			if = {
+	# 				limit = {
+	# 					any_spouse = {
+	# 						is_landed = no				
+	# 						culture = { has_cultural_pillar = heritage_volga_finnic }
+	# 					}
+	# 				}
+	# 				every_spouse = {
+	# 					limit = {
+	# 						is_landed = no				
+	# 						culture = { has_cultural_pillar = heritage_volga_finnic }
+	# 					}
+	# 					set_culture = culture:sudanese
+	# 				}
+	# 			}
+	# 			if = {
+	# 				limit = {
+	# 					any_close_family_member = {
+	# 						is_landed = no				
+	# 						culture = { has_cultural_pillar = heritage_volga_finnic }
+	# 					}
+	# 				}
+	# 				every_close_family_member = {
+	# 					custom = all_family_members
+	# 					limit = {
+	# 						is_landed = no				
+	# 						culture = { has_cultural_pillar = heritage_volga_finnic }
+	# 					}
+	# 					set_culture = culture:sudanese
+	# 				}
+	# 			}
+	# 		}
+	# 	}
+	# }
+
+	#Convert appropriate courtiers
+	if = {
+		limit = {
+			any_courtier_or_guest = {			
+				OR = {
+					culture = { has_cultural_pillar = heritage_arabic }
+					culture = { has_cultural_pillar = heritage_east_african }
+				}
+			}
+		}
+		every_courtier_or_guest = {
+			limit = {
+				OR = {
+					culture = { has_cultural_pillar = heritage_arabic }
+					culture = { has_cultural_pillar = heritage_east_african }
+				}
+			}
+			set_culture = culture:sudanese
+			hidden_effect = {
+				if = {
+					limit = {
+						any_spouse = {
+							is_landed = no				
+							OR = {
+								culture = { has_cultural_pillar = heritage_arabic }
+								culture = { has_cultural_pillar = heritage_east_african }
+							}
+						}
+					}
+					every_spouse = {
+						limit = {
+							is_landed = no				
+							OR = {
+								culture = { has_cultural_pillar = heritage_arabic }
+								culture = { has_cultural_pillar = heritage_east_african }
+							}
+						}
+						set_culture = culture:sudanese
+					}
+				}
+				if = {
+					limit = {
+						any_close_family_member = {
+							is_landed = no				
+							OR = {
+								culture = { has_cultural_pillar = heritage_arabic }
+								culture = { has_cultural_pillar = heritage_east_african }
+							}
+						}
+					}
+					every_close_family_member = {
+						custom = all_family_members
+						limit = {
+							is_landed = no				
+							OR = {
+								culture = { has_cultural_pillar = heritage_arabic }
+								culture = { has_cultural_pillar = heritage_east_african }
+							}
+						}
+						set_culture = culture:sudanese
+					}
+				}
+			}
 		}
 	}
 }
