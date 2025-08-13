@@ -4549,7 +4549,7 @@ nubia.0220 = {
 	
 	right_portrait = {
 		character = root
-		animation = war_over_win
+		animation = thinking
 	}
 	
 	option = { # Default
@@ -4558,22 +4558,30 @@ nubia.0220 = {
 	
 	option = { # Egypt
 		name = nubia.0220.b
-		set_title_name = e_RICE_greater_egypt
+		title:e_RICE_nile = {
+			set_title_name = e_RICE_greater_egypt
+		}
 	}
 	
 	option = { # Nubia
 		name = nubia.0220.c
-		set_title_name = e_RICE_greater_nubia
+		title:e_RICE_nile = {
+			set_title_name = e_RICE_greater_nubia
+		}
 	}
 	
 	option = { # Kemet
 		name = nubia.0220.d
-		set_title_name = e_RICE_greater_kemet
+		title:e_RICE_nile = {
+			set_title_name = e_RICE_greater_kemet
+		}
 	}
 	
 	option = { # Kush
 		name = nubia.0220.e
-		set_title_name = e_RICE_greater_kush
+		title:e_RICE_nile = {
+			set_title_name = e_RICE_greater_kush
+		}
 	}
 
 	after = {
@@ -4589,7 +4597,7 @@ nubia.0221 = {
 	desc = nubia.0221.desc
 	theme = RICE_theme_nile_valley
 	
-	right_portrait = {
+	left_portrait = {
 		character = root
 		animation = war_over_win
 	}
@@ -4707,7 +4715,40 @@ nubia.0221 = {
 	}
 
 	after = {
-		trigger_event = nubia.0211
+		every_ruler = {
+			limit = {
+				is_playable_character = yes
+				OR = {
+					this = scope:nile_conqueror
+					any_vassal_or_below = {
+						this = scope:nile_conqueror
+					}
+					domicile.domicile_location ?= {					
+						OR = {
+							geographical_region = world_middle_east
+							geographical_region = world_africa
+							geographical_region = world_europe
+							geographical_region = world_india
+							geographical_region = world_steppe_west
+							geographical_region = world_steppe_central
+						}
+					}
+					any_held_county = {
+						any_county_province = {
+							OR = {
+								geographical_region = world_middle_east
+								geographical_region = world_africa
+								geographical_region = world_europe
+								geographical_region = world_india
+								geographical_region = world_steppe_west
+								geographical_region = world_steppe_central
+							}
+						}
+					}
+				}
+			}
+			trigger_event = nubia.0222
+		}
 	}
 }
 
@@ -4715,5 +4756,28 @@ nubia.0221 = {
 
 
 
+
+# Notification event
+nubia.0222 = {
+	type = character_event
+	window = fullscreen_event
+	title = nubia.0222.t
+	desc = nubia.0222.desc
+	theme = diplomacy_majesty_focus
+	override_background = { reference = RICE_nile_river_fullscreen_intro }
+
+	immediate = {
+		show_as_tooltip = {
+			scope:nile_conqueror = {
+				RICE_nile_empire_decision_effect = yes
+			}			
+		}
+	}
+	
+	option = { # Ok
+		name = nubia.0222.a	
+	}
+
+}
 
 
