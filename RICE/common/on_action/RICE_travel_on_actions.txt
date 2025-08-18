@@ -336,12 +336,23 @@ on_travel_plan_complete_RICE = {
 				limit = {
 					has_variable = RICE_is_travel_option_merchant
 				}
-				# If they are a human player or a ruler for some reason, don't kill them, just remove the variable
+				# If they are a human player or a ruler for some reason, or got married or have family
+				# Don't kill them, just remove the variable
 				if = {
 					limit = {		
 						OR = {
 							is_ai = no
 							is_landed = yes
+							is_married = yes
+							has_no_particular_noble_roots_trigger = yes
+							AND = {
+								exists = dynasty
+								dynasty = {
+									any_dynasty_member = {
+										count >= 1
+									}
+								}
+							}
 						}		
 					}
 					remove_variable = RICE_is_travel_option_merchant
