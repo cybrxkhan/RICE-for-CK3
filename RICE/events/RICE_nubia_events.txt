@@ -1131,27 +1131,36 @@ nubia.0060 = {
 		character:dongola0010 = {
 			save_scope_as = georgios
 			spawn_army = {
-				levies = 300
+				levies = 500
 				men_at_arms = {
 					type = archers_of_the_nile
 					stacks = 3
 				}
 				men_at_arms = {
 					type = RICE_alodian_cavalry
-					stacks = 2
+					stacks = 4
 				}
 				men_at_arms = {
 					type = light_footmen
-					stacks = 1
+					stacks = 2
 				}
 				men_at_arms = {
 					type = pikemen_unit
 					stacks = 2
 				}
+				men_at_arms = {
+					type = armored_footmen
+					stacks = 1
+				}
 				location = capital_province
 				uses_supply = yes
 				inheritable = yes
 				name = event_troop_default_name
+			}
+			show_as_tooltip = {
+				add_character_modifier = {
+					modifier = RICE_nubia_aspiration_defeat_the_traitor_and_the_bandit
+				}
 			}
 		}
 		character:dongola0011d = {
@@ -1179,6 +1188,11 @@ nubia.0060 = {
 				inheritable = yes
 				name = event_troop_default_name
 			}
+			show_as_tooltip = {
+				add_character_modifier = {
+					modifier = RICE_nubia_aspiration_take_over_makuria
+				}
+			}
 		}
 		character:bedouin0018 = {
 			save_scope_as = umari
@@ -1203,16 +1217,11 @@ nubia.0060 = {
 			}
 			add_truce_both_ways = {
 				character = scope:umari
-				years = 1
+				years = 10
 				name = TRUCE_COLLABORATION
 			}
 		}
 		custom_tooltip = nubia.0060.a.umari
-		show_as_tooltip = {
-			add_character_modifier = {
-				modifier = RICE_nubia_aspiration_defeat_the_traitor_and_the_bandit
-			}
-		}
 	}
 
 	# # ok
@@ -1279,6 +1288,11 @@ nubia.0061 = {
 					inheritable = yes
 					name = event_troop_default_name
 				}
+				show_as_tooltip = {
+					add_character_modifier = {
+						modifier = RICE_nubia_aspiration_defeat_the_traitor_and_the_bandit
+					}
+				}
 			}
 			character:dongola0011d = {
 				spawn_army = {
@@ -1304,6 +1318,11 @@ nubia.0061 = {
 					inheritable = yes
 					name = event_troop_default_name
 				}
+				show_as_tooltip = {
+					add_character_modifier = {
+						modifier = RICE_nubia_aspiration_take_over_makuria
+					}
+				}
 			}	
 			scope:niuty = {
 				start_war = {
@@ -1314,7 +1333,7 @@ nubia.0061 = {
 				}
 				add_truce_both_ways = {
 					character = scope:umari
-					years = 1
+					years = 10
 					name = TRUCE_COLLABORATION
 				}
 			}			
@@ -1323,14 +1342,8 @@ nubia.0061 = {
 
 	# ok
 	option = {
-		name = nubia.0061.a
-		
+		name = nubia.0061.a		
 		custom_tooltip = nubia.0060.a.umari
-		show_as_tooltip = {
-			add_character_modifier = {
-				modifier = RICE_nubia_aspiration_take_over_makuria
-			}
-		}
 	}
 
 	after = {
@@ -1434,7 +1447,7 @@ nubia.0062 = {
 
 	# gold
 	option = {
-		name = nubia.0062.b
+		name = nubia.0062.c
 		trigger = {
 			OR = {
 				is_ai = no
@@ -1521,7 +1534,7 @@ nubia.0063 = {
 
 	# gold
 	option = {
-		name = nubia.0063.b
+		name = nubia.0063.c
 		trigger = {
 			OR = {
 				is_ai = no
@@ -1555,7 +1568,58 @@ nubia.0064 = {
 	type = character_event
 	title = nubia.0064.t
 	window = duel_event
-	desc = nubia.0064.desc
+	desc = {
+		desc = nubia.0064.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:niuty = {
+						var:RICE_umari_offer ?= flag:nothing
+					}
+					scope:georgios = {
+						OR = {
+							var:RICE_umari_offer ?= flag:gold
+							var:RICE_umari_offer ?= flag:big_gold
+						}
+					}
+				}
+				desc = nubia.0064.desc.georgios
+			}
+			triggered_desc = {
+				trigger = {
+					scope:georgios = {
+						var:RICE_umari_offer ?= flag:nothing
+					}
+					scope:niuty = {
+						OR = {
+							var:RICE_umari_offer ?= flag:gold
+							var:RICE_umari_offer ?= flag:big_gold
+						}
+					}
+				}
+				desc = nubia.0064.desc.niuty
+			}
+			triggered_desc = {
+				trigger = {
+					scope:georgios = {
+						OR = {
+							var:RICE_umari_offer ?= flag:gold
+							var:RICE_umari_offer ?= flag:big_gold
+						}
+					}
+					scope:niuty = {
+						OR = {
+							var:RICE_umari_offer ?= flag:gold
+							var:RICE_umari_offer ?= flag:big_gold
+						}
+					}
+				}
+				desc = nubia.0064.desc.both
+			}
+			desc = nubia.0064.desc.neither
+		}
+		desc = nubia.0064.desc.conclusion
+	}
 	theme = martial
 	override_background = { reference = RICE_background_egypt_desert }
 	
@@ -1664,21 +1728,47 @@ nubia.0064 = {
 	# Support neither
 	option = {
 		name = nubia.0064.c
+		scope:niuty = {
+			trigger_event = nubia.0067
+		}
+		scope:georgios = {
+			trigger_event = nubia.0067
+		}
 	}
 
-	after = {
-		custom_tooltip = nubia.0064 # The victor of the war might still attack you after
-	}
+	# after = {
+	# 	custom_tooltip = nubia.0064.tooltip # The victor of the war might still attack you after
+	# }
 
 }
 
 
 
-# Georgios and Niuty are notified that al-Umari sided with Niuty
+# Georgios and Niuty are notified that al-Umari sided with Niuty 
 nubia.0065 = {
 	type = character_event
 	title = nubia.0065.t
-	desc = nubia.0065.desc
+	desc = {
+		desc = nubia.0065.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:niuty = {
+						root = this
+					}
+				}
+				desc = nubia.0065.desc.niuty
+			}
+			triggered_desc = {
+				trigger = {
+					scope:georgios = {
+						root = this
+					}
+				}
+				desc = nubia.0065.desc.georgios
+			}
+		}
+	}
 	theme = martial
 	override_background = { reference = RICE_background_egypt_desert }
 	
@@ -1737,7 +1827,7 @@ nubia.0065 = {
 	# Ok
 	option = {
 		name = nubia.0065.a
-		custom_tooltip = nubia.0064 # The victor of the war might still attack al-Umari after
+		#custom_tooltip = nubia.0064.tooltip # The victor of the war might still attack al-Umari after
 	}
 
 }
@@ -1748,7 +1838,27 @@ nubia.0065 = {
 nubia.0066 = {
 	type = character_event
 	title = nubia.0066.t
-	desc = nubia.0066.desc
+	desc = {
+		desc = nubia.0066.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:niuty = {
+						root = this
+					}
+				}
+				desc = nubia.0066.desc.niuty
+			}
+			triggered_desc = {
+				trigger = {
+					scope:georgios = {
+						root = this
+					}
+				}
+				desc = nubia.0066.desc.georgios
+			}
+		}
+	}
 	theme = martial
 	override_background = { reference = RICE_background_egypt_desert }
 	
@@ -1807,10 +1917,289 @@ nubia.0066 = {
 	# ok
 	option = {
 		name = nubia.0066.a
-		custom_tooltip = nubia.0064 # The victor of the war might still attack al-Umari after
+		#custom_tooltip = nubia.0064.tooltip # The victor of the war might still attack al-Umari after
 	}
 
 }
+
+
+# Georgios and Niuty are notified that al-Umari sided with no one
+nubia.0067 = {
+	type = character_event
+	title = nubia.0067.t
+	desc = {
+		desc = nubia.0067.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:niuty = {
+						root = this
+					}
+				}
+				desc = nubia.0067.desc.niuty
+			}
+			triggered_desc = {
+				trigger = {
+					scope:georgios = {
+						root = this
+					}
+				}
+				desc = nubia.0067.desc.georgios
+			}
+		}
+		desc = nubia.0067.desc.conclusion
+	}
+	theme = martial
+	override_background = { reference = RICE_background_egypt_desert }
+	
+	
+	right_portrait = {
+		character = scope:umari
+		animation = war_attacker
+	}
+
+	lower_left_portrait = {
+		character = scope:georgios
+		trigger = { exists = scope:georgios }
+	}
+
+	lower_right_portrait = {
+		character = scope:niuty
+		trigger = { exists = scope:niuty }
+	}
+
+	# ok
+	option = {
+		name = nubia.0067.a
+		#custom_tooltip = nubia.0064.tooltip # The victor of the war might still attack al-Umari after
+	}
+
+}
+
+
+
+# Georgios Aspiration Fulfilled
+nubia.0068 = {
+	type = character_event
+	title = nubia.0068.t
+	desc = nubia.0068.desc
+	theme = RICE_theme_nubia_dongola_building
+
+	right_portrait = {
+		character = scope:georgios
+		animation = war_over_win
+	}
+
+	lower_left_portrait = scope:niuty
+	lower_right_portrait = scope:umari
+
+	immediate = {
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		character:dongola0010 = { # Georgios
+			save_scope_as = georgios
+		}	
+
+		character:dongola0011d = { # Niuty
+			save_scope_as = niuty
+		}	
+
+		character:bedouin0018 = { # al-Umari
+			save_scope_as = umari
+		}	
+		
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_nubia_aspiration_defeat_the_traitor_and_the_bandit
+				}
+				remove_character_modifier = RICE_nubia_aspiration_defeat_the_traitor_and_the_bandit
+			}
+		}
+
+		# Main Objective Reward
+		add_legitimacy = medium_legitimacy_gain
+		add_prestige = RICE_aspiration_large_resource_bonus
+		add_martial_lifestyle_perk_points = 1
+		RICE_upgrade_education_trait_effect = yes
+		spawn_army = {
+			levies = 500
+			men_at_arms = {
+				type = archers_of_the_nile
+				stacks = 1
+			}
+			men_at_arms = {
+				type = RICE_alodian_cavalry
+				stacks = 2
+			}
+			men_at_arms = {
+				type = light_footmen
+				stacks = 1
+			}
+			men_at_arms = {
+				type = pikemen_unit
+				stacks = 1
+			}
+			men_at_arms = {
+				type = armored_footmen
+				stacks = 1
+			}
+			location = capital_province
+			uses_supply = yes
+			inheritable = yes
+			name = event_troop_default_name
+		}
+
+		# Bonus Objective Reward(s)
+		if = {
+			limit = {
+				completely_controls = title:k_nubia
+			}
+			every_county_in_region = {
+				region = RICE_greater_nubia_region
+				limit = { holder.top_liege = root }
+				custom = RICE_every_county_you_completely_control_in_nubia
+				change_development_level = RICE_red_sea_al_umari_aspiration_dev_bonus	
+			}
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_georgios_or_niuty_did_positive_pastoralist_decision
+			}
+			add_stewardship_lifestyle_perk_points = 1
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_georgios_or_niuty_did_negative_pastoralist_decision
+			}
+			add_intrigue_lifestyle_perk_points = 1
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = nubia.0068.a
+	}
+
+
+}
+
+
+
+# Niuty Aspiration Fulfilled
+nubia.0069 = {
+	type = character_event
+	title = nubia.0069.t
+	desc = nubia.0069.desc
+	theme = RICE_theme_nubia_dongola_building
+
+	right_portrait = {
+		character = scope:niuty
+		animation = war_over_win
+	}
+
+	lower_left_portrait = scope:georgios
+	lower_right_portrait = scope:umari
+
+	immediate = {
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		character:dongola0010 = { # Georgios
+			save_scope_as = georgios
+		}	
+
+		character:dongola0011d = { # Niuty
+			save_scope_as = niuty
+		}	
+
+		character:bedouin0018 = { # al-Umari
+			save_scope_as = umari
+		}	
+		
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_nubia_aspiration_take_over_makuria
+				}
+				remove_character_modifier = RICE_nubia_aspiration_take_over_makuria
+			}
+		}
+
+		# Main Objective Reward
+		add_legitimacy = medium_legitimacy_gain
+		add_prestige = RICE_aspiration_large_resource_bonus
+		add_martial_lifestyle_perk_points = 1
+		RICE_upgrade_education_trait_effect = yes
+		spawn_army = {
+			levies = 500
+			men_at_arms = {
+				type = archers_of_the_nile
+				stacks = 1
+			}
+			men_at_arms = {
+				type = RICE_alodian_cavalry
+				stacks = 2
+			}
+			men_at_arms = {
+				type = light_footmen
+				stacks = 1
+			}
+			men_at_arms = {
+				type = pikemen_unit
+				stacks = 1
+			}
+			men_at_arms = {
+				type = armored_footmen
+				stacks = 1
+			}
+			location = capital_province
+			uses_supply = yes
+			inheritable = yes
+			name = event_troop_default_name
+		}
+
+		# Bonus Objective Reward(s)
+		if = {
+			limit = {
+				completely_controls = title:k_nubia
+			}
+			every_county_in_region = {
+				region = RICE_greater_nubia_region
+				limit = { holder.top_liege = root }
+				custom = RICE_every_county_you_completely_control_in_nubia
+				change_development_level = RICE_red_sea_al_umari_aspiration_dev_bonus	
+			}
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_georgios_or_niuty_did_positive_pastoralist_decision
+			}
+			add_stewardship_lifestyle_perk_points = 1
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_georgios_or_niuty_did_negative_pastoralist_decision
+			}
+			add_intrigue_lifestyle_perk_points = 1
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = nubia.0069.a
+	}
+
+
+}
+
 
 
 
@@ -2524,9 +2913,15 @@ nubia.0120 = {
 	}
 
 	immediate = {
+		character:RICE_nubia_misc_001 = {
+			save_scope_as = merki
+		}
 		show_as_tooltip = {
 			add_character_modifier = {
 				modifier = RICE_nubia_aspiration_ascend_bureaucracy_makuria
+			}
+			add_character_modifier = {
+				modifier = RICE_nubia_merki_modifier
 			}
 		}
 	}
@@ -2542,6 +2937,100 @@ nubia.0120 = {
 			}			
 			custom_tooltip = nubia.0120.info
 		}
+	}
+
+}
+
+
+# Merki aspiration fulfilled
+nubia.0121 = {
+	type = character_event
+	title = nubia.0121.t
+	desc = nubia.0121.desc
+	theme = administrative
+	override_background = { reference = RICE_background_nile_private_courtyard }
+
+	left_portrait = {
+		character = root
+		animation = chancellor
+	}
+
+
+	immediate = {
+
+		#play_music_cue = "mx_cue_epic_sacral_moment"
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		character:RICE_nubia_misc_001 = { # Merki
+			save_scope_as = merki
+		}	
+
+		title:k_nubia.holder = {
+			save_scope_as = makurian_king
+		}
+		
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_nubia_aspiration_ascend_bureaucracy_makuria
+				}
+				remove_character_modifier = RICE_nubia_aspiration_ascend_bureaucracy_makuria
+			}
+		}
+
+		# Main Objective Reward
+		dynasty ?= {
+			add_dynasty_prestige = RICE_aspiration_medium_resource_bonus
+		}
+		RICE_upgrade_education_trait_effect = yes
+		remove_character_modifier = RICE_nubia_merki_modifier
+		add_character_modifier = {
+			modifier = RICE_nubia_merki_upgraded_modifier
+		}
+		add_gold = RICE_aspiration_medium_resource_bonus
+
+		# Bonus Objective Reward(s)
+		if = {
+			limit = {
+				OR = {
+					has_relation_friend = scope:makurian_king
+					has_relation_best_friend = scope:makurian_king
+					is_councillor_of = scope:makurian_king
+					scope:makurian_king = {						
+						opinion = {
+							target = scope:merki
+							value >= 75
+						}
+					}
+				}
+			}
+			add_gold = RICE_aspiration_medium_resource_bonus
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_georgios_or_niuty_did_positive_pastoralist_decision
+			}
+			add_diplomacy_lifestyle_perk_points = 1
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_georgios_or_niuty_did_negative_pastoralist_decision
+			}
+			add_intrigue_lifestyle_perk_points = 1
+		}
+		if = {
+			limit = {
+				exists = var:RICE_num_times_did_nubian_agriculture_decision
+				var:RICE_num_times_did_nubian_agriculture_decision > 1
+			}
+			add_prestige = RICE_nubian_agriculture_decision_aspiration_prestige_bonus_value
+		}
+
+	}
+
+	option = { # Ok
+		name = nubia.0121.a
 	}
 
 }
