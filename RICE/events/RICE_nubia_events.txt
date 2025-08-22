@@ -17,6 +17,8 @@
 # nubia.0200-nubia.0209			Pilgrimage to Saint Anthony's Monastery
 # nubia.0210-nubia.0219			Nilotic Bovine Sacrifice
 # nubia.0220-nubia.0239			Nile Empire and Legends
+# nubia.0240-nubia.0249			???
+# nubia.0250-nubia.0299			Generic flavor events
 # 
 ###############################################################################
 
@@ -3040,7 +3042,8 @@ nubia.0122 = {
 	type = character_event
 	title = nubia.0122.t
 	desc = nubia.0122.desc
-	theme = RICE_theme_nubia_nuba_savanna_village
+	theme = wanderer_journey_focus
+	override_background = { reference = RICE_background_nubia_nuba_savanna_village }
 
 	left_portrait = {
 		character = root
@@ -3048,6 +3051,19 @@ nubia.0122 = {
 	}
 
 	immediate = {
+
+		character:RICE_daju_002 = { # Kusbur
+			save_scope_as = kusbur
+		}	
+
+		culture:daju = {
+			save_scope_as = daju
+		}
+
+		culture:tora = {
+			save_scope_as = tora
+		}
+
 		show_as_tooltip = {
 			add_character_modifier = {
 				modifier = RICE_nubia_aspiration_daju_migration_into_darfur
@@ -3070,6 +3086,152 @@ nubia.0122 = {
 
 }
 
+# Kusbur aspiration fulfilled
+nubia.0123 = {
+	type = character_event
+	title = nubia.0123.t
+	desc = nubia.0123.desc
+	theme = wanderer_journey_focus
+	override_background = { reference = RICE_background_nubia_nuba_savanna_village }
+
+	right_portrait = {
+		character = root
+		animation = personality_bold
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		character:RICE_daju_002 = { # Kusbur
+			save_scope_as = kusbur
+		}	
+
+		scope:kusbur.culture = {
+			save_scope_as = daju
+		}
+
+		culture:tora = {
+			save_scope_as = tora
+		}
+		
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_nubia_aspiration_daju_migration_into_darfur
+				}
+				remove_character_modifier = RICE_nubia_aspiration_daju_migration_into_darfur
+			}
+		}
+
+		# Main Objective Reward
+		dynasty ?= {
+			add_dynasty_prestige = RICE_aspiration_large_resource_bonus
+		}
+		every_county_in_region = {
+			region = RICE_greater_darfur
+			limit = { holder.top_liege = root }
+			custom = RICE_every_county_completely_control_greater_darfur
+			add_county_modifier = {
+				modifier = RICE_nubia_daju_migrations_modifier
+				years = 50
+			}
+		}
+
+		# Bonus Objective Reward(s)
+		if = {
+			limit = {
+				any_vassal = {
+					highest_held_title_tier = tier_county
+					OR = {
+						culture = culture:tora
+						culture = {
+							any_parent_culture_or_above = {
+								this = culture:tora
+							}
+						}
+					}					
+				}
+			}
+			spawn_army = {
+				levies = 200
+				men_at_arms = {
+					type = bowmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = pikemen_unit
+					stacks = 1
+				}
+				men_at_arms = {
+					type = RICE_sudanese_highlanders
+					stacks = 1
+				}
+				location = capital_province
+				uses_supply = yes
+				inheritable = yes
+				name = RICE_daju_warriors_event_troops
+			}
+		}
+		if = {
+			limit = {
+				any_vassal = {
+					highest_held_title_tier = tier_county
+					OR = {
+						culture = culture:daju
+						culture = {
+							any_parent_culture_or_above = {
+								this = culture:daju
+							}
+						}
+					}					
+				}
+			}
+			spawn_army = {
+				levies = 100
+				men_at_arms = {
+					type = bowmen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = pikemen_unit
+					stacks = 1
+				}
+				men_at_arms = {
+					type = sahel_horsemen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = RICE_sudanese_highlanders
+					stacks = 1
+				}
+				location = capital_province
+				uses_supply = yes
+				inheritable = yes
+				name = RICE_daju_warriors_event_troops
+			}
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_did_tebeldi_trees_decision
+			}
+			add_piety = RICE_aspiration_medium_resource_bonus
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_did_lake_oracle_decision
+			}
+			add_piety = RICE_aspiration_medium_resource_bonus
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0123.a
+	}
+
+}
+
 # Moses Georgios intro event
 nubia.0124 = {
 	type = character_event
@@ -3082,7 +3244,17 @@ nubia.0124 = {
 		animation = worry
 	}
 
+	lower_right_portrait = scope:saladin
+
 	immediate = {
+		character:dongola0022 = { # Moses Georgios
+			save_scope_as = moses_georgios
+		}	
+
+		character:226000 = { # saladin
+			save_scope_as = saladin
+		}	
+
 		show_as_tooltip = {
 			add_character_modifier = {
 				modifier = RICE_nubia_aspiration_revive_nubia
@@ -3105,6 +3277,156 @@ nubia.0124 = {
 
 }
 
+# Moses Georgios aspiration fulfilled
+nubia.0125 = {
+	type = character_event
+	title = nubia.0125.t
+	desc = nubia.0125.desc
+	theme = RICE_theme_nubia_church_interior
+
+	right_portrait = {
+		character = root
+		animation = personality_callous
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		character:dongola0022 = { # Moses Georgios
+			save_scope_as = moses_georgios
+		}	
+
+		character:226000 = { # saladin
+			save_scope_as = saladin
+		}	
+		
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_nubia_aspiration_revive_nubia
+				}
+				remove_character_modifier = RICE_nubia_aspiration_revive_nubia
+			}
+		}
+
+		# Main Objective Reward
+		every_county_in_region = {
+			region = RICE_greater_nubia_region
+			limit = { holder.top_liege = root }
+			custom = RICE_every_county_you_completely_control_in_nubia
+			change_development_level = RICE_red_sea_al_umari_aspiration_dev_bonus	
+		}
+		add_gold = RICE_aspiration_large_resource_bonus
+		add_prestige = RICE_aspiration_large_resource_bonus
+		spawn_army = {
+			levies = 500
+			men_at_arms = {
+				type = archers_of_the_nile
+				stacks = 3
+			}
+			men_at_arms = {
+				type = RICE_alodian_cavalry
+				stacks = 4
+			}
+			men_at_arms = {
+				type = light_footmen
+				stacks = 2
+			}
+			men_at_arms = {
+				type = pikemen_unit
+				stacks = 2
+			}
+			men_at_arms = {
+				type = armored_footmen
+				stacks = 1
+			}
+			location = capital_province
+			uses_supply = yes
+			inheritable = yes
+			name = event_troop_default_name
+		}
+		situation:RICE_nubia_baqt_situation = {
+			situation_sub_region:nubia = {
+				trigger_situation_catalyst = catalyst_situation_RICE_baqt_major_historical_event_sufficiency
+			}
+		}
+		# Bonus Objective Reward(s)
+		if = {
+			limit = {
+				OR = {
+					piety_level >= 3
+					prestige_level >= 3
+				}
+				#completely_controls = title:k_nubia
+				#completely_controls = title:k_alodia
+			}
+			dynasty ?= {
+				add_dynasty_prestige = RICE_aspiration_large_resource_bonus
+			}
+		}
+		if = {
+			limit = {
+				any_vassal = {
+					OR = {
+						is_allied_to = scope:moses_georgios
+						has_dread_level_towards = {
+							target = scope:moses_georgios
+							level >= 2
+						}
+						opinion = {
+							target = scope:moses_georgios
+							value >= 75
+						}
+					}					
+				}
+			}
+			spawn_army = {
+				levies = 200
+				# men_at_arms = {
+				# 	type = bowmen
+				# 	stacks = 1
+				# }
+				# men_at_arms = {
+				# 	type = pikemen_unit
+				# 	stacks = 1
+				# }
+				men_at_arms = {
+					type = mubarizun
+					stacks = 1
+				}
+				men_at_arms = {
+					type = abudrar
+					stacks = 1
+				}
+				men_at_arms = {
+					type = mulaththamun
+					stacks = 1
+				}
+				location = capital_province
+				uses_supply = yes
+				inheritable = yes
+				name = RICE_sicily_norman_muslim_event_troops
+			}
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0125.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}			
+			custom_tooltip = nubia.0125.info
+		}
+	}
+
+}
+
 # Eparch Adam intro event
 nubia.0126 = {
 	type = character_event
@@ -3118,17 +3440,24 @@ nubia.0126 = {
 	}
 
 	right_portrait = {
-		character = scope:makurian_king
+		character = scope:moses_georgios
 		animation = debating
 	}
 
+	lower_right_portrait = scope:saladin
+
 	immediate = {
-		title:k_nubia.holder = {
-			save_scope_as = makurian_king
-		}
+		character:dongola0022 = { # Moses Georgios
+			save_scope_as = moses_georgios
+		}	
+
+		character:226000 = { # saladin
+			save_scope_as = saladin
+		}	
+		
 		show_as_tooltip = {
 			add_character_modifier = {
-				modifier = RICE_nubia_aspiration_revive_nubia
+				modifier = RICE_nubia_aspiration_look_after_nubia_frontier
 			}
 		}
 	}
@@ -3144,6 +3473,98 @@ nubia.0126 = {
 			}			
 			custom_tooltip = nubia.0126.info
 		}
+	}
+
+}
+
+# Eparch Adam aspiration fulfilled
+nubia.0127 = {
+	type = character_event
+	title = nubia.0127.t
+	desc = nubia.0127.desc
+	theme = RICE_theme_nile_valley
+
+	right_portrait = {
+		character = scope:adam
+		animation = chancellor
+	}
+
+	immediate = {
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		character:nobadia0018 = { # Eparch Adam
+			save_scope_as = adam
+		}	
+		
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_nubia_aspiration_look_after_nubia_frontier
+				}
+				remove_character_modifier = RICE_nubia_aspiration_look_after_nubia_frontier
+			}
+		}
+
+		# Main Objective Reward
+		every_county_in_region = {
+			region = RICE_nubia_frontier
+			limit = { holder.top_liege = root }
+			custom = RICE_every_county_completely_control_nobatia
+			change_development_level = RICE_red_sea_al_umari_aspiration_dev_bonus	
+		}
+		RICE_upgrade_education_trait_effect = yes
+		add_diplomacy_lifestyle_perk_points = 1
+		# Bonus Objective Reward(s)
+		if = {
+			limit = {
+				OR = {
+					any_truce_holder = {
+						religion = religion:islam_religion
+					}
+					any_ally = {
+						religion = religion:islam_religion
+					}
+				}
+			}
+			spawn_army = {
+				levies = 200
+				# men_at_arms = {
+				# 	type = bowmen
+				# 	stacks = 1
+				# }
+				# men_at_arms = {
+				# 	type = pikemen_unit
+				# 	stacks = 1
+				# }
+				men_at_arms = {
+					type = mubarizun
+					stacks = 1
+				}
+				men_at_arms = {
+					type = abudrar
+					stacks = 1
+				}
+				men_at_arms = {
+					type = mulaththamun
+					stacks = 1
+				}
+				location = capital_province
+				uses_supply = yes
+				inheritable = yes
+				name = RICE_sicily_norman_muslim_event_troops
+			}
+		}
+		if = {
+			limit = {
+				prestige_level >= 3
+			}
+			add_intrigue_lifestyle_perk_points = 1
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0127.a
 	}
 
 }
@@ -5360,3 +5781,289 @@ nubia.0222 = {
 }
 
 
+
+
+######################################################################################
+# 
+# GENERIC FLAVOR EVENTS
+# 
+# nubia.0250-nubia.0299
+# 
+######################################################################################
+
+
+# Recent anchorite passes away
+# nubia.0250 = {
+# 	type = character_event
+# 	title = nubia.0250.t
+# 	desc = nubia.0250.desc
+# 	theme = faith
+# 	override_background = { reference = RICE_background_egypt_desert }
+
+# 	right_portrait = {
+# 		character = root
+# 		animation = thinking
+# 	}
+		
+# 	trigger = {
+# 		religion = religion:christianity_religion
+# 		any_held_county = {
+# 			any_county_province = {
+# 				OR = {
+# 					geographical_region = RICE_nile_river_valley_without_ethiopia
+# 					geographical_region = RICE_southern_egypt_and_northern_nubia
+# 				}
+# 			}
+# 		}
+# 	}
+
+# 	weight_multiplier = {
+# 		base = 1
+# 		modifier = {
+# 			add = 0.2
+# 			has_trait = zealous
+# 		}
+# 		modifier = {
+# 			add = -0.2
+# 			has_trait = cynical
+# 		}
+# 		modifier = {
+# 			add = 0.2
+# 			has_trait = generous
+# 		}
+# 		modifier = {
+# 			add = -0.2
+# 			has_trait = greedy
+# 		}
+# 		modifier = {
+# 			add = 0.2
+# 			has_trait = content
+# 		}
+# 		modifier = {
+# 			add = -0.2
+# 			has_trait = ambitious
+# 		}
+# 	}
+
+# 	immediate = {
+# 		random_held_county = {
+# 			limit = {
+# 				any_county_province = {
+# 					OR = {
+# 						geographical_region = RICE_nile_river_valley_without_ethiopia
+# 						geographical_region = RICE_southern_egypt_and_northern_nubia
+# 					}
+# 				}				
+# 			}
+# 			save_scope_as = county
+# 		}
+# 		scope:county = {
+# 			add_county_modifier = {
+# 				modifier = RICE_nubia_recent_anchorite_death
+# 				years = 10
+# 			}
+# 		}
+# 	}
+
+# 	option = { # Ok
+# 		name = nubia.0250.a
+# 		stress_impact = {
+# 			zealous = minor_stress_impact_gain
+# 		}
+# 	}
+
+# 	option = { # Ok
+# 		name = nubia.0250.b
+# 		trigger = {
+# 			OR = {
+# 				gold >= 20
+# 				is_ai = no
+# 			}
+# 		}
+# 		remove_short_term_gold = 20
+# 		add_piety = 50
+# 		stress_impact = {
+# 			greedy = miniscule_stress_impact_gain
+# 			cynical = miniscule_stress_impact_gain
+# 		}
+# 		add_character_modifier = {
+# 			modifier = RICE_manichean_supports_books
+# 			years = 10
+# 		}
+# 	}
+
+# 	option = { # Ok
+# 		name = nubia.0250.c
+# 		trigger = {
+# 			OR = {
+# 				gold >= 75
+# 				is_ai = no
+# 			}
+# 		}
+# 		remove_short_term_gold = 75
+# 		add_piety = 100
+# 		scope:county = {
+# 			remove_county_modifier = RICE_nubia_hermits_in_pharaonic_tombs
+# 			add_county_modifier = {
+# 				modifier = RICE_nubia_hermits_in_pharaonic_tombs_upgraded
+# 				years = 10
+# 			}
+# 		}
+# 		stress_impact = {
+# 			greedy = minor_stress_impact_gain
+# 			cynical = minor_stress_impact_gain
+# 		}
+# 		add_character_modifier = {
+# 			modifier = RICE_manichean_supports_books
+# 			years = 10
+# 		}
+# 	}
+
+# 	after = {
+# 		if = {
+# 			limit = {
+# 				has_game_rule = RICE_historical_context_on
+# 			}
+# 			custom_tooltip = nubia.0250.info
+# 		}
+# 	}
+
+# }
+
+# Local hermits inhabit a local ancient Pharaonic-era tomb
+# nubia.0251 = {
+# 	type = character_event
+# 	title = nubia.0251.t
+# 	desc = nubia.0251.desc
+# 	theme = faith
+# 	override_background = { reference = RICE_background_egypt_desert }
+
+# 	right_portrait = {
+# 		character = root
+# 		animation = thinking
+# 	}
+		
+# 	trigger = {
+# 		religion = religion:christianity_religion
+# 		any_held_county = {
+# 			any_county_province = {
+# 				OR = {
+# 					geographical_region = RICE_nile_river_valley_without_ethiopia
+# 					geographical_region = RICE_southern_egypt_and_northern_nubia
+# 				}
+# 			}
+# 		}
+# 	}
+
+# 	weight_multiplier = {
+# 		base = 1
+# 		modifier = {
+# 			add = 0.2
+# 			has_trait = zealous
+# 		}
+# 		modifier = {
+# 			add = -0.2
+# 			has_trait = cynical
+# 		}
+# 		modifier = {
+# 			add = 0.2
+# 			has_trait = generous
+# 		}
+# 		modifier = {
+# 			add = -0.2
+# 			has_trait = greedy
+# 		}
+# 		modifier = {
+# 			add = 0.2
+# 			has_trait = content
+# 		}
+# 		modifier = {
+# 			add = -0.2
+# 			has_trait = ambitious
+# 		}
+# 	}
+
+# 	immediate = {
+# 		random_held_county = {
+# 			limit = {
+# 				any_county_province = {
+# 					OR = {
+# 						geographical_region = RICE_nile_river_valley_without_ethiopia
+# 						geographical_region = RICE_southern_egypt_and_northern_nubia
+# 					}
+# 				}				
+# 			}
+# 			save_scope_as = county
+# 		}
+# 		scope:county = {
+# 			add_county_modifier = {
+# 				modifier = RICE_nubia_hermits_in_pharaonic_tombs
+# 				years = 10
+# 			}
+# 		}
+# 	}
+
+# 	option = { # Ok
+# 		name = nubia.0251.a
+# 		stress_impact = {
+# 			zealous = minor_stress_impact_gain
+# 		}
+# 	}
+
+# 	option = { # Ok
+# 		name = nubia.0251.b
+# 		trigger = {
+# 			OR = {
+# 				gold >= 20
+# 				is_ai = no
+# 			}
+# 		}
+# 		remove_short_term_gold = 20
+# 		add_piety = 50
+# 		stress_impact = {
+# 			greedy = miniscule_stress_impact_gain
+# 			cynical = miniscule_stress_impact_gain
+# 		}
+# 		add_character_modifier = {
+# 			modifier = RICE_manichean_supports_books
+# 			years = 10
+# 		}
+# 	}
+
+# 	option = { # Ok
+# 		name = nubia.0251.c
+# 		trigger = {
+# 			OR = {
+# 				gold >= 75
+# 				is_ai = no
+# 			}
+# 		}
+# 		remove_short_term_gold = 75
+# 		add_piety = 100
+# 		scope:county = {
+# 			remove_county_modifier = RICE_nubia_hermits_in_pharaonic_tombs
+# 			add_county_modifier = {
+# 				modifier = RICE_nubia_hermits_in_pharaonic_tombs_upgraded
+# 				years = 10
+# 			}
+# 		}
+# 		stress_impact = {
+# 			greedy = minor_stress_impact_gain
+# 			cynical = minor_stress_impact_gain
+# 		}
+# 		add_character_modifier = {
+# 			modifier = RICE_manichean_supports_books
+# 			years = 10
+# 		}
+# 	}
+
+# 	after = {
+# 		if = {
+# 			limit = {
+# 				has_game_rule = RICE_historical_context_on
+# 			}
+# 			custom_tooltip = nubia.0250.info
+# 		}
+# 	}
+
+# }
