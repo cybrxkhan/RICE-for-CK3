@@ -350,6 +350,59 @@ RICE_tribal_or_nomad_trigger = {
 	}
 }
 
-
+#the unlocalized part
+RICE_geographical_req = {
+	OR = {
+		trigger_if = {
+			limit = {
+				highest_held_title_tier >= tier_empire
+			}
+			any_sub_realm_county = {
+				title_province ?= { geographical_region = geographical_region:$REGION$ }
+			}
+		}
+		any_held_title = { #any_directly_owned_province may have split baronies across regions?
+			tier = tier_county
+			is_landless_type_title = no
+			trigger_if = {
+				limit = {
+					geographical_region:$REGION$ = geographical_region:RICE_red_sea_region
+				}
+				is_coastal_county = yes
+			}
+			any_county_province = {
+				geographical_region = $REGION$
+			}
+		}
+		domicile.domicile_location ?= {
+			geographical_region = $REGION$
+		}
+	}
+}
+travel_option_req = {
+	switch = {
+		trigger = geographical_region:$REGION$
+		geographical_region:RICE_maritime_silk_road_region = {
+			custom_description = { # this option was left "along"
+				text = RICE_maritime_silk_road_geographical_req
+				RICE_geographical_req = { REGION = $REGION$ }
+			}
+		}
+		geographical_region:world_india = {
+			custom_description = { #this is just here so we don't have "the [India]" without [region|E] or subcontinent suffix
+				text = RICE_india_geographical_req
+				RICE_geographical_req = { REGION = $REGION$ }
+			}
+		}
+		fallback = {
+			custom_description = {
+				text = RICE_geographical_travel_req
+				subject = geographical_region:$REGION$
+				object = root # try to invoke GetRealmOrDomicileConcept when landless
+				RICE_geographical_req = { REGION = $REGION$ }
+			}
+		}
+	}
+}
 
 
