@@ -1499,16 +1499,16 @@
 		character:RICE_nubia_eparch_coworkers_003 = {
 			get_title = title:c_sai
 			RICE_setup_new_granted_ruler_bonuses_effect = yes
-			save_scope_as = minnel
+			save_scope_as = teita
 		}
 
 		create_title_and_vassal_change = {
 			type = swear_fealty
 			save_scope_as = change
 		}
-		scope:minnel = {
+		scope:teita = {
 			change_liege = {
-				liege = scope:nobatia_eparch
+				liege = scope:makurian_king
 				change = scope:change
 			}
 		}
@@ -2469,7 +2469,20 @@
 	#
 	############################################################ 
 
+	culture:egyptian = {
+		save_scope_as = egyptian
+	}
+
+	culture:ethiopian = {		
+		get_all_innovations_from = scope:egyptian
+	}
+
+	culture:somali = {		
+		get_all_innovations_from = scope:egyptian
+	}
+
 	culture:nubian = {
+		get_all_innovations_from = scope:egyptian
 		if = {
 			limit = {
 				set_culture_pillar = martial_custom_equal
@@ -3308,7 +3321,6 @@ RICE_nile_farmers_positive_decision_effect = {
 			years = 5
 		}
 	}
-	add_gold = { minor_gold_value major_gold_value }
 	every_character_to_title_neighboring_county = {
 		limit = {
 			exists = this
@@ -3316,10 +3328,12 @@ RICE_nile_farmers_positive_decision_effect = {
 				RICE_tribal_or_nomad_trigger = no
 			}
 		}
-		add_opinion = {
-			target = root
-			modifier = pleased_opinion
-			opinion = 10
+		holder = {
+			add_opinion = {
+				target = root
+				modifier = pleased_opinion
+				opinion = 10
+			}
 		}
 	}
 	add_character_flag = {
@@ -3363,10 +3377,12 @@ RICE_nile_farmers_negative_decision_effect = {
 				RICE_tribal_or_nomad_trigger = no
 			}
 		}
-		add_opinion = {
-			target = root
-			modifier = angry_opinion
-			opinion = -10
+		holder = {
+			add_opinion = {
+				target = root
+				modifier = angry_opinion
+				opinion = -10
+			}
 		}
 	}
 	add_character_flag = {
@@ -3398,6 +3414,12 @@ RICE_nile_pastoralists_positive_decision_effect = {
 			any_county_situation = { this = situation:RICE_nile_river_situation }
 		}
 		#change_development_progress_with_overflow = 15
+		if = {
+			limit = {
+				has_county_modifier = RICE_nile_pastoralists_negative_modifier
+			}
+			remove_county_modifier = RICE_nile_pastoralists_negative_modifier
+		}
 		add_county_modifier = {
 			modifier = RICE_nile_pastoralists_positive_modifier
 			years = 5
@@ -3410,13 +3432,15 @@ RICE_nile_pastoralists_positive_decision_effect = {
 				RICE_tribal_or_nomad_trigger = yes
 			}
 		}
-		add_opinion = {
-			target = root
-			modifier = pleased_opinion
-			opinion = 10
+		holder = {			
+			add_opinion = {
+				target = root
+				modifier = pleased_opinion
+				opinion = 10
+			}
 		}
 	}
-	custom_tooltip = RICE_nile_pastoralists_positive_decision_effect_tooltip_2
+	#custom_tooltip = RICE_nile_pastoralists_positive_decision_effect_tooltip_2
 	add_character_flag = {
 		flag = RICE_nile_pastoralist_positive_timer
 		years = 20
@@ -3457,6 +3481,12 @@ RICE_nile_pastoralists_negative_decision_effect = {
 			any_county_situation = { this = situation:RICE_nile_river_situation }
 		}
 		#change_development_progress_with_overflow = 15
+		if = {
+			limit = {
+				has_county_modifier = RICE_nile_pastoralists_positive_modifier
+			}
+			remove_county_modifier = RICE_nile_pastoralists_positive_modifier
+		}
 		add_county_modifier = {
 			modifier = RICE_nile_pastoralists_negative_modifier
 			years = 5
@@ -3469,10 +3499,12 @@ RICE_nile_pastoralists_negative_decision_effect = {
 				RICE_tribal_or_nomad_trigger = yes
 			}
 		}
-		add_opinion = {
-			target = root
-			modifier = angry_opinion
-			opinion = -10
+		holder = {
+			add_opinion = {
+				target = root
+				modifier = angry_opinion
+				opinion = -10
+			}
 		}
 	}
 	add_character_flag = {
@@ -4586,6 +4618,94 @@ RICE_nubia_lake_oracle_decision_effect = {
 		add_character_flag = RICE_did_lake_oracle_decision
 	}
 }
+
+RICE_nubia_frontier_trait_small_xp_gain = {
+	if = {
+		limit = {
+			has_trait = RICE_lord_of_the_mountain
+		}
+		add_trait_xp = {
+			trait = RICE_lord_of_the_mountain
+			value = RICE_baqt_border_trait_small_xp_gain
+		}
+	}
+}
+
+RICE_egypt_frontier_trait_small_xp_gain = {
+	if = {
+		limit = {
+			has_trait = RICE_governor_of_aswan
+		}
+		add_trait_xp = {
+			trait = RICE_governor_of_aswan
+			value = RICE_baqt_border_trait_small_xp_gain
+		}
+	}
+}
+
+RICE_nubia_egypt_frontier_trait_small_xp_gain = {
+	RICE_nubia_frontier_trait_small_xp_gain = yes
+	RICE_egypt_frontier_trait_small_xp_gain = yes
+}
+
+RICE_nubia_frontier_trait_medium_xp_gain = {
+	if = {
+		limit = {
+			has_trait = RICE_lord_of_the_mountain
+		}
+		add_trait_xp = {
+			trait = RICE_lord_of_the_mountain
+			value = RICE_baqt_border_trait_medium_xp_gain
+		}
+	}
+}
+
+RICE_egypt_frontier_trait_medium_xp_gain = {
+	if = {
+		limit = {
+			has_trait = RICE_governor_of_aswan
+		}
+		add_trait_xp = {
+			trait = RICE_governor_of_aswan
+			value = RICE_baqt_border_trait_medium_xp_gain
+		}
+	}
+}
+
+RICE_nubia_egypt_frontier_trait_medium_xp_gain = {
+	RICE_nubia_frontier_trait_medium_xp_gain = yes
+	RICE_egypt_frontier_trait_medium_xp_gain = yes
+}
+
+RICE_nubia_frontier_trait_large_xp_gain = {
+	if = {
+		limit = {
+			has_trait = RICE_lord_of_the_mountain
+		}
+		add_trait_xp = {
+			trait = RICE_lord_of_the_mountain
+			value = RICE_baqt_border_trait_large_xp_gain
+		}
+	}
+}
+
+RICE_egypt_frontier_trait_large_xp_gain = {
+	if = {
+		limit = {
+			has_trait = RICE_governor_of_aswan
+		}
+		add_trait_xp = {
+			trait = RICE_governor_of_aswan
+			value = RICE_baqt_border_trait_large_xp_gain
+		}
+	}
+}
+
+RICE_nubia_egypt_frontier_trait_large_xp_gain = {
+	RICE_nubia_frontier_trait_large_xp_gain = yes
+	RICE_egypt_frontier_trait_large_xp_gain = yes
+}
+
 
 
 

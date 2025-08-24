@@ -818,6 +818,17 @@ RICE_baqt_frontier_decision = {
 		### Stewardship: Oversee Land Sales
 		item = {
 			value = RICE_baqt_frontier_land_sales
+			# Has at least one courtier or vassal
+			is_valid = {
+				OR = {
+					any_courtier = {	
+						is_available_ai_adult = yes				
+					}
+					any_vassal = {	
+						is_available_ai_adult = yes				
+					}
+				}
+			}
 			current_description = RICE_baqt_frontier_land_sales_desc
 			localization = RICE_baqt_frontier_land_sales_name
 			icon = "gfx/interface/icons/scheme_types/icon_dispute_border.dds"
@@ -893,6 +904,7 @@ RICE_baqt_frontier_decision = {
 		# }
 
 		custom_tooltip = RICE_baqt_frontier_decision_effect_tooltip_1
+		custom_tooltip = RICE_baqt_frontier_decision_effect_tooltip_2
 
 		RICE_baqt_frontier_decision_trait_gain_tooltip_effect = yes
 
@@ -905,24 +917,21 @@ RICE_baqt_frontier_decision = {
 
 		if = {
 			limit = { scope:RICE_baqt_frontier_correpsondence = yes }
-			show_as_tooltip = {
-				RICE_baqt_frontier_correpsondence_effect = yes
-				custom_tooltip = RICE_baqt_frontier_correpsondence_effect_1_tt
-				random_list = {
-					100 = {
-						show_chance = no
-						desc = RICE_baqt_frontier_decision_success
-						custom_tooltip = RICE_baqt_frontier_correpsondence_success_1_tt
-						custom_tooltip = RICE_baqt_frontier_correpsondence_success_2_tt
-						custom_tooltip = RICE_baqt_frontier_correpsondence_success_3_tt
-					}
-					100 = {
-						show_chance = no
-						desc = RICE_baqt_frontier_decision_failure
-						custom_tooltip = RICE_baqt_frontier_correpsondence_failure_1_tt
-						custom_tooltip = RICE_baqt_frontier_correpsondence_failure_2_tt
-						custom_tooltip = RICE_baqt_frontier_correpsondence_failure_3_tt
-					}
+			custom_tooltip = RICE_baqt_frontier_correpsondence_effect_1_tt
+			random_list = {
+				100 = {
+					show_chance = no
+					desc = RICE_baqt_frontier_decision_success
+					custom_tooltip = RICE_baqt_frontier_correpsondence_success_1_tt
+					custom_tooltip = RICE_baqt_frontier_correpsondence_success_2_tt
+					custom_tooltip = RICE_baqt_frontier_correpsondence_success_3_tt
+				}
+				100 = {
+					show_chance = no
+					desc = RICE_baqt_frontier_decision_failure
+					custom_tooltip = RICE_baqt_frontier_correpsondence_failure_1_tt
+					custom_tooltip = RICE_baqt_frontier_correpsondence_failure_2_tt
+					custom_tooltip = RICE_baqt_frontier_correpsondence_failure_3_tt
 				}
 			}
 			trigger_event = nubia.0160
@@ -930,20 +939,46 @@ RICE_baqt_frontier_decision = {
 
 		else_if = {
 			limit = { scope:RICE_baqt_frontier_fortify = yes }
-			show_as_tooltip = {
-				RICE_baqt_frontier_fortify_effect = yes
-				custom_tooltip = RICE_baqt_frontier_fortify_effect_1_tt
+			custom_tooltip = RICE_baqt_frontier_fortify_effect_1_tt
+			random_list = {
+				100 = {
+					show_chance = no
+					desc = RICE_baqt_frontier_decision_success
+					custom_tooltip = RICE_baqt_frontier_fortify_success_1_tt
+					custom_tooltip = RICE_baqt_frontier_fortify_success_2_tt
+					custom_tooltip = RICE_baqt_frontier_fortify_success_3_tt
+				}
+				100 = {
+					show_chance = no
+					desc = RICE_baqt_frontier_decision_failure
+					custom_tooltip = RICE_baqt_frontier_fortify_failure_1_tt
+					custom_tooltip = RICE_baqt_frontier_fortify_failure_2_tt
+					custom_tooltip = RICE_baqt_frontier_fortify_failure_3_tt
+				}
 			}
-			trigger_event = nubia.8888
+			trigger_event = nubia.0164
 		}
 
 		else_if = {
 			limit = { scope:RICE_baqt_frontier_land_sales = yes }
-			show_as_tooltip = {
-				RICE_baqt_frontier_land_sales_effect = yes
-				custom_tooltip = RICE_baqt_frontier_land_sales_effect_1_tt
+			custom_tooltip = RICE_baqt_frontier_land_sales_effect_1_tt
+			random_list = {
+				100 = {
+					show_chance = no
+					desc = RICE_baqt_frontier_decision_success
+					custom_tooltip = RICE_baqt_frontier_land_sales_success_1_tt
+					custom_tooltip = RICE_baqt_frontier_land_sales_success_2_tt
+					custom_tooltip = RICE_baqt_frontier_land_sales_success_3_tt
+				}
+				100 = {
+					show_chance = no
+					desc = RICE_baqt_frontier_decision_failure
+					custom_tooltip = RICE_baqt_frontier_land_sales_failure_1_tt
+					custom_tooltip = RICE_baqt_frontier_land_sales_failure_2_tt
+					custom_tooltip = RICE_baqt_frontier_land_sales_failure_3_tt
+				}
 			}
-			trigger_event = nubia.8888
+			trigger_event = nubia.0167
 		}
 
 		else_if = {
@@ -1092,16 +1127,16 @@ RICE_nile_pastoralists_positive_decision = {
 		}
 
 		trigger_event = {
-			id = nubia.8888
+			id = nubia.0090
 		}
 	}
 
 	cost = { 
-		gold = { value = RICE_activity_cost } # Cost should fluctuate based on Nile
+		gold = { value = RICE_nile_pastoralists_positive_decision_cost } # Cost should fluctuate based on Nile
 	}	
 
 	ai_potential = {
-		short_term_gold >= RICE_activity_cost
+		short_term_gold >= RICE_nile_pastoralists_positive_decision_cost
 	}
 
 	ai_will_do = {
@@ -1172,16 +1207,16 @@ RICE_nile_pastoralists_negative_decision = {
 		}
 
 		trigger_event = {
-			id = nubia.8888
+			id = nubia.0091
 		}
 	}
 
 	cost = { 
-		gold = { value = RICE_activity_cost }
+		gold = { value = RICE_nile_pastoralists_negative_decision_cost }
 	}	
 
 	ai_potential = {
-		short_term_gold >= RICE_activity_cost
+		short_term_gold >= RICE_nile_pastoralists_negative_decision_cost
 	}
 
 	ai_will_do = {
@@ -1262,16 +1297,16 @@ RICE_nile_farmers_positive_decision = {
 		}
 
 		trigger_event = {
-			id = nubia.8888
+			id = nubia.0092
 		}
 	}
 
 	cost = { 
-		gold = { value = RICE_activity_cost }
+		gold = { value = RICE_nile_farmers_positive_decision_cost }
 	}	
 
 	ai_potential = {
-		short_term_gold >= RICE_activity_cost
+		short_term_gold >= RICE_nile_farmers_positive_decision_cost
 	}
 
 	ai_will_do = {
@@ -1344,27 +1379,27 @@ RICE_nile_farmers_negative_decision = {
 		}
 
 		trigger_event = {
-			id = nubia.8888
+			id = nubia.0093
 		}
 	}
 
 	cost = { 
-		gold = { value = RICE_activity_cost }
+		gold = { value = RICE_nile_farmers_negative_decision_cost }
 	}	
 
 	ai_potential = {
-		short_term_gold >= RICE_activity_cost
+		short_term_gold >= RICE_nile_farmers_negative_decision_cost
 	}
 
 	ai_will_do = {
 		base = 40
 		modifier = {
 			add = 10
-			has_trait = generous
+			has_trait = greedy
 		}
 		modifier = {
 			add = -10
-			has_trait = paranoid
+			has_trait = compassionate
 		}
 	}
 }

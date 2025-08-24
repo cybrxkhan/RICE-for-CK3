@@ -7,7 +7,8 @@
 # nubia.0030-nubia.0039			Nile Flood & Related Decisions
 # nubia.0040-nubia.0059			Baqt Exchange
 # nubia.0060-nubia.0079			Niuty's Rebellion Event Chain
-# nubia.0080-nubia.0099			Culture events and decisions
+# nubia.0080-nubia.0089			Culture events and decisions
+# nubia.0090-nubia.0099			Pastoralists and Farmers
 # nubia.0100-nubia.0119			Eldad ha-Dani/Danite stuff
 # nubia.0120-nubia.0139			Other Historical Aspirations
 # nubia.0140-nubia.0159			Eparch Marianos slave fugitive event chain
@@ -2211,7 +2212,7 @@ nubia.0069 = {
 # 
 # CULTURE EVENTS AND DECISIONS
 # 
-# nubia.0080-nubia.0099
+# nubia.0080-nubia.0089
 # 
 ######################################################################################
 
@@ -2530,6 +2531,207 @@ nubia.0080 = {
 			}
 			remove_variable = RICE_nilotic_type
 		}
+	}
+
+}
+
+
+######################################################################################
+# 
+# PASTORALISTS AND FARMERS
+# 
+# nubia.0090-nubia.0099
+# 
+######################################################################################
+
+
+# Welcome Nile Pastoralists
+nubia.0090 = {
+	type = character_event
+	title = nubia.0090.t
+	desc = nubia.0090.desc
+	theme = migration
+	override_background = { reference = RICE_background_nile_travel }
+
+	right_portrait = {
+		character = root
+		animation = personality_forgiving
+	}
+
+	immediate = {
+		RICE_nile_pastoralists_positive_decision_effect = yes
+	}
+
+	# Ok
+	option = {
+		name = nubia.0090.a
+	}
+
+	# Pay extra
+	option = {
+		name = nubia.0090.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= RICE_pastoralist_decision_bonus_max
+			}
+		}
+		remove_short_term_gold = { RICE_pastoralist_decision_bonus_min RICE_pastoralist_decision_bonus_max }
+		# You are in Egypt
+		if = {
+			limit = {
+				capital_county = {
+					any_county_province = {
+						geographical_region = ghw_region_egypt
+					}
+				}
+			}
+			spawn_army = {
+				levies = 200
+				men_at_arms = {
+					type = light_horsemen
+					stacks = 1
+				}
+				men_at_arms = {
+					type = abudrar
+					stacks = 1
+				}
+				men_at_arms = {
+					type = mubarizun
+					stacks = 1
+				}
+				location = capital_province
+				uses_supply = yes
+				inheritable = yes
+				name = RICE_nile_pastoralist_troops
+			}
+		}
+		# You are in Nubia
+		else_if = {
+			limit = {
+				capital_county = {
+					any_county_province = {
+						geographical_region = RICE_greater_nubia_region
+					}
+				}
+			}
+			spawn_army = {
+				levies = 200
+				men_at_arms = {
+					type = archers_of_the_nile
+					stacks = 1
+				}
+				men_at_arms = {
+					type = RICE_nilotic_raiders
+					stacks = 1
+				}
+				men_at_arms = {
+					type = sahel_horsemen
+					stacks = 1
+				}
+				location = capital_province
+				uses_supply = yes
+				inheritable = yes
+				name = RICE_nile_pastoralist_troops
+			}
+		}
+		# You are in neither Nubia or Egypt for some reason
+		else = {
+			spawn_army = {
+				levies = 200
+				men_at_arms = {
+					type = archers_of_the_nile
+					stacks = 1
+				}
+				men_at_arms = {
+					type = abudrar
+					stacks = 1
+				}
+				men_at_arms = {
+					type = sahel_horsemen
+					stacks = 1
+				}
+				location = capital_province
+				uses_supply = yes
+				inheritable = yes
+				name = RICE_nile_pastoralist_troops
+			}
+		}
+	}
+
+}
+
+
+
+# Ward Off Nile Pastoralists
+nubia.0091 = {
+	type = character_event
+	title = nubia.0091.t
+	desc = nubia.0091.desc
+	theme = migration
+	override_background = { reference = RICE_background_nile_travel }
+
+	right_portrait = {
+		character = root
+		animation = disapproval
+	}
+
+	immediate = {
+		RICE_nile_pastoralists_negative_decision_effect = yes
+	}
+
+	# Ok
+	option = {
+		name = nubia.0091.a
+	}
+
+}
+
+# Protect Nile farmers
+nubia.0092 = {
+	type = character_event
+	title = nubia.0092.t
+	desc = nubia.0092.desc
+	theme = martial
+	override_background = { reference = RICE_background_nile_travel }
+
+	right_portrait = {
+		character = root
+		animation = war_defender
+	}
+
+	immediate = {
+		RICE_nile_farmers_positive_decision_effect = yes
+	}
+
+	# Ok
+	option = {
+		name = nubia.0092.a
+	}
+
+}
+
+# Plunder Nile farmers
+nubia.0093 = {
+	type = character_event
+	title = nubia.0093.t
+	desc = nubia.0093.desc
+	theme = raid
+	override_background = { reference = RICE_background_nile_travel }
+
+	right_portrait = {
+		character = root
+		animation = menacing
+	}
+
+	immediate = {
+		add_gold = { RICE_pastoralist_decision_bonus_min RICE_pastoralist_decision_bonus_max }
+		RICE_nile_farmers_negative_decision_effect = yes
+	}
+
+	# Ok
+	option = {
+		name = nubia.0093.a
 	}
 
 }
@@ -4153,24 +4355,7 @@ nubia.0161 = {
 	}
 
 	after = {
-		if = {
-			limit = {
-				has_trait = RICE_lord_of_the_mountain
-			}
-			add_trait_xp = {
-				trait = RICE_lord_of_the_mountain
-				value = RICE_baqt_border_trait_small_xp_gain
-			}
-		}
-		if = {
-			limit = {
-				has_trait = RICE_governor_of_aswan
-			}
-			add_trait_xp = {
-				trait = RICE_governor_of_aswan
-				value = RICE_baqt_border_trait_small_xp_gain
-			}
-		}
+		RICE_nubia_egypt_frontier_trait_small_xp_gain = yes
 		if = {
 			limit = {
 				scope:giver = {
@@ -4204,24 +4389,7 @@ nubia.0162 = {
 	immediate = {
 		scope:receiver = {
 			show_as_tooltip = {
-				if = {
-					limit = {
-						has_trait = RICE_lord_of_the_mountain
-					}
-					add_trait_xp = {
-						trait = RICE_lord_of_the_mountain
-						value = RICE_baqt_border_trait_small_xp_gain
-					}
-				}
-				if = {
-					limit = {
-						has_trait = RICE_governor_of_aswan
-					}
-					add_trait_xp = {
-						trait = RICE_governor_of_aswan
-						value = RICE_baqt_border_trait_small_xp_gain
-					}
-				}
+				RICE_nubia_egypt_frontier_trait_small_xp_gain = yes
 			}
 		}
 	}
@@ -4231,7 +4399,7 @@ nubia.0162 = {
 		name = nubia.0162.a
 		duel = {
 			skill = diplomacy
-			value = average_skill_rating
+			value = mediocre_skill_rating
 			10 = {
 				custom_tooltip = nubia.0162.a.small_success
 				compare_modifier = {
@@ -4243,24 +4411,7 @@ nubia.0162 = {
 					left_icon = ROOT
 					title = nubia.0162.a.small_success
 					add_prestige = minor_prestige_gain
-					if = {
-						limit = {
-							has_trait = RICE_lord_of_the_mountain
-						}
-						add_trait_xp = {
-							trait = RICE_lord_of_the_mountain
-							value = RICE_baqt_border_trait_medium_xp_gain
-						}
-					}
-					if = {
-						limit = {
-							has_trait = RICE_governor_of_aswan
-						}
-						add_trait_xp = {
-							trait = RICE_governor_of_aswan
-							value = RICE_baqt_border_trait_medium_xp_gain
-						}
-					}
+					RICE_nubia_egypt_frontier_trait_medium_xp_gain = yes
 					scope:giver = {
 						add_opinion = {
 							modifier = RICE_opinion_baqt_correspondence_good
@@ -4286,24 +4437,7 @@ nubia.0162 = {
 					left_icon = ROOT
 					title = nubia.0162.a.large_success
 					add_prestige = minor_prestige_gain
-					if = {
-						limit = {
-							has_trait = RICE_lord_of_the_mountain
-						}
-						add_trait_xp = {
-							trait = RICE_lord_of_the_mountain
-							value = RICE_baqt_border_trait_large_xp_gain
-						}
-					}
-					if = {
-						limit = {
-							has_trait = RICE_governor_of_aswan
-						}
-						add_trait_xp = {
-							trait = RICE_governor_of_aswan
-							value = RICE_baqt_border_trait_large_xp_gain
-						}
-					}
+					RICE_nubia_egypt_frontier_trait_large_xp_gain = yes
 					scope:giver = {
 						add_opinion = {
 							modifier = RICE_opinion_baqt_correspondence_good
@@ -4358,24 +4492,7 @@ nubia.0163 = {
 	immediate = {
 		scope:receiver = {
 			show_as_tooltip = {
-				if = {
-					limit = {
-						has_trait = RICE_lord_of_the_mountain
-					}
-					add_trait_xp = {
-						trait = RICE_lord_of_the_mountain
-						value = RICE_baqt_border_trait_small_xp_gain
-					}
-				}
-				if = {
-					limit = {
-						has_trait = RICE_governor_of_aswan
-					}
-					add_trait_xp = {
-						trait = RICE_governor_of_aswan
-						value = RICE_baqt_border_trait_small_xp_gain
-					}
-				}
+				RICE_nubia_egypt_frontier_trait_small_xp_gain = yes
 			}
 		}
 	}
@@ -4385,7 +4502,7 @@ nubia.0163 = {
 		name = nubia.0163.a
 		duel = {
 			skill = diplomacy
-			value = average_skill_rating
+			value = mediocre_skill_rating
 			10 = {
 				custom_tooltip = nubia.0163.a.large_failure
 				compare_modifier = {
@@ -4397,6 +4514,7 @@ nubia.0163 = {
 					left_icon = ROOT
 					title = nubia.0163.a.large_failure
 					add_prestige = medium_prestige_loss
+					RICE_nubia_egypt_frontier_trait_small_xp_gain = yes
 					scope:giver = {
 						add_opinion = {
 							modifier = RICE_opinion_baqt_correspondence_bad
@@ -4422,6 +4540,7 @@ nubia.0163 = {
 					left_icon = ROOT
 					title = nubia.0163.a.small_failure
 					add_prestige = minor_prestige_loss
+					RICE_nubia_egypt_frontier_trait_small_xp_gain = yes
 					scope:giver = {
 						add_opinion = {
 							modifier = RICE_opinion_baqt_correspondence_bad
@@ -4458,6 +4577,701 @@ nubia.0163 = {
 
 }
 
+
+# Fortify borders - spend extra money?
+nubia.0164 = {
+	type = character_event
+	title = nubia.0164.t
+	desc = nubia.0164.desc
+	theme = martial
+	override_background = { reference = RICE_background_nile_travel }
+	
+	right_portrait = {
+		character = root
+		animation = survey
+	}
+	
+	option = { # Ok
+		name = nubia.0164.a
+		#hidden_effect = {
+			duel = {
+				skills = { martial }
+				value = mediocre_skill_rating
+				# Success.
+				50 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 1.5
+						min = -49
+					}
+					trigger_event = nubia.0165
+				}
+				# Failure.
+				50 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -1.5
+						min = -49
+					}
+					trigger_event = nubia.0166
+				}
+			}
+		#}
+	}
+	
+	option = { # Ok
+		name = nubia.0164.b	
+		remove_short_term_gold = RICE_egypt_nubia_boost_cost_amount	
+		#hidden_effect = {
+			duel = {
+				skills = { martial }
+				value = mediocre_skill_rating
+				# Success.
+				70 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 1.5
+						min = -49
+					}
+					trigger_event = nubia.0165
+				}
+				# Failure.
+				30 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -1.5
+						min = -49
+					}
+					trigger_event = nubia.0166
+				}
+			}
+		#}
+	}
+
+}
+
+# Fortify borders - success
+nubia.0165 = {
+	type = character_event
+	title = nubia.0165.t
+	desc = {
+		desc = nubia.0165.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_nubia_fortify_major_success
+				}
+				desc = nubia.0165.desc.major
+			}
+			desc = nubia.0165.desc.minor
+		}
+	}
+	theme = martial
+	override_background = { reference = RICE_background_nile_private_courtyard }
+	
+	right_portrait = {
+		character = root
+		animation = war_over_win
+	}
+
+	immediate = {
+		# Determine how much success
+		duel = {
+			skills = { martial }
+			value = mediocre_skill_rating
+			# Great Success.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 1.5
+					min = -49
+				}
+				RICE_nubia_egypt_frontier_trait_large_xp_gain = yes
+				add_character_flag = {
+					flag = RICE_nubia_fortify_major_success
+					days = 1
+				}
+				every_realm_county = {
+					limit = {
+						title_province = {
+							geographical_region = RICE_egypt_and_nubia_frontier
+						}						
+					}
+					custom = RICE_every_county_you_completely_control_in_egypt_nubia_frontier
+					change_county_control = minor_county_control_gain
+					add_county_modifier = {
+						modifier = RICE_baqt_greatly_improved_defenses
+						years = 10
+					}	
+				}
+				# For some reason this doesn't work
+				# every_county_in_region = {
+				# 	region = RICE_egypt_and_nubia_frontier
+				# 	limit = { holder.top_liege = root }
+				# 	custom = RICE_every_county_you_completely_control_in_egypt_nubia_frontier
+				# 	change_county_control = minor_county_control_gain
+				# 	add_county_modifier = {
+				# 		modifier = RICE_baqt_greatly_improved_defenses
+				# 		years = 10
+				# 	}	
+				# }
+			}
+			# Minor Success
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -1.5
+					min = -49
+				}
+				RICE_nubia_egypt_frontier_trait_medium_xp_gain = yes
+				every_realm_county = {
+					limit = {
+						title_province = {
+							geographical_region = RICE_egypt_and_nubia_frontier
+						}						
+					}
+					custom = RICE_every_county_you_completely_control_in_egypt_nubia_frontier
+					change_county_control = miniscule_county_control_gain
+					add_county_modifier = {
+						modifier = RICE_baqt_greatly_improved_defenses
+						years = 10
+					}	
+				}
+				# For some reason this doesn't work
+				# every_county_in_region = {
+				# 	region = RICE_egypt_and_nubia_frontier
+				# 	limit = { holder.top_liege = root }
+				# 	custom = RICE_every_county_you_completely_control_in_egypt_nubia_frontier
+				# 	change_county_control = miniscule_county_control_gain
+				# 	add_county_modifier = {
+				# 		modifier = RICE_baqt_greatly_improved_defenses
+				# 		years = 10
+				# 	}	
+				# }
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = nubia.0165.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_nubia_fortify_major_success
+			}
+			remove_character_flag = RICE_nubia_fortify_major_success
+		}
+	}
+
+}
+
+# Fortify borders - mixed results
+nubia.0166 = {
+	type = character_event
+	title = nubia.0166.t
+	desc = {
+		desc = nubia.0166.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_nubia_fortify_major_failure
+				}
+				desc = nubia.0166.desc.major
+			}
+			desc = nubia.0166.desc.minor
+		}
+	}
+	theme = martial
+	override_background = { reference = RICE_background_nile_private_courtyard }
+	
+	right_portrait = {
+		character = root
+		animation = war_over_win
+	}
+
+	immediate = {
+		# Determine how much success
+		duel = {
+			skills = { martial }
+			value = mediocre_skill_rating
+			# Minor failure
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 1.5
+					min = -49
+				}
+				RICE_nubia_egypt_frontier_trait_small_xp_gain = yes
+				every_realm_county = {
+					limit = {
+						title_province = {
+							geographical_region = RICE_egypt_and_nubia_frontier
+						}						
+					}
+					custom = RICE_every_county_you_completely_control_in_egypt_nubia_frontier
+					change_county_control = miniscule_county_control_loss
+					add_county_modifier = {
+						modifier = RICE_baqt_mixed_result_defenses
+						years = 10
+					}	
+				}
+				# For some reason this doesn't work
+				# every_county_in_region = {
+				# 	region = RICE_egypt_and_nubia_frontier
+				# 	limit = { holder.top_liege = root }
+				# 	custom = RICE_every_county_you_completely_control_in_egypt_nubia_frontier
+				# 	change_county_control = miniscule_county_control_loss
+				# 	add_county_modifier = {
+				# 		modifier = RICE_baqt_mixed_result_defenses
+				# 		years = 10
+				# 	}	
+				# }
+			}
+			# Major failure
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -1.5
+					min = -49
+				}
+				RICE_nubia_egypt_frontier_trait_small_xp_gain = yes
+				add_character_flag = {
+					flag = RICE_nubia_fortify_major_failure
+					days = 1
+				}
+				every_realm_county = {
+					limit = {
+						title_province = {
+							geographical_region = RICE_egypt_and_nubia_frontier
+						}						
+					}
+					custom = RICE_every_county_you_completely_control_in_egypt_nubia_frontier
+					change_county_control = miniscule_county_control_loss
+					add_county_modifier = {
+						modifier = RICE_baqt_mixed_result_defenses
+						years = 10
+					}	
+				}
+				# For some reason this doesn't work
+				# every_county_in_region = {
+				# 	region = RICE_egypt_and_nubia_frontier
+				# 	limit = { holder.top_liege = root }
+				# 	custom = RICE_every_county_you_completely_control_in_egypt_nubia_frontier
+				# 	change_county_control = minor_county_control_loss
+				# 	add_county_modifier = {
+				# 		modifier = RICE_baqt_mixed_result_defenses
+				# 		years = 10
+				# 	}	
+				# }
+			}
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0166.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_nubia_fortify_major_failure
+			}
+			remove_character_flag = RICE_nubia_fortify_major_failure
+		}
+	}
+
+}
+
+
+
+
+
+# Oversee land sales - spend extra money?
+nubia.0167 = {
+	type = character_event
+	title = nubia.0167.t
+	desc = nubia.0167.desc
+	theme = stewardship
+	override_background = { reference = council_chamber }
+	
+	left_portrait = {
+		character = root
+		animation = chancellor
+	}
+	
+	right_portrait = {
+		character = scope:witness
+		animation = thinking
+	}
+	
+	immediate = {
+		every_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+			}
+			add_to_list = candidate_characters
+		}
+		every_vassal = {
+			limit = {
+				is_available_ai_adult = yes
+			}
+			add_to_list = candidate_characters
+		}
+		random_in_list = {
+			list = candidate_characters
+			save_scope_as = witness
+		}
+	}
+	
+	option = { # Ok
+		name = nubia.0167.a
+		#hidden_effect = {
+			duel = {
+				skills = { stewardship }
+				value = mediocre_skill_rating
+				# Success.
+				50 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 1.5
+						min = -49
+					}
+					trigger_event = nubia.0168
+				}
+				# Failure.
+				50 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -1.5
+						min = -49
+					}
+					trigger_event = nubia.0169
+				}
+			}
+		#}
+	}
+	
+	option = { # Ok
+		name = nubia.0167.b		
+		remove_short_term_gold = RICE_egypt_nubia_boost_cost_amount
+		#hidden_effect = {
+			duel = {
+				skills = { stewardship }
+				value = mediocre_skill_rating
+				# Success.
+				70 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 1.5
+						min = -49
+					}
+					trigger_event = nubia.0168
+				}
+				# Failure.
+				30 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -1.5
+						min = -49
+					}
+					trigger_event = nubia.0169
+				}
+			}
+		#}
+	}
+
+}
+
+# Oversee land sales - success
+nubia.0168 = {
+	type = character_event
+	title = nubia.0168.t
+	desc = {
+		desc = nubia.0168.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_nubia_land_sale_major_success
+				}
+				desc = nubia.0168.desc.major
+			}
+			desc = nubia.0168.desc.minor
+		}
+	}
+	theme = stewardship
+	override_background = { reference = RICE_background_nile_travel }
+	
+	left_portrait = {
+		character = root
+		animation = chancellor
+	}
+	
+	right_portrait = {
+		character = scope:witness
+		animation = happiness
+	}
+
+	immediate = {
+		# Determine how much success
+		duel = {
+			skills = { stewardship }
+			value = mediocre_skill_rating
+			# Great Success.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 1.5
+					min = -49
+				}
+				RICE_nubia_egypt_frontier_trait_large_xp_gain = yes
+				add_character_flag = {
+					flag = RICE_nubia_land_sale_major_success
+					days = 1
+				}
+				every_realm_county = {
+					limit = {
+						title_province = {
+							geographical_region = RICE_egypt_and_nubia_frontier
+						}						
+					}
+					custom = RICE_every_county_you_completely_control_in_egypt_nubia_frontier
+					change_development_progress_with_overflow = minor_development_progress_gain	
+				}
+				# For some reason this doesn't work
+				# every_county_in_region = {
+				# 	region = RICE_egypt_and_nubia_frontier
+				# 	limit = { holder.top_liege = root }
+				# 	custom = RICE_every_county_you_completely_control_in_egypt_nubia_frontier
+				# 	change_development_progress_with_overflow = minor_development_progress_gain	
+				# }
+				scope:witness = {
+					add_opinion = {
+						modifier = RICE_opinion_baqt_land_sales_good
+						target = root
+						opinion = 10
+					}
+					reverse_add_opinion = {
+						modifier = RICE_opinion_baqt_land_sales_good
+						target = root
+						opinion = 10
+					}
+					progress_towards_friend_effect = {
+						CHARACTER = root
+						OPINION = default_friend_opinion
+						REASON = RICE_nubia_egypt_land_sales_reason_good
+					}
+				}
+			}
+			# Minor Success
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -1.5
+					min = -49
+				}
+				RICE_nubia_egypt_frontier_trait_medium_xp_gain = yes
+				every_realm_county = {
+					limit = {
+						title_province = {
+							geographical_region = RICE_egypt_and_nubia_frontier
+						}						
+					}
+					custom = RICE_every_county_you_completely_control_in_egypt_nubia_frontier
+					change_development_progress_with_overflow = minimal_development_progress_gain
+				}
+				# For some reason this doesn't work
+				# every_county_in_region = {
+				# 	region = RICE_egypt_and_nubia_frontier
+				# 	limit = { holder.top_liege = root }
+				# 	custom = RICE_every_county_you_completely_control_in_egypt_nubia_frontier
+				# 	change_development_progress_with_overflow = minimal_development_progress_gain
+				# }
+				scope:witness = {
+					add_opinion = {
+						modifier = RICE_opinion_baqt_land_sales_good
+						target = root
+						opinion = 5
+					}
+					reverse_add_opinion = {
+						modifier = RICE_opinion_baqt_land_sales_good
+						target = root
+						opinion = 5
+					}
+					random = {
+						chance = 25
+						progress_towards_friend_effect = {
+							CHARACTER = root
+							OPINION = default_friend_opinion
+							REASON = RICE_nubia_egypt_land_sales_reason_good
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = nubia.0168.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_nubia_land_sale_major_success
+			}
+			remove_character_flag = RICE_nubia_land_sale_major_success
+		}
+	}
+
+}
+
+# Oversee land sales - mixed results
+nubia.0169 = {
+	type = character_event
+	title = nubia.0169.t
+	desc = {
+		desc = nubia.0169.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_nubia_land_sale_major_failure
+				}
+				desc = nubia.0169.desc.major
+			}
+			desc = nubia.0169.desc.minor
+		}
+	}
+	theme = stewardship
+	override_background = { reference = RICE_background_nile_travel }
+	
+	left_portrait = {
+		character = root
+		animation = chancellor
+	}
+	
+	right_portrait = {
+		character = scope:witness
+		animation = disapproval
+	}
+
+	immediate = {
+		# Determine how much success
+		duel = {
+			skills = { stewardship }
+			value = mediocre_skill_rating
+			# Minor failure
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 1.5
+					min = -49
+				}
+				RICE_nubia_egypt_frontier_trait_small_xp_gain = yes
+				every_realm_county = {
+					limit = {
+						title_province = {
+							geographical_region = RICE_egypt_and_nubia_frontier
+						}						
+					}
+					custom = RICE_every_county_you_completely_control_in_egypt_nubia_frontier
+					change_development_progress_with_overflow = minimal_development_progress_loss
+				}
+				# For some reason this doesn't work
+				# every_county_in_region = {
+				# 	region = RICE_egypt_and_nubia_frontier
+				# 	limit = { holder.top_liege = root }
+				# 	custom = RICE_every_county_you_completely_control_in_egypt_nubia_frontier
+				# 	change_development_progress_with_overflow = minimal_development_progress_loss
+				# }
+				scope:witness = {
+					add_opinion = {
+						modifier = RICE_opinion_baqt_land_sales_bad
+						target = root
+						opinion = -5
+					}
+					reverse_add_opinion = {
+						modifier = RICE_opinion_baqt_land_sales_bad
+						target = root
+						opinion = -5
+					}
+					random = {
+						chance = 10
+						progress_towards_rival_effect = {
+							CHARACTER = root
+							OPINION = default_rival_opinion
+							REASON = RICE_nubia_egypt_land_sales_reason_good
+						}
+					}
+				}
+			}
+			# Major failure
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -1.5
+					min = -49
+				}
+				RICE_nubia_egypt_frontier_trait_small_xp_gain = yes
+				add_character_flag = {
+					flag = RICE_nubia_land_sale_major_failure
+					days = 1
+				}
+				every_realm_county = {
+					limit = {
+						title_province = {
+							geographical_region = RICE_egypt_and_nubia_frontier
+						}						
+					}
+					custom = RICE_every_county_you_completely_control_in_egypt_nubia_frontier
+					change_development_progress_with_overflow = minor_development_progress_gain
+				}
+				# For some reason this doesn't work
+				# every_county_in_region = {
+				# 	region = RICE_egypt_and_nubia_frontier
+				# 	limit = { holder.top_liege = root }
+				# 	custom = RICE_every_county_you_completely_control_in_egypt_nubia_frontier
+				# 	change_development_progress_with_overflow = minor_development_progress_gain	
+				# }
+				scope:witness = {
+					add_opinion = {
+						modifier = RICE_opinion_baqt_land_sales_bad
+						target = root
+						opinion = -10
+					}
+					reverse_add_opinion = {
+						modifier = RICE_opinion_baqt_land_sales_bad
+						target = root
+						opinion = -10
+					}
+					random = {
+						chance = 25
+						progress_towards_rival_effect = {
+							CHARACTER = root
+							OPINION = default_rival_opinion
+							REASON = RICE_nubia_egypt_land_sales_reason_good
+						}
+					}
+				}
+			}
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0169.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_nubia_land_sale_major_failure
+			}
+			remove_character_flag = RICE_nubia_land_sale_major_failure
+		}
+	}
+
+}
 
 
 ##################################################################
