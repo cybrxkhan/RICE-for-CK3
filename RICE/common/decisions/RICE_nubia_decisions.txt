@@ -1701,7 +1701,8 @@ RICE_nubia_agriculture_decision = {
 
 	is_shown = {
 		#is_landed_or_landless_administrative = yes
-		is_playable_character = yes
+		#is_playable_character = yes
+		is_landed = yes
 		culture = { has_cultural_tradition = tradition_RICE_heirs_of_kush }
 	}
 	
@@ -1720,7 +1721,7 @@ RICE_nubia_agriculture_decision = {
 		decision_to_second_step_button = "RICE_NUBIAN_AGRICULTURE_PICK_TYPE"
 		show_from_start = yes
 		
-		### Expand Irrigation Networks
+		### Expand Irrigation Networks - tax, county fertility
 		item = {
 			value = RICE_nubia_agriculture_expand_irrigation
 			current_description = RICE_nubia_agriculture_expand_irrigation_desc
@@ -1731,7 +1732,7 @@ RICE_nubia_agriculture_decision = {
 			}
 		}
 		
-		### Construct Hafirs
+		### Construct Hafirs - control, county fertility, travel danger, legitimacy
 		item = {
 			value = RICE_nubia_agriculture_construct_hafirs
 			current_description = RICE_nubia_agriculture_construct_hafirs_desc
@@ -1742,7 +1743,29 @@ RICE_nubia_agriculture_decision = {
 			}
 		}
 		
-		### Import Cattle
+		### Grow Pig Herds - development, county opinion, [prestige and piety bonus]
+		item = {
+			value = RICE_nubia_agriculture_grow_pigs
+			is_valid = {
+				NOT = { religion = religion:islam_religion }
+				NOT = { religion = religion:judaism_religion }
+				any_sub_realm_county = {
+					title_capital_county.title_province = { geographical_region = RICE_nile_river_valley }
+					NOR = {
+						religion = religion:islam_religion
+						religion = religion:judaism_religion
+					}
+				}
+			}
+			current_description = RICE_nubia_agriculture_grow_pigs_desc
+			localization = RICE_nubia_agriculture_grow_pigs_name
+			icon = "gfx/interface/icons/widgets/RICE_nubia_agriculture_grow_pigs.dds"
+			ai_chance = {
+				value = 10
+			}
+		}
+		
+		### Import Cattle - development, [prestige bonus]
 		item = {
 			value = RICE_nubia_agriculture_import_cattle
 			current_description = RICE_nubia_agriculture_import_cattle_desc
@@ -1753,7 +1776,7 @@ RICE_nubia_agriculture_decision = {
 			}
 		}
 		
-		### Breed Cattle
+		### Breed Cattle - development, [piety bonus]
 		item = {
 			value = RICE_nubia_agriculture_breed_cattle
 			current_description = RICE_nubia_agriculture_breed_cattle_desc
@@ -1768,43 +1791,74 @@ RICE_nubia_agriculture_decision = {
 
 	effect = {
 		RICE_nubia_agriculture_decision_generic_effect = yes
-		custom_tooltip = RICE_nubia_agriculture_decision_effect_tooltip_1
-		custom_tooltip = RICE_nubia_agriculture_decision_effect_tooltip_2
+		#custom_tooltip = RICE_nubia_agriculture_decision_effect_tooltip_1
+		#custom_tooltip = RICE_nubia_agriculture_decision_effect_tooltip_2
 		if = {
 			limit = {
 				has_game_rule = RICE_historical_context_on
 			}
 			custom_tooltip = RICE_nubia_agriculture_decision_context_tooltip
 		}
-		# Not sure why AI can't pick one option or another
-		# if = {
-		# 	limit = { is_ai = yes }
-		# 	random_list = {
-		# 		10 = {
-		# 			set_variable = {
-		# 				name = RICE_manichean_manuscript_type
-		# 				value = flag:seven_treatises
-		# 				days = 730 # Precaution in case it doesn't go away
-		# 			}
-		# 		}
-		# 	}
-		# }
-		# else_if = {
-		# 	limit = {
-		# 		scope:RICE_nubian_agriculture_expand_irrigation = yes
-		# 	}
-		# 	set_variable = {
-		# 		name = RICE_manichean_manuscript_type
-		# 		value = flag:seven_treatises
-		# 		days = 730 # Precaution in case it doesn't go away
-		# 	}
-		# }
-		trigger_event = nubia.8888
+		#Not sure why AI can't pick one option or another
+		if = {
+			limit = { is_ai = yes }
+			random_list = {
+				10 = {
+					trigger_event = nubia.0030
+				}
+				10 = {
+					trigger_event = nubia.0031
+				}
+				10 = {
+					trigger_event = nubia.0032
+				}
+				10 = {
+					trigger_event = nubia.0033
+				}
+				10 = {
+					trigger_event = nubia.0034
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:RICE_nubia_agriculture_expand_irrigation = yes
+			}
+			show_as_tooltip = { RICE_nubia_agriculture_decision_expand_irrigation_networks_effect = yes }
+			trigger_event = nubia.0030
+		}
+		else_if = {
+			limit = {
+				scope:RICE_nubia_agriculture_construct_hafirs = yes
+			}
+			show_as_tooltip = { RICE_nubia_agriculture_decision_maintain_hafirs_effect = yes }
+			trigger_event = nubia.0031
+		}
+		else_if = {
+			limit = {
+				scope:RICE_nubia_agriculture_grow_pigs = yes
+			}
+			show_as_tooltip = { RICE_nubia_agriculture_decision_grow_pig_herds_effect = yes }
+			trigger_event = nubia.0032
+		}
+		else_if = {
+			limit = {
+				scope:RICE_nubia_agriculture_import_cattle = yes
+			}
+			show_as_tooltip = { RICE_nubia_agriculture_decision_import_cattle_effect = yes }
+			trigger_event = nubia.0033
+		}
+		else_if = {
+			limit = {
+				scope:RICE_nubia_agriculture_breed_cattle = yes
+			}
+			show_as_tooltip = { RICE_nubia_agriculture_decision_breed_cattle_effect = yes }
+			trigger_event = nubia.0034
+		}
 	}
 
 	cost = {
 		gold = minor_gold_value # Will depend
-		prestige = medium_prestige_value
 	}
 	
 	ai_potential = {
@@ -1813,14 +1867,6 @@ RICE_nubia_agriculture_decision = {
 
 	ai_will_do = {
 		base = 25
-		modifier = {
-			add = -5
-			has_trait = cynical
-		}
-		modifier = {
-			add = 5
-			has_trait = zealous
-		}
 		modifier = {
 			add = -10
 			has_trait = lazy
