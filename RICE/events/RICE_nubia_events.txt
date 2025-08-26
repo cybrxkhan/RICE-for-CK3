@@ -18,8 +18,8 @@
 # nubia.0200-nubia.0209			Pilgrimage to Saint Anthony's Monastery
 # nubia.0210-nubia.0219			Nilotic Bovine Sacrifice
 # nubia.0220-nubia.0239			Nile Empire and Legends
-# nubia.0240-nubia.0249			???
-# nubia.0250-nubia.0299			Generic flavor events
+# nubia.0240-nubia.0259			Sibir Festival
+# nubia.0270-nubia.0299			Generic flavor events
 # 
 ###############################################################################
 
@@ -7484,7 +7484,7 @@ nubia.0184 = {
 	
 	option = { # Ok
 		name = nubia.0184.a
-		RICE_nubia_banganarti_pilgrimage_completed_log_effect = yes
+		RICE_nubia_banganarti_pilgrimage_completed_log_entry_effect = yes
 	}
 
 	after = {
@@ -8555,12 +8555,12 @@ nubia.0211 = {
 	
 	left_portrait = {
 		character = root
-		animation = prayer
+		animation = wedding_priest # prayer
 	}
 
 	right_portrait = {
 		character = scope:chaplain
-		animation = wedding_priest
+		animation = throne_room_two_handed_passive_1
 		trigger = {
 			exists = scope:chaplain
 		}
@@ -9034,6 +9034,8 @@ nubia.0211 = {
 	}
 
 	after = {
+		# Needs to be displayed at the end so we don't have two instances of piety/prestige, one vague and one specific
+		#RICE_nubia_nilotic_bovine_sacrifice_completed_log_entry_effect = yes
 		if = {
 			limit = { has_variable = RICE_nilotic_sacrifice_type }
 			remove_variable = RICE_nilotic_sacrifice_type
@@ -9316,18 +9318,493 @@ nubia.0222 = {
 
 ######################################################################################
 # 
+# SIBIR FESTIVAL
+# 
+# nubia.0240-nubia.0259
+# 
+######################################################################################
+
+
+
+# Prepare for the Sibir
+nubia.0240 = {
+	type = activity_event
+	title = nubia.0240.t
+	desc = nubia.0240.desc
+	theme = friendly
+	override_background = { reference = RICE_background_nubia_nuba_savanna_village }
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	immediate = {
+		culture = { save_scope_as = culture }
+		scope:activity.activity_location = {
+			save_scope_as = location
+		}
+	}
+	
+	option = { # Ok
+		name = nubia.0240.a
+	}
+
+	after = {
+		trigger_event = {
+			id = nubia.0241
+			days = { 5 10 }
+		}
+	}
+}
+
+# Sibir starts, sacrifice the cattle
+nubia.0241 = {
+	type = activity_event
+	title = nubia.0241.t
+	desc = nubia.0241.desc
+	theme = faith
+	override_background = { reference = RICE_background_nubia_nuba_savanna_village }
+	
+	left_portrait = {
+		character = root
+		animation = throne_room_applaud_1
+	}
+
+	right_portrait = {
+		character = scope:chaplain
+		animation = throne_room_two_handed_passive_1
+		trigger = {
+			exists = scope:chaplain
+		}
+	}	
+
+	immediate = {
+		if = {
+			limit = {
+				exists = cp:councillor_court_chaplain
+			}
+			cp:councillor_court_chaplain ?= { save_scope_as = chaplain }
+		}
+	}
+	
+	option = { # Ok
+		name = nubia.0241.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_nubia_sibir_festival_sports_competition_type_none
+					}
+				}
+			}
+			trigger_event = {
+				id = nubia.0242
+				days = { 3 5 }
+			}
+		}
+		else = {			
+			trigger_event = {
+				id = nubia.0243
+				days = { 3 5 }
+			}
+		}
+	}
+}
+
+# Sibir concludes
+nubia.0242 = {
+	type = activity_event
+	title = nubia.0242.t
+	desc = nubia.0242.desc
+	theme = feast_activity
+	override_background = { reference = RICE_background_nubia_nuba_savanna_village }
+	
+	left_portrait = {
+		character = root
+		animation = toast
+	}
+
+	right_portrait = {
+		character = scope:drinker
+		animation = drink
+		trigger = {
+			exists = scope:drinker
+		}
+	}	
+
+	immediate = {
+		if = {
+			limit = {
+				scope:activity = {
+					any_attending_character = {
+						RICE_activity_participant_trigger = yes
+					}
+				}				
+			}
+			scope:activity = {
+				random_attending_character = {
+					limit = {
+						RICE_activity_participant_trigger = yes
+					}
+					save_scope_as = drinker
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = nubia.0242.a
+		RICE_nubia_sibir_festival_completed_log_entry_effect = yes
+	}
+
+	after = {
+		scope:activity = {
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}
+}
+
+# Observe the wrestling or stick fighting match, if one has been scheduled
+nubia.0243 = {
+	type = activity_event
+	title = nubia.0243.t
+	desc = nubia.0243.desc
+	theme = martial
+	override_background = { reference = RICE_background_nubia_nuba_savanna_village }
+	
+	left_portrait = {
+		character = root
+		animation = throne_room_cheer_1
+	}
+
+	right_portrait = {
+		character = scope:participant
+		animation = throne_room_cheer_2
+		trigger = {
+			exists = scope:participant
+		}
+	}	
+
+	immediate = {
+		if = {
+			limit = {
+				scope:activity = {
+					any_attending_character = {
+						RICE_activity_participant_trigger = yes
+					}
+				}				
+			}
+			scope:activity = {
+				random_attending_character = {
+					limit = {
+						RICE_activity_participant_trigger = yes
+					}
+					save_scope_as = participant
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = nubia.0243.a
+	}
+
+	after = {
+		hidden_effect = {
+			random_list = {
+				# Nothing ever happens
+				20 = {
+					trigger_event = {
+						id = nubia.0242
+						days = { 3 5 }
+					}
+				}
+				# Recruit a courtier
+				10 = {
+					modifier = {
+						add = 10
+						scope:activity = {
+							has_activity_option = {
+								category = special_type
+								option = RICE_nubia_sibir_festival_sports_competition_type_stick_fighting
+							}
+						}
+					}
+					trigger_event = nubia.0244
+				}
+				# Gain a character modifier or county modifier
+				10 = {
+					modifier = {
+						add = 10
+						scope:activity = {
+							has_activity_option = {
+								category = special_type
+								option = RICE_nubia_sibir_festival_sports_competition_type_wrestling
+							}
+						}
+					}
+					trigger_event = nubia.0245
+				}
+			}
+		}
+	}
+}
+
+# Recruit one of the winning youths?
+nubia.0244 = {
+	type = activity_event
+	title = nubia.0244.t
+	desc = nubia.0244.desc
+	theme = martial
+	override_background = { reference = RICE_background_nubia_nuba_savanna_village }
+	
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	right_portrait = {
+		character = scope:youth
+		animation = throne_room_bow_1
+	}	
+
+	immediate = {
+		create_character = {
+			location = root.capital_province
+			template = RICE_nuba_young_warrior_template
+			save_scope_as = youth			
+		}	
+	}
+	
+	option = { # Ok
+		name = nubia.0244.a
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 50			
+			}
+		}
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_nubia_sibir_festival_recruit_youth_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:host
+				scope:host = {
+					remove_short_term_gold = 50
+					add_courtier = scope:youth
+					if = {
+						limit = {
+							can_add_hook = {
+								target = scope:youth
+								type = loyalty_hook
+							}
+						}
+						add_hook = {
+							target = scope:youth
+							type = loyalty_hook
+						}
+					}							
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = nubia.0244.b
+		hidden_effect = {
+			scope:youth = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+	after = {
+		trigger_event = {
+			id = nubia.0242
+			days = { 3 5 }
+		}
+	}
+}
+
+# Recruit one of the winning youths?
+nubia.0245 = {
+	type = activity_event
+	title = nubia.0245.t
+	desc = nubia.0245.desc
+	theme = martial
+	override_background = { reference = RICE_background_nubia_nuba_savanna_village }
+	
+	right_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+
+	immediate = {
+		scope:activity.activity_location = {
+			save_scope_as = target_province			
+		}
+		random_list = {
+			10 = {
+				scope:target_province = {
+					add_province_modifier = {
+						modifier = RICE_nubia_sibir_province_modifier_1
+						years = 10
+					}
+				}
+			}
+			10 = {
+				scope:target_province = {
+					add_province_modifier = {
+						modifier = RICE_nubia_sibir_province_modifier_2
+						years = 10
+					}
+				}
+			}
+			10 = {
+				scope:target_province = {
+					add_province_modifier = {
+						modifier = RICE_nubia_sibir_province_modifier_3
+						years = 10
+					}
+				}
+			}
+			10 = {
+				add_character_modifier = {
+					modifier = RICE_nubia_sibir_character_modifier_1
+					years = 10
+				}
+			}
+			10 = {
+				add_character_modifier = {
+					modifier = RICE_nubia_sibir_character_modifier_2
+					years = 10
+				}
+			}
+			10 = {
+				add_character_modifier = {
+					modifier = RICE_nubia_sibir_character_modifier_3
+					years = 10
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = nubia.0245.a
+		hidden_effect = {
+			scope:activity = {
+				add_activity_log_entry = {
+					key = RICE_nubia_sibir_festival_gain_modifier_log
+					tags = { good }
+					# this line below adds the entry to the Effects section of the conclusion UI
+					show_in_conclusion = yes
+					character = scope:host
+					show_as_tooltip = {
+						if = {
+							limit = {
+								scope:target_province = { has_province_modifier = RICE_nubia_sibir_province_modifier_1 }
+							}
+							scope:target_province = {
+								add_province_modifier = {
+									modifier = RICE_nubia_sibir_province_modifier_1
+									years = 10
+								}
+							}
+						}						
+						if = {
+							limit = {
+								scope:target_province = { has_province_modifier = RICE_nubia_sibir_province_modifier_2 }
+							}
+							scope:target_province = {
+								add_province_modifier = {
+									modifier = RICE_nubia_sibir_province_modifier_2
+									years = 10
+								}
+							}
+						}						
+						if = {
+							limit = {
+								scope:target_province = { has_province_modifier = RICE_nubia_sibir_province_modifier_3 }
+							}
+							scope:target_province = {
+								add_province_modifier = {
+									modifier = RICE_nubia_sibir_province_modifier_3
+									years = 10
+								}
+							}
+						}						
+						if = {
+							limit = {
+								scope:host = { has_character_modifier = RICE_nubia_sibir_character_modifier_1 }
+							}
+							scope:host = {
+								add_character_modifier = {
+									modifier = RICE_nubia_sibir_character_modifier_1
+									years = 10
+								}
+							}
+						}						
+						if = {
+							limit = {
+								scope:host = { has_character_modifier = RICE_nubia_sibir_character_modifier_2 }
+							}
+							scope:host = {
+								add_character_modifier = {
+									modifier = RICE_nubia_sibir_character_modifier_2
+									years = 10
+								}
+							}
+						}						
+						if = {
+							limit = {
+								scope:host = { has_character_modifier = RICE_nubia_sibir_character_modifier_3 }
+							}
+							scope:host = {
+								add_character_modifier = {
+									modifier = RICE_nubia_sibir_character_modifier_3
+									years = 10
+								}
+							}
+						}						
+					}
+				}
+			}			
+		}
+	}
+
+	after = {
+		trigger_event = {
+			id = nubia.0242
+			days = { 3 5 }
+		}
+	}
+}
+
+
+
+######################################################################################
+# 
 # GENERIC FLAVOR EVENTS
 # 
-# nubia.0250-nubia.0299
+# nubia.0270-nubia.0299
 # 
 ######################################################################################
 
 
 # Recent anchorite passes away
-# nubia.0250 = {
+# nubia.0270 = {
 # 	type = character_event
-# 	title = nubia.0250.t
-# 	desc = nubia.0250.desc
+# 	title = nubia.0270.t
+# 	desc = nubia.0270.desc
 # 	theme = faith
 # 	override_background = { reference = RICE_background_egypt_desert }
 
@@ -9397,14 +9874,14 @@ nubia.0222 = {
 # 	}
 
 # 	option = { # Ok
-# 		name = nubia.0250.a
+# 		name = nubia.0270.a
 # 		stress_impact = {
 # 			zealous = minor_stress_impact_gain
 # 		}
 # 	}
 
 # 	option = { # Ok
-# 		name = nubia.0250.b
+# 		name = nubia.0270.b
 # 		trigger = {
 # 			OR = {
 # 				gold >= 20
@@ -9424,7 +9901,7 @@ nubia.0222 = {
 # 	}
 
 # 	option = { # Ok
-# 		name = nubia.0250.c
+# 		name = nubia.0270.c
 # 		trigger = {
 # 			OR = {
 # 				gold >= 75
@@ -9455,7 +9932,7 @@ nubia.0222 = {
 # 			limit = {
 # 				has_game_rule = RICE_historical_context_on
 # 			}
-# 			custom_tooltip = nubia.0250.info
+# 			custom_tooltip = nubia.0270.info
 # 		}
 # 	}
 
@@ -9593,7 +10070,7 @@ nubia.0222 = {
 # 			limit = {
 # 				has_game_rule = RICE_historical_context_on
 # 			}
-# 			custom_tooltip = nubia.0250.info
+# 			custom_tooltip = nubia.0270.info
 # 		}
 # 	}
 

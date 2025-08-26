@@ -4215,7 +4215,7 @@ RICE_christian_donor_portrait_clergy_effect = {
 
 
 
-RICE_nubia_banganarti_pilgrimage_completed_log_effect = {
+RICE_nubia_banganarti_pilgrimage_completed_log_entry_effect = {
 	scope:activity = {
 		add_activity_log_entry = {
 			key = RICE_nubia_banganarti_pilgrimage_completed_log
@@ -4852,6 +4852,72 @@ RICE_nubia_nilotic_bovine_sacrifice_completed_log_entry_effect = {
 					}					
 				}
 			}	
+		}
+	}
+}
+
+
+RICE_nubia_sibir_festival_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_nubia_sibir_festival_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				add_prestige = minor_prestige_gain
+				if = {
+					limit = {
+						has_activity_intent = RICE_nubia_sibir_festival_fun_intent
+					}
+					stress_impact = {
+						base = minor_stress_impact_loss
+						gregarious = miniscule_stress_impact_loss
+						lustful = miniscule_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_nubia_sibir_festival_community_intent
+					}
+					stress_impact = {
+						base = miniscule_stress_impact_loss
+						diligent = miniscule_stress_impact_loss
+						just = miniscule_stress_impact_loss
+					}
+					every_attending_character = {
+						limit = { NOT = { this = scope:host } }
+						custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+						add_opinion = {
+							target = scope:host
+							modifier = RICE_opinion_sibir_festival
+						}
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_nubia_sibir_festival_competition_intent
+					}
+					add_legitimacy = minor_legitimacy_gain
+					stress_impact = {
+						base = miniscule_stress_impact_loss
+						brave = miniscule_stress_impact_loss
+						ambitious = miniscule_stress_impact_loss
+					}
+				}
+			}
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_prestige = miniscule_prestige_gain
+				stress_impact = {
+					base = minor_stress_impact_loss
+					gregarious = miniscule_stress_impact_loss
+					athletic = miniscule_stress_impact_loss
+					tourney_participant = miniscule_stress_impact_loss
+				}
+			}		
 		}
 	}
 }
