@@ -120,6 +120,7 @@ Special thanks in particular to:
 - Naatturi for content from the Ukonusko Overhaul mod
 - Nezaros for religion and bookmark art
 - Nix for Evenki names
+- pharaox for helping fix a lot of issues, including some longstanding ones
 - PinkPanzer for some decision art
 - Rajas of Asia for Asian stuff and collab
 - Shatzi for more Breton content
