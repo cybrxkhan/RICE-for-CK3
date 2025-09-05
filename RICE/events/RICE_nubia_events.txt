@@ -1337,7 +1337,24 @@ nubia.0041 = {
 	type = character_event
 	title = nubia.0041.t
 	window = big_event_window
-	desc = nubia.0041.desc
+	desc = {
+		desc = nubia.0041.baqt.intro2
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					root = scope:actor
+				}
+				desc = nubia.0041.desc.actor
+			}
+			triggered_desc = {
+				trigger = {
+					root = scope:recipient
+				}
+				desc = nubia.0041.desc.recipient
+			}
+		}
+		desc = nubia.0041.baqt.conclusion
+	}
 	theme = RICE_theme_nile_valley
 	
 	left_portrait = {
@@ -1351,15 +1368,30 @@ nubia.0041 = {
 	}
 
 	immediate = {
+		show_as_tooltip = {
+			scope:actor = {
+				add_truce_both_ways = {
+					character = scope:recipient
+					days = purchase_truce_interaction_truce_days_small_value
+					name = RICE_nubia_baqt_exchange_truce
+				}
+			}
+		}
 		if = {
 			limit = {
 				root = scope:actor
+			}
+			scope:recipient = {
+				save_scope_as = other
 			}
 			RICE_nubia_baqt_exchange_effect = yes
 		}
 		else_if = {
 			limit = {
 				root = scope:recipient
+			}
+			scope:actor = {
+				save_scope_as = other
 			}
 			show_as_tooltip = {				
 				RICE_nubia_baqt_exchange_effect = yes
@@ -1386,6 +1418,212 @@ nubia.0041 = {
 	# 		remove_variable = RICE_baqt_recipient_good
 	# 	}
 	# }
+
+}
+
+# Offer Baqt gift event
+# Actor is giver
+# Recipient is receiver
+nubia.0042 = {
+	type = character_event
+	title = nubia.0042.t
+	window = big_event_window
+	desc = {
+		desc = nubia.0041.baqt.intro
+		desc = nubia.0041.baqt.intro2
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					root = scope:actor
+				}
+				desc = nubia.0042.desc.actor
+			}
+			triggered_desc = {
+				trigger = {
+					root = scope:recipient
+				}
+				desc = nubia.0042.desc.recipient
+			}
+		}
+		desc = nubia.0041.baqt.conclusion
+	}
+	theme = RICE_theme_nile_valley
+	
+	left_portrait = {
+		character = scope:actor
+		animation = personality_compassionate
+	}
+	
+	right_portrait = {
+		character = scope:recipient
+		animation = personality_greedy
+	}
+
+
+	
+	immediate = {
+		show_as_tooltip = {
+			scope:actor = {
+				add_truce_both_ways = {
+					character = scope:recipient
+					days = purchase_truce_interaction_truce_days_small_value
+					name = RICE_nubia_baqt_exchange_truce
+				}
+			}
+		}
+		if = {
+			limit = {
+				root = scope:actor
+			}
+			stress_impact = {
+				greedy = medium_stress_impact_gain
+				arrogant = minor_stress_impact_gain
+			}	
+			scope:recipient = {
+				save_scope_as = other
+			}
+			RICE_nubia_baqt_actor_give_effect = yes
+		}
+		else_if = {
+			limit = {
+				root = scope:recipient
+			}
+			scope:actor = {
+				save_scope_as = other
+				show_as_tooltip = {
+					stress_impact = {
+						greedy = medium_stress_impact_gain
+						arrogant = minor_stress_impact_gain
+					}				
+				}
+			}
+			show_as_tooltip = {				
+				RICE_nubia_baqt_actor_give_effect = yes
+			}
+		}
+	}
+
+	# ok
+	option = {
+		name = nubia.0042.a
+	}
+
+}
+
+# Demand Baqt Payment event
+# Actor is demander
+# Recipient is giver
+nubia.0043 = {
+	type = character_event
+	title = nubia.0043.t
+	window = big_event_window
+	desc = {
+		desc = nubia.0041.baqt.intro
+		desc = nubia.0041.baqt.intro2
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					root = scope:actor
+				}
+				desc = nubia.0043.desc.actor
+			}
+			triggered_desc = {
+				trigger = {
+					root = scope:recipient
+				}
+				desc = nubia.0043.desc.recipient
+			}
+		}
+		desc = nubia.0041.baqt.conclusion
+	}
+	theme = RICE_theme_nile_valley
+	
+	left_portrait = {
+		character = scope:actor
+		# If the demander likes the giver, they'll act less condenscending
+		triggered_animation = {
+			trigger = {
+				NOT = { has_trait = arrogant }
+				NOT = { has_trait = greedy }
+				scope:recipient = {
+					opinion = {
+						target = scope:actor
+						value >= low_positive_opinion
+					}					
+				}
+			}
+			animation = personality_forgiving
+		}
+		animation = personality_callous
+	}
+	
+	right_portrait = {
+		character = scope:recipient
+		# If the giver likes the demander, they'll look more accomodating
+		triggered_animation = {
+			trigger = {
+				NOT = { has_trait = arrogant }
+				NOT = { has_trait = greedy }
+				scope:recipient = {
+					opinion = {
+						target = scope:actor
+						value >= low_positive_opinion
+					}					
+				}
+			}
+			animation = personality_content
+		}
+		animation = disappointed
+	}
+
+
+	
+	immediate = {
+		show_as_tooltip = {
+			scope:actor = {
+				add_truce_both_ways = {
+					character = scope:recipient
+					days = purchase_truce_interaction_truce_days_small_value
+					name = RICE_nubia_baqt_exchange_truce
+				}
+			}
+		}
+		if = {
+			limit = {
+				root = scope:actor
+			}
+			scope:recipient = {
+				stress_impact = {
+					greedy = medium_stress_impact_gain
+					arrogant = minor_stress_impact_gain
+				}
+				save_scope_as = other
+			}
+			RICE_nubia_baqt_recipient_give_effect = yes
+		}
+		else_if = {
+			limit = {
+				root = scope:recipient
+			}
+			scope:actor = {
+				save_scope_as = other
+			}
+			show_as_tooltip = {	
+				scope:recipient = {
+					stress_impact = {
+						greedy = medium_stress_impact_gain
+						arrogant = minor_stress_impact_gain
+					}
+				}			
+				RICE_nubia_baqt_recipient_give_effect = yes
+			}
+		}
+	}
+
+	# ok
+	option = {
+		name = nubia.0043.a
+	}
 
 }
 
@@ -9154,11 +9392,11 @@ nubia.0178 = {
 	title = nubia.0178.t
 	desc = nubia.0178.desc
 	theme = administrative
-	override_background = { reference = RICE_background_nile_travel }
+	#override_background = { reference = RICE_background_nile_travel }
 	
 	right_portrait = {
 		character = root
-		animation = worry
+		animation = writing
 	}
 	
 	option = { # Ok
