@@ -697,7 +697,7 @@ nubia.0024 = {
 	override_background = { reference = RICE_background_nubia_nuba_savanna_village }
 	
 	right_portrait = {
-		character = root
+		character = scope:ruler
 		animation = thinking
 	}
 	
@@ -712,6 +712,7 @@ nubia.0024 = {
 	}
 
 	immediate = {
+		save_scope_as = ruler
 		if = {
 			limit = {
 				is_landless_adventurer = no
@@ -737,6 +738,7 @@ nubia.0024 = {
 						has_cultural_tradition = tradition_RICE_darfur_mountain_palaces
 					}
 				}
+				NOT = { has_character_flag = RICE_undergoing_lake_oracle } # In an edge case where they have this flag
 			}	
 			save_scope_as = courtier		
 		}
@@ -750,6 +752,7 @@ nubia.0024 = {
 						has_cultural_tradition = tradition_RICE_darfur_mountain_palaces
 					}
 				}
+				NOT = { has_character_flag = RICE_undergoing_lake_oracle } # In an edge case where they have this flag
 			}	
 			save_scope_as = clergy		
 		}
@@ -759,7 +762,7 @@ nubia.0024 = {
 	option = {
 		name = nubia.0024.a
 		trigger_event = {
-			id = nubia.0026
+			id = nubia.0025
 			days = { 10 30 }
 		}
 	}
@@ -770,19 +773,43 @@ nubia.0024 = {
 		trigger = {
 			exists = scope:courtier
 		}
-		add_piety = minor_piety_loss
+		add_prestige = minor_prestige_loss
 		custom_tooltip = nubia.0024.b.tooltip
 		scope:courtier = {
+			save_scope_as = representative
+			add_prestige = minor_prestige_gain
 			# To prevent them from somehow leaving your court while they're on the trip
 			add_character_flag = {
 				flag = blocked_from_leaving
 				years = 1
 			}
+			add_character_flag = {
+				flag = RICE_undergoing_lake_oracle
+				years = 3 # It's unlikely going to be three years, but just do this as a failsafe
+			}
+			add_opinion = {
+				modifier = respect_opinion
+				opinion = 10
+				target = scope:ruler
+			}
+		}
+		if = {
+			limit = {
+				root.capital_province = scope:lake_oracle_province
+			}
+			scope:courtier = {
+				trigger_event = {
+					id = nubia.0026
+					days = { 10 30 }
+				}				
+			}
+		}
+		else = {
 			start_travel_plan = { 
 				destination = scope:lake_oracle_province
 				return_trip = yes
-				on_arrival_event = nubia.0025
-			}
+				on_arrival_event = nubia.0026
+			}			
 		}
 	}
 
@@ -792,24 +819,177 @@ nubia.0024 = {
 		trigger = {
 			exists = scope:clergy
 		}
-		add_piety = medium_piety_loss
+		add_prestige = medium_prestige_loss
 		custom_tooltip = nubia.0024.c.tooltip
 		scope:clergy = {
+			save_scope_as = representative
+			add_prestige = medium_prestige_gain
 			# To prevent them from somehow leaving your court while they're on the trip
 			add_character_flag = {
 				flag = blocked_from_leaving
 				years = 1
 			}
+			add_character_flag = {
+				flag = RICE_undergoing_lake_oracle
+				years = 3 # It's unlikely going to be three years, but just do this as a failsafe
+			}
+			add_opinion = {
+				modifier = respect_opinion
+				opinion = 10
+				target = scope:ruler
+			}
 			start_travel_plan = { 
 				destination = scope:lake_oracle_province
 				return_trip = yes
-				on_arrival_event = nubia.0025
+				on_arrival_event = nubia.0026
 			}
+		}
+		if = {
+			limit = {
+				root.capital_province = scope:lake_oracle_province
+			}
+			scope:courtier = {
+				trigger_event = {
+					id = nubia.0026
+					days = { 10 30 }
+				}				
+			}
+		}
+		else = {
+			start_travel_plan = { 
+				destination = scope:lake_oracle_province
+				return_trip = yes
+				on_arrival_event = nubia.0026
+			}			
 		}
 	}
 
 }
 
+
+
+# Representative arrives at the lake
+nubia.0025 = {
+	type = character_event
+	title = nubia.0025.t
+	desc = {
+		desc = nubia.0025.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					RICE_nubia_lake_oracle_positive_result_trigger = yes
+				}
+				desc = nubia.0025.desc.positive
+			}
+			triggered_desc = {
+				trigger = {
+					RICE_nubia_lake_oracle_negative_result_trigger = yes
+				}
+				desc = nubia.0025.desc.negative
+			}
+			desc = nubia.0025.desc.nothing
+		}
+	}
+	theme = faith
+	override_background = { reference = RICE_background_nubia_nuba_savanna_village }
+	
+	left_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = { RICE_nubia_lake_oracle_negative_result_trigger = yes }
+			animation = worry
+		}
+		animation = personality_zealous
+	}
+
+	right_portrait = {
+		character = scope:representative
+		trigger = {
+			exists = scope:representative
+		}
+		triggered_animation = {
+			trigger = { RICE_nubia_lake_oracle_negative_result_trigger = yes }
+			animation = sadness
+		}
+		animation = personality_content
+	}
+
+	immediate = {
+		RICE_nubia_lake_oracle_decision_effect = yes
+		RICE_nubia_lake_oracle_randomizer_effect = yes
+	}
+	
+	# Ok
+	option = {
+		name = nubia.0025.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_mountain_lake_sent_courtier
+			}
+			remove_character_flag = RICE_mountain_lake_sent_courtier
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_mountain_lake_sent_clergy
+			}
+			remove_character_flag = RICE_mountain_lake_sent_clergy
+		}
+	}
+
+}
+
+
+
+# Once representative arrives at the mountain lake
+nubia.0026 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_character_flag = RICE_undergoing_lake_oracle
+			}
+			remove_character_flag = RICE_undergoing_lake_oracle
+		}
+		if = {
+			limit = {
+				exists = scope:ruler
+				scope:ruler = {
+					is_alive = yes
+				}
+			}
+			if = {
+				limit = {
+					root = scope:clergy
+				}
+				scope:ruler = {
+					add_character_flag = {
+						flag = RICE_mountain_lake_sent_clergy
+						days = 1
+					}					
+				}
+			}
+			else_if = {
+				limit = {
+					root = scope:courtier
+				}
+				scope:ruler = {
+					add_character_flag = {
+						flag = RICE_mountain_lake_sent_courtier
+						days = 1
+					}					
+				}
+			}
+			scope:ruler = {
+				trigger_event = nubia.0025
+			}
+		}
+	}
+}
 
 
 
