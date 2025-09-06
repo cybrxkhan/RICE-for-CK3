@@ -3364,30 +3364,30 @@ nubia.0101 = {
 	# Ok
 	option = {
 		name = nubia.0101.a		
-		create_legend = {
-			type = heroic
-			quality = famed
-			chronicle = RICE_the_tribe_of_dan_legend
-			properties = {
-				danite = root
-				religion = religion:judaism_religion
-			}
-		}
+		# create_legend = {
+		# 	type = heroic
+		# 	quality = famed
+		# 	chronicle = RICE_the_tribe_of_dan_legend
+		# 	properties = {
+		# 		danite = root
+		# 		religion = religion:judaism_religion
+		# 	}
+		# }
 	}
 
 	# Ok
-	option = {
-		name = nubia.0101.b		
-		create_legend = {
-			type = holy
-			quality = famed
-			chronicle = RICE_the_tribe_of_dan_legend
-			properties = {
-				danite = root
-				religion = religion:judaism_religion
-			}
-		}
-	}
+	# option = {
+	# 	name = nubia.0101.b		
+	# 	# create_legend = {
+	# 	# 	type = holy
+	# 	# 	quality = famed
+	# 	# 	chronicle = RICE_the_tribe_of_dan_legend
+	# 	# 	properties = {
+	# 	# 		danite = root
+	# 	# 		religion = religion:judaism_religion
+	# 	# 	}
+	# 	# }
+	# }
 
 
 }
@@ -3492,6 +3492,26 @@ nubia.0103 = {
 					add = 15
 					var:RICE_eldad_ha_dani_reception >= 85 # Very Enthusiastic Reception
 				}
+				modifier = {
+					add = 10
+					has_trait_xp = { trait = RICE_the_danite track = RICE_the_danite_serpent value >= 25 }
+				}
+				modifier = {
+					add = 10
+					has_trait_xp = { trait = RICE_the_danite track = RICE_the_danite_serpent value >= 50 }
+				}
+				modifier = {
+					add = 10
+					has_trait_xp = { trait = RICE_the_danite track = RICE_the_danite_serpent value >= 75 }
+				}
+				modifier = {
+					add = 10
+					has_trait_xp = { trait = RICE_the_danite track = RICE_the_danite_serpent value >= 100 }
+				}
+				modifier = {
+					add = 50
+					has_trait = RICE_the_danite_upgraded_serpent
+				}
 				desc = nubia.0103.success
 				trigger_event = nubia.0104
 			}
@@ -3538,6 +3558,26 @@ nubia.0103 = {
 					add = 15
 					var:RICE_eldad_ha_dani_reception <= 15 # Very Skeptical Reception
 				}
+				modifier = {
+					add = 10
+					has_trait_xp = { trait = RICE_the_danite track = RICE_the_danite_justice value >= 25 }
+				}
+				modifier = {
+					add = 10
+					has_trait_xp = { trait = RICE_the_danite track = RICE_the_danite_justice value >= 50 }
+				}
+				modifier = {
+					add = 10
+					has_trait_xp = { trait = RICE_the_danite track = RICE_the_danite_justice value >= 75 }
+				}
+				modifier = {
+					add = 10
+					has_trait_xp = { trait = RICE_the_danite track = RICE_the_danite_justice value >= 100 }
+				}
+				modifier = {
+					add = 50
+					has_trait = RICE_the_danite_upgraded_justice
+				}
 				desc = nubia.0103.success
 				trigger_event = nubia.0104
 			}
@@ -3577,9 +3617,8 @@ nubia.0104 = {
 		animation = personality_compassionate
 	}
 
-	immediate = {
-		RICE_eldad_ha_dani_decision_success_effect = yes
-	}
+	#immediate = {		
+	#}
 
 	# Serpent: Martial, Intrigue, Prowess
 	# Justice: Diplomacy, Stewardship, Learning
@@ -3587,6 +3626,7 @@ nubia.0104 = {
 	# Ok
 	option = {
 		name = nubia.0104.a
+		RICE_eldad_ha_dani_decision_success_effect = yes
 	}
 
 	after = {		
@@ -3608,9 +3648,8 @@ nubia.0105 = {
 		animation = sadness
 	}
 
-	immediate = {
-		RICE_eldad_ha_dani_decision_failure_effect = yes
-	}
+	#immediate = {
+	#}
 
 	# Serpent: Martial, Intrigue, Prowess
 	# Justice: Diplomacy, Stewardship, Learning
@@ -3618,6 +3657,7 @@ nubia.0105 = {
 	# Ok
 	option = {
 		name = nubia.0105.a
+		RICE_eldad_ha_dani_decision_failure_effect = yes
 	}
 
 	after = {		
@@ -3626,6 +3666,118 @@ nubia.0105 = {
 
 }
 
+
+# Eldad ha-Dani aspiration fulfilled
+nubia.0106 = {
+	type = character_event
+	title = nubia.0106.t
+	desc = nubia.0106.desc
+	theme = legend
+	override_background = { reference = bp2_tavern_mena }
+
+	right_portrait = {
+		character = root
+		animation = war_over_win
+	}
+
+
+	immediate = {
+
+		play_music_cue = "mx_cue_epic_sacral_moment"
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		character:RICE_red_sea_001 = {
+			save_scope_as = eldad
+		}	
+		
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_nubia_aspiration_spread_stories_tribe_of_dan
+				}
+				remove_character_modifier = RICE_nubia_aspiration_spread_stories_tribe_of_dan
+			}
+		}
+
+		# Main Objective Reward
+		faith = {
+			change_fervor = {
+				value = 20
+				desc = fervor_gain_RICE_eldad_ha_dani_success
+			}
+		}
+
+		if = {
+			limit = {
+				has_trait_xp = { trait = RICE_the_danite track = RICE_the_danite_serpent value >= 100 }
+			}
+			remove_trait = RICE_the_danite
+			add_trait = RICE_the_danite_upgraded_serpent
+			add_prestige = RICE_aspiration_medium_resource_bonus
+		}
+		else_if = {
+			limit = {
+				has_trait_xp = { trait = RICE_the_danite track = RICE_the_danite_justice value >= 100 }
+			}
+			remove_trait = RICE_the_danite
+			add_trait = RICE_the_danite_upgraded_justice
+			add_piety = RICE_aspiration_medium_resource_bonus
+		}
+
+		add_gold = RICE_aspiration_medium_resource_bonus
+
+		create_legend = {
+			type = heroic
+			quality = famed
+			chronicle = RICE_the_tribe_of_dan_legend
+			properties = {
+				danite = root
+				religion = religion:judaism_religion
+			}
+		}
+
+		# Bonus Objective Reward(s)
+		if = {
+			limit = {
+				is_landless_adventurer = yes
+			}
+			add_gold = RICE_aspiration_medium_resource_bonus
+		}
+		if = {
+			limit = {
+				piety_level >= 4
+			}
+			dynasty ?= {
+				add_dynasty_prestige = RICE_aspiration_medium_resource_bonus
+			}
+		}
+		if = {
+			limit = {
+				prestige_level >= 4
+				}
+			if = {
+				limit = {
+					has_trait = RICE_the_danite_upgraded_serpent
+				}
+				add_intrigue_lifestyle_perk_points = 1
+			}
+			else_if = {
+				limit = {
+					has_trait = RICE_the_danite_upgraded_justice
+				}
+				add_learning_lifestyle_perk_points = 1
+			}
+		}
+		
+
+	}
+
+	option = { # Ok
+		name = nubia.0106.a
+	}
+
+}
 
 ######################################################################################
 # 
