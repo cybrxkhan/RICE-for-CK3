@@ -10305,6 +10305,82 @@ nubia.0178 = {
 		character = root
 		animation = writing
 	}
+
+	# Choose potential random names by randomly generating dead courtiers
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = {
+					any_county_in_region = {
+						region = RICE_africa_and_the_middle_east
+						NOT = { culture = { has_same_culture_heritage = root.culture } }
+					}				
+				}
+				random_county_in_region = {
+					limit = {
+						NOT = { culture = { has_same_culture_heritage = root.culture } }
+					}
+					save_scope_as = county_different
+				}
+				create_character = {
+					location = root.location
+					template = RICE_random_gender_adjusted_character_template
+					save_scope_as = random_different
+					culture = scope:county_different.culture
+					faith = scope:county_different.faith
+				}
+				scope:random_different = {
+					death = {
+						death_reason = death_vanished
+					}					
+				}
+				create_character = {
+					location = root.location
+					template = RICE_random_gender_adjusted_character_template
+					save_scope_as = random_different_2
+					culture = scope:county_different.culture
+					faith = scope:county_different.faith
+				}	
+				scope:random_different_2 = {
+					death = {
+						death_reason = death_vanished
+					}					
+				}
+			}
+			create_character = {
+				location = root.location
+				template = RICE_random_gender_adjusted_character_template
+				save_scope_as = random_same
+				culture = root.culture
+				faith = root.faith
+			}
+			scope:random_same = {
+				death = {
+					death_reason = death_vanished
+				}					
+			}			
+			create_character = {
+				location = root.location
+				template = RICE_random_gender_adjusted_character_template
+				save_scope_as = random_same_2
+				culture = root.culture
+				faith = root.faith
+			}
+			scope:random_same = {
+				death = {
+					death_reason = death_vanished
+				}					
+			}	
+			random_held_county = {
+				limit = {
+					any_county_province = {
+						geographical_region = RICE_southern_egypt_and_northern_nubia
+					}					
+				}
+				save_scope_as = county
+			}		
+		}
+	}
 	
 	option = { # Ok
 		name = nubia.0178.a
