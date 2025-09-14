@@ -13423,6 +13423,8 @@ nubia.0261 = {
 	}
 		
 	trigger = {
+		NOT = { government_has_flag = government_is_tribal }
+		NOT = { government_has_flag = government_is_nomadic }
 		NOT = { religion = religion:islam_religion }
 		OR = {
 			culture = culture:nubian
@@ -13836,6 +13838,716 @@ nubia.0264 = {
 				has_game_rule = RICE_historical_context_on
 			}
 			custom_tooltip = nubia.0264.info
+		}
+	}
+
+}
+
+# Zealous non-Muslim is outraged at the usage of the "Era of Hegira" in your documents
+nubia.0265 = {
+	type = character_event
+	title = nubia.0265.t
+	desc = nubia.0265.desc
+	theme = administrative
+
+	left_portrait = {
+		character = root
+		animation = war_over_tie
+	}
+
+	right_portrait = {
+		character = scope:zealot
+		animation = anger
+	}
+		
+	trigger = {
+		capital_county = {
+			any_county_province = {
+				OR = {
+					geographical_region = ghw_region_egypt
+					geographical_region = RICE_greater_nubia_region
+				}
+			}
+		}
+		NOT = { government_has_flag = government_is_tribal }
+		NOT = { government_has_flag = government_is_nomadic }
+		NOT = { religion = religion:islam_religion }
+		OR = {
+			any_courtier_or_guest = {
+				is_available_ai_adult = yes
+				faith = root.faith
+				NOT = { has_trait = cynical }
+				NOT = { has_trait = content }
+				NOT = { has_trait = shy }
+				OR = {
+					has_trait = zealous
+					has_trait = arrogant
+					has_trait = wrathful
+					has_trait = honest
+				}
+			}
+			any_vassal = {
+				is_available_ai_adult = yes
+				faith = root.faith
+				NOT = { has_trait = cynical }
+				NOT = { has_trait = content }
+				NOT = { has_trait = shy }
+				OR = {
+					has_trait = zealous
+					has_trait = arrogant
+					has_trait = wrathful
+					has_trait = honest
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = honest
+		}
+		modifier = {
+			add = -0.2
+			has_trait = deceitful
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+	}
+
+	immediate = {
+		culture:bedouin = {
+			save_scope_as = arabic
+		}
+		every_courtier_or_guest = {
+			limit = {
+				is_available_ai_adult = yes
+				faith = root.faith
+				NOT = { has_trait = cynical }
+				NOT = { has_trait = content }
+				NOT = { has_trait = shy }
+				OR = {
+					has_trait = zealous
+					has_trait = arrogant
+					has_trait = wrathful
+					has_trait = honest
+				}
+			}
+			add_to_list = candidate_characters
+		}
+		every_vassal = {
+			limit = {
+				is_available_ai_adult = yes
+				faith = root.faith
+				NOT = { has_trait = cynical }
+				NOT = { has_trait = content }
+				NOT = { has_trait = shy }
+				OR = {
+					has_trait = zealous
+					has_trait = arrogant
+					has_trait = wrathful
+					has_trait = honest
+				}
+			}
+			add_to_list = candidate_characters
+		}
+		random_in_list = {
+			list = candidate_characters
+			save_scope_as = zealot
+		}
+		if = {
+			limit = {
+				top_liege = {
+					religion = religion:islam_religion
+				}
+			}
+			top_liege = {
+				save_scope_as = liege
+			}
+		}
+		else_if = {
+			limit = {
+				liege = {
+					religion = religion:islam_religion
+				}
+			}
+			liege = {
+				save_scope_as = liege
+			}
+		}
+	}
+
+	option = { # Serious
+		name = nubia.0265.a
+		trigger = {
+			OR = {
+				top_liege = {
+					religion = religion:islam_religion
+				}
+				liege = {
+					religion = religion:islam_religion
+				}
+			}
+		}
+		add_legitimacy = miniscule_legitimacy_gain
+	}
+
+	option = { # Don't care
+		name = nubia.0265.b
+		add_prestige = 50
+		add_character_modifier = {
+			modifier = RICE_nubia_encouraging_era_of_hegira
+			years = 10
+		}
+		scope:zealot = {
+			reverse_add_opinion = {
+				modifier = disapproval_opinion
+				target = root
+				opinion = -15
+			}
+		}
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Discourage its use
+		name = nubia.0265.c
+		add_piety = 50
+		add_character_modifier = {
+			modifier = RICE_nubia_discouraging_era_of_hegira
+			years = 10
+		}
+		scope:zealot = {
+			add_opinion = {
+				modifier = pleased_opinion
+				target = root
+				opinion = 10
+			}
+		}
+		stress_impact = {
+			diligent = miniscule_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+			cynical = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = nubia.0265.info
+		}
+	}
+
+}
+
+# Mound of red brick discovered in Nubia, but could be home to fearsome spirits
+nubia.0266 = {
+	type = character_event
+	title = nubia.0266.t
+	desc = nubia.0266.desc
+	theme = RICE_theme_nubia_dongola_building
+
+	right_portrait = root
+		
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_nile_river_valley_nubia
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		random_held_title = {			
+			limit = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = RICE_nile_river_valley_nubia
+				}
+			}
+			save_scope_as = county
+			add_county_modifier = {
+				modifier = RICE_nubia_red_brick_mounds
+				years = 10
+			}
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0266.a
+		add_piety = -50
+		every_courtier = {
+			custom = RICE_every_zealous_nubian_courtier_of_religion
+			limit = {
+				religion = root.religion
+				OR = {
+					has_trait = zealous
+					has_trait = humble
+					has_trait = paranoid
+					has_trait = craven
+				}
+			}
+			add_opinion = {
+				target = root
+				modifier = RICE_nubia_disrespects_local_spirits
+				opinion = -10
+			}
+		}
+		stress_impact = {
+			craven = miniscule_stress_impact_gain
+			paranoid = miniscule_stress_impact_gain
+			zealous = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Don't touch them!
+		name = nubia.0266.b
+		add_piety = 50
+		every_courtier = {
+			custom = RICE_every_zealous_nubian_courtier_of_religion
+			limit = {
+				religion = root.religion
+				OR = {
+					has_trait = zealous
+					has_trait = humble
+					has_trait = paranoid
+					has_trait = craven
+				}
+			}
+			add_opinion = {
+				target = root
+				modifier = RICE_nubia_respects_local_spirits
+				opinion = 10
+			}
+		}
+		scope:county = {
+			remove_county_modifier = RICE_nubia_red_brick_mounds
+		}
+		stress_impact = {
+			diligent = miniscule_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+			cynical = minor_stress_impact_gain
+			brave = miniscule_stress_impact_gain
+		}
+	}
+
+}
+
+
+# Arrive at a Hafir while in Nubia
+nubia.0267 = {
+	type = character_event
+	title = nubia.0267.t
+	desc = {
+		desc = nubia.0267.desc
+		triggered_desc = {
+			trigger = {
+				root = scope:ruler
+			}
+			desc = nubia.0267.desc.self
+		}
+	}
+	theme = travel_stewardship
+	override_background = { reference = RICE_background_nile_valley }
+	
+	right_portrait = {
+		character = root
+		animation = personality_content
+	}	
+
+	trigger = {
+		is_location_valid_for_travel_event_on_land = yes
+		location = {
+			geographical_region = RICE_nile_river_valley_nubia
+		}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		location.county.holder = {
+			save_scope_as = ruler
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0267.a
+		trigger = {
+			root = scope:ruler
+		}
+		add_prestige = 25
+		stress_impact = {
+			arrogant = minor_stress_impact_loss
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0267.b
+		trigger = {
+			root = scope:ruler
+		}
+		add_piety = 25
+		stress_impact = {
+			humble = minor_stress_impact_loss
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0267.c
+		trigger = {
+			NOT = { root = scope:ruler }
+		}
+		add_piety = 25
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0267.d
+		trigger = {
+			NOT = { root = scope:ruler }
+		}
+		add_prestige = 25
+		stress_impact = {
+			humble = minor_stress_impact_gain
+			paranoid = minor_stress_impact_gain
+		}
+	}
+
+}
+
+
+# While stopping by a Nubian village, the locals have no beef to offer you
+nubia.0268 = {
+	type = character_event
+	title = nubia.0268.t
+	desc = nubia.0268.desc
+	theme = travel_diplomacy
+	override_background = { reference = RICE_background_nile_private_courtyard }
+	
+	right_portrait = {
+		character = root
+		animation = personality_compassionate
+	}	
+
+	trigger = {
+		is_location_valid_for_travel_event_on_land = yes
+		location = {
+			county = {
+				OR = {
+					culture = culture:nubian
+					culture = {
+						any_parent_culture_or_above = {
+							this = culture:nubian
+						}
+					}
+				}				
+			}
+			# Not for religions where it wouldn't make sense
+			NOR = {
+				religion = religion:islam_religion
+				religion = religion:judaism_religion
+				religion = religion:hinduism_religion
+				is_vegetarian_trigger = yes
+			}
+		}
+		# Not for religions where it wouldn't make sense
+		NOR = {
+			religion = religion:islam_religion
+			religion = religion:judaism_religion
+			religion = religion:hinduism_religion
+			is_vegetarian_trigger = yes
+		}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		location.county.culture = {
+			save_scope_as = culture
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0268.a
+		add_piety = 25
+		stress_impact = {
+			gluttonous = minor_stress_impact_gain
+			arrogant = minor_stress_impact_gain
+			arbitrary = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0268.b
+		add_prestige = 25
+		stress_impact = {
+			temperate = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+			just = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0268.c
+		trigger = {
+			OR = {
+				gold >= 30
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 30
+		add_piety = 25
+		add_prestige = 25
+		add_character_modifier = {
+			modifier = RICE_nubia_generous_to_commoners
+			years = 10
+		}
+		stress_impact = {
+			greedy = medium_stress_impact_gain
+			arrogant = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+			paranoid = miniscule_stress_impact_gain
+			sadistic = miniscule_stress_impact_gain
+			arbitrary = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = nubia.0268.info
+		}
+	}
+
+}
+
+
+
+# Chaplain complains about Coptic monks owning and farming land
+nubia.0269 = {
+	type = character_event
+	title = nubia.0269.t
+	desc = nubia.0269.desc
+	theme = learning_scholarship_focus
+
+	left_portrait = {
+		character = root
+		animation = personality_cynical
+	}
+
+	right_portrait = {
+		character = scope:chaplain
+		animation = stressed_teacher
+	}
+		
+	trigger = {
+		NOT = { government_has_flag = government_is_tribal }
+		NOT = { government_has_flag = government_is_nomadic }
+		religion = religion:christianity_religion
+		capital_county = {
+			any_county_province = {
+				OR = {
+					geographical_region = ghw_region_egypt
+					geographical_region = RICE_greater_nubia_region
+				}
+			}
+		}
+		cp:councillor_court_chaplain = {
+			exists = yes
+			is_available_ai_adult = yes
+			faith = root.faith
+			OR = {
+				has_trait = zealous
+				has_trait = diligent
+				has_trait = temperate
+				has_trait = humble
+				has_trait = generous
+				has_trait = impatient
+				has_trait = stubborn
+			}
+			NOR = {
+				has_trait = cynical
+				has_trait = lazy
+				has_trait = greedy
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+	}
+
+	immediate = {
+		cp:councillor_court_chaplain = {
+			save_scope_as = chaplain
+			add_character_modifier = {
+				modifier = RICE_nubia_encouraging_monks_away_from_farming
+				years = 10
+			}
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0269.a
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+		scope:chaplain = {
+			add_opinion = {
+				target = root
+				modifier = disappointed_opinion
+				opinion = -5
+			}
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0269.b
+		add_piety = 100
+		add_character_modifier = {
+			modifier = RICE_nubia_encouraging_monks_away_from_farming
+			years = 10
+		}
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			diligent = miniscule_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+			cynical = minor_stress_impact_gain
+		}
+		scope:chaplain = {
+			add_opinion = {
+				target = root
+				modifier = pious_opinion
+				opinion = 15
+			}
 		}
 	}
 
