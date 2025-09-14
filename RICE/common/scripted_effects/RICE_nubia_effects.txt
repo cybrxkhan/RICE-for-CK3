@@ -5019,6 +5019,126 @@ RICE_nubia_sibir_festival_completed_log_entry_effect = {
 	}
 }
 
+# Choose potential random names by randomly generating dead courtiers
+RICE_baqt_process_complaints_and_requests_setup_effect = {
+	hidden_effect = {
+		if = {
+			limit = {
+				any_county_in_region = {
+					region = RICE_north_africa_and_the_middle_east
+					NOT = { culture = { has_same_culture_heritage = root.culture } }
+				}				
+			}
+			random_county_in_region = {
+				region = RICE_north_africa_and_the_middle_east
+				limit = {
+					NOT = { culture = { has_same_culture_heritage = root.culture } }
+				}
+				# Weight up according to development, so will tend to pick more prosperous counties
+				weight = {
+					base = 1
+					modifier = {
+						add = {
+							value = development_level
+							multiply = 1.5
+						}
+					}
+					# Be more likely to select Arabic, Coptic, or Nubian cultures
+					modifier = {
+						OR = {
+							culture = { has_cultural_pillar = heritage_arabic }
+							culture = { has_cultural_pillar = heritage_egyptian }
+							culture = culture:nubian
+							culture = {
+								any_parent_culture_or_above = {
+									this = culture:nubian
+								}
+							}
+						}
+						add = 25
+					}
+				}
+				save_scope_as = county_different
+			}
+		}
+		# If one can't be found, just pick something random
+		else = {
+			random_county_in_region = {
+				region = RICE_north_africa_and_the_middle_east
+				# Weight up according to development, so will tend to pick more prosperous counties
+				weight = {
+					base = 1
+					modifier = {
+						add = {
+							value = development_level
+							multiply = 1.5
+						}
+					}
+				}
+				save_scope_as = county_different
+			}		
+		}
+		create_character = {
+			location = root.location
+			template = RICE_random_gender_adjusted_character_template
+			save_scope_as = random_different
+			culture = scope:county_different.culture
+			faith = scope:county_different.faith
+		}
+		scope:random_different = {
+			death = {
+				death_reason = death_vanished
+			}					
+		}
+		create_character = {
+			location = root.location
+			template = RICE_random_gender_adjusted_character_template
+			save_scope_as = random_different_2
+			culture = scope:county_different.culture
+			faith = scope:county_different.faith
+		}	
+		scope:random_different_2 = {
+			death = {
+				death_reason = death_vanished
+			}					
+		}
+		create_character = {
+			location = root.location
+			template = RICE_random_gender_adjusted_character_template
+			save_scope_as = random_same
+			culture = root.culture
+			faith = root.faith
+		}
+		scope:random_same = {
+			death = {
+				death_reason = death_vanished
+			}					
+		}			
+		create_character = {
+			location = root.location
+			template = RICE_random_gender_adjusted_character_template
+			save_scope_as = random_same_2
+			culture = root.culture
+			faith = root.faith
+		}
+		scope:random_same = {
+			death = {
+				death_reason = death_vanished
+			}					
+		}	
+		random_held_county = {
+			limit = {
+				any_county_province = {
+					geographical_region = RICE_southern_egypt_and_northern_nubia
+				}					
+			}
+			save_scope_as = county
+		}		
+	}	
+}
+
+
+
 RICE_baqt_process_complaints_and_requests_effect = {
 	RICE_nubia_egypt_frontier_trait_medium_xp_gain = yes
 	stress_impact = {
