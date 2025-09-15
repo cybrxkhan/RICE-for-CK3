@@ -13403,7 +13403,6 @@ nubia.0260 = {
 
 }
 
-
 # Nubian chancellor suggests training scribes in Nubian, Coptic, Greek, or Arabic
 nubia.0261 = {
 	type = character_event
@@ -14776,7 +14775,7 @@ nubia.0271 = {
 
 }
 
-# While stopping by a Nubian village, the locals have no beef to offer you
+# While stopping by a Nubian church, the monks there talk about pigs and pork
 nubia.0272 = {
 	type = character_event
 	title = nubia.0272.t
@@ -14915,6 +14914,263 @@ nubia.0272 = {
 				has_game_rule = RICE_historical_context_on
 			}
 			custom_tooltip = nubia.0272.info
+		}
+	}
+
+}
+
+
+# Chaplain recommends you an oikonomos (title likely referring to a steward of a church/monastery in a Nubian context) to bring onto your staff
+nubia.0273 = {
+	type = character_event
+	title = nubia.0273.t
+	desc = nubia.0273.desc
+	theme = RICE_theme_nubia_church_interior
+
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+
+	center_portrait = {
+		character = scope:chaplain
+		animation = happiness
+		camera = camera_event_very_right
+	}
+
+	right_portrait = {
+		character = scope:oikonomos
+		animation = throne_room_bow_3
+		camera = camera_event_very_right
+	}
+
+	trigger = {
+		religion = religion:christianity_religion
+		OR = {
+			culture = culture:nubian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:nubian
+				}
+			}
+		}
+		cp:councillor_court_chaplain = {
+			exists = yes
+			is_available_ai_adult = yes
+			faith = root.faith
+			OR = {
+				culture = culture:nubian
+				culture = {
+					any_parent_culture_or_above = {
+						this = culture:nubian
+					}
+				}
+			}
+			NOR = {
+				has_trait = lazy
+				has_trait = shy
+				has_trait = reclusive
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = fickle
+		}
+		modifier = {
+			add = -0.2
+			has_trait = stubborn
+		}
+		modifier = {
+			add = 0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = -0.2
+			has_trait = paranoid
+		}
+		modifier = {
+			add = 0.2
+			has_trait = honest
+		}
+		modifier = {
+			add = -0.2
+			has_trait = deceitful
+		}
+	}
+
+	immediate = {
+		cp:councillor_court_chaplain = {
+			save_scope_as = chaplain
+		}
+		create_character = {
+			location = root.capital_province
+			template = RICE_nubia_oikonomos_template
+			save_scope_as = oikonomos			
+		}
+		scope:oikonomos = {
+			add_character_modifier = {
+				modifier = RICE_nubia_oikonomos_modifier
+			}
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0273.a
+		trigger = {
+			OR = {
+				gold >= 50
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 50
+		add_courtier = scope:oikonomos
+		stress_impact = {
+			greedy = miniscule_stress_impact_gain
+			paranoid = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0273.b
+        scope:chaplain = {
+            add_opinion = {
+                target = root
+                modifier = disappointed_opinion
+                opinion = -5
+            }
+        }
+		hidden_effect = {
+			scope:oikonomos = {
+				death = {
+					death_reason = death_vanished
+				}
+			}			
+		}
+	}
+
+}
+
+
+
+# One of your knights is very devoted to Saint Epimachos
+nubia.0274 = {
+	type = character_event
+	title = nubia.0274.t
+	desc = nubia.0274.desc
+	theme = RICE_theme_nubia_church_interior
+
+	right_portrait = {
+		character = scope:knight
+		animation = prayer
+	}
+		
+	trigger = {
+		religion = religion:christianity_religion
+		OR = {
+			culture = culture:nubian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:nubian
+				}
+			}
+		}
+		any_knight = {
+			is_available_ai_adult = yes
+			religion = religion:christianity_religion
+			OR = {
+				culture = culture:nubian
+				culture = {
+					any_parent_culture_or_above = {
+						this = culture:nubian
+					}
+				}
+			}
+			NOT = { has_trait = cynical }
+			NOT = { has_trait = lazy }
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = honest
+		}
+		modifier = {
+			add = -0.2
+			has_trait = deceitful
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+	}
+
+	immediate = {
+		random_knight = {				
+			limit = {
+				is_available_ai_adult = yes
+				religion = religion:christianity_religion
+				OR = {
+					culture = culture:nubian
+					culture = {
+						any_parent_culture_or_above = {
+							this = culture:nubian
+						}
+					}
+				}
+				NOT = { has_trait = cynical }
+				NOT = { has_trait = lazy }
+			}
+			save_scope_as = knight
+			add_character_modifier = {
+				modifier = RICE_nubia_saint_epimachos_devotee
+				years = 20
+			}
+		}		
+	}
+
+	option = { # Ok
+		name = nubia.0274.a
+		add_piety = 25
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0274.b
+		add_prestige = 25
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0274.c
+		trigger = {
+			has_trait = zealous
+		}
+		trait = zealous
+		add_character_modifier = {
+			modifier = RICE_nubia_saint_epimachos_devotee
+			years = 20
 		}
 	}
 
