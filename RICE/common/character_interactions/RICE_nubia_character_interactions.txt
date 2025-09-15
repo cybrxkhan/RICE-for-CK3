@@ -51,7 +51,7 @@ RICE_nubia_baqt_propose_exchange = {
 	
 	is_valid = {
 		scope:actor = {
-			gold >= medium_gold_value
+			gold >= RICE_baqt_value
 		}
 		OR = {
 			AND = {
@@ -211,7 +211,7 @@ RICE_nubia_baqt_propose_exchange = {
 		scope:actor = {
 			add_truce_both_ways = {
 				character = scope:recipient
-				days = purchase_truce_interaction_truce_days_small_value
+				years = RICE_nubia_baqt_truce_value
 				name = RICE_nubia_baqt_exchange_truce
 			}
 		}
@@ -228,7 +228,7 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:textiles = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:textiles
@@ -249,7 +249,7 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:foodstuffs = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:foodstuffs
@@ -270,7 +270,7 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:olive_oil = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:olive_oil
@@ -291,7 +291,7 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:wine = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:wine
@@ -312,7 +312,7 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:glass = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:glass
@@ -333,7 +333,7 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:horses = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:horses
@@ -354,7 +354,7 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:exotic_beasts = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:exotic_beasts
@@ -375,7 +375,7 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:metals = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:metals
@@ -396,7 +396,7 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:ebony = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:ebony
@@ -417,7 +417,7 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:slaves = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:slaves
@@ -438,7 +438,7 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:ivory = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:ivory
@@ -459,7 +459,7 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:animal_skins = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:animal_skins
@@ -887,34 +887,94 @@ RICE_nubia_baqt_propose_exchange = {
 		# Relative power.
 		## Scope:actor has far fewer levies than scope:recipient.
 		modifier = {
-			add = -30
+			add = {
+				value = -30
+				if = {
+					limit = {						
+						situation:RICE_nubia_baqt_situation ?= {
+							any_situation_sub_region = {
+								has_sub_region_phase_parameter = rice_baqt_power_less_difference
+							}
+						}
+					}
+					add = 15
+				}
+			}
 			scope:actor.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_far_weaker_value
 			desc = PT_AI_RECIPIENT_IS_MUCH_STRONGER
 		}
 		## Scope:actor has fewer levies than scope:recipient.
 		modifier = {
-			add = -10
+			add = {
+				value = -10
+				if = {
+					limit = {						
+						situation:RICE_nubia_baqt_situation ?= {
+							any_situation_sub_region = {
+								has_sub_region_phase_parameter = rice_baqt_power_less_difference
+							}
+						}
+					}
+					add = 5
+				}
+			}
 			scope:actor.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_far_weaker_value
 			scope:actor.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_somewhat_weaker_value
 			desc = PT_AI_RECIPIENT_IS_SOMEWHAT_STRONGER
 		}
 		## Scope:actor has roughly equal levies with scope:recipient.
 		modifier = {
-			add = 10
+			add = {
+				value = 10
+				if = {
+					limit = {						
+						situation:RICE_nubia_baqt_situation ?= {
+							any_situation_sub_region = {
+								has_sub_region_phase_parameter = rice_baqt_power_less_difference
+							}
+						}
+					}
+					subtract = 5
+				}
+			}
 			scope:actor.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_somewhat_weaker_value
 			scope:actor.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_somewhat_stronger_value
 			desc = PT_AI_RECIPIENT_IS_ROUGHLY_EQUAL
 		}
 		## Scope:actor has more levies than scope:recipient.
 		modifier = {
-			add = 25
+			add = {
+				value = 25
+				if = {
+					limit = {						
+						situation:RICE_nubia_baqt_situation ?= {
+							any_situation_sub_region = {
+								has_sub_region_phase_parameter = rice_baqt_power_less_difference
+							}
+						}
+					}
+					subtract = 10
+				}
+			}
 			scope:actor.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_somewhat_stronger_value
 			scope:actor.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_far_stronger_value
 			desc = PT_AI_RECIPIENT_IS_SOMEWHAT_WEAKER
 		}
 		## Scope:actor has far more levies than scope:recipient.
 		modifier = {
-			add = 50
+			add = {
+				value = 50
+				if = {
+					limit = {						
+						situation:RICE_nubia_baqt_situation ?= {
+							any_situation_sub_region = {
+								has_sub_region_phase_parameter = rice_baqt_power_less_difference
+							}
+						}
+					}
+					subtract = 20
+				}
+			}
 			scope:actor.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_far_stronger_value
 			desc = PT_AI_RECIPIENT_IS_MUCH_WEAKER
 		}
@@ -1013,8 +1073,6 @@ RICE_nubia_baqt_propose_exchange = {
 
 }
 
-
-
 RICE_nubia_baqt_offer_gift = {
 	interface_priority = 30
 	category = interaction_category_diplomacy
@@ -1066,7 +1124,7 @@ RICE_nubia_baqt_offer_gift = {
 	
 	is_valid = {
 		scope:actor = {
-			gold >= medium_gold_value
+			gold >= RICE_baqt_value
 		}
 		OR = {
 			AND = {
@@ -1226,7 +1284,7 @@ RICE_nubia_baqt_offer_gift = {
 		scope:actor = {
 			add_truce_both_ways = {
 				character = scope:recipient
-				days = purchase_truce_interaction_truce_days_small_value
+				years = RICE_nubia_baqt_truce_value
 				name = RICE_nubia_baqt_exchange_truce
 			}
 		}
@@ -1243,7 +1301,7 @@ RICE_nubia_baqt_offer_gift = {
 				scope:textiles = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:textiles
@@ -1264,7 +1322,7 @@ RICE_nubia_baqt_offer_gift = {
 				scope:foodstuffs = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:foodstuffs
@@ -1285,7 +1343,7 @@ RICE_nubia_baqt_offer_gift = {
 				scope:olive_oil = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:olive_oil
@@ -1306,7 +1364,7 @@ RICE_nubia_baqt_offer_gift = {
 				scope:wine = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:wine
@@ -1327,7 +1385,7 @@ RICE_nubia_baqt_offer_gift = {
 				scope:glass = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:glass
@@ -1348,7 +1406,7 @@ RICE_nubia_baqt_offer_gift = {
 				scope:horses = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:horses
@@ -1369,7 +1427,7 @@ RICE_nubia_baqt_offer_gift = {
 				scope:exotic_beasts = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:exotic_beasts
@@ -1390,7 +1448,7 @@ RICE_nubia_baqt_offer_gift = {
 				scope:metals = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:metals
@@ -1411,7 +1469,7 @@ RICE_nubia_baqt_offer_gift = {
 				scope:ebony = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:ebony
@@ -1432,7 +1490,7 @@ RICE_nubia_baqt_offer_gift = {
 				scope:slaves = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:slaves
@@ -1453,7 +1511,7 @@ RICE_nubia_baqt_offer_gift = {
 				scope:ivory = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:ivory
@@ -1474,7 +1532,7 @@ RICE_nubia_baqt_offer_gift = {
 				scope:animal_skins = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:animal_skins
@@ -1885,34 +1943,94 @@ RICE_nubia_baqt_offer_gift = {
 		# Relative power.
 		## Scope:actor has far fewer levies than scope:recipient.
 		modifier = {
-			add = -30
+			add = {
+				value = -30
+				if = {
+					limit = {						
+						situation:RICE_nubia_baqt_situation ?= {
+							any_situation_sub_region = {
+								has_sub_region_phase_parameter = rice_baqt_power_less_difference
+							}
+						}
+					}
+					add = 10
+				}
+			}
 			scope:actor.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_far_weaker_value
 			desc = PT_AI_RECIPIENT_IS_MUCH_STRONGER
 		}
 		## Scope:actor has fewer levies than scope:recipient.
 		modifier = {
-			add = -10
+			add = {
+				value = -10
+				if = {
+					limit = {						
+						situation:RICE_nubia_baqt_situation ?= {
+							any_situation_sub_region = {
+								has_sub_region_phase_parameter = rice_baqt_power_less_difference
+							}
+						}
+					}
+					add = 5
+				}
+			}
 			scope:actor.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_far_weaker_value
 			scope:actor.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_somewhat_weaker_value
 			desc = PT_AI_RECIPIENT_IS_SOMEWHAT_STRONGER
 		}
 		## Scope:actor has roughly equal levies with scope:recipient.
 		modifier = {
-			add = 10
+			add = {
+				value = 10
+				if = {
+					limit = {						
+						situation:RICE_nubia_baqt_situation ?= {
+							any_situation_sub_region = {
+								has_sub_region_phase_parameter = rice_baqt_power_less_difference
+							}
+						}
+					}
+					subtract = 5
+				}
+			}
 			scope:actor.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_somewhat_weaker_value
 			scope:actor.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_somewhat_stronger_value
 			desc = PT_AI_RECIPIENT_IS_ROUGHLY_EQUAL
 		}
 		## Scope:actor has more levies than scope:recipient.
 		modifier = {
-			add = 25
+			add = {
+				value = 25
+				if = {
+					limit = {						
+						situation:RICE_nubia_baqt_situation ?= {
+							any_situation_sub_region = {
+								has_sub_region_phase_parameter = rice_baqt_power_less_difference
+							}
+						}
+					}
+					subtract = 10
+				}
+			}
 			scope:actor.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_somewhat_stronger_value
 			scope:actor.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_far_stronger_value
 			desc = PT_AI_RECIPIENT_IS_SOMEWHAT_WEAKER
 		}
 		## Scope:actor has far more levies than scope:recipient.
 		modifier = {
-			add = 50
+			add = {
+				value = 50
+				if = {
+					limit = {						
+						situation:RICE_nubia_baqt_situation ?= {
+							any_situation_sub_region = {
+								has_sub_region_phase_parameter = rice_baqt_power_less_difference
+							}
+						}
+					}
+					subtract = 20
+				}
+			}
 			scope:actor.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_far_stronger_value
 			desc = PT_AI_RECIPIENT_IS_MUCH_WEAKER
 		}
@@ -1935,6 +2053,15 @@ RICE_nubia_baqt_offer_gift = {
 
 	ai_will_do = {
 		base = 40
+		# Baqt phases
+		modifier = {
+			add = 30
+			situation:RICE_nubia_baqt_situation ?= {
+				any_situation_sub_region = {
+					has_sub_region_phase_parameter = rice_baqt_gift_more_likely
+				}
+			}
+		}
 		# Some personalities & traits just don't want to fight.
 		## Cravens (who aren't also ambitious).
 		modifier = {
@@ -2062,7 +2189,7 @@ RICE_nubia_baqt_demand_payment = {
 	
 	is_valid = {
 		scope:actor = {
-			gold >= medium_gold_value
+			gold >= RICE_baqt_value
 		}
 		OR = {
 			AND = {
@@ -2222,7 +2349,7 @@ RICE_nubia_baqt_demand_payment = {
 		scope:actor = {
 			add_truce_both_ways = {
 				character = scope:recipient
-				days = purchase_truce_interaction_truce_days_small_value
+				years = RICE_nubia_baqt_truce_value
 				name = RICE_nubia_baqt_exchange_truce
 			}
 		}
@@ -2240,7 +2367,7 @@ RICE_nubia_baqt_demand_payment = {
 				scope:textiles = yes
 			}
 			scope:recipient = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_recipient_good
 					value = flag:textiles
@@ -2261,7 +2388,7 @@ RICE_nubia_baqt_demand_payment = {
 				scope:foodstuffs = yes
 			}
 			scope:recipient = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_recipient_good
 					value = flag:foodstuffs
@@ -2282,7 +2409,7 @@ RICE_nubia_baqt_demand_payment = {
 				scope:olive_oil = yes
 			}
 			scope:recipient = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_recipient_good
 					value = flag:olive_oil
@@ -2303,7 +2430,7 @@ RICE_nubia_baqt_demand_payment = {
 				scope:wine = yes
 			}
 			scope:recipient = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_recipient_good
 					value = flag:wine
@@ -2324,7 +2451,7 @@ RICE_nubia_baqt_demand_payment = {
 				scope:glass = yes
 			}
 			scope:recipient = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_recipient_good
 					value = flag:glass
@@ -2345,7 +2472,7 @@ RICE_nubia_baqt_demand_payment = {
 				scope:horses = yes
 			}
 			scope:recipient = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_recipient_good
 					value = flag:horses
@@ -2366,7 +2493,7 @@ RICE_nubia_baqt_demand_payment = {
 				scope:exotic_beasts = yes
 			}
 			scope:recipient = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_recipient_good
 					value = flag:exotic_beasts
@@ -2387,7 +2514,7 @@ RICE_nubia_baqt_demand_payment = {
 				scope:metals = yes
 			}
 			scope:recipient = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_recipient_good
 					value = flag:metals
@@ -2408,7 +2535,7 @@ RICE_nubia_baqt_demand_payment = {
 				scope:ebony = yes
 			}
 			scope:recipient = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_recipient_good
 					value = flag:ebony
@@ -2429,7 +2556,7 @@ RICE_nubia_baqt_demand_payment = {
 				scope:slaves = yes
 			}
 			scope:recipient = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_recipient_good
 					value = flag:slaves
@@ -2450,7 +2577,7 @@ RICE_nubia_baqt_demand_payment = {
 				scope:ivory = yes
 			}
 			scope:recipient = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_recipient_good
 					value = flag:ivory
@@ -2471,7 +2598,7 @@ RICE_nubia_baqt_demand_payment = {
 				scope:animal_skins = yes
 			}
 			scope:recipient = {
-				remove_short_term_gold = medium_gold_value
+				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_recipient_good
 					value = flag:animal_skins
@@ -2503,7 +2630,6 @@ RICE_nubia_baqt_demand_payment = {
 
 	ai_accept = {
 		base = 10
-
 		# Based on their Skills
 		modifier = { 
 			add = {
@@ -2884,34 +3010,94 @@ RICE_nubia_baqt_demand_payment = {
 		# Relative power.
 		## Scope:actor has far fewer levies than scope:recipient.
 		modifier = {
-			add = -40
+			add = {
+				value = -40
+				if = {
+					limit = {						
+						situation:RICE_nubia_baqt_situation ?= {
+							any_situation_sub_region = {
+								has_sub_region_phase_parameter = rice_baqt_power_less_difference
+							}
+						}
+					}
+					add = 20
+				}
+			}
 			scope:actor.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_far_weaker_value
 			desc = PT_AI_RECIPIENT_IS_MUCH_STRONGER
 		}
 		## Scope:actor has fewer levies than scope:recipient.
 		modifier = {
-			add = -20
+			add = {
+				value = -20
+				if = {
+					limit = {						
+						situation:RICE_nubia_baqt_situation ?= {
+							any_situation_sub_region = {
+								has_sub_region_phase_parameter = rice_baqt_power_less_difference
+							}
+						}
+					}
+					add = 10
+				}
+			}
 			scope:actor.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_far_weaker_value
 			scope:actor.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_somewhat_weaker_value
 			desc = PT_AI_RECIPIENT_IS_SOMEWHAT_STRONGER
 		}
 		## Scope:actor has roughly equal levies with scope:recipient.
 		modifier = {
-			add = 20
+			add = {
+				value = 20
+				if = {
+					limit = {						
+						situation:RICE_nubia_baqt_situation ?= {
+							any_situation_sub_region = {
+								has_sub_region_phase_parameter = rice_baqt_power_less_difference
+							}
+						}
+					}
+					subtract = -10
+				}
+			}
 			scope:actor.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_somewhat_weaker_value
 			scope:actor.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_somewhat_stronger_value
 			desc = PT_AI_RECIPIENT_IS_ROUGHLY_EQUAL
 		}
 		## Scope:actor has more levies than scope:recipient.
 		modifier = {
-			add = 30
+			add = {
+				value = 30
+				if = {
+					limit = {						
+						situation:RICE_nubia_baqt_situation ?= {
+							any_situation_sub_region = {
+								has_sub_region_phase_parameter = rice_baqt_power_less_difference
+							}
+						}
+					}
+					subtract = -15
+				}
+			}
 			scope:actor.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_somewhat_stronger_value
 			scope:actor.max_military_strength <= scope:recipient.purchase_truce_interaction_recipient_far_stronger_value
 			desc = PT_AI_RECIPIENT_IS_SOMEWHAT_WEAKER
 		}
 		## Scope:actor has far more levies than scope:recipient.
 		modifier = {
-			add = 60
+			add = {
+				value = 60
+				if = {
+					limit = {						
+						situation:RICE_nubia_baqt_situation ?= {
+							any_situation_sub_region = {
+								has_sub_region_phase_parameter = rice_baqt_power_less_difference
+							}
+						}
+					}
+					subtract = -20
+				}
+			}
 			scope:actor.max_military_strength > scope:recipient.purchase_truce_interaction_recipient_far_stronger_value
 			desc = PT_AI_RECIPIENT_IS_MUCH_WEAKER
 		}
@@ -2933,7 +3119,16 @@ RICE_nubia_baqt_demand_payment = {
 	}
 
 	ai_will_do = {
-		base = 60
+		base = 50
+		# Baqt phases
+		modifier = {
+			add = 50
+			situation:RICE_nubia_baqt_situation ?= {
+				any_situation_sub_region = {
+					has_sub_region_phase_parameter = rice_baqt_demand_more_likely
+				}
+			}
+		}
 		# Some personalities & traits just don't want to fight.
 		## Cravens (who aren't also ambitious).
 		modifier = {
