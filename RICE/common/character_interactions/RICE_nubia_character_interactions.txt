@@ -53,6 +53,9 @@ RICE_nubia_baqt_propose_exchange = {
 		scope:actor = {
 			gold >= RICE_baqt_value
 		}
+		scope:recipient = {
+			gold >= RICE_baqt_value
+		}
 		OR = {
 			AND = {
 				scope:actor = {
@@ -208,6 +211,12 @@ RICE_nubia_baqt_propose_exchange = {
 	send_options_exclusive = yes
 	
 	on_accept = {
+		situation:RICE_nubia_baqt_situation ?= {
+			trigger_situation_catalyst = {
+				catalyst = catalyst_situation_RICE_baqt_exchange_goods
+				character = scope:actor
+			}
+		}
 		scope:actor = {
 			add_truce_both_ways = {
 				character = scope:recipient
@@ -228,7 +237,6 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:textiles = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:textiles
@@ -249,7 +257,6 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:foodstuffs = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:foodstuffs
@@ -270,7 +277,6 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:olive_oil = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:olive_oil
@@ -291,7 +297,6 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:wine = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:wine
@@ -312,7 +317,6 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:glass = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:glass
@@ -333,7 +337,6 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:horses = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:horses
@@ -354,7 +357,6 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:exotic_beasts = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:exotic_beasts
@@ -375,7 +377,6 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:metals = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:metals
@@ -396,7 +397,6 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:ebony = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:ebony
@@ -417,7 +417,6 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:slaves = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:slaves
@@ -438,7 +437,6 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:ivory = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:ivory
@@ -459,7 +457,6 @@ RICE_nubia_baqt_propose_exchange = {
 				scope:animal_skins = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:animal_skins
@@ -476,6 +473,7 @@ RICE_nubia_baqt_propose_exchange = {
 			}
 		}
 		scope:actor = {
+			remove_short_term_gold = RICE_baqt_value
 			show_as_tooltip = {
 				stress_impact = {
 					greedy = medium_stress_impact_gain
@@ -485,6 +483,7 @@ RICE_nubia_baqt_propose_exchange = {
 			#trigger_event = nubia.8888
 		}
 		scope:recipient = {
+			remove_short_term_gold = RICE_baqt_value
 			if = {
 				limit = {
 					RICE_baqt_nubian_ruler_trigger = yes
@@ -1281,6 +1280,28 @@ RICE_nubia_baqt_offer_gift = {
 	send_options_exclusive = yes
 	
 	on_accept = {
+		if = {
+			limit = {
+				scope:actor.max_military_strength >= scope:recipient.max_military_strength
+			}
+			situation:RICE_nubia_baqt_situation ?= {
+				trigger_situation_catalyst = {
+					catalyst = catalyst_situation_RICE_baqt_offer_gift_weaker
+					character = scope:actor
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:actor.max_military_strength < scope:recipient.max_military_strength
+			}
+			situation:RICE_nubia_baqt_situation ?= {
+				trigger_situation_catalyst = {
+					catalyst = catalyst_situation_RICE_baqt_offer_gift_stronger
+					character = scope:actor
+				}
+			}
+		}
 		scope:actor = {
 			add_truce_both_ways = {
 				character = scope:recipient
@@ -1301,7 +1322,6 @@ RICE_nubia_baqt_offer_gift = {
 				scope:textiles = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:textiles
@@ -1322,7 +1342,6 @@ RICE_nubia_baqt_offer_gift = {
 				scope:foodstuffs = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:foodstuffs
@@ -1343,7 +1362,6 @@ RICE_nubia_baqt_offer_gift = {
 				scope:olive_oil = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:olive_oil
@@ -1364,7 +1382,6 @@ RICE_nubia_baqt_offer_gift = {
 				scope:wine = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:wine
@@ -1385,7 +1402,6 @@ RICE_nubia_baqt_offer_gift = {
 				scope:glass = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:glass
@@ -1406,7 +1422,6 @@ RICE_nubia_baqt_offer_gift = {
 				scope:horses = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:horses
@@ -1427,7 +1442,6 @@ RICE_nubia_baqt_offer_gift = {
 				scope:exotic_beasts = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:exotic_beasts
@@ -1448,7 +1462,6 @@ RICE_nubia_baqt_offer_gift = {
 				scope:metals = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:metals
@@ -1469,7 +1482,6 @@ RICE_nubia_baqt_offer_gift = {
 				scope:ebony = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:ebony
@@ -1490,7 +1502,6 @@ RICE_nubia_baqt_offer_gift = {
 				scope:slaves = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:slaves
@@ -1511,7 +1522,6 @@ RICE_nubia_baqt_offer_gift = {
 				scope:ivory = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:ivory
@@ -1532,7 +1542,6 @@ RICE_nubia_baqt_offer_gift = {
 				scope:animal_skins = yes
 			}
 			scope:actor = {
-				remove_short_term_gold = RICE_baqt_value
 				set_variable = {
 					name = RICE_baqt_actor_good
 					value = flag:animal_skins
@@ -1549,6 +1558,7 @@ RICE_nubia_baqt_offer_gift = {
 			}
 		}
 		scope:actor = {
+			remove_short_term_gold = RICE_baqt_value
 			stress_impact = {
 				greedy = medium_stress_impact_gain
 				generous = medium_stress_impact_loss
@@ -2188,7 +2198,7 @@ RICE_nubia_baqt_demand_payment = {
 	}
 	
 	is_valid = {
-		scope:actor = {
+		scope:recipient = {
 			gold >= RICE_baqt_value
 		}
 		OR = {
@@ -2346,6 +2356,12 @@ RICE_nubia_baqt_demand_payment = {
 	send_options_exclusive = yes
 	
 	on_accept = {
+		situation:RICE_nubia_baqt_situation ?= {
+			trigger_situation_catalyst = {
+				catalyst = catalyst_situation_RICE_baqt_demand_tribute
+				character = scope:actor
+			}
+		}
 		scope:actor = {
 			add_truce_both_ways = {
 				character = scope:recipient
