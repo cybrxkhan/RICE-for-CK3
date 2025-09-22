@@ -16193,3 +16193,710 @@ nubia.0279 = {
 	}
 
 }
+
+# Ancient Nubian pottery workshops are performing well
+nubia.0280 = {
+	type = character_event
+	title = nubia.0280.t
+	desc = nubia.0280.desc
+	theme = RICE_theme_nubia_dongola_building
+
+	left_portrait = root
+
+	right_portrait = {
+		character = scope:councilor
+		animation = debating
+	}
+		
+	trigger = {
+		OR = {
+			culture = culture:nubian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:nubian
+				}
+			}
+		}
+		any_held_title = {
+			tier = tier_county
+			OR = {
+				culture = culture:nubian
+				culture = {
+					any_parent_culture_or_above = {
+						this = culture:nubian
+					}
+				}
+			}	
+			any_county_province = {
+				geographical_region = RICE_nile_river_valley_nubia
+			}
+		}
+		any_councillor = {
+			is_available_ai_adult = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+		modifier = {
+			add = 0.2
+			has_trait = honest
+		}
+		modifier = {
+			add = -0.2
+			has_trait = deceitful
+		}
+	}
+
+	immediate = {
+		random_held_title = {			
+			limit = {
+				tier = tier_county
+				OR = {
+					culture = culture:nubian
+					culture = {
+						any_parent_culture_or_above = {
+							this = culture:nubian
+						}
+					}
+				}
+				any_county_province = {
+					geographical_region = RICE_nile_river_valley_nubia
+				}
+			}
+			save_scope_as = county
+		}
+		scope:county.culture = {
+			save_scope_as = culture
+		}
+		random_councillor = {
+			limit = {
+				is_available_ai_adult = yes
+			}
+			save_scope_as = councilor
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0280.a
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 50			
+			}
+		}
+		remove_short_term_gold = 50
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_nubia_ancient_pottery_workshops
+				years = 20
+			}
+		}
+		scope:councilor = {
+			add_opinion = {
+				target = root
+				opinion = 10
+				modifier = pleased_opinion
+			}	
+		}
+		stress_impact = {
+			lazy = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0280.b
+		scope:councilor = {
+			add_opinion = {
+				target = root
+				opinion = -10
+				modifier = disappointed_opinion
+			}	
+		}
+		stress_impact = {
+			diligent = miniscule_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = nubia.0280.info
+		}
+	}
+
+}
+
+# Courtier encounters Ablemba sprits
+nubia.0281 = {
+	type = character_event
+	title = nubia.0281.t
+	desc = nubia.0281.desc
+	theme = memory_negative
+
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+
+	right_portrait = {
+		character = scope:courtier
+		animation = shiver
+	}
+		
+	trigger = {
+		OR = {
+			culture = { has_cultural_pillar = heritage_east_african }
+			culture = { has_cultural_pillar = heritage_arabic }
+			culture = { has_cultural_pillar = heritage_berber }
+		}
+		NOT = { faith.religion = { is_in_family = rf_pagan } }
+		capital_county = {			
+			any_county_province = {
+				geographical_region = RICE_nile_river_valley_nubia
+			}
+			OR = {
+				culture = culture:nubian
+				culture = {
+					any_parent_culture_or_above = {
+						this = culture:nubian
+					}
+				}
+			}	
+		}
+		any_courtier_or_guest = {
+			is_available_healthy_ai_adult = yes
+			religion = root.religion
+			culture = root.culture
+			NOT = { has_trait = cynical }
+			OR = {
+				has_trait = zealous
+				has_trait = paranoid
+				has_trait = shy
+				has_trait = lifestyle_mystic
+				has_trait = eccentric
+				has_trait = impatient
+				has_trait = lazy
+				has_trait = fickle
+				has_trait = stubborn
+				has_trait = lustful
+				has_trait = arrogant
+				has_trait = brave
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		random_courtier_or_guest = {
+			limit = {
+				is_available_healthy_ai_adult = yes
+				religion = root.religion
+				culture = root.culture
+				NOT = { has_trait = cynical }
+				OR = {
+					has_trait = zealous
+					has_trait = paranoid
+					has_trait = shy
+					has_trait = lifestyle_mystic
+					has_trait = eccentric
+					has_trait = impatient
+					has_trait = lazy
+					has_trait = fickle
+					has_trait = stubborn
+					has_trait = lustful
+					has_trait = arrogant
+					has_trait = brave
+				}				
+			}
+			save_scope_as = courtier
+		}
+		scope:courtier = {
+			add_character_modifier = {
+				modifier = RICE_nubia_encountered_an_ablemba
+				years = 5
+			}
+		}
+		capital_county.culture = {
+			save_scope_as = culture
+		}
+		if = {
+			limit = {
+				religion = religion:islam_religion
+			}
+			faith:coptic = {
+				save_scope_as = old_faith
+			}
+		}
+		else = {
+			faith:kushitism_pagan = {
+				save_scope_as = old_faith
+			}
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0281.a
+		add_piety = 20
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0281.b
+		add_prestige = 20
+		stress_impact = {
+			zealous = miniscule_stress_impact_gain
+		}
+	}
+
+	
+
+}
+
+
+
+
+# Stay at a Nubian Coptic monastery, which they don't have enough space for more people
+nubia.0282 = {
+	type = character_event
+	title = nubia.0282.t
+	desc = nubia.0282.desc
+	theme = travel_learning
+	override_background = { reference = RICE_background_nile_private_courtyard }
+	
+	right_portrait = {
+		character = root
+		animation = personality_compassionate
+	}	
+
+	trigger = {
+		is_location_valid_for_travel_event_on_land = yes
+		location = {
+			county = {
+				religion = religion:christianity_religion
+				OR = {
+					culture = culture:nubian
+					culture = {
+						any_parent_culture_or_above = {
+							this = culture:nubian
+						}
+					}
+				}				
+			}
+		}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = gluttonous
+		}
+	}
+
+	immediate = {
+		location.county.culture = {
+			save_scope_as = culture
+		}
+		location.county.faith = {
+			save_scope_as = faith
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0282.a
+		stress_impact = {
+			generous = miniscule_stress_impact_gain
+			compassionate = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0282.b
+		trigger = {
+			OR = {
+				gold >= 15
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 15
+		add_piety = 25
+		add_prestige = 25
+		# add_character_modifier = {
+		# 	modifier = RICE_nubia_generous_to_other_travelers
+		# 	years = 10
+		# }
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+			sadistic = miniscule_stress_impact_gain
+		}
+	}
+
+}
+
+
+
+# Character reflects on stories of the Nubians being legendary archers
+nubia.0283 = {
+	type = character_event
+	title = nubia.0283.t
+	desc = nubia.0283.desc
+	theme = martial
+
+	right_portrait = {
+		character = root
+		animation = war_over_win
+	}
+		
+	trigger = {
+		OR = {
+			culture = culture:nubian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:nubian
+				}
+			}
+		}	
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = wrathful
+		}
+		modifier = {
+			add = -0.2
+			has_trait = calm
+		}
+	}
+
+	immediate = {
+		culture = {
+			save_scope_as = nubian
+		}
+		culture:bedouin = {
+			save_scope_as = arabic
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0283.a
+		add_character_modifier = {
+			modifier = RICE_nubia_archers_emulating_ancestors
+			years = 10
+		}
+		stress_impact = {
+			brave = miniscule_stress_impact_loss
+			diligent = miniscule_stress_impact_loss
+			ambitious = miniscule_stress_impact_loss
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0283.b
+		add_character_modifier = {
+			modifier = RICE_nubia_archers_discourage_foreigners
+			years = 10
+		}
+		stress_impact = {
+			paranoid = miniscule_stress_impact_loss
+			zealous = miniscule_stress_impact_loss
+			stubborn = miniscule_stress_impact_loss
+		}
+	}
+
+
+}
+
+
+
+# Chaplain is lecturing on the Virgin Mary and the high status of women in Nubia
+nubia.0284 = {
+	type = character_event
+	title = nubia.0284.t
+	desc = nubia.0284.desc
+	theme = RICE_theme_nubia_church_interior
+
+	right_portrait = {
+		character = scope:chaplain
+		animation = personality_zealous
+	}
+
+	trigger = {
+		religion = religion:christianity_religion
+		OR = {
+			culture = culture:nubian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:nubian
+				}
+			}
+		}
+		cp:councillor_court_chaplain = {
+			exists = yes
+			is_available_ai_adult = yes
+			faith = root.faith
+			culture = root.culture
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+	}
+
+	immediate = {
+		cp:councillor_court_chaplain = {
+			save_scope_as = chaplain
+		}
+		culture = {
+			save_scope_as = nubian
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0284.a
+		add_character_modifier = {
+			modifier = RICE_nubia_respects_powerful_women
+			years = 10
+		}
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			paranoid = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0284.b
+		add_character_modifier = {
+			modifier = RICE_nubia_cynical_ruler
+			years = 10
+		}
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			trusting = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = nubia.0284.info
+		}
+	}
+
+}
+
+# Servants are carving names of saints and archangels into pottery
+nubia.0285 = {
+	type = character_event
+	title = nubia.0285.t
+	desc = nubia.0285.desc
+	theme = faith
+	override_background = { reference = relaxing_room }
+
+	right_portrait = root
+
+	trigger = {
+		religion = religion:christianity_religion
+		OR = {
+			culture = culture:nubian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:nubian
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+	}
+
+	immediate = {
+		culture = {
+			save_scope_as = nubian
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0285.a
+		add_character_modifier = {
+			modifier = RICE_nubia_protective_pots
+			years = 10
+		}
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0285.b
+		add_prestige = -100
+		add_character_modifier = {
+			modifier = RICE_nubia_very_protective_pots
+			years = 10
+		}
+		stress_impact = {
+			cynical = medium_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0285.c
+		add_character_modifier = {
+			modifier = RICE_nubia_cynical_ruler
+			years = 10
+		}
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			trusting = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = nubia.0285.info
+		}
+	}
+
+}
