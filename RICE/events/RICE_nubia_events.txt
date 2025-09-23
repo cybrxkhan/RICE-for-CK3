@@ -16900,3 +16900,443 @@ nubia.0285 = {
 	}
 
 }
+
+
+# Character notices locals carving the name of Saint Michael into the walls
+nubia.0286 = {
+	type = character_event
+	title = nubia.0286.t
+	desc = nubia.0286.desc
+	theme = travel_learning
+	override_background = { reference = RICE_background_nile_travel }
+	
+	right_portrait = {
+		character = root
+		animation = personality_rational
+	}	
+
+	trigger = {
+		is_location_valid_for_travel_event_on_land = yes
+		location = {
+			county = {
+				religion = religion:christianity_religion
+				OR = {
+					culture = culture:nubian
+					culture = {
+						any_parent_culture_or_above = {
+							this = culture:nubian
+						}
+					}
+				}				
+			}
+		}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+	}
+
+	immediate = {
+		location.county.culture = {
+			save_scope_as = culture
+		}
+		location.county.faith = {
+			save_scope_as = faith
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0286.a
+		add_prestige = 25
+	}
+
+	option = { # Ok
+		name = nubia.0286.b
+		trigger = {
+			religion = religion:christianity_religion
+		}
+		add_piety = 25
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0286.c
+		trigger = {
+			NOT = { religion = religion:christianity_religion }
+		}
+		add_piety = 25
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+		}
+	}
+
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = nubia.0285.info
+		}
+	}
+
+}
+
+
+
+# Two courtiers are in a dispute as shareholders of a saqia
+nubia.0287 = {
+	type = character_event
+	title = nubia.0287.t
+	window = big_event_window
+	desc = nubia.0287.desc
+	theme = RICE_theme_nile_valley
+
+	
+	left_portrait = {
+		character = scope:courtier_1
+		animation = dismissal
+	}
+	right_portrait = {
+		character = scope:courtier_2
+		animation = disapproval
+	}
+
+	trigger = {	
+		OR = {
+			culture = culture:nubian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:nubian
+				}
+			}
+			culture = { has_cultural_pillar = heritage_iranian }
+			culture = { has_cultural_pillar = heritage_arabic }
+			culture = { has_cultural_pillar = heritage_syriac }
+			culture = { has_cultural_pillar = heritage_egyptian }
+		}	
+		any_courtier = {
+			is_available_ai_adult = yes
+			count >= 2
+			culture = root.culture
+		}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	immediate = {
+		every_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+				count >= 2
+				culture = root.culture
+			}
+			add_to_list = courtier_candidates
+		}
+		random_in_list = {
+			list = courtier_candidates
+			save_scope_as = courtier_1
+		}
+		random_in_list = {
+			list = courtier_candidates
+			limit = {
+				exists = scope:courtier_1
+				NOT = { this = scope:courtier_1 }
+			}
+			save_scope_as = courtier_2
+		}
+		scope:courtier_1 = {
+			add_character_modifier = {
+				modifier = RICE_nubia_investing_in_local_saqia
+				years = 10
+			}
+			add_opinion = {
+				target = scope:courtier_2
+				modifier = RICE_nubia_saqia_dispute_opinion
+			}
+		}
+		scope:courtier_2 = {
+			add_character_modifier = {
+				modifier = RICE_nubia_investing_in_local_saqia
+				years = 10
+			}
+			add_opinion = {
+				target = scope:courtier_1
+				modifier = RICE_nubia_saqia_dispute_opinion
+			}
+		}
+	}
+
+	
+	option = { # ok
+		name = nubia.0287.a
+		stress_impact = {
+			diligent = miniscule_stress_impact_gain
+			calm = miniscule_stress_impact_gain
+			patient = miniscule_stress_impact_gain
+			just = miniscule_stress_impact_gain
+		}
+		scope:courtier_1 = {
+			add_opinion = {
+				target = root
+				modifier = frustrated_opinion
+				opinion = -15
+			}		
+		}
+		scope:courtier_2 = {
+			add_opinion = {
+				target = root
+				modifier = frustrated_opinion
+				opinion = -15
+			}		
+		}
+	}
+	
+	option = { # ok
+		name = nubia.0287.b
+		scope:courtier_1 = {
+			add_opinion = {
+				target = root
+				modifier = RICE_agrees_with_me_opinion
+				opinion = 30
+			}		
+		}
+		scope:courtier_2 = {
+			add_opinion = {
+				target = root
+				modifier = RICE_disagrees_with_me_opinion
+				opinion = -30
+			}		
+		}
+	}
+	
+	option = { # ok
+		name = nubia.0287.c
+		scope:courtier_2 = {
+			add_opinion = {
+				target = root
+				modifier = RICE_agrees_with_me_opinion
+				opinion = 30
+			}		
+		}
+		scope:courtier_1 = {
+			add_opinion = {
+				target = root
+				modifier = RICE_disagrees_with_me_opinion
+				opinion = -30
+			}		
+		}
+	}
+	
+	option = { # ok
+		name = nubia.0287.d
+		stress_impact = {
+			lazy = minor_stress_impact_gain
+			shy = miniscule_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+			arbitrary = miniscule_stress_impact_gain
+			fickle = miniscule_stress_impact_gain
+		}
+		duel = {
+			skills = { diplomacy }
+			value = medium_skill_rating
+			desc = nubia.0287.d.tooltip
+			# Failure
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -1.5
+					min = -49
+				}
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					left_icon = scope:courtier_1
+					right_icon = scope:courtier_2
+					title = nubia.0287.d.bad
+					add_prestige = -100
+					scope:courtier_1 = {
+						add_opinion = {
+							target = root
+							modifier = annoyed_opinion
+							opinion = -15
+						}
+					}
+					scope:courtier_2 = {
+						add_opinion = {
+							target = root
+							modifier = annoyed_opinion
+							opinion = -15
+						}
+					}
+				}
+			}
+			# Success.
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 1.5
+					min = -49
+				}
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = scope:courtier_1
+					right_icon = scope:courtier_2
+					title = nubia.0287.d.good
+					add_prestige = 100
+					scope:courtier_1 = {
+						remove_opinion = {
+							modifier = RICE_nubia_saqia_dispute_opinion
+							target = scope:courtier_2
+						}
+						add_opinion = {
+							target = root
+							modifier = grateful_opinion
+							opinion = 15
+						}
+					}
+					scope:courtier_2 = {
+						remove_opinion = {
+							modifier = RICE_nubia_saqia_dispute_opinion
+							target = scope:courtier_1
+						}
+						add_opinion = {
+							target = root
+							modifier = grateful_opinion
+							opinion = 15
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+
+}
+
+# Traveling merchants tell about difficulties due to cold season on the Nile
+nubia.0288 = {
+	type = character_event
+	title = nubia.0288.t
+	desc = nubia.0288.desc
+	theme = stewardship_wealth_focus
+	override_background = { reference = RICE_background_nile_valley }
+
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	trigger = {
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = RICE_nile_river_valley_without_ethiopia
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0288.a
+		add_piety = 25
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0288.b
+		add_prestige = -50
+		add_character_modifier = {
+			modifier = RICE_nubia_learning_about_nile_seasons
+			years = 10
+		}
+		stress_impact = {
+			lazy = minor_stress_impact_gain
+			shy = miniscule_stress_impact_gain
+		}
+	}
+
+}
+
