@@ -15118,7 +15118,10 @@ nubia.0276 = {
 	trigger = {
 		any_held_title = {
 			tier = tier_county
-			religion = religion:christianity_religion
+			OR = {
+				religion = religion:christianity_religion
+				faith = { has_doctrine = tenet_monasticism }
+			}
 			any_county_province = {
 				geographical_region = RICE_nile_river_valley_without_ethiopia
 			}
@@ -15157,7 +15160,10 @@ nubia.0276 = {
 		random_held_title = {			
 			limit = {
 				tier = tier_county
-				religion = religion:christianity_religion
+				OR = {
+					religion = religion:christianity_religion
+					faith = { has_doctrine = tenet_monasticism }
+				}
 				any_county_province = {
 					geographical_region = RICE_nile_river_valley_without_ethiopia
 				}
@@ -17022,11 +17028,11 @@ nubia.0287 = {
 	
 	left_portrait = {
 		character = scope:courtier_1
-		animation = dismissal
+		animation = disapproval
 	}
 	right_portrait = {
 		character = scope:courtier_2
-		animation = disapproval
+		animation = debating
 	}
 
 	trigger = {	
@@ -17183,6 +17189,7 @@ nubia.0287 = {
 	
 	option = { # ok
 		name = nubia.0287.d
+		custom_tooltip = nubia.0287.d.tooltip
 		stress_impact = {
 			lazy = minor_stress_impact_gain
 			shy = miniscule_stress_impact_gain
@@ -17193,9 +17200,9 @@ nubia.0287 = {
 		duel = {
 			skills = { diplomacy }
 			value = medium_skill_rating
-			desc = nubia.0287.d.tooltip
 			# Failure
 			50 = {
+				desc = nubia.0287.d.bad
 				compare_modifier = {
 					value = scope:duel_value
 					multiplier = -1.5
@@ -17225,6 +17232,7 @@ nubia.0287 = {
 			}
 			# Success.
 			50 = {
+				desc = nubia.0287.d.good
 				compare_modifier = {
 					value = scope:duel_value
 					multiplier = 1.5
@@ -17277,7 +17285,7 @@ nubia.0288 = {
 
 	left_portrait = {
 		character = root
-		animation = thinking
+		animation = personality_forgiving
 	}
 
 	trigger = {
@@ -17340,3 +17348,696 @@ nubia.0288 = {
 
 }
 
+# Reading the Sayings of the Desert Fathers as a Coptic
+nubia.0289 = {
+	type = character_event
+	title = nubia.0289.t
+	desc = nubia.0289.desc
+	theme = learning_scholarship_focus
+
+	left_portrait = {
+		character = root
+		animation = reading
+	}
+
+	trigger = {
+		faith = faith:coptic
+		NOT = { has_trait = cynical }
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0289.a
+		add_character_modifier = {
+			modifier = RICE_nubia_sayings_of_the_desert_fathers_political
+			years = 10
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0289.b
+		add_character_modifier = {
+			modifier = RICE_nubia_sayings_of_the_desert_fathers_spiritual
+			years = 10
+		}
+	}
+
+}
+
+
+# Courtier gets a religious protective/apotropaic tattoo
+nubia.0290 = {
+	type = character_event
+	title = nubia.0290.t
+	desc = nubia.0290.desc
+	theme = friendly
+	override_background = { reference = RICE_background_nile_private_courtyard }
+
+	left_portrait = root
+
+	right_portrait = scope:courtier
+
+	trigger = {
+		OR = {
+			any_courtier_or_guest = {
+				is_available_ai_adult = yes
+				NOT = { has_trait = cynical }
+				OR = {
+					faith = {
+						has_doctrine = special_doctrine_rice_doctrine_northeast_african_tattoo
+					}
+					culture = { has_cultural_pillar = heritage_egyptian }
+					culture = { has_cultural_pillar = heritage_east_african }
+				}
+				NOT = { religion = religion:islam_religion }
+				NOT = { religion = religion:judaism_religion }
+			}
+			any_vassal = {
+				is_available_ai_adult = yes
+				NOT = { has_trait = cynical }
+				OR = {
+					faith = {
+						has_doctrine = special_doctrine_rice_doctrine_northeast_african_tattoo
+					}
+					culture = { has_cultural_pillar = heritage_egyptian }
+					culture = { has_cultural_pillar = heritage_east_african }
+				}
+				NOT = { religion = religion:islam_religion }
+				NOT = { religion = religion:judaism_religion }
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = -0.2
+			has_trait = paranoid
+		}
+	}
+
+	immediate = {
+
+		every_courtier_or_guest = {
+			limit = {
+				is_available_ai_adult = yes
+				NOT = { has_trait = cynical }
+				OR = {
+					faith = {
+						has_doctrine = special_doctrine_rice_doctrine_northeast_african_tattoo
+					}
+					culture = { has_cultural_pillar = heritage_egyptian }
+					culture = { has_cultural_pillar = heritage_east_african }
+				}
+				NOT = { religion = religion:islam_religion }
+				NOT = { religion = religion:judaism_religion }
+			}
+			add_to_list = candidate_characters
+		}
+		every_vassal = {
+			limit = {
+				is_available_ai_adult = yes
+				NOT = { has_trait = cynical }
+				OR = {
+					faith = {
+						has_doctrine = special_doctrine_rice_doctrine_northeast_african_tattoo
+					}
+					culture = { has_cultural_pillar = heritage_egyptian }
+					culture = { has_cultural_pillar = heritage_east_african }
+				}
+				NOT = { religion = religion:islam_religion }
+				NOT = { religion = religion:judaism_religion }
+			}
+			add_to_list = candidate_characters
+		}
+		random_in_list = {
+			list = candidate_characters
+			save_scope_as = courtier
+		}
+
+		scope:courtier = {
+			RICE_east_african_tattoo_decision_effect = yes			
+		}
+
+	}
+
+	option = { # Ok
+		name = nubia.0290.a
+		add_piety = 15
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0290.b
+		add_prestige = 15
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+		}
+	}
+
+}
+
+# Observing servants build a gossi grain silo
+nubia.0291 = {
+	type = character_event
+	title = nubia.0291.t
+	desc = nubia.0291.desc
+	theme = friendly
+	override_background = { reference = RICE_background_nubia_dongola_building }
+
+	right_portrait = {
+		character = root
+		animation = survey
+	}
+
+	trigger = {
+		culture = {
+			has_innovation = innovation_RICE_gossi_grain_silos
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0291.a
+		add_prestige = 50
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			gregarious = miniscule_stress_impact_loss
+			gluttonous = minor_stress_impact_loss
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0291.b
+		add_character_modifier = {
+			modifier = RICE_nubia_learning_about_gossi_grain_silos
+			years = 10
+		}
+	}
+
+}
+
+# Courtier becomes enthusiastic devotee to Saint Raphael
+nubia.0292 = {
+	type = character_event
+	title = nubia.0292.t
+	desc = nubia.0292.desc
+	theme = faith
+	override_background = { reference = RICE_background_nubia_church_interior }
+
+	left_portrait = {
+		character = root
+		animation = personality_cynical
+	}
+
+	right_portrait = {
+		character = scope:courtier
+		animation = personality_zealous
+	}
+
+	trigger = {
+		religion = religion:christianity_religion
+		OR = {
+			culture = culture:nubian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:nubian
+				}
+			}
+		}	
+		OR = {
+			any_courtier_or_guest = {
+				is_available_ai_adult = yes
+				NOT = { has_trait = cynical }
+				faith = root.faith
+				culture = root.culture
+			}
+			any_vassal = {
+				is_available_ai_adult = yes
+				NOT = { has_trait = cynical }
+				faith = root.faith
+				culture = root.culture
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = fickle
+		}
+		modifier = {
+			add = -0.2
+			has_trait = stubborn
+		}
+	}
+
+	immediate = {
+
+		every_courtier_or_guest = {
+			limit = {
+				is_available_ai_adult = yes
+				NOT = { has_trait = cynical }
+				faith = root.faith
+				culture = root.culture
+			}
+			add_to_list = candidate_characters
+		}
+		every_vassal = {
+			limit = {
+				is_available_ai_adult = yes
+				NOT = { has_trait = cynical }
+				NOT = { has_trait = cynical }
+				faith = root.faith
+				culture = root.culture
+			}
+			add_to_list = candidate_characters
+		}
+		random_in_list = {
+			list = candidate_characters
+			weight = {
+				base = 10
+				modifier = {
+					has_trait = zealous
+					add = 20
+				}
+				modifier = {
+					has_trait = trusting
+					add = 5
+				}
+				modifier = {
+					has_trait = eccentric
+					add = 5
+				}
+				modifier = {
+					has_any_illness = yes
+					add = 10
+				}
+				modifier = {
+					has_any_debilitating_illness = yes
+					add = 10
+				}
+			}
+			save_scope_as = courtier
+		}
+
+		scope:courtier = {
+			add_character_modifier = {
+				modifier = RICE_nubia_enthusiastic_saint_raphael_devotee
+				years = 20
+			}			
+		}
+
+	}
+
+	option = { # Ok
+		name = nubia.0292.a
+		scope:courtier = {
+			add_opinion = {
+				target = scope:courtier
+				modifier = RICE_nubia_fellow_raphael_devotee
+			}
+		}
+		random_list = {
+			50 = {
+				desc = nubia.0292.a.nothing
+				modifier = {
+					add = 10
+					has_trait = cynical
+				}
+				modifier = {
+					add = 10
+					has_trait = lazy
+				}
+				modifier = {
+					add = 5
+					has_trait = arbitrary
+				}
+				modifier = {
+					add = 5
+					has_trait = callous
+				}
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					left_icon = ROOT
+					title = nubia.0292.a.nothing
+					stress_impact = {
+						base = miniscule_stress_impact_gain
+						impatient = miniscule_stress_impact_gain
+						trusting = miniscule_stress_impact_gain
+					}
+				}
+			}
+			35 = {
+				desc = nubia.0292.a.casual
+				modifier = {
+					add = 10
+					has_trait = zealous
+				}
+				modifier = {
+					add = 5
+					has_trait = diligent
+				}
+				modifier = {
+					add = 5
+					has_trait = brave
+				}
+				modifier = {
+					add = {
+						value = piety_level
+						multiply = 2.5
+					}					
+				}
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = nubia.0292.a.casual
+					add_character_modifier = {
+						modifier = RICE_nubia_casual_saint_raphael_devotee
+						years = 20
+					}
+				}
+			}
+			15 = {
+				desc = nubia.0292.a.enthusiastic
+				modifier = {
+					add = 5
+					has_trait = zealous
+				}
+				modifier = {
+					add = 5
+					has_trait = diligent
+				}
+				modifier = {
+					add = 5
+					has_trait = brave
+				}
+				modifier = {
+					add = {
+						value = piety_level
+						multiply = 1.5
+					}					
+				}
+				send_interface_toast = {
+					type = event_toast_effect_good
+					left_icon = ROOT
+					title = nubia.0292.a.enthusiastic
+					add_character_modifier = {
+						modifier = RICE_nubia_enthusiastic_saint_raphael_devotee
+						years = 20
+					}
+				}				
+			}
+		}
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0292.b
+		add_prestige = 50
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			diligent = miniscule_stress_impact_gain
+		}
+	}
+
+}
+
+# Servant wants to bury their dead child under the servant's quarters
+nubia.0293 = {
+	type = character_event
+	title = nubia.0293.t
+	desc = nubia.0293.desc
+	theme = death
+	override_background = { reference = RICE_background_nile_private_courtyard }
+
+	right_portrait = root
+
+	trigger = {
+		OR = {
+			culture = culture:nubian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:nubian
+				}
+			}
+			culture = culture:ancient_egyptian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:ancient_egyptian
+				}
+			}
+			culture = culture:egyptian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:egyptian
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0293.a
+		add_character_modifier = {
+			modifier = RICE_nubia_buried_infant_under_servants_quarters
+			years = 10
+		}
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			paranoid = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+			sadistic = miniscule_stress_impact_gain
+			arbitrary = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # No
+		name = nubia.0293.b
+		stress_impact = {
+			compassionate = medium_stress_impact_gain
+			generous = minor_stress_impact_gain
+			just = minor_stress_impact_gain
+			zealous = minor_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+		}
+	}
+
+}
+
+# Drinking Karkade, a traditional drink in Egypt and Sudan made from hibiscus
+nubia.0294 = {
+	type = character_event
+	title = nubia.0294.t
+	desc = nubia.0294.desc
+	theme = feast_activity
+	override_background = { reference = bp1_kitchen_western }
+
+	left_portrait = {
+		character = root
+		animation = admiration
+	}
+
+	trigger = {
+		OR = {
+			culture = culture:nubian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:nubian
+				}
+			}
+			culture = culture:ancient_egyptian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:ancient_egyptian
+				}
+			}
+			culture = culture:egyptian
+			culture = {
+				any_parent_culture_or_above = {
+					this = culture:egyptian
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		add_character_modifier = {
+			modifier = RICE_nubia_drinking_karkade
+			years = 8
+		}
+	}
+
+	option = { # Ok
+		name = nubia.0294.a
+		add_prestige = -50
+		add_character_modifier = {
+			modifier = RICE_nubia_enjoys_making_karkade
+			years = 8
+		}
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			lazy = minor_stress_impact_gain
+			shy = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # No
+		name = nubia.0294.b
+	}
+
+}
