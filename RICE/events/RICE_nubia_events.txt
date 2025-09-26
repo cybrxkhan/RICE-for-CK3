@@ -4698,7 +4698,7 @@ nubia.0140 = {
 				opinion = 10
 			}
 		}
-		custom_tooltip = nubia.0140.a.tooltip
+		#custom_tooltip = nubia.0140.a.tooltip
 		trigger_event = nubia.0141
 	}
 
@@ -4801,6 +4801,13 @@ nubia.0141 = {
 
 	option = { # Send Angelosinkouda
 		name = nubia.0141.b
+		trigger = {
+			OR = {
+				gold >= 15
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 15
 		if = {
 			limit = {
 				scope:angelosinkouda = {
@@ -4848,6 +4855,7 @@ nubia.0142 = {
 			}
 		}
 		# Letter was unable to arrive for some reason
+		# 40% chance automatic failure, 60% chance automatic success
 		else = {
 			scope:marianos = {
 				trigger_event = nubia.0143
@@ -4898,22 +4906,34 @@ nubia.0143 = {
 nubia.0144 = {
 	type = character_event
 	title = nubia.0144.t
-	desc = nubia.0144.desc
-	theme = stewardship_domain_focus
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:angelosinkouda
+				}
+				desc = nubia.0144.desc.courtier
+			}
+			desc = nubia.0144.desc.messenger
+		}
+		desc = nubia.0144.desc
+	}
+	theme = intrigue
 	override_background = { reference = RICE_background_nile_private_courtyard }
 
-	left_portrait = {
-		character = scope:mena
-		animation = war_over_tie
-	}
 
 	# If scope:angelosinkouda doesn't exist, such as if it was a lower-ranked official choice, then don't add him in the scene
-	right_portrait = {
+	left_portrait = {
 		character = scope:angelosinkouda
-		animation = obsequious_bow
+		animation = throne_room_messenger_1
 		trigger = {
 			exists = scope:angelosinkouda
 		}
+	}
+
+	right_portrait = {
+		character = scope:mena
+		animation = war_over_tie
 	}
 
 	lower_left_portrait = scope:teniellasi
@@ -4934,12 +4954,17 @@ nubia.0144 = {
 
 # Read the letter
 nubia.0145 = {
-	type = letter_event
-	opening = {
-		desc = nubia.0145.opening
-	}
+	type = character_event
+	title = nubia.0145.t
 	desc = nubia.0145.desc
-	sender = scope:marianos
+	theme = intrigue
+	override_background = { reference = RICE_background_nile_private_courtyard }
+
+
+	right_portrait = {
+		character = scope:mena
+		animation = chancellor
+	}
 
 	option = { # Mena is not interested in helping
 		name = nubia.0145.a
@@ -4976,7 +5001,7 @@ nubia.0145 = {
 
 	option = { # Mena will help
 		name = nubia.0145.a
-		custom_tooltip = nubia.0145.a.tooltip
+		custom_tooltip = nubia.0145.b.tooltip
 		scope:marianos = {
 			trigger_event = nubia.0147
 		}
@@ -5013,7 +5038,6 @@ nubia.0146 = {
 					just = miniscule_stress_impact_gain
 				}
 				add_prestige = minor_prestige_loss
-				trigger_event = nubia.0146
 			}
 			scope:teniellasi = {
 				add_opinion = {
@@ -5196,7 +5220,7 @@ nubia.0149 = {
 	}
 
 	option = { # Blame subordinates
-		name = nubia.0148.b
+		name = nubia.0149.b
 		stress_impact = {
 			humble = miniscule_stress_impact_gain
 			just = miniscule_stress_impact_gain
@@ -5210,7 +5234,7 @@ nubia.0149 = {
 				just = miniscule_stress_impact_gain
 			}
 			add_prestige = minor_prestige_loss
-			trigger_event = nubia.0151
+			trigger_event = nubia.0150
 			add_opinion = {
 				modifier = failure_opinion
 				target = scope:mena
@@ -5235,16 +5259,35 @@ nubia.0149 = {
 		}
 	}
 
+	after = {
+		custom_tooltip = nubia.0149.tooltip
+	}
+
 }
 
 
 
 
-# Mena fails to catch the slaves and blames himself - Marianos takes note
+# Mena fails to catch the slaves - Marianos takes note
 nubia.0150 = {
 	type = character_event
 	title = nubia.0150.t
-	desc = nubia.0150.desc
+	desc = {
+		desc = nubia.0150.desc.intro
+		desc = nubia.0150.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:mena = {
+						has_character_modifier = RICE_nubia_blames_subordinates
+					}
+				}
+				desc = nubia.0150.desc.blame_others
+			}
+			desc = nubia.0150.desc.blame_self
+		}
+		desc = nubia.0150.desc.conclusion
+	}
 	theme = administrative
 	override_background = { reference = RICE_background_nile_private_courtyard }
 
@@ -5259,43 +5302,92 @@ nubia.0150 = {
 	}
 
 	immediate = {
-		show_as_tooltip = {
-			scope:mena = {
-				add_prestige = medium_prestige_loss
-				add_legitimacy = miniscule_legitimacy_loss
-				stress_impact = {
-					arrogant = miniscule_stress_impact_gain
-					ambitious = miniscule_stress_impact_gain
-					arbitrary = miniscule_stress_impact_gain
-					brave = miniscule_stress_impact_gain
+		if = {
+			limit = {
+				scope:mena = {
+					has_character_modifier = RICE_nubia_blames_subordinates
 				}
 			}
-			scope:marianos = {
-				stress_impact = {
-					diligent = miniscule_stress_impact_gain
-					ambitious = miniscule_stress_impact_gain
-					just = miniscule_stress_impact_gain
+			show_as_tooltip = {
+				scope:mena = {
+					add_character_modifier = {
+						modifier = RICE_nubia_blames_subordinates
+						years = 10
+					}
+					stress_impact = {
+						humble = miniscule_stress_impact_gain
+						just = miniscule_stress_impact_gain
+						craven = miniscule_stress_impact_gain
+						calm = miniscule_stress_impact_gain
+					}
 				}
-				add_prestige = minor_prestige_loss
-				trigger_event = nubia.0150
-				add_opinion = {
-					modifier = failure_opinion
-					target = scope:mena
-					opinion = -20
+				scope:marianos = {
+					stress_impact = {
+						diligent = miniscule_stress_impact_gain
+						ambitious = miniscule_stress_impact_gain
+						just = miniscule_stress_impact_gain
+					}
+					add_prestige = minor_prestige_loss
+					trigger_event = nubia.0151
+					add_opinion = {
+						modifier = failure_opinion
+						target = scope:mena
+						opinion = -5
+					}
+				}
+				scope:teniellasi = {
+					add_opinion = {
+						modifier = disappointed_opinion
+						target = scope:marianos
+						opinion = -10
+					}
+					add_opinion = {
+						modifier = angry_opinion
+						target = scope:mena
+						opinion = -20
+					}
 				}
 			}
-			scope:teniellasi = {
-				add_opinion = {
-					modifier = disappointed_opinion
-					target = scope:marianos
-					opinion = -10
+		}
+		else = {
+			show_as_tooltip = {
+				scope:mena = {
+					add_prestige = medium_prestige_loss
+					add_legitimacy = miniscule_legitimacy_loss
+					stress_impact = {
+						arrogant = miniscule_stress_impact_gain
+						ambitious = miniscule_stress_impact_gain
+						arbitrary = miniscule_stress_impact_gain
+						brave = miniscule_stress_impact_gain
+					}
 				}
-				add_opinion = {
-					modifier = angry_opinion
-					target = scope:mena
-					opinion = -40
+				scope:marianos = {
+					stress_impact = {
+						diligent = miniscule_stress_impact_gain
+						ambitious = miniscule_stress_impact_gain
+						just = miniscule_stress_impact_gain
+					}
+					add_prestige = minor_prestige_loss
+					trigger_event = nubia.0150
+					add_opinion = {
+						modifier = failure_opinion
+						target = scope:mena
+						opinion = -20
+					}
 				}
-			}	
+				scope:teniellasi = {
+					add_opinion = {
+						modifier = disappointed_opinion
+						target = scope:marianos
+						opinion = -10
+					}
+					add_opinion = {
+						modifier = angry_opinion
+						target = scope:mena
+						opinion = -40
+					}
+				}	
+			}
 		}
 	}
 
@@ -5328,91 +5420,47 @@ nubia.0150 = {
 }
 
 
-# Mena fails to catch the slaves and blames subordinates - Marianos takes note
+# Marianos is notified that Mena was unable to receive the letter properly but the slaves were found and caught by other officials
 nubia.0151 = {
 	type = character_event
 	title = nubia.0151.t
 	desc = nubia.0151.desc
-	theme = administrative
-	override_background = { reference = RICE_background_nile_private_courtyard }
+	theme = stewardship_domain_focus
 
 	left_portrait = {
-		character = scope:teniellasi
-		animation = anger
+		character = scope:marianos
+		animation = personality_forgiving
 	}
-
+	
 	right_portrait = {
-		character = scope:mena
-		animation = shame
+		character = scope:teniellasi
+		animation = personality_content
 	}
 
-	immediate = {
-		show_as_tooltip = {
-			scope:mena = {
-				add_character_modifier = {
-					modifier = RICE_nubia_blames_subordinates
-					years = 10
-				}
-				stress_impact = {
-					humble = miniscule_stress_impact_gain
-					just = miniscule_stress_impact_gain
-					craven = miniscule_stress_impact_gain
-					calm = miniscule_stress_impact_gain
-				}
-			}
-			scope:marianos = {
-				stress_impact = {
-					diligent = miniscule_stress_impact_gain
-					ambitious = miniscule_stress_impact_gain
-					just = miniscule_stress_impact_gain
-				}
-				add_prestige = minor_prestige_loss
-				trigger_event = nubia.0151
-				add_opinion = {
-					modifier = failure_opinion
-					target = scope:mena
-					opinion = -5
-				}
-			}
-			scope:teniellasi = {
-				add_opinion = {
-					modifier = disappointed_opinion
-					target = scope:marianos
-					opinion = -10
-				}
-				add_opinion = {
-					modifier = angry_opinion
-					target = scope:mena
-					opinion = -20
-				}
-			}
-		}
-	}
-
-	option = { # Oh well
+	option = {
 		name = nubia.0151.a
-	}
-
-	option = { # Compensate Teniellasi
-		name = nubia.0151.b
-		trigger = {
-			OR = {
-				is_ai = no
-				gold >= 50
+		scope:marianos = {
+			RICE_nubia_egypt_frontier_trait_small_xp_gain = yes
+			add_prestige = medium_prestige_gain
+			trigger_event = nubia.0155
+			add_opinion = {
+				modifier = pleased_opinion
+				target = scope:mena
+				opinion = 25
 			}
-		}
-		remove_short_term_gold = 50
-		add_prestige = minor_prestige_gain
-		pay_short_term_gold = {
-			target = scope:teniellasi
-			gold = 50
 		}
 		scope:teniellasi = {
 			add_opinion = {
-				modifier = RICE_opinion_compensated_for_lost_slaves
+				modifier = pleased_opinion
 				target = scope:marianos
+				opinion = 20
 			}
-		}	
+			add_opinion = {
+				modifier = grateful_opinion
+				target = scope:mena
+				opinion = 20
+			}
+		}
 	}
 
 }
@@ -5836,7 +5884,10 @@ nubia.0152 = {
 nubia.0153 = {
 	type = character_event
 	title = nubia.0153.t
-	desc = nubia.0153.desc
+	desc = {
+		desc = nubia.0150.desc.intro
+		desc = nubia.0153.desc
+	}
 	theme = administrative
 	override_background = { reference = RICE_background_nile_valley }
 	
@@ -5892,8 +5943,30 @@ nubia.0153 = {
 		}		
 	}
 
-	option = { # Ok
-		name = nubia.0153.a
+	option = { # Oh well
+		name = nubia.0150.a
+	}
+
+	option = { # Compensate Teniellasi
+		name = nubia.0150.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		add_prestige = minor_prestige_gain
+		pay_short_term_gold = {
+			target = scope:teniellasi
+			gold = 50
+		}
+		scope:teniellasi = {
+			add_opinion = {
+				modifier = RICE_opinion_compensated_for_lost_slaves
+				target = scope:marianos
+			}
+		}	
 	}
 }
 
@@ -5901,7 +5974,10 @@ nubia.0153 = {
 nubia.0154 = {
 	type = character_event
 	title = nubia.0154.t
-	desc = nubia.0154.desc
+	desc = {
+		desc = nubia.0150.desc.intro
+		desc = nubia.0154.desc
+	}
 	theme = administrative
 	override_background = { reference = RICE_background_nile_valley }
 	
@@ -5986,7 +6062,10 @@ nubia.0154 = {
 nubia.0155 = {
 	type = character_event
 	title = nubia.0155.t
-	desc = nubia.0155.desc
+	desc = {
+		desc = nubia.0150.desc.intro
+		desc = nubia.0155.desc
+	}
 	theme = administrative
 	override_background = { reference = RICE_background_nile_valley }
 	
