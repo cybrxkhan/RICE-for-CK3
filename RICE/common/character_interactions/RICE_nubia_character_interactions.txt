@@ -42,6 +42,10 @@ RICE_nubia_baqt_propose_exchange = {
 		scope:actor = {	
 			is_ruler = yes
 			RICE_involved_in_baqt_trigger = yes
+			OR = {
+				is_ai = no
+				NOT = { has_character_flag = RICE_pending_baqt_negotiations_flag }
+			}
 		}
 		scope:recipient = {
 			is_ruler = yes
@@ -223,8 +227,31 @@ RICE_nubia_baqt_propose_exchange = {
 	}
 
 	send_options_exclusive = yes
+
+	on_send = {
+		# Flag to prevent AI from sending multiple requests at once
+		if = {
+			limit = {
+				scope:actor = {
+					is_ai = yes
+				}
+			}
+			scope:actor = {
+				add_character_flag = {
+					flag = RICE_pending_baqt_negotiations_flag
+					years = 1 # Just in case it goes overboard
+				}
+			}
+		}
+	}
 	
 	on_accept = {
+		if = {
+			limit = {
+				scope:actor = { has_character_flag = RICE_pending_baqt_negotiations_flag }
+			}
+			scope:actor = { remove_character_flag = RICE_pending_baqt_negotiations_flag }
+		}
 		situation:RICE_nubia_baqt_situation ?= {
 			trigger_situation_catalyst = {
 				catalyst = catalyst_situation_RICE_baqt_exchange_goods
@@ -536,6 +563,22 @@ RICE_nubia_baqt_propose_exchange = {
 			trigger_event = nubia.0040
 		}
 		RICE_baqt_frontier_officials_xp_gain_effect = yes
+	}
+
+	on_decline = {		
+		if = {
+			limit = {
+				scope:actor = { has_character_flag = RICE_pending_baqt_negotiations_flag }
+			}
+			scope:actor = { remove_character_flag = RICE_pending_baqt_negotiations_flag }
+		}
+		scope:actor = {
+			add_opinion = {
+				target = scope:recipient
+				modifier = insulted_opinion
+					opinion = -10
+			}
+		}
 	}
 
 	ai_accept = {
@@ -1031,6 +1074,19 @@ RICE_nubia_baqt_propose_exchange = {
 
 	ai_will_do = {
 		base = 25
+		# Don't get too many truces at once
+		modifier = {
+			add = -50
+			OR = {
+				any_truce_holder = { count >= 1 }
+				any_truce_target = { count >= 1 }
+			}
+		}
+		# Already is getting Baqt goods from somewhere else
+		modifier = {
+			add = -50
+			RICE_has_baqt_good_trigger = yes
+		}
 		# Some personalities & traits just don't want to fight.
 		## Cravens (who aren't also ambitious).
 		modifier = {
@@ -1149,6 +1205,10 @@ RICE_nubia_baqt_offer_gift = {
 		scope:actor = {	
 			is_ruler = yes
 			RICE_involved_in_baqt_trigger = yes
+			OR = {
+				is_ai = no
+				NOT = { has_character_flag = RICE_pending_baqt_negotiations_flag }
+			}
 		}
 		scope:recipient = {
 			is_ruler = yes
@@ -1325,8 +1385,48 @@ RICE_nubia_baqt_offer_gift = {
 	}
 
 	send_options_exclusive = yes
+
+	on_send = {
+		# Flag to prevent AI from sending multiple requests at once
+		if = {
+			limit = {
+				scope:actor = {
+					is_ai = yes
+				}
+			}
+			scope:actor = {
+				add_character_flag = {
+					flag = RICE_pending_baqt_negotiations_flag
+					years = 1 # Just in case it goes overboard
+				}
+			}
+		}
+	}
+
+	on_send = {
+		# Flag to prevent AI from sending multiple requests at once
+		if = {
+			limit = {
+				scope:actor = {
+					is_ai = yes
+				}
+			}
+			scope:actor = {
+				add_character_flag = {
+					flag = RICE_pending_baqt_negotiations_flag
+					years = 1 # Just in case it goes overboard
+				}
+			}
+		}
+	}
 	
 	on_accept = {
+		if = {
+			limit = {
+				scope:actor = { has_character_flag = RICE_pending_baqt_negotiations_flag }
+			}
+			scope:actor = { remove_character_flag = RICE_pending_baqt_negotiations_flag }
+		}
 		if = {
 			limit = {
 				scope:actor.max_military_strength >= scope:recipient.max_military_strength
@@ -1636,6 +1736,22 @@ RICE_nubia_baqt_offer_gift = {
 			trigger_event = nubia.0042
 		}
 		RICE_baqt_frontier_officials_xp_gain_effect = yes
+	}
+
+	on_decline = {		
+		if = {
+			limit = {
+				scope:actor = { has_character_flag = RICE_pending_baqt_negotiations_flag }
+			}
+			scope:actor = { remove_character_flag = RICE_pending_baqt_negotiations_flag }
+		}
+		scope:actor = {
+			add_opinion = {
+				target = scope:recipient
+				modifier = insulted_opinion
+					opinion = -10
+			}
+		}
 	}
 
 	ai_accept = {
@@ -2131,6 +2247,19 @@ RICE_nubia_baqt_offer_gift = {
 
 	ai_will_do = {
 		base = 10
+		# Don't get too many truces at once
+		modifier = {
+			add = -50
+			OR = {
+				any_truce_holder = { count >= 1 }
+				any_truce_target = { count >= 1 }
+			}
+		}
+		# Already is getting Baqt goods from somewhere else
+		modifier = {
+			add = -50
+			RICE_has_baqt_good_trigger = yes
+		}
 		# Baqt phases
 		modifier = {
 			add = 30
@@ -2258,6 +2387,10 @@ RICE_nubia_baqt_demand_payment = {
 		scope:actor = {	
 			is_ruler = yes
 			RICE_involved_in_baqt_trigger = yes
+			OR = {
+				is_ai = no
+				NOT = { has_character_flag = RICE_pending_baqt_negotiations_flag }
+			}
 		}
 		scope:recipient = {
 			is_ruler = yes
@@ -2436,6 +2569,12 @@ RICE_nubia_baqt_demand_payment = {
 	send_options_exclusive = yes
 	
 	on_accept = {
+		if = {
+			limit = {
+				scope:actor = { has_character_flag = RICE_pending_baqt_negotiations_flag }
+			}
+			scope:actor = { remove_character_flag = RICE_pending_baqt_negotiations_flag }
+		}
 		situation:RICE_nubia_baqt_situation ?= {
 			trigger_situation_catalyst = {
 				catalyst = catalyst_situation_RICE_baqt_demand_tribute
@@ -2743,6 +2882,22 @@ RICE_nubia_baqt_demand_payment = {
 			trigger_event = nubia.0043
 		}
 		RICE_baqt_frontier_officials_xp_gain_effect = yes
+	}
+
+	on_decline = {		
+		if = {
+			limit = {
+				scope:actor = { has_character_flag = RICE_pending_baqt_negotiations_flag }
+			}
+			scope:actor = { remove_character_flag = RICE_pending_baqt_negotiations_flag }
+		}
+		scope:actor = {
+			add_opinion = {
+				target = scope:recipient
+				modifier = insulted_opinion
+					opinion = -10
+			}
+		}
 	}
 
 	ai_accept = {
@@ -3237,6 +3392,19 @@ RICE_nubia_baqt_demand_payment = {
 
 	ai_will_do = {
 		base = 20
+		# Don't get too many truces at once
+		modifier = {
+			add = -50
+			OR = {
+				any_truce_holder = { count >= 1 }
+				any_truce_target = { count >= 1 }
+			}
+		}
+		# Already is getting Baqt goods from somewhere else
+		modifier = {
+			add = -50
+			RICE_has_baqt_good_trigger = yes
+		}
 		# Baqt phases
 		modifier = {
 			add = 50
