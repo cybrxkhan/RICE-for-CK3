@@ -8,5 +8,5 @@ tags={
 	"Decisions"
 }
 name="RICE + EPE Compatibility Patch"
-supported_version="1.16.*"
+supported_version="1.17.*"
 remote_file_id="2553043828"
