@@ -1,13 +1,13 @@
-<img src="https://i.imgur.com/kOFlwnp.jpg">
+<img src="https://i.imgur.com/bFeftvs.jpg">
 
-## Latest Version: Version 1.16.1.b Hotfix for "Cao'an" (Released 6/28/25, for vanilla patch 1.16.x)
+## Latest Version: Version 1.17.0 "Makuria" (Released 9/30/25, for vanilla patch 1.17.x)
 
-**Newest Flavor Pack: *Manicheism: The Religion of Light***
+**Newest Flavor Pack: *Nubia: Heirs of Kush***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_Please recite: purity, light, power, wisdom, the supreme perfect truth, Mani the Buddha of Light._
-_- Inscription dated to 1445 CE at Cao’an Temple, China, one of the few intact Manichean temples_
+_"The Nubians are Christians whose country is larger and richer than Ethiopia. The Nile of Egypt runs through their cities and regions. Their villages are prosperous and they have fertile land."_
+_- Ibn Hawqal, 10th century Muslim traveler and geographer_
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
@@ -55,6 +55,7 @@ Click to view guides which cover the features in each specific pack in more deta
 - [Niger Delta: Heirs of Oduduwa](https://docs.google.com/document/d/e/2PACX-1vTgW9FFORhgNKseRIGdOXnsCLe5Nee8f8dK9yQxkvWshD3ZJf5vzXhMHQKmoy3qnMEjm2kLImgExhvt/pub)
 - [Normandy: Adventurers and Aristocrats](https://docs.google.com/document/d/e/2PACX-1vSJl5JRfLjzdzwnCo6WJVG8qJ8-5htcWQ1L1PU3tMIq1Ym4HOO6fPhQ1ovarPeb_3b3pLPRhLBvgyRT/pub)
 - [North Atlantic: From Iceland to Vinland](https://docs.google.com/document/d/e/2PACX-1vQmBr7TYKBGRMtVYj8IWAjLHHAadsxJwGZI1VIG0PRA4ZV3mru5HGv3vAqaktbnVMe1oFpTdCEPKFLd/pub)
+- Nubia: Heirs of Kush
 - [Pamir and Zunist: Roof of the World](https://docs.google.com/document/d/e/2PACX-1vQmHEFpko8WE1fnHLHyG-4t01Xyka4eTe88WuLJWRL6jk0S3ju3fA1CFyX_dDArSduFlzqUl58pjRRO/pub)
 - [Polabians: Defenders of Svetovit](https://docs.google.com/document/d/e/2PACX-1vQqIii6uXJkyQUEe6Q00VRUNrj3ega216kcKp1GVMYaHNKgzyqyG0rHJz9ZsBTbzr3jPe4awL7yvTCS/pub)
 - [Red Sea: Treasures of the Eastern Desert](https://docs.google.com/document/d/e/2PACX-1vQzLb-MR90fMQvjqZsxceuydKihTehAlpxexdhdim5pfxi_aGVBeLl1rJMmuR-89nVB7PVLfboZKBuy/pub)
@@ -79,9 +80,9 @@ Click to view guides which cover the features in each specific pack in more deta
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/1lf6jVR.jpg">
+<img src="https://i.imgur.com/w5HV0la.jpg">
 
-### Version 1.16.1.b Hotfix for "Cao'an"
+### Version 1.17.0 "Makuria"
 
 - Added missing Spanish localization
 - Added Joachim of Fiore as a courtier in Sicily in 1178
@@ -98,12 +99,13 @@ Thanks to all I worked with, took stuff from, and provided me encouragement and 
 Special thanks in particular to:
 
 - A for code/bugfixing related to some Upper Egypt content
+- Africa Plus mod (created by BlackEmperor and maintained by iFrunx) for collab and content
 - Atreides for bookmark icons
-- B7E7 for collab and content from BlackEmperor's Africa Plus mod
 - Bonseny for the amazing VIET and RICE logos and the beautiful 3D art assets
 - Celticus for a lot of useful help and suggestions
 - Cruci for grammar fixes and miscellaneous help
 - Diadochi Kings mod (from CK2) for Elamite names
+- DPh Kraken for some faith icons
 - DrStein(Dupont) for revamped artwork
 - Eastern Etiquette mod and 🍓白茶 for Chinese history improvements
 - Eclipsed Crown mod for various Asian history and collab
@@ -111,6 +113,9 @@ Special thanks in particular to:
 - George Hammond for some music ([see here](https://fanlink.to/georgehammondmusic) for more of his work)
 - Henry for the Better Bedouin Culture mod
 - Herkles for Dharmachakra stuff and collab
+- hunter00001 for some MAA icons, faith icons, and other art
+- Ibn Battuta's Legacy mod by Ibn Battuta for some map/title code (mainly for compatibility with IBL)
+- iFrunx for various history fixes and recommendations in the Middle East
 - KeizerHarm for UI work
 - Klorpa for fixing a lot of typos
 - Lahom for most Native American names
@@ -120,7 +125,7 @@ Special thanks in particular to:
 - Naatturi for content from the Ukonusko Overhaul mod
 - Nezaros for religion and bookmark art
 - Nix for Evenki names
-- pharaox for helping fix a lot of issues, including some longstanding ones
+- pharaox for helping fix a lot of issues, including some longstanding ones related to Activities
 - PinkPanzer for some decision art
 - Rajas of Asia for Asian stuff and collab
 - Shatzi for more Breton content
