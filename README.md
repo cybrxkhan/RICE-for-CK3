@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/bFeftvs.jpg">
 
-## Latest Version: Version 1.17.0 "Makuria" (Released 9/30/25, for vanilla patch 1.17.x)
+## Latest Version: Version 1.17.0.a Hotfix for "Makuria" (Released 9/30/25, for vanilla patch 1.17.x)
 
 **Newest Flavor Pack: *Nubia: Heirs of Kush***
 
@@ -82,75 +82,32 @@ Click to view guides which cover the features in each specific pack in more deta
 
 <img src="https://i.imgur.com/w5HV0la.jpg">
 
-### Version 1.17.0 "Makuria"
+### Version 1.17.0.a Hotfix for "Makuria"
 
-- Added Nubia Flavor Pack: Heirs of Kush
-- Added 9 Egypt/Nubia themed soundtracks
-- Added Coronations DLC’s anointment doctrines to RICE faiths
-- Added some new faith icons to replace RICE’s old ones, credits to hunter0001 and DPh Kraken
-- Added some unique icons for RICE MAAs, credits to hunter00001
-- Added effect to ensure spouses and children of newly added rulers don’t start off in random courts at game start
-- Added language to all Aspiration text indicating that Aspiration completion is calculated at the beginning of the year
-- Enabled several activities for LAAMPs (thanks to pharaox for the assistance with this!)
-- Replaced Khan/Shah of the White Huns trait with a new and improved one by hunter00001
-- Replaced vanilla Nubian namelist with new namelist that includes more given names and dynasty names
-- Modified historical setup for Egypt in 867, based on feedback from iFrunx
-- Tweaked ibn Tulun’s starting traits and gave him some event troops
-- Decision to Contact Indian Ocean Pirates now requires owning at least one coastal county in the Indian Ocean region
-- Decreased chances of generic flavor events happening overall
-- Split some effects from the Pamir start up effects into separate files per the request of the Raja of Asia devs, to ensure easier compatibility between the two mods
-- Anglo-Saxon culture now starts with the Monastic Communities tradition
-- Changed the Orenda faith’s name to Uki-Otkon
-- Most of RICE’s travel options now cost some herd if you’re nomadic, to be consistent with vanilla’s travel options
-- Replaced various religious terms for Slavic pagan faiths with more historically researched ones (thanks to msl229 for the information/research and code)
-- Tweaked language for triggers for various RICE travel options
-- The merchant trade events while traveling now show you how many successes you’ve had even after you gotten the trait
-- al-Umari now has the deceitful trait instead of brave
-- al-Umari now starts with the Adventurer, Gallowsbait, and Reaver traits
-- Changed localization of Wenmo to Wamo (it is still the same in the code)
-- Changed al-Umari starting event chain in 867 to have an option for him to become a tributary rather than a vassal of the Tulunids at game start
-- Changed many location-based activities for landless adventurers to require them having their camp on the location, as a fix for a potential issue where the activity would automatically end if they had no guests (thanks to pharaox for the assistance with this!)
-- Matter of Britain tradition now increases legend spread chance
-- Ubiquity of Poetry tradition now increases legend spread chance
-- Changed Bengali/Gauda culture’s Seafarers tradition to Maritime Mercantilism
-- Changed Turko-Hephthalite heritage to Turkic
-- Changed al-Wahshiyya’s family name to al-Altayawi
-- Changed Khuzi culture to derive innovations from Kurdish rather than Persian
-- Darb al-Arbain modifier now reduces travel danger instead of build cost (all other bonuses stay the same)
-- Decision to Resolve the Issue of Xwedodah is now only available if your faith has a relevant incest doctrine
-- Game start effects to replace vanilla faiths’ doctrines with other doctrines now checks if they already have those doctrines in most cases
-- Reduced cooldown for several feast/festival-themed activities
-- Revised Kashmir’s faith setup so Astore and Skardu are now Dezawist
-- Newly added rulers will now usually only change to clan government at game start if their liege is also 
-- Tweaked territory of Pala Dynasty remnants in 1178 since previously they were holding temple holdings
-- Unlocked the Horse Sacrifice activity for Baltic and Slavic pagans
-- Modified Volga-Dnieper Trade region’s geographical boundaries
-- Made the Harran star worship event a big event pic
-- Made the Pillar supplication event a big event pic
-- Trans-Saharan Merchant travel option can now be taken anywhere in Africa
-- at-Tabataba’i in 867 is now Zayidi instead of Ismaili
-- Renamed at-Tabataba’s dynasty to at-Tabataba’i
-- Renamed 867 Shukayr’s dynasty to Shukayrid
-- Enabled adventurers in Sri Lanka to choose or change the monastic sect they support, though most other Sri Lanka struggle features are still not available to them
-- Fixed Adventurers being able to technically end the Sri Lanka struggle
-- Fixed inconsistent scoping in the Norman Adventurer CB
-- Fixed effects of the Bema Festival activity being applied twice
-- Fixed Rift Valley Traders tradition not actually increasing the chances of off-map African courtier spawn
-- Fixed missing culture req tooltip for RICE_breton_tro_breizh
-- Fixed duplicate province filters in a few activities
-- Fixed Pyu and several other Southeast Asian cultures getting Indian innovations they shouldn’t be getting
-- Fixed option to Commission a Manichean Manuscript picking a Manichean faith when choosing the Other Religions’ Texts option
-- Fixed some of the effects of the Norman conquest/assimilation endings not working properly for the Normandy struggle when the AI does it
-- Fixed the “chuck it in the river yo” placeholder localization for the Drowning of Marzanna activity
-- Fixed AI chances of deciding what to do for the Niger Delta Ooni events not accounting for the Ooni’s opinion of the ruler properly
-- Fixed localization for slavic_religion_opinion
-- Fixed missing modifier icons for some Kupala Night activity modifiers
-- Fixed visual issue with the icon for the Bon religion’s Protective Deities doctrine
-- Fixed missing loc for RICE_aegean_region_geographical_req
-- Fixed decision to Build a Local Christian Religious Building checking if you built Buddhist religious buildings instead of Christian building to see if you can do it
-- Fixed Han culture getting Cultivated Sophistication without the Roads to Power DLC
-- Fixed missing loc in the notification message for non-Manichean rulers when an Uyghur ruler takes the decision to Influence the Future of Uyghur Manicheism
-- Miscellaneous fixes
+- Added learning education traits for Manichean Archegoi in 867 and 1066
+- Added martial education trait for the Daju ruler Zalaf in 1178
+- Tweaked new faith icons made by hunter00001
+- Decision to Compile the First Turkish Dictionary now requires having a culture with the Turkic language rather than heritage
+- Nerfed Sawdan’s starting army in 867 slightly
+- Nerfed the potential amount of gold gained from merchant travel events
+- Failing to negotiate for extra money during merchant travel events now gives stress, especially if you have certain traits
+- Baqt situation will no longer exist for pre-Islamic start dates (if running a mod that adds in early start dates)
+- In 1066 and 1178 start dates, Daju rulers now start with castle holdings rather than tribal
+- Tweaked values of the Pithipati of Bodh Gaya modifier
+- Decision to Claim the Mantle of the Pithipatis is now visible if your capital is in India and you are Buddhist
+- Fixed Nuba culture starting with Performative Honor instead of Right to Prove
+- Fixed event to search for fern flower during Kupala Night not giving stress loss
+- Fixed several vanilla characters that RICE gives a martial education to not getting a commander trait
+- Fixed Sorbian culture not using RICE’s Sorbian namelist
+- Fixed Native American cultures’ gloss localization causing error log spam
+- Fixed the localization for the requirements of the Trans-Saharan merchant caravan travel option not displaying correct region 
+- Fixed trigger for killing off merchant NPCs from the merchant travel option at the end of traveling
+- Fixed Daju rulers not holding Dar al-Said in 1178
+- Fixed several instances of the code referring to the Pithipati of Bodh Gaya modifier as a dynasty modifier instead of a character modifier
+- Fixed some duplicate modifiers and localizations
+- Fixed some loc errors
+- Miscellaneous bugfixes
+
 
 ## Credits
 
