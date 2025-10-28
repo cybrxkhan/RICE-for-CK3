@@ -1,0 +1,2949 @@
+﻿###############################################################################
+# 
+# HANGZHOU
+# 
+# hangzhou.0000-hangzhou.0019			Setup events, history events, miscellaneous events and decisions
+# hangzhou.0020-hangzhou.0029			Minor decisions
+# hangzhou.0030-hangzhou.0049			West Lake activity events/decisions
+# hangzhou.0050-hangzhou.0069			Qiantang Tides activity events decisions
+# hangzhou.0070-hangzhou.0079			Historical characters flavor
+# hangzhou.0080-hangzhou.0099			Poetry Gathering events
+# hangzhou.0100-hangzhou.0129			Generic flavor events
+# 
+###############################################################################
+
+namespace = hangzhou
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# hangzhou.0000-hangzhou.0019
+# 
+######################################################################################
+
+######################################################################################
+# 
+# MINOR DECISIONS
+# 
+# hangzhou.0020-hangzhou.0029
+# 
+######################################################################################
+
+
+# Building the Qiantang River Embankment
+hangzhou.0020 = {
+	type = character_event
+	title = hangzhou.0020.t
+	desc = hangzhou.0020.desc
+	theme = realm
+	override_background = { reference = tgp_farm_asia }
+
+	left_portrait = {
+		character = scope:seawall_builder
+		animation = survey
+		camera = camera_lifestyles
+	}
+
+	right_portrait = {
+		character = scope:archer
+		animation = crossbow
+		trigger = {
+			exists = scope:archer
+		}
+		camera = camera_event_horse_right_facing_left
+	}	
+
+	immediate = {
+		if = {
+			limit = {
+				root = scope:seawall_builder
+			}
+			RICE_hangzhou_erect_embankment_on_qiantang_river_effect = yes
+		}
+		else = {
+			show_as_tooltip = {
+				RICE_hangzhou_erect_embankment_on_qiantang_river_effect = yes
+			}
+		}
+	}
+
+	option = { # Ok
+		name = hangzhou.0020.a
+	}
+
+}
+
+# Improve West Lake decision
+hangzhou.0021 = {
+	type = character_event
+	title = hangzhou.0021.t
+	desc = hangzhou.0021.desc
+	theme = realm
+	override_background = { reference = RICE_background_hangzhou_west_lake }
+
+	right_portrait = {
+		character = root
+		animation = survey
+	}	
+
+	immediate = {
+		if = {
+			limit = {
+				var:RICE_west_lake_improvement_type = flag:dredge
+			}
+			RICE_hangzhou_improve_west_lake_dredging_effect = yes
+		}
+		else_if = {
+			limit = {
+				var:RICE_west_lake_improvement_type = flag:patrols
+			}
+			RICE_hangzhou_improve_west_lake_patrols_effect = yes
+		}
+		else_if = {
+			limit = {
+				var:RICE_west_lake_improvement_type = flag:repairs
+			}
+			RICE_hangzhou_improve_west_lake_repairs_effect = yes
+		}
+		else_if = {
+			limit = {
+				var:RICE_west_lake_improvement_type = flag:landscaping
+			}
+			RICE_hangzhou_improve_west_lake_landscaping_effect = yes
+		}
+		else_if = {
+			limit = {
+				var:RICE_west_lake_improvement_type = flag:religious
+			}
+			RICE_hangzhou_improve_west_religious_structures_effect = yes
+		}
+	}
+
+	option = { # Ok
+		name = hangzhou.0021.a
+	}
+
+}
+
+
+
+
+##################################################################
+# 
+# WEST LAKE ACTIVITY
+# hangzhou.0030-0049 reserved
+# 
+##################################################################
+
+# Make preparations to travel to West Lake
+hangzhou.0030 = {
+	type = character_event
+	title = hangzhou.0030.t
+	desc = hangzhou.0030.desc
+	theme = travel
+	
+	right_portrait = {
+		character = root
+		animation = pondering
+	}
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_hangzhou_sightsee_at_west_lake
+		}
+	}
+	
+	# immediate = {
+	# 	play_music_cue = "mx_cue_epic_sacral_moment"
+	# }
+	
+	option = { # Ok
+		name = hangzhou.0030.a
+	}
+}
+
+
+# Arrive at West Lake - buy a guide map or not?
+# Put in a gloss historical tooltip about West Lake guides
+hangzhou.0031 = {
+	type = activity_event
+	title = hangzhou.0031.t
+	desc = hangzhou.0031.desc
+	theme = RICE_theme_hangzhou_west_lake
+	
+	left_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+
+	right_portrait = {
+		character = scope:guide_vendor
+		animation = storyteller
+		hide_info = yes
+	}
+	artifact = { # To display the artifact in the event-window
+		target = scope:RICE_west_lake_painting_artifact
+		position = lower_center_portrait
+	}
+	artifact = { # To display the artifact in the event-window
+		target = scope:RICE_hangzhou_ten_scenes_scroll_artifact
+		position = lower_right_portrait
+	}
+
+	immediate = {	
+		hidden_effect_new_object = {
+			create_artifact = {	
+				name = RICE_hangzhou_west_lake_guide_name
+				description = RICE_hangzhou_west_lake_guide_desc
+				type = journal
+				visuals = RICE_east_asian_scroll
+				quality = 10
+				wealth = 10
+				modifier = RICE_hangzhou_ten_scenes_guide_artifact
+				decaying = no
+				save_scope_as = RICE_west_lake_guide_artifact
+				history = {
+					type = created_before_history
+				}
+			}
+			scope:RICE_west_lake_guide_artifact = {
+				set_variable = RICE_hangzhou_west_lake_guide_variable
+				random = {
+					chance = 30
+					add_artifact_modifier = artifact_monthly_minor_prestige_5_modifier
+				}
+				random = {
+					chance = 30
+					add_artifact_modifier = artifact_learning_1_modifier
+				}
+				random = {
+					chance = 30
+					add_artifact_modifier = artifact_monthly_learning_lifestyle_xp_1_modifier
+				}
+				random = {
+					chance = 30
+					add_artifact_modifier = artifact_monthly_diplomacy_lifestyle_xp_1_modifier
+				}
+				random = {
+					chance = 30
+					add_artifact_modifier = artifact_monthly_stewardship_lifestyle_xp_1_modifier
+				}
+				random = {
+					chance = 30
+					add_artifact_modifier = artifact_monthly_intrigue_lifestyle_xp_1_modifier
+				}
+				random = {
+					chance = 30
+					add_artifact_modifier = artifact_monthly_piety_2_modifier
+				}
+				random = {
+					chance = 30
+					add_artifact_modifier = artifact_monthly_merit_mult_2_modifier
+				}
+				random = {
+					chance = 30
+					add_artifact_modifier = artifact_diplomacy_1_modifier
+				}
+				random = {
+					chance = 30
+					add_artifact_modifier = artifact_stewardship_1_modifier
+				}
+				random = {
+					chance = 30
+					add_artifact_modifier = artifact_intrigue_1_modifier
+				}
+				random = {
+					chance = 30
+					add_artifact_modifier = artifact_monthly_influence_mult_2_modifier
+				}
+				random = {
+					chance = 30
+					add_artifact_modifier = artifact_travel_safety_1
+				}
+				random = {
+					chance = 30
+					add_artifact_modifier = character_travel_speed_1
+				}
+			}
+		}		
+		title:c_hangzhou = {
+			culture = {
+				save_scope_as = hangzhou_culture
+			}
+			faith = {
+				save_scope_as = hangzhou_faith
+			}
+		}
+		if = {
+			limit = {
+				is_ai = no
+			}
+			create_character = {
+				template = RICE_random_gender_adjusted_character_template
+				gender = male
+				location = root.location
+				culture = scope:hangzhou_culture
+				faith = scope:hangzhou_faith
+				save_scope_as = guide_vendor
+				after_creation = {
+					remove_character_flag = peasant_outfit
+				}
+			}
+		}
+		else = {
+			save_scope_as = guide_vendor # To ensure the name shows up properly and doesn't give any errors in the error log
+		}
+	}
+	
+	option = { # Ok
+		name = hangzhou.0031.a
+		trigger = {
+			OR = {
+				gold >= 25
+				is_ai = no
+				NOT = {
+					any_character_artifact = {
+						has_variable = RICE_hangzhou_west_lake_guide_variable
+					}					
+				}
+			}
+		}
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_hangzhou_west_lake_bought_guide_log
+				tags = { good }
+				show_in_conclusion = yes
+				character = root
+				scope:host = {
+					remove_short_term_gold = 25
+					stress_impact = {
+						greedy = miniscule_stress_impact_gain
+					}			
+					show_as_tooltip = {
+						scope:RICE_west_lake_guide_artifact = {
+							set_owner = {
+								target = root
+							}
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+		}
+	}
+	
+	option = { # Ok
+		name = hangzhou.0031.b
+		ai_chance = {
+			base = 90
+			modifier = {
+				add = 30
+				has_trait = greedy
+			}
+			modifier = {
+				add = 10
+				has_trait = content
+			}
+			modifier = {
+				add = 10
+				has_trait = callous
+			}
+		}
+	}
+
+	after = {
+		scope:guide_vendor ?= { silent_disappearance_effect = yes }
+		trigger_event = {
+			id = hangzhou.0032
+			days = { 3 6 }
+		}
+	}
+
+}
+
+# What to experience at West Lake?
+hangzhou.0032 = {
+	type = activity_event
+	title = hangzhou.0032.t
+	desc = hangzhou.0032.desc
+	theme = RICE_theme_hangzhou_west_lake
+
+
+	left_portrait = {
+		character = root
+		animation = survey
+	}
+	right_portrait = {
+		character = scope:participant
+		animation = pondering
+		trigger = {
+			exists = scope:participant
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				scope:activity = {
+					any_attending_character = {
+						RICE_activity_participant_trigger = yes
+					}
+				}				
+			}
+			scope:activity = {
+				random_attending_character = {
+					limit = {
+						RICE_activity_participant_trigger = yes
+					}
+					save_scope_as = participant
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = hangzhou.0032.a
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_hangzhou_west_lake_relaxation_log
+				tags = { good }
+				show_in_conclusion = yes
+				character = root
+				every_attending_character = {
+					limit = {
+						NOT = { this = scope:host }
+					}
+					custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+					random = {
+						chance = 25
+						add_character_modifier = {
+							modifier = RICE_hangzhou_west_lake_relaxation_modifier
+							years = 5
+						}
+					}					
+				}
+				hidden_effect = {
+					random = {
+						chance = 25
+						scope:host = {
+							send_interface_toast = {
+								type = event_toast_effect_good
+								left_icon = scope:host
+								title = hangzhou.0032.inspired
+								add_merit_if_relevant_effect = {
+									MERIT = miniscule_merit_value
+								}
+								if = {
+									limit = { has_trait = confucian_education }
+									add_trait_xp = {
+										trait = confucian_education
+										value = 2
+									}
+								}
+								add_character_modifier = {
+									modifier = RICE_hangzhou_west_lake_relaxation_modifier
+									years = 5
+								}
+							}
+						}
+					}	
+				}
+				every_attending_character = {
+					limit = {
+						NOT = { this = scope:host }
+						OR = {
+							has_trait = calm
+							has_trait = content
+							has_trait = shy
+						}
+					}
+					custom = EVERY_ACTIVITY_PARTICIPANT_RELAXATION_EFFECT
+					add_opinion = {
+						target = scope:root
+						modifier = RICE_opinion_west_lake_fun_outing
+						opinion = 5
+					}
+					
+				}
+				scope:host = {
+					if = {
+						limit = {
+							has_activity_intent = RICE_hangzhou_sightsee_at_west_lake_relaxation_intent
+						}
+						stress_impact = {
+							base = medium_stress_impact_loss
+						}
+					}				
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = hangzhou.0032.b
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_hangzhou_west_lake_socialization_log
+				tags = { good }
+				show_in_conclusion = yes
+				character = root
+				every_attending_character = {
+					limit = {
+						NOT = { this = scope:host }
+					}
+					custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+					random = {
+						chance = 25
+						add_character_modifier = {
+							modifier = RICE_hangzhou_west_lake_socialization_modifier
+							years = 5
+						}
+					}
+					add_opinion = {
+						target = scope:root
+						modifier = RICE_opinion_west_lake_fun_outing
+						opinion = 10
+					}					
+				}
+				hidden_effect = {
+					random = {
+						chance = 25
+						scope:host = {
+							send_interface_toast = {
+								type = event_toast_effect_good
+								left_icon = scope:host
+								title = hangzhou.0032.inspired
+								add_merit_if_relevant_effect = {
+									MERIT = miniscule_merit_value
+								}
+								if = {
+									limit = { has_trait = confucian_education }
+									add_trait_xp = {
+										trait = confucian_education
+										value = 2
+									}
+								}
+								add_character_modifier = {
+									modifier = RICE_hangzhou_west_lake_socialization_modifier
+									years = 5
+								}
+							}
+						}
+					}	
+				}
+				every_attending_character = {
+					limit = {
+						NOT = { this = scope:host }
+						OR = {
+							has_trait = gregarious
+							has_trait = ambitious
+							has_trait = trusting
+						}
+					}
+					custom = EVERY_ACTIVITY_PARTICIPANT_SOCIALIZATION_EFFECT
+					add_opinion = {
+						target = scope:root
+						modifier = RICE_opinion_west_lake_fun_outing
+						opinion = 5
+					}
+					
+				}
+				scope:host = {
+					if = {
+						limit = {
+							has_activity_intent = RICE_hangzhou_sightsee_at_west_lake_socialization_intent
+						}
+						stress_impact = {
+							base = minor_stress_impact_loss
+						}
+					}				
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = hangzhou.0032.c
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_hangzhou_west_lake_reflection_log
+				tags = { good }
+				show_in_conclusion = yes
+				character = root
+				every_attending_character = {
+					limit = {
+						NOT = { this = scope:host }
+					}
+					custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+					random = {
+						chance = 25
+						add_character_modifier = {
+							modifier = RICE_hangzhou_west_lake_reflection_modifier
+							years = 5
+						}
+					}					
+				}
+				hidden_effect = {
+					random = {
+						chance = 25
+						scope:host = {
+							send_interface_toast = {
+								type = event_toast_effect_good
+								left_icon = scope:host
+								title = hangzhou.0032.inspired
+								add_merit_if_relevant_effect = {
+									MERIT = miniscule_merit_value
+								}
+								if = {
+									limit = { has_trait = confucian_education }
+									add_trait_xp = {
+										trait = confucian_education
+										value = 2
+									}
+								}
+								add_character_modifier = {
+									modifier = RICE_hangzhou_west_lake_reflection_modifier
+									years = 5
+								}
+							}
+						}
+					}	
+				}
+				every_attending_character = {
+					limit = {
+						NOT = { this = scope:host }
+						OR = {
+							has_trait = patient
+							has_trait = temperate
+							has_trait = zealous
+						}
+					}
+					custom = EVERY_ACTIVITY_PARTICIPANT_REFLECTION_EFFECT
+					add_opinion = {
+						target = scope:root
+						modifier = RICE_opinion_west_lake_fun_outing
+						opinion = 5
+					}
+					
+				}
+				scope:host = {
+					add_piety = minor_piety_gain
+					if = {
+						limit = {
+							has_activity_intent = RICE_hangzhou_sightsee_at_west_lake_reflection_intent
+						}
+						stress_impact = {
+							base = minor_stress_impact_loss
+						}
+					}				
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = hangzhou.0032.d
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_hangzhou_west_lake_indulgence_log
+				tags = { good }
+				show_in_conclusion = yes
+				character = root
+				every_attending_character = {
+					limit = {
+						NOT = { this = scope:host }
+					}
+					custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+					random = {
+						chance = 25
+						add_character_modifier = {
+							modifier = RICE_hangzhou_west_lake_indulgence_modifier
+							years = 5
+						}
+					}					
+				}
+				hidden_effect = {
+					random = {
+						chance = 25
+						scope:host = {
+							send_interface_toast = {
+								type = event_toast_effect_good
+								left_icon = scope:host
+								title = hangzhou.0032.inspired
+								add_merit_if_relevant_effect = {
+									MERIT = miniscule_merit_value
+								}
+								if = {
+									limit = { has_trait = confucian_education }
+									add_trait_xp = {
+										trait = confucian_education
+										value = 2
+									}
+								}
+								add_character_modifier = {
+									modifier = RICE_hangzhou_west_lake_indulgence_modifier
+									years = 5
+								}
+							}
+						}
+					}	
+				}
+				every_attending_character = {
+					limit = {
+						NOT = { this = scope:host }
+						OR = {
+							has_trait = gluttonous
+							has_trait = content
+							has_trait = lustful
+						}
+					}
+					custom = EVERY_ACTIVITY_PARTICIPANT_INDULGENCE_EFFECT
+					add_opinion = {
+						target = scope:root
+						modifier = RICE_opinion_west_lake_fun_outing
+						opinion = 5
+					}
+					
+				}
+				scope:host = {
+					add_piety = minor_prestige_gain
+					if = {
+						limit = {
+							has_activity_intent = RICE_hangzhou_sightsee_at_west_lake_indulgence_intent
+						}
+						stress_impact = {
+							base = minor_stress_impact_loss
+						}
+					}				
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_hangzho_ten_scenes_west_lake_done
+				}
+			}
+			trigger_event = {
+				id = hangzhou.0034
+				days = { 3 5 }
+			}
+		}
+		trigger_event = {
+			id = hangzhou.0033
+			days = { 6 10 }
+		}
+	}
+
+}
+
+# Finish visit to West Lake
+hangzhou.0033 = {
+	type = activity_event
+	title = hangzhou.0033.t
+	desc = hangzhou.0033.desc
+	theme = RICE_theme_hangzhou_west_lake
+
+
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+	right_portrait = {
+		character = scope:participant
+		animation = pondering
+		trigger = {
+			exists = scope:participant
+		}
+	}
+	
+	option = { # Ok
+		name = hangzhou.0032.a
+		RICE_hangzhou_sightsee_at_west_lake_completed_log_entry_effect = yes
+	}
+
+	after = {
+		scope:activity = {
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}
+
+}
+
+# Enjoying the Ten Scenes
+hangzhou.0034 = {
+	type = activity_event
+	title = hangzhou.0034.t
+	desc = hangzhou.0034.desc
+	theme = RICE_theme_hangzhou_west_lake
+
+
+	left_portrait = {
+		character = root
+		animation = admiration
+	}
+	right_portrait = {
+		character = scope:ten_scenes_enjoyer
+		animation = personality_compassionate
+		trigger = {
+			exists = scope:ten_scenes_enjoyer
+		}
+	}
+	
+	immediate = {
+		if = {
+			limit = {
+				scope:activity = {
+					any_attending_character = {
+						RICE_activity_participant_trigger = yes
+					}
+				}				
+			}
+			scope:activity = {
+				random_attending_character = {
+					limit = {
+						RICE_activity_participant_trigger = yes
+					}
+					save_scope_as = ten_scenes_enjoyer
+				}
+			}
+		}
+	}
+
+	option = { # Ok
+		name = hangzhou.0034.a
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_hangzhou_west_lake_enjoyed_ten_scenes_log
+				tags = { good }
+				show_in_conclusion = yes
+				character = root
+				scope:host = {
+					add_prestige = minor_prestige_gain
+					if = {
+						limit = {
+							government_has_flag = government_has_influence
+						}
+						change_influence = minor_influence_gain
+					}
+					stress_impact = {
+						base = miniscule_stress_impact_loss
+						calm = miniscule_stress_impact_loss
+						zealous = miniscule_stress_impact_loss
+						confucian_education = miniscule_stress_impact_loss
+						poet = miniscule_stress_impact_loss
+					}			
+				}
+			}
+		}		
+	}
+
+}
+
+
+
+# Promote West Lake / Ten Scenes
+hangzhou.0040 = {
+	type = character_event
+	title = hangzhou.0040.t
+	desc = hangzhou.0040.desc
+	theme = RICE_theme_hangzhou_west_lake
+	
+	right_portrait = {
+		character = scope:ten_scenes_promoter
+		animation = pondering
+	}
+
+	# artifact = { # To display the artifact in the event-window
+	# 	target = scope:RICE_west_lake_painting_artifact
+	# 	position = lower_center_portrait
+	# }
+	# artifact = { # To display the artifact in the event-window
+	# 	target = scope:RICE_hangzhou_ten_scenes_scroll_artifact
+	# 	position = lower_right_portrait
+	# }
+
+	immediate = {
+		hidden_effect_new_object = {
+			create_artifact = {	
+				name = RICE_hangzhou_ten_scenes_painting_name
+				description = RICE_hangzhou_ten_scenes_painting_desc
+				type = journal
+				visuals = RICE_hangzhou_west_lake_painting
+				quality = 80
+				wealth = 80
+				modifier = RICE_hangzhou_ten_scenes_painting_artifact
+				decaying = no
+				save_scope_as = RICE_west_lake_painting_artifact
+			}
+			scope:RICE_west_lake_painting_artifact = {
+				set_variable = RICE_hangzhou_ten_scenes_painting_variable
+			}
+		}		
+		hidden_effect_new_object = {
+			create_artifact = {	
+				name = RICE_hangzhou_ten_scenes_scroll_name
+				description = RICE_hangzhou_ten_scenes_scroll_desc
+				type = journal
+				visuals = RICE_east_asian_scroll
+				quality = 80
+				wealth = 80
+				modifier = RICE_hangzhou_ten_scenes_scroll_artifact
+				decaying = no
+				save_scope_as = RICE_west_lake_scroll_artifact
+			}
+			scope:RICE_west_lake_scroll_artifact = {
+				set_variable = RICE_hangzhou_ten_scenes_scroll_variable
+			}
+		}		
+	}
+	
+	option = { # Make a scroll
+		name = hangzhou.0040.a
+		show_as_tooltip = {
+			scope:RICE_west_lake_scroll_artifact = {
+				set_owner = {
+					target = root
+				}
+			}
+		}
+		hidden_effect = {
+			destroy_artifact = scope:RICE_west_lake_painting_artifact
+		}
+	}
+	
+	option = { # Make a painting
+		name = hangzhou.0040.b
+		show_as_tooltip = {
+			scope:RICE_west_lake_painting_artifact = {
+				set_owner = {
+					target = root
+				}
+			}
+		}
+		hidden_effect = {
+			destroy_artifact = scope:RICE_west_lake_scroll_artifact
+		}
+	}
+
+	after = {
+		custom_tooltip = hangzhou.0040.tooltip
+		RICE_hangzhou_ten_scenes_west_lake_decision_effect = yes
+		every_ruler = {
+			limit = {
+				is_playable_character = yes
+				OR = {
+					this = scope:ten_scenes_promoter
+					any_liege_or_above = {
+						this = scope:ten_scenes_promoter
+					}
+					AND = {
+						RICE_is_lesser_sinosphere_culture_trigger = yes
+						OR = {
+							domicile.domicile_location ?= {					
+								OR = {
+									geographical_region = world_asia
+									geographical_region = world_tibet
+									geographical_region = world_steppe
+								}
+							}
+							any_held_county = {
+								any_county_province = {				
+									OR = {
+										geographical_region = world_asia
+										geographical_region = world_tibet
+										geographical_region = world_steppe
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			trigger_event = hangzhou.0041
+		}
+	}
+
+}
+
+
+# Promote West Lake
+hangzhou.0041 = {
+	type = character_event
+	title = hangzhou.0041.t
+	desc = hangzhou.0041.desc
+	theme = RICE_theme_hangzhou_west_lake
+	
+	right_portrait = {
+		character = scope:ten_scenes_promoter
+		animation = reading
+	}
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:RICE_west_lake_painting_artifact
+		position = lower_center_portrait
+		trigger = { 
+			exists = scope:RICE_west_lake_painting_artifact
+			scope:ten_scenes_promoter = {
+				any_character_artifact = {
+					has_variable = RICE_hangzhou_ten_scenes_painting_variable
+				}
+			}
+		}
+	}
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:RICE_hangzhou_ten_scenes_scroll_artifact
+		position = lower_right_portrait
+		trigger = { 
+			exists = scope:RICE_hangzhou_ten_scenes_scroll_artifact
+			scope:ten_scenes_promoter = {
+				any_character_artifact = {
+					has_variable = RICE_hangzhou_ten_scenes_scroll_variable
+				}
+			}
+		}
+	}
+
+	immediate = {
+		play_music_cue = "mx_cue_sacredrite"		
+	}
+	
+	option = { # Ok
+		name = hangzhou.0041.a
+		custom_tooltip = hangzhou.0040.tooltip
+	}
+
+
+}
+
+
+
+##################################################################
+# 
+# QIANTANG TIDES ACTIVITY
+# hangzhou.0050-0069 reserved
+# 
+##################################################################
+
+# Make preparations to travel to see the Qiantang Tides
+hangzhou.0050 = {
+	type = character_event
+	title = hangzhou.0050.t
+	desc = hangzhou.0050.desc
+	theme = travel
+	
+	right_portrait = {
+		character = root
+		animation = pondering
+	}
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_hangzhou_sightsee_at_west_lake
+		}
+	}
+	
+	# immediate = {
+	# 	play_music_cue = "mx_cue_epic_sacral_moment"
+	# }
+	
+	option = { # Ok
+		name = hangzhou.0050.a
+	}
+}
+
+
+# Arrive at Qiantang River - festival is under way, everyone waiting for the tides to come!
+hangzhou.0051 = {
+	type = activity_event
+	title = hangzhou.0051.t
+	desc = hangzhou.0051.desc
+	theme = friendly
+	override_background = { reference = tgp_docks_asia }
+	
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	right_portrait = {
+		character = scope:participant
+		animation = personality_greedy
+		trigger = {
+			exists = scope:participant
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				scope:activity = {
+					any_attending_character = {
+						RICE_activity_participant_trigger = yes
+					}
+				}				
+			}
+			scope:activity = {
+				random_attending_character = {
+					limit = {
+						RICE_activity_participant_trigger = yes
+					}
+					save_scope_as = participant
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = hangzhou.0051.a
+	}
+
+	after = {
+		trigger_event = hangzhou.0052
+	}
+
+}
+
+
+# Watching the tidal bore
+hangzhou.0052 = {
+	type = activity_event
+	title = hangzhou.0052.t
+	desc = hangzhou.0052.desc
+	theme = friendly
+	override_background = { reference = tgp_farm_asia }
+	
+	left_portrait = {
+		character = root
+		animation = survey
+		camera = camera_activity_horse
+	}
+
+	right_portrait = {
+		character = scope:participant
+		animation = throne_room_cheer_1
+		trigger = {
+			exists = scope:participant
+		}
+		camera = camera_activity_horse
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				scope:activity = {
+					any_attending_character = {
+						RICE_activity_participant_trigger = yes
+					}
+				}				
+			}
+			scope:activity = {
+				random_attending_character = {
+					limit = {
+						RICE_activity_participant_trigger = yes
+					}
+					save_scope_as = participant
+				}
+			}
+		}
+		# Choose a potential victim
+		hidden_effect = {
+			scope:activity = {
+				random_attending_character = {
+					#limit = { is_ai = yes }
+					save_scope_as = victim
+				}				
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = hangzhou.0052.a
+		random_list = {
+			90 = {
+				custom_tooltip = hangzhou.0052.a.nothing
+				trigger_event = hangzhou.0053
+			}
+			9 = {	
+				custom_tooltip = hangzhou.0052.a.injury	
+				hidden_effect = {		
+					scope:activity = {
+						add_activity_log_entry = {
+							key = RICE_hangzhou_watch_qiantang_tide_injury_log
+							tags = { bad }
+							# this line below adds the entry to the Effects section of the conclusion UI
+							show_in_conclusion = yes
+							character = root
+							scope:victim = {
+								#limit = { is_ai = yes }
+								increase_wounds_no_death_effect = { REASON = wounds }
+							}
+						}
+					}					
+				}
+				trigger_event = hangzhou.0054
+			}
+			1 = {
+				custom_tooltip = hangzhou.0052.a.death
+				hidden_effect = {
+					scope:activity = {
+						add_activity_log_entry = {
+							key = RICE_hangzhou_watch_qiantang_tide_death_log
+							tags = { bad }
+							# this line below adds the entry to the Effects section of the conclusion UI
+							show_in_conclusion = yes
+							character = root
+							scope:victim = {
+								#limit = { is_ai = yes }
+								death = { death_reason = death_drowned }
+							}
+						}
+					}
+				}
+				trigger_event = hangzhou.0055
+			}
+		}
+	}
+
+}
+
+
+# Tidal bore - nothing crazy happened
+hangzhou.0053 = {
+	type = activity_event
+	title = hangzhou.0053.t
+	desc = hangzhou.0053.desc
+	theme = friendly
+	override_background = { reference = tgp_farm_asia }
+	
+	left_portrait = {
+		character = root
+		animation = personality_content
+	}
+
+	right_portrait = {
+		character = scope:participant
+		animation = personality_dishonorable
+		trigger = {
+			exists = scope:participant
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				scope:activity = {
+					any_attending_character = {
+						RICE_activity_participant_trigger = yes
+					}
+				}				
+			}
+			scope:activity = {
+				random_attending_character = {
+					limit = {
+						RICE_activity_participant_trigger = yes
+					}
+					save_scope_as = participant
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = hangzhou.0053.a
+		RICE_hangzhou_watch_qiantang_tide_uneventful_completed_log_entry_effect = yes
+	}
+
+	after = {
+		scope:activity = {
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}	
+
+}
+
+
+# Tidal bore - someone got injured
+hangzhou.0054 = {
+	type = activity_event
+	title = hangzhou.0054.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					root = scope:victim
+				}
+				desc = hangzhou.0054.injury_self
+			}
+			desc = hangzhou.0054.injury_other
+		}
+		desc = hangzhou.0054.desc
+	}
+	theme = unfriendly
+	override_background = { reference = tgp_farm_asia }
+	
+	left_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = {
+				root = scope:victim
+			}
+			animation = severelywounded
+		}
+		animation = shock
+	}
+
+	right_portrait = {
+		character = scope:victim
+		animation = severelywounded
+		trigger = {
+			root != scope:victim
+		}
+	}
+
+	immediate = {
+		# Fallback in case injury victim doesn't exist for some reason
+		if = {
+			limit = {
+				NOT = { exists = scope:victim }
+			}
+			hidden_effect = {
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_hangzhou_watch_qiantang_tide_injury_log
+						tags = { bad }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = root
+						random_attending_character = {
+							#limit = { is_ai = yes }
+							save_scope_as = victim
+							increase_wounds_no_death_effect = { REASON = wounds }
+						}
+					}
+				}				
+			}
+		}
+		show_as_tooltip = {
+			scope:victim = {
+				increase_wounds_no_death_effect = { REASON = wounds }
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = hangzhou.0054.a
+		RICE_hangzhou_watch_qiantang_tide_injury_completed_log_entry_effect = yes
+	}
+
+	after = {
+		scope:activity = {
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}	
+
+}
+
+
+# Tidal bore - someone died
+hangzhou.0055 = {
+	type = activity_event
+	title = hangzhou.0055.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					root = scope:victim
+				}
+				desc = hangzhou.0055.injury_self
+			}
+			desc = hangzhou.0055.injury_other
+		}
+		desc = hangzhou.0055.desc
+	}
+	theme = death
+	override_background = { reference = tgp_overflowing_river }
+	
+	left_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = {
+				root = scope:victim
+			}
+			animation = dead
+		}
+		animation = shock
+	}
+
+	lower_center_portrait = {
+		character = scope:victim
+		trigger = {
+			root != scope:victim
+		}
+	}
+
+	immediate = {
+		# Fallback in case injury victim doesn't exist for some reason
+		if = {
+			limit = {
+				NOT = { exists = scope:victim }
+			}
+			hidden_effect = {
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_hangzhou_watch_qiantang_tide_death_log
+						tags = { bad }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = root
+						random_attending_character = {
+							#limit = { is_ai = yes }
+							save_scope_as = victim
+							death = { death_reason = death_drowned }
+						}
+					}
+				}				
+			}
+		}
+		show_as_tooltip = {
+			scope:victim = {
+				death = { death_reason = death_drowned }
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = hangzhou.0055.a
+		RICE_hangzhou_watch_qiantang_tide_death_completed_log_entry_effect = yes
+	}
+
+	after = {
+		scope:activity = {
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}	
+
+}
+
+
+######################################################################################
+# 
+# HISTORICAL CHARACTERS FLAVOR
+# 
+# hangzhou.0070-hangzhou.0079
+# 
+######################################################################################
+
+
+
+# Lu You intro event
+hangzhou.0070 = {
+	type = character_event
+	title = hangzhou.0070.t
+	desc = hangzhou.0070.desc
+	theme = memory_stress
+	override_background = { reference = tgp_garden_asia } # tgp_wedding_bedroom_asia
+
+	left_portrait = {
+		character = scope:lu_you
+		animation = crying
+		camera = camera_event_right_away
+		#camera = camera_event_right_forward
+	}
+
+	lower_right_portrait = {
+		character = scope:tang_wan
+		animation = dead
+	}
+
+	immediate = {
+		character:han_11751 = {
+			save_scope_as = lu_you
+		}
+		character:RICE_chinese_miscellaneous_001 = {
+			save_scope_as = tang_wan
+		}
+		show_as_tooltip = {
+			add_stress = 100
+			add_character_modifier = {
+				modifier = RICE_hangzhou_aspiration_retire_into_seclusion
+			}
+		}
+	}
+
+	option = { # Ok
+		name = hangzhou.0070.a
+		flavor = {
+			triggered_desc = {
+				trigger = {
+					has_game_rule = RICE_historical_context_on
+				}
+				desc = hangzhou.0070.info
+			}
+		}
+	}
+
+}
+
+
+
+# Lu You aspiration fulfilled
+hangzhou.0071 = {
+	type = character_event
+	title = hangzhou.0071.t
+	desc = hangzhou.0071.desc
+	theme = memory_positive
+	override_background = { reference = tgp_garden_asia } # tgp_wedding_bedroom_asia
+
+	left_portrait = {
+		character = scope:lu_you
+		animation = pondering
+		camera = camera_event_right_away_3_4
+		#camera = camera_event_right_away
+		#camera = camera_event_right_forward
+	}
+
+	lower_right_portrait = {
+		character = scope:tang_wan
+		animation = dead
+	}
+
+	immediate = {
+
+		play_music_cue = "mx_cue_positive_effect"
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+
+		character:han_11751 = {
+			save_scope_as = lu_you
+		}
+		character:RICE_chinese_miscellaneous_001 = {
+			save_scope_as = tang_wan
+		}
+		
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_hangzhou_aspiration_retire_into_seclusion
+				}
+				remove_character_modifier = RICE_hangzhou_aspiration_retire_into_seclusion
+			}
+		}
+
+		# Main Objective Reward
+		add_prestige = RICE_aspiration_large_resource_bonus
+		add_gold = RICE_aspiration_tiny_resource_bonus
+		RICE_upgrade_education_trait_effect = yes
+		add_character_modifier = {
+			modifier = RICE_hangzhou_liberated_old_man
+		}
+
+		# Bonus Objective Reward(s)
+		if = {
+			limit = {
+				OR = {
+					any_relation = {
+						type = friend
+						count >= 1
+					}
+					any_relation = {
+						type = best_friend
+						count >= 1
+					}
+				}
+			}
+			if = {
+				limit = {
+					government_has_flag = government_has_influence
+				}
+				change_influence = major_influence_gain
+			}
+		}
+		if = {
+			limit = {
+				stress <= low_stress
+			}
+			add_piety = RICE_aspiration_medium_resource_bonus
+		}
+
+	}
+
+	option = { # Ok
+		name = hangzhou.0071.a
+	}
+
+}
+
+
+
+
+
+######################################################################################
+# 
+# POETRY GATHERING
+# 
+# hangzhou.0080-hangzhou.0099
+# 
+######################################################################################
+
+
+
+
+
+# Poetry Gathering begins
+hangzhou.0080 = {
+	type = activity_event
+	title = hangzhou.0080.t
+	desc = hangzhou.0080.desc
+	theme = friendly
+	
+	left_portrait = {
+		character = scope:host
+		trigger = {
+			NOT = {
+				this = root
+			}
+		}
+		animation = personality_forgiving
+	}
+
+	right_portrait = root
+	
+	option = { # Ok
+		name = hangzhou.0080.a
+	}
+
+	after = {
+		trigger_event = {
+			id = hangzhou.0081
+			days = { 5 10 }
+		}
+	}
+}
+
+
+
+# Poetry Gathering continues - recite the first poem
+hangzhou.0081 = {
+	type = activity_event
+	title = hangzhou.0081.t
+	desc = hangzhou.0081.desc
+	theme = RICE_theme_east_asian_poetry_gathering
+	
+	left_portrait = {
+		character = scope:host
+		trigger = {
+			NOT = {
+				this = root
+			}
+		}
+		triggered_animation = {
+			trigger = {
+				NOT = {
+					this = root
+				}
+				opinion = {
+					target = root
+					value <= -50
+				}	
+			}
+			animation = boredom
+		}
+		animation = pondering
+	}
+	
+	right_portrait = {
+		character = root
+		animation = storyteller
+	}
+	
+	option = { # Ok
+		name = hangzhou.0081.a
+	}
+
+	after = {
+
+		# Victor is decided
+		if = {
+			limit = {
+				root = scope:host
+			}
+			trigger_event = {
+				id = hangzhou.0082
+				days = { 7 9 }
+			}
+		}
+
+		### Potential random events
+
+		# # Make a friend
+		# if = {
+		# 	limit = {
+		# 		any_attending_character = {
+		# 			NOT = { this = root }
+		# 			NOR = {
+		# 				has_relation_rival = root
+		# 				has_relation_nemesis = root
+		# 			}
+		# 			is_adult = yes
+		# 			opinion = {
+		# 				target = root
+		# 				value >= -50
+		# 			}	
+		# 		}				
+		# 	}
+		# 	random = {
+		# 		chance = 10
+		# 		trigger_event = {
+		# 			id = hangzhou.0090
+		# 			days = { 3 5 }
+		# 		}
+		# 	}
+		# }
+
+		# # Make an enemy
+		# if = {
+		# 	limit = {
+		# 		any_attending_character = {
+		# 			NOT = { this = root }
+		# 			NOR = {
+		# 				has_relation_friend = root
+		# 				has_relation_best_friend = root
+		# 				has_relation_lover = root
+		# 				has_relation_soulmate = root
+		# 			}
+		# 			is_adult = yes
+		# 			opinion = {
+		# 				target = root
+		# 				value <= 50
+		# 			}	
+		# 		}				
+		# 	}
+		# 	random = {
+		# 		chance = 10
+		# 		trigger_event = {
+		# 			id = hangzhou.0091
+		# 			days = { 3 5 }
+		# 		}
+		# 	}
+		# }
+
+		# # Enjoy the good food
+		# random = {
+		# 	chance = 25
+		# 	trigger_event = {
+		# 		id = hangzhou.0092
+		# 		days = { 3 5 }
+		# 	}
+		# }
+
+		# # Be inspired in your daily life
+		# random = {
+		# 	chance = 25
+		# 	trigger_event = {
+		# 		id = hangzhou.0093
+		# 		days = { 3 5 }
+		# 	}
+		# }
+
+		# # Impressed with another poem
+		# if = {
+		# 	limit = {
+		# 		any_attending_character = {
+		# 			NOT = { this = root }
+		# 			is_ai = yes
+		# 			is_adult = yes	
+		# 		}				
+		# 	}
+		# 	random = {
+		# 		chance = 25
+		# 		trigger_event = {
+		# 			id = hangzhou.0094
+		# 			days = { 3 5 }
+		# 		}
+		# 	}
+		# }
+
+		# # Unimpressed with another poem
+		# if = {
+		# 	limit = {
+		# 		any_attending_character = {
+		# 			NOT = { this = root }
+		# 			is_ai = yes
+		# 			is_adult = yes	
+		# 		}				
+		# 	}
+		# 	random = {
+		# 		chance = 25
+		# 		trigger_event = {
+		# 			id = hangzhou.0095
+		# 			days = { 3 5 }
+		# 		}
+		# 	}
+		# }
+
+		# # Intriguing intellectual discussion
+		# if = {
+		# 	limit = {
+		# 		any_attending_character = {
+		# 			NOT = { this = root }
+		# 			is_ai = yes
+		# 			is_adult = yes
+		# 		}				
+		# 	}
+		# 	random = {
+		# 		chance = 25
+		# 		trigger_event = {
+		# 			id = hangzhou.0096
+		# 			days = { 3 5 }
+		# 		}
+		# 	}
+		# }
+
+		# # Got way too drunk
+		# if = {
+		# 	limit = {
+		# 		any_attending_character = {
+		# 			NOT = { this = root }
+		# 			is_ai = yes
+		# 			is_adult = yes	
+		# 			NOT = { has_trait = temperate }
+		# 			# Not certain Muslim characters
+		# 			NAND = {
+		# 				religion = religion:islam_religion
+		# 				OR = {
+		# 					has_trait = zealous
+		# 					has_trait = diligent
+		# 				}
+		# 			}
+		# 			OR = {
+		# 				has_trait = drunkard
+		# 				has_trait = lustful
+		# 				has_trait = gregarious
+		# 				has_trait = lifestyle_reveler
+		# 				has_trait = seducer
+		# 				has_trait = impatient
+		# 				has_trait = gluttonous
+		# 				has_trait = trusting
+		# 				has_trait = arbitrary
+		# 				has_trait = fickle
+		# 				has_trait = stubborn
+		# 			}
+		# 		}				
+		# 	}
+		# 	random = {
+		# 		chance = 25
+		# 		trigger_event = {
+		# 			id = hangzhou.0097
+		# 			days = { 3 5 }
+		# 		}
+		# 	}
+		# }
+
+		# # Praising the natural atmosphere
+		# if = {
+		# 	limit = {
+		# 		any_attending_character = {
+		# 			NOT = { this = root }
+		# 			is_ai = yes
+		# 			is_adult = yes
+		# 		}				
+		# 	}
+		# 	random = {
+		# 		chance = 25
+		# 		trigger_event = {
+		# 			id = hangzhou.0098
+		# 			days = { 3 5 }
+		# 		}
+		# 	}
+		# }
+
+	}
+}
+
+
+
+
+# Poetry Gathering - winner is decided
+hangzhou.0082 = {
+	type = activity_event
+	title = hangzhou.0082.t
+	desc = hangzhou.0082.desc
+	theme = RICE_theme_east_asian_poetry_gathering
+	
+	left_portrait = {
+		character = root
+		trigger = {
+			this != scope:poetry_winner
+		}
+		animation = throne_room_applaud_1
+	}
+	
+	right_portrait = {
+		character = scope:poetry_winner
+		animation = happiness
+	}
+
+	immediate = {
+		# If there are at least 4 people attending, increase the chances of a participant actually winning
+		if = {
+			limit = {
+				scope:activity = {
+					any_attending_character = {
+						count >= 4
+						#is_ai = yes 
+						is_adult = yes 
+						#NOT = { this = root }
+					}
+				}				
+			}
+			random_list = {
+				10 = {
+					create_character = {
+						location = root.location
+						template = RICE_poetry_gathering_attendee_template
+						save_scope_as = local_literati
+					}				
+					scope:local_literati = {
+						save_scope_as = poetry_winner
+					}
+				}
+				10 = {
+					scope:activity = {
+						every_attending_character = {
+							limit = {
+								is_adult = yes
+							}
+							add_to_list = potential_winner
+						}						
+					}
+					random_in_list = {
+						list = potential_winner
+						weight = {
+							base = 10
+							modifier = {
+								add = {
+									value = diplomacy
+									multiply = 2
+								}
+							}
+							modifier = {
+								add = {
+									value = learning
+									multiply = 2
+								}
+							}
+							modifier = {
+								has_trait = scholar
+								add = 2
+							}
+							modifier = {
+								has_trait = lifestyle_poet
+								add = 2
+							}
+							modifier = {
+								has_trait = lifestyle_poet
+								has_trait_xp = {
+									trait = lifestyle_poet
+									value > 25
+								}
+								add = 2
+							}
+							modifier = {
+								has_trait = lifestyle_poet
+								has_trait_xp = {
+									trait = lifestyle_poet
+									value > 50
+								}
+								add = 2
+							}
+							modifier = {
+								has_trait = lifestyle_poet
+								has_trait_xp = {
+									trait = lifestyle_poet
+									value > 75
+								}
+								add = 2
+							}
+						}
+						save_scope_as = poetry_winner
+					}
+				}
+			}
+		}
+		else = {
+			# If there aren't that many attendees, decrease the chances one of them will win
+			random_list = {
+				10 = {
+					create_character = {
+						location = root.location
+						template = RICE_poetry_gathering_attendee_template
+						save_scope_as = local_literati
+					}				
+					scope:local_literati = {
+						save_scope_as = poetry_winner
+					}
+				}
+				20 = {
+					scope:activity = {
+						every_attending_character = {
+							limit = {
+								is_adult = yes
+							}
+							add_to_list = potential_winner
+						}						
+					}
+					random_in_list = {
+						list = potential_winner
+						weight = {
+							base = 10
+							modifier = {
+								add = {
+									value = diplomacy
+									multiply = 2
+								}
+							}
+							modifier = {
+								add = {
+									value = learning
+									multiply = 2
+								}
+							}
+							modifier = {
+								has_trait = scholar
+								add = 2
+							}
+							modifier = {
+								has_trait = lifestyle_poet
+								add = 2
+							}
+							modifier = {
+								has_trait = lifestyle_poet
+								has_trait_xp = {
+									trait = lifestyle_poet
+									value > 25
+								}
+								add = 2
+							}
+							modifier = {
+								has_trait = lifestyle_poet
+								has_trait_xp = {
+									trait = lifestyle_poet
+									value > 50
+								}
+								add = 2
+							}
+							modifier = {
+								has_trait = lifestyle_poet
+								has_trait_xp = {
+									trait = lifestyle_poet
+									value > 75
+								}
+								add = 2
+							}
+						}
+						save_scope_as = poetry_winner
+					}
+				}
+			}
+		}
+
+		scope:activity = {
+			add_activity_log_entry = {
+				key = RICE_east_asian_poetry_gathering_victor_log
+				tags = { good }
+				# this line below adds the entry to the Effects section of the conclusion UI
+				show_in_conclusion = yes
+				character = scope:poetry_winner
+				scope:poetry_winner = {
+					add_prestige = medium_prestige_gain
+					add_merit_if_relevant_effect = {
+						MERIT = miniscule_merit_value
+					}	
+					add_character_modifier = {
+						modifier = RICE_east_asian_won_poetry_contest
+						years = 5
+					}				
+				}
+			}
+		}
+
+	}
+	
+	option = { # Ok
+		name = hangzhou.0082.a
+	}
+
+	after = {
+		scope:activity = {
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+			}	
+			trigger_event = hangzhou.0083 	# Announce the winner to other attendees
+		}
+		trigger_event = {
+			id = hangzhou.0084
+			days = { 2 3 }
+		}
+	}
+
+}
+
+
+
+
+# Poetry Gathering - winner is decided (attendee POV)
+hangzhou.0083 = {
+	type = activity_event
+	title = hangzhou.0083.t
+	desc = hangzhou.0083.desc
+	theme = RICE_theme_east_asian_poetry_gathering
+	
+	left_portrait = {
+		character = root
+		trigger = {
+			this != scope:poetry_winner
+		}
+		animation = throne_room_applaud_1
+	}
+	
+	right_portrait = {
+		character = scope:poetry_winner
+		animation = acknowledging
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			scope:poetry_winner = {
+				add_prestige = medium_prestige_gain
+				add_merit_if_relevant_effect = {
+					MERIT = miniscule_merit_value
+				}	
+				add_character_modifier = {
+					modifier = RICE_east_asian_won_poetry_contest
+					years = 5
+				}				
+			}			
+		}
+	}
+	
+	option = { # Ok
+		name = hangzhou.0083.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_activity_intent = RICE_east_asian_poetry_gathering_recognize_literati_intent
+			}
+			trigger_event = hangzhou.0085
+		}
+		else = {
+			#hidden_effect = {
+				random = {
+					chance = {
+						value = 0
+						if = {
+							limit = {
+								root.diplomacy >= high_skill_rating
+							}
+							add = 8
+						}
+						else_if = {
+							limit = {
+								root.diplomacy >= decent_skill_rating
+							}
+							add = 5
+						}
+						else_if = {
+							limit = {
+								root.diplomacy >= mediocre_skill_rating
+							}
+							add = 2
+						}
+						if = {
+							limit = {
+								root.learning >= high_skill_rating
+							}
+							add = 8
+						}
+						else_if = {
+							limit = {
+								root.learning >= decent_skill_rating
+							}
+							add = 5
+						}
+						else_if = {
+							limit = {
+								root.learning >= mediocre_skill_rating
+							}
+							add = 2
+						}
+						if = {
+							limit = {
+								has_trait = lifestyle_poet
+							}
+							add = 2
+						}
+						if = {
+							limit = {
+								has_trait = scholar
+							}
+							add = 2
+						}
+						if = {
+							limit = {
+								has_trait = confucian_education
+							}
+							add = 2
+						}
+						if = {
+							limit = {
+								has_trait = gregarious
+							}
+							add = 2
+						}
+						if = {
+							limit = {
+								has_trait = ambitious
+							}
+							add = 2
+						}
+						if = {
+							limit = {
+								has_trait = education_learning_3
+							}
+							add = 2
+						}
+						else_if = {
+							limit = {
+								has_trait = education_learning_4
+							}
+							add = 4
+						}
+						else_if = {
+							limit = {
+								has_trait = education_learning_5
+							}
+							add = 6
+						}
+						if = {
+							limit = {
+								has_trait = education_diplomacy_3
+							}
+							add = 2
+						}
+						else_if = {
+							limit = {
+								has_trait = education_diplomacy_4
+							}
+							add = 4
+						}
+						else_if = {
+							limit = {
+								has_trait = education_diplomacy_5
+							}
+							add = 6
+						}
+						min = 1
+						max = 25
+					}
+					trigger_event = hangzhou.0085
+				}				
+			#}
+		}			
+	}
+
+}
+
+
+
+# Poetry Gathering - conclusion
+hangzhou.0084 = {
+	type = activity_event
+	title = hangzhou.0084.t
+	desc = hangzhou.0084.desc
+	theme = RICE_theme_east_asian_poetry_gathering
+	
+	left_portrait = {
+		character = scope:poetry_participant
+		trigger = {
+			exists = scope:poetry_participant
+		}
+		animation = drink_goblet
+	}
+	
+	right_portrait = {
+		character = scope:host
+		animation = toast_goblet
+	}
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:RICE_poetry_gathering_poem
+		position = lower_right_portrait
+		trigger = { 
+			exists = scope:RICE_poetry_gathering_poem
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				exists = scope:poetry_winner
+				NOT = { scope:poetry_winner = scope:host }
+			}
+			scope:poetry_winner = {
+				save_scope_as = poetry_participant
+			}
+		}
+		else_if = {
+			limit = {
+				scope:activity = {
+					any_attending_character = {
+						RICE_activity_participant_trigger = yes
+						this != host
+					}
+				}					
+			}
+			random_attending_character = {
+				limit = {
+					RICE_activity_participant_trigger = yes
+					this != host
+				}
+				save_scope_as = poetry_participant
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:poetry_winner
+			}
+			
+			random = {
+				chance = 99 # For testing purposes
+				# chance = {
+				# 	value = scope:poetry_winner.diplomacy
+				# 	multiply = 2
+				# 	max = 50
+				# }
+				# modifier = {
+				# 	scope:poetry_winner = { has_trait = lifestyle_poet }
+				# 	add = 4
+				# }
+				# modifier = {
+				# 	scope:poetry_winner = { has_trait = confucian_education }
+				# 	add = 2
+				# }
+				# modifier = {
+				# 	scope:poetry_winner = { has_trait = scholar }
+				# 	add = 2
+				# }
+				# If no one present is a human player, reduce the chances of an artifact so there's less poem artifact spam
+				modifier = {
+					NOT = {
+						scope:activity = {
+							any_attending_character = {
+								is_ai = no
+							}
+						}							
+					}
+					add = -30
+				}
+				random_list = {
+					# Diplomacy themed poem = humanity/society
+					10 = {
+						modifier = {
+							add = 3
+							scope:poetry_winner = {
+								has_education_diplomacy_trigger = yes
+							}
+						}
+						hidden_effect_new_object = {
+							create_artifact = {	
+								name = RICE_poetry_gathering_poem_diplomacy_name
+								description = RICE_poetry_gathering_poem_diplomacy_desc
+								type = journal
+								visuals = RICE_east_asian_scroll
+								quality = 15
+								wealth = 15
+								modifier = RICE_poetry_gathering_poem_diplomacy_artifact
+								save_scope_as = RICE_poetry_gathering_poem
+							}
+							scope:RICE_west_lake_guide_artifact = {
+								set_variable = RICE_hangzhou_west_lake_guide_variable
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_monthly_minor_prestige_5_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_monthly_diplomacy_lifestyle_xp_1_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_diplomacy_1_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_monthly_influence_mult_2_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_general_opinion_1_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_owned_personal_scheme_success_chance_add_4_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_personal_scheme_phase_duration_add_5_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_befriend_scheme_phase_duration_add_3_modifier
+								}
+							}
+						}	
+					}
+					# Martial themed poem = war
+					10 = {
+						modifier = {
+							add = 3
+							scope:poetry_winner = {
+								has_education_martial_trigger = yes
+							}
+						}
+						hidden_effect_new_object = {
+							create_artifact = {	
+								name = RICE_poetry_gathering_poem_martial_name
+								description = RICE_poetry_gathering_poem_martial_desc
+								type = journal
+								visuals = RICE_east_asian_scroll
+								quality = 15
+								wealth = 15
+								modifier = RICE_poetry_gathering_poem_martial_artifact
+								save_scope_as = RICE_poetry_gathering_poem
+							}
+							scope:RICE_west_lake_guide_artifact = {
+								set_variable = RICE_hangzhou_west_lake_guide_variable
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_negate_prowess_penalty_add_2_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_monthly_martial_lifestyle_xp_1_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_martial_1_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_enemy_hard_casualty_modifier_2_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_prowess_2_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_knight_effectiveness_3_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_men_at_arms_maintenance_3_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_levy_reinforcement_rate_1_modifier
+								}
+							}
+						}	
+					}
+					# Stewardship themed poem = nature
+					10 = {
+						modifier = {
+							add = 3
+							scope:poetry_winner = {
+								has_education_stewardship_trigger = yes
+							}
+						}
+						hidden_effect_new_object = {
+							create_artifact = {	
+								name = RICE_poetry_gathering_poem_stewardship_name
+								description = RICE_poetry_gathering_poem_stewardship_desc
+								type = journal
+								visuals = RICE_east_asian_scroll
+								quality = 15
+								wealth = 15
+								modifier = RICE_poetry_gathering_poem_stewardship_artifact
+								save_scope_as = RICE_poetry_gathering_poem
+							}
+							scope:RICE_west_lake_guide_artifact = {
+								set_variable = RICE_hangzhou_west_lake_guide_variable
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_development_growth_1_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_monthly_stewardship_lifestyle_xp_1_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_stewardship_1_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_domain_tax_mult_1_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_build_gold_cost_2_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_build_time_1_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = character_travel_speed_1
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_domain_tax_same_faith_mult_2_modifier
+								}
+							}
+						}	
+					}
+					# Intrigue themed poem = love
+					10 = {
+						modifier = {
+							add = 3
+							scope:poetry_winner = {
+								has_education_intrigue_trigger = yes
+							}
+						}
+						hidden_effect_new_object = {
+							create_artifact = {	
+								name = RICE_poetry_gathering_poem_intrigue_name
+								description = RICE_poetry_gathering_poem_intrigue_desc
+								type = journal
+								visuals = RICE_east_asian_scroll
+								quality = 15
+								wealth = 15
+								modifier = RICE_poetry_gathering_poem_intrigue_artifact
+								save_scope_as = RICE_poetry_gathering_poem
+							}
+							scope:RICE_west_lake_guide_artifact = {
+								set_variable = RICE_hangzhou_west_lake_guide_variable
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_seduce_scheme_phase_duration_mult_1_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_monthly_intrigue_lifestyle_xp_1_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_seduce_scheme_phase_duration_add_2_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_spouse_opinion_add_1_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_courting_scheme_phase_duration_add_1_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_attraction_opinion_1_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_fertility_gain_1_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_courtier_and_guest_opinion_2_modifier
+								}
+							}
+						}	
+					}
+					# Learning themed poem = history/politics
+					10 = {
+						modifier = {
+							add = 3
+							scope:poetry_winner = {
+								has_education_learning_trigger = yes
+							}
+						}
+						hidden_effect_new_object = {
+							create_artifact = {	
+								name = RICE_poetry_gathering_poem_learning_name
+								description = RICE_poetry_gathering_poem_learning_desc
+								type = journal
+								visuals = RICE_east_asian_scroll
+								quality = 15
+								wealth = 15
+								modifier = RICE_poetry_gathering_poem_learning_artifact
+								save_scope_as = RICE_poetry_gathering_poem
+							}
+							scope:RICE_west_lake_guide_artifact = {
+								set_variable = RICE_hangzhou_west_lake_guide_variable
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_monthly_lifestyle_xp_minor_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_monthly_learning_lifestyle_xp_1_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_study_confucian_classics_scheme_phase_duration_add_2_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_monthly_merit_mult_2_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_monthly_piety_1_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_scheme_resistance_add_2_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_learn_language_scheme_phase_duration_add_1_modifier
+								}
+								random = {
+									chance = 30
+									add_artifact_modifier = artifact_stress_gain_2_modifier
+								}
+							}
+						}	
+					}
+				}
+		
+			}
+		}
+
+	}
+	
+	option = { # Ok
+		name = hangzhou.0084.a
+		if = {
+			limit = {
+				root = scope:host
+			}
+			scope:activity = {
+				RICE_east_asian_poetry_gathering_completed_log_entry_effect = yes
+			}
+		}
+		else = {
+			show_as_tooltip = {				
+				RICE_east_asian_poetry_gathering_completed_log_entry_effect = yes
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_activity_intent = RICE_east_asian_poetry_gathering_recognize_literati_intent
+			}
+			trigger_event = hangzhou.0085
+		}
+		else = {
+			#hidden_effect = {
+				random = {
+					chance = {
+						value = 0
+						if = {
+							limit = {
+								root.diplomacy >= high_skill_rating
+							}
+							add = 8
+						}
+						else_if = {
+							limit = {
+								root.diplomacy >= decent_skill_rating
+							}
+							add = 5
+						}
+						else_if = {
+							limit = {
+								root.diplomacy >= mediocre_skill_rating
+							}
+							add = 2
+						}
+						if = {
+							limit = {
+								root.learning >= high_skill_rating
+							}
+							add = 8
+						}
+						else_if = {
+							limit = {
+								root.learning >= decent_skill_rating
+							}
+							add = 5
+						}
+						else_if = {
+							limit = {
+								root.learning >= mediocre_skill_rating
+							}
+							add = 2
+						}
+						if = {
+							limit = {
+								has_trait = lifestyle_poet
+							}
+							add = 2
+						}
+						if = {
+							limit = {
+								has_trait = scholar
+							}
+							add = 2
+						}
+						if = {
+							limit = {
+								has_trait = confucian_education
+							}
+							add = 2
+						}
+						if = {
+							limit = {
+								has_trait = gregarious
+							}
+							add = 2
+						}
+						if = {
+							limit = {
+								has_trait = ambitious
+							}
+							add = 2
+						}
+						if = {
+							limit = {
+								has_trait = education_learning_3
+							}
+							add = 1
+						}
+						else_if = {
+							limit = {
+								has_trait = education_learning_4
+							}
+							add = 2
+						}
+						else_if = {
+							limit = {
+								has_trait = education_learning_5
+							}
+							add = 3
+						}
+						if = {
+							limit = {
+								has_trait = education_diplomacy_3
+							}
+							add = 1
+						}
+						else_if = {
+							limit = {
+								has_trait = education_diplomacy_4
+							}
+							add = 2
+						}
+						else_if = {
+							limit = {
+								has_trait = education_diplomacy_5
+							}
+							add = 3
+						}
+						if = {
+							limit = {
+								root = scope:host								
+								scope:activity = {
+									has_activity_option = {
+										category = RICE_east_asian_poetry_gathering_amenities_amount
+										option = RICE_east_asian_poetry_gathering_amenities_amount_large
+									}
+								}
+							}
+							add = 10
+						}
+						if = {
+							limit = {
+								root = scope:host								
+								scope:activity = {
+									has_activity_option = {
+										category = RICE_east_asian_poetry_gathering_amenities_amount
+										option = RICE_east_asian_poetry_gathering_amenities_amount_medium
+									}
+								}
+							}
+							add = 5
+						}
+						min = 1
+						max = 30
+					}
+					trigger_event = hangzhou.0085
+				}				
+			#}
+		}	
+		
+		# Host concludes the activity
+		if = {
+			limit = {
+				root = scope:host
+			}
+			if = {
+				limit = {
+					exists = scope:local_literati
+				}
+				scope:local = {
+					trigger_event = {
+						id = hangzhou.0087
+						days = 1
+					}
+				}
+			}
+			trigger_event = {
+				id = hangzhou.0086
+				days = 1
+			}
+		}
+
+	}
+
+}
+
+
+
+# Poetry Gathering - recruit a member of the literati?
+hangzhou.0085 = {
+	type = activity_event
+	title = hangzhou.0085.t
+	desc = hangzhou.0085.desc
+	theme = RICE_theme_east_asian_poetry_gathering
+	
+	left_portrait = {
+		character = root
+		animation = interested
+		#camera = camera_event_center_pointing_right
+		camera = camera_event_right_pointing_left
+	}
+
+	right_portrait = {
+		character = scope:recruit_option
+		animation = gongshou
+	}
+
+	immediate = {
+		random_list = {
+			10 = {
+				trigger = {
+					root = scope:host
+					scope:poetry_winner = scope:local_literati
+				}
+				scope:local_literati = {
+					save_scope_as = recruit_option
+				}
+			}
+			10 = {
+				create_character = {
+					location = root.location
+					template = RICE_poetry_gathering_attendee_template
+					save_scope_as = recruit_option
+				}				
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = hangzhou.0085.a
+		add_courtier = scope:recruit_option
+		if = {
+			limit = {
+				government_has_flag = government_has_influence
+			}
+			change_influence = major_influence_loss
+		}
+		else = {
+			add_prestige = major_prestige_loss
+		}
+	}
+	
+	option = { # Ok
+		name = hangzhou.0085.b
+		hidden_effect = {
+			scope:recruit_option = {
+				trigger_event = {
+					id = hangzhou.0087
+					days = 1
+				}
+			}
+		}
+	}
+
+}
+
+
+
+
+
+
+# Poetry Gathering - conclude the event
+hangzhou.0086 = {	
+	hidden = yes
+
+	immediate = {
+		scope:activity = {
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}	
+
+}
+
+
+# Get rid of spawned literati characters if they're not at anyone's court
+hangzhou.0087 = {	
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				is_pool_character = yes
+			}
+			silent_disappearance_effect = yes
+		}
+	}	
+
+}
+
+
+
+
+

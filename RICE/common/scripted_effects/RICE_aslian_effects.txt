@@ -1,0 +1,516 @@
+﻿RICE_setup_aslian_flavor_pack_effect = {
+
+	############################################################
+	#
+	# DNA
+	#
+	############################################################
+
+
+
+	############################################################ 
+	#
+	# CULTURE CHANGES
+	#
+	############################################################ 
+
+	culture:senoi = {
+		set_name_list = name_list_senoi
+		add_culture_tradition = tradition_RICE_rainforest_ritualists
+		remove_variable = tradition_cooldown
+	}
+
+	culture:semang = {
+		add_culture_tradition = tradition_RICE_rainforest_ritualists
+		remove_variable = tradition_cooldown
+	}
+
+	culture:timor = {
+		add_culture_tradition = tradition_RICE_tropical_purveyors
+		remove_variable = tradition_cooldown
+	}
+
+	culture:chong = {
+		add_culture_tradition = tradition_RICE_tropical_purveyors
+		remove_variable = tradition_cooldown
+	}
+
+	culture:dayak = {
+		add_culture_tradition = tradition_RICE_tropical_purveyors
+		remove_variable = tradition_cooldown
+	}
+
+	culture:maluku = {
+		add_culture_tradition = tradition_RICE_tropical_purveyors
+		remove_variable = tradition_cooldown
+	}
+
+	culture:papuan = {
+		add_culture_tradition = tradition_RICE_tropical_purveyors
+		remove_variable = tradition_cooldown
+	}
+
+	
+	############################################################
+	#
+	# RELIGION CHANGES
+	#
+	############################################################
+
+	############################################################
+	#
+	# CULTURE/RELIGION MAP CHANGES
+	#
+	############################################################
+
+	if = {
+		limit = {
+			game_start_date <= 1000.1.1
+		}
+		title:c_MAL_gangganegra = {
+			set_county_culture = culture:senoi
+			set_county_faith = faith:senoi_pagan
+		}
+	}
+
+	every_ruler = {
+		limit = {
+			culture = culture:senoi
+		}
+		set_character_faith_with_conversion = faith:senoi_pagan
+		every_vassal = {
+			limit = {
+				culture = culture:senoi
+			}
+			set_character_faith_with_conversion = faith:senoi_pagan
+		}
+		every_courtier_or_guest = {
+			limit = {
+				culture = culture:senoi
+			}
+			set_character_faith = faith:senoi_pagan
+		}
+		if = {
+			limit = {
+				has_dlc_feature = all_under_heaven
+			}
+			RICE_become_wanua_effect = yes
+		}
+	}
+
+	every_county_in_region = {
+		region = world_asia
+		limit = {
+			culture = culture:senoi
+		}
+		set_county_faith = faith:senoi_pagan
+		holder = {
+			every_courtier_or_guest = {
+				limit = {
+					culture = culture:senoi
+				}
+				set_character_faith = faith:senoi_pagan
+			}
+		}
+	}
+
+
+
+	############################################################
+	#
+	# HISTORY/TITLE CHANGES
+	#
+	############################################################ 
+
+	# Give Bah Lud his titles in Malaysia
+	character:RICE_aslian_001 ?= {
+		if = {
+			limit = {
+				is_alive = yes
+			}
+			get_title = title:c_MAL_semantan
+			RICE_setup_new_granted_ruler_bonuses_effect = yes
+			add_courtier = character:RICE_aslian_002
+			set_sexuality = heterosexual
+			add_character_modifier = {
+				modifier = RICE_aslian_aspiration_become_semai_hero
+			}
+			set_variable = {
+				name = RICE_historical_aspiration
+				value = flag:bah_lud
+			}
+		}
+	}	
+
+	
+	############################################################
+	#
+	# BUILDING
+	#
+	############################################################
+
+	if = {
+		limit = {
+			title:b_MAL_Pekan = {
+				title_province = { has_special_building = no }
+			}
+		}
+		title:b_MAL_Pekan.title_province = {
+			add_special_building = RICE_aslian_pahang_gold_mines_01
+		}
+	}
+
+	############################################################
+	#
+	# MISCELLANEOUS
+	#
+	############################################################
+
+
+	# Give Austroasiatic faiths the "Austroasiatic Roots" special doctrine
+	# Give Dangerous Tiger to most faiths by default
+	# bahnaric_religion, kuy_religion, wa_religion, pearic_religion, sarnaism_religion
+	every_religion_global = {
+		limit = {
+			OR = {
+				this = religion:vietic_religion
+				this = religion:kuy_religion
+				this = religion:bahnaric_religion
+				this = religion:wa_religion
+				this = religion:aslian_religion
+				this = religion:khmuic_religion
+				this = religion:pearic_religion
+				this = religion:sarnaism_religion
+				this = religion:khasi_religion
+			}
+		}
+		every_faith = {
+			add_doctrine = rice_austroasiatic_retributive_tiger
+			if = {
+				limit = {
+					NOT = { has_doctrine = special_doctrine_is_austroasiatic_faith }
+				}
+				add_doctrine = special_doctrine_is_austroasiatic_faith
+			}
+		}
+	}
+
+	religion:vietic_religion = {
+		every_faith = {
+			remove_doctrine = rice_austroasiatic_retributive_tiger
+			add_doctrine = rice_austroasiatic_majestic_tiger
+		}
+	}
+
+	religion:aslian_religion = {
+		every_faith = {
+			remove_doctrine = rice_austroasiatic_retributive_tiger
+			add_doctrine = rice_austroasiatic_wise_tiger
+		}
+	}
+
+	religion:khmuic_religion = {
+		every_faith = {
+			remove_doctrine = rice_austroasiatic_retributive_tiger
+			add_doctrine = rice_austroasiatic_savage_tiger
+		}
+	}
+
+	religion:khasi_religion = {
+		every_faith = {
+			remove_doctrine = rice_austroasiatic_retributive_tiger
+			add_doctrine = rice_austroasiatic_majestic_tiger
+		}
+	}
+
+	# Khasi tiger is benevolent
+
+	# every_faith = {
+	# 	limit = {
+	# 		has_doctrine = special_doctrine_is_austroasiatic_faith
+	# 		NOR = {
+	# 			has_doctrine = rice_austroasiatic_wise_tiger
+	# 			has_doctrine = rice_austroasiatic_majestic_tiger
+	# 			has_doctrine = rice_austroasiatic_retributive_tiger
+	# 			has_doctrine = rice_austroasiatic_savage_tiger
+	# 			has_doctrine = rice_austroasiatic_no_tiger
+	# 		}
+	# 	}
+	# 	add_doctrine = rice_austroasiatic_retributive_tiger
+	# }
+
+	# Generate Semang courtiers
+
+	# world_asia_malaysia
+
+	# Not working for some reason
+	# every_county_in_region = {
+	# 	region = world_asia_malaysia
+	# 	holder = {
+	# 		triger_event = aslian.0001
+	# 	}		
+	# }
+
+
+}
+
+
+
+RICE_aslian_blood_sacrifice_decision_effect = {
+	if = {
+		limit = {
+			is_female = yes
+			age <= 45
+		}
+		add_prestige = medium_prestige_gain
+		stress_impact = {
+			base = minor_stress_impact_loss
+			zealous = minor_stress_impact_loss
+		}
+	}
+	else = {
+		add_prestige = minor_prestige_gain
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			zealous = miniscule_stress_impact_loss
+		}
+	}
+	add_character_modifier = {
+		modifier = RICE_aslian_performed_siwaac_blood_sacrifice
+		years = 5
+	}
+	if = {
+		limit = {
+			has_trait = lifestyle_mystic
+		}
+		add_trait_xp = {
+			trait = lifestyle_mystic
+			value = small_lifestyle_random_xp_low
+		}
+	}
+	if = {
+		limit = { has_character_modifier = RICE_aslian_aspiration_become_semai_hero }
+		add_character_flag = RICE_bah_lud_did_blood_sacrifice
+	}
+}
+
+
+RICE_austroasiatic_tiger_god_decision_effect = {
+	add_piety = RICE_austroasiatic_tiger_decision_piety_gain
+	if = {
+		limit = {
+			faith = { has_doctrine = rice_austroasiatic_wise_tiger }
+		}
+		add_character_modifier = {
+			modifier = RICE_austroasiatic_wise_tiger_modifier
+			years = 10
+		}
+	}	
+	else_if = {
+		limit = {
+			faith = { has_doctrine = rice_austroasiatic_majestic_tiger }
+		}
+		add_character_modifier = {
+			modifier = RICE_austroasiatic_majestic_tiger_modifier
+			years = 10
+		}
+	}	
+	else_if = {
+		limit = {
+			faith = { has_doctrine = rice_austroasiatic_retributive_tiger }
+		}
+		add_character_modifier = {
+			modifier = rice_austroasiatic_retributive_tiger_modifier
+			years = 10
+		}
+	}	
+	else_if = {
+		limit = {
+			faith = { has_doctrine = rice_austroasiatic_savage_tiger }
+		}
+		add_character_modifier = {
+			modifier = RICE_austroasiatic_savage_tiger_modifier
+			years = 10
+		}
+	}	
+	# Fallback
+	else = {
+		add_character_modifier = {
+			modifier = RICE_austroasiatic_fallback_tiger_modifier
+			years = 10
+		}
+	}
+	if = {
+		limit = {
+			has_trait = lifestyle_mystic
+		}
+		add_trait_xp = {
+			trait = lifestyle_mystic
+			value = small_lifestyle_random_xp_low
+		}
+	}
+	if = {
+		limit = { has_character_modifier = RICE_aslian_aspiration_become_semai_hero }
+		add_character_flag = RICE_bah_lud_did_tiger_offering
+	}
+}
+
+
+RICE_SEA_harvest_rare_tropical_goods_decision_basic_effect = {
+	if = {
+		limit = {
+			is_landless_adventurer = yes
+		}
+		domicile ?= {
+			change_provisions = minor_provisions_gain
+		}
+	}
+	else_if = {
+		limit = {
+			government_has_flag = government_is_wanua
+		}
+		add_barter_goods = 100
+	}
+	else = {
+		add_prestige = minor_prestige_value
+	}
+	add_character_modifier = {
+		modifier = RICE_SEA_tropical_good_modifier
+		years = 10
+	}
+}
+
+RICE_SEA_harvest_rare_tropical_goods_interaction_effect = {
+	if = {
+		limit = {
+			scope:recipient = { is_landless_adventurer = yes }
+		}
+		scope:recipient = {
+			domicile ?= {
+				change_provisions = minor_provisions_gain
+			}			
+		}
+	}
+	else_if = {
+		limit = {
+			government_has_flag = government_is_wanua
+		}
+		scope:recipient = {
+			add_barter_goods = 100		
+		}
+	}
+	# else = {
+	# 	scope:recipient = {
+	# 		add_prestige = minor_prestige_value		
+	# 	}		
+	# }
+	scope:recipient = {
+		add_character_modifier = {
+			modifier = RICE_SEA_tropical_good_trade_modifier
+			years = 10
+		}	
+	}
+	scope:actor = {
+		remove_short_term_gold = gold
+		add_prestige = medium_prestige_value
+		if = {
+			limit = {
+				government_has_flag = government_is_wanua
+			}
+			add_barter_goods = 25
+		}
+		add_character_modifier = {
+			modifier = RICE_southeast_asian_local_trade_networks
+			years = 5
+		}
+		stress_impact = {
+			greedy = medium_stress_impact_gain
+			generous = medium_stress_impact_loss
+		}
+		add_opinion = {
+			target = scope:recipient
+			modifier = RICE_opinion_southeast_asian_rare_goods_trade
+			opinion = 15
+		}
+		reverse_add_opinion = {
+			target = scope:recipient
+			modifier = RICE_opinion_southeast_asian_rare_goods_trade
+			opinion = 15
+		}
+	}	
+}
+
+
+RICE_aslian_siwang_ritual_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_aslian_siwang_ritual_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			if = {
+				limit = {
+					scope:activity = {
+						any_attending_character = {
+							has_character_flag = RICE_aslian_siwang_ritual_halaaq_flag
+						}
+					}
+				}
+				every_attending_character = {
+					limit = {
+						has_character_flag = RICE_aslian_siwang_ritual_halaaq_flag
+					}
+					add_piety = minor_piety_gain
+					add_prestige = minor_prestige_gain
+					if = {
+						limit = {
+							has_trait = lifestyle_mystic
+						}
+						add_trait_xp = {
+							trait = lifestyle_mystic
+							value = small_lifestyle_random_xp_low
+						}
+					}
+					remove_character_flag = RICE_aslian_siwang_ritual_halaaq_flag
+				}
+			}
+			# scope:host = {
+			# 	add_piety = minor_piety_gain
+			# 	add_prestige = minor_prestige_gain				
+			# }	
+			every_attending_character = {
+				#limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_piety = minor_piety_gain
+				add_prestige = minor_prestige_gain	
+				if = {
+					limit = {
+						has_trait = lifestyle_mystic
+					}
+					add_trait_xp = {
+						trait = lifestyle_mystic
+						value = RICE_tiny_mystic_lifestyle_random_xp_low
+					}
+				}
+				add_character_modifier = {
+					modifier = RICE_aslian_siwang_ritual_halaa_modifier
+					years = 5
+				}
+				if = {
+					limit = { has_character_modifier = RICE_aslian_aspiration_become_semai_hero }
+					add_character_flag = RICE_bah_lud_did_siwang_ritual
+				}
+				if = {
+					limit = {
+						has_character_flag = RICE_bah_lud_did_siwang_ritual
+					}
+					add_character_flag = RICE_bah_lud_did_siwang_ritual_twice
+				}
+			}	
+		}
+	}	
+}
+
+
+

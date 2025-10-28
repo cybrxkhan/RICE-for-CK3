@@ -8,78 +8,75 @@ RICE_basic_is_available_adult_trigger = {
 }
 
 RICE_basic_is_available_adult_courtier_even_if_sick_trigger = { # Basically the above, without the landed title requirement
-	is_alive = yes
-	is_imprisoned = no
-	is_in_army = no
-	custom_description = {
-		text = ALREADY_IN_ACTIVITY
-		NOR = {
-			exists = involved_activity
-			has_variable = homage_liege_scope
-			has_character_flag = meditation_character_flag
-			has_character_flag = petition_liege_character_flag
-			has_character_flag = holding_court_character_flag
-			is_being_visited_on_tour_strict = yes
-		}
-	}
-	is_busy_in_events_unlocalised = no
-	NOT = { has_trait = incapable }
-	is_adult = yes
+	is_available_ai_adult = yes
 }
 
 RICE_is_available_adult_even_if_sick_trigger = { # Without smallpox/bubonic plague requirement
-	is_alive = yes
-	custom_description = {
-		text = ALREADY_IN_ACTIVITY
-		NOR = {
-			exists = involved_activity
-			has_variable = homage_liege_scope
-			has_character_flag = meditation_character_flag
-			has_character_flag = petition_liege_character_flag
-			has_character_flag = holding_court_character_flag
-			is_being_visited_on_tour_strict = yes
-		}
-	}
-	is_in_army = no
-	is_imprisoned = no
-	#has_contagious_deadly_disease_trigger = no
-	NOT = { has_trait = incapable }
-	custom_description = {
-		text = ALREADY_PLANNING_ACTIVITY
-		NOT = { has_character_flag = planning_an_activity }
-	}
+	is_available_healthy_adult = yes
 }
 
 RICE_is_greater_sinosphere_culture_trigger = {
     OR = {
-        culture = { has_cultural_pillar = heritage_chinese }
-        culture = { has_cultural_pillar = heritage_mongolic }
-        culture = { has_cultural_pillar = heritage_tocharian }
-        culture = { has_cultural_pillar = heritage_qiangic }
-        culture = { has_cultural_pillar = heritage_yamato }
-        culture = { has_cultural_pillar = heritage_korean }
-        culture = { has_cultural_pillar = heritage_loloish }
-        culture = { has_cultural_pillar = heritage_vietic }
+        culture_has_east_asian_heritage_pillar_trigger = yes
+        culture_has_central_asian_heritage_pillar_trigger = yes
         culture = culture:sogdian
         culture = culture:saka
-        culture = culture:uyghur
-        culture = culture:yughur
-        culture = culture:uriankhai
-        culture = culture:shatuo
+        culture = culture:jurchen
         culture = {
             any_parent_culture_or_above = {
                 OR = {
                     this = culture:sogdian
                     this = culture:saka
-                    this = culture:uyghur
-                    this = culture:yughur
-                    this = culture:uriankhai
-                    this = culture:shatuo
+                    this = culture:jurchen
                 }
             }
         }
     }
 }
+
+RICE_is_lesser_sinosphere_culture_trigger = {
+	OR = {
+        culture = { has_cultural_pillar = heritage_chinese }
+        culture = { has_cultural_pillar = heritage_japonic }
+        culture = { has_cultural_pillar = heritage_korean }
+        culture = { has_cultural_pillar = heritage_buyeo }
+        culture = { has_cultural_pillar = heritage_viet }
+        culture = { has_cultural_pillar = heritage_tungusic }
+        culture = { has_cultural_pillar = heritage_hmongic }
+        culture = culture:khitan
+        culture = {
+            any_parent_culture_or_above = {
+				this = culture:khitan
+			}
+        }
+        culture = culture:jurchen
+        culture = {
+            any_parent_culture_or_above = {
+				this = culture:jurchen
+			}
+        }
+	}
+}
+
+RICE_is_even_lesser_sinosphere_culture_trigger = {
+	OR = {
+        culture = { has_cultural_pillar = heritage_chinese }
+        culture = { has_cultural_pillar = heritage_japonic }
+        culture = { has_cultural_pillar = heritage_korean }
+        culture = { has_cultural_pillar = heritage_buyeo }
+        culture = { has_cultural_pillar = heritage_viet }
+	}
+}
+
+RICE_is_even_lesser_sinosphere_non_japanese_culture_trigger = {
+	OR = {
+        culture = { has_cultural_pillar = heritage_chinese }
+        culture = { has_cultural_pillar = heritage_korean }
+        culture = { has_cultural_pillar = heritage_buyeo }
+        culture = { has_cultural_pillar = heritage_viet }
+	}
+}
+
 
 RICE_is_near_eastern_culture_trigger = {
     OR = {
@@ -117,12 +114,13 @@ RICE_culture_has_sea_heritage_pillar_trigger = {
 RICE_culture_has_mainland_sea_heritage_pillar_trigger = {
 	culture = {
 		OR = {
-			has_cultural_pillar = heritage_qiangic
+			has_cultural_pillar = heritage_viet
+			has_cultural_pillar = heritage_mon_khmer
 			has_cultural_pillar = heritage_burman
-			has_cultural_pillar = heritage_khmer
-			has_cultural_pillar = heritage_loloish
+			#has_cultural_pillar = heritage_austronesian
 			has_cultural_pillar = heritage_tai
-			has_cultural_pillar = heritage_vietic
+			has_cultural_pillar = heritage_hmongic
+			has_cultural_pillar = heritage_chamic
 		}
 	}
 }
@@ -130,19 +128,34 @@ RICE_culture_has_mainland_sea_heritage_pillar_trigger = {
 RICE_culture_has_island_sea_heritage_pillar_trigger = {
 	culture = {
 		OR = {
+			has_cultural_pillar = heritage_austronesian
+			has_cultural_pillar = heritage_malayic
 			has_cultural_pillar = heritage_chamic
-			has_cultural_pillar = heritage_filipino
-			has_cultural_pillar = heritage_sulawesi
-			AND = {
-				has_cultural_pillar = heritage_malayic
-				NOR = {
-					this = culture:malagasy
-					any_parent_culture_or_above = {
-						this = culture:malagasy
-					}
-				}
-			}
 		}
+	}
+}
+
+RICE_is_filipino_culture_trigger = {
+	OR = {
+		culture = { has_cultural_pillar = heritage_filipino }
+        culture = culture:bisayan
+        culture = {
+            any_parent_culture_or_above = {
+				this = culture:bisayan
+			}
+        }		
+        culture = culture:tagalog
+        culture = {
+            any_parent_culture_or_above = {
+				this = culture:tagalog
+			}
+        }		
+        culture = culture:iloko
+        culture = {
+            any_parent_culture_or_above = {
+				this = culture:iloko
+			}
+        }		
 	}
 }
 
@@ -172,20 +185,13 @@ RICE_culture_has_woodland_heritage_pillar_trigger = {
 }
 RICE_silk_road_east_asian_culture = {
 	OR = {
-		culture = { has_cultural_pillar = heritage_chinese }
-        culture = { has_cultural_pillar = heritage_yamato }
-        culture = { has_cultural_pillar = heritage_korean }
-        culture = { has_cultural_pillar = heritage_loloish }
-        culture = { has_cultural_pillar = heritage_vietic }
+		culture_has_east_asian_heritage_pillar_trigger = yes
 		culture = culture:khitan
 	}
 }
 
 RICE_silk_road_steppe_culture = {
-	OR = {
-		culture = { has_cultural_pillar = heritage_mongolic }
-		culture = { has_cultural_pillar = heritage_turkic }		
-	}
+	culture_has_central_asian_heritage_pillar_trigger = yes
 	NOT = { culture = culture:khitan }
 }
 
@@ -404,5 +410,39 @@ travel_option_req = {
 		}
 	}
 }
+
+
+RICE_uses_east_asian_government_trigger = {
+	OR = {
+		government_has_flag = government_is_celestial
+		government_has_flag = government_is_meritocratic
+		government_has_flag = government_is_steppe_admin
+		government_has_flag = government_is_japan_administrative
+		government_has_flag = government_is_japan_feudal
+	}	
+}
+
+RICE_potential_east_asian_scholar_gentry_culture_or_faith_trigger = {
+	OR = {
+		faith = { has_doctrine = special_doctrine_immaterial_harmony }
+		RICE_uses_east_asian_government_trigger = yes
+		RICE_is_even_lesser_sinosphere_culture_trigger = yes
+		culture = { has_cultural_tradition = tradition_scholar_officials }
+		culture = { has_cultural_tradition = tradition_sinophilic }
+		culture = { has_cultural_tradition = tradition_tgp_ephemeral_grace }
+	}	
+}
+
+RICE_potential_literate_east_asian_scholar_gentry_trigger = {
+	OR = {
+		diplomacy >= medium_skill_rating
+		learning >= medium_skill_rating
+		has_trait = lifestyle_poet
+	}
+	NOT = { diplomacy <= low_skill_rating }
+	NOT = { learning <= low_skill_rating }
+	RICE_potential_east_asian_scholar_gentry_culture_or_faith_trigger = yes
+}
+
 
 

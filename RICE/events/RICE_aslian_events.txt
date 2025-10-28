@@ -1,0 +1,563 @@
+﻿###############################################################################
+# 
+# NUBIA
+# 
+# aslian.0000-aslian.0019			Setup events, history events, miscellaneous events and decisions
+# aslian.0020-aslian.0029			Minor decisions
+# aslian.0030-aslian.0039			Rainforest Goods flavor
+# aslian.0040-aslian.0049			Siwang Ritual Activity
+# aslian.0080-aslian.0099			Generic flavor events
+# 
+###############################################################################
+
+namespace = aslian
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# aslian.0000-aslian.0019
+# 
+######################################################################################
+
+# Create Semang courtiers as appropriate
+aslian.0001 = {
+	hidden = yes
+
+	immediate = {
+		random_list = {
+			10 = {
+				create_character = {
+					gender = male
+					faith = faith:semang_pagan
+					culture = culture:semang
+					random_traits = yes
+					employer = root
+				}
+			}
+			10 = {
+				create_character = {
+					gender = female
+					faith = faith:semang_pagan
+					culture = culture:semang
+					random_traits = yes
+					employer = root
+				}
+			}
+			10 = {
+			}
+		}
+		random = {
+			chance = 33
+			random_list = {
+				10 = {
+					create_character = {
+						gender = male
+						faith = faith:semang_pagan
+						culture = culture:semang
+						random_traits = yes
+						employer = root
+					}
+				}
+				10 = {
+					create_character = {
+						gender = female
+						faith = faith:semang_pagan
+						culture = culture:semang
+						random_traits = yes
+						employer = root
+					}
+				}
+				10 = {
+				}
+			}
+		}
+	}
+}
+
+
+# Senoi courtier spawn
+
+# Semang courtier spawn
+
+# Selatar courtier spawn
+
+# Selatar courtier spawn - military
+
+# Moklen courtier spawn
+
+
+# Bah Lud intro event
+aslian.0010 = {
+	type = character_event
+	title = aslian.0010.t
+	desc = aslian.0010.desc
+	theme = RICE_theme_aslian_malaysia_landscape
+
+	left_portrait = {
+		character = scope:bah_lud
+		animation = personality_compassionate
+	}
+
+	right_portrait = {
+		character = scope:inak
+		animation = flirtation
+	}
+
+	immediate = {
+		character:RICE_aslian_001 = {
+			save_scope_as = bah_lud
+		}
+		character:RICE_aslian_002 = {
+			save_scope_as = inak
+		}
+		show_as_tooltip = {
+			add_character_modifier = {
+				modifier = RICE_aslian_aspiration_become_semai_hero
+			}
+		}
+	}
+
+	option = { # Ok
+		name = aslian.0010.a
+		flavor = {
+			triggered_desc = {
+				trigger = {
+					has_game_rule = RICE_historical_context_on
+				}
+				desc = aslian.0010.info
+			}
+		}
+	}
+
+}
+
+
+
+
+# Bah Lud aspiration fulfilled
+aslian.0011 = {
+	type = character_event
+	title = aslian.0011.t
+	desc = aslian.0011.desc
+	theme = RICE_theme_aslian_malaysia_landscape
+
+	left_portrait = {
+		character = scope:bah_lud
+		animation = hero_flex
+	}
+
+	right_portrait = {
+		character = scope:inak
+		animation = happiness
+		trigger = {
+			exists = scope:inak
+		}
+	}
+
+	immediate = {
+
+		play_music_cue = "mx_cue_positive_effect"
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+
+
+		character:RICE_aslian_001 = {
+			save_scope_as = bah_lud
+		}
+		character:RICE_aslian_002 = {
+			save_scope_as = inak
+		}
+		
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_aslian_aspiration_become_semai_hero
+				}
+				remove_character_modifier = RICE_aslian_aspiration_become_semai_hero
+			}
+		}
+
+		# Main Objective Reward
+		add_prestige = RICE_aspiration_medium_resource_bonus
+		add_piety = RICE_aspiration_medium_resource_bonus
+		dynasty ?= {
+			add_dynasty_prestige = RICE_aspiration_medium_resource_bonus
+		}
+		#add_gold = RICE_aspiration_small_resource_bonus
+		RICE_upgrade_education_trait_effect = yes
+
+		# Bonus Objective Reward(s)
+		if = {
+			limit = {
+				has_character_flag = RICE_bah_lud_did_blood_sacrifice
+			}
+			add_intrigue_lifestyle_perk_points = 1
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_bah_lud_did_tiger_offering
+			}
+			add_martial_lifestyle_perk_points = 1
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_bah_lud_did_siwang_ritual_twice
+			}
+			add_legitimacy = medium_legitimacy_gain
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_bah_lud_did_tropical_good_exchange
+			}
+			add_stewardship_lifestyle_perk_points = 1
+		}
+
+	}
+
+	option = { # Ok
+		name = aslian.0011.a
+	}
+
+}
+
+
+######################################################################################
+# 
+# MISC DECISIONS
+# 
+# aslian.0020-aslian.0029
+# 
+######################################################################################
+
+
+# Siwaac blood sacrifice
+aslian.0020 = {
+	type = character_event
+	title = aslian.0020.t
+	desc = aslian.0020.desc
+	theme = faith
+	override_background = { reference = wilderness }
+	override_effect_2d = {
+		reference = rain
+	}
+
+	right_portrait = {
+		character = root
+		animation = marshal_dagger
+	}
+
+	immediate = {
+		RICE_aslian_blood_sacrifice_decision_effect = yes
+	}
+
+	option = { # Ok
+		name = aslian.0020.a
+	}
+
+}
+
+
+# Make Offering to the Tiger God
+aslian.0021 = {
+	type = character_event
+	title = aslian.0021.t
+	desc = aslian.0021.desc
+	theme = faith
+
+	right_portrait = {
+		character = root
+		animation = prayer
+	}
+
+	immediate = {
+		RICE_austroasiatic_tiger_god_decision_effect = yes
+	}
+
+	option = { # Ok
+		name = aslian.0021.a
+	}
+
+}
+
+
+
+
+######################################################################################
+# 
+# RAINFOREST GOODS FLAVOR
+# 
+# aslian.0030-aslian.0039
+# 
+######################################################################################
+
+# Acquire tropical goods
+aslian.0030 = {
+	type = character_event
+	title = aslian.0030.t
+	desc = aslian.0030.desc
+	theme = RICE_theme_aslian_malaysia_landscape
+
+	right_portrait = {
+		character = root
+		animation = survey
+	}
+
+	option = { # Ok
+		name = aslian.0030.a
+		RICE_SEA_harvest_rare_tropical_goods_decision_basic_effect = yes
+		custom_tooltip = aslian.0030.tooltip
+	}
+
+}
+
+# Exchange tropical goods
+aslian.0031 = {
+	type = character_event
+	title = aslian.0031.t
+	desc = aslian.0031.desc
+	theme = stewardship_wealth_focus
+	override_background = { reference = tgp_village_sea }
+
+	left_portrait = {
+		character = scope:actor
+		animation = personality_greedy
+	}
+
+	right_portrait = {
+		character = scope:recipient
+		animation = personality_content
+	}
+
+	immediate = {
+		if = {
+			limit = { has_character_modifier = RICE_aslian_aspiration_become_semai_hero }
+			add_character_flag = RICE_bah_lud_did_tropical_good_exchange
+		}
+		show_as_tooltip = {
+			RICE_SEA_harvest_rare_tropical_goods_decision_basic_effect = yes
+			RICE_SEA_harvest_rare_tropical_goods_interaction_effect = yes
+		}
+	}
+
+	option = { # Ok
+		name = aslian.0031.a
+	}
+
+}
+
+
+
+
+######################################################################################
+# 
+# SIWANG RITUAL ACTIVITY
+# 
+# aslian.0040-aslian.0049
+# 
+######################################################################################
+
+
+# Siwang Ritual preparations - who to choose to be the Halaa?
+aslian.0040 = {
+	type = activity_event
+	title = aslian.0040.t
+	desc = aslian.0040.desc
+	theme = faith
+	override_background = { reference = RICE_background_aslian_senoi_village }
+	
+	left_portrait = root
+
+	right_portrait = {
+		character = scope:candidate
+		animation = personality_zealous
+		trigger = {
+			exists = scope:candidate
+		}
+	}
+
+	immediate = {
+		# Prioritize anyone with the Mystic trait first
+		if = {
+			limit = {
+				scope:activity = {
+					any_attending_character = {
+						RICE_activity_participant_trigger = yes
+						has_trait = lifestyle_mystic
+					}
+				}				
+			}
+			scope:activity = {
+				random_attending_character = {
+					limit = {
+						RICE_activity_participant_trigger = yes
+						has_trait = lifestyle_mystic
+					}
+					save_scope_as = candidate
+				}
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = aslian.0040.a
+		trigger = {
+			has_trait = lifestyle_mystic
+		}
+		trait = lifestyle_mystic
+		save_scope_as = halaaq
+		add_character_flag = {
+			flag = RICE_aslian_siwang_ritual_halaaq_flag
+			days = 15
+		}
+		custom_tooltip = aslian.0040.a.tooltip
+	}
+	
+	option = { # Ok
+		name = aslian.0040.b
+		trigger = {
+			exists = scope:candidate
+		}
+		add_opinion = {
+			target = root
+			modifier = happy_opinion
+			opinion = 30
+		}
+		scope:candidate = {
+			save_scope_as = halaaq
+			add_character_flag = {
+				flag = RICE_aslian_siwang_ritual_halaaq_flag
+				days = 15
+			}
+		}
+		custom_tooltip = aslian.0040.b.tooltip
+	}
+	
+	option = { # Ok
+		name = aslian.0040.c
+		#custom_tooltip = aslian.0040.c.tooltip
+	}
+
+	after = {
+		trigger_event = {
+			id = aslian.0041
+			days = { 3 5 }
+		}		
+	}
+}
+
+
+
+# Siwang Ritual preparations - who to choose to be the Halaa?
+aslian.0041 = {
+	type = activity_event
+	title = aslian.0041.t
+	desc = aslian.0041.desc
+	theme = faith
+	override_background = { reference = bp1_bonfire }
+	
+	left_portrait = {
+		character = scope:participant
+		animation = prayer
+		trigger = {
+			exists = scope:candidate
+		}
+	}
+
+	right_portrait = {
+		character = scope:halaaq
+		animation = wedding_priest
+		trigger = {
+			exists = scope:halaaq
+		}
+	}
+
+	immediate = {
+		# Prioritize anyone with the Mystic trait first
+		if = {
+			limit = {
+				scope:activity = {
+					any_attending_character = {
+						RICE_activity_participant_trigger = yes
+						this != scope:halaaq
+					}
+				}				
+			}
+			scope:activity = {
+				random_attending_character = {
+					limit = {
+						RICE_activity_participant_trigger = yes
+						this != scope:halaaq
+					}
+					save_scope_as = participant
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				root != scope:halaaq
+			}
+			root = {
+				save_scope_as = participant
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = aslian.0041.a
+	}
+
+	after = {
+		trigger_event = {
+			id = aslian.0042
+			days = { 3 5 }
+		}		
+	}
+}
+
+
+
+# Siwang Ritual concludes
+aslian.0042 = {
+	type = activity_event
+	title = aslian.0042.t
+	desc = aslian.0042.desc
+	theme = faith
+	override_background = { reference = bp1_bonfire }
+	
+	left_portrait = {
+		character = scope:participant
+		animation = prayer
+		trigger = {
+			exists = scope:candidate
+		}
+	}
+
+	right_portrait = {
+		character = scope:halaaq
+		animation = wedding_priest
+		trigger = {
+			exists = scope:halaaq
+		}
+	}
+	
+	option = { # Ok
+		name = aslian.0042.a
+		RICE_aslian_siwang_ritual_completed_log_entry_effect = yes
+	}
+
+	after = {
+		scope:activity = {
+			hidden_effect = { skip_activity_phase = yes }
+		}		
+	}
+}
+
+
+
+
+
+
+
+

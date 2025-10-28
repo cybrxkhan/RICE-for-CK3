@@ -185,7 +185,7 @@ tradition_RICE_ubiquity_of_poetry = {
 								count >= 3
 								culture = prev
 								primary_title.tier >= tier_county
-								has_trait = poet
+								has_trait = lifestyle_poet
 							}
 						}
 					}
@@ -459,7 +459,7 @@ tradition_RICE_silk_road = {
 		unlock_rice_silk_road_dynasty_legacy = yes
 		rice_decision_reinforce_relations_multiple = yes
 		unlock_silk_road_entertainers = yes
-		unlock_sincization = yes
+		#unlock_sincization = yes
 		#unlock_rice_tarim_basin_establish_translation_bureau = yes
 		#rice_decision_reinforce_relations_no_limit = yes
 	}
@@ -2967,6 +2967,285 @@ tradition_RICE_cattle_economy = {
 				add = {
 					value = tradition_incompatible_ethos_penalty
 					desc = not_bellicose_stoic_or_communal_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	ai_will_do = { value = 100 }
+}
+
+tradition_RICE_rainforest_ritualists = {
+	category = regional
+
+	layers = {
+		0 = steward
+		1 = indian
+		4 = RICE_medicine.dds
+	}
+	
+	is_shown = {
+		#NOT = { has_cultural_tradition = tradition_RICE_tropical_purveyors }
+		OR = {
+			scope:character = {
+				religion = religion:aslian_religion 
+			}
+			this = culture:senoi
+			any_parent_culture_or_above = {
+				this = culture:senoi
+			}
+			this = culture:semang
+			any_parent_culture_or_above = {
+				this = culture:semang
+			}
+		}
+	}
+	can_pick = {
+		NOT = { has_cultural_tradition = tradition_RICE_tropical_purveyors }
+		OR = {
+			scope:character = {
+				religion = religion:aslian_religion 
+			}
+			this = culture:senoi
+			any_parent_culture_or_above = {
+				this = culture:senoi
+			}
+			this = culture:semang
+			any_parent_culture_or_above = {
+				this = culture:semang
+			}
+		}
+	}
+	
+	parameters = {
+		#adultery_always_accepted = yes
+		#pensive_trait_more_common = yes
+		#rowdy_trait_less_common = yes
+		unlock_rice_southeast_asian_gather_tropical_goods_decision = yes
+		unlock_rice_southeast_asian_trade_tropical_goods_interaction = yes
+		unlock_rice_aslian_blood_decision = yes
+	}
+	
+	character_modifier = {
+		dread_baseline_add = 5
+		owned_personal_scheme_success_chance_add = 5
+		negate_stewardship_penalty_add = 2
+		jungle_travel_danger = jungle_medium_danger_reduction
+		ai_boldness = -25
+		ai_vengefulness = -25
+	}
+
+	county_modifier = {
+		jungle_provisions_use_mult = -0.5
+		forest_provisions_use_mult = -0.5
+		jungle_barter_goods_mult = 0.15		
+		forest_barter_goods_mult = 0.15		
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_spiritual = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_communal_spiritual_or_stoic_desc
+				}
+			}
+
+			if = {
+				limit = {
+					NOT = {
+						any_culture_county = {
+							percent >= 0.3
+							any_county_province = {
+								terrain = jungle
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = jungle_percentage_desc
+				}
+			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_jungle_dwellers }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	ai_will_do = { value = 100 }
+}
+
+tradition_RICE_tropical_purveyors = {
+	category = regional
+
+	layers = {
+		0 = steward
+		1 = indian
+		4 = RICE_luxury_goods.dds
+	}
+	
+	is_shown = {
+		#NOT = { has_cultural_tradition = tradition_RICE_rainforest_ritualists }
+		any_culture_county = {
+			title_province = {
+				geographical_region = world_asia_southeast
+			}
+		}
+	}
+	can_pick = {
+		NOT = { has_cultural_tradition = tradition_RICE_rainforest_ritualists }
+		any_culture_county = {
+			title_province = {
+				geographical_region = world_asia_southeast
+			}
+		}
+	}
+	
+	parameters = {
+		unlock_rice_southeast_asian_gather_tropical_goods_interaction = yes
+		unlock_rice_southeast_asian_trade_tropical_goods_interaction = yes
+	}
+	
+	character_modifier = {
+		negate_stewardship_penalty_add = 2
+		jungle_travel_danger = jungle_medium_danger_reduction
+	}
+
+	county_modifier = {
+		jungle_provisions_use_mult = -0.5
+		forest_provisions_use_mult = -0.5
+		jungle_barter_goods_mult = 0.15		
+		forest_barter_goods_mult = 0.15		
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_spiritual = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_communal_spiritual_or_stoic_desc
+				}
+			}
+
+			if = {
+				limit = {
+					NOT = {
+						any_culture_county = {
+							percent >= 0.3
+							any_county_province = {
+								terrain = jungle
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = jungle_percentage_desc
+				}
+			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_jungle_dwellers }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	ai_will_do = { value = 100 }
+}
+
+tradition_RICE_fear_of_spirits = {
+	category = regional
+
+	layers = {
+		0 = diplo
+		1 = indian
+		4 = RICE_shamanism.dds
+	}
+	
+	is_shown = {
+
+	}
+	can_pick = {
+
+	}
+	
+	character_modifier = {
+		intrigue_per_piety_level = 1
+		capital_additional_fort_level = 1
+		enemy_hostile_scheme_success_chance_add = -10
+		character_travel_safety_mult = 0.1
+	}
+
+	county_modifier = {
+		church_holding_build_speed = -0.1	
+	}
+
+	province_modifier = {
+		stationed_maa_toughness_mult_per_piety_level = 0.05
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_spiritual = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_communal_spiritual_or_stoic_desc
 				}
 			}
 			

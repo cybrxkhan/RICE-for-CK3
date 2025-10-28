@@ -1,0 +1,827 @@
+﻿RICE_setup_hangzhou_flavor_pack_effect = {
+
+	############################################################
+	#
+	# DNA
+	#
+	############################################################
+
+
+
+	############################################################
+	#
+	# HISTORY/TITLE CHANGES
+	#
+	############################################################ 
+
+	############################################################ 
+	#
+	# CULTURE CHANGES
+	#
+	############################################################ 
+
+	title:c_nghe_an = {
+		set_county_faith = faith:viet_pagan
+		set_county_culture = culture:muong
+	}
+
+	title:c_nam_dinh = {
+		set_county_faith = faith:viet_pagan
+		set_county_culture = culture:muong
+	}
+
+	title:c_lam_tay = {
+		set_county_faith = faith:viet_pagan
+	}
+
+	title:c_quoc_oai = {
+		set_county_faith = faith:viet_pagan
+	}
+
+	title:c_binh_nguyen = {
+		set_county_faith = faith:viet_pagan
+		set_county_culture = culture:muong
+	}
+
+	title:c_sam_nuea = {		
+		set_county_culture = culture:muong
+	}
+
+	# title:c_hai_dong = {		
+	# 	set_county_culture = culture:muong
+	# }
+
+	# Annamese Chinese presence in Vietnam before the development of later Sino-Viet culture
+	if = {
+		limit = {
+			game_start_date <= 950.1.1
+		}
+		title:c_thang_long = {
+			set_county_culture = culture:han
+		}
+	}
+
+	every_county_in_region = {
+		region = custom_viet_lands
+		holder = {
+			every_courtier_or_guest = {
+				limit = {
+					culture = { has_cultural_pillar = heritage_viet }
+                    is_lowborn = yes
+                }
+                random = {
+                    chance = 50
+                    set_character_faith = faith:viet_pagan
+                }
+                random_list = {
+                    70 = { }
+					20 = { set_culture = culture:muong }
+					10 = { set_culture = culture:han }
+                }
+			}
+		}		
+	}
+
+	############################################################ 
+	#
+	# RELIGION CHANGES
+	#
+	############################################################ 
+	
+	############################################################
+	#
+	# BUILDING
+	#
+	############################################################
+	
+	############################################################
+	#
+	# CHARACTER TWEAKS
+	#
+	############################################################
+
+	# Lu You - change traits around
+	if = {
+		limit = {
+			character:han_11751 ?= { is_alive = yes }
+		}
+		character:han_11751 = {
+			RICE_remove_education_traits_effect = yes
+			remove_all_perk_lifestyle_traits_effect = yes			
+			RICE_remove_personality_traits_effect = yes
+			add_trait = education_learning_4
+			add_trait = scholar
+			add_trait = ambitious
+			add_trait = brave
+			add_trait = just
+			add_trait = honest
+			add_trait = loyal
+			add_character_modifier = {
+				modifier = RICE_hangzhou_aspiration_retire_into_seclusion
+			}
+			set_sexuality = heterosexual
+			set_variable = {
+				name = RICE_historical_aspiration
+				value = flag:lu_you
+			}
+			add_stress = 100
+			# To prevent him from having a mental break so early
+			add_character_flag = {
+				flag = recently_hit_stress_threshold
+				days = 10
+			}
+		}
+	}
+
+	############################################################
+	#
+	# MISCELLANEOUS
+	#
+	############################################################
+	
+	# Closest site to Shanglin Lake I could find
+	title:c_mingzhou_1 = {
+		add_county_modifier = {
+			modifier = RICE_hangzhou_yue_kilns_modifier
+		}
+	}
+	
+	# Longquan is here
+	title:c_chuzhou = {
+		add_county_modifier = {
+			modifier = RICE_hangzhou_longquan_kilns_modifier
+		}
+	}
+
+	# King Qian Liu of Wuyue ordered the construction of the seawall
+	if = {
+		limit = {
+			game_start_date >= 925.1.1
+		}
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_hangzhou_king_qian_seawall_built
+		}
+	}
+
+	# Su Causeway was built at the order of Su Shi in 1089
+	if = {
+		limit = {
+			game_start_date >= 1089.1.1
+		}
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_hangzhou_su_causeway_built
+		}
+	}
+
+	# Yue Fei temple was built in 1221 by Emperor Ningzong
+	if = {
+		limit = {
+			game_start_date >= 1221.1.1
+		}
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_hangzhou_yue_fei_temple_built
+		}
+	}
+
+}
+
+
+RICE_hangzhou_improve_west_lake_dredging_effect = {
+	add_prestige = minor_prestige_gain
+	if = {
+		limit = {
+			government_has_flag = government_has_merit
+			top_liege = root
+		}
+		add_legitimacy = miniscule_legitimacy_gain
+	}
+	else = {
+		add_merit_if_relevant_effect = {
+			MERIT = miniscule_merit_value
+		}
+	}
+	title:c_hangzhou = {
+		add_county_modifier = {
+			modifier = RICE_hangzhou_west_lake_dredging_modifier
+			years = 10
+		}
+	}
+}
+
+RICE_hangzhou_improve_west_lake_patrols_effect = {
+	if = {
+		limit = {
+			government_has_flag = government_has_influence
+		}
+		change_influence = minor_influence_gain
+	}
+	else = {
+		add_prestige = minor_prestige_gain
+	}
+	if = {
+		limit = {
+			government_has_flag = government_has_merit
+			top_liege = root
+		}
+		add_legitimacy = miniscule_legitimacy_gain
+	}
+	else = {
+		add_merit_if_relevant_effect = {
+			MERIT = miniscule_merit_value
+		}
+	}
+	title:c_hangzhou = {
+		add_county_modifier = {
+			modifier = RICE_hangzhou_west_lake_patrols_modifier
+			years = 10
+		}
+	}
+}
+
+RICE_hangzhou_improve_west_lake_repairs_effect = {
+	add_piety = minor_piety_gain
+	if = {
+		limit = {
+			government_has_flag = government_has_merit
+			top_liege = root
+		}
+		add_legitimacy = miniscule_legitimacy_gain
+	}
+	else = {
+		add_merit_if_relevant_effect = {
+			MERIT = miniscule_merit_value
+		}
+	}
+	title:c_hangzhou = {
+		add_county_modifier = {
+			modifier = RICE_hangzhou_west_lake_repairs_modifier
+			years = 10
+		}
+	}
+}
+
+RICE_hangzhou_improve_west_lake_landscaping_effect = {
+	add_prestige = medium_prestige_gain
+	if = {
+		limit = {
+			government_has_flag = government_has_merit
+			top_liege = root
+		}
+		add_legitimacy = minor_legitimacy_gain
+	}
+	else = {
+		add_merit_if_relevant_effect = {
+			MERIT = minor_merit_value
+		}
+	}
+	title:c_hangzhou = {
+		add_county_modifier = {
+			modifier = RICE_hangzhou_west_lake_landscaping_modifier
+			years = 10
+		}
+	}
+}
+
+RICE_hangzhou_improve_west_religious_structures_effect = {
+	add_piety = medium_piety_gain
+	if = {
+		limit = {
+			government_has_flag = government_has_merit
+			top_liege = root
+		}
+		add_legitimacy = minor_legitimacy_gain
+	}
+	else = {
+		add_merit_if_relevant_effect = {
+			MERIT = minor_merit_value
+		}
+	}
+	title:c_hangzhou = {
+		add_county_modifier = {
+			modifier = RICE_hangzhou_west_lake_religious_structures_modifier
+			years = 10
+		}
+	}
+}
+
+
+RICE_hangzhou_dedicate_temple_to_yue_fei_effect = {
+	add_legitimacy = major_legitimacy_gain
+	add_merit_if_relevant_effect = {
+		MERIT = medium_merit_value
+	}
+}
+
+RICE_hangzhou_build_su_causeway_effect = {
+	add_merit_if_relevant_effect = {
+		MERIT = medium_merit_value
+	}
+	add_character_modifier = {
+		modifier = RICE_hangzhou_built_su_causeway
+	}
+	title:c_hangzhou = {
+		add_county_modifier = {
+			modifier = RICE_hangzhou_su_causeway_modifier
+			years = 25
+		}
+	}	
+}
+
+RICE_hangzhou_construct_leifeng_pagoda_effect = {
+	add_piety = medium_piety_gain
+	add_legitimacy = minor_legitimacy_gain
+	add_merit_if_relevant_effect = {
+		MERIT = medium_merit_value
+	}
+	title:c_hangzhou = {
+		add_county_modifier = {
+			modifier = RICE_hangzhou_leifang_modifier
+			years = 25
+		}
+	}	
+}
+
+
+RICE_east_asian_poetry_gathering_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_east_asian_poetry_gathering_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			# If the poetry winner isn't a playable character, give the poem to the host
+			if = {
+				limit = {
+					exists = scope:RICE_poetry_gathering_poem
+					exists = scope:poetry_winner
+					scope:poetry_winner = {
+						is_playable_character = no
+					}
+				}
+				scope:RICE_poetry_gathering_poem = {
+					set_owner = {
+						target = scope:host
+					}
+				}				
+			}
+			else = {
+				show_as_tooltip = {
+					scope:RICE_poetry_gathering_poem = {
+						set_owner = {
+							target = scope:poetry_winner
+						}
+					}						
+				}
+			}
+			scope:host = {
+				if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = special_type
+								option = RICE_east_asian_poetry_gathering_type_grand
+							}
+						}
+					}
+					add_prestige = major_prestige_gain
+					if = {
+						limit = {
+							government_has_flag = government_has_influence
+						}
+						change_influence = major_influence_gain
+					}
+					add_merit_if_relevant_effect = {
+						MERIT = minor_merit_value
+					}
+				}
+				else = {
+					add_prestige = medium_prestige_gain
+					if = {
+						limit = {
+							government_has_flag = government_has_influence
+						}
+						change_influence = minor_influence_gain
+					}
+					add_merit_if_relevant_effect = {
+						MERIT = miniscule_merit_value
+					}
+				}
+			}
+			every_attending_character = {
+				#limit = { this != scope:host }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				if = {
+					limit = {
+						this != scope:host
+						scope:activity = {
+							has_activity_option = {
+								category = special_type
+								option = RICE_east_asian_poetry_gathering_type_grand
+							}
+						}
+					}
+					add_opinion = {
+						target = scope:host
+						modifier = RICE_opinion_grand_poetry_gathering
+						opinion = 10
+					}
+				}
+				if = {
+					limit = {							
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_east_asian_poetry_gathering_amenities_amount
+								option = RICE_east_asian_poetry_gathering_amenities_amount_large
+							}
+						}	
+					}
+					add_prestige = medium_prestige_gain
+					if = {
+						limit = {
+							this != scope:host					
+						}
+						add_opinion = {
+							target = scope:host
+							modifier = RICE_opinion_poetry_gathering
+							opinion = 15
+						}
+					}
+				}
+				else_if = {
+					limit = {							
+						scope:activity = {
+							has_activity_option = {
+								category = RICE_east_asian_poetry_gathering_amenities_amount
+								option = RICE_east_asian_poetry_gathering_amenities_amount_large
+							}
+						}	
+					}
+					add_prestige = minor_prestige_gain
+					if = {
+						limit = {
+							this != scope:host					
+						}
+						add_opinion = {
+							target = scope:host
+							modifier = RICE_opinion_poetry_gathering
+							opinion = 10
+						}
+					}
+				}
+				else = {
+					add_prestige = miniscule_prestige_gain
+					if = {
+						limit = {
+							this != scope:host					
+						}
+						add_opinion = {
+							target = scope:host
+							modifier = RICE_opinion_poetry_gathering
+							opinion = 5
+						}
+					}
+				}
+				if = {
+					limit = {
+						has_activity_intent = RICE_east_asian_poetry_gathering_socialize_intent
+					}
+					add_character_modifier = {
+						modifier = RICE_east_asian_fraternized_with_poets
+						years = 10
+					}
+					stress_impact = {
+						gregarious = minor_stress_impact_loss
+						lustful = minor_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_east_asian_poetry_gathering_fame_intent
+					}
+					add_prestige = minor_prestige_gain
+					add_merit_if_relevant_effect = {
+						MERIT = minor_merit_value
+					}
+					stress_impact = {
+						ambitious = minor_stress_impact_loss
+						arrogant = minor_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_east_asian_poetry_gathering_erudition_intent
+					}
+					stress_impact = {
+						base = minor_stress_impact_loss
+						humble = minor_stress_impact_loss
+						calm = minor_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_east_asian_poetry_gathering_recognize_literati_intent
+					}
+					if = {
+						limit = {
+							government_has_flag = government_has_influence
+						}
+						change_influence = medium_influence_gain
+					}
+					stress_impact = {
+						trusting = minor_stress_impact_loss
+						diligent = minor_stress_impact_loss
+					}
+				}
+				stress_impact = {
+					base = minor_stress_impact_loss
+				}
+			}	
+			every_attending_character = {
+				limit = { has_trait = lifestyle_poet }
+				custom = EVERY_ACTIVITY_PARTICIPANT_POET_EFFECT
+				add_trait_xp = {
+					trait = lifestyle_poet
+					value = 5
+				}
+			}	
+		}
+	}	
+}
+
+RICE_hangzhou_erect_embankment_on_qiantang_river_effect = {
+	dynasty ?= {
+		add_dynasty_prestige = major_dynasty_prestige_gain
+	}
+	if = {
+		limit = {
+			government_has_flag = government_has_merit
+			top_liege = root
+		}
+		add_legitimacy = medium_legitimacy_gain
+	}
+	else = {
+		add_merit_if_relevant_effect = {
+			MERIT = medium_merit_value
+		}
+	}
+	create_legend_seed = {
+		type = heroic
+		quality = famed
+		chronicle = RICE_hangzhou_legend_qian_liu_tidal_bore
+		properties = {
+			ruler = root
+			faith = root.faith
+			culture = root.culture
+		}
+	}
+	title:c_hangzhou = {
+		add_county_modifier = {
+			modifier = RICE_hangzhou_qiantang_river_embankment_modifier
+			years = 25
+		}
+	}	
+	title:c_muzhou = {
+		add_county_modifier = {
+			modifier = RICE_hangzhou_qiantang_river_embankment_modifier
+			years = 25
+		}
+	}	
+	title:c_wuzhou = {
+		add_county_modifier = {
+			modifier = RICE_hangzhou_qiantang_river_embankment_modifier
+			years = 25
+		}
+	}	
+	title:c_xin_an = {
+		add_county_modifier = {
+			modifier = RICE_hangzhou_qiantang_river_embankment_modifier
+			years = 25
+		}
+	}	
+	title:c_huzhou = {
+		add_county_modifier = {
+			modifier = RICE_hangzhou_qiantang_river_embankment_modifier
+			years = 25
+		}
+	}	
+}
+
+
+RICE_hangzhou_sightsee_at_west_lake_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_hangzhou_sightsee_at_west_lake_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			# scope:host = {
+			# 	add_prestige = minor_prestige_gain
+			# }
+			every_attending_character = {
+				#limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_prestige = minor_prestige_gain
+				if = {
+					limit = {
+						government_has_flag = government_has_influence
+					}
+					change_influence = minor_influence_gain
+				}
+				if = {
+					limit = {
+						NOT = { has_variable = RICE_num_times_west_lake_visit }
+					}
+					set_variable = {
+						name = RICE_num_times_west_lake_visit
+						value = 1
+					}
+				}
+				else = {
+					change_variable = {
+						name = RICE_num_times_west_lake_visit
+						add = 1
+					}
+				}
+			}		
+		}
+	}
+}
+
+
+
+
+RICE_hangzhou_watch_qiantang_tide_uneventful_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_hangzhou_watch_qiantang_tide_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				add_prestige = medium_prestige_gain
+				if = {
+					limit = {
+						has_activity_intent = RICE_hangzhou_watch_qiantang_tide_fun_intent
+					}
+					stress_impact = {
+						base = major_stress_impact_loss
+						brave = minor_stress_impact_loss
+						gregarious = minor_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_hangzhou_watch_qiantang_tide_ritual_intent
+					}
+					add_piety = medium_piety_gain
+					stress_impact = {
+						base = medium_stress_impact_loss
+						brave = minor_stress_impact_loss
+						gregarious = minor_stress_impact_loss
+					}
+				}
+			}
+			if = {
+				limit = {
+					current_month >= 7
+					current_month <= 9
+				}
+				scope:host = {
+					add_prestige = minor_prestige_gain
+					add_piety = minor_piety_gain
+					if = {
+						limit = {
+							government_has_flag = government_has_influence
+						}
+						change_influence = minor_influence_gain
+					}					
+				}				
+			}	
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_prestige = minor_prestige_gain
+				add_opinion = {
+					target = scope:host
+					modifier = RICE_opinion_qiantang_tides
+					opinion = 20
+				}
+			}	
+		}
+	}
+}
+
+RICE_hangzhou_watch_qiantang_tide_injury_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_hangzhou_watch_qiantang_tide_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				add_prestige = minor_prestige_gain
+				if = {
+					limit = {
+						has_activity_intent = RICE_hangzhou_watch_qiantang_tide_fun_intent
+					}
+					stress_impact = {
+						base = medium_stress_impact_loss
+						brave = miniscule_stress_impact_loss
+						gregarious = miniscule_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						has_activity_intent = RICE_hangzhou_watch_qiantang_tide_ritual_intent
+					}
+					add_piety = minor_piety_gain
+					stress_impact = {
+						base = minor_stress_impact_loss
+						brave = miniscule_stress_impact_loss
+						gregarious = miniscule_stress_impact_loss
+					}
+				}
+			}
+			if = {
+				limit = {
+					current_month >= 7
+					current_month <= 9
+				}
+				scope:host = {
+					add_prestige = miniscule_prestige_gain
+					add_piety = miniscule_piety_gain
+					if = {
+						limit = {
+							government_has_flag = government_has_influence
+						}
+						change_influence = miniscule_influence_gain
+					}					
+				}				
+			}	
+			every_attending_character = {
+				limit = { NOT = { this = scope:host } }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_prestige = miniscule_prestige_gain
+				add_opinion = {
+					target = scope:host
+					modifier = RICE_opinion_qiantang_tides
+					opinion = 10
+				}
+			}		
+		}
+	}
+}
+
+RICE_hangzhou_watch_qiantang_tide_death_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_hangzhou_watch_qiantang_tide_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				add_prestige = miniscule_prestige_gain
+				if = {
+					limit = {
+						has_activity_intent = RICE_hangzhou_watch_qiantang_tide_fun_intent
+					}
+					stress_impact = {
+						base = miniscule_stress_impact_loss
+					}
+				}
+			}
+		}
+	}
+}
+
+
+RICE_hangzhou_ten_scenes_west_lake_decision_effect = {
+	add_prestige = medium_prestige_gain
+	if = {
+		limit = {
+			government_has_flag = government_has_influence
+		}
+		change_influence = major_influence_gain
+	}
+	# add_merit_if_relevant_effect = {
+	# 	MERIT = miniscule_merit_value
+	# }	
+	# if = {
+	# 	limit = { has_trait = confucian_education }
+	# 	add_trait_xp = {
+	# 		trait = confucian_education
+	# 		value = 5
+	# 	}
+	# }
+	add_character_modifier = {
+		modifier = RICE_hangzhou_ten_scenes_enjoyer
+	}
+}
