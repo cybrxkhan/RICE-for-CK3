@@ -21,6 +21,7 @@
 	}
 
 	culture:semang = {
+		add_culture_tradition = tradition_migratory
 		add_culture_tradition = tradition_RICE_rainforest_ritualists
 		remove_variable = tradition_cooldown
 	}
@@ -55,26 +56,41 @@
 		remove_variable = tradition_cooldown
 	}
 
-	# Replaced with Migratory for ROA
-	if = {
-		limit = {
-			roa_is_active = no
-		}
-		culture:seletar = {
-			add_culture_tradition = tradition_RICE_sea_nomads
-			remove_variable = tradition_cooldown
-		}
-
-		culture:moklen = {
-			add_culture_tradition = tradition_RICE_sea_nomads
-			remove_variable = tradition_cooldown
-		}
-
-		culture:sama = {
-			add_culture_tradition = tradition_RICE_sea_nomads
-			remove_variable = tradition_cooldown
-		}
+	culture:moklen = {
+		add_culture_tradition = tradition_RICE_sea_nomads
+		remove_variable = tradition_cooldown
 	}
+
+	culture:seletar = {
+		add_culture_tradition = tradition_RICE_sea_nomads
+		remove_variable = tradition_cooldown
+	}
+
+	culture:sama = {
+		add_culture_tradition = tradition_RICE_sea_nomads
+		remove_variable = tradition_cooldown
+	}
+
+	# Replaced with Migratory for ROA
+	# if = {
+	# 	limit = {
+	# 		roa_is_active = no
+	# 	}
+	# 	culture:seletar = {
+	# 		add_culture_tradition = tradition_RICE_sea_nomads
+	# 		remove_variable = tradition_cooldown
+	# 	}
+
+	# 	culture:moklen = {
+	# 		add_culture_tradition = tradition_RICE_sea_nomads
+	# 		remove_variable = tradition_cooldown
+	# 	}
+
+	# 	culture:sama = {
+	# 		add_culture_tradition = tradition_RICE_sea_nomads
+	# 		remove_variable = tradition_cooldown
+	# 	}
+	# }
 
 
 
@@ -546,5 +562,55 @@ RICE_aslian_siwang_ritual_completed_log_entry_effect = {
 	}	
 }
 
-
+RICE_SEA_manage_sea_lanes_basic_effect = {
+	add_legitimacy = miniscule_legitimacy_gain
+	every_held_title = {
+		custom = RICE_every_coastal_county
+		limit = {
+			tier = tier_county
+			is_coastal_county = yes
+		}
+		add_county_modifier = {
+			modifier = RICE_SEA_manage_sea_lanes_modifier
+			years = 5
+		}
+	}
+	if = {
+		limit = {
+			top_liege != root # is not an independent ruler
+		}
+		every_liege_or_above = {
+			add_opinion = {
+				target = root
+				modifier = RICE_opinion_managing_sea_lanes
+			}
+			hidden_effect = {
+				send_interface_message = {
+					type = event_generic_good
+					title = RICE_sea_nomad_sea_lanes_interface_message
+					left_icon = root
+					show_as_tooltip = {
+						add_opinion = {
+							target = root
+							modifier = RICE_opinion_managing_sea_lanes
+						}
+						root = {
+							every_held_title = {
+								custom = RICE_every_coastal_county
+								limit = {
+									tier = tier_county
+									is_coastal_county = yes
+								}
+								add_county_modifier = {
+									modifier = RICE_SEA_manage_sea_lanes_modifier
+									years = 5
+								}
+							}							
+						}		
+					}
+				}				
+			}
+		}
+	}
+}
 

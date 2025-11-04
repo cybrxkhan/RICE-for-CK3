@@ -291,3 +291,83 @@ tradition_tiger_sons = {
 		}
 	}
 }
+
+
+
+# Borrowed from Rajas of Asia
+tradition_migratory = {
+	category = realm
+
+	layers = {
+		0 = steward
+		1 = mena
+		4 = RICE_bush_branches.dds
+	}
+
+	can_pick = {
+		NOT = { has_cultural_tradition = tradition_RICE_sea_nomads } # Sea Nomads is an "upgraded" version of Migratory
+		OR = {
+			custom_tooltip = {
+				text = government_is_tribal_tt
+				scope:character = {
+					government_has_flag = government_is_tribal
+				}
+			}
+			custom_tooltip = {
+				text = nomadic_government_tt
+				scope:character = {
+					government_has_flag = government_is_nomadic
+				}
+			}
+		}
+	}
+
+	parameters = {
+		#enable_migration_cb = yes # RICE doesn't have this
+		strong_traits_more_valued = yes
+		more_likely_to_leave_court = yes
+		unlock_voluntary_laampdom = yes
+		much_more_likely_to_be_laamps = yes
+	}
+	county_modifier = {
+		development_growth_factor = -0.25
+		monthly_county_control_decline_factor = -0.25
+	}
+	character_modifier = {
+		levy_size = 0.10
+		movement_speed = 0.1
+		character_travel_speed_mult = 0.05
+		character_travel_safety_mult = 0.05
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_bellicose = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_stoic_or_communal_desc
+				}
+			}
+
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+
+	ai_will_do = {
+		value = 0
+	}
+}
+
+

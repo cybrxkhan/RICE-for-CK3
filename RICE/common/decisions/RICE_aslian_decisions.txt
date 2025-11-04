@@ -13,6 +13,7 @@ RICE_SEA_harvest_rare_tropical_goods_decision = {
 	cooldown = { days = 1825 } 
 
 	is_shown = {
+		is_playable_character = yes
 		OR = {
 			culture = { has_cultural_tradition = tradition_RICE_tropical_purveyors }
 			culture = { has_cultural_tradition = tradition_RICE_rainforest_ritualists }
@@ -106,6 +107,107 @@ RICE_SEA_harvest_rare_tropical_goods_decision = {
 	}
 }
 
+# Manage Sea Lanes
+RICE_SEA_manage_sea_lanes = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_tropicana.dds" }
+	decision_group_type = RICE_regional
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					culture = { has_cultural_tradition = tradition_RICE_sea_nomads }
+				}
+				desc = RICE_SEA_manage_sea_lanes_sea_nomad
+			}
+			desc = RICE_SEA_manage_sea_lanes
+		}
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					culture = { has_cultural_tradition = tradition_RICE_sea_nomads }
+				}
+				desc = RICE_SEA_manage_sea_lanes_desc_sea_nomad
+			}
+			desc = RICE_SEA_manage_sea_lanes_desc
+		}
+	}
+
+	desc = RICE_SEA_manage_sea_lanes_desc
+
+	ai_check_interval = 36
+
+	cooldown = { days = 1825 } 
+
+	is_shown = {
+		is_playable_character = yes
+		OR = {
+			culture = { has_cultural_tradition = tradition_RICE_sea_nomads }
+			has_character_modifier = RICE_SEA_sea_nomads_modifier
+		}
+	}
+	
+	is_valid = {
+		OR = {
+			culture = { has_cultural_tradition = tradition_RICE_sea_nomads }
+			has_character_modifier = RICE_SEA_sea_nomads_modifier
+		}
+		custom_description = {
+			text = RICE_normandy_coastal_county_req
+			any_held_title = {
+				tier = tier_county
+				is_coastal_county = yes
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+
+		show_as_tooltip = {
+			RICE_SEA_manage_sea_lanes_basic_effect = yes
+		}
+
+		custom_tooltip = RICE_SEA_manage_sea_lanes_effect_tooltip_1
+		#custom_tooltip = RICE_SEA_manage_sea_lanes_effect_tooltip_2
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_SEA_manage_sea_lanes_context_tooltip
+		}
+
+		trigger_event = {
+			id = aslian.0050
+		}
+	}
+
+	cost = { 
+		gold = { value = RICE_activity_cost } # Will depend 
+	}	
+
+	ai_potential = {
+		short_term_gold >= RICE_activity_cost
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+	}
+}
+
 # Make offerings to the Tiger God
 # Available to all Austroasiatic Faiths
 RICE_austroasiatic_tiger_god_decision = {
@@ -119,6 +221,7 @@ RICE_austroasiatic_tiger_god_decision = {
 	cooldown = { days = 3650 } 
 
 	is_shown = {
+		is_playable_character = yes
 		faith = { has_doctrine = special_doctrine_is_austroasiatic_faith }
 	}
 	
@@ -187,6 +290,7 @@ RICE_aslian_blood_sacrifice_decision = {
 	cooldown = { days = 1825 } 
 
 	is_shown = {
+		is_playable_character = yes
 		religion = religion:aslian_religion
 		# Also unlockable via the Aslian special tradition
 	}
