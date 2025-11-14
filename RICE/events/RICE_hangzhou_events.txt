@@ -6,7 +6,7 @@
 # hangzhou.0020-hangzhou.0029			Minor decisions
 # hangzhou.0030-hangzhou.0049			West Lake activity events/decisions
 # hangzhou.0050-hangzhou.0069			Qiantang Tides activity events decisions
-# hangzhou.0070-hangzhou.0079			Historical characters flavor
+# hangzhou.0070-hangzhou.0079			Lu You flavor
 # hangzhou.0080-hangzhou.0099			Poetry Gathering events
 # hangzhou.0100-hangzhou.0129			Generic flavor events
 # 
@@ -1590,13 +1590,215 @@ hangzhou.0071 = {
 		name = hangzhou.0071.a
 	}
 
+	after = {
+		# hangzhou.0074 - Write a poem about Tang Wan again
+		trigger_event = {
+			id = hangzhou.0074
+			months = { 96 180 } # 8-15 years
+		}
+	}
+
 }
 
 
-# Hangzhou 0072 - Deathbed poem when aspiration is fulfilled
+# Hangzhou 0072 - Deathbed poem when aspiration is fulfilled - ping event for heir
+# RICE_hangzhou_aspiration_retire_into_seclusion
+hangzhou.0072 = {
+	scope = none
+	hidden = yes
+	
+	trigger = {
+		has_character_modifier = RICE_hangzhou_liberated_old_man
+	}
+	
+	immediate = {
+		character:han_11751 = {
+			save_scope_as = lu_you
+		}
+		character:RICE_chinese_miscellaneous_001 = {
+			save_scope_as = tang_wan
+		}
+		every_child = {
+			add_to_list = lu_you_poem_list
+		}
+		scope:lu_you.primary_title ?= { # In case you have heirs that aren't of your dynasty
+			every_title_heir = {
+				add_to_list = lu_you_poem_list
+			}
+		}		
+		every_in_list = {
+			list = lu_you_poem_list
+			trigger_event = hangzhou.0073
+		}
+	}
+}
 
-# Hangzhou 0073 - Deathbed aspiration (seeing Tang Wan)
+# Hangzhou 0073 - Deathbed poem when aspiration is fulfilled
+hangzhou.0073 = {
+	type = character_event
+	title = hangzhou.0073.t
+	desc = hangzhou.0073.desc
+	theme = memory_positive
+	override_background = { reference = tgp_wedding_bedroom_asia }
 
+	left_portrait = {
+		character = root
+		animation = crying
+	}
+
+	right_portrait = {
+		character = scope:lu_you
+		animation = sick
+		#camera = camera_event_right_away_3_4
+		#camera = camera_event_right_away
+		#camera = camera_event_right_forward
+	}
+
+	lower_right_portrait = {
+		character = scope:tang_wan
+		animation = dead
+	}
+
+	immediate = {
+		# if = {
+		# 	limit = {
+		# 		any_child = { is_alive = yes count >= 1 }
+		# 	}
+		# 	if = {
+		# 		limit = {
+		# 			any_child = {
+		# 				is_player_heir_of = root
+		# 			}
+		# 		}
+		# 		random_child = {
+		# 			limit = {
+		# 				is_player_heir_of = root
+		# 			}
+		# 			save_scope_as = child
+		# 		}
+		# 	}
+		# 	else_if = {
+		# 		limit = {
+		# 			any_child = {
+		# 				is_adult = yes
+		# 			}
+		# 		}
+		# 		random_child = {
+		# 			limit = {
+		# 				is_adult = yes
+		# 			}
+		# 			save_scope_as = child
+		# 		}
+		# 	}
+		# 	else = {
+		# 		random_child = {
+		# 			save_scope_as = child
+		# 		}
+		# 	}
+		# }	
+		hidden_effect_new_object = {
+			create_artifact = {	
+				name = RICE_lu_you_final_poem_name
+				description = RICE_lu_you_final_poem_desc
+				type = journal
+				visuals = RICE_east_asian_scroll
+				quality = 50
+				wealth = 50
+				modifier = RICE_lu_you_final_poem_modifier
+				save_scope_as = RICE_lu_you_final_poem
+			}
+			scope:RICE_lu_you_final_poem = {
+				set_variable = RICE_lu_you_final_poem_variable
+			}
+			# If the Song Dynasty (or the hegemon of China) has reclaimed Kaifeng, signifying the start of reclaiming Northern China
+			if = {
+				limit = {
+					title:h_china.holder = {
+						completely_controls = title:c_bianzhou 	# Controls Kaifeng
+						culture = { has_cultural_pillar = heritage_chinese } # Is a Chinese culture
+					}
+				}
+				scope:CSM_xp = {
+					set_artifact_description = RICE_lu_you_final_poem_desc_kaifeng_reclaimed			
+				}
+			}
+		}		
+	}
+
+	option = { # Ok
+		name = hangzhou.0073.a
+		show_as_tooltip = {
+			scope:RICE_lu_you_final_poem = {
+				set_owner = {
+					target = root
+				}
+			}			
+		}
+	}
+
+}
+
+# Hangzhou 0074 - Writing the poems on Shen Garden
+hangzhou.0074 = {
+	type = character_event
+	title = hangzhou.0074.t
+	desc = hangzhou.0074.desc
+	theme = memory_stress
+	override_background = { reference = tgp_garden_asia }
+
+	left_portrait = {
+		character = scope:lu_you
+		animation = sadness
+		camera = camera_event_right_away
+		#camera = camera_event_right_forward
+	}
+
+	lower_right_portrait = {
+		character = scope:tang_wan
+		animation = dead
+	}
+
+	trigger = {
+		NOT = { has_character_flag = RICE_lu_you_shen_garden_poems_done }
+	}
+
+	immediate = {
+		add_character_flag = RICE_lu_you_shen_garden_poems_done
+		character:han_11751 = {
+			save_scope_as = lu_you
+		}
+		character:RICE_chinese_miscellaneous_001 = {
+			save_scope_as = tang_wan
+		}
+		hidden_effect_new_object = {
+			create_artifact = {	
+				name = RICE_lu_you_shen_garden_two_poems_name
+				description = RICE_lu_you_shen_garden_two_poems_desc
+				type = journal
+				visuals = RICE_east_asian_scroll
+				quality = 50
+				wealth = 50
+				modifier = RICE_lu_you_shen_garden_two_poems_modifier
+				save_scope_as = RICE_lu_you_shen_garden_two_poems
+			}
+			scope:RICE_lu_you_shen_garden_two_poems = {
+				set_variable = RICE_lu_you_shen_garden_two_poems_variable
+			}
+		}		
+	}
+
+	option = { # Ok
+		name = hangzhou.0074.a
+		show_as_tooltip = {
+			scope:RICE_lu_you_shen_garden_two_poems = {
+				set_owner = {
+					target = root
+				}
+			}			
+		}
+	}
+
+}
 
 
 ######################################################################################
