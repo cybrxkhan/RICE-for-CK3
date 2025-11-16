@@ -450,7 +450,24 @@ RICE_hangzhou_dedicate_temple_to_yue_fei = {
 	}
 
 	cost = { 
-		gold = { value = major_gold_value }
+		gold = {
+			value = 0
+			if = {
+				limit = {
+					has_treasury = no
+				}
+				add = major_gold_value
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = {
+					has_treasury = yes
+				}
+				add = major_gold_value
+			}
+		}
 	}	
 
 	ai_potential = {
@@ -530,14 +547,6 @@ RICE_hangzhou_improve_west_lake = {
 		RICE_is_available_adult_even_if_sick_trigger = yes
 	}
 
-	cost = {
-		gold = RICE_activity_cost
-	}
-	
-	ai_potential = {
-		short_term_gold > RICE_activity_cost
-	}
-
 	widget = {
 		gui = "decision_view_widget_RICE_hangzhou_improve_west_lake"
 		controller = decision_option_list_controller
@@ -581,7 +590,7 @@ RICE_hangzhou_improve_west_lake = {
 		item = {
 			value = RICE_hangzhou_improve_west_lake_landscaping
 			is_valid = {
-				gold >= medium_gold_value				
+				treasury_or_gold >= medium_treasury_or_gold_value		
 			}
 			current_description = RICE_hangzhou_improve_west_lake_landscaping_desc
 			localization = RICE_hangzhou_improve_west_lake_landscaping_name
@@ -595,7 +604,7 @@ RICE_hangzhou_improve_west_lake = {
 		item = {
 			value = RICE_hangzhou_improve_west_lake_religious_structures
 			is_valid = {
-				gold >= medium_gold_value
+				treasury_or_gold >= medium_treasury_or_gold_value	
 			}
 			current_description = RICE_hangzhou_improve_west_lake_religious_structures_desc
 			localization = RICE_hangzhou_improve_west_lake_religious_structures_name
@@ -730,12 +739,29 @@ RICE_hangzhou_improve_west_lake = {
 		# add_to_list = notification_sent
 	}
 
-	minimum_cost = {
-		gold = minor_gold_value
-	}
-
+	cost = { 
+		gold = {
+			value = 0
+			if = {
+				limit = {
+					has_treasury = no
+				}
+				add = RICE_activity_cost
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = {
+					has_treasury = yes
+				}
+				add = RICE_activity_cost
+			}
+		}
+	}	
+	
 	ai_potential = {
-		short_term_gold > medium_gold_value
+		short_term_gold > RICE_activity_cost
 	}
 
 	ai_will_do = {
