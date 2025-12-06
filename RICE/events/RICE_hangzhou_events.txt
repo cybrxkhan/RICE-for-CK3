@@ -3236,5 +3236,1193 @@ hangzhou.0087 = {
 
 
 
+######################################################################################
+# 
+# GENERIC FLAVOR EVENTS
+# 
+# hangzhou.0100-hangzhou.0149
+# 
+######################################################################################
 
 
+
+# Courtier criticizes yóushǒu, i.e. useless idlers 游手
+hangzhou.0100 = {
+	type = character_event
+	title = hangzhou.0100.t
+	desc = hangzhou.0100.desc
+	theme = realm
+
+	left_portrait = root
+
+	right_portrait = {
+		character = scope:courtier
+		animation = disapproval
+	}
+		
+	trigger = {
+		is_landed = yes
+
+		highest_held_title_tier <= tier_kingdom
+		culture = { has_cultural_pillar = heritage_chinese }
+		capital_county ?= {
+			culture = { has_cultural_pillar = heritage_chinese }
+		}
+		any_courtier = {
+			is_available_ai_adult = yes
+			culture = { has_cultural_pillar = heritage_chinese }
+			NOT = { has_trait = lazy }
+			NOT = { has_trait = content }
+			OR = {
+				has_trait = ambitious
+				has_trait = diligent
+				has_trait = arrogant
+				has_trait = wrathful
+				has_trait = just
+				has_trait = temperate
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	immediate = {
+		random_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+				culture = { has_cultural_pillar = heritage_chinese }
+				NOT = { has_trait = lazy }
+				NOT = { has_trait = content }
+				OR = {
+					has_trait = ambitious
+					has_trait = diligent
+					has_trait = arrogant
+					has_trait = wrathful
+					has_trait = just
+					has_trait = temperate
+				}
+			}	
+			save_scope_as = courtier		
+		}
+	}
+
+	option = { # Expel them from the markets
+		name = hangzhou.0100.a
+		capital_county = {
+			add_county_modifier = {
+				modifier = RICE_hangzhou_expelled_youshou
+				years = 10
+			}
+		}
+		stress_impact = {
+			compassionate = miniscule_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+			forgiving = miniscule_stress_impact_gain
+			content = miniscule_stress_impact_gain
+		}
+		scope:courtier = {
+			add_opinion = {
+				target = root
+				modifier = pleased_opinion
+				opinion = 10
+			}
+		}
+	}
+
+	option = { # Punish them
+		name = hangzhou.0100.b
+		capital_county = {
+			add_county_modifier = {
+				modifier = RICE_hangzhou_punished_youshou
+				years = 10
+			}
+		}
+		stress_impact = {
+			compassionate = miniscule_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+			forgiving = miniscule_stress_impact_gain
+			content = miniscule_stress_impact_gain
+		}
+		scope:courtier = {
+			add_opinion = {
+				target = root
+				modifier = pleased_opinion
+				opinion = 10
+			}
+		}
+	}
+
+	option = { # Encourage agriculture
+		name = hangzhou.0100.c
+		trigger = {
+			trigger_if = {
+				limit = {
+					is_ai = yes
+				}
+				short_term_treasury_or_gold >= 50
+			}
+		}
+		remove_treasury_or_gold = 50
+		capital_county = {
+			add_county_modifier = {
+				modifier = RICE_hangzhou_agriculture_youshou
+				years = 10
+			}
+		}
+		stress_impact = {
+			callous = miniscule_stress_impact_gain
+			lazy = minor_stress_impact_gain
+		}
+		scope:courtier = {
+			add_opinion = {
+				target = root
+				modifier = pleased_opinion
+				opinion = 10
+			}
+		}
+	}
+
+	option = { # Ok
+		name = hangzhou.0100.d
+		capital_county = {
+			add_county_modifier = {
+				modifier = RICE_hangzhou_ignore_youshou
+				years = 10
+			}
+		}
+		stress_impact = {
+			diligent = miniscule_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+			just = miniscule_stress_impact_gain
+			vengeful = miniscule_stress_impact_gain
+		}
+		scope:courtier = {
+			add_opinion = {
+				target = root
+				modifier = disappointed_opinion
+				opinion = -10
+			}
+		}
+	}
+
+}
+
+
+
+# While traveling, come across some yóushǒu, i.e. useless idlers 游手
+hangzhou.0101 = {
+	type = character_event
+	title = hangzhou.0101.t
+	desc = hangzhou.0101.desc
+	theme = travel_intrigue
+	override_background = tgp_market_asia
+	
+	left_portrait = {
+		character = root
+		animation = personality_cynical
+	}	
+	
+	right_portrait = {
+		character = root
+		animation = personality_dishonorable
+	}	
+
+	trigger = {
+		is_location_valid_for_travel_event_on_land = yes
+		location = {
+			county = {
+				culture = { has_cultural_pillar = heritage_chinese }				
+			}
+		}
+		culture = { has_cultural_pillar = heritage_chinese }
+		current_travel_plan = {
+			any_entourage_character = {
+				NOT = { this = root }
+				is_available_ai_adult = yes
+				culture = { has_cultural_pillar = heritage_chinese }
+			}
+		}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = greedy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		current_travel_plan = {
+			random_entourage_character = {
+				limit = {
+					NOT = { this = root }
+					culture = { has_cultural_pillar = heritage_chinese }
+				}
+				save_scope_as = traveler
+			}
+		}		
+	}
+
+	option = { # Ok
+		name = hangzhou.0101.a
+		add_character_modifier = {
+			modifier = RICE_hangzhou_comfortable_around_all_commoners
+			years = 5
+		}
+		scope:traveler = {
+			add_opinion = {
+				target = root
+				modifier = RICE_agrees_with_me_opinion
+				opinion = 10
+			}		
+		}
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			paranoid = minor_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+			craven = miniscule_stress_impact_gain
+			wrathful = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = hangzhou.0101.b
+		add_character_modifier = {
+			modifier = RICE_hangzhou_avoiding_suspicious_people
+			years = 5
+		}
+		scope:traveler = {
+			add_opinion = {
+				target = root
+				modifier = RICE_disagrees_with_me_opinion
+				opinion = -10
+			}		
+		}
+		stress_impact = {
+			trusting = minor_stress_impact_gain
+			lazy = minor_stress_impact_gain
+			content = miniscule_stress_impact_gain
+			compassionate = miniscule_stress_impact_gain
+			brave = miniscule_stress_impact_gain
+		}
+	}
+
+}
+
+
+
+# Traveling while lying at ease 臥游
+hangzhou.0102 = {
+	type = character_event
+	title = hangzhou.0102.t
+	desc = hangzhou.0102.desc
+	theme = party
+	override_background = tgp_relaxing_room_asia
+
+	left_portrait = {
+		character = root
+		animation = personality_forgiving
+	}
+
+	right_portrait = {
+		character = scope:courtier
+		animation = personality_content
+	}
+		
+	trigger = {
+		culture = { has_cultural_pillar = heritage_chinese }
+		OR = {
+			diplomacy >= mediocre_skill_rating
+			learning >= mediocre_skill_rating
+			has_trait = education_learning_3
+			has_trait = education_learning_4
+			has_trait = education_learning_5
+			has_trait = poet
+			has_trait = scholar
+			has_trait = confucian_education
+		}
+		any_courtier = {
+			is_available_ai_adult = yes
+			culture = { has_cultural_pillar = heritage_chinese }
+			OR = {
+				diplomacy >= mediocre_skill_rating
+				learning >= mediocre_skill_rating
+				has_trait = education_learning_3
+				has_trait = education_learning_4
+				has_trait = education_learning_5
+				has_trait = poet
+				has_trait = scholar
+				has_trait = confucian_education
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = generous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = greedy
+		}
+	}
+
+	immediate = {
+		random_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+				culture = { has_cultural_pillar = heritage_chinese }
+				OR = {
+					diplomacy >= mediocre_skill_rating
+					learning >= mediocre_skill_rating
+					has_trait = education_learning_3
+					has_trait = education_learning_4
+					has_trait = education_learning_5
+					has_trait = poet
+					has_trait = scholar
+					has_trait = confucian_education
+				}
+			}	
+			save_scope_as = courtier		
+		}
+		add_character_modifier = {
+			modifier = RICE_hangzhou_recent_travel_while_lying_at_ease
+			years = 5
+		}
+		scope:courtier = {
+			add_character_modifier = {
+				modifier = RICE_hangzhou_recent_travel_while_lying_at_ease
+				years = 5
+			}			
+		}
+		scope:courtier = {
+			add_opinion = {
+				target = root
+				modifier = travel_while_lying_at_ease_opinion
+				opinion = 15
+			}
+		}
+	}
+
+	option = { # Ok
+		name = hangzhou.0102.a
+		if = {
+			limit = {
+				government_has_flag = government_has_influence
+			}
+			change_influence = minor_influence_gain
+		}		
+		else = {
+			add_piety = minor_piety_gain
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			content = miniscule_stress_impact_loss
+			lazy = miniscule_stress_impact_loss
+			shy = miniscule_stress_impact_loss
+		}
+	}
+
+	option = { # Ok
+		name = hangzhou.0102.b
+		add_prestige = minor_prestige_gain
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			brave = miniscule_stress_impact_loss
+			gregarious = miniscule_stress_impact_loss
+			ambitious = miniscule_stress_impact_loss
+		}
+	}
+
+}
+
+# Enjoying Longjing tea
+hangzhou.0103 = {
+	type = character_event
+	title = hangzhou.0103.t
+	desc = hangzhou.0103.desc
+	theme = party
+	override_background = tgp_kitchen_asia
+
+	right_portrait = {
+		character = root
+		animation = pondering
+	}
+		
+	trigger = {
+		OR = {			
+			domicile.domicile_location ?= {					
+				geographical_region = tgp_yue_region # Includes k_liangzhe where Hangzhou is
+			}
+			capital_county ?= {
+				any_county_province = {
+					geographical_region = tgp_yue_region # Includes k_liangzhe where Hangzhou is
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	option = { # Ok
+		name = hangzhou.0103.a
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 40			
+			}
+		}
+		remove_short_term_gold = 40
+		add_character_modifier = {
+			modifier = RICE_hangzhou_longjing_tea
+			years = 10
+		}
+	}
+
+	option = { # Ok
+		name = hangzhou.0103.b
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = hangzhou.0103.info
+		}
+	}
+
+}
+
+# Courtier complains about pleasure seekers/tourists of Hangzhou's West Lake, based on the poem by Lin Sheng (林升)
+hangzhou.0104 = {
+	type = character_event
+	title = hangzhou.0104.t
+	desc = hangzhou.0104.desc
+	theme = unfriendly
+
+	left_portrait = {
+		character = root
+		animation = pondering
+	}
+
+	right_portrait = {
+		character = scope:courtier
+		animation = disapproval
+	}
+		
+	trigger = {
+		culture = { has_cultural_pillar = heritage_chinese }
+		OR = {			
+			domicile.domicile_location ?= {					
+				geographical_region = tgp_yue_region # Includes k_liangzhe where Hangzhou is
+			}
+			capital_county ?= {
+				any_county_province = {
+					geographical_region = tgp_yue_region # Includes k_liangzhe where Hangzhou is
+				}
+			}
+		}
+		OR = {
+			any_courtier_or_guest = {
+				is_available_ai_adult = yes
+				culture = { has_cultural_pillar = heritage_chinese }
+				NOT = { has_trait = lazy }
+				NOT = { has_trait = content }
+				NOT = { has_trait = gluttonous }
+				NOT = { has_trait = lustful }
+				NOT = { has_trait = lifestyle_reveler }
+				OR = {
+					has_trait = ambitious
+					has_trait = diligent
+					has_trait = arrogant
+					has_trait = wrathful
+					has_trait = just
+					has_trait = temperate
+					has_trait = brave
+					has_trait = vengeful
+					has_trait = impatient
+					has_trait = paranoid
+				}
+			}
+			any_vassal = {
+				is_available_ai_adult = yes
+				culture = { has_cultural_pillar = heritage_chinese }
+				NOT = { has_trait = lazy }
+				NOT = { has_trait = content }
+				NOT = { has_trait = gluttonous }
+				NOT = { has_trait = lustful }
+				NOT = { has_trait = lifestyle_reveler }
+				OR = {
+					has_trait = ambitious
+					has_trait = diligent
+					has_trait = arrogant
+					has_trait = wrathful
+					has_trait = just
+					has_trait = temperate
+					has_trait = brave
+					has_trait = vengeful
+					has_trait = impatient
+					has_trait = paranoid
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = content
+		}
+		modifier = {
+			add = -0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		every_courtier_or_guest = {
+			limit = {
+				is_available_ai_adult = yes
+				culture = { has_cultural_pillar = heritage_chinese }
+				NOT = { has_trait = lazy }
+				NOT = { has_trait = content }
+				NOT = { has_trait = gluttonous }
+				NOT = { has_trait = lustful }
+				NOT = { has_trait = lifestyle_reveler }
+				OR = {
+					has_trait = ambitious
+					has_trait = diligent
+					has_trait = arrogant
+					has_trait = wrathful
+					has_trait = just
+					has_trait = temperate
+					has_trait = brave
+					has_trait = vengeful
+					has_trait = impatient
+					has_trait = paranoid
+				}
+			}
+			add_to_list = candidate_characters
+		}
+		every_vassal = {
+			limit = {
+				is_available_ai_adult = yes
+				culture = { has_cultural_pillar = heritage_chinese }
+				NOT = { has_trait = lazy }
+				NOT = { has_trait = content }
+				NOT = { has_trait = gluttonous }
+				NOT = { has_trait = lustful }
+				NOT = { has_trait = lifestyle_reveler }
+				OR = {
+					has_trait = ambitious
+					has_trait = diligent
+					has_trait = arrogant
+					has_trait = wrathful
+					has_trait = just
+					has_trait = temperate
+					has_trait = brave
+					has_trait = vengeful
+					has_trait = impatient
+					has_trait = paranoid
+				}
+			}
+			add_to_list = candidate_characters
+		}
+		random_in_list = {
+			list = candidate_characters
+			weight = {
+				base = 20
+				modifier = {
+					has_trait = ambitious
+					add = 10
+				}
+				modifier = {
+					has_trait = brave
+					add = 10
+				}
+				modifier = {
+					learning >= decent_skill_rating
+					add = 10
+				}
+				modifier = {
+					learning >= high_skill_rating
+					add = 10
+				}
+				modifier = {
+					diplomacy >= decent_skill_rating
+					add = 10
+				}
+				modifier = {
+					diplomacy >= high_skill_rating
+					add = 10
+				}
+			}
+			save_scope_as = courtier
+		}
+	}
+
+	option = { # Ok
+		name = hangzhou.0104.a
+		scope:courtier = {
+			add_opinion = {
+				target = root
+				modifier = RICE_agrees_with_me_opinion
+				opinion = 20
+			}		
+		}
+		stress_impact = {
+			lazy = minor_stress_impact_gain
+			craven = miniscule_stress_impact_gain
+			lifestyle_reveler = minor_stress_impact_gain
+			lustful = miniscule_stress_impact_gain
+			gluttonous = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = hangzhou.0103.b
+		if = {
+			limit = {
+				government_has_flag = government_has_influence
+			}
+			change_influence = minor_influence_gain
+		}
+		else = {
+			add_prestige = minior_prestige_gain
+		}
+		scope:courtier = {
+			add_opinion = {
+				target = root
+				modifier = RICE_disagrees_with_me_opinion
+				opinion = -20
+			}		
+		}
+		stress_impact = {
+			diligent = minor_stress_impact_gain
+			ambitious = minor_stress_impact_gain
+			brave = miniscule_stress_impact_gain
+			temperate = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = hangzhou.0103.info
+		}
+	}
+
+}
+
+# Courtier gifts you dìngshèng gāo, aka Victory Cakes popular in the area around Hangzhou (定胜糕) 
+hangzhou.0105 = {
+	type = character_event
+	title = hangzhou.0105.t
+	desc = hangzhou.0105.desc
+	theme = feast_activity
+
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+
+	right_portrait = {
+		character = scope:courtier
+		animation = throne_room_bow_2
+	}
+		
+	trigger = {
+		culture = { has_cultural_pillar = heritage_chinese }
+		OR = {			
+			domicile.domicile_location ?= {					
+				geographical_region = tgp_yue_region # Includes k_liangzhe where Hangzhou is
+			}
+			capital_county ?= {
+				any_county_province = {
+					geographical_region = tgp_yue_region # Includes k_liangzhe where Hangzhou is
+				}
+			}
+		}
+		OR = {
+			any_courtier_or_guest = {
+				is_available_ai_adult = yes
+				culture = { has_cultural_pillar = heritage_chinese }
+				NOT = { has_trait = lazy }
+				NOT = { has_trait = greedy }
+			}
+			any_vassal = {
+				is_available_ai_adult = yes
+				culture = { has_cultural_pillar = heritage_chinese }
+				NOT = { has_trait = lazy }
+				NOT = { has_trait = greedy }
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = -0.2
+			has_trait = paranoid
+		}
+	}
+
+	immediate = {
+		every_courtier_or_guest = {
+			limit = {
+				is_available_ai_adult = yes
+				culture = { has_cultural_pillar = heritage_chinese }
+				NOT = { has_trait = lazy }
+				NOT = { has_trait = greedy }
+			}
+			add_to_list = candidate_characters
+		}
+		every_vassal = {
+			limit = {
+				is_available_ai_adult = yes
+				culture = { has_cultural_pillar = heritage_chinese }
+				NOT = { has_trait = lazy }
+				NOT = { has_trait = greedy }
+			}
+			add_to_list = candidate_characters
+		}
+		random_in_list = {
+			list = candidate_characters
+			weight = {
+				base = 20
+				modifier = {
+					has_trait = generous
+					add = 10
+				}
+				modifier = {
+					has_trait = ambitious
+					add = 5
+				}
+			}
+			save_scope_as = courtier
+		}
+	}
+
+	option = { # Ok
+		name = hangzhou.0105.a
+		add_character_modifier = {
+			modifier = RICE_hangzhou_victory_cakes
+			years = 4
+		}
+		scope:courtier = {
+			reverse_add_opinion = {
+				target = root
+				modifier = pleased_opinion
+				opinion = 5
+			}		
+		}
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+			brave = miniscule_stress_impact_loss
+			gluttonous = miniscule_stress_impact_loss
+			education_martial_1 = miniscule_stress_impact_loss
+			education_martial_2 = miniscule_stress_impact_loss
+			education_martial_3 = miniscule_stress_impact_loss
+			education_martial_4 = miniscule_stress_impact_loss
+			education_martial_5 = miniscule_stress_impact_loss
+		}
+	}
+
+}
+
+# Reflecting on the legends of the White Snake
+hangzhou.0106 = {
+	type = character_event
+	title = hangzhou.0106.t
+	desc = hangzhou.0106.desc
+	theme = feast_activity
+
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+		
+	trigger = {
+		culture = { has_cultural_pillar = heritage_chinese }
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+	}
+
+	option = { # Ok
+		name = hangzhou.0106.a
+		add_character_modifier = {
+			modifier = RICE_hangzhou_prefers_moral_endings
+			years = 5
+		}
+		stress_impact = {
+			lustful = miniscule_stress_impact_gain
+			forgiving = miniscule_stress_impact_gain
+			compassionate = miniscule_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = hangzhou.0106.b
+		add_character_modifier = {
+			modifier = RICE_hangzhou_prefers_positive_endings
+			years = 5
+		}
+		stress_impact = {
+			arbitrary = miniscule_stress_impact_gain
+			vengeful = miniscule_stress_impact_gain
+			sadistic = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = hangzhou.0106.c
+		add_character_modifier = {
+			modifier = RICE_hangzhou_unconventional_white_snake_story
+			years = 5
+		}
+		stress_impact = {
+			chaste = miniscule_stress_impact_gain
+			zealous = miniscule_stress_impact_gain
+			lazy = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = hangzhou.0106.info
+		}
+	}
+
+}
+
+# Reading about the winding stream parties of Wáng Xīzhī (王羲之)
+hangzhou.0107 = {
+	type = character_event
+	title = hangzhou.0107.t
+	desc = hangzhou.0107.desc
+	theme = learning
+
+	right_portrait = {
+		character = root
+		animation = reading
+	}
+		
+	trigger = {
+		RICE_is_even_lesser_sinosphere_culture_trigger = yes
+		OR = {
+			diplomacy >= mediocre_skill_rating
+			learning >= mediocre_skill_rating
+			has_trait = education_diplomacy_3
+			has_trait = education_diplomacy_4
+			has_trait = education_diplomacy_5
+			has_trait = education_learning_3
+			has_trait = education_learning_4
+			has_trait = education_learning_5
+			has_trait = poet
+			has_trait = scholar
+			has_trait = confucian_education
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = honest
+		}
+		modifier = {
+			add = -0.2
+			has_trait = deceitful
+		}
+		modifier = {
+			add = 0.2
+			has_trait = calm
+		}
+		modifier = {
+			add = -0.2
+			has_trait = wrathful
+		}
+	}
+
+	option = { # Ok
+		name = hangzhou.0107.a
+		add_character_modifier = {
+			modifier = RICE_hangzhou_idolizes_past_chinese_poets
+			years = 5
+		}
+		stress_impact = {
+			humble = miniscule_stress_impact_gain
+			content = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = hangzhou.0107.b
+		add_character_modifier = {
+			modifier = RICE_hangzhou_appreciates_modern_poetry
+			years = 5
+		}
+		stress_impact = {
+			arbitrary = miniscule_stress_impact_gain
+			vengeful = miniscule_stress_impact_gain
+		}
+	}
+
+}
+
+# Reading about the legends of Xī Shī, one of the four great beauties of Chinese legend
+hangzhou.0108 = {
+	type = character_event
+	title = hangzhou.0107.t
+	desc = hangzhou.0107.desc
+	theme = seduction
+
+	right_portrait = {
+		character = root
+		animation = reading
+	}
+		
+	trigger = {
+		RICE_is_even_lesser_sinosphere_culture_trigger = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = lustful
+		}
+		modifier = {
+			add = -0.2
+			has_trait = chaste
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+	}
+
+	option = { # Ok
+		name = hangzhou.0108.a
+		flavor = {
+			triggered_desc = {
+				trigger = {
+					has_game_rule = RICE_historical_context_on
+				}
+				desc = hangzhou.0108.info
+			}
+		}
+		add_character_modifier = {
+			modifier = RICE_hangzhou_prefers_tragic_endings
+			years = 5
+		}
+		stress_impact = {
+			trusting = miniscule_stress_impact_gain
+			compassionate = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = hangzhou.0108.b
+		flavor = {
+			triggered_desc = {
+				trigger = {
+					has_game_rule = RICE_historical_context_on
+				}
+				desc = hangzhou.0108.info
+			}
+		}
+		add_character_modifier = {
+			modifier = RICE_hangzhou_prefers_positive_endings
+			years = 5
+		}
+		stress_impact = {
+			cynical = miniscule_stress_impact_gain
+			sadistic = miniscule_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+		}
+	}
+
+}
