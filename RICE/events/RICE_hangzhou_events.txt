@@ -1053,7 +1053,7 @@ hangzhou.0050 = {
 		is_landed = yes
 		exists = involved_activity
 		involved_activity = {
-			has_activity_type = activity_RICE_hangzhou_sightsee_at_west_lake
+			has_activity_type = activity_RICE_hangzhou_watch_qiantang_tide
 		}
 	}
 	
@@ -1071,7 +1071,17 @@ hangzhou.0050 = {
 hangzhou.0051 = {
 	type = activity_event
 	title = hangzhou.0051.t
-	desc = hangzhou.0051.desc
+	desc = {
+		desc = hangzhou.0051.desc
+		triggered_desc = {
+			# Month is between August and September
+			trigger = {
+				current_month >= 8
+				current_month <= 9
+			}
+			desc = hangzhou.0051.desc.festival
+		}
+	}
 	theme = friendly
 	override_background = { reference = tgp_docks_asia }
 	
@@ -1187,7 +1197,7 @@ hangzhou.0052 = {
 							tags = { bad }
 							# this line below adds the entry to the Effects section of the conclusion UI
 							show_in_conclusion = yes
-							character = root
+							character = scope:victim
 							scope:victim = {
 								#limit = { is_ai = yes }
 								increase_wounds_no_death_effect = { REASON = wounds }
@@ -1206,7 +1216,7 @@ hangzhou.0052 = {
 							tags = { bad }
 							# this line below adds the entry to the Effects section of the conclusion UI
 							show_in_conclusion = yes
-							character = root
+							character = scope:victim
 							scope:victim = {
 								#limit = { is_ai = yes }
 								death = { death_reason = death_drowned }
@@ -1282,6 +1292,7 @@ hangzhou.0054 = {
 	type = activity_event
 	title = hangzhou.0054.t
 	desc = {
+		desc = hangzhou.0054.desc.intro
 		first_valid = {
 			triggered_desc = {
 				trigger = {
@@ -1364,14 +1375,15 @@ hangzhou.0055 = {
 	type = activity_event
 	title = hangzhou.0055.t
 	desc = {
+		desc = hangzhou.0055.desc.intro
 		first_valid = {
 			triggered_desc = {
 				trigger = {
 					root = scope:victim
 				}
-				desc = hangzhou.0055.injury_self
+				desc = hangzhou.0055.death_self
 			}
-			desc = hangzhou.0055.injury_other
+			desc = hangzhou.0055.death_other
 		}
 		desc = hangzhou.0055.desc
 	}
@@ -3343,6 +3355,9 @@ hangzhou.0100 = {
 			}
 		}
 		remove_treasury_or_gold = 100
+		add_merit_if_relevant_effect = {
+			MERIT = minor_merit_value
+		}
 		capital_county = {
 			add_county_modifier = {
 				modifier = RICE_hangzhou_expelled_youshou
@@ -3375,6 +3390,9 @@ hangzhou.0100 = {
 			}
 		}
 		remove_treasury_or_gold = 100
+		add_merit_if_relevant_effect = {
+			MERIT = minor_merit_value
+		}
 		capital_county = {
 			add_county_modifier = {
 				modifier = RICE_hangzhou_punished_youshou
@@ -3407,6 +3425,9 @@ hangzhou.0100 = {
 			}
 		}
 		remove_treasury_or_gold = 250
+		add_merit_if_relevant_effect = {
+			MERIT = minor_merit_value
+		}
 		capital_county = {
 			add_county_modifier = {
 				modifier = RICE_hangzhou_agriculture_youshou
@@ -3481,7 +3502,6 @@ hangzhou.0101 = {
 		culture = { has_cultural_pillar = heritage_chinese }
 		current_travel_plan = {
 			any_entourage_character = {
-				NOT = { this = root }
 				is_available_ai_adult = yes
 				culture = { has_cultural_pillar = heritage_chinese }
 			}
@@ -3520,7 +3540,6 @@ hangzhou.0101 = {
 		current_travel_plan = {
 			random_entourage_character = {
 				limit = {
-					NOT = { this = root }
 					culture = { has_cultural_pillar = heritage_chinese }
 				}
 				save_scope_as = traveler
@@ -3667,16 +3686,16 @@ hangzhou.0102 = {
 			}	
 			save_scope_as = courtier		
 		}
-		add_character_modifier = {
-			modifier = RICE_hangzhou_recent_travel_while_lying_at_ease
-			years = 5
-		}
-		scope:courtier = {
-			add_character_modifier = {
-				modifier = RICE_hangzhou_recent_travel_while_lying_at_ease
-				years = 5
-			}			
-		}
+		# add_character_modifier = {
+		# 	modifier = RICE_hangzhou_recent_travel_while_lying_at_ease
+		# 	years = 5
+		# }
+		# scope:courtier = {
+		# 	add_character_modifier = {
+		# 		modifier = RICE_hangzhou_recent_travel_while_lying_at_ease
+		# 		years = 5
+		# 	}			
+		# }
 		scope:courtier = {
 			add_opinion = {
 				target = root
@@ -4010,6 +4029,9 @@ hangzhou.0104 = {
 
 	option = { # Ok
 		name = hangzhou.0104.a
+		add_merit_if_relevant_effect = {
+			MERIT = miniscule_merit_value
+		}
 		scope:courtier = {
 			add_opinion = {
 				target = root
@@ -4079,7 +4101,7 @@ hangzhou.0105 = {
 
 	right_portrait = {
 		character = scope:courtier
-		animation = throne_room_bow_2
+		animation = throne_room_bow_1
 	}
 		
 	trigger = {
@@ -4206,7 +4228,7 @@ hangzhou.0106 = {
 	type = character_event
 	title = hangzhou.0106.t
 	desc = hangzhou.0106.desc
-	theme = feast_activity
+	theme = RICE_theme_hangzhou_west_lake
 
 	left_portrait = {
 		character = root
@@ -4303,6 +4325,7 @@ hangzhou.0107 = {
 	title = hangzhou.0107.t
 	desc = hangzhou.0107.desc
 	theme = learning
+	override_background = tgp_asia_estate
 
 	right_portrait = {
 		character = root
