@@ -1,13 +1,13 @@
-<img src="https://i.imgur.com/bFeftvs.jpg">
+<img src="https://i.imgur.com/r2J2u54.jpg"> <img src="https://i.imgur.com/kL2wGFE.jpg">
 
-## Latest Version: Version 1.17.0.a Hotfix for "Makuria" (Released 9/30/25, for vanilla patch 1.17.x)
+## Latest Version: Version 1.18.0 "Scholar-Gentry" (Released 12/9/25, for vanilla patch 1.18.x)
 
-**Newest Flavor Pack: *Nubia: Heirs of Kush***
+**Newest Flavor Packs: *Hangzhou: Splendor of the Song Dynasty* and *Aslians: The Jungle Pacifists***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_"The Nubians are Christians whose country is larger and richer than Ethiopia. The Nile of Egypt runs through their cities and regions. Their villages are prosperous and they have fertile land."_
-_- Ibn Hawqal, 10th century Muslim traveler and geographer_
+_“I fear not drifting clouds that blur my sight, for I stand at the highest height.”_
+_– Wang Anshi (1021 - 1086), Song Dynasty statesman, philosopher, and poet_
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
@@ -30,82 +30,116 @@ The mod folder should look something like this:
 **NOTE**: When re-installing a mod, delete the old version of the mod first before copy and pasting the new one! While it's not always necessary, it's a good habit to do to prevent any potential issues. Additionally, make sure you are not subscribed to the Steam version of the mod, to prevent the launcher from getting confused as to which version to use.
 
 
-## Current Flavor Packs
+## Current Flavor Packs and Content
 
-At the moment, the below RICE flavor packs are included in the mod. There is a [RICE Wiki](https://ck3.paradoxwikis.com/RICE) that goes over the mod's features, thanks to feringghithebroken for working on it!
+There is a [RICE Wiki](https://ck3.paradoxwikis.com/RICE) that goes over the mod's features, thanks to feringghithebroken for working on most of it! Please note some of it may not be up to date with the latest version of RICE.
 
-Click to view guides which cover the features in each specific pack in more detail (please note some guides are unfinished and/or out of date).
+At the moment, RICE includes **42** flavor packs:
 
-- [Aachen: Charlemagne's Capital](https://docs.google.com/document/d/e/2PACX-1vQNflzrfD7oYcEYcMWDW07MsWCW-8cwIO8-JxSIm_WTnB1Ij0Dr-b3PRNu8mKmUFRXfHW3QDax2Z0DD/pub)
-- [Bamian: Valley of Light](https://docs.google.com/document/d/e/2PACX-1vRkkEsWly8Ma6TtWuE1ucsiTEGNFxRP4O-691XW02FvlHhX-02u_PVIf1LTeNx2egNEUnFuhXw6wNve/pub)
-- [Bozo: Masters of the River](https://docs.google.com/document/d/e/2PACX-1vSgpnZZbXXz3sProMU-P70vbCsYatZOqkonVQMLdtZMFWhXf8zH1RE1ubz9hQI-kTqWIIK0at1Ki5PR/pub)
-- [Brittany: The Western Duchy](https://docs.google.com/document/d/e/2PACX-1vTzGuR_ffwqfpm6rwh27hq71K4Fs35pcLZioPLbHulhHn2ZV25SD2HrGipPofvBYngi5S_O4Yino4Y7/pub)
-- [Chios: Isle of Mastic](https://docs.google.com/document/d/1Lu4cGXN7hSaDtYd_wsXKbjAeIOYMoYVuum6zfYfBc_k/pub)
-- [Galicia: The Way of Saint James](https://docs.google.com/document/d/e/2PACX-1vRZSjZ2kqKE7-do03KlArEXVylNpYqP2ptS4Eg5EWWFYMRrxN7qAEaX6gG3H0ChMT_YR1AAg7BCbb1c/pub)
-- [Galicia-Volhynia: Borderlands of Red Rus](https://cybrxkhansmods.godaddysites.com/)
-- [Granada: Memories of the Alhambra](https://docs.google.com/document/d/e/2PACX-1vSFZFsesbXB3S4L2cgOfu_IYL6WzxbzLjzps4qGizN-8avV7Wvi99A5V8K-oq4IiiILonH_e85kIAgy/pub)
-- [Guanche: The Fortunate Isles](https://docs.google.com/document/d/e/2PACX-1vSs5DoK_1Hux5Uqe8cZp9qKdClxq_8W6PF3Rdejo8hR_C3mn1_qd166bbpw096x0DtwBGTBHC8aQYTO/pub)
-- [Harran: The Last Hellenic Pagans](https://docs.google.com/document/d/e/2PACX-1vQOVaDq59Adp5PsNw7r8KhK9cgHMBBWGPWG085FdTKegkD8G8BFLa_e1lz8usY164B42gAVZD4D_2Rs/pub)
-- [Khuzestan: Land of the Sugar Cane](https://docs.google.com/document/d/e/2PACX-1vRI3FkOVenhxblZjwPx5v9OI_SxzK-i5DO4S4Yd2983gkrLwvoD9rSxKJ5nLai8TsMVxtCU147Km6je/pub)
-- [Khwarezm: The Oxus Borderlands](https://docs.google.com/document/d/e/2PACX-1vRb7KJnolu0twdKXwN0N6K9qZSSNxm2yyS6VroADAGod9VjUGBKf5nIh-ZzsdYr93W3XuN0MGO8OeXd/pub)
-- [Khwarezm: The Oxus Borderlands](https://docs.google.com/document/d/e/2PACX-1vShpMfQVVfTPIMytox_d9YgqsCv5nzE-AR6WWLlEu4UjRqFQ7ekMWISy8Wp5U1KEAhoKxcFiunqVBvF/pub)
-- [Lesbos: Island of Poets](https://docs.google.com/document/d/e/2PACX-1vShpMfQVVfTPIMytox_d9YgqsCv5nzE-AR6WWLlEu4UjRqFQ7ekMWISy8Wp5U1KEAhoKxcFiunqVBvF/pub)
-- Manicheism: Religion of Light
-- [Mordvin: Along the Volga](https://docs.google.com/document/d/e/2PACX-1vSJLf-BGou98MSCHMEVO1QWEme1kKSe8CiriXgpfEUHeySTLJOsPLQobPnu_fIt-W-GqcL3VBXFqJzZ/pub)
-- [Niger Delta: Heirs of Oduduwa](https://docs.google.com/document/d/e/2PACX-1vTgW9FFORhgNKseRIGdOXnsCLe5Nee8f8dK9yQxkvWshD3ZJf5vzXhMHQKmoy3qnMEjm2kLImgExhvt/pub)
-- [Normandy: Adventurers and Aristocrats](https://docs.google.com/document/d/e/2PACX-1vSJl5JRfLjzdzwnCo6WJVG8qJ8-5htcWQ1L1PU3tMIq1Ym4HOO6fPhQ1ovarPeb_3b3pLPRhLBvgyRT/pub)
-- [North Atlantic: From Iceland to Vinland](https://docs.google.com/document/d/e/2PACX-1vQmBr7TYKBGRMtVYj8IWAjLHHAadsxJwGZI1VIG0PRA4ZV3mru5HGv3vAqaktbnVMe1oFpTdCEPKFLd/pub)
+- Aachen: Charlemagne's Capital
+- Aslians: The Jungle Pacifists
+- Bamian: Valley of Light
+- Bozo: Masters of the River
+- Brittany: The Western Duchy
+- Chios: Isle of Mastic
+- Galicia: The Way of Saint James
+- Galicia-Volhynia: Borderlands of Red Rus
+- Granada: Memories of the Alhambra
+- Guanche: The Fortunate Isles
+- Hangzhou: Splendor of the Song Dynasty
+- Harran: The Last Hellenic Pagans
+- Khuzestan: Land of the Sugar Cane
+- Khwarezm: The Oxus Borderlands
+- Lesbos: Island of Poets
+- Magadha: Diamond Throne of Buddhism
+- Manichean: The Religion of Light
+- Mordvin: Along the Volga
+- Niger Delta: Heirs of Odudwa
+- Normandy: Adventurers and Aristocrats
+- North Atlantic: From Iceland to Vinland
 - Nubia: Heirs of Kush
-- [Pamir and Zunist: Roof of the World](https://docs.google.com/document/d/e/2PACX-1vQmHEFpko8WE1fnHLHyG-4t01Xyka4eTe88WuLJWRL6jk0S3ju3fA1CFyX_dDArSduFlzqUl58pjRRO/pub)
-- [Polabians: Defenders of Svetovit](https://docs.google.com/document/d/e/2PACX-1vQqIii6uXJkyQUEe6Q00VRUNrj3ega216kcKp1GVMYaHNKgzyqyG0rHJz9ZsBTbzr3jPe4awL7yvTCS/pub)
-- [Red Sea: Treasures of the Eastern Desert](https://docs.google.com/document/d/e/2PACX-1vQzLb-MR90fMQvjqZsxceuydKihTehAlpxexdhdim5pfxi_aGVBeLl1rJMmuR-89nVB7PVLfboZKBuy/pub)
-- [Rhodes: Shadow of the Colossus](https://docs.google.com/document/d/e/2PACX-1vRXCGUoynvQtA3RuaJUE9FYagIHOX4wJkyeDHRsV-cjvyyBTONIEy0oOYr3yvcUt1eG_fEHtzUgv_wA/pub)
-- [Sardinia: Reign of the Judges](https://docs.google.com/document/d/e/2PACX-1vTFqEepIES0OzohAoV1tXHwn8B95wVVu7dQoSC0wIb_-pzHF2_RxnA-pwUqTC5NvVidtmeGPpVNXlfd/pub)
-- [Siberia: People of the Reindeer](https://docs.google.com/document/d/e/2PACX-1vTOr-vq1KkHRJ_gxPOlb9brCKde3TRzN_1TVZwfPmSiIIW5TEAJGkQ0eNGwiEfvgape1pDAKau3ZcvD/pub)
-- [Sicily: Where Three Worlds Met](https://docs.google.com/document/d/1gV1yD3d3Yp73GeM30GMFGr0sXGkg0vL6mV_Vgoz3P7c/pub)
-- [Siwa: Oases of the Western Desert](https://docs.google.com/document/d/1OOXqqBEGv94IBAH-rIsjoBog1YFtVAFg_TPsuIQmhtg/pub)
-- [Socotra: Isle of Dragon's Blood](https://docs.google.com/document/d/e/2PACX-1vRs_x_9wjofcveP_yhymlL5TWPB1UdSQyi_C_M1z4dWpFg3lqHgHwGpFD2xfkf0-RdsKIlRekQsLD4s/pub)
-- [South Ethiopia: The Highland Kingdoms](https://docs.google.com/document/d/e/2PACX-1vSPq9IoWEAWlTTkrLDZVqwzYzqlngxUYq2zKr800V7TXWQDn3CBX9molZq4dtp6rPmxa_hL3nL9tRrp/pub)
-- [Sri Lanka: Abode of Lions](https://docs.google.com/document/d/e/2PACX-1vTuEbSCc2fBJPzI7zUerL46bBslIV4rHMGF_nZlG_RDn2zvl96Cw-fHLYdwBqkELSSeBZDWubI1L0yI/pub)
-- [Sus: Door of the Sahara](https://docs.google.com/document/d/e/2PACX-1vQo9H7CnvJxD-KEjrwKEZ6GUUAJSqtF8-3oHW8YyoOntDliMBNHEOxRMNJRt8VFdpNs9LOGdgX9jCtZ/pub)
-- [Tarim Basin: Peoples of the Silk Road](https://docs.google.com/document/d/e/2PACX-1vTDLXZZlm5IfgIRvQfu6nIqd7Hflm-9BsgtrHGA8nHKtpxbIVxukXWD2Z6V0NPZ-iFUj6TtOgH3qFdy/pub)
-- [Tuareg: People of the Veil](https://docs.google.com/document/d/e/2PACX-1vSXsPZ1GvXLx10DXJ1IKA4w555ZnLQ1jg-5FrBG332UVf4QAoQ73dydF1JEvzII37kH7mKlTPqi24P9/pub)
-- [Tuyuhun: Horsemen of Qinghai](https://docs.google.com/document/d/e/2PACX-1vSLTlVseJqHCut1xBqm9tY2AVgfunhUTX0m8oN-OvHpMgexvpbFO8OIXVC2xDkgo9UvMYnv4qnjBUqP/pub)
-- [Upper Egypt: Children of the Nile](https://docs.google.com/document/d/e/2PACX-1vRPqf2Ip9U9cgDBiihQw6J-sGoCMiobFNhXrTsnzvwNIWBcjlRf2Cvn5ifDYADIwLt9w636GB7WCeY2/pub)
-- [Yazd: Abode of Worship](https://docs.google.com/document/d/e/2PACX-1vSPDkkP1PqCoPsi_HM29C5MM5L-as_SyKkmx_jNtOEqoW2mQx2APneBmbHNhi5hNePLHAxqm9QTm8y3/pub)
-- [Yazidis: People of the Peacock Angel](https://docs.google.com/document/d/e/2PACX-1vR3oN9lw2Yzsz_tGQb4sLDUPOVUjE6xhyYXvjtqnuKAJOegbo4UBuXpncgmk4s-cjEmAe8t1VvINe2h/pub)
-- [Yorkshire: To Scarborough Fair](https://docs.google.com/document/d/e/2PACX-1vQpl_JscDm-mK927vAdVA3-EUVdZ6A_htNKej7_cAKC1NcnYxHz8uvOT-bidmyLCNrfrYAsPun1QW3X/pub)
-- [Zhangzhung: Land of Hidden Treasures](https://docs.google.com/document/d/e/2PACX-1vQ389lRnsEbsFhT_5q37n546tqs0ybugbqAdtt_-ZPnRZyZjLv3ESDdx5iLJGeMehaXdruaOIYPrmsl/pub)
+- Pamir and Zunist: Roof of the World
+- Polabians: Defenders of Svetovit
+- Red Sea: Treasures of the Eastern Desert
+- Rhodes: Shadow of the Colossus
+- Sardinia: Reign of the Judges
+- Siberia: People of the Reindeer
+- Sicily: Where Three Worlds Met
+- Siwa: Oases of the Western Desert
+- Socotra: Isle of Dragon's Blood
+- South Ethiopia: The Highland Kingdoms (NEW!!!)
+- Sri Lanka: Abode of Lions
+- Sus: Door of the Sahara
+- Tarim Basin: Peoples of the Silk Road
+- Tuareg: People of the Veil
+- Tuyuhun: Horsemen of Qinghai
+- Upper Egypt: Children of the Nile
+- Yazd: Abode of Worship
+- Yazidis: People of the Peacock Angel
+- Yorkshire: To Scarborough Fair
+- Zhangzhung: Land of Hidden Treasures
 
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/w5HV0la.jpg">
+<img src="https://i.imgur.com/Bz5rOLA.jpg">
 
-### Version 1.17.0.a Hotfix for "Makuria"
+### Version 1.18.0 "Scholar-Gentry"
 
-- Added learning education traits for Manichean Archegoi in 867 and 1066
-- Added martial education trait for the Daju ruler Zalaf in 1178
-- Tweaked new faith icons made by hunter00001
-- Decision to Compile the First Turkish Dictionary now requires having a culture with the Turkic language rather than heritage
-- Nerfed Sawdan’s starting army in 867 slightly
-- Nerfed the potential amount of gold gained from merchant travel events
-- Failing to negotiate for extra money during merchant travel events now gives stress, especially if you have certain traits
-- Baqt situation will no longer exist for pre-Islamic start dates (if running a mod that adds in early start dates)
-- In 1066 and 1178 start dates, Daju rulers now start with castle holdings rather than tribal
-- Tweaked values of the Pithipati of Bodh Gaya modifier
-- Decision to Claim the Mantle of the Pithipatis is now visible if your capital is in India and you are Buddhist
-- Fixed Nuba culture starting with Performative Honor instead of Right to Prove
-- Fixed event to search for fern flower during Kupala Night not giving stress loss
-- Fixed several vanilla characters that RICE gives a martial education to not getting a commander trait
-- Fixed Sorbian culture not using RICE’s Sorbian namelist
-- Fixed Native American cultures’ gloss localization causing error log spam
-- Fixed the localization for the requirements of the Trans-Saharan merchant caravan travel option not displaying correct region 
-- Fixed trigger for killing off merchant NPCs from the merchant travel option at the end of traveling
-- Fixed Daju rulers not holding Dar al-Said in 1178
-- Fixed several instances of the code referring to the Pithipati of Bodh Gaya modifier as a dynasty modifier instead of a character modifier
-- Fixed some duplicate modifiers and localizations
-- Fixed some loc errors
+- Added two new flavor packs: Hangzhou: Splendor of the Song Dynasty and the Aslians: The Jungle Pacifists
+- Added 7 Southeast Asian themed soundtracks
+- Added 5 Chinese themed soundtracks
+- Added many new cultures and faiths in Asia
+- Added new playable landless adventurers:
+    - 867: Gung Ye, Pei Toutuo (aka Fahai)
+    - 1066: Aravindahrada, Seliangaya Bungsu
+    - 1178: Vidyanandana, Bukūri Yongšon
+- Added new COA for the Manichean Archegos (courtesy of DPh Kraken)
+- Removed some of RICE’s old East/Southeast Asian religions and cultures, as they’ve been superseded by vanilla’s new faiths/religions in Asia
+- Added new COAs courtesy of DPh Kraken
+- Added Giac Hai and his sons as courtiers of the adventurer-monk Khong Lo in 1066
+- Added a few more names to RICE’s Nubian namelist
+- Added DNA for a few easter egg characters
+- A lot of content’s geographical restrictions have been reworked to account for the new map
+- Replaced RICE’s old Seasonal Migrators tradition with Rajas of Asia’s Migrators tradition
+- Several RICE religions are now given Mountain Worship tenet instead of Cththonic Redoubts
+- East Bantu is now relocalized as Sabaki instead of Zanj, and RICE’s old Sabaki culture has been removed
+- Tweaked culture/faith setup for northern Mesopotamia/Western Iranian borderlands to be more in line with vanilla’s recent changes to the map in that region
+- Kaifeng Jews now have a small chance of appearing via Silk Road community events
+- Rebalanced frequency with ai_frequency_by_tier instead of ai_frequency for various character interactions (following vanilla’s new examples)
+- Rebalanced frequency with ai_check_interval_by_tier instead of ai_check_interval for various character interactions (following vanilla’s new examples) 
+- Tweaked geographical requirements for the Silk Road communities, partly to account for new geographical regions
+- Separated some of RICE’s old off-map African effects at game start into a separate file from the Sri Lanka stuff (credits to Msl229 for assistance with this)
+- All East Slavic cultures now start with Communal Lands, to represent the custom of Toloka or communal agricultural work
+- Made the Yufirid dynasty mostly Himyarite in 867 (thanks to Msl229 from the Rajas of Asia team for the tip)
+- Gave Lin Deng the Venerated Ancestor trait
+- Changed Khuzi to be a hybrid of Elymaean and Mashriqi
+- Iron Forest now has Cataphract Archer MAA art
+- Disabled Silk Road community decisions for landless admin nobles
+- Gave some RICE special buildings the is_mountain and travel_point_of_interest_stress_relief flags recently added in vanilla as appropriate
+- AI emperors/hegemons will now never take the Nile Empire decision, to prevent weird situations like the Mongols taking the decision causing an Empire "None of" in Egypt and Nubia
+- Siculo-Arabic culture counties will now exist in Sicily in the 10th century and not just afterwards, if playing with mods that add in such start dates
+- Updated some innovations’ different associated skills, akin to vanilla's recent changes
+- Removed an extra trait from Ibn Tulun
+- Various tweaks to cultures’ graphical code to ensure consistency between RICE and RICE+EPE compatch versions
+- Tweaked maximum values of Renown gain for the "Ancestor Veneration" activity to make more sense
+- Fixed RICE purging merchants from the caravan travel options if they were existing characters pulled from the character pool
+- Fixed RICE’s feudalization decision for non-vanilla African pagan religions not including most of RICE’s new African religions
+- Fixed missing localization for Fur names
+- Fixed some missing deity localizations for some Uralic pagan faiths
+- Fixed Polar Bear artifact from the Nordsetur walrus hunt decision event chain not being destroyed if you sell it
+- Fixed erroneous building icon for the final stage of the Mediterranean pirate building
+- Fixed RICE_remove_personality_traits_effect not accounting for the eccentric trait
+- Fixed decision to Finance Almadraba Fishing not actually costing any gold despite the UI saying so
+- Fixed Unite the Nile decision being visible to everyone
+- Fixed dummy character version of the African version of Eldad ha-Dani (for appearance purposes) having the dynasty as his last name
+- Fixed African Apotropaic Tattoos special doctrine potentially not being passed down to a new faith
+- Fixed the names of various Egyptian characters in 867 based on iFrunx’s recommendations
+- Fixed Makuria/Alodia’s Queen Mother Maria’s age in the 1178 bookmark
+- Fixed missing head_determination = head_determination_domain in some cultures in RICE+EPE compatch
+- Fixed decision events to choose a patron Tibetan/Buddhist deity decision not resetting the decision cooldown if you change your mind and opt-out of choosing one
+- Fixed how Erzya and Moksha (aka Mordvin cultures) are assigned at all start dates
+- Fixed loc error for the Pilgrimage to Ramasetu name in the activity screen
 - Miscellaneous bugfixes
 
 
@@ -142,6 +176,7 @@ Special thanks in particular to:
 - Naatturi for content from the Ukonusko Overhaul mod
 - Nezaros for religion and bookmark art
 - Nix for Evenki names
+- Oriental Empires for collab and help
 - pharaox for helping fix a lot of issues, including some longstanding ones related to Activities
 - PinkPanzer for some decision art
 - Rajas of Asia for Asian stuff and collab
