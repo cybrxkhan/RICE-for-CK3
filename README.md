@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/r2J2u54.jpg"> <img src="https://i.imgur.com/kL2wGFE.jpg">
 
-## Latest Version: Version 1.18.0 "Scholar-Gentry" (Released 12/9/25, for vanilla patch 1.18.x)
+## Latest Version: Version 1.18.0.a Hotfix for "Scholar-Gentry" (Released 12/9/25, for vanilla patch 1.18.x)
 
 **Newest Flavor Packs: *Hangzhou: Splendor of the Song Dynasty* and *Aslians: The Jungle Pacifists***
 
@@ -83,6 +83,19 @@ At the moment, RICE includes **42** flavor packs:
 ## Latest Changelog
 
 <img src="https://i.imgur.com/Bz5rOLA.jpg">
+
+### Version 1.18.0.a Hotfix for "Scholar-Gentry"
+
+- Removed the hostility doctrine effects of the Buddhist Canon doctrines, to prevent situations like the Maitreyist faith seeing everyone else as righteous
+- RICE activities are now greyed out when you recently attended them, and show how long the cooldown is for, to be consistent with recent changes to vanilla’s activities
+- Rebalanced costs of decisions for the Temple of Yue Fei, Su Causeway, Qiantang River Seawall, and West Lake improvements
+- Hephthalite culture now has Devoted Horsemanship instead of Horse Lords, to be in line with other vanilla nomad cultures
+- Fixed missing localization for some bookmark gloss tooltips
+- Fixed missing icon for Malay paganism
+- Fixed missing localization for Melanesian, Micronesian, Polynesian, and Papuan heritages
+- Fixed missing localization for Viet pagan priests
+- Fixed missing localization from the West Lake activity for guests during an event
+- Miscellaneous bugfixes
 
 ### Version 1.18.0 "Scholar-Gentry"
 
