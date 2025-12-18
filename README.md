@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/r2J2u54.jpg"> <img src="https://i.imgur.com/kL2wGFE.jpg">
 
-## Latest Version: Version 1.18.0.b Hotfix for "Scholar-Gentry" (Released 12/13/25, for vanilla patch 1.18.x)
+## Latest Version: Version 1.18.0.c Hotfix for "Scholar-Gentry" (Released 12/17/25, for vanilla patch 1.18.x)
 
 **Newest Flavor Packs: *Hangzhou: Splendor of the Song Dynasty* and *Aslians: The Jungle Pacifists***
 
@@ -83,6 +83,21 @@ At the moment, RICE includes **42** flavor packs:
 ## Latest Changelog
 
 <img src="https://i.imgur.com/Bz5rOLA.jpg">
+
+### Version 1.18.0.c Hotfix for "Scholar-Gentry"
+
+- Added some randomly spawned Jakun, Moklen, Seletar, and Sama courtiers in SE Asia at game start
+- AI is now more likely to take the option to Abandon the Manichean Church, rather than Support or Reform it, for the decision to Influence the Future of the Uyghur Manichean Church in 867
+- Merchant caravan travel events no longer specify a specific merchant trait xp gain, as it was sometimes wrong; it now simply states you will gain between 1-5 xp
+- Nerfed many of the Buddhist/Bon deity modifiers
+- Moved the pirate den special building in Mahoyadapuram to Calicut to avoid replacing the potential holy site building for Malabarism
+- Added some French translations of gloss tooltips, courtesy of sonic21121
+- Fixed missing icons for Papuan faiths
+- Fixed merchants spawned by caravan travel options having placeholder African cultures/faiths
+- Fixed the ruler of Wadi el-Milk not being a vassal of Makuria when playing with Ibn Battuta’s Legacy
+- Fixed DNA for several SE Asian and Chinese characters missing some elements in RICE+EPE compatch
+- Fixed Normandy decisions giving Normans the wrong innovations if the Rollo analogue is not Norse culture
+- Miscellaneous bugfixes
 
 ### Version 1.18.0.b Hotfix for "Scholar-Gentry"
 
