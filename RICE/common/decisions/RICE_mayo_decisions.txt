@@ -1,0 +1,412 @@
+﻿
+# Influence the Future of the Uyghur Manichean Church
+RICE_mayo_school_of_mayo_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_christian_monastery_monks.dds" }
+	decision_group_type = major
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 64
+		kingdom = 48
+		empire = 36
+		hegemony = 36
+	}
+
+	#cooldown = { days = 10 } #1825
+	
+	desc = RICE_mayo_school_of_mayo_decision_desc
+	
+	is_shown = {
+		NOT = { has_global_variable = RICE_game_started_on_TFE_start_date }
+		is_playable_character = yes
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_mayo_school_of_mayo_decision_done
+			}
+		}
+		any_held_county = {
+			any_county_province = {
+				geographical_region = ghw_region_celtic
+			}
+		}
+		religion = religion:christianity_religion
+	}
+	
+	is_valid = {
+		is_landed = yes
+		religion = religion:christianity_religion
+		piety_level >= 3
+		has_title = title:c_mayo
+
+		# custom_description = {
+		# 	text = RICE_custom_ireland_capital_req
+		# 	capital_county = {
+		# 		any_county_province = {
+		# 			geographical_region = custom_ireland
+		# 		}
+		# 	}
+		# }
+
+		title:c_mayo = {
+			religion = religion:christianity_religion
+		}
+
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+
+	widget = {
+		gui = "decision_view_widget_RICE_mayo_school_of_mayo_decision"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "RICE_mayo_school_of_mayo_decision_PICK_TYPE"
+		show_from_start = yes
+		
+		### Embrace Irish Learning
+		item = {
+			value = RICE_mayo_school_of_mayo_decision_irish
+			current_description = RICE_mayo_school_of_mayo_decision_irish_desc
+			localization = RICE_mayo_school_of_mayo_decision_irish_name
+			icon = "gfx/interface/icons/court_position_types/master_bard_camp_officer.dds"
+			ai_chance = {
+				value = 10
+			}
+		}
+		
+		### Revitalize English Connections
+		item = {
+			value = RICE_mayo_school_of_mayo_decision_english
+			current_description = RICE_mayo_school_of_mayo_decision_english_desc
+			localization = RICE_mayo_school_of_mayo_decision_english_name
+			icon = "gfx/interface/icons/widgets/RICE_north_atlantic_clergy.dds"
+			ai_chance = {
+				value = 30
+			}
+		}
+		
+		### Destroy the School
+		item = {
+			value = RICE_mayo_school_of_mayo_decision_destroy
+			current_description = RICE_mayo_school_of_mayo_decision_destroy_desc
+			localization = RICE_mayo_school_of_mayo_decision_destroy_name
+			icon = "gfx/interface/icons/message_feed/dread.dds"
+			ai_chance = {
+				value = 60
+			}
+		}
+
+	}
+
+	effect = {
+		capital_county = {
+			faith = {
+				save_scope_as = capital_faith
+			}
+		}
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_mayo_school_of_mayo_decision_done
+		}
+		save_scope_as = uyghur_leader
+
+		# AI will tend towards destroying the Church, but not necessarily
+		if = {
+			limit = {
+				is_ai = yes
+			}
+
+			random_list = {
+				# irish
+				10 = {
+					trigger_event = mayo.0010
+				}
+				# english
+				10 = {
+					trigger_event = mayo.0011
+				}
+				# destroy
+				10 = {
+					trigger_event = mayo.0012
+				}
+			}
+		}
+
+		else_if = {
+			limit = { scope:RICE_mayo_school_of_mayo_decision_irish = yes }
+			show_as_tooltip = {
+				RICE_mayo_school_of_mayo_decision_irish_effect = yes
+			}
+			trigger_event = mayo.0010
+		}
+
+		else_if = {
+			limit = { scope:RICE_mayo_school_of_mayo_decision_english = yes }
+			show_as_tooltip = {
+				RICE_mayo_school_of_mayo_decision_english_effect = yes
+			}
+			trigger_event = mayo.0011
+		}
+
+		else_if = {
+			limit = { scope:RICE_mayo_school_of_mayo_decision_destroy = yes }
+			show_as_tooltip = {
+				RICE_mayo_school_of_mayo_decision_destroy_effect = yes
+			}
+			trigger_event = mayo.0012
+		}
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_mayo_school_of_mayo_decision_context_tooltip
+		}
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value } # Will depend 
+		piety = major_piety_gain
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	ai_will_do = {
+		base = 25
+
+		modifier = {
+			add = 15
+			# Happened around the 10th century
+			current_date >= 875.1.1
+		}
+
+		modifier = {
+			add = 15
+			# Happened around the 10th century
+			current_date >= 925.1.1
+		}
+
+		modifier = {
+			add = 15
+			# Happened around the 10th century
+			current_date >= 975.1.1
+		}
+
+		modifier = {
+			add = 15
+			# Happened around the 10th century
+			current_date >= 1025.1.1
+		}
+
+	}
+}
+
+
+
+# Bury Bog Butter
+RICE_mayo_bury_bog_butter = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_western_european_meadows.dds" }
+	decision_group_type = RICE_regional
+
+	desc = RICE_mayo_bury_bog_butter_desc
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 48
+		duchy = 48
+		kingdom = 48
+		empire = 48
+		hegemony = 48
+	}
+
+	cooldown = { days = 1825 } 
+
+	is_shown = {
+		is_playable_character = yes
+		culture = {
+			has_innovation = innovation_RICE_placeholder_01
+		}
+	}
+	
+	is_valid = {
+		culture = {
+			has_innovation = innovation_RICE_placeholder_01
+		}
+		OR = {
+			custom_description = {
+				text = "RICE_any_held_county_bog_butter_terrain_capital_req"
+				any_held_title = {
+					tier = tier_county
+					title_province = {
+						OR = {
+							terrain = hills
+							terrain = forest
+							terrain = wetlands
+							terrain = taiga
+						}						
+					}
+				}
+			}
+			custom_description = {
+				text = "RICE_any_held_county_bog_butter_terrain_domicile_req"
+				domicile.domicile_location ?= {
+					OR = {
+						terrain = hills
+						terrain = forest
+						terrain = wetlands
+						terrain = taiga
+					}
+				}
+			}
+		}
+		custom_description = {
+			text = "RICE_any_held_county_bog_butter_flag_req"
+			NOT = {
+				has_character_flag = RICE_mayo_buried_bog_butter_flag
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+
+		show_as_tooltip = {
+			RICE_mayo_bury_bog_butter_basic_effect = yes
+		}
+
+		custom_tooltip = RICE_mayo_bury_bog_butter_effect_tooltip_1 
+		custom_tooltip = RICE_mayo_bury_bog_butter_effect_tooltip_2 
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_mayo_bury_bog_butter_context_tooltip
+		}
+
+		trigger_event = {
+			id = mayo.8888
+		}
+	}
+
+	cost = { 
+		gold = { value = 25 } # Will depend 
+	}	
+
+	ai_potential = {
+		short_term_gold >= 25
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -10
+			has_trait = paranoid
+		}
+	}
+}
+
+# Retrieve Bog Butter
+RICE_mayo_retrieve_bog_butter = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_western_european_meadows.dds" }
+	decision_group_type = RICE_regional
+
+	desc = RICE_mayo_retrieve_bog_butter_desc
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 48
+		duchy = 48
+		kingdom = 48
+		empire = 48
+		hegemony = 48
+	}
+
+	cooldown = { days = 3650 } 
+
+	is_shown = {
+		is_playable_character = yes
+		OR = {
+			culture = {
+				has_innovation = innovation_RICE_placeholder_01
+			}
+			has_character_flag = RICE_mayo_buried_bog_butter_flag
+		}
+	}
+	
+	is_valid = {
+		OR = {
+			culture = {
+				has_innovation = innovation_RICE_placeholder_01
+			}
+			has_character_flag = RICE_mayo_buried_bog_butter_flag
+		}
+		NOT = { has_character_flag = RICE_mayo_recently_buried_bug_butter_flag }
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+
+		custom_tooltip = RICE_mayo_retrieve_bog_butter_effect_tooltip_1 
+		
+		show_as_tooltip = {
+			RICE_mayo_retrieve_bog_butter_effect = yes
+		}
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_mayo_retrieve_bog_butter_context_tooltip
+		}
+
+		trigger_event = {
+			id = mayo.8888
+		}
+	}
+
+	# cost = { 
+	# 	gold = { value = RICE_activity_cost } # Will depend 
+	# }	
+
+	# ai_potential = {
+	# 	short_term_gold >= RICE_activity_cost
+	# }
+
+	ai_will_do = {
+		base = 40
+		modifier = {
+			add = 10
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -10
+			has_trait = patient
+		}
+	}
+}
+
+
