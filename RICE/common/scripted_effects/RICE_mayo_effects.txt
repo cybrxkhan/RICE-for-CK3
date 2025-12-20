@@ -12,6 +12,26 @@
 	#
 	############################################################
 
+    faith:insular_celtic = {
+        # Independent diocese structure, abbeys controlled by dynasties
+        if = {
+            limit = { has_doctrine = doctrine_clerical_succession_spiritual_fixed_appointment }
+            remove_doctrine = doctrine_clerical_succession_spiritual_fixed_appointment
+            add_doctrine = doctrine_clerical_succession_temporal_fixed_appointment
+        }
+        # Martial priests
+        if = {
+            limit = { has_doctrine = doctrine_clerical_function_alms_and_pacification }
+            remove_doctrine = doctrine_clerical_function_alms_and_pacification
+            add_doctrine = doctrine_clerical_function_recruitment
+        }
+        # Secular divorce
+        if = {
+            limit = { has_doctrine = doctrine_divorce_approval }
+            remove_doctrine = doctrine_divorce_approval
+            add_doctrine = doctrine_divorce_allowed
+        }
+    }	
 
 	############################################################ 
 	#
@@ -443,4 +463,97 @@ RICE_visit_holy_well_completed_log_entry_effect = {
 			}	
 		}
 	}	
+}
+
+RICE_embrace_gaelicization_effect = {
+	add_legitimacy = minor_legitimacy_loss
+	set_culture = scope:gaelic_culture
+	add_prestige = medium_prestige_gain
+	add_character_modifier = {
+		modifier = RICE_recently_gaelicized
+		years = 10
+	}
+	every_spouse = {
+		limit = {
+			is_landed = no
+			culture = { has_same_culture_heritage = scope:old_culture }
+			NOT = { culture = { has_cultural_pillar = heritage_goidelic } }
+		}
+		set_culture = scope:gaelic_culture
+		add_character_modifier = {
+			modifier = RICE_recently_gaelicized
+			years = 10
+		}
+	}
+	every_close_family_member = {
+		custom = RICE_all_family_members_at_court_sharing_old_heritage
+		limit = {
+			is_landed = no
+			culture = { has_same_culture_heritage = scope:old_culture }
+			NOT = { culture = { has_cultural_pillar = heritage_goidelic } }
+			is_courtier_of = root
+		}
+		set_culture = scope:gaelic_culture
+		add_character_modifier = {
+			modifier = RICE_recently_gaelicized
+			years = 10
+		}
+	}
+	every_courtier = {
+		custom = RICE_all_courtiers_sharing_old_heritage
+		limit = {
+			is_landed = no
+			culture = { has_same_culture_heritage = scope:old_culture }
+			NOT = { culture = { has_cultural_pillar = heritage_goidelic } }
+		}
+		random = {
+			chance = 33
+			set_culture = scope:gaelic_culture
+			add_character_modifier = {
+				modifier = RICE_recently_gaelicized
+				years = 10
+			}
+		}
+	}
+	top_liege = {
+		if = {
+			limit = {
+				culture = { has_cultural_pillar = heritage_goidelic }
+			}
+			add_opinion = {
+				target = root
+				modifier = RICE_opinion_embraced_gaelicization
+				opinion = 20
+			}
+		}
+		else = {
+			add_opinion = {
+				target = root
+				modifier = RICE_opinion_embraced_gaelicization
+				opinion = -20
+			}
+		}
+		every_vassal_or_below = {
+			custom = RICE_every_goidelic_ruler_in_realm
+			limit = {
+				culture = { has_cultural_pillar = heritage_goidelic }
+			}
+			add_opinion = {
+				target = root
+				modifier = RICE_opinion_embraced_gaelicization
+				opinion = 20
+			}			
+		}
+		every_vassal_or_below = {
+			custom = RICE_every_non_goidelic_ruler_in_realm
+			limit = {
+				NOT = { culture = { has_cultural_pillar = heritage_goidelic } }
+			}
+			add_opinion = {
+				target = root
+				modifier = RICE_opinion_embraced_gaelicization
+				opinion = -20
+			}			
+		}
+	}
 }

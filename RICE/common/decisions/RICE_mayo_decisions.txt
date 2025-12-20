@@ -207,6 +207,114 @@ RICE_mayo_school_of_mayo_decision = {
 }
 
 
+RICE_embrace_gaelicization = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_stone_church.dds" }
+
+	decision_group_type = major
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 48
+		duchy = 48
+		kingdom = 0
+		empire = 0
+		hegemony = 0
+	}
+
+	desc = RICE_embrace_gaelicization_desc
+
+	
+	is_shown = {
+		any_held_title = {
+			tier = tier_county
+			culture = { has_cultural_tradition = tradition_RICE_brehon_law }
+		}
+		NOT = { culture = { has_cultural_pillar = heritage_goidelic } }
+		NOT = { has_character_flag = RICE_embraced_gaelicization } # To avoid players trying to cheese it
+	}
+	
+	is_valid = {
+		any_held_title = {
+			tier = tier_county
+			culture = { has_cultural_tradition = tradition_RICE_brehon_law }
+		}
+		NOT = { culture = { has_cultural_pillar = heritage_goidelic } }
+	}
+	
+	is_valid_showing_failures_only = {
+		RICE_is_available_adult_even_if_sick_trigger = yes
+	}
+
+
+	effect = {
+
+		culture = {
+			save_scope_as = old_culture
+		}
+
+		capital_county.culture = {
+			save_scope_as = gaelic_culture
+		}
+
+		custom_tooltip = RICE_embrace_gaelicization_effect_tooltip_1
+
+		show_as_tooltip = {
+			RICE_embrace_gaelicization_effect = yes
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_embrace_gaelicization_context_tooltip
+		}
+		
+		trigger_event = {
+			id = mayo.0023
+		}
+	}
+
+	cost = {
+		gold = { value = RICE_activity_cost } 
+		#prestige = { value = medium_prestige_value }
+	}
+
+	ai_potential = {
+		short_term_gold > RICE_activity_cost
+	}
+
+	ai_will_do = {
+		base = 10
+		modifier = {
+			add = -30
+			highest_held_title_tier > tier_duchy # Don't want kings becoming Chinese willy nilly
+		}
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -10
+			has_trait = content
+		}
+		# Make it very likely to happen in Dunhuang region
+		modifier = {
+			add = 80
+			any_directly_owned_province = {
+				geographical_region = RICE_dunhuang_region
+			}
+		}
+		modifier = {
+			add = 100
+			liege = {
+				has_title = title:k_hexi
+				current_date < 910.1.1
+			}
+		}
+	}
+}
+
+
 # Consecrate a Holy Well
 # By Cybrxkhan
 RICE_consecrate_holy_well = {
