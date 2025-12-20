@@ -207,6 +207,356 @@ RICE_mayo_school_of_mayo_decision = {
 }
 
 
+# Consecrate a Holy Well
+# By Cybrxkhan
+RICE_consecrate_holy_well = {
+	picture = {
+		trigger = {
+			culture = { has_graphical_mediterranean_culture_group_trigger = yes }
+		}
+		reference = "gfx/interface/illustrations/event_scenes/decision_erect_homer_monument.dds"
+	}
+	picture = {
+		trigger = {
+			culture = { has_graphical_mena_culture_group_trigger = yes }
+		}
+		reference = "gfx/interface/illustrations/event_scenes/decision_visit_western_oasis_springs.dds"
+	}
+	picture = {
+		trigger = {
+			culture = { has_graphical_east_asia_culture_group_trigger = yes }
+		}
+		reference = "gfx/interface/illustrations/event_scenes/decision_RICE_east_asian_garden.dds"
+	}
+	picture = {
+		trigger = {
+			culture = { has_graphical_india_culture_group_trigger = yes }
+		}
+		reference = "gfx/interface/illustrations/decisions/decision_rice_tropical_hot_springs.dds"
+	}
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_RICE_forest_river.dds"
+	}
+	decision_group_type = RICE_religious
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 64
+		duchy = 64
+		kingdom = 64
+		empire = 64
+		hegemony = 64
+	}
+
+	cooldown = { days = 7300 } #1825
+	
+	desc = RICE_consecrate_holy_well_desc
+	
+	is_shown = {
+		# Do not enable it if TFE is running, as the TFE version will take precedence
+		NOT = { exists = culture:soissons }
+		is_playable_character = yes
+		# NOT = {
+		# 	any_directly_owned_province = {
+		# 		county = {
+		# 			OR = {
+		# 				has_county_modifier = TFE_holy_well_level_1
+		# 				has_county_modifier = TFE_holy_well_level_2
+		# 				has_county_modifier = TFE_holy_well_level_3
+		# 			}
+		# 		}
+		# 	}
+		# }
+		# TFE has its own version
+		RICE_is_holy_well_culture = yes
+	}
+	
+	is_valid = {
+		is_landed = yes
+		# TFE has its own version
+		RICE_is_holy_well_culture = yes
+		custom_description = {
+			text = TFE_no_holy_well_county
+			NOT = {
+				any_directly_owned_province = {
+					county = {
+						OR = {
+							has_county_modifier = TFE_holy_well_level_1
+							has_county_modifier = TFE_holy_well_level_2
+							has_county_modifier = TFE_holy_well_level_3
+						}
+					}
+				}
+			}	
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	cost = {
+		gold = RICE_activity_cost
+		prestige = medium_prestige_value
+	}
+
+	effect = {
+
+		#custom_tooltip = RICE_consecrate_holy_well_effect_tooltip_1
+		custom_tooltip = RICE_consecrate_holy_well_effect_tooltip_2
+		custom_tooltip = RICE_consecrate_holy_well_effect_tooltip_3
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_consecrate_holy_well_context_tooltip
+		}
+
+		trigger_event = {
+			id = mayo.0020
+		}
+	}
+
+	ai_potential = {
+		short_term_gold >= RICE_activity_cost
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = zealous
+		}
+		modifier = {
+			add = -10
+			has_trait = cynical
+		}
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+	}
+}
+
+# # Visit a Holy Well
+# # By Cybrxkhan
+# RICE_visit_holy_well = {
+# 	picture = {
+# 		trigger = {
+# 			culture = { has_graphical_mediterranean_culture_group_trigger = yes }
+# 		}
+# 		reference = "gfx/interface/illustrations/event_scenes/decision_erect_homer_monument.dds"
+# 	}
+# 	picture = {
+# 		trigger = {
+# 			culture = { has_graphical_mena_culture_group_trigger = yes }
+# 		}
+# 		reference = "gfx/interface/illustrations/event_scenes/decision_visit_western_oasis_springs.dds"
+# 	}
+# 	picture = {
+# 		trigger = {
+# 			culture = { has_graphical_east_asia_culture_group_trigger = yes }
+# 		}
+# 		reference = "gfx/interface/illustrations/event_scenes/decision_RICE_east_asian_garden.dds"
+# 	}
+# 	picture = {
+# 		trigger = {
+# 			culture = { has_graphical_india_culture_group_trigger = yes }
+# 		}
+# 		reference = "gfx/interface/illustrations/decisions/decision_rice_tropical_hot_springs.dds"
+# 	}
+# 	picture = {
+# 		reference = "gfx/interface/illustrations/decisions/decision_RICE_forest_river.dds"
+# 	}
+# 	decision_group_type = RICE_religious
+
+# 	ai_check_interval_by_tier = {
+# 		barony = 0
+# 		county = 64
+# 		duchy = 64
+# 		kingdom = 64
+# 		empire = 64
+# 		hegemony = 64
+# 	}
+
+# 	cooldown = { days = 3650 } #1825
+	
+# 	desc = RICE_visit_holy_well_desc
+	
+# 	is_shown = {
+# 		is_playable_character = yes
+# 		any_directly_owned_province = {
+# 			county = {
+# 				OR = {
+# 					has_county_modifier = TFE_holy_well_level_1
+# 					has_county_modifier = TFE_holy_well_level_2
+# 					has_county_modifier = TFE_holy_well_level_3
+# 				}
+# 			}
+# 		}
+# 		culture = {
+# 			has_cultural_tradition = tradition_sacred_springs
+# 		}
+# 		NOT = {
+# 			any_owned_story = {
+# 				story_type = story_RICE_visit_holy_well
+# 			}
+# 		}
+# 	}
+	
+# 	is_valid = {
+# 		culture = {
+# 			has_cultural_tradition = tradition_sacred_springs
+# 		}
+# 		custom_description = {
+# 			text = TFE_yes_holy_well_county
+# 			any_directly_owned_province = {
+# 				county = {
+# 					OR = {
+# 						has_county_modifier = TFE_holy_well_level_1
+# 						has_county_modifier = TFE_holy_well_level_2
+# 						has_county_modifier = TFE_holy_well_level_3
+# 					}
+# 				}
+# 			}	
+# 		}
+# 	}
+
+# 	is_valid_showing_failures_only = {
+# 		is_available_adult = yes
+# 	}
+
+# 	cost = {
+# 		gold = TFE_basic_activity_cost
+# 	}
+
+# 	effect = {
+
+# 		custom_tooltip = RICE_visit_holy_well_effect_tooltip_1
+# 		custom_tooltip = RICE_visit_holy_well_effect_tooltip_2
+
+# 		add_character_flag = planning_an_activity
+# 		if = {
+# 			limit = {
+# 				any_directly_owned_province = {
+# 					county = {
+# 						has_county_modifier = TFE_holy_well_level_3
+# 					}
+# 				}
+# 			}			
+# 			random_directly_owned_province = {
+# 				limit = {
+# 					county = {
+# 						has_county_modifier = TFE_holy_well_level_3
+# 					}
+# 				}
+# 				county = {
+# 					root = {
+# 						set_variable = {
+# 							name = county_well
+# 							value = PREV
+# 						}
+# 					}
+# 				}
+# 			}
+# 		}
+# 		else_if = {
+# 			limit = {
+# 				any_directly_owned_province = {
+# 					county = {
+# 						has_county_modifier = TFE_holy_well_level_2
+# 					}
+# 				}
+# 			}			
+# 			random_directly_owned_province = {
+# 				limit = {
+# 					county = {
+# 						has_county_modifier = TFE_holy_well_level_2
+# 					}
+# 				}
+# 				county = {
+# 					root = {
+# 						set_variable = {
+# 							name = county_well
+# 							value = PREV
+# 						}
+# 					}
+# 				}
+# 			}
+# 		}
+# 		else_if = {
+# 			limit = {
+# 				any_directly_owned_province = {
+# 					county = {
+# 						has_county_modifier = TFE_holy_well_level_1
+# 					}
+# 				}
+# 			}			
+# 			random_directly_owned_province = {
+# 				limit = {
+# 					county = {
+# 						has_county_modifier = TFE_holy_well_level_1
+# 					}
+# 				}
+# 				county = {
+# 					root = {
+# 						set_variable = {
+# 							name = county_well
+# 							value = PREV
+# 						}
+# 					}
+# 				}
+# 			}
+# 		}
+# 		# Failsafe in case there's no appropriate county
+# 		else = {
+# 			root = {
+# 				set_variable = {
+# 					name = county_well
+# 					value = capital_county
+# 				}
+# 			}
+# 		}
+# 		create_story = story_RICE_visit_holy_well
+
+# 		if = {
+# 			limit = {
+# 				has_game_rule = RICE_historical_context_on
+# 			}
+# 			custom_tooltip = RICE_visit_holy_well_context_tooltip
+# 		}
+# 	}
+
+# 	ai_potential = {
+# 		short_term_gold >= 50
+# 	}
+
+# 	ai_will_do = {
+# 		base = 30
+# 		modifier = {
+# 			add = 10
+# 			has_trait = zealous
+# 		}
+# 		modifier = {
+# 			add = -10
+# 			has_trait = cynical
+# 		}
+# 		modifier = {
+# 			add = 10
+# 			has_trait = diligent
+# 		}
+# 		modifier = {
+# 			add = -10
+# 			has_trait = lazy
+# 		}
+# 	}
+# }
+
 
 # Bury Bog Butter
 RICE_mayo_bury_bog_butter = {

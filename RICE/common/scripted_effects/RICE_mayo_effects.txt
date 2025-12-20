@@ -38,28 +38,34 @@
 	culture:pictish = {		
 		add_innovation = innovation_RICE_placeholder_01 # Bog Butter
 		add_innovation = innovation_RICE_placeholder_02 # Crannogs
+		remove_variable = tradition_cooldown
 	}
 
 	culture:scottish = {		
 		add_innovation = innovation_RICE_placeholder_01 # Bog Butter
 		add_innovation = innovation_RICE_placeholder_02 # Crannogs
+		remove_variable = tradition_cooldown
 	}
 
 	culture:gaelic = {		
 		add_innovation = innovation_RICE_placeholder_01 # Bog Butter
 		add_innovation = innovation_RICE_placeholder_02 # Crannogs
+		remove_variable = tradition_cooldown
 	}
 
 	culture:welsh = {		
 		add_innovation = innovation_RICE_placeholder_02 # Crannogs
+		remove_variable = tradition_cooldown
 	}
 
 	culture:cumbrian = {		
 		add_innovation = innovation_RICE_placeholder_02 # Crannogs
+		remove_variable = tradition_cooldown
 	}
 
 	culture:cornish = {		
 		add_innovation = innovation_RICE_placeholder_02 # Crannogs
+		remove_variable = tradition_cooldown
 	}
 
 
@@ -143,6 +149,17 @@
 	# Rock of Cashel
 	if = {
 		limit = {
+			game_start_date < 1050.1.1
+			title:b_clonmel = {
+				NOT = { title_province = { has_holding_type = city_holding } }
+			}
+		}
+		title:b_clonmel.title_province = {
+			set_holding_type = tribal_holding
+		}
+	}
+	if = {
+		limit = {
 			title:b_clonmel = { # Closest to the site out of all baronies
 				title_province = { has_special_building = no }
 			}
@@ -202,4 +219,228 @@ RICE_mayo_butter_interaction_effect = {
 		}
 	}
 
+}
+
+RICE_visit_holy_well_initial_effect = {
+	if = {
+		limit = {
+			scope:county = {
+				has_county_modifier = TFE_holy_well_level_3
+			}
+		}
+		random = {
+			chance = 45
+			if = {
+				limit = {
+					piety_level >= 5
+				}
+				add = 9
+			}
+			else_if = {
+				limit = {
+					piety_level >= 4
+				}
+				add = 6
+			}
+			else_if = {
+				limit = {
+					piety_level >= 3
+				}
+				add = 3
+			}
+			scope:activity = {
+				add_activity_log_entry = {
+					key = RICE_visit_holy_well_gain_modifier_log
+					tags = { good }
+					show_in_conclusion = yes
+					character = root
+					scope:host = {
+						send_interface_toast = {
+							type = event_toast_effect_good
+							left_icon = ROOT
+							title = mayo.0021.toast
+							add_character_modifier = {
+								modifier = TFE_healing_waters_of_a_holy_well
+								years = 10
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			scope:county = {
+				has_county_modifier = TFE_holy_well_level_2
+			}
+		}
+		random = {
+			chance = 30
+			if = {
+				limit = {
+					piety_level >= 5
+				}
+				add = 9
+			}
+			else_if = {
+				limit = {
+					piety_level >= 4
+				}
+				add = 6
+			}
+			else_if = {
+				limit = {
+					piety_level >= 3
+				}
+				add = 3
+			}
+			scope:activity = {
+				add_activity_log_entry = {
+					key = RICE_visit_holy_well_gain_modifier_log
+					tags = { good }
+					show_in_conclusion = yes
+					character = root
+					scope:host = {
+						send_interface_toast = {
+							type = event_toast_effect_good
+							left_icon = ROOT
+							title = mayo.0021.toast
+							add_character_modifier = {
+								modifier = TFE_healing_waters_of_a_holy_well
+								years = 10
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			scope:county = {
+				has_county_modifier = TFE_holy_well_level_1
+			}
+		}
+		random = {
+			chance = 15
+			if = {
+				limit = {
+					piety_level >= 5
+				}
+				add = 9
+			}
+			else_if = {
+				limit = {
+					piety_level >= 4
+				}
+				add = 6
+			}
+			else_if = {
+				limit = {
+					piety_level >= 3
+				}
+				add = 3
+			}
+			scope:activity = {
+				add_activity_log_entry = {
+					key = RICE_visit_holy_well_gain_modifier_log
+					tags = { good }
+					show_in_conclusion = yes
+					character = root
+					scope:host = {
+						send_interface_toast = {
+							type = event_toast_effect_good
+							left_icon = ROOT
+							title = mayo.0021.toast
+							add_character_modifier = {
+								modifier = TFE_healing_waters_of_a_holy_well
+								years = 10
+							}
+						}
+					}
+				}
+			}
+		}
+	}	
+}
+
+
+
+RICE_visit_holy_well_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_visit_holy_well_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			scope:host = {
+				if = {
+					limit = {
+						scope:county = {
+							has_county_modifier = TFE_holy_well_level_3
+						}
+					}
+					add_legitimacy = medium_legitimacy_gain
+				}
+				else_if = {
+					limit = {
+						scope:county = {
+							has_county_modifier = TFE_holy_well_level_2
+						}
+					}
+					add_legitimacy = minor_legitimacy_gain
+				}
+				else_if = {
+					limit = {
+						scope:county = {
+							has_county_modifier = TFE_holy_well_level_1
+						}
+					}
+					add_legitimacy = miniscule_legitimacy_gain
+				}			
+			}
+			every_attending_character = {
+				#limit = { this != scope:host }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				if = {
+					limit = {
+						scope:county = {
+							has_county_modifier = TFE_holy_well_level_3
+						}
+					}
+					add_piety = 150
+					stress_impact = {
+						base = medium_stress_impact_loss
+						zealous = miniscule_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						scope:county = {
+							has_county_modifier = TFE_holy_well_level_2
+						}
+					}
+					add_piety = 100
+					stress_impact = {
+						base = minor_stress_impact_loss
+						zealous = miniscule_stress_impact_loss
+					}
+				}
+				else_if = {
+					limit = {
+						scope:county = {
+							has_county_modifier = TFE_holy_well_level_1
+						}
+					}
+					add_piety = 50
+					stress_impact = {
+						base = miniscule_stress_impact_loss
+						zealous = miniscule_stress_impact_loss
+					}
+				}
+			}	
+		}
+	}	
 }

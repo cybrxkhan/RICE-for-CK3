@@ -1,0 +1,177 @@
+﻿###############################################################################
+# 
+# mayo
+# 
+# mayo.0000-mayo.0019			Setup events, history events, miscellaneous events and decisions
+# mayo.0020-mayo.0029			Minor decisions
+# mayo.0030-mayo.0039			???
+# mayo.0040-mayo.0049			???
+# mayo.0050-mayo.0079			???
+# mayo.0080-mayo.0099			Generic flavor events
+# 
+###############################################################################
+
+namespace = mayo
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# mayo.0000-mayo.0019
+# 
+######################################################################################
+
+######################################################################################
+# 
+# MINOR DECISIONS
+# 
+# mayo.0020-mayo.0029
+# 
+######################################################################################
+
+
+# Well consecration (by Cybrxkhan) - borrowed from my original work in TFE
+mayo.0020 = {
+	type = character_event
+	title = mayo.0020.t
+	desc = mayo.0020.desc
+	theme = faith
+	override_background = { reference = wilderness }
+	
+	right_portrait = {
+		character = root
+		animation = personality_honorable
+	}
+
+	immediate = {
+		capital_county = {
+			save_scope_as = county
+		}
+		random_list = {
+			40 = {
+				modifier = {
+					add = 8
+					piety_level <= 1
+				}
+				modifier = {
+					add = 4
+					piety_level <= 2
+				}
+				scope:county = {
+					add_county_modifier = {
+						modifier = TFE_holy_well_level_1
+						years = 20
+					}
+				}
+			}
+			30 = {
+				modifier = {
+					add = 4
+					piety_level <= 2
+				}
+				modifier = {
+					add = 8
+					piety_level <= 3
+				}
+				modifier = {
+					add = 4
+					piety_level <= 4
+				}
+				scope:county = {
+					add_county_modifier = {
+						modifier = TFE_holy_well_level_2
+						years = 20
+					}
+				}
+			}
+			20 = {
+				modifier = {
+					add = 4
+					piety_level >= 3
+				}
+				modifier = {
+					add = 8
+					piety_level >= 4
+				}
+				modifier = {
+					add = 4
+					piety_level >= 5
+				}
+				scope:county = {
+					add_county_modifier = {
+						modifier = TFE_holy_well_level_3
+						years = 20
+					}
+				}
+			}
+		}
+	}
+	
+	# Ok
+	option = {
+		name = mayo.0020.a
+		custom_tooltip = mayo.0020.tooltip
+	}
+
+}
+
+
+# Visiting the Holy Well (by Cybrxkhan) - borrowed from my original work in TFE
+mayo.0021 = {
+	type = activity_event
+	title =  mayo.0021.t
+	desc = mayo.0021.desc
+	theme = faith
+	override_background  = { reference = wilderness }
+	
+	right_portrait = {
+		character = root
+		animation = prayer
+	}
+
+	immediate = {
+		scope:activity.activity_location.county = {
+			save_scope_as = county		
+		}		
+	}
+	
+	option = { # Ok
+		name =  mayo.0021.a
+		RICE_visit_holy_well_initial_effect = yes
+	}
+	
+	after = {
+		RICE_visit_holy_well_completed_log_entry_effect = yes
+		scope:activity = {
+			hidden_effect = { skip_activity_phase = yes }
+		}
+	}		
+}
+
+
+
+# Make preparations to go to the holy well
+mayo.0022 = {
+	type = character_event
+	title = mayo.0022.t
+	desc = mayo.0022.desc
+	theme = travel
+	
+	right_portrait = {
+		character = root
+		animation = holding_staff
+	}
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_visit_holy_well
+		}
+	}
+	
+	option = { # Ok
+		name = mayo.0022.a
+	}
+}
