@@ -140,6 +140,18 @@
 		}
 	}
 
+	# Rock of Cashel
+	if = {
+		limit = {
+			title:b_clonmel = { # Closest to the site out of all baronies
+				title_province = { has_special_building = no }
+			}
+		}
+		title:b_clonmel.title_province = {
+			add_special_building = RICE_mayo_rock_of_cashel_01
+		}
+	}
+
 	############################################################
 	#
 	# MISCELLANEOUS
@@ -150,6 +162,44 @@
 }
 
 
-# RICE_mayo_butter_interaction_effect = {
+RICE_mayo_butter_interaction_effect = {
+	
+	scope:actor = {
+		remove_short_term_gold = RICE_butter_interaction_cost
+		add_prestige = RICE_butter_prestige_actor_gain
+	}
 
-# }
+	if = {
+		limit = {
+			scope:recipient = {
+				highest_held_title_tier >= tier_kingdom
+			}
+		}
+		scope:actor = {
+			add_legitimacy = minor_legitimacy_gain
+		}
+	}
+	else_if = {
+		limit = {
+			scope:recipient = {
+				highest_held_title_tier >= tier_duchy
+			}
+		}
+		scope:actor = {
+			add_legitimacy = miniscule_legitimacy_gain
+		}
+	}
+	
+	scope:recipient = {
+		add_prestige = RICE_butter_prestige_recipient_gain
+		add_opinion = {
+			target = scope:actor
+			modifier = RICE_opinion_butter_gift
+		}
+		add_character_modifier = {
+			modifier = RICE_mayo_butter_gift_modifier
+			years = 3
+		}
+	}
+
+}
