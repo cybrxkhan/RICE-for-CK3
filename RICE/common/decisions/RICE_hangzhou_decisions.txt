@@ -1,5 +1,131 @@
 ﻿
 
+RICE_hangzhou_84000_miniature_stupas_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_forest_river.dds" }
+	decision_group_type = major
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 128
+		kingdom = 80
+		empire = 80
+		hegemony = 80
+	}
+
+	#cooldown = { days = 10 } #1825
+	
+	desc = RICE_hangzhou_84000_miniature_stupas_decision_desc
+	
+	is_shown = {
+		is_landed_or_landless_administrative = yes
+		trigger_if = {
+			limit = {
+				has_tgp_dlc_trigger = yes
+			}
+			any_character_situation = {
+				situation_type = dynastic_cycle
+			}
+		}
+		trigger_else = {
+			OR = {
+				root.capital_county ?= {
+					title_province = { geographical_region = world_asia_china }
+				}
+				domicile.domicile_location ?= {
+					geographical_region = world_asia_china
+				}
+			}
+		}
+		#OR = {
+		#	religion = religion:buddhism_religion
+			faith = { has_doctrine = special_doctrine_immaterial_harmony }
+		#}
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_hangzhou_84000_stupas_done
+			}
+		}
+	}
+	
+	is_valid = {
+		highest_held_title_tier >= tier_kingdom
+		#OR = {
+			religion = religion:buddhism_religion
+		#	faith = { has_doctrine = special_doctrine_immaterial_harmony }
+		#}
+		trigger_if = {
+			limit = {
+				has_tgp_dlc_trigger = yes
+			}
+			situation:dynastic_cycle ?= {
+				situation_current_phase = situation_dynastic_cycle_phase_chaos
+			}			
+			situation:dynastic_cycle ?= {
+				situation_current_phase = situation_dynastic_cycle_phase_instability
+			}			
+			situation:dynastic_cycle ?= {
+				situation_current_phase = situation_dynastic_cycle_phase_instability_conquest
+			}
+		}
+		trigger_if = {
+			limit = { government_has_flag = government_has_influence }
+			influence_level >= 3
+		}
+		trigger_else = {
+			prestige_level >= 3
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_hangzhou_84000_stupas_done
+		}
+		save_scope_as = stupa_builder
+
+		custom_tooltip = RICE_hangzhou_84000_miniature_stupas_decision_effect_tooltip_1
+
+		show_as_tooltip = {
+			RICE_hangzhou_84000_miniature_stupas_decision_effect = yes
+		}
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_hangzhou_84000_miniature_stupas_decision_context_tooltip
+		}
+
+		trigger_event = hangzhou.0020
+	}
+
+	cost = { 
+		gold = major_gold_value
+	}	
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 25
+		modifier = {
+			add = 10
+			has_trait = zealous
+		}
+		modifier = {
+			add = -10
+			has_trait = cynical
+		}
+	}
+}
+
 
 RICE_hangzhou_erect_embankment_on_qiantang_river = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_forest_river.dds" }

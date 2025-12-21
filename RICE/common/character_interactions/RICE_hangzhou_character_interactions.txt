@@ -1,0 +1,381 @@
+﻿
+RICE_hangzhou_84000_stupas_interaction = {
+	category = interaction_category_friendly
+	common_interaction = yes
+
+	desc = RICE_hangzhou_84000_stupas_interaction_desc
+
+	greeting = positive
+	notification_text = RICE_hangzhou_84000_stupas_interaction_notification
+	popup_on_receive = yes
+	ai_maybe = yes
+	
+	ai_targets = {
+		ai_recipients = scripted_relations
+	}
+	ai_targets = {
+		ai_recipients = liege
+	}
+	ai_targets = {
+		ai_recipients = neighboring_rulers
+		ai_recipients = peer_vassals
+		max = 10
+	}
+	ai_targets = {
+		ai_recipients = vassals
+		max = 10
+	}
+	ai_target_quick_trigger = {
+		adult = yes
+	}
+	ai_frequency_by_tier = {
+		barony = 0
+		county = 48
+		duchy = 48
+		kingdom = 48
+		empire = 48
+		hegemony = 48
+	}
+	
+	cooldown = { years = 1 }
+	cooldown_against_recipient = { years = 10 }
+	
+	is_shown = {
+		NOT = {
+			scope:recipient = scope:actor
+		}
+		scope:actor = {	
+			is_playable_character = yes
+			has_character_modifier = RICE_hangzhou_84000_stupas_modifier
+		}
+		scope:recipient = {
+			#is_ai = yes
+			is_adult = yes
+			#is_ruler = yes
+			OR = {
+				religion = religion:buddhism_religion
+				faith = { has_doctrine = special_doctrine_immaterial_harmony }
+			}
+		}
+	}
+	
+	is_valid = {
+		scope:actor = {
+			gold >= minor_gold_value
+			has_character_modifier = RICE_hangzhou_84000_stupas_modifier
+			OR = {
+				religion = religion:buddhism_religion
+				faith = { has_doctrine = special_doctrine_immaterial_harmony }
+			}
+		}
+		scope:recipient = {
+			OR = {
+				religion = religion:buddhism_religion
+				faith = { has_doctrine = special_doctrine_immaterial_harmony }
+			}
+		}
+	}
+	
+	on_accept = {
+		RICE_hangzhou_84000_stupas_interaction_effect = yes
+		scope:actor = {
+			trigger_event = hangzhou.8888
+		}
+		scope:recipient = {
+			trigger_event = hangzhou.8888
+		}
+
+	}
+
+	on_decline = {
+		scope:actor = {
+			add_opinion = {
+				target = scope:recipient
+				modifier = insulted_opinion
+					opinion = -20
+			}
+		}		
+	}
+
+	ai_accept = {
+		base = 25
+
+	   # AI take opinion into account, but reduced so they'll at least occasionally accept from folks they dislike.
+	   opinion_modifier = {
+		   who = scope:recipient
+		   opinion_target = scope:actor
+		   multiplier = 0.8
+		   desc = AI_OPINION_REASON
+	   }
+
+		#Relations & relatives (with actor)
+
+		modifier = {
+			has_relation_friend = scope:actor
+			add = 10
+			desc = AI_YOUR_FRIEND
+		}
+
+		modifier = {
+			this.dynasty.dynast = scope:actor
+			add = 10
+			desc = AI_YOU_ARE_THE_DYNAST
+		}
+
+		modifier = {
+			this.house.house_head = scope:actor
+			add = 10
+			desc = AI_YOU_ARE_THE_HOUSE_HEAD
+		}
+
+		modifier = {
+			is_spouse_of = scope:actor
+			add = 25
+			desc = AI_YOUR_SPOUSE
+		}
+
+		#Relations & relatives (with host)
+		modifier = {
+			exists = liege
+			has_relation_lover = liege
+			add = 25
+			desc = AI_THEIR_LOVER
+		}
+
+		#Make less likely that they accept if they are of another culture
+		modifier = {
+			add = -10
+			trigger = {
+				scope:actor = {
+					culture = { has_same_culture_heritage = scope:recipient.culture }
+					NOT = { has_same_culture_as = scope:recipient }
+				}
+			}
+			desc = AI_NOT_CULTURE
+		}
+		
+		modifier = {
+			add = -20
+			trigger = {
+				scope:actor = {
+					NOT = { culture = { has_same_culture_heritage = scope:recipient.culture } }
+				}
+			}
+			desc = AI_NOT_CULTURE
+		}
+	   
+
+		#Less likely if they don't like other religion
+		modifier = {
+			add = {
+				value = -5
+				if = {
+					limit = {
+						scope:recipient.faith = {
+							faith_hostility_level = {
+								target = scope:actor.faith
+								value >= faith_hostile_level
+							}
+						}
+					}
+					subtract = 5
+				}
+				if = {
+					limit = {
+						scope:recipient.faith = {
+							faith_hostility_level = {
+								target = scope:actor.faith
+								value >= faith_evil_level
+							}
+						}
+					}
+					subtract = 10
+				}
+			}
+			trigger = {
+				NOT = { scope:recipient.faith = scope:actor.faith }
+			}
+			desc = AI_RELIGION
+		}
+
+	   # TRAITS
+		modifier = {
+			add = 10
+			scope:actor = {
+				has_trait = greedy
+			}
+			desc = RICE_interaction_actor_greedy_acceptance
+		}
+		modifier = {
+			add = 10
+			scope:recipient = {
+				has_trait = gluttonous
+			}
+			desc = TAKE_THE_VOWS_GLUTTONOUS
+		}
+		modifier = {
+			add = 10
+			scope:recipient = {
+				has_trait = ambitious
+			}
+			desc = INTERACTION_AMBITIOUS
+		}
+		modifier = {
+			add = 10
+			scope:recipient = {
+				has_trait = trusting
+			}
+			desc = INTERACTION_TRUSTING
+		}
+		modifier = {
+			add = -15
+			scope:recipient = {
+				has_trait = paranoid
+			}
+			desc = INTERACTION_PARANOID
+		}
+		modifier = {
+			add = -15
+			scope:recipient = {
+				has_trait = arrogant
+			}
+			desc = INTERACTION_ARROGANT
+		}
+		modifier = {
+			scope:recipient = {
+				has_trait = callous
+			}
+			add = -15
+			desc = INTERACTION_CALLOUS
+		}
+
+
+    }
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 60
+		modifier = { # Basic Filtering
+			factor = 0
+			scope:recipient = {
+				NOR = {
+					AND = { # Bankrupt vassals, lovers, friends and a bankrupt liege should be considered
+						OR = {
+							is_vassal_of = scope:actor
+							AND = {
+								exists = liege
+								liege = scope:actor
+							}
+							has_secret_relation_lover = scope:actor
+							has_relation_lover = scope:actor
+							has_relation_soulmate = scope:actor
+							has_relation_friend = scope:actor
+							has_relation_best_friend = scope:actor
+						}
+						gold < 0
+					}
+					AND = { # Generous characters will give gifts to their friends/lovers
+						OR = {
+							has_secret_relation_lover = scope:actor
+							has_relation_lover = scope:actor
+							has_relation_soulmate = scope:actor
+							has_relation_friend = scope:actor
+							has_relation_best_friend = scope:actor
+						}
+						scope:actor = {
+							OR = {
+								ai_greed <= high_negative_ai_value
+								AND = {
+									ai_greed < 0
+									culture = {
+										has_cultural_parameter = gives_more_gifts
+									}
+								}
+							}
+						}
+					}
+					AND = { # Characters with the Generous Cultural Tradition will give gifts to more people
+						is_ruler = yes
+						OR = {
+							is_allied_to = scope:actor
+							is_close_or_extended_family_of = scope:actor
+						}
+						scope:actor = {
+							ai_greed < 0
+							culture = {
+								has_cultural_parameter = gives_more_gifts
+							}
+						}
+					}
+					AND = { # Powerful vassals should be considered
+						is_powerful_vassal_of = scope:actor
+						opinion = {
+							target = scope:actor
+							value < 0
+						}
+						NOT ={
+							has_opinion_modifier = {
+								target = scope:actor
+								modifier = gift_opinion
+							}
+						}
+					}
+					AND = { # Factioneering vassals should be considered
+						is_vassal_of = scope:actor
+						is_a_faction_member = yes
+						NOT ={
+							has_opinion_modifier = {
+								target = scope:actor
+								modifier = gift_opinion
+							}
+						}
+					}
+					AND = { # Realm Priests should be considered
+						scope:actor = {
+							faith = { has_doctrine = doctrine_theocracy_temporal }
+							exists = cp:councillor_court_chaplain
+							cp:councillor_court_chaplain = scope:recipient
+						}
+						opinion = {
+							target = scope:actor
+							value <= 25
+						}
+						NOT = {
+							has_opinion_modifier = {
+								target = scope:actor
+								modifier = gift_opinion
+							}
+						}
+					}
+					AND = { # Rulers at war with your rivals deserve gold if they're bankrupt
+						gold < 0
+						is_at_war = yes
+						any_war_enemy = {
+							has_relation_rival = scope:actor
+						}
+					}
+				}
+			}
+		}
+		
+		modifier = {
+			factor = 0.1
+			scope:recipient = {
+				opinion = {
+					target = scope:actor
+					value < 0
+				}
+				NAND = {
+					is_vassal_of = scope:actor
+					scope:actor = {
+						ai_rationality > 50
+					}
+				}
+			}
+		}
+	}
+
+}
