@@ -4,7 +4,7 @@
 # 
 # mayo.0000-mayo.0019			Setup events, history events, miscellaneous events and decisions
 # mayo.0020-mayo.0029			Minor decisions
-# mayo.0030-mayo.0039			???
+# mayo.0030-mayo.0039			Croagh Patrick Pilgrimage
 # mayo.0040-mayo.0049			???
 # mayo.0050-mayo.0079			???
 # mayo.0080-mayo.0099			Generic flavor events
@@ -76,6 +76,167 @@ mayo.0010 = {
 	}
 
 }
+
+
+
+# Johannes Scotus Erigena intro event
+mayo.0012 = {
+	type = character_event
+	title = mayo.0012.t
+	desc = mayo.0012.desc
+	theme = learning	
+	override_background = { reference = bp2_university }
+	
+	left_portrait = {
+		character = scope:wulfad
+		animation = personality_compassionate
+	}
+	
+	right_portrait = {
+		character = root
+		animation = page_flipping
+	}
+
+	lower_left_portrait = scope:charles
+	#lower_center_portrait = scope:wulfad
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:periphyseon
+		position = lower_right_portrait
+	}
+
+	immediate = {
+		character:90104 = {
+			save_scope_as = charles
+		}
+		character:RICE_irish_004 = {
+			save_scope_as = wulfad
+		}
+		culture:greek = {
+			save_scope_as = greek
+		}
+		hidden_effect_new_object = {
+			create_artifact = {	
+				name = RICE_mayo_periphyseon_name
+				description = RICE_mayo_periphyseon_desc
+				type = miscellaneous
+				visuals = RICE_generic_european_manuscript_artifact
+				quality = 80
+				wealth = 80
+				modifier = RICE_mayo_periphyseon_modifier
+				decaying = no
+				save_scope_as = periphyseon
+			}
+			scope:periphyseon = {
+				set_variable = RICE_periphyseon
+			}
+		}
+	}
+
+	option = { # OK
+		name = mayo.0012.a
+		remove_trait = devoted
+		ai_chance = {
+			base = 35
+		}
+	}
+
+	option = { # OK
+		name = mayo.0012.b
+		add_piety_level = 1
+		ai_chance = {
+			base = 65
+		}
+	}
+
+	after = {
+		add_piety = 1000
+		add_prestige = 1000
+		show_as_tooltip = {
+			scope:RICE_periphyseon = {
+				set_owner = {
+					target = root
+				}
+			}
+		}
+		trigger_event = mayo.0013
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = mayo.0012.info
+			}
+		}
+	}
+
+}
+
+# Johannes Scotus Erigena intro event - part 2
+# Johannes Scotus' disciple or assistant is nicknamed "Nisifortinus" in modern scholarship
+# We don't actually know his name
+# He was often said to have lessened the severity of Johannes' sometimes biting or controversial remarks
+# Many of Nisifortinus' interventions in Johannes text begins with "nisi forte", "if not perhaps"
+mayo.0013 = {
+	type = character_event
+	title = mayo.0013.t
+	desc = mayo.0013.desc
+	theme = learning
+	override_background = { reference = RICE_background_irish_monastery }
+	
+	left_portrait = {
+		character = scope:nisifortinus
+		animation = holding_scrolls
+		camera = camera_event_center_pointing_right
+	}
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+		camera = camera_event_left
+	}
+
+	immediate = {
+		create_character = {
+			location = root.location
+			template = RICE_nisifortinus_template
+			save_scope_as = nisifortinus
+			gender_female_chance = root_faith_dominant_gender_adjusted_female_chance
+		}	
+	}
+
+	option = { # OK
+		name = mayo.0013.a
+		add_gold = { 25 50 }
+		domicile = {
+			change_provisions = {
+				value = { minor_provisions_gain medium_provisions_gain }
+			}
+		}
+		silent_disappearance_effect = yes
+	}
+
+	option = { # OK
+		name = mayo.0013.b
+		add_courtier = scope:nisifortinus
+		set_relation_friend = { reason = friend_scholarly_matters target = scope:nisifortinus }
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_description_no_bullet = {
+				text = mayo.0013.info
+			}
+		}
+	}
+
+}
+
+
+
 
 ######################################################################################
 # 
@@ -256,3 +417,88 @@ mayo.0023 = {
 
 }
 
+
+##################################################################
+# 
+# PILGRIMAGE TO BANGANARTI
+# mayo.0030-0039 reserved
+# 
+##################################################################
+
+# Make preparations to begin the pilgrimage
+mayo.0030 = {
+	type = character_event
+	title = mayo.0030.t
+	desc = mayo.0030.desc
+	theme = travel_pilgrimage
+	override_background = { reference = RICE_background_irish_hills }
+	
+	left_portrait = {
+		character = root
+		animation = holding_staff
+	}
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_mayo_croagh_patrick_pilgrimage
+		}
+	}
+	
+	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
+	}
+	
+	option = { # Ok
+		name = mayo.0030.a
+	}
+}
+
+
+# Arrive at Croagh Patrick
+mayo.0031 = {
+	type = activity_event
+	title = mayo.0031.t
+	desc = mayo.0031.desc
+	theme = faith
+	override_background = { reference = RICE_background_mayo_croagh_patrick }
+	
+	right_portrait = {
+		character = root
+		animation = survey_staff
+	}
+
+	immediate = {
+		faith = {
+			save_scope_as = faith
+		}
+	}
+	
+	option = { # Ok
+		name = mayo.0031.a
+		add_piety = 75
+		stress_impact = {
+			base = minor_stress_impact_gain
+			lazy = minor_stress_impact_gain
+			cynical = minor_stress_impact_gain
+		}
+	}
+	
+	option = { # Ok
+		name = mayo.0031.b
+		stress_impact = {
+			ambitious = miniscule_stress_impact_gain
+			diligent = miniscule_stress_impact_gain
+			zealous = minor_stress_impact_gain
+		}
+	}
+
+	after = {		
+		trigger_event = {
+			id = mayo.0032
+			days = { 3 8 }
+		}
+	}
+}
