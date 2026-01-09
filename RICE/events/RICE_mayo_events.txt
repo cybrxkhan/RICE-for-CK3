@@ -502,3 +502,142 @@ mayo.0031 = {
 		}
 	}
 }
+
+
+
+
+
+######################################################################################
+# 
+# GENERIC FLAVOR EVENTS
+# 
+# mayo.0080-mayo.0099
+# 
+######################################################################################
+
+
+
+# Dreaming of incest is considered a terrifying nightmare among the Semai and a harbringer of death - but you avoid it
+mayo.0080 = {
+	type = character_event
+	title = mayo.0080.t
+	desc = mayo.0080.desc
+	theme = faith
+	override_background = RICE_background_galway_bay_castle
+
+	right_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = {
+				OR = {
+					has_trait = arrogant
+					has_trait = cynical
+					has_trait = arbitrary
+					has_trait = callous
+				}
+				NOR = {
+					has_trait = zealous
+					has_trait = humble
+				}
+			}
+			animation = personality_callous
+		}
+		animation = personality_zealous
+	}
+		
+	trigger = {
+		game_start_date >= 600.1.1
+		religion = religion:christianity_religion
+		has_title = title:c_connacht
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+	}
+
+	immediate = {
+		title:c_connacht = {
+			save_scope_as = connacht
+		}
+	}
+
+	option = { # Ok
+		name = mayo.0080.a
+		trigger = {
+			OR = {
+				is_ai = no
+				short_term_gold >= 100			
+			}
+		}
+		remove_short_term_gold = 100
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			greedy = miniscule_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+		add_piety = 100
+		add_character_modifier = {
+			modifier = RICE_mayo_supported_galway_bay_seafarers
+			years = 10
+		}
+		scope:connacht = {
+			add_county_modifier = {
+				modifier = RICE_mayo_saint_macdara_support
+				years = 10
+			}
+		}
+	}
+
+	option = { # Ok
+		name = mayo.0080.b		
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			generous = miniscule_stress_impact_gain
+			humble = miniscule_stress_impact_gain
+			ambitious = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = mayo.0080.info
+		}
+	}
+
+}
+
+
+
+
+
+
+
+
