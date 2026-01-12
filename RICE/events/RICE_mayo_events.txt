@@ -505,6 +505,217 @@ mayo.0031 = {
 
 
 
+# Arrive at Croagh Patrick summit, pray
+mayo.0032 = {
+	type = activity_event
+	title = mayo.0032.t
+	desc = mayo.0032.desc
+	theme = faith
+	override_background = { reference = RICE_background_mayo_croagh_patrick }
+	
+	left_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = {
+				exists = scope:injured_person
+				root = scope:injured_person
+			}
+			animation = severelywounded
+		}
+		animation = prayer
+	}
+
+	right_portrait = {
+		character = scope:injured_person
+		animation = severelywounded
+		trigger = {
+			exists = scope:injured_person
+			root != scope:injured_person
+		}
+	}
+
+	immediate = {
+		# Small chance of someone receiving an injury
+		random = {
+			chance = 99
+			scope:activity = {
+				random_attending_character = {
+					save_scope_as = injured_person
+				}
+			}		
+			scope:activity = {
+				add_activity_log_entry = {
+					key = RICE_mayo_croagh_patrick_injury_log
+					tags = { bad }
+					# this line below adds the entry to the Effects section of the conclusion UI
+					show_in_conclusion = yes
+					character = scope:injured_person
+					scope:injured_person = {
+						add_piety = medium_piety_gain
+						increase_wounds_effect = { REASON = fallen_from_a_mountain }
+					}
+				}
+			}			
+		}
+	}
+	
+	option = { # Ok
+		name = mayo.0032.a
+	}
+
+	after = {	
+		random = {
+			chance = 5
+			trigger_event = {
+				id = mayo.0033
+				days = { 2 4 }
+			}
+		}	
+		trigger_event = {
+			id = mayo.0034
+			days = { 6 9 }
+		}
+	}
+}
+
+
+
+# Lightning strikes on Croag Patrick
+mayo.0033 = {
+	type = activity_event
+	title = mayo.0033.t
+	desc = mayo.0033.desc
+	theme = skull
+	override_background = { reference = RICE_background_mayo_croagh_patrick }
+	widget = {
+		gui = "event_window_widget_vfx_lightning_storm"
+		container = "foreground_shader_vfx_container"
+	}
+	
+	left_portrait = {
+		character = root
+		animation = shock
+	}
+
+	right_portrait = {
+		character = scope:lightning_person
+		animation = severelywounded
+		trigger = {
+			exists = scope:lightning_person
+			root != scope:lightning_person
+		}
+	}
+
+	immediate = {
+		scope:activity = {
+			random_attending_character = {
+				save_scope_as = lightning_person
+			}
+		}
+	}
+	
+	option = { # Ok
+		name = mayo.0033.a
+		
+		scope:activity = {
+			random_list = {
+				70 = {
+					add_activity_log_entry = {
+						key = RICE_mayo_croagh_patrick_lightning_harmless_log
+						tags = { bad }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = scope:lightning_person
+						scope:lightning_person = {
+							stress_impact = {
+								base = miniscule_stress_impact_gain
+								craven = miniscule_stress_impact_gain
+								cynical = miniscule_stress_impact_gain
+							}
+						}
+					}
+				}
+				25 = {
+					add_activity_log_entry = {
+						key = RICE_mayo_croagh_patrick_lightning_injury_log
+						tags = { bad }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = scope:lightning_person
+						scope:lightning_person = {
+							increase_wounds_effect = { REASON = struck_by_lightning }
+							stress_impact = {
+								base = minor_stress_impact_gain
+								craven = minor_stress_impact_gain
+								cynical = minor_stress_impact_gain
+							}
+						}
+					}
+				}
+				5 = {
+					add_activity_log_entry = {
+						key = RICE_mayo_croagh_patrick_lightning_death_log
+						tags = { bad }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = scope:lightning_person
+						scope:lightning_person = {
+							death = { death_reason = death_struck_by_lightning }
+						}
+						hidden_effect = {
+							scope:host = {
+								add_character_flag = {
+									flag = RICE_mayo_croagh_patrick_lightning_someone_died
+									days = 10
+								}
+							}
+						}
+					}
+				}
+			}
+		}	
+	}
+
+	after = {	
+		# Historical context tooltip mentioning about the lightning incident
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}			
+			custom_tooltip = mayo.0033.info
+		}		
+	}
+}
+
+
+
+# Pilgrimage concludes
+mayo.0034 = {
+	type = activity_event
+	title = mayo.0034.t
+	desc = mayo.0034.desc
+	theme = faith
+	override_background = { reference = RICE_background_mayo_croagh_patrick }
+	
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+	
+	option = { # Ok
+		name = mayo.0034.a
+		RICE_mayo_croagh_patrick_pilgrimage_completed_log_entry_effect = yes
+	}
+
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
+		}
+	}
+}
+
 
 
 ######################################################################################
