@@ -5,7 +5,7 @@
 # mayo.0000-mayo.0019			Setup events, history events, miscellaneous events and decisions
 # mayo.0020-mayo.0029			Minor decisions
 # mayo.0030-mayo.0039			Croagh Patrick Pilgrimage
-# mayo.0040-mayo.0049			???
+# mayo.0040-mayo.0049			Butter
 # mayo.0050-mayo.0079			???
 # mayo.0080-mayo.0099			Generic flavor events
 # 
@@ -505,11 +505,30 @@ mayo.0031 = {
 
 
 
-# Arrive at Croagh Patrick summit, pray
+# Going up the Croagh Patrick summit
 mayo.0032 = {
 	type = activity_event
 	title = mayo.0032.t
-	desc = mayo.0032.desc
+	desc = {
+		desc = mayo.0032.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:injured_person
+					root = scope:injured_person
+				}
+				desc = mayo.0032.desc.injury_you
+			}
+			triggered_desc = {
+				trigger = {
+					exists = scope:injured_person
+					NOT = { root = scope:injured_person }
+				}
+				desc = mayo.0032.desc.injury_other
+			}
+		}
+		desc = mayo.0032.desc
+	}
 	theme = faith
 	override_background = { reference = RICE_background_mayo_croagh_patrick }
 	
@@ -522,7 +541,7 @@ mayo.0032 = {
 			}
 			animation = severelywounded
 		}
-		animation = prayer
+		animation = holding_staff
 	}
 
 	right_portrait = {
@@ -564,15 +583,71 @@ mayo.0032 = {
 	}
 
 	after = {	
+		trigger_event = {
+			id = mayo.0033
+			days = { 2 4 }
+		}
+	}
+}
+
+
+# Arrive at Croagh Patrick summit, pray
+mayo.0033 = {
+	type = activity_event
+	title = mayo.0033.t
+	desc = mayo.0033.desc
+	theme = faith
+	override_background = { reference = RICE_background_mayo_croagh_patrick }
+
+	left_portrait = {
+		character = scope:fellow_pilgrim
+		trigger = {
+			exists = scope:fellow_pilgrim
+		}
+		animation = prayer
+	}
+
+	right_portrait = {
+		character = root
+		animation = prayer
+	}
+
+	immediate = {
+		# Find someone to display
+		if = {
+			limit = {
+				scope:activity = {
+					any_attending_character = {
+						count >= 1
+						NOT = { this = root }
+					}
+				}				
+			}
+			scope:activity = {
+				random_attending_character = {
+					limit = {
+						NOT = { this = root }
+					}
+					save_scope_as = fellow_pilgrim
+				}
+			}
+		}		
+	}
+
+	option = { # Ok
+		name = mayo.0032.a
+	}
+
+	after = {	
 		random = {
-			chance = 5
+			chance = 99
 			trigger_event = {
-				id = mayo.0033
+				id = mayo.0034
 				days = { 2 4 }
 			}
 		}	
 		trigger_event = {
-			id = mayo.0034
+			id = mayo.0035
 			days = { 6 9 }
 		}
 	}
@@ -581,10 +656,10 @@ mayo.0032 = {
 
 
 # Lightning strikes on Croag Patrick
-mayo.0033 = {
+mayo.0034 = {
 	type = activity_event
-	title = mayo.0033.t
-	desc = mayo.0033.desc
+	title = mayo.0034.t
+	desc = mayo.0034.desc
 	theme = skull
 	override_background = { reference = RICE_background_mayo_croagh_patrick }
 	widget = {
@@ -615,7 +690,7 @@ mayo.0033 = {
 	}
 	
 	option = { # Ok
-		name = mayo.0033.a
+		name = mayo.0034.a
 		
 		scope:activity = {
 			random_list = {
@@ -682,7 +757,7 @@ mayo.0033 = {
 			limit = {
 				has_game_rule = RICE_historical_context_on
 			}			
-			custom_tooltip = mayo.0033.info
+			custom_tooltip = mayo.0034.info
 		}		
 	}
 }
@@ -690,10 +765,10 @@ mayo.0033 = {
 
 
 # Pilgrimage concludes
-mayo.0034 = {
+mayo.0035 = {
 	type = activity_event
-	title = mayo.0034.t
-	desc = mayo.0034.desc
+	title = mayo.0035.t
+	desc = mayo.0035.desc
 	theme = faith
 	override_background = { reference = RICE_background_mayo_croagh_patrick }
 	
@@ -703,7 +778,7 @@ mayo.0034 = {
 	}
 	
 	option = { # Ok
-		name = mayo.0034.a
+		name = mayo.0035.a
 		RICE_mayo_croagh_patrick_pilgrimage_completed_log_entry_effect = yes
 	}
 
@@ -716,6 +791,175 @@ mayo.0034 = {
 	}
 }
 
+
+
+######################################################################################
+# 
+# BUTTER
+# 
+# mayo.0040-mayo.0049
+# 
+######################################################################################
+
+
+# Burying the bog butter
+mayo.0040 = {
+	type = character_event
+	title = mayo.0040.t
+	desc = mayo.0040.desc
+	theme = RICE_theme_irish_lake
+	
+	left_portrait = root
+
+	immediate = {
+		RICE_mayo_bury_bog_butter_basic_effect = yes
+		custom_tooltip = RICE_mayo_bury_bog_butter_effect_tooltip_1
+	}
+	
+	# Ok
+	option = {
+		name = mayo.0040.a
+	}
+
+}
+
+# Digging up the bog butter
+mayo.0041 = {
+	type = character_event
+	title = mayo.0041.t
+	desc = mayo.0041.desc
+	theme = RICE_theme_irish_lake
+	
+	right_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+
+	immediate = {
+		RICE_mayo_retrieve_bog_butter_effect = yes
+		RICE_mayo_butterlord_counter_effect = yes # Random chance to become a butter lord
+	}
+	
+	# Ok
+	option = {
+		name = mayo.0041.a
+	}
+
+}
+
+# You have become the Butter Lord
+mayo.0042 = {
+	type = character_event
+	title = mayo.0042.t
+	desc = mayo.0042.desc
+	theme = feast_activity
+	
+	right_portrait = {
+		character = root
+		animation = personality_callous
+	}
+
+	immediate = {
+		add_prestige = minor_prestige_gain				
+		set_global_variable = {
+			name = RICE_butterlord_nickname_happened
+			value = yes
+		}
+	}
+	
+	# Accept the nickname
+	option = {
+		name = mayo.0042.a		
+		RICE_mayo_butterlord_effect = yes
+	}
+	
+	# Refuse the nickname
+	option = {
+		name = mayo.0042.b
+		custom_tooltip = mayo.0042.b.tooltip
+		add_character_flag = RICE_refused_butterlord_nickname
+	}
+
+}
+
+# Share the butter - actor/giver POV event
+mayo.0043 = {
+	type = character_event
+	title = mayo.0043.t
+	desc = mayo.0043.desc
+	theme = feast_activity
+	
+	left_portrait = {
+		character = scope:actor
+		animation = personality_compassionate
+	}
+	
+	right_portrait = {
+		character = scope:recipient
+		triggered_animation = {
+			trigger = {
+				opinion = {
+					target = scope:actor
+					value <= -25
+				}	
+			}
+			animation = personality_cynical
+		}
+		animation = admiration
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			RICE_mayo_butter_interaction_effect = yes
+		}		
+		RICE_mayo_butterlord_counter_effect = yes # Random chance to become a butter lord
+	}
+	
+	# Ok
+	option = {
+		name = mayo.0043.a		
+	}
+
+}
+
+# Share the butter - recipient/receiver POV event
+mayo.0044 = {
+	type = character_event
+	title = mayo.0044.t
+	desc = mayo.0044.desc
+	theme = feast_activity
+	
+	left_portrait = {
+		character = scope:actor
+		animation = personality_compassionate
+	}
+	
+	right_portrait = {
+		character = scope:recipient
+		triggered_animation = {
+			trigger = {
+				opinion = {
+					target = scope:actor
+					value <= -25
+				}	
+			}
+			animation = personality_cynical
+		}
+		animation = admiration
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			RICE_mayo_butter_interaction_effect = yes
+		}
+	}
+	
+	# Ok
+	option = {
+		name = mayo.0044.a		
+	}
+
+}
 
 
 ######################################################################################

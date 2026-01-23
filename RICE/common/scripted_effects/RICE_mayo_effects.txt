@@ -649,3 +649,44 @@ RICE_mayo_croagh_patrick_pilgrimage_completed_log_entry_effect = {
 		}
 	}
 }
+
+RICE_mayo_butterlord_effect = {
+	give_nickname = RICE_nick_butterlord
+}
+
+RICE_mayo_butterlord_counter_effect = {
+	hidden_effect = {
+		if = {
+			limit = {
+				is_ai = no # Only player will get this
+				has_any_nickname = no # Don't already have a nickname
+				NOT = { has_global_variable = RICE_butterlord_nickname_happened }
+				NOT = { has_character_flag = RICE_refused_butterlord_nickname }
+			}
+			random = {
+				chance = 33
+				if = {
+					limit = { NOT = { exists = var:RICE_butterlord_count } }
+					set_variable = {
+						name = RICE_butterlord_count
+						value = 1
+					}
+				}
+				else = {
+					change_variable = {
+						name = RICE_butterlord_count
+						add = 1
+					}		
+				}
+			}
+			# Triggers once you get the variable 4 times
+			if = {
+				limit = {
+					exists = RICE_butterlord_count
+					var:RICE_butterlord_count = 4
+				}
+				trigger_event = mayo.0042
+			}
+		}			
+	}	
+}
