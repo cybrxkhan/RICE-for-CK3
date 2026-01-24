@@ -1189,6 +1189,636 @@ mayo.0081 = {
 
 
 
+# Courtier accidentally trespasess and must pay the appropriate compensation
+mayo.0082 = {
+	type = character_event
+	title = mayo.0082.t
+	desc = mayo.0082.desc
+	theme = dread
+	override_background = { reference = throne_room }
+
+	left_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = {
+				OR = {
+					opinion = {
+						target = scope:trespasser
+						value >= 75
+					}	
+					has_trait = forgiving
+					has_trait = humble
+					has_trait = compassionate
+				}
+			}
+			animation = personality_forgiving
+		}
+		animation = disappointed
+	}
+
+	right_portrait = {
+		character = scope:trespasser
+		animation = shame
+	}
+
+	trigger = {
+		culture = { has_cultural_tradition = tradition_RICE_brehon_law }
+		OR = {
+			any_courtier_or_guest = {
+				is_available_ai_adult = yes
+				culture = { has_cultural_tradition = tradition_RICE_brehon_law }
+				NOT = { is_close_or_extended_family_of = root }
+				NOT = { is_spouse_of = root }
+			}
+			any_vassal = {
+				is_available_ai_adult = yes
+				culture = { has_cultural_tradition = tradition_RICE_brehon_law }
+				NOT = { is_close_or_extended_family_of = root }
+				NOT = { is_spouse_of = root }
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+		modifier = {
+			add = 0.2
+			has_trait = trusting
+		}
+		modifier = {
+			add = -0.2
+			has_trait = paranoid
+		}
+	}
+
+	immediate = {
+
+		every_courtier_or_guest = {
+			limit = {
+				is_available_ai_adult = yes
+				culture = { has_cultural_tradition = tradition_RICE_brehon_law }
+				NOT = { is_close_or_extended_family_of = root }
+				NOT = { is_spouse_of = root }
+			}
+			add_to_list = candidate_characters
+		}
+		every_vassal = {
+			limit = {
+				is_available_ai_adult = yes
+				culture = { has_cultural_tradition = tradition_RICE_brehon_law }
+				NOT = { is_close_or_extended_family_of = root }
+				NOT = { is_spouse_of = root }
+			}
+			add_to_list = candidate_characters
+		}
+		random_in_list = {
+			list = candidate_characters
+			save_scope_as = trespasser
+		}
+
+		scope:trespasser = {
+			add_prestige = medium_prestige_loss		
+		}
+
+	}
+
+	option = { # Ok
+		name = mayo.0082.a
+		scope:trespasser = {
+			pay_short_term_gold = {
+				target = root
+				gold = 50
+			}
+		}
+		stress_impact = {
+			forgiving = minor_stress_impact_gain
+			generous = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = mayo.0082.b
+		add_piety = 50
+		scope:trespasser = {
+			add_opinion = {
+				target = root
+				modifier = grateful_opinion
+				opinion = 25
+			}
+		}
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			wrathful = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = mayo.0082.info
+		}
+	}
+
+}
+
+# Arrogant courtier looks down on combmakers
+mayo.0083 = {
+	type = character_event
+	title = mayo.0083.t
+	desc = mayo.0083.desc
+	theme = stewardship_domain_focus
+	override_background = { reference = throne_room }
+
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	right_portrait = {
+		character = scope:arrogant
+		animation = disapproval
+	}
+
+	trigger = {
+		culture = { has_cultural_tradition = tradition_RICE_brehon_law }
+		OR = {
+			any_courtier_or_guest = {
+				is_available_ai_adult = yes
+				culture = { has_cultural_tradition = tradition_RICE_brehon_law }
+				OR = {
+					has_trait = arrogant
+					has_trait = arbitrary
+					has_trait = callous
+					has_trait = sadistic
+					has_trait = paranoid
+				}
+				NOR = {
+					has_trait = humble
+					has_trait = compassionate
+				}
+			}
+			any_vassal = {
+				is_available_ai_adult = yes
+				culture = { has_cultural_tradition = tradition_RICE_brehon_law }
+				OR = {
+					has_trait = arrogant
+					has_trait = arbitrary
+					has_trait = callous
+					has_trait = sadistic
+					has_trait = paranoid
+				}
+				NOR = {
+					has_trait = humble
+					has_trait = compassionate
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = -0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	immediate = {
+
+		every_courtier_or_guest = {
+			limit = {
+				is_available_ai_adult = yes
+				culture = { has_cultural_tradition = tradition_RICE_brehon_law }
+				OR = {
+					has_trait = arrogant
+					has_trait = arbitrary
+					has_trait = callous
+					has_trait = sadistic
+					has_trait = paranoid
+				}
+				NOR = {
+					has_trait = humble
+					has_trait = compassionate
+				}
+			}
+			add_to_list = candidate_characters
+		}
+		every_vassal = {
+			limit = {
+				is_available_ai_adult = yes
+				culture = { has_cultural_tradition = tradition_RICE_brehon_law }
+				OR = {
+					has_trait = arrogant
+					has_trait = arbitrary
+					has_trait = callous
+					has_trait = sadistic
+					has_trait = paranoid
+				}
+				NOR = {
+					has_trait = humble
+					has_trait = compassionate
+				}
+			}
+			add_to_list = candidate_characters
+		}
+		random_in_list = {
+			list = candidate_characters
+			save_scope_as = arrogant
+		}
+
+	}
+
+	option = { # Ok
+		name = mayo.0083.a
+		add_piety = 25
+		scope:arrogant = {
+			add_opinion = {
+				target = root
+				modifier = RICE_disagrees_with_me_opinion
+				opinion = -15
+			}		
+		}
+		stress_impact = {
+			arrogant = minor_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = mayo.0083.b
+		add_piety = -25
+		add_prestige = 50
+		scope:arrogant = {
+			add_opinion = {
+				target = root
+				modifier = RICE_agrees_with_me_opinion
+				opinion = 15
+			}		
+		}
+		stress_impact = {
+			humble = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = mayo.0083.info
+		}
+	}
+
+}
+
+
+# Find a rare type of pine tree in a part of Ireland
+mayo.0084 = {
+	type = character_event
+	title = mayo.0084.t
+	desc = mayo.0084.desc
+	theme = RICE_theme_mayo_sligo_landscape
+
+	left_portrait = {
+		character = scope:councilor
+		animation = personality_greedy
+	}
+
+	right_portrait = root
+		
+	trigger = {
+		culture = { has_cultural_tradition = tradition_RICE_brehon_law }
+		any_held_title = {
+			tier = tier_county
+			any_county_province = {
+				geographical_region = custom_ireland
+			}
+		}
+		any_councillor = {
+			is_available_ai_adult = yes
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+	}
+
+	immediate = {
+		random_held_title = {
+			limit = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = custom_ireland
+				}
+			}	
+			save_scope_as = county
+		}
+		random_councillor = {
+			limit = {
+				is_available_ai_adult = yes
+			}
+			save_scope_as = councilor
+		}
+	}
+
+	option = { # Ok
+		name = mayo.0084.a
+		add_character_modifier = {
+			modifier = RICE_mayo_pine_trees
+			years = 5
+		}
+		stress_impact = {
+			content = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = mayo.0084.b
+		add_piety = 50
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			ambitious = minor_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = mayo.0084.info
+		}
+	}
+
+}
+
+
+# # Two of your champions argue about who deserves the "champion's portion"
+# mayo.0082 = {
+# 	type = character_event
+# 	window = duel_event
+# 	title = mayo.0082.t
+# 	desc = mayo.0082.desc
+# 	theme = feast_activity
+
+# 	left_portrait = {
+# 		character = scope:warrior_1
+# 		animation = random_weapon_aggressive
+# 	}
+
+# 	right_portrait = {
+# 		character = scope:warrior_2
+# 		animation = random_weapon_aggressive
+# 	}
+		
+# 	trigger = {
+# 		culture = { has_cultural_tradition = tradition_RICE_brehon_law }		
+# 		any_knight = {
+# 			count >= 2
+# 			is_available_healthy_ai_adult = yes
+# 			culture = { has_cultural_tradition = tradition_RICE_brehon_law }
+# 			prowess >= mediocre_skill_rating
+# 			NOR = {
+# 				has_trait = calm
+# 				has_trait = forgiving
+# 				has_trait = humble
+# 				has_trait = craven
+# 			}
+# 		}
+# 	}
+
+# 	weight_multiplier = {
+# 		base = 1
+# 		modifier = {
+# 			add = 0.2
+# 			has_trait = humble
+# 		}
+# 		modifier = {
+# 			add = -0.2
+# 			has_trait = arrogant
+# 		}
+# 		modifier = {
+# 			add = 0.2
+# 			has_trait = zealous
+# 		}
+# 		modifier = {
+# 			add = -0.2
+# 			has_trait = cynical
+# 		}
+# 		modifier = {
+# 			add = 0.2
+# 			has_trait = compassionate
+# 		}
+# 		modifier = {
+# 			add = -0.2
+# 			has_trait = callous
+# 		}
+# 	}
+
+# 	immediate = {
+# 		every_knight = {
+# 			limit = {
+# 				is_available_healthy_ai_adult = yes
+# 				culture = { has_cultural_tradition = tradition_RICE_brehon_law }
+# 				prowess >= mediocre_skill_rating
+# 				NOR = {
+# 					has_trait = calm
+# 					has_trait = forgiving
+# 					has_trait = humble
+# 					has_trait = craven
+# 				}
+# 			}
+# 			add_to_list = knight_candidates
+# 		}
+# 		random_in_list = {
+# 			list = knight_candidates
+# 			save_scope_as = warrior_1
+# 		}
+# 		random_in_list = {
+# 			list = knight_candidates
+# 			limit = {
+# 				exists = scope:warrior_1
+# 				NOT = { this = scope:warrior_1 }
+# 			}
+# 			save_scope_as = warrior_2
+# 		}
+# 	}
+
+# 	option = { # Ok
+# 		name = mayo.0082.a
+# 		random_list = {
+# 			10 = {
+# 				send_interface_toast = {
+# 					type = event_toast_effect_good
+# 					left_icon = scope:warrior_1
+# 					right_icon = scope:warrior_2
+# 					title = mayo.0082.peaceful					
+# 					scope:warrior_1 = {
+# 						add_opinion = {
+# 							modifier = RICE_opinion_forgiven
+# 							target = scope:warrior_2
+# 							opinion = 10
+# 						}
+# 					}
+# 					scope:warrior_2 = {
+# 						add_opinion = {
+# 							modifier = RICE_opinion_forgiven
+# 							target = scope:warrior_1
+# 							opinion = 10
+# 						}
+# 					}
+# 				}
+# 			}
+# 			10 = {
+# 				send_interface_toast = {
+# 					type = event_toast_effect_good
+# 					left_icon = scope:warrior_1
+# 					right_icon = scope:warrior_2
+# 					title = mayo.0082.warrior_1					
+# 					scope:warrior_1 = {
+# 						add_prestige = 250
+# 						add_opinion = {
+# 							target = scope:warrior_2
+# 							modifier = annoyed_opinion
+# 							opinion = -15
+# 						}
+# 					}
+# 					scope:warrior_2 = {
+# 						add_opinion = {
+# 							target = scope:warrior_1
+# 							modifier = annoyed_opinion
+# 							opinion = -15
+# 						}
+# 					}
+# 				}
+# 			}
+# 			10 = {
+# 				send_interface_toast = {
+# 					type = event_toast_effect_good
+# 					left_icon = scope:warrior_1
+# 					right_icon = scope:warrior_2
+# 					title = mayo.0082.warrior_2					
+# 					scope:warrior_1 = {
+# 						add_opinion = {
+# 							target = scope:warrior_2
+# 							modifier = annoyed_opinion
+# 							opinion = -15
+# 						}
+# 					}
+# 					scope:warrior_2 = {
+# 						add_prestige = 250
+# 						add_opinion = {
+# 							target = scope:warrior_1
+# 							modifier = annoyed_opinion
+# 							opinion = -15
+# 						}
+# 					}
+# 				}
+# 			}
+# 			10 = {
+# 				send_interface_toast = {
+# 					type = event_toast_effect_good
+# 					left_icon = scope:warrior_1
+# 					right_icon = scope:warrior_2
+# 					title = mayo.0082.warrior_2			
+# 					scope:warrior_1 = {
+# 						add_opinion = {
+# 							target = scope:warrior_2
+# 							modifier = annoyed_opinion
+# 							opinion = -15
+# 						}
+# 					}
+# 					scope:warrior_2 = {
+# 						add_prestige = 250
+# 						add_opinion = {
+# 							target = scope:warrior_1
+# 							modifier = annoyed_opinion
+# 							opinion = -15
+# 						}
+# 					}
+# 				}
+# 			}
+# 		}
+# 	}
+
+# 	after = {
+# 		if = {
+# 			limit = {
+# 				has_game_rule = RICE_historical_context_on
+# 			}
+# 			custom_tooltip = mayo.0082.info
+# 		}
+# 	}
+
+# }
+
+
+
 
 
 
