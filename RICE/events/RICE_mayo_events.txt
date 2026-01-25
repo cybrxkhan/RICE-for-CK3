@@ -237,6 +237,396 @@ mayo.0013 = {
 
 
 
+# Ruaidrí Ua Conchobair / Rory O'Connor's Aspiration fulfilled - English Fealty Route
+mayo.0014 = {
+	type = character_event
+	title = mayo.0014.t
+	desc = mayo.0014.desc
+	theme = vassal
+	override_background = { reference = RICE_background_irish_hills }
+
+	left_portrait = {
+		character = scope:english_ruler
+		animation = frontend_center_idle
+		camera = camera_event_very_left
+	}
+
+	right_portrait = {
+		character = scope:rory_o_connor
+		animation = frontend_left_idle
+		camera = camera_event_left
+	}
+
+	immediate = {
+
+		character:214510 = {
+			save_scope_as = rory_o_connor
+		}
+		title:k_england.holder = {
+			save_scope_as = english_ruler
+		}
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_mayo_aspiration_maintain_authority_in_ireland
+				}
+				remove_character_modifier = RICE_mayo_aspiration_maintain_authority_in_ireland
+			}
+		}
+
+		# Main Objective Reward
+		add_prestige = RICE_aspiration_medium_resource_bonus
+		add_gold = RICE_aspiration_medium_resource_bonus
+		spawn_army = {
+			levies = 400
+			men_at_arms = {
+				type = longbowmen
+				stacks = 2
+			}
+			men_at_arms = {
+				type = armored_footmen
+				stacks = 1
+			}
+			men_at_arms = {
+				type = pikemen_unit
+				stacks = 1
+			}
+			men_at_arms = {
+				type = conrois
+				stacks = 4
+			}
+			location = capital_province
+			uses_supply = yes
+			inheritable = yes
+			name = RICE_anglo_norman_mercenaries_event_troops
+		}		
+		scope:rory_o_connor.culture = {
+			change_cultural_acceptance = {
+				target = culture:norman
+				value = 40
+				desc = cultural_acceptance_gain_event
+			}
+			change_cultural_acceptance = {
+				target = culture:english
+				value = 40
+				desc = cultural_acceptance_gain_event
+			}
+		}	
+
+		# Bonus Objective Reward(s)
+		if = {
+			limit = {
+				piety_level_3 >= 3
+			}
+			add_gold = RICE_aspiration_small_resource_bonus
+		}
+
+		if = {
+			limit = {
+				has_character_flag = RICE_rory_did_croagh_patrick_pilgrimage
+			}
+			add_diplomacy_lifestyle_perk_points = 1
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = mayo.0014.a
+	}
+
+}
+
+# Ruaidrí Ua Conchobair / Rory O'Connor's Aspiration fulfilled - Indepenent Ruler Route
+mayo.0015 = {
+	type = character_event
+	title = mayo.0015.t
+	desc = mayo.0015.desc
+	theme = crown
+	override_background = { reference = RICE_background_irish_hills }
+
+	left_portrait = {
+		character = scope:english_ruler
+		trigger = {
+			exists = scope:english_ruler
+		}
+		animation = war_over_loss
+	}
+
+	right_portrait = {
+		character = scope:rory_o_connor
+		animation = war_over_win
+	}
+
+	immediate = {
+
+		character:214510 = {
+			save_scope_as = rory_o_connor
+		}
+		if = {
+			limit = {
+				exists = title:k_england.holder
+			}
+			title:k_england.holder = {
+				save_scope_as = english_ruler
+			}
+		}
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_mayo_aspiration_maintain_authority_in_ireland
+				}
+				remove_character_modifier = RICE_mayo_aspiration_maintain_authority_in_ireland
+			}
+		}
+
+		# Main Objective Reward
+		add_prestige = RICE_aspiration_medium_resource_bonus
+		dynasty ?= {
+			add_dynasty_prestige = RICE_aspiration_large_resource_bonus
+		}
+		spawn_army = {
+			levies = 800
+			men_at_arms = {
+				type = light_footmen
+				stacks = 3
+			}
+			men_at_arms = {
+				type = bowmen
+				stacks = 3
+			}
+			men_at_arms = {
+				type = armored_footmen
+				stacks = 1
+			}
+			men_at_arms = {
+				type = pikemen_unit
+				stacks = 1
+			}
+			men_at_arms = {
+				type = hobelar
+				stacks = 4
+			}
+			location = capital_province
+			uses_supply = yes
+			inheritable = yes
+			name = RICE_irish_event_troops
+		}	
+		get_title = title:k_ireland
+
+		# Bonus Objective Reward(s)
+		if = {
+			limit = {
+				piety_level_3 >= 3
+			}
+			add_gold = RICE_aspiration_small_resource_bonus
+		}
+
+		if = {
+			limit = {
+				has_character_flag = RICE_rory_did_croagh_patrick_pilgrimage
+			}
+			add_diplomacy_lifestyle_perk_points = 1
+		}
+
+		
+		custom_tooltip = RICE_irish_high_king_message_tooltip
+
+	}
+
+	# Ok
+	option = {
+		name = mayo.0015.a
+	}
+
+	after = {
+		every_ruler = {
+			limit = {
+				#is_ai = no
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = world_europe_west_britannia
+					}
+				}
+			}
+			trigger_event = mayo.0016
+		}			
+	}
+
+}
+
+# Ruaidrí Ua Conchobair / Rory O'Connor independent ruler notification event
+# Minor rulers in Ireland must also choose between becoming a vassal or tributary
+mayo.0016 = {
+	type = character_event
+	title = mayo.0016.t
+	desc = mayo.0016.desc
+	theme = crown
+	override_background = { reference = RICE_background_irish_hills }
+
+	left_portrait = {
+		character = scope:english_ruler
+		trigger = {
+			exists = scope:english_ruler
+		}
+		animation = war_over_loss
+	}
+
+	right_portrait = {
+		character = scope:rory_o_connor
+		animation = war_over_win
+	}
+
+	immediate = {
+		show_as_tooltip = {
+			scope:rory_o_connor = {
+				get_title = title:k_ireland
+			}
+		}
+	}
+	
+	# Ok
+	option = {
+		name = mayo.0016.a
+		trigger = {
+			OR = {
+				is_independent_ruler = no
+				highest_held_title_tier > tier_duchy
+				NOT = {
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = custom_ireland
+						}
+					}				
+				}
+			}
+		}
+	}
+	
+	# Remain independent
+	option = {
+		name = mayo.0016.b
+		trigger = {
+			is_independent_ruler = yes
+			highest_held_title_tier <= tier_duchy
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = custom_ireland
+				}
+			}	
+		}
+		ai_chance = {
+			factor = 50
+			modifier = {
+				has_trait = ambitious
+				add = 25
+			}
+			modifier = {
+				has_trait = greedy
+				add = 15
+			}
+			modifier = {
+				has_trait = content
+				add = -15
+			}
+			modifier = {
+				has_trait = craven
+				add = -25
+			}
+		}
+	}
+	
+	# Become a tributary
+	option = {
+		name = mayo.0016.c
+		trigger = {
+			is_independent_ruler = yes
+			highest_held_title_tier <= tier_duchy
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = custom_ireland
+				}
+			}	
+		}
+		start_tributary_interaction_effect = {
+			TRIBUTARY = root
+			SUZERAIN = scope:rory_o_connor
+		}
+		ai_chance = {
+			factor = 50
+			modifier = {
+				has_trait = calm
+				add = 15
+			}
+			modifier = {
+				has_trait = patient
+				add = 15
+			}
+			modifier = {
+				has_trait = greedy
+				add = -15
+			}
+			modifier = {
+				has_trait = ambitious
+				add = -25
+			}
+		}
+	}
+	
+	# Become a vassal
+	option = {
+		name = mayo.0016.d
+		trigger = {
+			is_independent_ruler = yes
+			highest_held_title_tier <= tier_duchy
+			any_held_title = {
+				tier = tier_county
+				any_county_province = {
+					geographical_region = custom_ireland
+				}
+			}	
+		}
+		create_title_and_vassal_change = {
+			type = swear_fealty
+			save_scope_as = change
+		}
+		change_liege = {
+			liege = scope:rory_o_connor
+			change = scope:change
+		}
+		resolve_title_and_vassal_change = scope:change
+		ai_chance = {
+			factor = 50
+			modifier = {
+				has_trait = just
+				add = 25
+			}
+			modifier = {
+				has_trait = content
+				add = 15
+			}
+			modifier = {
+				has_trait = greedy
+				add = -20
+			}
+			modifier = {
+				has_trait = ambitious
+				add = -40
+			}
+		}
+	}
+
+}
 
 ######################################################################################
 # 
@@ -783,6 +1173,13 @@ mayo.0035 = {
 	}
 
 	after = {
+		# For Rory O'Connor's aspiration
+		if = {
+			limit = {
+				root = character:214510
+			}
+			add_character_flag = RICE_rory_did_croagh_patrick_pilgrimage
+		}
 		hidden_effect = {
 			scope:activity = {
 				hidden_effect = { skip_activity_phase = yes }

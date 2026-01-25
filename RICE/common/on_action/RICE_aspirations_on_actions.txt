@@ -974,6 +974,66 @@ RICE_aspirations_pulse = {
 					trigger_event = hangzhou.0071
 				}
 			}
+			# Ruaidrí Ua Conchobair / Rory O'Connor
+			# Maintain Authority in Ireland - English Fealty Route
+			if = {
+				limit = {
+					exists = character:214510
+					exists = title:k_england.holder # Obviously England needs to still exist
+					character:214510 = {
+						is_alive = yes
+						culture = { has_cultural_pillar = heritage_goidelic }
+						NOT = { has_title = title:k_england }
+						OR = {
+							is_vassal_or_below_of = title:k_england.holder
+							is_tributary_of = title:k_england.holder
+						}
+						prestige_level >= 3
+						has_variable = RICE_historical_aspiration
+					}
+					# At least 6 counties
+					any_county_in_region = {
+						region = custom_ireland
+						count >= 6
+						save_temporary_scope_as = county_temp
+						character:214510 = { completely_controls = scope:county_temp }
+					}
+				}
+				character:214510 = {
+					trigger_event = mayo.0014
+				}
+			}
+			# Ruaidrí Ua Conchobair / Rory O'Connor
+			# Maintain Authority in Ireland - Independent Ruler Route
+			if = {
+				limit = {
+					exists = character:214510
+					character:214510 = {
+						is_alive = yes
+						culture = { has_cultural_pillar = heritage_goidelic }
+						is_independent_ruler = yes
+						is_tributary = no
+						prestige_level >= 3
+						has_variable = RICE_historical_aspiration
+					}
+					# At least 9 counties
+					any_county_in_region = {
+						region = custom_ireland
+						count >= 9
+						save_temporary_scope_as = county_temp
+						character:214510 = { completely_controls = scope:county_temp }
+					}
+					# Less than 2 counties controlled by non-Goidelic rulers
+					any_county_in_region = {
+						region = custom_ireland
+						count > 2
+						holder.culture = { has_cultural_pillar = heritage_goidelic }
+					}
+				}
+				character:214510 = {
+					trigger_event = mayo.0015
+				}
+			}
 		}
 
 		# Hafsa's aspiration is processed immediately
