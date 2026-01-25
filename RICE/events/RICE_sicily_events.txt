@@ -8664,16 +8664,6 @@ sicily.0188 = {
 		animation = holding_scrolls
 	}
 
-	lower_left_portrait = {
-		character = scope:johannes
-		animation = personality_forgiving
-	}
-
-	lower_right_portrait = {
-		character = scope:atto
-		animation = personality_compassionate
-	}
-
 	immediate = {
 
 		character:RICE_sicily_arabic_003 = {
@@ -8684,7 +8674,7 @@ sicily.0188 = {
 			add_character_modifier = {
 				modifier = RICE_sicily_aspiration_disseminate_modern_medicine
 			}
-		}	
+		}
 
 		character:RICE_sicily_arabic_010 = {
 			save_scope_as = johannes
@@ -8692,6 +8682,10 @@ sicily.0188 = {
 
 		character:RICE_sicily_latin_011 = {
 			save_scope_as = atto
+		}
+
+		culture:african_roman = {
+			save_scope_as = african_roman_culture
 		}
 
 	}
@@ -8750,9 +8744,7 @@ sicily.0188 = {
 			limit = {
 				has_game_rule = RICE_historical_context_on
 			}
-			custom_description_no_bullet = {
-				text = sicily.0188.info
-			}
+			custom_tooltip = sicily.0188.info
 		}
 
 		trigger_event = sicily.0189
@@ -8773,6 +8765,16 @@ sicily.0189 = {
 	left_portrait = {
 		character = scope:constantine
 		animation = holding_scrolls
+	}
+
+	lower_left_portrait = {
+		character = scope:johannes
+		animation = personality_forgiving
+	}
+
+	lower_right_portrait = {
+		character = scope:atto
+		animation = personality_compassionate
 	}
 
 	# Remain a layman
@@ -8818,6 +8820,17 @@ sicily.0189 = {
 	# 	}
 	# }
 
+	after = {	
+			
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = sicily.0189.info
+		}
+
+	}
+
 }
 
 
@@ -8834,10 +8847,23 @@ sicily.0190 = {
 		animation = physician
 	}
 
+	artifact = { # To display the artifact in the event-window
+		target = scope:RICE_sicily_liber_pantegni
+		position = lower_right_portrait
+		trigger = { 
+			exists = scope:RICE_sicily_liber_pantegni
+		}
+	}
+
 	immediate = {
+		play_music_cue = "mx_cue_epic_sacral_moment"
 
 		character:RICE_sicily_arabic_003 = {
 			save_scope_as = constantine
+		}
+
+		culture:roman = {
+			save_scope_as = roman_culture
 		}
 
 		RICE_historical_aspiration_fulfilled_effect = yes
@@ -8862,6 +8888,21 @@ sicily.0190 = {
 		}
 		add_character_modifier = {
 			modifier = RICE_sicily_constantine_the_african_modifier_upgraded
+		}
+		hidden_effect_new_object = {
+			create_artifact = {	
+				name = RICE_sicily_liber_pantegni_name
+				description = RICE_sicily_liber_pantegni_desc
+				type = journal
+				visuals = RICE_sicily_salerno_medical_text_artifact
+				quality = 80
+				wealth = 80
+				modifier = RICE_sicily_liber_pantegni_modifier
+				save_scope_as = RICE_sicily_liber_pantegni
+			}
+			scope:RICE_sicily_liber_pantegni = {
+				set_variable = RICE_sicily_liber_pantegni_variable
+			}
 		}
 
 		# Bonus Objective Reward(s)
@@ -8897,11 +8938,189 @@ sicily.0190 = {
 			}
 			add_stewardship_lifestyle_perk_points = 1
 		}
+
+		custom_tooltip = sicily.0190.artifact_tooltip
 	}
 
 	# Ok
 	option = {
 		name = sicily.0190.a
+	}
+
+	after = {
+		# Ruler of Salerno is guaranteed to get a copy
+		if = {
+			limit = {
+				NOT = { title:c_salerno.holder = scope:constantine }
+			}
+			title:c_salerno.holder = {
+				trigger_event = sicily.0191
+			}
+		}
+		hidden_effect = {
+			# Rulers in Italy may get a copy (guaranteed if non-AI/player)
+			every_ruler = {
+				limit = {
+					NOT = { this = root }
+					NOT = { has_title = title:c_salerno }
+					is_landed = yes
+					highest_held_title_tier >= tier_county
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = world_europe_south_italy
+						}
+					}
+				}
+				if = {
+					limit = {
+						is_ai = no
+					}
+					trigger_event = sicily.0191
+				}
+				else = {
+					random = {
+						chance = 15
+						trigger_event = sicily.0191
+					}
+				}
+			}			
+		}
+	}
+
+}
+
+
+# Constantine the African's Liber Pantegni - other rulers get a copy
+sicily.0191 = {
+	type = character_event
+	title = sicily.0191.t
+	desc = sicily.0191.desc
+	theme = medicine
+	override_background = { reference = RICE_background_sicily_interior }
+
+	right_portrait = {
+		character = scope:constantine
+		animation = physician
+	}
+
+	artifact = { # To display the artifact in the event-window
+		target = scope:RICE_sicily_liber_pantegni_copy
+		position = lower_right_portrait
+		trigger = { 
+			exists = scope:RICE_sicily_liber_pantegni_copy
+		}
+	}
+
+	immediate = {
+		hidden_effect_new_object = {
+			create_artifact = {	
+				name = RICE_sicily_liber_pantegni_name
+				description = RICE_sicily_liber_pantegni_desc
+				type = journal
+				visuals = RICE_sicily_salerno_medical_text_artifact
+				quality = 80
+				wealth = 80
+				modifier = RICE_sicily_liber_pantegni_modifier
+				save_scope_as = RICE_sicily_liber_pantegni_copy
+			}
+			scope:RICE_sicily_liber_pantegni_copy = {
+				set_variable = RICE_sicily_liber_pantegni_variable
+			}
+		}
+	}
+
+	# Ok
+	option = {
+		name = sicily.0191.a
+		show_as_tooltip = {
+			scope:RICE_sicily_liber_pantegni_copy = {
+				set_owner = {
+					target = root
+				}
+			}
+		}
+	}
+
+}
+
+# Constantine the African does work - Latin translations
+sicily.0192 = {
+	type = character_event
+	title = sicily.0192.t
+	desc = sicily.0192.desc
+	theme = medicine
+	override_background = { reference = RICE_background_sicily_interior }
+
+	right_portrait = {
+		character = root
+		animation = writing
+	}
+
+	immediate = {
+		culture:roman = {
+			save_scope_as = roman_culture
+		}		
+	}
+
+	# Ok
+	option = {
+		name = sicily.0192.a
+		RICE_constantine_latin_option_effect = yes
+	}
+
+}
+
+# Constantine the African does work - Greek research
+sicily.0193 = {
+	type = character_event
+	title = sicily.0193.t
+	desc = sicily.0193.desc
+	theme = medicine
+	override_background = { reference = RICE_background_sicily_interior }
+
+	right_portrait = {
+		character = root
+		animation = reading
+	}
+
+	immediate = {
+		culture:roman = {
+			save_scope_as = roman_culture
+		}		
+	}
+
+	# Ok
+	option = {
+		name = sicily.0193.a
+		RICE_constantine_greek_option_effect = yes
+	}
+
+}
+
+# Constantine the African does work - Arabic research
+sicily.0194 = {
+	type = character_event
+	title = sicily.0194.t
+	desc = sicily.0194.desc
+	theme = medicine
+	override_background = { reference = RICE_background_sicily_interior }
+
+	right_portrait = {
+		character = root
+		animation = reading
+	}
+
+	immediate = {
+		culture:roman = {
+			save_scope_as = roman_culture
+		}		
+	}
+
+	# Ok
+	option = {
+		name = sicily.0194.a
+		RICE_constantine_arabic_option_effect = yes
 	}
 
 }
