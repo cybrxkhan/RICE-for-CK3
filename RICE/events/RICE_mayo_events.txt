@@ -6,7 +6,7 @@
 # mayo.0020-mayo.0029			Minor decisions
 # mayo.0030-mayo.0039			Croagh Patrick Pilgrimage
 # mayo.0040-mayo.0049			Butter
-# mayo.0050-mayo.0079			???
+# mayo.0050-mayo.0059			Mayo of the Saxons
 # mayo.0080-mayo.0099			Generic flavor events
 # 
 ###############################################################################
@@ -1357,6 +1357,279 @@ mayo.0044 = {
 	}
 
 }
+
+
+######################################################################################
+# 
+# MAYO OF THE SAXONS
+# 
+# mayo.0050-mayo.0059
+# 
+######################################################################################
+
+
+# Embrace Irish Learning
+mayo.0050 = {
+	type = character_event
+	title = mayo.0050.t
+	desc = mayo.0050.desc
+	theme = RICE_theme_irish_monastery
+	
+	right_portrait = {
+		character = scope:mayo_leader
+		animation = personality_zealous
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_sacredrite
+		if = {
+			limit = {
+				root = scope:mayo_leader
+			}
+			RICE_mayo_school_of_mayo_decision_irish_effect = yes
+		}
+		else = {
+			show_as_tooltip = {
+				RICE_mayo_school_of_mayo_decision_irish_effect = yes
+			}
+		}
+	}
+	
+	# Ok
+	option = {
+		name = mayo.0050.a
+	}
+
+}
+
+
+# Revitalize English Connections
+mayo.0051 = {
+	type = character_event
+	title = mayo.0051.t
+	desc = mayo.0051.desc
+	theme = RICE_theme_irish_monastery
+	
+	right_portrait = {
+		character = scope:mayo_leader
+		animation = war_over_win
+	}
+
+	immediate = {
+		play_music_cue = mx_cue_sacredrite
+		if = {
+			limit = {
+				root = scope:mayo_leader
+			}
+			RICE_mayo_school_of_mayo_decision_english_effect = yes
+		}
+		else = {
+			show_as_tooltip = {
+				RICE_mayo_school_of_mayo_decision_english_effect = yes
+			}
+		}
+	}
+	
+	# Ok
+	option = {
+		name = mayo.0051.a
+	}
+
+	after = {
+		if = {
+			limit = {
+				root = scope:mayo_leader
+			}
+			hidden_effect = {
+				trigger_event = mayo.0053
+			}
+		}
+	}
+
+}
+
+
+# Revitalize English Connections
+mayo.0052 = {
+	type = character_event
+	title = mayo.0052.t
+	desc = mayo.0052.desc
+	theme = faith
+	override_background = burning_building_west
+	
+	right_portrait = {
+		character = scope:mayo_leader
+		animation = war_over_win
+	}
+
+	#widget = { gui = event_window_widget_vfx_heavy_smoke container = foreground_shader_vfx_container }
+
+	immediate = {
+		play_music_cue = "mx_cue_crusade_starts"
+		if = {
+			limit = {
+				root = scope:mayo_leader
+			}
+			RICE_mayo_school_of_mayo_decision_destroy_effect = yes
+		}
+		else = {
+			show_as_tooltip = {
+				RICE_mayo_school_of_mayo_decision_destroy_effect = yes
+			}
+		}
+	}
+	
+	# Ok
+	option = {
+		name = mayo.0052.a
+	}
+
+}
+
+
+# Saxon monk shows up
+mayo.0053 = {
+	type = character_event
+	title = mayo.0053.t
+	desc = mayo.0053.desc
+	theme = RICE_theme_irish_monastery
+	
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	
+	right_portrait = {
+		character = scope:saxon_monk
+		animation = throne_room_bow_2
+	}
+
+	trigger = {
+		has_global_variable = RICE_mayo_school_of_mayo_decision_english_happened
+		religion = religion:christianity_religion
+		capital_county = {
+			any_county_province = {
+				geographical_region = custom_ireland
+			}
+		}		
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = -0.85
+			NOT = {
+				has_global_variable = RICE_mayo_saxon_monk_spawn_timer
+			}
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {					
+				any_county_in_region = {
+					region = world_europe_west_britannia
+					religion = religion:christianity_religion
+				}
+			}
+			random_county_in_region = {
+				region = world_europe_west_britannia
+				limit = {
+					religion = religion:christianity_religion
+				}
+				faith = {
+					save_scope_as = county_faith
+				}
+			}
+		}
+		else = {
+			75 = {
+				faith:catholic = {
+					save_scope_as = county_faith
+				}
+			}
+			25 = {
+				faith:insular_celtic = {
+					save_scope_as = county_faith
+				}
+			}
+		}
+		if = {
+			limit = {					
+				any_county_in_region = {
+					region = world_europe_west_britannia
+					OR = {
+						culture = { has_cultural_pillar = heritage_west_germanic }
+						culture = { any_parent_culture_or_above = { this = culture:norman } }
+					}
+				}
+			}
+			random_county_in_region = {
+				region = world_europe_west_britannia
+				limit = {
+					OR = {
+						culture = { has_cultural_pillar = heritage_west_germanic }
+						culture = { any_parent_culture_or_above = { this = culture:norman } }
+					}
+				}
+				culture = {
+					save_scope_as = county_culture
+				}
+			}
+		}
+		else = {
+			culture:anglo_saxon = {
+				save_scope_as = county_culture
+			}
+		}
+
+		create_character = {
+			location = root.capital_province
+			template = RICE_random_monk_or_nun_template
+			culture = scope:county_culture
+			faith = scope:county_faith
+			save_scope_as = saxon_monk
+		}	
+		hidden_effect = {
+			scope:saxon_monk = {				
+				add_trait = devoted
+			}			
+		}
+
+	}
+	
+	# Ok
+	option = {
+		name = mayo.0053.a
+		trigger = {
+			OR = {
+				gold >= 50
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 50
+		add_courtier = scope:saxon_monk
+	}
+	
+	# Ok
+	option = {
+		name = mayo.0053.b
+		hidden_effect = {
+			random = {
+				chance = 90
+				scope:saxon_monk = {
+					death = {
+						death_reason = death_vanished
+					}
+				}
+			}
+		}
+	}
+
+}
+
+
+
 
 
 ######################################################################################

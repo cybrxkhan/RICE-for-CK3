@@ -37,6 +37,7 @@ RICE_mayo_school_of_mayo_decision = {
 		is_landed = yes
 		religion = religion:christianity_religion
 		piety_level >= 3
+		prestige_level >= 3
 		has_title = title:c_mayo
 
 		# custom_description = {
@@ -101,17 +102,16 @@ RICE_mayo_school_of_mayo_decision = {
 	}
 
 	effect = {
-		capital_county = {
-			faith = {
-				save_scope_as = capital_faith
-			}
-		}
 		#Can only happen once
 		add_to_global_variable_list = {
 			name = unavailable_unique_decisions
 			target = flag:RICE_mayo_school_of_mayo_decision_done
 		}
-		save_scope_as = uyghur_leader
+
+		save_scope_as = mayo_leader
+		culture:anglo_saxon = {
+			save_scope_as = anglo_saxon_culture
+		}
 
 		# AI will tend towards destroying the Church, but not necessarily
 		if = {
@@ -122,15 +122,74 @@ RICE_mayo_school_of_mayo_decision = {
 			random_list = {
 				# irish
 				10 = {
-					trigger_event = mayo.0010
+					every_ruler = {
+						limit = {
+							OR = {
+								this = scope:mayo_leader	
+								any_liege_or_above = { this = scope:mayo_leader }
+								any_vassal_or_below = { this = scope:mayo_leader }
+								any_held_county = {
+									any_county_province = {
+										geographical_region = world_europe_west_britannia
+									}
+								}
+							}
+						}
+						trigger_event = mayo.0050
+					}	
 				}
 				# english
 				10 = {
-					trigger_event = mayo.0011
+					every_ruler = {
+						limit = {
+							OR = {
+								this = scope:mayo_leader	
+								any_liege_or_above = { this = scope:mayo_leader }
+								any_vassal_or_below = { this = scope:mayo_leader }
+								any_held_county = {
+									any_county_province = {
+										geographical_region = world_europe_west_britannia
+									}
+								}
+							}
+						}
+						trigger_event = mayo.0051
+					}	
 				}
 				# destroy
 				10 = {
-					trigger_event = mayo.0012
+					trigger = {
+						OR = {
+							has_trait = greedy
+							has_trait = cynical
+							has_trait = ambitious
+							has_trait = sadistic
+							has_trait = arrogant
+							has_trait = arbitrary
+						}
+						NOR = {
+							has_trait = zealous
+							has_trait = generous
+							has_trait = compassionate
+							has_trait = humble
+							has_trait = just
+						}
+					}
+					every_ruler = {
+						limit = {
+							OR = {
+								this = scope:mayo_leader	
+								any_liege_or_above = { this = scope:mayo_leader }
+								any_vassal_or_below = { this = scope:mayo_leader }
+								any_held_county = {
+									any_county_province = {
+										geographical_region = world_europe_west_britannia
+									}
+								}
+							}
+						}
+						trigger_event = mayo.0052
+					}	
 				}
 			}
 		}
@@ -140,7 +199,21 @@ RICE_mayo_school_of_mayo_decision = {
 			show_as_tooltip = {
 				RICE_mayo_school_of_mayo_decision_irish_effect = yes
 			}
-			trigger_event = mayo.0010
+			every_ruler = {
+				limit = {
+					OR = {
+						this = scope:mayo_leader	
+						any_liege_or_above = { this = scope:mayo_leader }
+						any_vassal_or_below = { this = scope:mayo_leader }
+						any_held_county = {
+							any_county_province = {
+								geographical_region = world_europe_west_britannia
+							}
+						}
+					}
+				}
+				trigger_event = mayo.0050
+			}	
 		}
 
 		else_if = {
@@ -148,7 +221,21 @@ RICE_mayo_school_of_mayo_decision = {
 			show_as_tooltip = {
 				RICE_mayo_school_of_mayo_decision_english_effect = yes
 			}
-			trigger_event = mayo.0011
+			every_ruler = {
+				limit = {
+					OR = {
+						this = scope:mayo_leader	
+						any_liege_or_above = { this = scope:mayo_leader }
+						any_vassal_or_below = { this = scope:mayo_leader }
+						any_held_county = {
+							any_county_province = {
+								geographical_region = world_europe_west_britannia
+							}
+						}
+					}
+				}
+				trigger_event = mayo.0051
+			}
 		}
 
 		else_if = {
@@ -156,7 +243,21 @@ RICE_mayo_school_of_mayo_decision = {
 			show_as_tooltip = {
 				RICE_mayo_school_of_mayo_decision_destroy_effect = yes
 			}
-			trigger_event = mayo.0012
+			every_ruler = {
+				limit = {
+					OR = {
+						this = scope:mayo_leader	
+						any_liege_or_above = { this = scope:mayo_leader }
+						any_vassal_or_below = { this = scope:mayo_leader }
+						any_held_county = {
+							any_county_province = {
+								geographical_region = world_europe_west_britannia
+							}
+						}
+					}
+				}
+				trigger_event = mayo.0052
+			}
 		}
 
 		if = {
