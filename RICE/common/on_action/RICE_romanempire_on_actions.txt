@@ -1,0 +1,79 @@
+on_title_gain = {
+	on_actions = {
+		RICE_restoreromanempire_on_gain
+	}
+}
+
+RICE_restoreromanempire_on_gain = {
+	trigger = {
+		scope:title = title:h_roman_empire
+	}
+
+	effect = {	
+		if = {
+			limit = {
+				scope:title = title:h_roman_empire
+				NOT = {
+					scope:title = {
+					has_variable = RICE_romanempiredejure_processed
+					}
+				}
+			}
+
+			#Set the variable so this won't happen again
+			scope:title = {
+				set_variable = {
+					name = RICE_romanempiredejure_processed
+					value = yes
+				}
+			}
+
+			# Check all sub-realm titles within realm
+			# Aegyptus
+			every_sub_realm_title = {
+				limit = {
+					tier = tier_kingdom
+					NOR = { #Ignore if it's already somehow in any of the Roman Empire's sub-empires
+						de_jure_liege = title:e_illyria
+						de_jure_liege = title:e_macedonia
+						de_jure_liege = title:e_anatolia
+						de_jure_liege = title:e_oriens
+						de_jure_liege = title:e_aegyptus
+						de_jure_liege = title:e_africa
+					}
+				}
+				if = {
+					limit = {
+						exists = title:e_aegyptus
+						OR = {
+							#Egypt, Blemmyia, Nubia, and Abyssinia are all handled by the base game at this point
+							title:k_alodia    ?= this
+						}
+					}
+					set_de_jure_liege_title = title:e_aegyptus
+				}
+			}
+			# Check all De-Jure titles of Byzantium
+			title:e_byzantium = {
+				if = { 
+					limit = {
+						OR = {
+							NOT = { exists = holder }
+							holder ?= root
+						}
+					}
+					every_in_de_jure_hierarchy = {
+						limit = {
+							exists = title:e_aegyptus
+							tier = tier_kingdom
+							OR = {
+								title:k_alodia    ?= this
+							}
+						}
+						set_de_jure_liege_title = title:e_aegyptus
+					}
+				}
+			}
+		}
+	}
+}
