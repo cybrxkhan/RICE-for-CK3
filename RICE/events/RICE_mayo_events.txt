@@ -26,6 +26,7 @@ namespace = mayo
 mayo.0010 = {
 	type = character_event
 	title = mayo.0010.t
+	window = duel_event
 	desc = mayo.0010.desc
 	theme = diplomacy_majesty_focus
 	override_background = { reference = RICE_background_irish_hills }
@@ -34,13 +35,13 @@ mayo.0010 = {
 	left_portrait = {
 		character = scope:henry_ii
 		animation = dismissal
-		camera = camera_event_very_left
+		#camera = camera_event_very_left
 	}
 
 	right_portrait = {
 		character = scope:rory_o_connor
 		animation = anger
-		camera = camera_event_very_right_far
+		#camera = camera_event_very_right_far
 	}
 
 	immediate = {
@@ -265,6 +266,12 @@ mayo.0014 = {
 		title:k_england.holder = {
 			save_scope_as = english_ruler
 		}
+		culture:irish = {
+			save_scope_as = irish
+		}
+		culture:norman = {
+			save_scope_as = norman
+		}
 
 		RICE_historical_aspiration_fulfilled_effect = yes
 
@@ -366,6 +373,13 @@ mayo.0015 = {
 		character:214510 = {
 			save_scope_as = rory_o_connor
 		}
+		culture:irish = {
+			save_scope_as = irish
+		}
+		culture:norman = {
+			save_scope_as = norman
+		}
+
 		if = {
 			limit = {
 				exists = title:k_england.holder
@@ -467,7 +481,22 @@ mayo.0015 = {
 mayo.0016 = {
 	type = character_event
 	title = mayo.0016.t
-	desc = mayo.0016.desc
+	desc = {
+		desc = mayo.0016.desc
+		triggered_desc = {
+			trigger = {
+				is_independent_ruler = yes
+				highest_held_title_tier <= tier_duchy
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						geographical_region = custom_ireland
+					}
+				}
+			}
+			desc = mayo.0016.desc.irish
+		}
+	}
 	theme = crown
 	override_background = { reference = RICE_background_irish_hills }
 
@@ -542,6 +571,10 @@ mayo.0016 = {
 				has_trait = craven
 				add = -25
 			}
+			modifier = {
+				sub_realm_size >= 5
+				add = 100
+			}
 		}
 	}
 	
@@ -579,6 +612,10 @@ mayo.0016 = {
 			modifier = {
 				has_trait = ambitious
 				add = -25
+			}
+			modifier = {
+				sub_realm_size >= 5
+				add = 25
 			}
 		}
 	}
