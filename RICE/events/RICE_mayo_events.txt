@@ -982,25 +982,27 @@ mayo.0032 = {
 
 	immediate = {
 		# Small chance of someone receiving an injury
-		random = {
-			chance = 99
-			scope:activity = {
-				random_attending_character = {
-					save_scope_as = injured_person
-				}
-			}		
-			scope:activity = {
-				add_activity_log_entry = {
-					key = RICE_mayo_croagh_patrick_injury_log
-					tags = { bad }
-					# this line below adds the entry to the Effects section of the conclusion UI
-					show_in_conclusion = yes
-					character = scope:injured_person
-					scope:injured_person = {
-						add_piety = medium_piety_gain
-						increase_wounds_effect = { REASON = fallen_from_a_mountain }
+		hidden_effect = {
+			random = {
+				chance = 15
+				scope:activity = {
+					random_attending_character = {
+						save_scope_as = injured_person
 					}
-				}
+				}		
+				scope:activity = {
+					add_activity_log_entry = {
+						key = RICE_mayo_croagh_patrick_injury_log
+						tags = { bad }
+						# this line below adds the entry to the Effects section of the conclusion UI
+						show_in_conclusion = yes
+						character = scope:injured_person
+						scope:injured_person = {
+							add_piety = medium_piety_gain
+							increase_wounds_effect = { REASON = fallen_from_a_mountain }
+						}
+					}
+				}			
 			}			
 		}
 	}
@@ -1062,17 +1064,19 @@ mayo.0033 = {
 	}
 
 	option = { # Ok
-		name = mayo.0032.a
+		name = mayo.0033.a
 	}
 
 	after = {	
-		random = {
-			chance = 99
-			trigger_event = {
-				id = mayo.0034
-				days = { 2 4 }
-			}
-		}	
+		hidden_effect = {
+			random = {
+				chance = 5
+				trigger_event = {
+					id = mayo.0034
+					days = { 2 4 }
+				}
+			}				
+		}
 		trigger_event = {
 			id = mayo.0035
 			days = { 6 9 }
@@ -1214,6 +1218,7 @@ mayo.0035 = {
 		if = {
 			limit = {
 				root = character:214510
+				NOT = { has_character_flag = RICE_rory_did_croagh_patrick_pilgrimage }
 			}
 			add_character_flag = RICE_rory_did_croagh_patrick_pilgrimage
 		}
