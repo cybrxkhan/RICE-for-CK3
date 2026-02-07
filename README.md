@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/5IQLfMs.jpg">
 
-## Latest Version: Version 1.18.1 "Saint Patrick" (Released 2/2/26, for vanilla patch 1.18.x)
+## Latest Version: Version 1.18.1.a Hotfix for "Saint Patrick" (Released 2/7/26, for vanilla patch 1.18.x)
 
 **Newest Flavor Pack: *Mayo: Heather and Yew***
 
@@ -86,6 +86,15 @@ At the moment, RICE includes **43** flavor packs:
 ## Latest Changelog
 
 <img src="https://i.imgur.com/0B88XAP.jpg">
+
+### Version 1.18.1.a Hotfix for "Saint Patrick"
+
+- Added additional Spanish translations, courtesy of DT2399 
+- Nerfed travel bonuses of the Abbey of Kells and the Rock of Cashel
+- Fixed issues with missing text in some languages, especially Spanish, which weren’t displaying the expected language nor the English placeholders
+- Fixed missing localization for the Kherwal (Munda) religion
+- Fixed missing icons for some tracked traits
+- Miscellaneous bugfxies
 
 ### Version 1.18.1 "Saint Patrick"
 
