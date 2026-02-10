@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/5IQLfMs.jpg">
 
-## Latest Version: Version 1.18.1.a Hotfix for "Saint Patrick" (Released 2/7/26, for vanilla patch 1.18.x)
+## Latest Version: Version 1.18.1.b Hotfix for "Saint Patrick" (Released 2/9/26, for vanilla patch 1.18.x)
 
 **Newest Flavor Pack: *Mayo: Heather and Yew***
 
@@ -86,6 +86,17 @@ At the moment, RICE includes **43** flavor packs:
 ## Latest Changelog
 
 <img src="https://i.imgur.com/0B88XAP.jpg">
+
+### Version 1.18.1.b Hotfix for "Saint Patrick"
+
+- Added further Spanish translations and fixes to the Spanish files, courtesy of DT2399
+- Zaghawa culture now starts with the Gold Dust Traders tradition
+- Kanuri culture now starts with the Dryland Dwellers tradition
+- Kachin counties and rulers are now Burmic rather than Thai pagan
+- Fixed Denawar religion not getting the Manichean doctrine from Eclipsed Crown when running the two mods together
+- Fixed a few alcohol-related flavor events being enabled in situations where their faith wouldn’t allow or discourages it
+- Fixed Saint Hilaria event potentially being available to non-Christians
+- Miscellaneous bugfixes
 
 ### Version 1.18.1.a Hotfix for "Saint Patrick"
 
