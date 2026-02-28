@@ -437,6 +437,36 @@
 			}
 		}
 	}
+
+	############################################################
+	#
+	# MISCELLANEOUS
+	#
+	############################################################
+
+	# Add a few (lowborn) characters with the Khat Addict trait at game start
+	every_ruler = {
+		limit = {
+			capital_county = {
+				any_county_province = {
+					OR = {
+						geographical_region = world_africa_east
+						geographical_region = world_middle_east_arabia
+					}
+				}
+			}
+		}
+		every_courtier_or_guest = {
+			limit = {
+				has_no_particular_noble_roots_trigger = yes
+				RICE_enjoys_khat_trigger = yes
+			}
+			random = {
+				chance = 1
+				add_trait = RICE_khat_addict
+			}
+		}
+	}	
 		
 }
 
@@ -542,3 +572,52 @@ RICE_organize_red_sea_ferries_effect = {
 		}
 	}
 }
+
+
+
+RICE_red_sea_chew_khat_effect = {
+
+	if = {
+		limit = {
+			NOT = { has_trait = RICE_khat_addict }
+		}
+		custom_tooltip = RICE_red_sea_chew_khat_effect_tooltip_1 
+	}
+
+	hidden_effect = {
+		random = {
+			chance = 5
+			add_trait = RICE_khat_addict
+		}
+	}
+
+	add_stress = medium_stress_loss
+
+	every_courtier_or_guest = {
+		custom = RICE_all_khat_courtiers_and_guests
+		limit = {
+			RICE_enjoys_khat_trigger = yes
+		}
+		add_opinion = {
+			target = root
+			modifier = RICE_opinion_chewed_khat_together
+		}
+		reverse_add_opinion = {
+			target = root
+			modifier = RICE_opinion_chewed_khat_together
+		}
+		if = {
+			limit = {
+				NOT = { has_trait = RICE_khat_addict }
+			}
+			hidden_effect = {
+				random = {
+					chance = 1
+					add_trait = RICE_khat_addict
+				}
+			}			
+		}
+	}
+
+}
+
