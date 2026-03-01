@@ -748,16 +748,16 @@ RICE_pirate_indian_ocean_decision = {
 		
 		### Establish Relations with Pirates
 		item = {
-			value = RICE_pirate_establish_relations
+			value = RICE_socotra_cast_insular_sorcery_rejuvenate_clan
 			is_valid = {
 				NOR = { 
 					has_character_modifier = RICE_pirate_indian_ocean_connections_modifier
 					culture = { has_cultural_tradition = tradition_RICE_sorcerous_corsairs }
 				}
 			}
-			current_description = RICE_pirate_establish_relations_desc
-			localization = RICE_pirate_establish_relations_name
-			icon = "gfx/interface/icons/widgets/RICE_pirate_establish_relations.dds"
+			current_description = RICE_socotra_cast_insular_sorcery_rejuvenate_clan_desc
+			localization = RICE_socotra_cast_insular_sorcery_rejuvenate_clan_name
+			icon = "gfx/interface/icons/widgets/RICE_socotra_cast_insular_sorcery_rejuvenate_clan.dds"
 			ai_chance = {
 				value = 10
 			}
@@ -939,9 +939,9 @@ RICE_pirate_indian_ocean_decision = {
 		}
 
 		else_if = {
-			limit = { scope:RICE_pirate_establish_relations = yes }
+			limit = { scope:RICE_socotra_cast_insular_sorcery_rejuvenate_clan = yes }
 			show_as_tooltip = {
-				custom_tooltip = RICE_pirate_establish_relations_effect_tooltip_1
+				custom_tooltip = RICE_socotra_cast_insular_sorcery_rejuvenate_clan_effect_tooltip_1
 				RICE_indian_ocean_pirates_establish_relations_effect = yes
 			}
 			trigger_event = socotra.0090
@@ -1034,3 +1034,269 @@ RICE_pirate_indian_ocean_decision = {
 		}
 	}
 }
+
+
+RICE_socotra_cast_insular_sorcery = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_hammerfell.dds" }
+	desc = RICE_socotra_cast_insular_sorcery_desc
+	decision_group_type = RICE_regional
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 64
+		duchy = 48
+		kingdom = 48
+		empire = 48
+		hegemony = 48
+	}
+	
+	cooldown = { years = 3650 } 
+
+	is_shown = {
+		is_landed = yes
+		culture = { has_cultural_tradition = tradition_RICE_sorcerous_corsairs }
+	}
+
+	is_valid = {
+		culture = { has_cultural_tradition = tradition_RICE_sorcerous_corsairs }
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		RICE_is_available_adult_even_if_sick_trigger = yes
+	}
+
+	
+	widget = {
+		gui = "decision_view_widget_RICE_socotra_cast_insular_sorcery"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "RICE_SOCOTRA_SORCERY_PICK_TYPE"
+		show_from_start = yes	
+		
+		### Bless Ships
+		item = {
+			value = RICE_socotra_cast_insular_sorcery_bless_ships
+			is_valid = {
+				custom_description = {
+					text = RICE_capital_coastal_county
+					any_held_county = {
+						is_coastal_county = yes
+					}
+				}
+			}
+			current_description = RICE_socotra_cast_insular_sorcery_bless_ships_desc
+			localization = RICE_socotra_cast_insular_sorcery_bless_ships_name
+			icon = "gfx/interface/icons/event_types/_frame_diplomacy.dds"
+			ai_chance = {
+				value = 10
+			}
+		}	
+		
+		### Weaken Enemies
+		item = {
+			value = RICE_socotra_cast_insular_sorcery_weaken_enemies
+			current_description = RICE_socotra_cast_insular_sorcery_weaken_enemies_desc
+			localization = RICE_socotra_cast_insular_sorcery_weaken_enemies_name
+			icon = "gfx/interface/icons/event_types/_frame_martial.dds" # type_disaster
+			ai_chance = {
+				value = 10
+			}
+		}		
+		
+		### Pray for Water
+		item = {
+			value = RICE_socotra_cast_insular_sorcery_pray_for_water
+			current_description = RICE_socotra_cast_insular_sorcery_pray_for_water_desc
+			localization = RICE_socotra_cast_insular_sorcery_pray_for_water_name
+			icon = "gfx/interface/icons/event_types/_frame_stewards.dds"
+			ai_chance = {
+				value = 10
+			}
+		}		
+		
+		### Insulate Coasts
+		item = {
+			value = RICE_socotra_cast_insular_sorcery_insulate_coasts
+			is_valid = {
+				custom_description = {
+					text = RICE_capital_coastal_county
+					any_held_county = {
+						is_coastal_county = yes
+					}
+				}
+			}
+			current_description = RICE_socotra_cast_insular_sorcery_insulate_coasts_desc
+			localization = RICE_socotra_cast_insular_sorcery_insulate_coasts_name
+			icon = "gfx/interface/icons/event_types/_frame_intrigue.dds"
+			ai_chance = {
+				value = 10
+			}
+		}	
+		
+		### Rejuvenate Clan
+		item = {
+			value = RICE_socotra_cast_insular_sorcery_rejuvenate_clan
+			current_description = RICE_socotra_cast_insular_sorcery_rejuvenate_clan_desc
+			localization = RICE_socotra_cast_insular_sorcery_rejuvenate_clan_name
+			icon = "gfx/interface/icons/event_types/_frame_learning.dds"
+			ai_chance = {
+				value = 10
+			}
+		}			
+
+	}
+
+	cost = {
+		gold = minor_gold_value # Will depend
+		piety = medium_piety_value
+	}
+	
+	ai_potential = {
+		short_term_gold > minor_gold_value
+	}
+
+	effect = {
+
+		#RICE_pirate_decision_basic_effect = yes
+		
+		if = {
+			limit = {
+				is_ai = yes
+			}
+
+			if = {
+				limit = {
+					NOR = {
+						has_character_modifier = RICE_pirate_indian_ocean_connections_modifier
+						any_held_county = { 
+							RICE_socotra_has_pirate_den_trigger = yes
+						}						
+					}
+				}
+				trigger_event = socotra.0090
+			}
+
+			else = {
+				random_list = {
+					10 = {
+						trigger_event = socotra.0091
+					}
+					10 = {
+						trigger_event = socotra.0092
+					}
+					10 = {
+						trigger = {
+							gold >= medium_gold_value
+						}
+						trigger_event = socotra.0093
+					}
+					10 = {
+						trigger = {
+							gold >= RICE_pirate_ransom_max_value
+						}
+						trigger_event = socotra.0094
+					}
+					# 10 = {
+					# 	trigger_event = socotra.0095
+					# }
+				}
+
+			}
+		}
+
+		else_if = {
+			limit = { scope:RICE_socotra_cast_insular_sorcery_rejuvenate_clan = yes }
+			show_as_tooltip = {
+				custom_tooltip = RICE_socotra_cast_insular_sorcery_rejuvenate_clan_effect_tooltip_1
+				RICE_indian_ocean_pirates_establish_relations_effect = yes
+			}
+			trigger_event = socotra.0090
+		}
+
+		else_if = {
+			limit = { scope:RICE_pirate_acquire_booty = yes }
+			show_as_tooltip = {
+				custom_tooltip = RICE_pirate_acquire_booty_effect_tooltip_1
+				custom_tooltip = RICE_pirate_acquire_booty_effect_tooltip_2
+				RICE_pirates_acquire_booty_effect = yes
+				# Can't show amount as it is randomized
+				#RICE_pirates_acquire_booty_gold_effect = yes
+			}
+			trigger_event = socotra.0091
+		}
+
+		else_if = {
+			limit = { scope:RICE_pirate_authorize_sales = yes }
+			show_as_tooltip = {
+				#custom_tooltip = RICE_pirate_authorize_sales_effect_tooltip_1
+				RICE_indian_ocean_pirates_authorize_sales_effect = yes	
+			}
+			trigger_event = socotra.0092
+		}
+
+		else_if = {
+			limit = { scope:RICE_pirate_recruit_pirates = yes }
+			show_as_tooltip = {
+				custom_tooltip = RICE_pirate_recruit_pirates_effect_tooltip_1
+				RICE_pirates_recruit_pirates_effect = yes
+				# Can't show amount as it is randomized
+				#RICE_pirates_recruit_pirates_soldiers_effect = yes
+			}
+			trigger_event = socotra.0093
+		}
+
+		else_if = {
+			limit = { scope:RICE_pirate_ransom_prisoners = yes }
+			show_as_tooltip = {
+				custom_tooltip = RICE_pirate_ransom_prisoners_effect_tooltip_1
+				custom_tooltip = RICE_pirate_ransom_prisoners_effect_tooltip_2
+				RICE_pirates_ransom_prisoners_effect = yes	
+			}
+			trigger_event = socotra.0094
+		}
+
+		# else_if = {
+		# 	limit = { scope:RICE_pirate_compensate_victims = yes }
+		# 	show_as_tooltip = {
+		# 		custom_tooltip = RICE_pirate_compensate_victims_effect_tooltip_1
+		# 	}
+		# 	trigger_event = socotra.0095
+		# }
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_socotra_cast_insular_sorcery_context_tooltip
+		}
+
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = -10
+			has_trait = generous
+		}
+		modifier = {
+			add = 10
+			has_trait = greedy
+		}
+		modifier = {
+			add = -10
+			has_trait = compassionate
+		}
+		modifier = {
+			add = 10
+			has_trait = sadistic
+		}
+		modifier = {
+			add = -10
+			has_trait = content
+		}
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+	}
+}
+
