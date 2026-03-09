@@ -1,16 +1,42 @@
 ﻿RICE_setup_siberia_flavor_pack_effect = {
 
+
+	############################################################
+	#
+	# RELIGION CHANGES
+	#
+	############################################################
+
 	if = {
 		limit = {
-			game_start_date >= 700.1.1
-			title:b_karabalgasun = {
-				title_province = { has_special_building = no }
+			has_dlc_feature = all_under_heaven
+		}
+		faith:siberian_pagan = {
+			if = {
+				limit = {
+					NOT = { has_doctrine = tenet_takamin }
+					has_doctrine = tenet_ritual_celebrations
+				}
+				remove_doctrine = tenet_ritual_celebrations
+				add_doctrine = tenet_takamin
+			}
+			else_if = {
+				limit = {
+					NOT = { has_doctrine = tenet_takamin }
+					has_doctrine = tenet_ancestor_worship
+				}
+				remove_doctrine = tenet_ancestor_worship
+				add_doctrine = tenet_takamin
 			}
 		}
-		title:b_karabalgasun.title_province = {
-			add_special_building = RICE_siberia_orkhon_inscriptions
-		}
 	}
+
+	############################################################
+	#
+	# CULTURE CHANGES
+	#
+	############################################################
+
 
 	# Innovations
 	culture:komi = { save_scope_as = komi }
@@ -23,7 +49,8 @@
 		}
 	}		
 	culture:nivkh = {
-		get_all_innovations_from = scope:komi
+		save_scope_as = nivkh_culture
+		#get_all_innovations_from = scope:komi
 		if = {
 			limit = { NOT = { has_cultural_tradition = tradition_RICE_siberian_survivalists } }
 			add_culture_tradition = tradition_RICE_siberian_survivalists
@@ -39,7 +66,7 @@
 		}
 	}		
 	culture:yeniseian = {
-		get_all_innovations_from = scope:komi
+		get_all_innovations_from = scope:nivkh_culture
 		if = {
 			limit = { NOT = { has_cultural_tradition = tradition_RICE_siberian_survivalists } }
 			add_culture_tradition = tradition_RICE_siberian_survivalists
@@ -47,7 +74,7 @@
 		}
 	}		
 	culture:yukaghir = {
-		get_all_innovations_from = scope:komi
+		get_all_innovations_from = scope:nivkh_culture
 		if = {
 			limit = { NOT = { has_cultural_tradition = tradition_RICE_siberian_survivalists } }
 			add_culture_tradition = tradition_RICE_siberian_survivalists
@@ -61,6 +88,35 @@
 			remove_variable = tradition_cooldown
 		}
 	}	
+
+	############################################################
+	#
+	# HISTORY/TITLE CHANGES
+	#
+	############################################################
+
+
+
+	############################################################
+	#
+	# MISCELLANEOUS
+	#
+	############################################################
+
+
+
+	if = {
+		limit = {
+			game_start_date >= 700.1.1
+			title:b_karabalgasun = {
+				title_province = { has_special_building = no }
+			}
+		}
+		title:b_karabalgasun.title_province = {
+			add_special_building = RICE_siberia_orkhon_inscriptions
+		}
+	}
+
 		
 	# Spawn Siberian courtiers
 	if = {
