@@ -8,6 +8,8 @@
 # socotra.0030-socotra.0039	Zahra the Socotran History Events
 # socotra.0040-socotra.0049	Moon Sacrifice
 # socotra.0050-socotra.0089	Socotra Generic Flavor Events
+# socotra.0090-socotra.0099 Socotran Piracy
+# socotra.0100-socotra.0109 Rahabhan Flavor Events/Aspiration
 # 
 ###############################################################################
 
@@ -5937,3 +5939,210 @@ socotra.0094 = {
 		RICE_pirates_ransom_prisoners_gold_effect = yes
 	}
 }
+
+
+######################################################################################
+# 
+# RAHABHAN EVENTS
+# 
+# socotra.0100-socotra.0109 reserved
+# 
+######################################################################################
+
+
+# Introduce Rahabhan
+socotra.0100 = {
+	type = character_event
+	title = socotra.0100.t
+	desc = socotra.0100.desc
+	window = big_event_window
+	theme = memory_intrigue
+	override_background = { reference = RICE_background_socotra_tree }
+	
+	left_portrait = {
+		character = scope:rahabhan
+		animation = personality_callous
+		camera = camera_event_right_pointing_right
+	}
+	right_portrait = {
+		character = scope:rahabhan_wife
+		animation = war_over_tie
+		camera = camera_event_right_pointing_very_right
+	}
+
+	immediate = {
+		character:RICE_socotra_003 = {
+			save_scope_as = rahabhan
+		}
+		character:RICE_socotra_004 = {
+			save_scope_as = rahabhan_wife
+		}
+		show_as_tooltip = {
+			add_character_modifier = {
+				modifier = RICE_socotra_aspiration_conslidate_clan
+			}
+		}
+		# Create characters to use as reference for copying DNA in case he's a different ethnicity
+		hidden_effect = {
+			# Roman/Greek
+			create_character = {
+				location = title:c_socotra.holder.capital_province
+				random_traits = yes
+				faith = faith:nestorian
+				culture = culture:greek
+				gender_female_chance = 100
+				save_scope_as = roman_courtier
+			}
+			# Persian
+			create_character = {
+				location = title:c_socotra.holder.capital_province
+				random_traits = yes
+				faith = faith:nestorian
+				culture = culture:persian
+				gender_female_chance = 100
+				save_scope_as = persian_courtier
+			}
+			# Indian
+			create_character = {
+				location = title:c_socotra.holder.capital_province
+				random_traits = yes
+				faith = faith:nestorian
+				culture = culture:gujarati
+				gender_female_chance = 100
+				save_scope_as = indian_courtier
+			}
+			# African
+			create_character = {
+				location = title:c_socotra.holder.capital_province
+				random_traits = yes
+				faith = faith:nestorian
+				culture = culture:swahili
+				gender_female_chance = 100
+				save_scope_as = african_courtier
+			}
+		}
+		
+	}
+	
+	option = { # Franks
+		name = socotra.0100.a
+		# AI will more likely go with this option
+		ai_chance = {
+			base = 70
+		}
+	}	
+	
+	option = { # Romans
+		name = socotra.0100.b
+		scope:rahabhan_wife = {
+			random_list = {
+				60 = { set_culture = culture:greek }
+				20 = { set_culture = culture:armenian }
+				20 = { set_culture = culture:sicilian }
+			}
+		}
+		custom_tooltip = RICE_physical_appearance_change_wife_desc
+		hidden_effect = {
+			scope:rahabhan_wife = {
+				copy_inheritable_appearance_from = scope:roman_courtier
+			}
+		}
+		# However, there's a chance the AI will go with this option instead
+		ai_chance = {
+			base = 20
+		}
+	}	
+	
+	option = { # Persians
+		name = socotra.0100.c
+		scope:rahabhan_wife = {
+			random_list = {
+				60 = { set_culture = culture:persian }
+				20 = { set_culture = culture:tajik }
+				10 = { set_culture = culture:afghan }
+				10 = { set_culture = culture:khalaj }
+			}
+		}
+		custom_tooltip = RICE_physical_appearance_change_wife_desc
+		hidden_effect = {
+			scope:rahabhan_wife = {
+				copy_inheritable_appearance_from = scope:persian_courtier
+			}
+		}
+		# However, there's a chance the AI will go with this option instead
+		ai_chance = {
+			base = 20
+		}
+	}	
+	
+	option = { # Indians
+		name = socotra.0100.d
+		scope:rahabhan_wife = {
+			random_list = {
+				30 = { set_culture = culture:sindhi }
+				30 = { set_culture = culture:gujarati }
+				10 = { set_culture = culture:tamil }
+				10 = { set_culture = culture:telugu }
+				10 = { set_culture = culture:marathi }
+				10 = { set_culture = culture:sinhala }
+			}
+		}
+		custom_tooltip = RICE_physical_appearance_change_wife_desc
+		hidden_effect = {
+			scope:rahabhan_wife = {
+				copy_inheritable_appearance_from = scope:indian_courtier
+			}
+		}
+		# However, there's a chance the AI will go with this option instead
+		ai_chance = {
+			base = 20
+		}
+	}	
+	
+	option = { # Africans
+		name = socotra.0100.e
+		scope:rahabhan_wife = {
+			random_list = {
+				30 = { set_culture = culture:swahili }
+				20 = { set_culture = culture:somali }
+				10 = { set_culture = culture:beja }
+				10 = { set_culture = culture:nubian }
+				10 = { set_culture = culture:ethiopian }
+				10 = { set_culture = culture:harla }
+				10 = { set_culture = culture:afar }
+			}
+		}
+		custom_tooltip = RICE_physical_appearance_change_wife_desc
+		hidden_effect = {
+			scope:rahabhan_wife = {
+				copy_inheritable_appearance_from = scope:african_courtier
+			}
+		}
+	}	
+
+	after = {
+		hidden_effect = {
+			scope:roman_courtier = { death = { death_reason = death_vanished } }
+			scope:persian_courtier = { death = { death_reason = death_vanished } }
+			scope:indian_courtier = { death = { death_reason = death_vanished } }
+			scope:african_courtier = { death = { death_reason = death_vanished } }
+		}		
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
