@@ -5,6 +5,7 @@
 # red_sea.0000-red_sea.0019	Misc Events (including Decisions)
 # red_sea.0020-red_sea.0029	al-'Umari Events
 # red_sea.0030-red_sea.0049	Red Sea Flavor Events
+# red_sea.0050-red_sea.0069	Najahid Events
 # 
 ###############################################################################
 
@@ -1591,3 +1592,562 @@ red_sea.0039 = {
 
 
 
+
+######################################################################################
+# 
+# NAJAHID EVENTS
+# 
+# red_sea.0050-red_sea.0069 reserved
+# 
+######################################################################################
+
+
+# Introduce the Najahid Siblings
+red_sea.0050 = {
+	type = character_event
+	title = red_sea.0050.t
+	desc = red_sea.0050.desc
+	window = big_event_window
+	theme = intrigue
+	override_background = { reference = RICE_background_red_sea_beach }
+	
+	left_portrait = {
+		character = scope:said
+		animation = aggressive_unarmed
+	}
+	right_portrait = {
+		character = scope:sulayhid
+		animation = personality_callous
+	}
+
+	lower_left_portrait = scope:jayyash
+	lower_center_portrait = scope:adh_dhakhirah
+	lower_right_portrait = scope:najah
+
+	immediate = {
+		character:45035 = {
+			save_scope_as = sulayhid
+		}
+		character:najahid001 = {
+			save_scope_as = najah
+		}
+		character:me_najahid_001 = {
+			save_scope_as = mu_arik
+		}
+		character:najahid002 = {
+			save_scope_as = said
+			show_as_tooltip = {
+				add_character_modifier = {
+					modifier = RICE_red_sea_aspiration_avenge_najah
+				}
+			}
+		}
+		character:najahid003 = {
+			save_scope_as = jayyash
+			show_as_tooltip = {
+				add_character_modifier = {
+					modifier = RICE_red_sea_aspiration_avenge_najah
+				}
+			}
+		}
+		character:me_najahid_002 = {
+			save_scope_as = adh_dhakhirah
+			show_as_tooltip = {
+				add_character_modifier = {
+					modifier = RICE_red_sea_aspiration_avenge_najah
+				}
+			}
+		}		
+	}
+	
+	option = { # Ok
+		name = red_sea.0050.a
+		flavor = {
+			triggered_desc = {
+				trigger = {
+					has_game_rule = RICE_historical_context_on
+				}
+				desc = red_sea.0050.info
+			}
+		}
+	}
+
+	after = {
+		# Following event only makes sense if none of the siblings rule the Sultanate of Dahlak
+		if = {
+			limit = {
+				NOT = { scope:said = { has_title = title:c_dahlak } }
+				NOT = { scope:jayyash = { has_title = title:c_dahlak } }
+				NOT = { scope:adh_dhakhirah = { has_title = title:c_dahlak } }
+			}
+		}
+		scope:said = {
+			trigger_event = red_sea.0051
+		}
+	}
+
+}
+
+
+# Sa'id tries to betray the ruler of Dahlak - does Jayyash succeed in stopping him or not?
+red_sea.0051 = {
+	type = character_event
+	title = red_sea.0051.t
+	desc = red_sea.0051.desc
+	window = big_event_window
+	theme = intrigue
+	override_background = { reference = RICE_background_red_sea_beach }
+	
+	left_portrait = {
+		character = scope:said
+		animation = aggressive_sword
+	}
+	right_portrait = {
+		character = scope:jayyash
+		animation = disapproval
+	}
+	lower_center_portrait = scope:dahlak_ruler
+
+	immediate = {
+			title:c_dahlak.holder = {
+				save_scope_as = dahlak_ruler
+			}
+	}
+	
+	option = { # Jayyash stops his brother
+		name = red_sea.0051.a
+		flavor = {
+			triggered_desc = {
+				trigger = {
+					has_game_rule = RICE_historical_context_on
+				}
+				desc = red_sea.0051.info
+			}
+		}
+		scope:dahlak_ruler = {
+			add_opinion = {
+				target = scope:said
+				modifier = RICE_opinion_aborted_coup
+			}
+		}
+		scope:dahlak_ruler = {
+			add_opinion = {
+				target = scope:jayyash
+				modifier = RICE_opinion_prevented_coup
+			}
+		}
+		scope:jayyash = {
+			add_piety = major_piety_gain
+			add_opinion = {
+				target = scope:said
+				modifier = disappointed_opinion
+				opinion = -15
+			}
+			reverse_add_opinion = {
+				target = scope:said
+				modifier = opposed_me
+				opinion = -30
+			}
+		}
+		trigger_event = red_sea.0052
+		hidden_effect = {
+			title:c_dahlak = {
+				trigger_event = red_sea.0054
+			}
+		}
+	}
+	
+	option = { # Jayyash doesn't stop his brother
+		name = red_sea.0051.a
+		# Only allow this if the ruler of Dahlak is an AI, or if both Sa'id and Dahlak's ruler is not AI
+		trigger = {
+			OR = {
+				scope:dahlak_ruler = { is_ai = yes }
+				AND = {
+					scope:said = { is_ai = no }
+					scope:dahlak_ruler = { is_ai = no }
+				}
+			}
+		}
+		flavor = {
+			triggered_desc = {
+				trigger = {
+					has_game_rule = RICE_historical_context_on
+				}
+				desc = red_sea.0051.info
+			}
+		}
+		add_piety = major_piety_loss
+		get_title = title:c_dahlak
+		scope:dahlak_ruler = {
+			add_opinion = {
+				target = scope:said
+				modifier = RICE_opinion_successful_coup
+			}
+		}
+		scope:jayyash = {
+			add_opinion = {
+				target = scope:said
+				modifier = disappointed_opinion
+				opinion = -30
+			}
+			reverse_add_opinion = {
+				target = scope:said
+				modifier = opposed_me
+				opinion = -30
+			}
+		}
+		trigger_event = red_sea.0053
+		hidden_effect = {
+			title:c_dahlak = {
+				trigger_event = red_sea.0055
+			}
+		}
+	}
+
+}
+
+
+# Sa'id fails to betray the Sultan of Dahlak
+red_sea.0052 = {
+	type = character_event
+	title = red_sea.0052.t
+	desc = red_sea.0052.desc
+	theme = intrigue
+	override_background = { reference = RICE_background_red_sea_beach }
+	
+	left_portrait = {
+		character = scope:said
+		animation = anger
+	}
+	right_portrait = {
+		character = scope:jayyash
+		animation = disappointed
+	}
+	lower_center_portrait = scope:dahlak_ruler
+	
+	option = {
+		name = red_sea.0052.a
+	}
+
+}
+
+# Sa'id betrays the Sultan of Dahlak
+red_sea.0053 = {
+	type = character_event
+	title = red_sea.0053.t
+	desc = red_sea.0053.desc
+	theme = intrigue
+	override_background = { reference = RICE_background_red_sea_beach }
+	
+	left_portrait = {
+		character = scope:said
+		animation = personality_callous
+	}
+	right_portrait = {
+		character = scope:jayyash
+		animation = disappointed
+	}
+	lower_center_portrait = scope:dahlak_ruler
+	
+	option = {
+		name = red_sea.0053.a
+	}
+
+}
+
+# Sa'id fails to betray the Sultan of Dahlak - notify the Sultan of Dahlak
+red_sea.0054 = {
+	type = character_event
+	title = red_sea.0054.t
+	desc = red_sea.0054.desc
+	theme = intrigue
+	override_background = { reference = RICE_background_red_sea_beach }
+	
+	left_portrait = {
+		character = scope:said
+		animation = anger
+	}
+	right_portrait = {
+		character = scope:jayyash
+		animation = disappointed
+	}
+	
+	option = {
+		name = red_sea.0054.a
+	}
+
+}
+
+# Sa'id betrays the Sultan of Dahlak - notify the Sultan of Dahlak
+red_sea.0055 = {
+	type = character_event
+	title = red_sea.0055.t
+	desc = red_sea.0055.desc
+	theme = intrigue
+	override_background = { reference = RICE_background_red_sea_beach }
+	
+	left_portrait = {
+		character = scope:said
+		animation = personality_callous
+	}
+	right_portrait = {
+		character = scope:dahlak_ruler
+		animation = rage
+	}
+	lower_center_portrait = scope:jayyash
+	
+	option = {
+		name = red_sea.0055.a
+	}
+
+}
+
+
+# Najah's children/siblings aspiration fulfilled
+red_sea.0060 = {
+	type = character_event
+	title = red_sea.0060.t
+	desc = red_sea.0060.desc
+	theme = dynasty
+	override_background = { reference = RICE_background_red_sea_beach }
+
+	left_portrait = {
+		character = root
+		animation = chancellor
+	}
+
+	left_portrait = {
+		character = root
+		animation = personality_vengeful
+	}
+	right_portrait = {
+		character = scope:najah
+		animation = dead
+	}
+	lower_left_portrait = {
+		character = scope:said
+		trigger = {
+			root != scope:said
+		}
+	}
+	lower_center_portrait = {
+		character = scope:jayyash
+		trigger = {
+			root != scope:jayyash
+		}
+	}
+	lower_right_portrait = {
+		character = scope:adh_dhakhirah
+		trigger = {
+			root != scope:adh_dhakhirah
+		}
+	}
+
+	immediate = {
+		character:45035 = {
+			save_scope_as = sulayhid
+		}
+		character:najahid001 = {
+			save_scope_as = najah	
+		}
+		character:najahid002 = {
+			save_scope_as = said		
+			show_as_tooltip = {
+				if = {
+					limit = { has_character_modifier = RICE_red_sea_aspiration_avenge_najah }
+					remove_character_modifier = RICE_red_sea_aspiration_avenge_najah
+				}
+			}
+		}
+		character:najahid003 = {
+			save_scope_as = jayyash		
+			show_as_tooltip = {
+				if = {
+					limit = { has_character_modifier = RICE_red_sea_aspiration_avenge_najah }
+					remove_character_modifier = RICE_red_sea_aspiration_avenge_najah
+				}
+			}
+		}
+		character:me_najahid_002 = {
+			save_scope_as = adh_dhakhirah		
+			show_as_tooltip = {
+				if = {
+					limit = { has_character_modifier = RICE_red_sea_aspiration_avenge_najah }
+					remove_character_modifier = RICE_red_sea_aspiration_avenge_najah
+				}
+			}
+		}		
+
+		play_music_cue = "mx_cue_positive_effect"
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		# Main Objective Reward
+		show_as_tooltip = {
+			if = {
+				limit = {
+					scope:said = { is_alive = yes }
+					scope:jayyash = { is_alive = yes }
+					scope:adh_dhakhirah = { is_alive = yes }
+				}
+				dynasty ?= {
+					add_dynasty_prestige = RICE_aspiration_medium_resource_bonus_times_3
+				}		
+			}
+			else_if = {
+				limit = {
+					OR = {
+						scope:said = { is_alive = yes }
+						scope:jayyash = { is_alive = yes }
+					}
+					OR = {
+						scope:jayyash = { is_alive = yes }
+						scope:adh_dhakhirah = { is_alive = yes }
+					}
+					OR = {
+						scope:said = { is_alive = yes }
+						scope:adh_dhakhirah = { is_alive = yes }
+					}
+				}
+				dynasty ?= {
+					add_dynasty_prestige = RICE_aspiration_medium_resource_bonus_times_2
+				}	
+			}
+			else = {
+				dynasty ?= {
+					add_dynasty_prestige = RICE_aspiration_medium_resource_bonus
+				}
+			}
+		}
+		# This event will happen to every surviving sibling, so we're just displaying it as a tooltip above
+		hidden_effect = {
+			dynasty ?= {
+				add_dynasty_prestige = RICE_aspiration_medium_resource_bonus
+			}			
+		}
+
+		if = {
+			limit = {
+				is_landed = yes
+			}
+			add_legitimacy = medium_legitimacy_gain
+		}
+
+		show_as_tooltip = {
+			scope:said = {
+				add_character_modifier = {
+					modifier = RICE_red_sea_heirs_of_najah_modifier
+				}
+			}
+			scope:jayyash = {
+				add_character_modifier = {
+					modifier = RICE_red_sea_heirs_of_najah_modifier
+				}
+			}
+			scope:adh_dhakhirah = {
+				add_character_modifier = {
+					modifier = RICE_red_sea_heirs_of_najah_modifier
+				}
+			}			
+		}
+
+		# This event will happen to every surviving sibling, so we're just displaying it as a tooltip above
+		hidden_effect = {
+			add_character_modifier = {
+				modifier = RICE_red_sea_heirs_of_najah_modifier
+			}		
+		}
+
+		spawn_army = {
+			levies = 400
+			men_at_arms = {
+				type = abudrar
+				stacks = 2
+			}
+			men_at_arms = {
+				type = light_horsemen
+				stacks = 1
+			}
+			men_at_arms = {
+				type = camel_rider
+				stacks = 1
+			}
+			men_at_arms = {
+				type = horn_warrior
+				stacks = 1
+			}
+			men_at_arms = {
+				type = sarawit
+				stacks = 1
+			}
+			location = capital_province
+			uses_supply = yes
+			inheritable = yes
+			name = event_troop_default_name
+		}
+
+		# Bonus Objective Reward(s)
+		if = {
+			limit = {
+				has_title = title:c_dahlak
+			}
+			add_gold = RICE_aspiration_medium_resource_bonus
+		}
+		if = {
+			limit = {
+				NOT = { has_title = title:c_dahlak }
+				OR = {
+					any_vassal_or_below = {
+						has_title = title:c_dahlak
+					}
+					title:c_dahalk.holder = { is_tributary_of = root }
+				}
+			}
+			every_held_title = {
+				limit = {
+					tier = tier_county
+					OR = {
+						duchy = title:d_taizz
+						duchy = title:d_sanaa
+					}
+				}
+				change_development_level = RICE_red_sea_al_umari_aspiration_dev_bonus
+			}
+		}
+		if = {
+			limit = {
+				scope:sulayhid = {
+					is_alive = no
+					NOT = { any_child = { is_alive = yes } }
+				}
+			}
+			add_intrigue_lifestyle_perk_points = 1
+			add_prestige = RICE_aspiration_large_resource_bonus
+		}
+		if = {
+			limit = {
+				scope:sulayhid = {
+					is_alive = yes
+					NOT = { any_child = { is_alive = yes } }
+				}
+			}
+			add_prestige = RICE_nubian_agriculture_decision_aspiration_prestige_bonus_value
+		}
+
+	}
+
+	option = { # Ok
+		name = red_sea.0060.a
+	}
+
+	after = {	
+		hidden_effect = {
+			if = {
+				limit = { has_character_modifier = RICE_red_sea_aspiration_avenge_najah }
+				remove_character_modifier = RICE_red_sea_aspiration_avenge_najah
+			}
+		}	
+	}
+
+}
