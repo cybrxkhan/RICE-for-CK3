@@ -1106,6 +1106,9 @@ RICE_socotra_cast_insular_sorcery = {
 		
 		### Rejuvenate Clan
 		item = {
+			is_valid = {
+				exists = dynasty
+			}
 			value = RICE_socotra_cast_insular_sorcery_rejuvenate_clan
 			current_description = RICE_socotra_cast_insular_sorcery_rejuvenate_clan_desc
 			localization = RICE_socotra_cast_insular_sorcery_rejuvenate_clan_name
@@ -1117,9 +1120,9 @@ RICE_socotra_cast_insular_sorcery = {
 		
 		### Weaken Enemies
 		item = {
-			value = RICE_socotra_cast_insular_sorcery_weaken_enemies
-			current_description = RICE_socotra_cast_insular_sorcery_weaken_enemies_desc
-			localization = RICE_socotra_cast_insular_sorcery_weaken_enemies_name
+			value = RICE_socotra_cast_insular_sorcery_impair_enemies
+			current_description = RICE_socotra_cast_insular_sorcery_impair_enemies_desc
+			localization = RICE_socotra_cast_insular_sorcery_impair_enemies_name
 			icon = "gfx/interface/icons/culture_tradition/4-items/speech.dds" # type_disaster
 			ai_chance = {
 				value = 10
@@ -1128,6 +1131,9 @@ RICE_socotra_cast_insular_sorcery = {
 		
 		### Pray for Water
 		item = {
+			is_valid = {
+				is_landed = yes
+			}
 			value = RICE_socotra_cast_insular_sorcery_pray_for_water
 			current_description = RICE_socotra_cast_insular_sorcery_pray_for_water_desc
 			localization = RICE_socotra_cast_insular_sorcery_pray_for_water_name
@@ -1186,25 +1192,42 @@ RICE_socotra_cast_insular_sorcery = {
 		short_term_gold > minor_gold_value
 	}
 
-	effect = {		
+	effect = {	
+		save_scope_as = sorcerer
 		if = {
 			limit = {
 				is_ai = yes
 			}
 			random_list = {
 				10 = {
+					trigger = {
+						exists = dynasty
+					}
 					trigger_event = socotra.0110
 				}
 				10 = {
 					trigger_event = socotra.0111
 				}
 				10 = {
+					trigger = {
+						is_landed = yes
+					}
 					trigger_event = socotra.0112
 				}
 				10 = {
+					trigger = {						
+						any_held_county = {
+							is_coastal_county = yes
+						}
+					}
 					trigger_event = socotra.0113
 				}
 				10 = {
+					trigger = {
+						any_held_county = {
+							is_coastal_county = yes
+						}
+					}
 					trigger_event = socotra.0114
 				}
 			}
@@ -1212,18 +1235,14 @@ RICE_socotra_cast_insular_sorcery = {
 
 		else_if = {
 			limit = { scope:RICE_socotra_cast_insular_sorcery_rejuvenate_clan = yes }
-			show_as_tooltip = {
-				custom_tooltip = RICE_socotra_cast_insular_sorcery_rejuvenate_clan_effect_tooltip_1
-				RICE_socotra_cast_insular_sorcery_rejuvenate_clan_effect = yes
-			}
+			custom_tooltip = RICE_socotra_cast_insular_sorcery_rejuvenate_clan_effect_tooltip_1
 			trigger_event = socotra.0110
 		}
 
 		else_if = {
-			limit = { scope:RICE_socotra_cast_insular_sorcery_weaken_enemies = yes }
+			limit = { scope:RICE_socotra_cast_insular_sorcery_impair_enemies = yes }
 			show_as_tooltip = {
-				custom_tooltip = RICE_socotra_cast_insular_sorcery_weaken_enemies_effect_tooltip_1
-				RICE_socotra_cast_insular_sorcery_weaken_enemies_effect = yes
+				custom_tooltip = RICE_socotra_cast_insular_sorcery_impair_enemies_effect_tooltip_1
 			}
 			trigger_event = socotra.0111
 		}
@@ -1232,7 +1251,6 @@ RICE_socotra_cast_insular_sorcery = {
 			limit = { scope:RICE_socotra_cast_insular_sorcery_pray_for_water = yes }
 			show_as_tooltip = {
 				custom_tooltip = RICE_socotra_cast_insular_sorcery_pray_for_water_effect_tooltip_1
-				RICE_socotra_cast_insular_sorcery_pray_for_water_effect = yes
 			}
 			trigger_event = socotra.0112
 		}
@@ -1241,7 +1259,6 @@ RICE_socotra_cast_insular_sorcery = {
 			limit = { scope:RICE_socotra_cast_insular_sorcery_insulate_coasts = yes }
 			show_as_tooltip = {
 				custom_tooltip = RICE_socotra_cast_insular_sorcery_insulate_coasts_effect_tooltip_1
-				RICE_socotra_cast_insular_sorcery_insulate_coasts_effect = yes
 			}
 			trigger_event = socotra.0113
 		}
@@ -1250,7 +1267,7 @@ RICE_socotra_cast_insular_sorcery = {
 			limit = { scope:RICE_socotra_cast_insular_sorcery_bless_ships = yes }
 			show_as_tooltip = {
 				custom_tooltip = RICE_socotra_cast_insular_sorcery_bless_ships_effect_tooltip_1
-				RICE_socotra_cast_insular_sorcery_bless_ships_effect = yes
+				custom_tooltip = RICE_socotra_cast_insular_sorcery_bless_ships_effect_tooltip_2
 			}
 			trigger_event = socotra.0114
 		}
