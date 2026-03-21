@@ -3973,6 +3973,12 @@ socotra.0041 = {
 	
 	after = {
 		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_socotra_aspiration_conslidate_clan
+				}
+				add_character_flag = RICE_socotra_rahabhan_did_moon_sacrifice
+			}
 			random_list = {
 				20 = {
 					modifier = {
@@ -6166,6 +6172,172 @@ socotra.0100 = {
 			scope:indian_courtier = { death = { death_reason = death_vanished } }
 			scope:african_courtier = { death = { death_reason = death_vanished } }
 		}		
+	}
+
+}
+
+
+# Introduce Rahabhan - conclusions
+socotra.0101 = {
+	type = character_event
+	title = socotra.0101.t
+	desc = socotra.0101.desc
+	window = big_event_window
+	theme = RICE_theme_socotra_beach
+	override_icon = { reference = "gfx/interface/icons/event_types/type_travel_sea.dds" }
+
+	
+	left_portrait = {
+		character = scope:rahabhan
+		animation = personality_callous
+		camera = camera_event_right_pointing_right
+	}
+	right_portrait = {
+		character = scope:rahabhan_wife
+		animation = war_over_tie
+		camera = camera_event_right_pointing_very_right
+	}
+	
+	option = { # Ok
+		name = socotra.0101.a		
+	}
+
+}
+
+
+# Rahabhan's Aspiration fulfilled
+socotra.0102 = {
+	type = character_event
+	title = socotra.0102.t
+	desc = socotra.0102.desc
+	theme = dynasty
+	override_background = { reference = RICE_background_socotra_tree }
+
+	
+	left_portrait = {
+		character = scope:rahabhan
+		animation = personality_callous
+		camera = camera_event_right_pointing_right
+	}
+	right_portrait = {
+		character = scope:rahabhan_wife
+		animation = war_over_tie
+		camera = camera_event_right_pointing_very_right
+	}
+
+	immediate = {
+		
+		character:RICE_socotra_003 = {
+			save_scope_as = rahabhan
+		}
+		character:RICE_socotra_004 = {
+			save_scope_as = rahabhan_wife
+		}
+
+		RICE_historical_aspiration_fulfilled_effect = yes
+
+		hidden_effect = {
+			if = {
+				limit = {
+					has_character_modifier = RICE_socotra_aspiration_conslidate_clan
+				}
+				remove_character_modifier = RICE_socotra_aspiration_conslidate_clan
+			}
+		}
+
+		# Main Objective Reward
+
+		dynasty ?= {
+			add_dynasty_prestige = RICE_aspiration_large_resource_bonus
+		}
+		if = {
+			limit = {
+				prestige_level >= 3
+			}
+			add_piety = RICE_aspiration_medium_resource_bonus
+		}
+		if = {
+			limit = {
+				piety_level >= 3
+			}
+			add_prestige = RICE_aspiration_medium_resource_bonus
+		}
+		add_gold = RICE_aspiration_medium_resource_bonus
+		title:c_socotra = {
+			change_development_level = RICE_socotra_rahabhan_aspiration_dev_bonus
+		}
+
+		# Bonus Objective Reward(s)
+		if = {
+			limit = {
+				character:RICE_socotra_004 ?= {
+					is_alive = yes
+					OR = {
+						has_relation_lover = root
+						has_relation_soulmate = root
+						has_relation_friend = root
+						has_relation_best_friend = root				
+					}
+				}
+			}
+			add_character_modifier = {
+				modifier = RICE_socotra_rahabhan_wife_relationship_modifier
+			}
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_socotra_rahabhan_did_moon_sacrifice
+			}
+			add_intrigue_lifestyle_perk_points = 1
+		}
+		if = {
+			limit = {
+				has_trait_xp = {
+					trait = RICE_socotra_sorcerer
+					value >= 50
+				}
+			}
+			add_learning_lifestyle_perk_points = 1
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_socotra_did_bawarij_pirates_decision
+				has_character_flag = RICE_socotra_pirate_collab_decision
+			}
+			spawn_army = {
+				levies = 300
+				men_at_arms = {
+					type = khandayat
+					stacks = 1
+				}
+				men_at_arms = {
+					type = horn_warrior
+					stacks = 2
+				}
+				men_at_arms = {
+					type = abudrar
+					stacks = 1
+				}
+				men_at_arms = {
+					type = bowmen
+					stacks = 2
+				}
+				men_at_arms = {
+					type = RICE_swahili_sailors
+					stacks = 1
+				}
+				location = title:c_socotra.title_province
+				war = war
+				#inheritable = no
+				name = event_troop_default_name
+			}
+		}
+
+	}
+
+	# Ok
+	option = {
+		name = socotra.0102.a
 	}
 
 }
