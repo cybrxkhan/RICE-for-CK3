@@ -16,7 +16,7 @@
 # sicily.0170-sicily.0179			Courtier Spawn
 # sicily.0180-sicily.0199			Other Historical Events
 # sicily.0200-sicily.0229			Generic events
-# sicily.0230-sicily.0239			More minor decisions
+# sicily.0230-sicily.0239			More minor decisions and events
 # sicily.0240-sicily.0249			Other setup/maintenance events
 # 
 ###############################################################################
@@ -11772,6 +11772,459 @@ sicily.0233 = {
 }
 
 
+# Sicilian refugee spawn
+sicily.0234 = {
+	type = character_event
+	title = sicily.0234.t
+	desc = sicily.0234.desc
+	theme = wanderer_destination_focus
+	override_background = { reference = RICE_background_sicily_coastal_countryside }
+
+	left_portrait = root
+	right_portrait = {
+		character = scope:courtier
+		animation = throne_room_bow_1
+	}
+
+	trigger = {
+		capital_county = {
+			title_province = {
+				OR = {
+					geographical_region = world_asia_minor
+					geographical_region = world_europe_south
+					geographical_region = world_europe_west_iberia
+					geographical_region = ghw_region_southern_france
+					geographical_region = world_africa_north
+					geographical_region = world_middle_east_jerusalem
+				}
+				NOT = { geographical_region = custom_sicily }
+			}
+		}
+		OR = {
+			struggle:RICE_sicily_struggle ?= {
+				is_struggle_phase = struggle_RICE_sicily_phase_borderland
+			}
+			has_global_variable = RICE_sicily_struggle_ending_periphery	
+		}
+		# Make sure they aren't involved in the Sicilian struggle
+		NAND = {
+			exists = struggle:RICE_sicily_struggle
+			any_character_struggle = {
+				involvement = involved
+				is_struggle_type = RICE_sicily_struggle
+			}			
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 1.5
+			capital_county = {
+				title_province = {
+					geographical_region = dlc_fp2_mediterranean_shoreline
+				}
+			}
+		}
+	}
+
+	immediate = {
+		# if = {
+		# 	limit = {
+		# 		OR = {
+		# 			culture_has_west_european_heritage_pillar_trigger = yes
+		# 			culture_has_north_european_heritage_pillar_trigger = yes
+		# 			culture_has_south_european_heritage_pillar_trigger = yes
+		# 			culture_has_central_european_heritage_pillar_trigger = yes
+		# 			religion = religion:christianity_religion
+		# 			capital_county = {
+		# 				title_province = {
+		# 					OR = {
+		# 						geographical_region = world_asia_minor
+		# 						geographical_region = world_europe_south
+		# 						geographical_region = world_europe_west_iberia
+		# 						geographical_region = ghw_region_southern_france
+		# 					}
+		# 				}
+		# 			}					
+		# 		}
+		# 	}
+		# 	random_list = {
+		# 		10 = {
+		# 			trigger = {
+		# 				current_year >= 950.1.1
+		# 			}
+		# 			culture:sicilian = { save_scope_as = sicily_culture }
+		# 		}
+		# 		10 = { culture:italian = { save_scope_as = sicily_culture } }
+		# 		10 = { culture:cisalpine = { save_scope_as = sicily_culture } }
+		# 		10 = { culture:lombard = { save_scope_as = sicily_culture } }
+		# 	}
+		# 	random_list = {
+		# 		90 = { faith:catholic = { save_scope_as = sicily_faith } }
+		# 		10 = { faith:orthodox = { save_scope_as = sicily_faith } }
+		# 	}
+		# }
+		# else_if = {
+		# 	limit = {
+		# 		OR = {
+		# 			culture_has_south_european_heritage_pillar_trigger = yes
+		# 			culture_has_east_european_heritage_pillar_trigger = yes
+		# 			religion = religion:christianity_religion
+		# 			capital_county = {
+		# 				title_province = {
+		# 					OR = {
+		# 						geographical_region = world_asia_minor
+		# 						geographical_region = world_europe_south
+		# 						geographical_region = world_europe_west_iberia
+		# 						geographical_region = ghw_region_southern_france
+		# 					}
+		# 				}
+		# 			}					
+		# 		}
+		# 	}
+		# 	random_list = {
+		# 		10 = {
+		# 			trigger = {
+		# 				current_year >= 950.1.1
+		# 			}
+		# 			culture:sicilian = { save_scope_as = sicily_culture }
+		# 		}
+		# 		10 = { culture:greek = { save_scope_as = sicily_culture } }
+		# 		10 = { culture:siqilli = { save_scope_as = sicily_culture } }
+		# 	}
+		# 	random_list = {
+		# 		10 = { faith:catholic = { save_scope_as = sicily_faith } }
+		# 		90 = { faith:orthodox = { save_scope_as = sicily_faith } }
+		# 	}
+		# }
+		# else_if = {
+		# 	limit = {
+		# 		OR = {
+		# 			culture_has_mena_heritage_pillar_trigger = yes
+		# 			culture_has_african_heritage_pillar_trigger = yes
+		# 			religion = religion:islam_religion
+		# 			religion = religion:amazigh_religion
+		# 			religion = religion:zoroastrianism_religion
+		# 			religion = religion:semitic_religion
+		# 			capital_county = {
+		# 				title_province = {
+		# 					OR = {
+		# 						geographical_region = world_asia_minor
+		# 						geographical_region = world_europe_south
+		# 						geographical_region = world_europe_west_iberia
+		# 						geographical_region = world_africa_north
+		# 						geographical_region = world_middle_east_jerusalem
+		# 					}
+		# 				}
+		# 			}					
+		# 		}
+		# 	}
+		# 	random_list = {
+		# 		10 = {
+		# 			trigger = {
+		# 				current_year >= 950.1.1
+		# 			}
+		# 			culture:sicilian = { save_scope_as = sicily_culture }
+		# 		}
+		# 		10 = { culture:greek = { save_scope_as = sicily_culture } }
+		# 		10 = { culture:siqilli = { save_scope_as = sicily_culture } }
+		# 	}
+		# 	random_list = {
+		# 		10 = { faith:catholic = { save_scope_as = sicily_faith } }
+		# 		90 = { faith:orthodox = { save_scope_as = sicily_faith } }
+		# 	}
+		# }
+
+		create_character = {
+			location = root.capital_province
+			template = RICE_nilotic_generic_template
+			culture = culture:luo
+			faith = faith:dinka_pagan
+			save_scope_as = courtier			
+		}
+		random_list = {
+			30 = {
+				set_variable = {
+					name = RICE_sicilian_refugee_size
+					value = flag:large
+					days = 1
+				}
+			}
+			70 = {
+				set_variable = {
+					name = RICE_sicilian_refugee_size
+					value = flag:small
+					days = 1
+				}
+			}
+		}
+		random_list = {
+			20 = {
+				modifier = {
+					add = 4
+					diplomacy >= high_skill_rating
+				}
+				modifier = {
+					add = 4
+					diplomacy >= decent_skill_rating
+				}
+				modifier = {
+					add = 4
+					diplomacy >= medium_skill_rating
+				}
+				set_variable = {
+					name = RICE_sicilian_refugee_type
+					value = flag:nobles
+					days = 1
+				}
+			}
+			20 = {
+				modifier = {
+					add = 4
+					martial >= high_skill_rating
+				}
+				modifier = {
+					add = 4
+					martial >= decent_skill_rating
+				}
+				modifier = {
+					add = 4
+					martial >= medium_skill_rating
+				}
+				set_variable = {
+					name = RICE_sicilian_refugee_type
+					value = flag:soldiers
+					days = 1
+				}
+			}
+			20 = {
+				modifier = {
+					add = 4
+					stewardship >= high_skill_rating
+				}
+				modifier = {
+					add = 4
+					stewardship >= decent_skill_rating
+				}
+				modifier = {
+					add = 4
+					stewardship >= medium_skill_rating
+				}
+				set_variable = {
+					name = RICE_sicilian_refugee_type
+					value = flag:merchants
+					days = 1
+				}
+			}
+			20 = {
+				modifier = {
+					add = 4
+					intrigue >= high_skill_rating
+				}
+				modifier = {
+					add = 4
+					intrigue >= decent_skill_rating
+				}
+				modifier = {
+					add = 4
+					intrigue >= medium_skill_rating
+				}
+				set_variable = {
+					name = RICE_sicilian_refugee_type
+					value = flag:artisans
+					days = 1
+				}
+			}
+			20 = {
+				modifier = {
+					add = 4
+					learning >= high_skill_rating
+				}
+				modifier = {
+					add = 4
+					learning >= decent_skill_rating
+				}
+				modifier = {
+					add = 4
+					learning >= medium_skill_rating
+				}
+				set_variable = {
+					name = RICE_sicilian_refugee_type
+					value = flag:literati
+					days = 1
+				}
+			}
+		}
+	}
+
+	# Work with them
+	option = {
+		name = sicily.0234.a
+		trigger = {
+			OR = {
+				gold >= 50
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 50
+		if = {
+			limit = {
+				var:RICE_nilotic_type ?= flag:warriors
+			}
+			add_character_modifier = {
+				modifier = RICE_nubia_nilotic_warriors
+				years = 20
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_nilotic_type ?= flag:artisans
+			}
+			add_character_modifier = {
+				modifier = RICE_nubia_nilotic_artisans
+				years = 20
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_nilotic_type ?= flag:blacksmiths
+			}
+			add_character_modifier = {
+				modifier = RICE_nubia_nilotic_blacksmiths
+				years = 20
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_nilotic_type ?= flag:traders
+			}
+			add_character_modifier = {
+				modifier = RICE_nubia_nilotic_traders
+				years = 20
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_nilotic_type ?= flag:ritualists
+			}
+			add_character_modifier = {
+				modifier = RICE_nubia_nilotic_ritualists
+				years = 20
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_nilotic_type ?= flag:builders
+			}
+			add_character_modifier = {
+				modifier = RICE_nubia_nilotic_builders
+				years = 20
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_nilotic_type ?= flag:herders
+			}
+			add_character_modifier = {
+				modifier = RICE_nubia_nilotic_herders
+				years = 20
+			}
+		}
+	}
+
+	# Invite courtier
+	option = {
+		name = sicily.0234.b
+		trigger = {
+			OR = {
+				gold >= 50
+				is_ai = no
+			}
+		}
+		remove_short_term_gold = 100
+		add_courtier = scope:courtier
+		if = {
+			limit = {
+				var:RICE_nilotic_type ?= flag:warriors
+			}
+			add_character_modifier = {
+				modifier = RICE_nubia_nilotic_warriors
+				years = 20
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_nilotic_type ?= flag:artisans
+			}
+			add_character_modifier = {
+				modifier = RICE_nubia_nilotic_artisans
+				years = 20
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_nilotic_type ?= flag:blacksmiths
+			}
+			add_character_modifier = {
+				modifier = RICE_nubia_nilotic_blacksmiths
+				years = 20
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_nilotic_type ?= flag:traders
+			}
+			add_character_modifier = {
+				modifier = RICE_nubia_nilotic_traders
+				years = 20
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_nilotic_type ?= flag:ritualists
+			}
+			add_character_modifier = {
+				modifier = RICE_nubia_nilotic_ritualists
+				years = 20
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_nilotic_type ?= flag:builders
+			}
+			add_character_modifier = {
+				modifier = RICE_nubia_nilotic_builders
+				years = 20
+			}
+		}
+	}
+	
+	# Don't work with them
+	option = {
+		name = sicily.0234.c
+		hidden_effect = {
+			random = {
+				chance = 80
+				scope:courtier = {
+					death = {
+						death_reason = death_vanished
+					}
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_variable = RICE_nilotic_type
+			}
+			remove_variable = RICE_nilotic_type
+		}
+	}
+
+}
 
 ######################################################################################
 # 
