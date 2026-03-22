@@ -12226,6 +12226,12 @@ sicily.0234 = {
 				}
 			}
 		}
+		# Make sure you can't convert them
+		hidden_effect = {
+			scope:courtier = {
+				trigger_event = RICEmisc.0002
+			}
+		}	
 	}
 	
 	# Don't work with them
@@ -12266,7 +12272,7 @@ sicily.0235 = {
 	title = sicily.0235.t
 	desc = sicily.0235.desc
 	theme = wanderer_destination_focus
-	override_background = { reference = RICE_background_sicily_amalfi_coast }
+	override_background = { reference = RICE_background_sicily_coastal_town }
 
 	left_portrait = root
 	right_portrait = {
@@ -12367,6 +12373,11 @@ sicily.0235 = {
 					add = 4
 					martial >= medium_skill_rating
 				}
+				create_character = {
+					location = root.capital_province
+					template = RICE_sicily_promoted_migrant_martial_template
+					save_scope_as = courtier			
+				}
 				set_variable = {
 					name = RICE_sicilian_migrant_type
 					value = flag:soldiers
@@ -12385,6 +12396,11 @@ sicily.0235 = {
 				modifier = {
 					add = 4
 					stewardship >= medium_skill_rating
+				}
+				create_character = {
+					location = root.capital_province
+					template = RICE_sicily_promoted_migrant_stewardship_template
+					save_scope_as = courtier			
 				}
 				set_variable = {
 					name = RICE_sicilian_migrant_type
@@ -12405,6 +12421,11 @@ sicily.0235 = {
 					add = 4
 					intrigue >= medium_skill_rating
 				}
+				create_character = {
+					location = root.capital_province
+					template = RICE_sicily_promoted_migrant_intrigue_template
+					save_scope_as = courtier			
+				}
 				set_variable = {
 					name = RICE_sicilian_migrant_type
 					value = flag:artisans
@@ -12424,6 +12445,11 @@ sicily.0235 = {
 					add = 4
 					learning >= medium_skill_rating
 				}
+				create_character = {
+					location = root.capital_province
+					template = RICE_sicily_promoted_migrant_learning_template
+					save_scope_as = courtier			
+				}
 				set_variable = {
 					name = RICE_sicilian_migrant_type
 					value = flag:literati
@@ -12435,17 +12461,10 @@ sicily.0235 = {
 
 	# Work with them
 	option = {
-		name = sicily.0234.a
+		name = sicily.0235.a
 		trigger = {
 			OR = {
-				AND = {
-					gold >= 50
-					var:RICE_sicilian_refugee_size ?= flag:small
-				}
-				AND = {
-					gold >= 125
-					var:RICE_sicilian_refugee_size ?= flag:large
-				}
+				gold >= 75
 				is_ai = no
 			}
 		}
@@ -12462,143 +12481,81 @@ sicily.0235 = {
 				type = loyalty_hook
 			}
 		}
+		remove_short_term_gold = 75
 		if = {
 			limit = {
-				var:RICE_sicilian_refugee_size ?= flag:large
+				var:RICE_sicilian_refugee_type ?= flag:nobles
 			}
-			remove_short_term_gold = 125
-			if = {
-				limit = {
-					var:RICE_sicilian_refugee_type ?= flag:nobles
-				}
-				add_character_modifier = {
-					modifier = RICE_sicily_refugee_connections_nobles
-					years = 20
-				}
-				capital_county = {
-					add_county_modifier = {
-						modifier = RICE_sicily_refugees_nobles
-						years = 20
-					}					
-				}
-			}
-			else_if = {
-				limit = {
-					var:RICE_sicilian_refugee_type ?= flag:soldiers
-				}
-				add_character_modifier = {
-					modifier = RICE_sicily_refugee_connections_soldiers
-					years = 20
-				}
-				capital_county = {
-					add_county_modifier = {
-						modifier = RICE_sicily_refugees_soldiers
-						years = 20
-					}					
-				}
-			}
-			else_if = {
-				limit = {
-					var:RICE_sicilian_refugee_type ?= flag:merchants
-				}
-				add_character_modifier = {
-					modifier = RICE_sicily_refugee_connections_merchants
-					years = 20
-				}
-				capital_county = {
-					add_county_modifier = {
-						modifier = RICE_sicily_refugees_merchants
-						years = 20
-					}					
-				}
-			}
-			else_if = {
-				limit = {
-					var:RICE_sicilian_refugee_type ?= flag:artisans
-				}
-				add_character_modifier = {
-					modifier = RICE_sicily_refugee_connections_artisans
-					years = 20
-				}
-				capital_county = {
-					add_county_modifier = {
-						modifier = RICE_sicily_refugees_artisans
-						years = 20
-					}					
-				}
-			}
-			else_if = {
-				limit = {
-					var:RICE_sicilian_refugee_type ?= flag:literati
-				}
-				add_character_modifier = {
-					modifier = RICE_sicily_refugee_connections_literati
-					years = 20
-				}
-				capital_county = {
-					add_county_modifier = {
-						modifier = RICE_sicily_refugees_literati
-						years = 20
-					}					
-				}
+			add_character_modifier = {
+				modifier = RICE_sicily_migrants_nobles
+				years = 20
 			}
 		}
 		else_if = {
 			limit = {
-				var:RICE_sicilian_refugee_size ?= flag:small
+				var:RICE_sicilian_refugee_type ?= flag:soldiers
 			}
-			remove_short_term_gold = 50
-			if = {
-				limit = {
-					var:RICE_sicilian_refugee_type ?= flag:nobles
-				}
-				add_character_modifier = {
-					modifier = RICE_sicily_refugee_connections_nobles
-					years = 10
-				}
+			add_character_modifier = {
+				modifier = RICE_sicily_migrants_soldiers
+				years = 20
 			}
-			else_if = {
-				limit = {
-					var:RICE_sicilian_refugee_type ?= flag:soldiers
-				}
-				add_character_modifier = {
-					modifier = RICE_sicily_refugee_connections_soldiers
-					years = 10
-				}
+		}
+		else_if = {
+			limit = {
+				var:RICE_sicilian_refugee_type ?= flag:merchants
 			}
-			else_if = {
-				limit = {
-					var:RICE_sicilian_refugee_type ?= flag:merchants
-				}
-				add_character_modifier = {
-					modifier = RICE_sicily_refugee_connections_merchants
-					years = 10
-				}
+			add_character_modifier = {
+				modifier = RICE_sicily_migrants_merchants
+				years = 20
 			}
-			else_if = {
-				limit = {
-					var:RICE_sicilian_refugee_type ?= flag:artisans
-				}
-				add_character_modifier = {
-					modifier = RICE_sicily_refugee_connections_artisans
-					years = 10
-				}
+		}
+		else_if = {
+			limit = {
+				var:RICE_sicilian_refugee_type ?= flag:artisans
 			}
-			else_if = {
-				limit = {
-					var:RICE_sicilian_refugee_type ?= flag:literati
-				}
-				add_character_modifier = {
-					modifier = RICE_sicily_refugee_connections_literati
-					years = 10
-				}
+			add_character_modifier = {
+				modifier = RICE_sicily_migrants_artisans
+				years = 20
+			}
+		}
+		else_if = {
+			limit = {
+				var:RICE_sicilian_refugee_type ?= flag:literati
+			}
+			add_character_modifier = {
+				modifier = RICE_sicily_migrants_literati
+				years = 20
+			}
+		}
+		if = {
+			limit = {
+				scope:courtier = { RICE_sicily_latin_trigger = yes }
+			}
+			RICE_sicily_signore_latin_track_medium_gain = yes
+		}
+		if = {
+			limit = {
+				scope:courtier = { RICE_sicily_greek_trigger = yes }
+			}
+			RICE_sicily_signore_greek_track_medium_gain = yes
+		}
+		if = {
+			limit = {
+				scope:courtier = { RICE_sicily_arabic_trigger = yes }
+			}
+			RICE_sicily_signore_arabic_track_medium_gain = yes
+		}
+		# Make sure you can't convert them
+		hidden_effect = {
+			scope:courtier = {
+				trigger_event = RICEmisc.0002
 			}
 		}
 	}
 	
 	# Don't work with them
 	option = {
-		name = sicily.0234.b
+		name = sicily.0235.b
 		hidden_effect = {
 			random = {
 				chance = 90
