@@ -1,4 +1,4 @@
-<img src="https://i.imgur.com/5IQLfMs.jpg">
+<img src="https://i.imgur.com/fXKiHfG.jpg">
 
 ## Latest Version: Version 1.18.2 "Erythraean Sea" (Released 3/28/26, for vanilla patch 1.18.x)
 
@@ -83,7 +83,7 @@ At the moment, RICE includes **43** flavor packs:
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/0B88XAP.jpg">
+<img src="https://i.imgur.com/cOhfhNP.jpg">
 
 ### Version 1.18.2 "Erythraean Sea"
 
