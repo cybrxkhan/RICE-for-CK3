@@ -668,12 +668,14 @@ RICE_red_sea_chew_khat_effect = {
 		custom_tooltip = RICE_red_sea_chew_khat_effect_tooltip_1 
 		hidden_effect = {
 			random = {
-				chance = 5
+				chance = RICE_red_sea_khat_addict_chance
 				trigger_event = red_sea.0006
 				#add_trait = RICE_khat_addict
 			}
 		}
 	}
+
+	RICE_red_sea_khat_addiction_effect = yes
 
 
 	add_stress = medium_stress_loss
@@ -690,6 +692,7 @@ RICE_red_sea_chew_khat_effect = {
 				has_trait = shy
 			}
 		}
+		RICE_red_sea_khat_addiction_effect = yes
 		add_opinion = {
 			target = root
 			modifier = RICE_opinion_chewed_khat_together
@@ -704,7 +707,7 @@ RICE_red_sea_chew_khat_effect = {
 			}
 			hidden_effect = {
 				random = {
-					chance = 1
+					chance = RICE_red_sea_khat_addict_chance
 					trigger_event = red_sea.0006
 					#add_trait = RICE_khat_addict
 				}
@@ -714,3 +717,27 @@ RICE_red_sea_chew_khat_effect = {
 
 }
 
+RICE_red_sea_khat_addiction_effect = {
+	# No point in counting if you have the trait
+	if = {
+		limit = {
+			NOT = { has_trait = RICE_khat_addict }
+		}
+		if = {
+			limit = { NOT = { exists = var:RICE_red_sea_khat_addiction_counter } }
+			set_variable = {
+				name = RICE_red_sea_khat_addiction_counter
+				value = 1
+			}
+		}
+		else = {
+			random = {
+				chance = 50
+				change_variable = {
+					name = RICE_red_sea_khat_addiction_counter
+					add = 1
+				}	
+			}	
+		}	
+	}
+}
