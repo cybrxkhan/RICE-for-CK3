@@ -1,17 +1,17 @@
-<img src="https://i.imgur.com/fXKiHfG.jpg">
+<img src="https://i.imgur.com/w6LVrn2.jpg">
 
-## Latest Version: Version 1.18.2 "Erythraean Sea" (Released 3/28/26, for vanilla patch 1.18.x)
+## Latest Version: Version 1.19.0 "Strait of Malacca" (Released 4/28/26, for vanilla patch 1.19.x)
 
 **Newest Flavor Pack: *Mayo: Heather and Yew***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_“Whoever is bound for the Land of the Zanj sails past Socotra. The majority of its population are Christian Arabs. Thence are delivered aloe and the resin of a tree which grows only on this island.”_
-_– Yaqut al-Hamawi (1179–1229 CE), Islamic scholar and geographer_
+_“All the merchants from above the winds and below the winds came to Melaka [...] It was named Malakat by all the Arabs, meaning the meeting place of all merchants, because there are many different types of commerce there.”_
+_– The Malay Annals (c. 15th-16th century)_
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
-RICE is designed with compatibility in mind, and is technically compatible with most mods; I avoid editing vanilla files to prevent conflicts with other mods. For example, new cultures are added via hidden events at game start instead of directly through province history. If you are a mod author or user and concerned about compatibiliy with RICE, don't hesitate to contact me on the forums or Discord! Also feel free to use my work in your mods - all I ask is that I am credited and (if possible) to give me a heads up.
+RICE is designed with compatibility in mind, and is technically compatible with many mods; I avoid editing vanilla files to prevent conflicts with other mods. For example, new cultures are added via hidden events at game start instead of directly through province history. If you are a mod author or user and concerned about compatibiliy with RICE, don't hesitate to contact me on the forums or Discord! Also feel free to use my work in your mods - all I ask is that I am credited and (if possible) to give me a heads up.
 
 
 ## Manual Installation Steps
@@ -85,62 +85,37 @@ At the moment, RICE includes **43** flavor packs:
 
 <img src="https://i.imgur.com/cOhfhNP.jpg">
 
-### Version 1.18.2 "Erythraean Sea"
+### Version 1.19.0 "Strait of Malacca"
 
-- Added landless adventurers: Wang Jian (867), Sa’id ibn Najah (1066), Bona of Pisa (1178), Joao Soares de Pavia (1178)
-- Added Sa’id Najahid in Dahlak as a bookmarked adventurer in 1066
-- Added Rahabhan, ruler of Socotra, as a bookmarked character in 1178
-- Added Riv-i Farhad, a legendary ruler of Shughnan, in the 1066 start date as a Khurzmazta ruler
-- Added Marwan as ruler of the western oases in 867 (hypothetical father of Abd al-Malik b. Marwan, ruler of the Oases in 943) as a tributary, to reflect the autonomous nature of the western oases before the Fatimid era
-- Added Shalak Shah as ruler of Chitral in 867, a legendary leader of the Kalash people in Chitral
-- Added Kaldan Sherab of the Dro clan, founder of Alchi Monastery, as a ruler of Diskit in western Tibet in 1066
-- Added Sorcerous Corsairs tradition for the South Arabian culture to replace Seafaring
-- Added the Honorable Marauders tradition for the Beja culture
-- Added Toloka tradition for various Eastern European cultures
-- Added flavor related to Khat:
-- Decision to Chew Khat Leaves in the Red Sea and East Africa regions
-- Khat Addict trait that one can get from the decision
-- Added decision to Pray to a Sycamore Tree for Horn African heritage cultures or those with certain traditions with a capital in parts of Africa or the Middle East where the sycamore grows
-- Added decision to Maintain Kharshif Blocks for the ruler of Siwa
-- Added event for Sicilian refugees to spawn as courtiers outside of Sicily
-- Added event for migrant courtiers to spawn in Sicily
-- Added new special buildings in the following counties:
-    - Walled City of Shibam (Sanaa)
-    - Mount Kinabalu (Kudat)
-    - Fortress of Luxembourg (Luxembourg )
-    - Carnac Stones (Vannes)
-    - Bandiagara Escarpment (Bandiagara)
-    - Dia Mounds (Massina)
-    - Fortress of Loropeni (Loropeni)
-    - Sungbo’s Eredo (Owu)
-    - Gardens of Suzhou (Suzhou)
-    - Alcazaba (Malaga)
-    - Nowbahar (Balkh)
-- Added some Kalash names to the Peristani namelist
-- Added effect to apply Siberian Permafrost modifiers in on_game_start_after_lobby for edge cases where the modifiers weren’t getting applied due to how they’re implemented in vanilla (possibly due to not accounting for RICE cultures)
-- Replaced the Isolationist tradition with Refined Poetry for the Beja
-- Removed faith-based gender requirement for the interaction to Grant Normandy
-- Tweaked bad flood mitigation interface message for the Nile situation to not display all your counties
-- The Silk Road region now includes all of the Middle East
-- Various Siberian/Uralic faiths now start with the Takamin tenet if running with the All Under Heaven DLC
-- The decision to Recruit Bawarij Pirates no longer requires you to be at war
-- Socotran Kingdom decision now requires Sorcerous Corsairs tradition and a certain level of development level on Socotra, or alternatively the renown/dynasty legacy, rather than solely the latter
-- Tweaked Silk Road communities events to trigger more frequently
-- Fixed Silk Road communities mechanic rarely or never triggering events for Southeast Asian and East African communities
-- Fixed various Middle Eastern cultures potentially not displaying their dynasty on the map due to changes in how the culture code worked after AUH
-- Fixed Eight Protectors of Khotan modifier not appearing when playing with the Eclipsed Crown mod
-- Fixed Uralic rulers and counties not getting RICE’s new faiths and cultures applied properly when playing with the Eclipsed Crown mod
-- Fixed missing placeholder Spanish loc for Constantine 
-- Fixed RICE’s version of Mont-Saint-Michel potentially appearing if the Creator Pack: Holy Buildings DLC is running
-- Fixed Ibn Jubayr’s title not being destroyed if you disabled all RICE adventurers
-- Fixed Amis culture having the Monsoon Trade Routes innovation
-- Fixed gaining or losing opinion of yourself if you take the Gaelicization decision
-- Fixed issue where Gaelicization decision could be taken as a culture without the Brehon Laws tradition, by changing the requirements for your capital to be of a culture with that tradition rather than any county
-- Fixed many RICE special buildings not providing Mandala bonuses when built
-- Fixed missing loc for several features in some non-English languages
-- Fixed repetitive event title for the Opening of the Nile Canals activity event
-- Fixed England version of the Domesday Book artifact displaying the wrong title
-- Fixed the Unite the Lands of the Nile decision saying you gain the Empire of the Nile title twice
+- Added new cultures, faiths, and innovations coming with the future Oceania Flavor Pack to ensure save-game compatibility when it comes out later
+- Added several new Dayak cultures, courtesy of Rajas of Asia
+- Added placeholder faiths, religion, cultures, languages, and namelists, for use in the future for save-game compatibility just in case
+- Added new adventurers: Bernard the Pilgrim (867), Subhuticandra (1066)
+- Added Ade tradition to several Sulawesi and Dayak cultures, courtesy of Rajas of Asia
+- Added “Aficionado of Ancient History” modifier to RICE’s adventurer Abd al-Latif al-Baghdadi in 1178
+- Added Aari and Oropom courtiers to randomly spawn in a few South Ethiopian courts at game start
+- Added Caravaneers tradition to Marka
+- Added Brewing Culture tradition to Franconians
+- Added Maritime Mercantilism to Saxons
+- Added Artisans tradition to Kashmiris
+- Added Storytellers tradition to Gonds
+- Added Prolific Hunters tradition to Eeyou
+- Pudgalavada Canon doctrine now has a bonus to theocratic vassal tax, to distinguish it from the Pali (Theravada) Canon
+- Tantric Canon doctrine now has a bonus to resisting hostile schemes, to distinguish it more from the Mahayana Canon
+- Integrated Raja of Asia’s tweaks to the Aluk faith’s localization
+- Several Alhambra related decisions now have exceptions to the requirement of having the Alhambra building to avoid issues with the Medieval Arts mod
+- Stronghold raids no longer happen if the Sicilian struggle is resolved with a “true” ending
+- Buffed Sorcerous Corsair’s bonus to knight effectiveness from intrigue
+- Kehin trait now costs more in ruler designer to be in line with other traits
+- Reduced the ruler designer costs of several RICE traits
+- Fixed missing localization for the modifier from the Ayo Visto Mappamundi event
+- Fixed Sicilian refugee/immigrant events wrongly giving the new courtier a hook on you
+- Fixed Sa’id ibn Najah starting off with a claim on Nubia instead of titles in Yemen
+- Fixed Turkish Dictionary decision not working with CE
+- Fixed Cranial Trophies being available to a few faiths without the AUH DLC
+- Fixed Nile Flood mitigation modifier being applied even during a good flood (instead of only a bad flood)
+- Fixed missing localization for several Nubian titles in Spanish
+- Fixed missing Sabaki parent culture for the Chagga in the RICE+EPE Compatch
 - Miscellaneous bugfixes
 
 
