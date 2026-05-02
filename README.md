@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/w6LVrn2.jpg">
 
-## Latest Version: Version 1.19.0 "Strait of Malacca" (Released 4/28/26, for vanilla patch 1.19.x)
+## Latest Version: Version 1.19.0.a Hotfix for "Strait of Malacca" (Released 5/2/26, for vanilla patch 1.19.x)
 
 **Newest Flavor Pack: *Mayo: Heather and Yew***
 
@@ -84,6 +84,24 @@ At the moment, RICE includes **43** flavor packs:
 ## Latest Changelog
 
 <img src="https://i.imgur.com/cOhfhNP.jpg">
+
+### Version 1.19.0.a Hotfix for "Strait of Malacca"
+
+- Created RICE+CE Compatch sub-mod as a one time temporary measure due to the large amount of new languages/heritages added (the compatch will be depreciated once the CE devs find time to update to account for RICE’s new stuff)
+- Changed traditions around for a few Dayak cultures
+- Changed Sardinian Industrious tradition to Legalism
+- Kaifeng Jews now start with West Iranian rather than Chinese language
+- Kaifeng Jews are now a hybrid of Persian Jews and Han
+- Tweaked ethnicities of Kaifeng Jews
+- Added some additional French translation, courtesy of French translation team
+- Disabled a couple of Egyptian rulers in 867 when playing with Muslim Enhancements because they were buggy
+- Fixed missing loc for several Southeast Asian religions
+- Fixed issue with Muslim Enhancements where Sa’id ibn Najah can start off as both an adventurer and a landed ruler in 1066
+- Fixed Oceanic and South American cultures not starting off with any innovations
+- Fixed Sasi innovation having no effects
+- Fixed Sasi innovation not being given to many cultures that it should’ve been given to
+- Fixed missing loc for Sweet Potatoes innovation
+- Miscellaneous bugfixes
 
 ### Version 1.19.0 "Strait of Malacca"
 
