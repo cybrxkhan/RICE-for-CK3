@@ -87,7 +87,7 @@ At the moment, RICE includes **43** flavor packs:
 
 <img src="https://i.imgur.com/cOhfhNP.jpg">
 
-### Version 1.19.0.a Hotfix for "Strait of Malacca"
+### Version 1.19.0.b Hotfix for "Strait of Malacca"
 
 - Many RICE decisions no longer require you to be in good health
 - Changed hot springs activity to be available in one’s realm/domicile, rather than all provinces, in order to improve performance and significantly reduce error log spam (thanks to user @claus for catching this!)
