@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/w6LVrn2.jpg">
 
-## Latest Version: Version 1.19.0.a Hotfix for "Strait of Malacca" (Released 5/2/26, for vanilla patch 1.19.x)
+## Latest Version: Version 1.19.0.b Hotfix for "Strait of Malacca" (Released 5/15/26, for vanilla patch 1.19.x)
 
 **Newest Flavor Pack: *Mayo: Heather and Yew***
 
@@ -26,6 +26,8 @@ DO NOT manually download the master branch unless you know what you're doing as 
 The mod folder should look something like this:
 
 <img src="https://i.imgur.com/UMv7AZ5.png">
+
+If you wish to install the RICE+EPE compatch, do the same thing for its folder and .mod file.
 
 **NOTE**: When re-installing a mod, delete the old version of the mod first before copy and pasting the new one! While it's not always necessary, it's a good habit to do to prevent any potential issues. Additionally, make sure you are not subscribed to the Steam version of the mod, to prevent the launcher from getting confused as to which version to use.
 
@@ -84,6 +86,27 @@ At the moment, RICE includes **43** flavor packs:
 ## Latest Changelog
 
 <img src="https://i.imgur.com/cOhfhNP.jpg">
+
+### Version 1.19.0.a Hotfix for "Strait of Malacca"
+
+- Many RICE decisions no longer require you to be in good health
+- Changed hot springs activity to be available in one’s realm/domicile, rather than all provinces, in order to improve performance and significantly reduce error log spam (thanks to user @claus for catching this!)
+- Added rice cultivators tradition to Kutai
+- Sunda culture now has Maritime Mercantilism instead of Maritime Way of Life
+- Switched Agrarian tradition with Staunch Traditionalists for Abui culture
+- A few Oceanic cultures now have more traditions to be consistent with RICE cultures having 3-5 traditions (these will be changed once the Oceania Flavor Pack comes out)
+- Switched back COA for Socotra’s rulers now that PI fixed the mix-up between the Nestorian and Coptic COAs
+- Decreased chances of Silk Road community events
+- Qinghaicong Horse modifiers’ localization now references the relevant game concepts
+- Fixed loyalty hook not being given correctly for Sicilian refugee/immigrant courtier spawn events
+- Fixed Filipino courtier spawn in RICE’s Silk Road mechanic not triggering properly
+- Fixed Viet courtier spawn in RICE’s Silk Road mechanic having normal Mahayana instead of East Asian Buddhist faiths
+- Fixed several Celtic soundtracks being enabled if you have the game rule to disable vocal music on
+- Fixed issue with Rus culture decision when playing with Cultures Expanded
+- Fixed error log spam when doing the hot springs activity due to how barony/provinces work now
+- Fixed missing loc for the Larrakia language
+- Fixed error log spam from bookmark portraits when using the RICE+EPE compatch
+- Miscellaneous bugfixes and loc fixes
 
 ### Version 1.19.0.a Hotfix for "Strait of Malacca"
 
