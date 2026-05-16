@@ -1,0 +1,749 @@
+﻿
+
+
+
+
+tradition_RICE_oceanic_voyagers = {
+	category = regional
+
+	layers = {
+		0 = diplo
+		1 = indian
+		4 = RICE_ocean.dds
+	}
+
+	is_shown = {
+		OR = {
+			has_cultural_pillar = heritage_polynesian
+			has_cultural_pillar = heritage_micronesian
+			has_cultural_pillar = heritage_melanesian
+			has_cultural_pillar = heritage_papuan
+			# scope:character = {
+			# 	any_sub_realm_county = {
+			# 		culture = {	has_cultural_pillar = heritage_austronesian }
+			# 	}
+			# }
+		}
+	}
+	
+	can_pick = {
+		OR = {
+			has_cultural_pillar = heritage_polynesian
+			has_cultural_pillar = heritage_micronesian
+			has_cultural_pillar = heritage_melanesian	
+			has_cultural_pillar = heritage_papuan
+		}
+		custom_description = {
+			text = percentage_of_culture_on_coast_desc
+			any_culture_county = {
+				percent >= 0.5
+				any_county_province = {
+					is_coastal = yes
+				}
+			}
+		}
+	}
+	
+	parameters = {
+		can_travel_along_rivers = yes
+		coastal_tribe_bonuses = yes #Maa bonuses for coastal tribal
+		unlock_voluntary_laampdom = yes
+		much_more_likely_to_be_laamps = yes
+		coastal_holding_bonuses = yes
+		unlock_rice_pacific_navigation = yes
+	}
+	character_modifier = {
+		embarkation_cost_mult = -0.85
+		naval_movement_speed_mult = 0.1
+		coastal_sea_travel_danger = medium_sea_danger_reduction
+		sea_travel_danger = medium_sea_danger_reduction
+	}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_bellicose = { is_in_list = traits }
+						culture_pillar:ethos_bureaucratic = { is_in_list = traits }
+						culture_pillar:ethos_spiritual = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_bureaucratic_or_spiritual_desc
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						any_culture_county = {
+							percent >= 0.7
+							any_county_province = {
+								is_coastal = yes
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = high_coastal_percentage_desc
+				}
+			}
+
+			if = {
+				limit = {
+					scope:character = {
+						has_variable = tradition_seafaring_travel_discount
+					}
+					
+				}
+
+				add = {
+					value = tradition_travel_discount
+					desc = tradition_travel_discount_desc
+				}
+			}
+
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	
+	ai_will_do = {
+		value = 200
+		if = { # Make stacking more less common
+			limit = {
+				OR = {
+					culture_tradition:tradition_maritime_mercantilism = { is_in_list = traits }
+					culture_tradition:tradition_fishermen = { is_in_list = traits }
+				}
+			}
+			multiply = 2
+		}
+		if = {
+			limit = {
+				has_cultural_pillar = heritage_papuan
+			}
+			multiply = 0.25
+		}
+		if = {
+			limit = {
+				NOT = {
+					scope:character = {
+						any_sub_realm_county = {
+							percent >= 0.3
+							any_county_province = {
+								is_coastal = yes
+							}
+						}
+					}
+				}
+			}
+			multiply = 0
+		}
+		else_if = {
+			limit = {
+				any_culture_county = {
+					percent >= 0.6
+					any_county_province = {
+						is_coastal = yes
+					}
+				}
+			}
+			multiply = 8
+		}
+	}
+}
+
+
+tradition_RICE_palau_clubs = {
+	category = regional
+
+	layers = {
+		0 = intrigue
+		1 = indian
+		4 = RICE_palauan_storyboard.dds
+	}
+
+	is_shown = {
+		OR = {
+			this = culture:palauan
+			any_parent_culture_or_above = {
+				this = culture:palauan
+			}
+		}
+	}
+	
+	can_pick = {
+		OR = {
+			this = culture:palauan
+			any_parent_culture_or_above = {
+				this = culture:palauan
+			}
+		}
+	}
+	
+	parameters = {
+		#unlock_rice_mengol_mechanic = yes
+		rice_rename_meeting_houses = yes
+		rice_better_meeting_houses = yes
+		guardian_education_better_outcomes = yes
+		gregarious_trait_gives_bonuses = yes
+	}
+	character_modifier = {
+		max_personal_schemes_add = 1
+		#courtier_and_guest_opinion = 5
+		#diplomacy_per_prestige_level = 1
+	}
+	# county_modifier = {
+	# 	county_opinion_add = 5
+	# }
+	
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_courtly = { is_in_list = traits }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_egalitarian = { is_in_list = traits }
+						culture_pillar:ethos_spiritual = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_courtly_communal_egalitarian_or_spiritual_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	
+	ai_will_do = {
+		value = 100
+	}
+}
+
+tradition_RICE_yap_stone_money = {
+	category = regional
+
+	layers = {
+		0 = steward
+		1 = indian
+		4 = RICE_ocean.dds
+	}
+
+	is_shown = {
+		OR = {
+			this = culture:yap
+			any_parent_culture_or_above = {
+				this = culture:yap
+			}
+		}
+	}
+	
+	can_pick = {
+		OR = {
+			this = culture:yap
+			any_parent_culture_or_above = {
+				this = culture:yap
+			}
+		}
+	}
+	
+	parameters = {
+		unlock_rice_yap_stone_money_mechanic = yes
+	}
+	character_modifier = {
+		stewardship_per_prestige_level = 1
+		character_travel_speed_mult = 0.15
+		owned_personal_scheme_success_chance_add = 10
+		monthly_prestige_gain_per_legitimacy_level_mult = 0.02
+	}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_courtly = { is_in_list = traits }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_egalitarian = { is_in_list = traits }
+						culture_pillar:ethos_spiritual = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_courtly_communal_egalitarian_or_spiritual_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	
+	ai_will_do = {
+		value = 100
+	}
+}
+
+
+tradition_RICE_biak_adventurers = {
+	category = regional
+
+	layers = {
+		0 = intrigue
+		1 = indian
+		4 = RICE_ocean.dds
+	}
+
+	is_shown = {
+		OR = {
+			this = culture:biak
+			any_parent_culture_or_above = {
+				this = culture:biak
+			}
+		}
+	}
+	
+	can_pick = {
+		OR = {
+			this = culture:biak
+			any_parent_culture_or_above = {
+				this = culture:biak
+			}
+		}
+		custom_description = {
+			text = percentage_of_culture_on_coast_desc
+			any_culture_county = {
+				percent >= 0.5
+				any_county_province = {
+					is_coastal = yes
+				}
+			}
+		}
+	}
+	
+	parameters = {
+		unlock_rice_biak_mechanics = yes
+		unlock_voluntary_laampdom = yes
+		much_more_likely_to_be_laamps = yes
+		can_travel_along_rivers = yes
+		#coastal_tribe_bonuses = yes #Maa bonuses for coastal tribal
+		#coastal_holding_bonuses = yes #Bonus to construction speed of holdings
+		culture_can_raid_at_sea_even_if_feudal_no_restrictions = yes
+	}
+	character_modifier = {
+		monthly_martial_lifestyle_xp_gain_mult = 0.1
+		monthly_stewardship_lifestyle_xp_gain_mult = 0.1
+		monthly_wanderer_lifestyle_xp_gain_mult = 0.1
+		#character_travel_safety = 5
+		#character_travel_speed = 5
+		#stewardship_per_prestige_level = 1
+		#coastal_sea_travel_danger = low_sea_danger_reduction
+		diplomatic_range_mult = 0.05
+		monthly_barter_goods_mult = 0.01
+	}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_courtly = { is_in_list = traits }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_egalitarian = { is_in_list = traits }
+						culture_pillar:ethos_spiritual = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_courtly_communal_egalitarian_or_spiritual_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	
+	ai_will_do = {
+		value = 100
+	}
+}
+
+# There is a Biak saying "sing or die"
+tradition_RICE_biak_songs = {
+	category = regional
+
+	layers = {
+		0 = martial
+		1 = indian
+		4 = RICE_ritual_celebration.dds
+	}
+
+	is_shown = {
+		OR = {
+			this = culture:biak
+			any_parent_culture_or_above = {
+				this = culture:biak
+			}
+		}
+	}
+	
+	can_pick = {
+		OR = {
+			this = culture:biak
+			any_parent_culture_or_above = {
+				this = culture:biak
+			}
+		}
+	}
+	
+	parameters = {
+		unlock_rice_biak_wor_mechanics = yes
+	}
+	character_modifier = {
+		diplomacy = 1
+		stress_loss_mult = 0.15
+		enemy_hostile_scheme_success_chance_add = -10
+	}
+	#province_modifier = {
+		#stationed_maa_toughness_mult_per_prestige_level = 0.03
+		#stationed_maa_damage_mult_per_prestige_level = 0.03
+	#}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_courtly = { is_in_list = traits }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_egalitarian = { is_in_list = traits }
+						culture_pillar:ethos_spiritual = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_courtly_communal_egalitarian_or_spiritual_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	
+	ai_will_do = {
+		value = 100
+	}
+}
+
+
+tradition_RICE_kava_culture = {
+	category = regional
+
+	layers = {
+		0 = steward
+		1 = indian
+		4 = RICE_kava.dds
+	}
+
+	is_shown = {
+		OR = {
+			has_cultural_pillar = heritage_polynesian
+			has_cultural_pillar = heritage_micronesian
+			has_cultural_pillar = heritage_melanesian
+			has_cultural_pillar = heritage_papuan
+		}
+	}
+	
+	can_pick = {
+
+	}
+	
+	parameters = {
+		rice_kava_bonus_culture = yes
+		unlock_rice_kava_decision = yes
+		rice_kava_decision_bonuses = yes
+	}
+	character_modifier = {
+		monthly_piety_gain_per_legitimacy_level_add = 0.05
+		monthly_prestige_gain_per_legitimacy_level_add = 0.05
+		max_personal_schemes_add = 1
+	}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_courtly = { is_in_list = traits }
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_egalitarian = { is_in_list = traits }
+						culture_pillar:ethos_spiritual = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_courtly_communal_egalitarian_or_spiritual_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	
+	ai_will_do = {
+		value = 100
+	}
+}
+
+
+tradition_RICE_enthusiastic_debaters = {
+	category = societal
+
+	layers = {
+		0 = intrigue
+		1 = indian
+		4 = RICE_pointing_finger.dds
+	}
+
+	is_shown = {
+
+	}
+	
+	can_pick = {
+
+	}
+
+	parameters = {		
+		stubborn_trait_more_common = yes
+	}
+	
+	character_modifier = {
+		negate_diplomacy_penalty_add = 1
+		negate_intrigue_penalty_add = 1
+		negate_learning_penalty_add = 1
+		monthly_lifestyle_xp_gain_mult = 0.05
+		owned_personal_scheme_success_chance_add = 5
+	}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_bureaucratic = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_communal_bureaucratic_or_stoic_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	
+	ai_will_do = {
+		value = 100
+	}
+}
+
+
+tradition_RICE_marine_armor = {
+	category = combat
+
+	layers = {
+		0 = diplo
+		1 = indian
+		4 = RICE_armor.dds
+	}
+
+	is_shown = {
+
+	}
+	
+	can_pick = {
+
+	}
+
+	parameters = {		
+		#stubborn_trait_more_common = yes
+	}
+	
+	character_modifier = {
+		negate_prowess_penalty_add = 1
+		levy_toughness = 2
+		maa_toughness_add = 2
+		#accolade_glory_gain_mult = 0.1
+		coastal_sea_travel_danger = low_sea_danger_reduction
+		wetlands_travel_danger = wetlands_low_danger_reduction
+		no_water_crossing_penalty = yes
+	}
+	
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_bellicose = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_bellicose_or_stoic_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	
+	ai_will_do = {
+		value = 100
+	}
+}
+
+
+
+tradition_RICE_bronze_drum_conoisseurs = {
+	category = regional
+
+	layers = {
+		0 = intrigue
+		1 = asian
+		4 = RICE_dong_son_drum.dds
+	}
+	
+	is_shown = {
+		any_culture_county = {
+			title_province = {
+				OR = {
+					geographical_region = world_asia_southeast
+					geographical_region = world_asia_china
+				}
+			}
+		}
+	}
+	can_pick = {
+		any_culture_county = {
+			title_province = {
+				OR = {
+					geographical_region = world_asia_southeast
+					geographical_region = world_asia_china
+				}
+			}
+		}
+	}
+	
+	character_modifier = {
+		artifact_decay_reduction_mult = -0.25
+		monthly_prestige_gain_per_legitimacy_level_add = 0.1
+		monthly_court_grandeur_change_mult = 0.05
+		owned_legend_spread_mult = 0.05
+		owned_personal_scheme_success_chance_max_add = 5
+		#max_personal_schemes_add = 1
+	}
+
+	cost = {
+		prestige = {
+			add = {
+				value = tradition_base_cost
+				desc = BASE
+				format = "BASE_VALUE_FORMAT"
+			}
+			
+			if = {
+				limit = {
+					NOR = {
+						culture_pillar:ethos_communal = { is_in_list = traits }
+						culture_pillar:ethos_spiritual = { is_in_list = traits }
+						culture_pillar:ethos_stoic = { is_in_list = traits }
+					}
+				}
+				add = {
+					value = tradition_incompatible_ethos_penalty
+					desc = not_communal_spiritual_or_stoic_desc
+				}
+			}
+
+			if = {
+				limit = {
+					NOT = {
+						any_culture_county = {
+							percent >= 0.3
+							any_county_province = {
+								terrain = jungle
+							}
+						}
+					}
+				}
+				add = {
+					value = tradition_unfulfilled_criteria_penalty
+					desc = jungle_percentage_desc
+				}
+			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_jungle_dwellers }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
+			
+			multiply = tradition_replacement_cost_if_relevant
+		}
+	}
+	ai_will_do = { value = 100 }
+}

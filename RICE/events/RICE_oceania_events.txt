@@ -1,0 +1,1160 @@
+﻿###############################################################################
+# 
+# Oceania
+# 
+# oceania.0000-oceania.0019			Setup events, history events, miscellaneous events and decisions
+# oceania.0020-oceania.0029			Minor decisions
+# oceania.0030-oceania.0039			Oceanic off-map culture/faith events
+# oceania.0040-oceania.0049			Sasi Ceremony
+# oceania.0050-oceania.0059			Oceanic off-map decisions
+# oceania.0060-oceania.0069			
+# oceania.0070-oceania.0079			
+# oceania.0080-oceania.0099			Generic flavor events
+# 
+###############################################################################
+
+namespace = oceania
+
+######################################################################################
+# 
+# SETUP EVENTS, HISTORY EVENTS, MISC DECISIONS
+# 
+# oceania.0000-oceania.0019
+# 
+######################################################################################
+
+
+# Welcome Visitors from Oceania
+oceania.0010 = {
+	type = character_event
+	title = oceania.0010.t
+	desc = oceania.0010.desc
+	theme = RICE_theme_raja_ampat_beach
+	
+	left_portrait = {
+		character = root
+		animation = survey
+	}
+
+	option = {
+		name = oceania.0010.a
+		RICE_welcome_visitors_from_oceania_basic_effect = yes
+	}
+}
+
+
+
+######################################################################################
+# 
+# MINOR DECISIONS
+# 
+# oceania.0020-oceania.0029
+# 
+######################################################################################
+
+
+
+# Chew betel nuts
+oceania.0020 = {
+	type = character_event
+	title = oceania.0020.t
+	desc = oceania.0020.desc
+	theme = mental_break
+	override_background = { reference = tavern }
+	
+	left_portrait = {
+		character = root
+		animation = personality_irrational
+	}
+
+	option = {
+		name = oceania.0020.a
+		RICE_stress_loss_chew_betel_nuts_decision_effect = yes
+	}
+}
+
+# Betel nuts addiction event
+oceania.0021 = {
+	type = character_event
+	title = oceania.0021.t
+	desc = oceania.0021.desc
+	theme = mental_break
+	override_background = { reference = tavern }
+	
+	left_portrait = {
+		character = root
+		animation = personality_irrational
+	}
+
+	immediate = {
+		add_trait = betel_chewer
+		save_scope_as = addict
+	}
+
+	option = {
+		name = oceania.0021.a
+	}
+
+	after = {
+		hidden_effect = {
+			if = {
+				limit = {
+					is_independent_ruler = no
+				}
+				liege = {
+					send_interface_message = {
+						type = event_generic_bad
+						left_icon = scope:addict
+						title = oceania.0021.liege.message
+						show_as_tooltip = {							
+							scope:addict = {
+								add_trait_force_tooltip = betel_chewer
+							}
+						}
+					}				
+				}
+			}
+		}
+	}
+
+}
+
+
+# Drink kava
+oceania.0022 = {
+	type = character_event
+	title = oceania.0022.t
+	desc = {
+		desc = oceania.0022.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					faith = { has_doctrine = rice_kava_role_ceremonial_doctrine }
+				}
+				desc =  oceania.0022.desc.ceremonial
+			}
+			triggered_desc = {
+				trigger = {
+					faith = { has_doctrine = rice_kava_role_medicinal_doctrine }
+				}
+				desc =  oceania.0022.desc.medicinal
+			}
+			desc =  oceania.0022.desc.social
+		}
+	}
+	theme = feast_activity
+	override_background = { reference = tavern }
+	
+	right_portrait = {
+		character = root
+		animation = drink
+	}
+
+	option = {
+		name = oceania.0022.a
+		RICE_stress_loss_drink_kava_decision_effect = yes
+	}
+}
+
+# Drink kava trait event
+oceania.0023 = {
+	type = character_event
+	title = oceania.0023.t
+	desc = oceania.0023.desc
+	theme = feast_activity
+	override_background = { reference = tavern }
+	
+	right_portrait = {
+		character = root
+		animation = toast
+	}
+
+	immediate = {
+		add_trait = RICE_kava_drinker
+		save_scope_as = kava_drinker
+	}
+
+	option = {
+		name = oceania.0023.a
+	}
+
+	after = {
+		hidden_effect = {
+			if = {
+				limit = {
+					is_independent_ruler = no
+				}
+				liege = {
+					send_interface_message = {
+						type = event_generic_good
+						left_icon = scope:kava_drinker
+						title = oceania.0023.liege.message
+						show_as_tooltip = {							
+							scope:kava_drinker = {
+								add_trait_force_tooltip = RICE_kava_drinker
+							}
+						}
+					}				
+				}
+			}
+		}
+	}
+
+}
+
+# Austronesian/Oceanic meeting House decision
+oceania.0024 = {
+	type = character_event
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					culture = { has_cultural_tradition = tradition_RICE_palau_clubs }
+				}
+				desc = oceania.0024.t.palauan
+			}
+			desc = oceania.0024.t
+		}
+	}
+	desc = {
+		desc = oceania.0024.desc.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					culture = { has_cultural_tradition = tradition_RICE_palau_clubs }
+				}
+				desc =  oceania.0024.desc.palauan
+			}
+			desc =  oceania.0024.desc.normal
+		}
+	}
+	theme = RICE_theme_raja_ampat_beach
+	
+	right_portrait = {
+		character = root
+		animation = war_over_win
+	}
+
+	option = {
+		name = oceania.0024.a
+		trigger = { NOT = { culture = { has_cultural_tradition = tradition_RICE_palau_clubs } } }
+		remove_short_term_gold = RICE_oceania_meeting_houses_cost_small
+		add_prestige = RICE_oceania_meeting_houses_prestige_small
+		add_legitimacy = RICE_oceania_meeting_houses_legitimacy_small
+		RICE_meeting_houses_ethos_bonus_small = yes
+	}
+
+	option = {
+		name = oceania.0024.b
+		trigger = { NOT = { culture = { has_cultural_tradition = tradition_RICE_palau_clubs } } }
+		remove_short_term_gold = RICE_oceania_meeting_houses_cost_medium
+		add_prestige = RICE_oceania_meeting_houses_prestige_medium
+		add_legitimacy = RICE_oceania_meeting_houses_legitimacy_medium
+		RICE_meeting_houses_ethos_bonus_medium = yes
+	}
+
+	option = {
+		name = oceania.0024.c
+		trigger = { NOT = { culture = { has_cultural_tradition = tradition_RICE_palau_clubs } } }
+		remove_short_term_gold = RICE_oceania_meeting_houses_cost_large
+		add_prestige = RICE_oceania_meeting_houses_prestige_large
+		add_legitimacy = RICE_oceania_meeting_houses_legitimacy_large
+		RICE_meeting_houses_ethos_bonus_large = yes
+	}
+
+	option = {
+		name = oceania.0024.d
+		trigger = { culture = { has_cultural_tradition = tradition_RICE_palau_clubs } }
+		remove_short_term_gold = RICE_oceania_meeting_houses_cost_small
+		add_prestige = RICE_oceania_meeting_houses_prestige_large
+		add_legitimacy = RICE_oceania_meeting_houses_legitimacy_large
+		RICE_meeting_houses_ethos_bonus_large = yes
+		RICE_meeting_houses_palau_male_bonus = yes
+	}
+
+	option = {
+		name = oceania.0024.e
+		trigger = { culture = { has_cultural_tradition = tradition_RICE_palau_clubs } }
+		remove_short_term_gold = RICE_oceania_meeting_houses_cost_small
+		add_prestige = RICE_oceania_meeting_houses_prestige_large
+		add_legitimacy = RICE_oceania_meeting_houses_legitimacy_large
+		RICE_meeting_houses_ethos_bonus_large = yes
+		RICE_meeting_houses_palau_female_bonus = yes
+	}
+
+}
+
+
+######################################################################################
+# 
+# OCEANIC OFF-MAP COURTIERS
+# 
+# oceania.0030-oceania.0049
+# 
+######################################################################################
+
+
+# Spawn Zone 1 characters: West Papua, West Micronesia
+oceania.0030 = { 
+	type = character_event
+	theme = realm
+	override_background = { reference = RICE_background_polynesia_beach }
+	override_icon = { reference = "gfx/interface/icons/event_types/type_travel_sea.dds" }
+	title = oceania.0030.t
+	desc = oceania.0030.desc
+
+	left_portrait = root
+
+	right_portrait = {
+		character = scope:courtier
+		animation = throne_room_bow_1
+	}
+
+	immediate = {
+		
+		RICE_choose_random_off_map_oceania_class_1_effect = yes
+
+		create_character = {
+			location = root.location
+			template = RICE_oceania_random_gender_adjusted_character_template
+			save_scope_as = courtier
+			culture = scope:oceanic_culture
+			faith = scope:oceanic_faith
+		}
+
+		RICE_pick_random_oceania_modifier_effect = yes
+
+	}
+
+	option = {
+		name = oceania.0030.a
+		RICE_get_random_oceania_modifier_effect = yes
+		hidden_effect = {
+			scope:courtier = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+	option = {
+		name = oceania.0030.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		RICE_get_random_oceania_modifier_effect = yes
+		add_courtier = scope:courtier
+	}
+
+	option = {
+		name = oceania.0030.c
+		hidden_effect = {
+			scope:courtier = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+
+	after = {
+		RICE_oceania_courtier_spawn_cleanup_effect = yes
+	}
+
+}
+
+
+# Spawn Zone 2 characters: Central Micronesia, Central Papua
+oceania.0031 = { 
+	type = character_event
+	theme = realm
+	override_background = { reference = RICE_background_polynesia_beach }
+	override_icon = { reference = "gfx/interface/icons/event_types/type_travel_sea.dds" }
+	title = oceania.0031.t
+	desc = oceania.0031.desc
+
+	left_portrait = root
+
+	right_portrait = {
+		character = scope:courtier
+		animation = throne_room_bow_1
+	}
+
+	immediate = {
+		
+		RICE_choose_random_off_map_oceania_class_2_effect = yes
+
+		create_character = {
+			location = root.location
+			template = RICE_oceania_random_gender_adjusted_character_template
+			save_scope_as = courtier
+			culture = scope:oceanic_culture
+			faith = scope:oceanic_faith
+		}
+
+		RICE_pick_random_oceania_modifier_effect = yes
+
+	}
+
+	option = {
+		name = oceania.0031.a
+		RICE_get_random_oceania_modifier_effect = yes
+		hidden_effect = {
+			scope:courtier = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+	option = {
+		name = oceania.0031.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		RICE_get_random_oceania_modifier_effect = yes
+		add_courtier = scope:courtier
+	}
+
+	option = {
+		name = oceania.0031.c
+		hidden_effect = {
+			scope:courtier = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_oceania_courtier_spawn_cleanup_effect = yes
+	}
+
+}
+
+
+# Spawn Zone 3 characters: East Micronesia, East Papua, West Melanesia, Australia
+oceania.0032 = { 
+	type = character_event
+	theme = realm
+	override_background = { reference = RICE_background_polynesia_beach }
+	override_icon = { reference = "gfx/interface/icons/event_types/type_travel_sea.dds" }
+	title = oceania.0032.t
+	desc = oceania.0032.desc
+
+	left_portrait = root
+
+	right_portrait = {
+		character = scope:courtier
+		animation = throne_room_bow_1
+	}
+
+	immediate = {
+		
+		RICE_choose_random_off_map_oceania_class_3_effect = yes
+
+		create_character = {
+			location = root.location
+			template = RICE_oceania_random_gender_adjusted_character_template
+			save_scope_as = courtier
+			culture = scope:oceanic_culture
+			faith = scope:oceanic_faith
+		}
+
+		RICE_pick_random_oceania_modifier_effect = yes
+
+	}
+
+	option = {
+		name = oceania.0032.a
+		RICE_get_random_oceania_modifier_effect = yes
+		hidden_effect = {
+			scope:courtier = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+	option = {
+		name = oceania.0032.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		RICE_get_random_oceania_modifier_effect = yes
+		add_courtier = scope:courtier
+	}
+
+	option = {
+		name = oceania.0032.c
+		hidden_effect = {
+			scope:courtier = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_oceania_courtier_spawn_cleanup_effect = yes
+	}
+
+}
+
+
+# Spawn Zone 4 characters: Polynesia, East Melanesia
+oceania.0033 = { 
+	type = character_event
+	theme = realm
+	override_background = { reference = RICE_background_polynesia_beach }
+	override_icon = { reference = "gfx/interface/icons/event_types/type_travel_sea.dds" }
+	title = oceania.0033.t
+	desc = oceania.0033.desc
+
+	left_portrait = root
+
+	right_portrait = {
+		character = scope:courtier
+		animation = throne_room_bow_1
+	}
+
+	immediate = {
+		
+		RICE_choose_random_off_map_oceania_class_4_effect = yes
+
+		create_character = {
+			location = root.location
+			template = RICE_oceania_random_gender_adjusted_character_template
+			save_scope_as = courtier
+			culture = scope:oceanic_culture
+			faith = scope:oceanic_faith
+		}
+
+		RICE_pick_random_oceania_modifier_effect = yes
+
+	}
+
+	option = {
+		name = oceania.0033.a
+		RICE_get_random_oceania_modifier_effect = yes
+		hidden_effect = {
+			scope:courtier = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+	option = {
+		name = oceania.0033.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		RICE_get_random_oceania_modifier_effect = yes
+		add_courtier = scope:courtier
+	}
+
+	option = {
+		name = oceania.0033.c
+		hidden_effect = {
+			scope:courtier = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_oceania_courtier_spawn_cleanup_effect = yes
+	}
+
+}
+
+
+# Spawn Zone 5 characters: South America
+oceania.0034 = { 
+	type = character_event
+	theme = realm
+	override_background = { reference = RICE_background_polynesia_beach }
+	override_icon = { reference = "gfx/interface/icons/event_types/type_travel_sea.dds" }
+	title = oceania.0034.t
+	desc = oceania.0034.desc
+
+	left_portrait = root
+
+	right_portrait = {
+		character = scope:courtier
+		animation = throne_room_bow_1
+	}
+
+	immediate = {
+		
+		RICE_choose_random_off_map_oceania_class_5_effect = yes
+
+		create_character = {
+			location = root.location
+			template = RICE_oceania_random_gender_adjusted_character_template
+			save_scope_as = courtier
+			culture = scope:oceanic_culture
+			faith = scope:oceanic_faith
+		}
+
+		RICE_pick_random_oceania_modifier_effect = yes
+
+	}
+
+	option = {
+		name = oceania.0034.a
+		RICE_get_random_oceania_modifier_effect = yes
+		hidden_effect = {
+			scope:courtier = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+	option = {
+		name = oceania.0034.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		RICE_get_random_oceania_modifier_effect = yes
+		add_courtier = scope:courtier
+	}
+
+	option = {
+		name = oceania.0034.c
+		hidden_effect = {
+			scope:courtier = {
+				death = {
+					death_reason = death_vanished
+				}
+			}
+		}
+	}
+
+	after = {
+		RICE_oceania_courtier_spawn_cleanup_effect = yes
+	}
+	
+}
+
+
+
+
+######################################################################################
+# 
+# SASI CEREMONY
+# 
+# oceania.0040-oceania.0049
+# 
+######################################################################################
+
+
+# Setup activity
+oceania.0040 = {
+	type = character_event
+	title = oceania.0040.t
+	desc = {
+		desc = oceania.0040.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					involved_activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_oceania_sasi_ceremony_type_water
+						}
+					}
+				}
+				desc =  oceania.0040.desc.water
+			}
+			triggered_desc = {
+				trigger = {
+					involved_activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_oceania_sasi_ceremony_type_land
+						}
+					}
+				}
+				desc =  oceania.0040.desc.land
+			}
+		}
+	}
+	theme = travel
+	override_background = { reference = RICE_background_himalayan_wilderness }
+	
+	right_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	trigger = {
+		is_available_travelling = yes
+		is_landed = yes
+		exists = involved_activity
+		involved_activity = {
+			has_activity_type = activity_RICE_oceania_sasi_ceremony
+		}
+	}
+	
+	option = { # Ok
+		name = oceania.0040.a
+	}	
+}
+
+
+# Arrive at the location - prepare for the ceremony and meet the others
+oceania.0041 = {
+	type = activity_event
+	title = oceania.0041.t
+	desc = {
+		desc = oceania.0041.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_oceania_sasi_ceremony_type_water
+						}
+					}
+				}
+				desc =  oceania.0041.desc.water
+			}
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_oceania_sasi_ceremony_type_land
+						}
+					}
+				}
+				desc =  oceania.0041.desc.land
+			}
+		}
+	}
+	theme = RICE_theme_raja_ampat_beach
+
+	right_portrait = {
+		character = root
+		animation = personality_bold
+	}
+
+	immediate = {
+		scope:activity = {
+			activity_location = {
+				save_scope_as = location
+			}
+		}
+	}
+	
+	# Spend time in prayer
+	option = {
+		name = oceania.0041.a
+	}
+	
+	# Discuss matters with local community leaders
+	option = {
+		name = oceania.0041.b
+	}
+	
+	after = {
+		trigger_event = {
+			id = oceania.0042
+			days = { 3 7 }
+		}
+	}	
+}
+
+
+# Sasi closing ceremony proper
+oceania.0042 = {
+	type = activity_event
+	title = oceania.0042.t
+	desc = {
+		desc = oceania.0042.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_oceania_sasi_ceremony_type_water
+						}
+					}
+				}
+				desc =  oceania.0042.desc.water
+			}
+			triggered_desc = {
+				trigger = {
+					scope:activity = {
+						has_activity_option = {
+							category = special_type
+							option = RICE_oceania_sasi_ceremony_type_land
+						}
+					}
+				}
+				desc =  oceania.0042.desc.land
+			}
+		}
+	}
+	theme = RICE_theme_raja_ampat_beach
+
+	right_portrait = {
+		character = root
+		animation = personality_zealous
+	}
+
+	option = {
+		name = oceania.0042.a
+		#create_story = RICE_sasi_ceremony_story
+		RICE_oceania_sasi_ceremony_completed_log_entry_effect = yes
+		scope:activity.activity.location.county = {
+			trigger_event = {
+				id = oceania.0044
+				days = 1
+			}			
+		}
+	}
+	
+	after = {
+		hidden_effect = {
+			scope:activity = {
+				hidden_effect = { skip_activity_phase = yes }
+			}
+		}
+	}	
+}
+
+
+
+# Trigger on county, not on the person who held the Sasi ceremony, in case someone else inherits it
+oceania.0044 = {
+	hidden = yes
+	scope = landed_title
+
+	trigger = {
+		has_county_modifier = RICE_oceania_sasi_closed_modifier
+	}
+
+	immediate = {
+		save_scope_as = sasi_open_county
+		holder = {
+			trigger_event = oceania.0045
+		}
+	}
+}
+
+# Sasi 
+oceania.0045 = {
+	type = character_event
+	title = oceania.0045.t
+	desc = oceania.0045.desc
+	theme = RICE_theme_raja_ampat_beach
+
+	left_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+
+	option = {
+		name = oceania.0045.a
+		sceop:sasi_open_county = {
+			RICE_oceania_sasi_opened_modifier_effect = yes
+		}
+	}
+
+}
+
+
+######################################################################################
+# 
+# OCEANIC OFF-MAP DECISIONS
+# 
+# oceania.0050-oceania.0059
+# 
+######################################################################################
+
+
+# Stone Money expedition sets out
+oceania.0050 = {
+	type = character_event
+	title = oceania.0050.t
+	desc = oceania.0050.desc
+	theme = stewardship_wealth_focus
+	override_background = { reference = RICE_background_himalayan_wilderness }
+
+	left_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+
+	option = {
+		name = oceania.0050.a
+		custom_tooltip = oceania.0050.a.tooltip
+	}
+
+	option = {
+		name = oceania.0050.b
+		add_piety = minor_piety_loss
+		custom_tooltip = oceania.0050.b.tooltip
+		add_character_flag = {
+			flag = RICE_himalayan_salt_expedition_small_piety_boost
+			days = 120 # Failsafe in case it doesn't go away
+		}
+	}
+
+	option = {
+		name = oceania.0050.c
+		add_piety = medium_piety_loss
+		custom_tooltip = oceania.0050.c.tooltip
+		add_character_flag = {
+			flag = RICE_himalayan_salt_expedition_large_piety_boost
+			days = 120 # Failsafe in case it doesn't go away
+		}
+	}
+
+	after = {
+		custom_tooltip = oceania.0050.general.tooltip
+		trigger_event = {
+			id = oceania.0051
+			days = { 30 90 }
+		}
+	}
+
+}
+
+
+# Himalayan salt expedition returns
+oceania.0051 = {
+	type = character_event
+	title = oceania.0051.t
+	desc = {
+		desc = oceania.0051.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_himalayan_salt_expedition_success
+				}
+				desc = oceania.0051.desc.success
+			}
+			desc = oceania.0051.desc.failure
+		}		
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_himalayan_salt_expedition_low
+				}
+				desc = oceania.0051.desc.low
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_himalayan_salt_expedition_medium
+				}
+				desc = oceania.0051.desc.medium
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_himalayan_salt_expedition_high
+				}
+				desc = oceania.0051.desc.high
+			}
+		}		
+	}
+	theme = stewardship_wealth_focus
+	override_background = { reference = RICE_background_himalayan_wilderness }
+
+	right_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = { has_character_flag = RICE_himalayan_salt_expedition_success }
+			animation = happiness
+		}
+		triggered_animation = {
+			trigger = { NOT = { has_character_flag = RICE_himalayan_salt_expedition_success } }
+			animation = sadness
+		}
+	}
+
+	immediate = {
+		random = {
+			chance = RICE_himalayan_salt_expedition_success_chance
+			add_character_flag = RICE_himalayan_salt_expedition_success
+			random_list = {
+				25 = {
+					add_character_flag = RICE_himalayan_salt_expedition_low
+				}
+				20 = {
+					modifier = {
+						add = {
+							value = stewardship
+							multiply = 0.3
+							max = 10
+						}
+					}
+					modifier = {
+						add = {
+							value = diplomacy
+							multiply = 0.2
+							max = 10
+						}
+					}
+					modifier = {
+						add = {
+							value = intrigue
+							multiply = 0.2
+							max = 10
+						}
+					}
+					add_character_flag = RICE_himalayan_salt_expedition_medium
+				}
+				15 = {
+					modifier = {
+						add = {
+							value = stewardship
+							multiply = 0.15
+							max = 10
+						}
+					}
+					modifier = {
+						add = {
+							value = diplomacy
+							multiply = 0.1
+							max = 10
+						}
+					}
+					modifier = {
+						add = {
+							value = intrigue
+							multiply = 0.1
+							max = 10
+						}
+					}
+					add_character_flag = RICE_himalayan_salt_expedition_high
+				}
+			}
+		}
+	}
+
+	option = {
+		name = {
+			trigger = { NOT = { has_character_flag = RICE_himalayan_salt_expedition_success } }
+			text = oceania.0051.a.failure
+		}
+		name = {
+			trigger = { has_character_flag = RICE_himalayan_salt_expedition_low }
+			text = oceania.0051.a.low
+		}
+		name = {
+			trigger = { has_character_flag = RICE_himalayan_salt_expedition_medium }
+			text = oceania.0051.a.medium
+		}
+		name = {
+			trigger = { has_character_flag = RICE_himalayan_salt_expedition_high }
+			text = oceania.0051.a.high
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_himalayan_salt_expedition_success
+			}
+			add_prestige = { RICE_himalayan_salt_expedition_min_prestige_gain_value RICE_himalayan_salt_expedition_max_prestige_gain_value }
+			add_gold = { RICE_himalayan_salt_expedition_min_gold_gain_value RICE_himalayan_salt_expedition_max_gold_gain_value }
+		}
+		if = {
+			limit = {
+				NOT = { has_character_flag = RICE_himalayan_salt_expedition_success }
+			}
+			stress_impact = {
+				greedy = minor_stress_impact_gain
+				ambitious = miniscule_stress_impact_gain
+				wrathful = miniscule_stress_impact_gain
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					has_character_flag = RICE_himalayan_salt_expedition_medium
+					has_character_flag = RICE_himalayan_salt_expedition_high
+				}
+			}
+			stress_impact = {
+				greedy = minor_stress_impact_loss
+				ambitious = miniscule_stress_impact_loss
+				diligent = miniscule_stress_impact_loss
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_character_flag = RICE_himalayan_salt_expedition_success
+			}
+			remove_character_flag = RICE_himalayan_salt_expedition_success
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_himalayan_salt_expedition_low
+			}
+			remove_character_flag = RICE_himalayan_salt_expedition_low
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_himalayan_salt_expedition_medium
+			}
+			remove_character_flag = RICE_himalayan_salt_expedition_medium
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_himalayan_salt_expedition_high
+			}
+			remove_character_flag = RICE_himalayan_salt_expedition_high
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_himalayan_salt_expedition_small_piety_boost
+			}
+			remove_character_flag = RICE_himalayan_salt_expedition_small_piety_boost
+		}
+		if = {
+			limit = {
+				has_character_flag = RICE_himalayan_salt_expedition_large_piety_boost
+			}
+			remove_character_flag = RICE_himalayan_salt_expedition_large_piety_boost
+		}
+	}
+
+}

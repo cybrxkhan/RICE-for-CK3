@@ -1,0 +1,756 @@
+﻿
+
+# Welcome Visitors from Oceania
+RICE_welcome_visitors_from_oceania = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_tropicana.dds" }
+	decision_group_type = RICE_regional
+
+	desc = RICE_welcome_visitors_from_oceania_desc
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 128
+		duchy = 80
+		kingdom = 80
+		empire = 80
+		hegemony = 80
+	}
+
+	cooldown = { days = 3650 } 
+
+	is_shown = {
+		is_playable_character = yes
+		OR = {
+			#RICE_culture_has_greater_pacific_heritage_pillar_trigger = yes
+			root.capital_county ?= {
+				title_province = { geographical_region = world_asia_southeast_islands }
+			}
+			domicile.domicile_location ?= {
+				geographical_region = world_asia_southeast_islands
+			}
+		}	
+	}
+	
+	is_valid = {
+
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+
+		show_as_tooltip = {
+			RICE_welcome_visitors_from_oceania_basic_effect = yes
+		}
+
+		custom_tooltip = RICE_welcome_visitors_from_oceania_effect_tooltip_1 
+		custom_tooltip = RICE_welcome_visitors_from_oceania_effect_tooltip_2 
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_welcome_visitors_from_oceania_context_tooltip
+		}
+
+		trigger_event = {
+			id = oceania.0010
+		}
+	}
+
+	cost = { 
+		gold = { value = minor_gold_value } # Will depend 
+	}	
+
+	ai_potential = {
+		short_term_gold >= minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -10
+			has_trait = paranoid
+		}
+	}
+}
+
+
+# Send money or riches back home
+# RICE_oceania_biak_decision = {
+# 	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_oceania_trade.dds" }
+# 	decision_group_type = RICE_regional
+
+# 	desc = RICE_oceania_biak_decision_desc
+
+# 	ai_check_interval_by_tier = {
+# 		barony = 0
+# 		county = 36
+# 		duchy = 36
+# 		kingdom = 36
+# 		empire = 36
+# 		hegemony = 36
+# 	}
+
+# 	cooldown = { days = 1095 } 
+
+# 	is_shown = {
+# 		is_playable_character = yes
+# 		culture = { has_cultural_tradition = tradition_RICE_biak_adventurers }
+# 	}
+	
+# 	is_valid = {
+# 		culture = { has_cultural_tradition = tradition_RICE_biak_adventurers }
+# 	}
+
+# 	is_valid_showing_failures_only = {
+# 		is_available_adult = yes
+# 	}
+
+# 	effect = {
+
+# 		#custom_tooltip = stress_loss_drunkard_decision_effect_tooltip
+
+# 		show_as_tooltip = {
+# 			RICE_oceania_biak_decision_effect = yes
+# 		}
+
+# 		if = {
+# 			limit = {
+# 				has_game_rule = RICE_historical_context_on
+# 			}
+# 			custom_tooltip = RICE_oceania_biak_decision_context_tooltip
+# 		}
+
+# 		trigger_event = {
+# 			id = oceania.8888
+# 		}
+# 	}
+
+# 	cost = { 
+# 		gold = { value = minor_gold_value } # Will depend 
+# 	}	
+
+# 	ai_potential = {
+# 		short_term_gold >= minor_gold_value
+# 	}
+
+# 	ai_will_do = {
+# 		base = 30
+
+# 		modifier = {
+# 			add = 100
+# 			stress >= 50
+# 		}
+
+# 		modifier = {
+# 			add = 10
+# 			has_trait = diligent
+# 		}
+
+# 		modifier = {
+# 			add = -10
+# 			has_trait = lazy
+# 		}
+		
+# 	}
+# }
+
+
+RICE_oceania_recruit_biak_adventurers = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_oceania_explorers.dds" }
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 80
+		duchy = 64
+		kingdom = 48
+		empire = 48
+		hegemony = 48
+	}
+	decision_group_type = RICE_regional
+	cooldown = { days = 3650 }
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					OR = {
+						culture = culture:biak
+						culture = {
+							any_parent_culture_or_above = {
+								this = culture:biak
+							}
+						}
+					}
+				}
+				desc = RICE_oceania_recruit_biak_adventurers_desc_biak
+			}
+			desc = RICE_oceania_recruit_biak_adventurers_desc
+		}
+	}
+	selection_tooltip = RICE_oceania_recruit_biak_adventurers_tooltip
+
+	is_shown = {
+		#highest_held_title_tier > tier_barony
+		is_playable_character = yes
+
+		OR = {
+			culture = { has_cultural_tradition = tradition_RICE_biak_adventurers }
+			root.capital_county ?= {
+				title_province = { geographical_region = RICE_eastern_southeast_asia_region }
+			}
+			domicile.domicile_location ?= {
+				geographical_region = RICE_eastern_southeast_asia_region
+			}
+		}	
+	}
+	
+	is_valid = {
+		NOR = {
+			has_character_modifier = RICE_oceania_biak_adventuerer_warriors
+			has_character_modifier = RICE_oceania_biak_adventuerer_traders
+		}
+		OR = {
+			culture = { has_cultural_tradition = tradition_RICE_biak_adventurers }
+			custom_description = {
+				text = "RICE_eastern_southeast_asia_capital_req"
+				OR = {
+					root.capital_county ?= {
+						title_province = { geographical_region = RICE_eastern_southeast_asia_region }
+					}
+					domicile.domicile_location ?= {
+						geographical_region = RICE_eastern_southeast_asia_region
+					}
+				}
+
+			}
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+
+		
+    widget = {
+    	gui = "decision_view_widget_RICE_oceania_recruit_biak_adventurers"
+		controller = decision_option_list_controller
+    	
+		#decision_has_second_step = yes
+		#decision_custom_widget_container = "custom_widgets_container_step_two"
+		decision_to_second_step_button = "RICE_oceania_recruit_biak_adventurers_type" 
+
+		item = {
+			value = RICE_oceania_recruit_biak_adventurers_warriors_option
+			current_description = RICE_oceania_recruit_biak_adventurers_warriors_option_desc
+			localization = RICE_oceania_recruit_biak_adventurers_warriors_option
+			icon = "gfx/interface/icons/character_interactions/extinguish_noble_family.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+		item = {
+			value = RICE_oceania_recruit_biak_adventurers_traders_option
+			current_description = RICE_oceania_recruit_biak_adventurers_traders_option_desc
+			localization = RICE_oceania_recruit_biak_adventurers_traders_option
+			icon = "gfx/interface/icons/icon_barter.dds"
+
+			ai_chance = {
+				value = 10
+			}
+		}
+
+	}
+
+	effect = {
+
+		custom_tooltip = RICE_oceania_recruit_biak_adventurers_effect_tooltip_1
+		custom_tooltip = RICE_oceania_recruit_biak_adventurers_effect_tooltip_2
+		#custom_tooltip = RICE_oceania_recruit_biak_adventurers_effect_tooltip_3
+
+				# Not sure why AI can't pick one option or another
+		if = {
+			limit = { is_ai = yes }
+			random_list = {
+				10 = {
+					set_variable = {
+						name = RICE_biak_adventurer_type
+						value = flag:warriors
+					}
+				}
+				10 = {
+					set_variable = {
+						name = RICE_biak_adventurer_type
+						value = flag:traders
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:RICE_oceania_recruit_biak_adventurers_warriors_option = yes
+			}
+			set_variable = {
+				name = RICE_biak_adventurer_type
+				value = flag:warriors
+			}
+		}
+		else_if = {
+			limit = {
+				scope:RICE_oceania_recruit_biak_adventurers_traders_option = yes
+			}
+			set_variable = {
+				name = RICE_biak_adventurer_type
+				value = flag:traders
+			}
+		}
+
+				
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_oceania_recruit_biak_adventurers_context_tooltip
+		}
+		
+		trigger_event = oceania.8888
+	}
+
+	minimum_cost = { 
+		gold = { value = minor_gold_value } # Will depend
+	}	
+
+	ai_potential = {
+		short_term_gold > minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -10
+			has_trait = paranoid
+		}
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+	}
+}
+
+RICE_oceania_meeting_houses_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_southeast_asian_village.dds" }
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 80
+		duchy = 64
+		kingdom = 48
+		empire = 48
+		hegemony = 48
+	}
+	decision_group_type = RICE_regional
+
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					culture = { has_cultural_tradition = tradition_RICE_palau_clubs }
+				}
+				desc = RICE_oceania_meeting_houses_decision_palauan
+			}
+			desc = RICE_oceania_meeting_houses_decision
+		}
+	}
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					culture = { has_cultural_tradition = tradition_RICE_palau_clubs }
+				}
+				desc = RICE_oceania_meeting_houses_decision_palauan_desc
+			}
+			desc = RICE_oceania_meeting_houses_decision_desc
+		}
+	}
+
+	cooldown = { days = 3650 }
+
+	desc = RICE_oceania_meeting_houses_decision_desc
+	selection_tooltip = RICE_oceania_meeting_houses_decision_tooltip
+
+	is_shown = {
+		#highest_held_title_tier > tier_barony
+		is_playable_character = yes
+		OR = {
+			culture = { has_cultural_tradition = tradition_RICE_palau_clubs }
+			RICE_culture_has_oceanic_and_austronesian_heritage_pillar_trigger = yes			
+		}
+	}
+	
+	is_valid = {
+		is_landed = yes
+		OR = {
+			culture = { has_cultural_tradition = tradition_RICE_palau_clubs }
+			RICE_culture_has_oceanic_and_austronesian_heritage_pillar_trigger = yes			
+		}
+	}
+	
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+
+	effect = {
+
+		if = {
+			limit = {
+				culture = { has_cultural_tradition = tradition_RICE_palau_clubs }
+			}
+			custom_tooltip = RICE_oceania_meeting_houses_decision_effect_tooltip_2
+		}
+		else = {
+			custom_tooltip = RICE_oceania_meeting_houses_decision_effect_tooltip_1
+		}
+		custom_tooltip = RICE_oceania_meeting_houses_decision_effect_tooltip_3
+				
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_oceania_meeting_houses_decision_context_tooltip
+		}
+		
+		trigger_event = oceania.0024
+	}
+
+	minimum_cost = { 
+		gold = { value = RICE_oceania_meeting_houses_cost_small } # Will depend
+	}	
+
+	ai_potential = {
+		short_term_gold > RICE_oceania_meeting_houses_cost_small
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -10
+			has_trait = paranoid
+		}
+		modifier = {
+			add = 10
+			has_trait = diligent
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+	}
+}
+
+
+
+# Quarry Stone Money
+RICE_oceania_quarry_stone_money = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_oceania_explorers.dds" }
+	decision_group_type = RICE_regional
+
+	desc = RICE_oceania_quarry_stone_money_desc
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 64
+		duchy = 48
+		kingdom = 48
+		empire = 48
+		hegemony = 48
+	}
+
+	cooldown = { days = 3650 } 
+
+	is_shown = {
+		is_playable_character = yes
+		culture = { has_cultural_tradition = tradition_RICE_yap_stone_money }
+	}
+	
+	is_valid = {
+		culture = { has_cultural_tradition = tradition_RICE_yap_stone_money }
+		custom_description = {
+			text = RICE_capital_coastal_county
+			any_held_county = {
+				#tier = tier_county
+				is_coastal_county = yes
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+
+		custom_tooltip = RICE_oceania_quarry_stone_money_effect_tooltip_1 
+		custom_tooltip = RICE_oceania_quarry_stone_money_effect_tooltip_2 
+		custom_tooltip = RICE_oceania_quarry_stone_money_effect_tooltip_3
+		custom_tooltip = RICE_oceania_quarry_stone_money_effect_tooltip_4
+		custom_tooltip = RICE_oceania_quarry_stone_money_effect_tooltip_5
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_oceania_quarry_stone_money_context_tooltip
+		}
+
+		trigger_event = {
+			id = oceania.8888
+		}
+	}
+
+	cost = { 
+		gold = { value = minor_gold_value } # Will depend 
+	}	
+
+	ai_potential = {
+		short_term_gold >= minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = 10
+			has_trait = greedy
+		}
+		modifier = {
+			add = -10
+			has_trait = paranoid
+		}
+		modifier = {
+			add = 10
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -10
+			has_trait = lazy
+		}
+	}
+}
+
+
+# Chew Betel Nuts
+RICE_stress_loss_chew_betel_nuts_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_southeast_asian_village.dds" }
+	decision_group_type = RICE_regional
+
+	desc = RICE_stress_loss_chew_betel_nuts_decision_desc
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 36
+		duchy = 36
+		kingdom = 36
+		empire = 36
+		hegemony = 36
+	}
+
+	cooldown = { days = 1095 } 
+
+	is_shown = {
+		is_playable_character = yes
+		OR = {
+			RICE_enjoys_betel_nuts_trigger = yes
+			capital_county = {
+				RICE_is_south_asian_southeast_asian_or_oceanic_culture_minus_polynesian = yes
+			}
+		}
+	}
+	
+	is_valid = {
+		OR = {
+			RICE_enjoys_betel_nuts_trigger = yes
+			capital_county = {
+				RICE_is_south_asian_southeast_asian_or_oceanic_culture_minus_polynesian = yes
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+
+		#custom_tooltip = stress_loss_drunkard_decision_effect_tooltip
+		
+		show_as_tooltip = {
+			RICE_stress_loss_chew_betel_nuts_decision_effect = yes
+		}
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_stress_loss_chew_betel_nuts_decision_context_tooltip
+		}
+
+		trigger_event = {
+			id = oceania.0020
+		}
+	}
+
+	cost = { 
+		gold = { value = minor_gold_value } # Will depend 
+	}	
+
+	ai_potential = {
+		short_term_gold >= minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 0
+
+		modifier = {
+			add = 100
+			stress >= 50
+		}
+
+		modifier = {
+			add = 10
+			has_trait = lazy
+		}
+
+		modifier = {
+			add = -10
+			has_trait = diligent
+		}
+
+	}
+}
+
+# Drink Kava
+RICE_stress_loss_drink_kava_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_oceania_trade.dds" }
+	decision_group_type = RICE_regional
+
+	desc = RICE_stress_loss_drink_kava_decision_desc
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 36
+		duchy = 36
+		kingdom = 36
+		empire = 36
+		hegemony = 36
+	}
+
+	cooldown = { days = 1095 } 
+
+	is_shown = {
+		is_playable_character = yes
+		OR = {
+			RICE_enjoys_kava_trigger = yes
+			has_character_modifier = RICE_oceania_courtier_modifier_kava
+			capital_county = {
+				OR = {
+					culture = { has_cultural_tradition = tradition_RICE_kava_culture }
+					RICE_culture_has_oceanic_heritage_pillar_trigger = yes					
+				}
+			}
+		}
+	}
+	
+	is_valid = {
+		OR = {
+			RICE_enjoys_kava_trigger = yes
+			has_character_modifier = RICE_oceania_courtier_modifier_kava
+			capital_county = {
+				OR = {
+					culture = { has_cultural_tradition = tradition_RICE_kava_culture }
+					RICE_culture_has_oceanic_heritage_pillar_trigger = yes					
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	effect = {
+
+		#custom_tooltip = stress_loss_drunkard_decision_effect_tooltip
+
+		show_as_tooltip = {
+			RICE_stress_loss_drink_kava_decision_effect = yes
+		}
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_stress_loss_drink_kava_decision_context_tooltip
+		}
+
+		trigger_event = {
+			id = oceania.0022
+		}
+	}
+
+	cost = { 
+		gold = { value = minor_gold_value } # Will depend 
+	}	
+
+	ai_potential = {
+		short_term_gold >= minor_gold_value
+	}
+
+	ai_will_do = {
+		base = 0
+
+		modifier = {
+			add = 100
+			stress >= 50
+		}
+
+		modifier = {
+			add = 10
+			has_trait = lazy
+		}
+
+		modifier = {
+			add = -10
+			has_trait = diligent
+		}
+		
+	}
+}
