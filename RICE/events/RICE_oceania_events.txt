@@ -6,8 +6,8 @@
 # oceania.0020-oceania.0029			Minor decisions
 # oceania.0030-oceania.0039			Oceanic off-map culture/faith events
 # oceania.0040-oceania.0049			Sasi Ceremony
-# oceania.0050-oceania.0059			Oceanic off-map decisions
-# oceania.0060-oceania.0069			
+# oceania.0050-oceania.0059			Stone Money
+# oceania.0060-oceania.0069			Biak Adventurers
 # oceania.0070-oceania.0079			
 # oceania.0080-oceania.0099			Generic flavor events
 # 
@@ -30,7 +30,7 @@ oceania.0010 = {
 	title = oceania.0010.t
 	desc = oceania.0010.desc
 	theme = RICE_theme_raja_ampat_beach
-	override_background = { reference = RICE_background_eastern_indonesia_beach }
+	override_background = { reference = RICE_background_southeast_asia_beach }
 	
 	left_portrait = {
 		character = root
@@ -941,7 +941,7 @@ oceania.0045 = {
 
 ######################################################################################
 # 
-# OCEANIC OFF-MAP DECISIONS
+# STONE MONEY
 # 
 # oceania.0050-oceania.0059
 # 
@@ -997,7 +997,7 @@ oceania.0050 = {
 }
 
 
-# Himalayan salt expedition returns
+# Stone Money expedition returns
 oceania.0051 = {
 	type = character_event
 	title = oceania.0051.t
@@ -1197,3 +1197,762 @@ oceania.0051 = {
 	}
 
 }
+
+######################################################################################
+# 
+# BIAK ADVENTURERS
+# 
+# oceania.0060-oceania.0069
+# 
+######################################################################################
+
+
+# Hidden tombola
+oceania.0060 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+
+		save_scope_as = granter
+		culture:biak = { save_scope_as = biak_culture }
+		# There's a chance they're following your faith
+		random_list = {
+			60 = {
+				faith:biak_pagan = { save_scope_as = biak_faith } 
+			}
+			40 = {
+				root.faith = { save_scope_as = biak_faith }
+			}
+		}
+		save_scope_as = current_ruler
+
+		# Pick the focus county if you're a landed ruler - if you only have a capital, then it will be your capital
+		if = {
+			limit = {
+				any_held_county = {
+					count > 1 #Don't give away your only title
+				}
+			}				
+			random_held_title = {
+				limit = {
+					tier = tier_county
+				}	
+				weight = { # Prioritize coastal counties, especially in Southeast Asia
+					base = 1
+					modifier = {
+						add = 4
+						is_coastal_county = yes
+					}
+					modifier = {
+						add = 4
+						any_county_province = { geographical_region = RICE_eastern_southeast_asia_region }
+					}
+					modifier = {
+						add = 2
+						any_county_province = { geographical_region = world_asia_southeast }
+					}
+				}
+				save_scope_as = target_county
+			}			
+		}
+		else_if = {
+			limit = {
+				has_domicile = yes
+			}
+			domicile ?= {
+				domicile_location.county = {
+					save_scope_as = target_county
+				}
+			}
+		}
+		else = {
+			location.county = { save_scope_as = target_county }
+		}
+
+		random_list = {
+			80 = {
+				create_character = {
+					location = root.location
+					template = RICE_biak_leader_young_generic_character_template
+					save_scope_as = biak_leader
+				}
+				if = {
+					limit = {
+						var:RICE_biak_adventurer_type ?= flag:warriors
+					}
+					trigger_event = oceania.0061
+				}
+				else = {
+					trigger_event = oceania.0062					
+				}
+			}
+			# They demand more gold; won't happen to Biaks
+			20 = {
+				trigger = {
+					NOT = { culture = { has_cultural_tradition = tradition_RICE_biak_adventurers } }
+				}
+				create_character = {
+					location = root.location
+					template = RICE_biak_leader_warrior_character_template
+					save_scope_as = biak_leader
+				}
+				trigger_event = oceania.0063	
+			}
+		}
+
+	}
+}
+
+# Biak adventurers come in peace - warriors
+oceania.0061 = {
+	type = character_event
+	title = oceania.0061.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					culture = { has_cultural_tradition = tradition_RICE_biak_adventurers }
+				}
+				desc = oceania.0061.desc.intro.peaceful
+				desc = oceania.0061.desc.biak
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_oceania_biak_demands_flag
+				}
+				desc = oceania.0061.desc.intro.tense
+				desc = oceania.0061.desc.tense
+			}
+			desc = oceania.0061.desc.intro.peaceful
+			desc = oceania.0061.desc.peaceful
+		}
+	}
+	theme = martial
+	override_background = { reference = RICE_background_southeast_asia_beach }
+
+	left_portrait = {
+		character = root
+		animation = personality_callous
+	}
+
+	right_portrait = {
+		character = scope:biak_leader
+		animation = relaxed_spear
+	}
+
+	# Recruit them
+	option = {
+		name = oceania.0061.a
+		add_character_modifier = {
+			modifier = RICE_oceania_ties_with_biak_warriors
+			years = 10
+		}
+		spawn_army = {
+			levies = 200
+			men_at_arms = {
+				type = RICE_mambri
+				stacks = 2
+			}
+			men_at_arms = {
+				type = bowmen
+				stacks = 1
+			}
+			location = capital_province
+			name = RICE_biak_adventurer_spawn_troops
+		}
+		scope:biak_leader ?= { silent_disappearance_effect = yes }
+	}
+
+	# Invite some to settle
+	option = {
+		name = oceania.0061.b
+		trigger = {
+			is_landed = yes
+		}
+		remove_short_term_gold = RICE_oceania_biak_settlement_additional_cost_small
+		add_character_modifier = {
+			modifier = RICE_oceania_ties_with_biak_warriors
+			years = 20
+		}
+		scope:target_county = {
+			add_county_modifier = {
+				modifier = RICE_oceania_settled_biak_warriors
+				years = 10
+			}
+		}
+		spawn_army = {
+			levies = 400
+			men_at_arms = {
+				type = RICE_mambri
+				stacks = 4
+			}
+			men_at_arms = {
+				type = bowmen
+				stacks = 2
+			}
+			location = capital_province
+			name = RICE_biak_adventurer_spawn_troops
+		}		
+		stress_impact = {
+			generous = minor_stress_impact_loss
+			trusting = minor_stress_impact_loss
+			paranoid = minor_stress_impact_gain
+			greedy = minor_stress_impact_gain
+		}
+		scope:biak_leader ?= { silent_disappearance_effect = yes }
+	}
+
+
+	# Invite some to settle *and* recruit the guy
+	option = {
+		name = oceania.0061.c	
+		trigger = {
+			is_landed = yes
+			diplomacy >= medium_skill_rating
+		}
+		skill = diplomacy
+		add_courtier = scope:biak_leader
+		remove_short_term_gold = RICE_oceania_biak_settlement_additional_cost_large
+		add_character_modifier = {
+			modifier = RICE_oceania_ties_with_biak_warriors
+			years = 20
+		}
+		scope:target_county = {
+			add_county_modifier = {
+				modifier = RICE_oceania_settled_biak_warriors
+				years = 10
+			}
+		}
+		spawn_army = {
+			levies = 400
+			men_at_arms = {
+				type = RICE_mambri
+				stacks = 4
+			}
+			men_at_arms = {
+				type = bowmen
+				stacks = 2
+			}
+			location = capital_province
+			name = RICE_biak_adventurer_spawn_troops
+		}		
+		stress_impact = {
+			generous = minor_stress_impact_loss
+			trusting = minor_stress_impact_loss
+			paranoid = minor_stress_impact_gain
+			greedy = minor_stress_impact_gain
+		}
+	}
+
+	# Recruit the guy (if you don't have land)
+	option = {
+		name = oceania.0061.d	
+		trigger = {
+			is_landed = no
+			diplomacy >= medium_skill_rating
+		}
+		skill = diplomacy
+		remove_short_term_gold = RICE_oceania_biak_settlement_additional_cost_small
+		add_courtier = scope:biak_leader
+		add_character_modifier = {
+			modifier = RICE_oceania_ties_with_biak_warriors
+			years = 10
+		}
+		spawn_army = {
+			levies = 200
+			men_at_arms = {
+				type = RICE_mambri
+				stacks = 2
+			}
+			men_at_arms = {
+				type = bowmen
+				stacks = 1
+			}
+			location = capital_province
+			name = RICE_biak_adventurer_spawn_troops
+		}
+	}
+
+
+	after = {
+		if = {
+			limit = { has_variable = RICE_biak_adventurer_type }
+			remove_variable = RICE_biak_adventurer_type
+		}
+		if = {
+			limit = { has_character_flag = RICE_oceania_biak_demands_flag }
+			remove_character_flag = RICE_oceania_biak_demands_flag
+		}
+	}
+
+}
+
+# Biak adventurers come in peace - traders
+oceania.0062 = {
+	type = character_event
+	title = oceania.0062.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					culture = { has_cultural_tradition = tradition_RICE_biak_adventurers }
+				}
+				desc = oceania.0062.desc.intro.peaceful
+				desc = oceania.0062.desc.biak
+			}
+			triggered_desc = {
+				trigger = {
+					has_character_flag = RICE_oceania_biak_demands_flag
+				}
+				desc = oceania.0062.desc.intro.tense
+				desc = oceania.0062.desc.tense
+			}
+			desc = oceania.0062.desc.intro.peaceful
+			desc = oceania.0062.desc.peaceful
+		}
+	}
+	theme = stewardship_wealth_focus
+	override_background = { reference = RICE_background_southeast_asia_beach }
+
+	left_portrait = {
+		character = root
+		animation = personality_callous
+	}
+
+	right_portrait = {
+		character = scope:biak_leader
+		animation = steward
+	}
+
+	# Recruit them
+	option = {
+		name = oceania.0062.a
+		add_character_modifier = {
+			modifier = RICE_oceania_ties_with_biak_traders
+			years = 10
+		}
+		if = {
+			limit = {
+				government_allows = barter
+			}
+			add_barter_goods = 50			
+		}
+		else_if = {
+			limit = {
+				has_government = landless_adventurer_government
+			}
+			domicile = {
+				change_provisions = minor_provisions_gain
+			}	
+		}
+		else_if = {
+			limit = {
+				government_allows = legitimacy
+			}
+			add_legitimacy = minor_legitimacy_gain
+		}
+		else = {
+			add_prestige = minor_prestige_gain
+		}
+		scope:biak_leader ?= { silent_disappearance_effect = yes }
+	}
+
+	# Invite some to settle
+	option = {
+		name = oceania.0062.b
+		trigger = {
+			is_landed = yes
+		}
+		remove_short_term_gold = RICE_oceania_biak_settlement_additional_cost_small
+		add_character_modifier = {
+			modifier = RICE_oceania_ties_with_biak_traders
+			years = 20
+		}
+		scope:target_county = {
+			add_county_modifier = {
+				modifier = RICE_oceania_settled_biak_traders
+				years = 10
+			}
+		}
+		if = {
+			limit = {
+				government_allows = barter
+			}
+			add_barter_goods = 50			
+		}
+		else_if = {
+			limit = {
+				has_government = landless_adventurer_government
+			}
+			domicile = {
+				change_provisions = medium_provisions_gain
+			}	
+		}
+		else_if = {
+			limit = {
+				government_allows = legitimacy
+			}
+			add_legitimacy = medium_legitimacy_gain
+		}
+		else = {
+			add_prestige = medium_prestige_gain
+		}	
+		stress_impact = {
+			generous = minor_stress_impact_loss
+			trusting = minor_stress_impact_loss
+			paranoid = minor_stress_impact_gain
+			greedy = minor_stress_impact_gain
+		}
+		scope:biak_leader ?= { silent_disappearance_effect = yes }
+	}
+
+
+	# Invite some to settle *and* recruit the guy
+	option = {
+		name = oceania.0062.c	
+		trigger = {
+			is_landed = yes
+			diplomacy >= medium_skill_rating
+		}
+		skill = diplomacy
+		add_courtier = scope:biak_leader
+		remove_short_term_gold = RICE_oceania_biak_settlement_additional_cost_large
+		add_character_modifier = {
+			modifier = RICE_oceania_ties_with_biak_traders
+			years = 20
+		}
+		scope:target_county = {
+			add_county_modifier = {
+				modifier = RICE_oceania_settled_biak_traders
+				years = 10
+			}
+		}
+		if = {
+			limit = {
+				government_allows = barter
+			}
+			add_barter_goods = 50			
+		}
+		else_if = {
+			limit = {
+				has_government = landless_adventurer_government
+			}
+			domicile = {
+				change_provisions = medium_provisions_gain
+			}	
+		}
+		else_if = {
+			limit = {
+				government_allows = legitimacy
+			}
+			add_legitimacy = medium_legitimacy_gain
+		}
+		else = {
+			add_prestige = medium_prestige_gain
+		}	
+		stress_impact = {
+			generous = minor_stress_impact_loss
+			trusting = minor_stress_impact_loss
+			paranoid = minor_stress_impact_gain
+			greedy = minor_stress_impact_gain
+		}
+	}
+
+	# Recruit the guy (if you don't have land)
+	option = {
+		name = oceania.0062.d	
+		trigger = {
+			is_landed = no
+			diplomacy >= medium_skill_rating
+		}
+		skill = diplomacy
+		remove_short_term_gold = RICE_oceania_biak_settlement_additional_cost_small
+		add_character_modifier = {
+			modifier = RICE_oceania_ties_with_biak_traders
+			years = 10
+		}
+		if = {
+			limit = {
+				government_allows = barter
+			}
+			add_barter_goods = 50			
+		}
+		else_if = {
+			limit = {
+				has_government = landless_adventurer_government
+			}
+			domicile = {
+				change_provisions = minor_provisions_gain
+			}	
+		}
+		else_if = {
+			limit = {
+				government_allows = legitimacy
+			}
+			add_legitimacy = minor_legitimacy_gain
+		}
+		else = {
+			add_prestige = minor_prestige_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = { has_variable = RICE_biak_adventurer_type }
+			remove_variable = RICE_biak_adventurer_type
+		}
+		if = {
+			limit = { has_character_flag = RICE_oceania_biak_demands_flag }
+			remove_character_flag = RICE_oceania_biak_demands_flag
+		}
+	}
+
+}
+
+
+# They demand extra gold or titles
+oceania.0063 = {
+	type = character_event
+	title = oceania.0063.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:RICE_biak_adventurer_type ?= flag:warriors
+				}
+				desc = oceania.0063.desc.warriors
+			}
+			triggered_desc = {
+				trigger = {
+					var:RICE_biak_adventurer_type ?= flag:traders
+				}
+				desc = oceania.0063.desc.traders
+			}
+			desc = oceania.0063.desc.fallback
+		}
+	}
+	theme = corruption
+	override_background = { reference = RICE_background_southeast_asia_beach }
+	
+	left_portrait = {
+		character = root
+		animation = anger
+	}
+	
+	right_portrait = {
+		character = scope:biak_leader
+		animation = relaxed_spear
+	}
+
+	immediate = {
+		add_character_flag = {
+			flag = RICE_oceania_biak_demands_flag
+			days = 1
+		}
+		scope:target_county.duchy = {
+			save_scope_as = target_duchy
+		}
+	}
+	
+	option = { # Ok
+		name = oceania.0063.a
+		add_opinion = {
+			target = scope:biak_leader
+			modifier = betrayal_opinion
+			opinion = -30
+		}
+		remove_short_term_gold = { 25 RICE_oceania_biak_pirates_demand_cost }	
+		stress_impact = {
+			craven = minor_stress_impact_loss
+			content = minor_stress_impact_loss
+			brave = minor_stress_impact_gain
+			greedy = minor_stress_impact_gain
+		}
+		trigger_event = oceania.0064
+	}
+	
+	option = { # Refuse
+		name = oceania.0063.b
+		add_opinion = {
+			target = scope:biak_leader
+			modifier = betrayal_opinion
+			opinion = -30
+		}
+		stress_impact = {
+			brave = minor_stress_impact_loss
+			greedy = minor_stress_impact_loss
+			craven = minor_stress_impact_gain
+			content = minor_stress_impact_gain
+		}
+		duel = {
+			skills = { diplomacy martial intrigue prowess }
+			target = scope:biak_leader
+			10 = {
+				custom_tooltip = oceania.0063.b.failure
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -0.9
+				}
+
+				save_scope_as = original_negotiator
+				add_to_list = RICE_biak_pirates_notification_list
+				# Every county in the duchy of the target county
+				scope:target_county = {
+					duchy = {
+						every_in_de_jure_hierarchy = {
+							limit = {
+								tier = tier_county
+							}
+							holder = {
+								add_to_list = RICE_biak_pirates_notification_list
+							}
+							hidden_effect = {
+								change_development_progress_with_overflow = -50
+								change_county_control = -15
+								add_county_modifier = {
+									modifier = RICE_oceania_biak_piracy_modifier
+									years = 10
+								}
+							}
+						}
+					}
+				}
+				custom_tooltip = RICE_raid_affected_rulers_angry_tt
+
+				every_in_list = {
+					list = RICE_biak_pirates_notification_list
+					trigger_event = oceania.0064
+				}
+			}
+			10 = {
+				custom_tooltip = oceania.0063.b.success
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 0.9
+				}
+				if = {
+					limit = {
+						var:RICE_biak_adventurer_type ?= flag:warriors
+					}
+					trigger_event = oceania.0061
+				}
+				else = {
+					trigger_event = oceania.0062					
+				}
+			}
+		}
+	}
+
+}
+
+
+
+# Biak refuse to back down and go rogue
+oceania.0064 = {
+	type = character_event
+	window = duel_event
+	title = oceania.0064.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					root = scope:original_negotiator
+				}
+				desc = oceania.0064.desc.original
+			}
+			desc = oceania.0064.desc
+		}
+	}
+	theme = raid
+	
+	left_portrait = {
+		character = scope:original_negotiator
+		animation = anger
+	}
+	
+	right_portrait = {
+		character = scope:biak_leader
+		animation = aggressive_spear
+	}
+
+	immediate = {
+		scope:biak_leader = {
+			add_character_flag = single_combat_duel_armor
+		}
+		#capital_county = { save_scope_as = capital }
+		# Every county in your capital duchy
+		show_as_tooltip = {
+			scope:target_county = {
+				duchy = {
+					every_in_de_jure_hierarchy = {
+						limit = {
+							tier = tier_county
+						}
+						custom = RICE_every_county_in_capital_duchy_owned_or_not
+						change_development_progress_with_overflow = -50
+						change_county_control = -15
+						add_county_modifier = {
+							modifier = RICE_oceania_biak_piracy_modifier
+							years = 10
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	option = { # ok
+		name = oceania.0064.a
+		trigger = {
+			root = scope:original_negotiator
+		}
+		custom_tooltip = RICE_raid_affected_rulers_angry_tt
+	}
+	
+	option = { # ok
+		name = oceania.0064.b
+		trigger = {
+			NOT = { root = scope:original_negotiator }
+		}
+		add_opinion = {
+			modifier = angry_opinion
+			target = scope:original_negotiator
+			opinion = -30
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				scope:biak_leader = {
+					has_character_flag = single_combat_duel_armor
+				}
+			}
+			scope:biak_leader = {
+				remove_character_flag = single_combat_duel_armor
+			}
+		}
+		if = {
+			limit = {
+				root = scope:original_negotiator
+			}
+			hidden_effect = {
+				scope:biak_leader ?= { silent_disappearance_effect = yes }
+				if = {
+					limit = { has_variable = RICE_biak_adventurer_type }
+					remove_variable = RICE_biak_adventurer_type
+				}
+				if = {
+					limit = { has_character_flag = RICE_oceania_biak_demands_flag }
+					remove_character_flag = RICE_oceania_biak_demands_flag
+				}
+			}
+		}
+	}
+
+}
+
+
+
+

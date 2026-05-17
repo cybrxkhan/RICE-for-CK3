@@ -89,88 +89,6 @@ RICE_welcome_visitors_from_oceania = {
 	}
 }
 
-
-# Send money or riches back home
-# RICE_oceania_biak_decision = {
-# 	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_oceania_trade.dds" }
-# 	decision_group_type = RICE_regional
-
-# 	desc = RICE_oceania_biak_decision_desc
-
-# 	ai_check_interval_by_tier = {
-# 		barony = 0
-# 		county = 36
-# 		duchy = 36
-# 		kingdom = 36
-# 		empire = 36
-# 		hegemony = 36
-# 	}
-
-# 	cooldown = { days = 1095 } 
-
-# 	is_shown = {
-# 		is_playable_character = yes
-# 		culture = { has_cultural_tradition = tradition_RICE_biak_adventurers }
-# 	}
-	
-# 	is_valid = {
-# 		culture = { has_cultural_tradition = tradition_RICE_biak_adventurers }
-# 	}
-
-# 	is_valid_showing_failures_only = {
-# 		is_available_adult = yes
-# 	}
-
-# 	effect = {
-
-# 		#custom_tooltip = stress_loss_drunkard_decision_effect_tooltip
-
-# 		show_as_tooltip = {
-# 			RICE_oceania_biak_decision_effect = yes
-# 		}
-
-# 		if = {
-# 			limit = {
-# 				has_game_rule = RICE_historical_context_on
-# 			}
-# 			custom_tooltip = RICE_oceania_biak_decision_context_tooltip
-# 		}
-
-# 		trigger_event = {
-# 			id = oceania.8888
-# 		}
-# 	}
-
-# 	cost = { 
-# 		gold = { value = minor_gold_value } # Will depend 
-# 	}	
-
-# 	ai_potential = {
-# 		short_term_gold >= minor_gold_value
-# 	}
-
-# 	ai_will_do = {
-# 		base = 30
-
-# 		modifier = {
-# 			add = 100
-# 			stress >= 50
-# 		}
-
-# 		modifier = {
-# 			add = 10
-# 			has_trait = diligent
-# 		}
-
-# 		modifier = {
-# 			add = -10
-# 			has_trait = lazy
-# 		}
-		
-# 	}
-# }
-
-
 RICE_oceania_recruit_biak_adventurers = {
 	picture = { reference = "gfx/interface/illustrations/decisions/decision_RICE_oceania_explorers.dds" }
 	ai_check_interval_by_tier = {
@@ -220,6 +138,12 @@ RICE_oceania_recruit_biak_adventurers = {
 	}
 	
 	is_valid = {
+		OR = {
+			prestige_level >= 2
+			dynasty ?= {
+				dynasty_prestige_level >= 2
+			}
+		}
 		NOR = {
 			has_character_modifier = RICE_oceania_biak_adventuerer_warriors
 			has_character_modifier = RICE_oceania_biak_adventuerer_traders
@@ -281,11 +205,8 @@ RICE_oceania_recruit_biak_adventurers = {
 
 	effect = {
 
-		custom_tooltip = RICE_oceania_recruit_biak_adventurers_effect_tooltip_1
-		custom_tooltip = RICE_oceania_recruit_biak_adventurers_effect_tooltip_2
-		#custom_tooltip = RICE_oceania_recruit_biak_adventurers_effect_tooltip_3
 
-				# Not sure why AI can't pick one option or another
+		# Not sure why AI can't pick one option or another
 		if = {
 			limit = { is_ai = yes }
 			random_list = {
@@ -293,12 +214,14 @@ RICE_oceania_recruit_biak_adventurers = {
 					set_variable = {
 						name = RICE_biak_adventurer_type
 						value = flag:warriors
+						days = 1
 					}
 				}
 				10 = {
 					set_variable = {
 						name = RICE_biak_adventurer_type
 						value = flag:traders
+						days = 1
 					}
 				}
 			}
@@ -307,21 +230,28 @@ RICE_oceania_recruit_biak_adventurers = {
 			limit = {
 				scope:RICE_oceania_recruit_biak_adventurers_warriors_option = yes
 			}
+			custom_tooltip = RICE_oceania_recruit_biak_adventurers_effect_warriors_tooltip_1
+			#custom_tooltip = RICE_oceania_recruit_biak_adventurers_effect_warriors_tooltip_2
 			set_variable = {
 				name = RICE_biak_adventurer_type
 				value = flag:warriors
+				days = 1
 			}
 		}
 		else_if = {
 			limit = {
 				scope:RICE_oceania_recruit_biak_adventurers_traders_option = yes
 			}
+			custom_tooltip = RICE_oceania_recruit_biak_adventurers_effect_traders_tooltip_1
+			#custom_tooltip = RICE_oceania_recruit_biak_adventurers_effect_traders_tooltip_2
 			set_variable = {
 				name = RICE_biak_adventurer_type
 				value = flag:traders
+				days = 1
 			}
 		}
 
+		custom_tooltip = RICE_oceania_recruit_biak_adventurers_effect_general_tooltip_1
 				
 		if = {
 			limit = {
@@ -330,7 +260,7 @@ RICE_oceania_recruit_biak_adventurers = {
 			custom_tooltip = RICE_oceania_recruit_biak_adventurers_context_tooltip
 		}
 		
-		trigger_event = oceania.8888
+		trigger_event = oceania.0060
 	}
 
 	minimum_cost = { 
