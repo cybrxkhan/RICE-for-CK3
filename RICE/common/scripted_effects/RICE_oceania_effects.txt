@@ -462,6 +462,41 @@
 		remove_variable = tradition_cooldown
 	}	
 
+	culture:zenu = {
+		add_culture_tradition = tradition_RICE_andean_hydraulic_engineering
+		remove_variable = tradition_cooldown
+	}	
+
+	culture:muisca = {
+		add_culture_tradition = tradition_RICE_andean_hydraulic_engineering
+		remove_variable = tradition_cooldown
+	}	
+
+	culture:chimu = {
+		add_culture_tradition = tradition_RICE_andean_hydraulic_engineering
+		remove_variable = tradition_cooldown
+	}	
+
+	culture:moche = {
+		add_culture_tradition = tradition_RICE_andean_hydraulic_engineering
+		remove_variable = tradition_cooldown
+	}	
+
+	culture:puquina = {
+		add_culture_tradition = tradition_RICE_andean_hydraulic_engineering
+		remove_variable = tradition_cooldown
+	}	
+
+	culture:quechua = {
+		add_culture_tradition = tradition_RICE_andean_hydraulic_engineering
+		remove_variable = tradition_cooldown
+	}	
+
+	culture:sican = {
+		add_culture_tradition = tradition_RICE_andean_hydraulic_engineering
+		remove_variable = tradition_cooldown
+	}	
+
 	
 	every_culture_global = {
 		limit = { has_cultural_pillar = heritage_arnhem_land }
@@ -658,11 +693,88 @@
 
 
 
-RICE_oceania_sasi_decision_basic_effect = {
-	
+RICE_oceania_sasi_ceremony_completed_log_entry_effect = {
+	scope:activity = {
+		add_activity_log_entry = {
+			key = RICE_oceania_sasi_ceremony_completed_log
+			tags = { completed }
+			# this line below adds the entry to the Effects section of the conclusion UI
+			show_in_conclusion = yes
+			character = root
+			if = {
+				limit = {
+					scope:host = { has_activity_intent = RICE_oceania_sasi_ceremony_conservation_intent }
+				}
+				scope:host = {
+					add_prestige = 100
+					stress_impact = {
+						temperate = minor_stress_impact_loss
+						patient = minor_stress_impact_loss
+						diligent = minor_stress_impact_loss
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					scope:host = { has_activity_intent = RICE_oceania_sasi_ceremony_ritual_intent }
+				}
+				scope:host = {
+					add_piety = 100
+					stress_impact = {
+						zealous = minor_stress_impact_loss
+						just = minor_stress_impact_loss
+						humble = minor_stress_impact_loss
+					}
+				}
+			}
+			if = {
+				limit = {
+					scope:activity.activity_location = {
+						county = {
+							development_level >= good_development_level
+						}
+					}					
+				}
+				scope:host = {
+					add_legitimacy = medium_legitimacy_gain
+				}
+			}
+			else_if = {
+				limit = {
+					scope:activity.activity_location = {
+						county = {
+							development_level >= bad_development_level
+						}
+					}					
+				}
+				scope:host = {
+					add_legitimacy = minor_legitimacy_gain
+				}
+			}
+			else = {
+				scope:host = {
+					add_legitimacy = miniscule_legitimacy_gain
+				}
+			}
+			every_attending_character = {
+				#limit = { this != scope:host }
+				custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+				add_prestige = 50
+				add_piety = 50
+			}
+			scope:activity.activity_location = {
+				county = {
+					add_county_modifier = {
+						modifier = RICE_oceania_sasi_closed_modifier
+						years = 3 # For 3 years as a failsafe in case the opening modifiers don't trigger for some reason
+					}
+				}
+			}	
+		}
+	}		
 }
 
-RICE_oceania_sasi_opened_modifier_effect = {
+RICE_oceania_water_sasi_opened_modifier_effect = {
 	if = {
 		limit = {
 			has_county_modifier = RICE_oceania_sasi_closed_modifier
@@ -670,7 +782,20 @@ RICE_oceania_sasi_opened_modifier_effect = {
 		remove_county_modifier = RICE_oceania_sasi_closed_modifier
 	}
 	add_county_modifier = {
-		modifier = RICE_oceania_sasi_open_modifier
+		modifier = RICE_oceania_sasi_water_modifier
+		years = 10
+	}
+}
+
+RICE_oceania_land_sasi_opened_modifier_effect = {
+	if = {
+		limit = {
+			has_county_modifier = RICE_oceania_sasi_closed_modifier
+		}
+		remove_county_modifier = RICE_oceania_sasi_closed_modifier
+	}
+	add_county_modifier = {
+		modifier = RICE_oceania_sasi_land_modifier
 		years = 10
 	}
 }
@@ -838,6 +963,15 @@ RICE_welcome_visitors_from_oceania_basic_effect = {
 	add_character_modifier = {
 		modifier = RICE_oceania_pacific_connections
 		years = 10
+	}
+	hidden_effect = {
+		random = {
+			chance = 25
+			trigger_event = {
+				id = oceania.0035
+				days = { 365 3650 }
+			}
+		}
 	}
 }
 

@@ -710,6 +710,60 @@ oceania.0034 = {
 
 
 
+# Ping event
+# Choose which Oceania region to spawn the courtier from
+oceania.0035 = {
+	type = character_event
+	hidden = yes
+
+	# Make sure the character is still someone who can actually get a courtier
+	trigger = {
+		NOT = { has_game_rule = RICE_oceania_frequency_off }
+		is_playable_character = yes
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			has_character_modifier = RICE_oceania_pacific_connections
+			add = 1
+		}
+		modifier = {
+			has_game_rule = RICE_oceania_frequency_uncommon
+			add = 0.5
+		}
+		modifier = {
+			has_game_rule = RICE_oceania_frequency_common
+			add = 1
+		}
+	}	
+
+	immediate = {
+		random_list = {
+			# Spawn Zone 1 characters: West Papua, West Micronesia
+			110 = { trigger_event = oceania.0030 }
+			# Spawn Zone 2 characters: Central Micronesia, Central Papua
+			60 = { trigger_event = oceania.0031 }
+			# Spawn Zone 3 characters: East Micronesia, East Papua, West Melanesia, Australia
+			30 = { trigger_event = oceania.0032 }
+			# Spawn Zone 4 characters: Polynesia, East Melanesia
+			20 = {
+				trigger = {
+					has_game_rule = RICE_remote_oceania_on
+				}
+				trigger_event = oceania.0033
+			}
+			# Spawn Zone 5 characters: South America
+			10 = {
+				trigger = {
+					has_game_rule = RICE_south_america_on
+				}
+				trigger_event = oceania.0034
+			}
+		}
+	}
+}
+
 
 ######################################################################################
 # 
@@ -752,7 +806,7 @@ oceania.0040 = {
 		}
 	}
 	theme = travel
-	override_background = { reference = RICE_background_himalayan_wilderness }
+	override_background = { reference = RICE_background_sasi }
 	
 	right_portrait = {
 		character = root
@@ -767,6 +821,14 @@ oceania.0040 = {
 			has_activity_type = activity_RICE_oceania_sasi_ceremony
 		}
 	}
+
+	immediate = {
+		involved_activity = {
+			activity_location = {
+				save_scope_as = location
+			}
+		}
+	}
 	
 	option = { # Ok
 		name = oceania.0040.a
@@ -778,34 +840,9 @@ oceania.0040 = {
 oceania.0041 = {
 	type = activity_event
 	title = oceania.0041.t
-	desc = {
-		desc = oceania.0041.desc
-		first_valid = {
-			triggered_desc = {
-				trigger = {
-					scope:activity = {
-						has_activity_option = {
-							category = special_type
-							option = RICE_oceania_sasi_ceremony_type_water
-						}
-					}
-				}
-				desc =  oceania.0041.desc.water
-			}
-			triggered_desc = {
-				trigger = {
-					scope:activity = {
-						has_activity_option = {
-							category = special_type
-							option = RICE_oceania_sasi_ceremony_type_land
-						}
-					}
-				}
-				desc =  oceania.0041.desc.land
-			}
-		}
-	}
-	theme = RICE_theme_raja_ampat_beach
+	desc = oceania.0041.desc
+	theme = friendly
+	override_background = { reference = RICE_background_sasi }
 
 	right_portrait = {
 		character = root
@@ -823,11 +860,24 @@ oceania.0041 = {
 	# Spend time in prayer
 	option = {
 		name = oceania.0041.a
+		add_piety = minor_piety_gain
 	}
 	
 	# Discuss matters with local community leaders
 	option = {
 		name = oceania.0041.b
+		add_prestige = minor_prestige_gain
+	}
+	
+	# Relax
+	option = {
+		name = oceania.0041.c
+		stress_impact = {
+			base = minor_stress_impact_loss
+			lazy = minor_stress_impact_loss
+			content = minor_stress_impact_loss
+			shy = minor_stress_impact_loss
+		}
 	}
 	
 	after = {
@@ -869,8 +919,10 @@ oceania.0042 = {
 				desc =  oceania.0042.desc.land
 			}
 		}
+		desc = oceania.0042.desc.conclusion
 	}
-	theme = RICE_theme_raja_ampat_beach
+	theme = faith
+	override_background = { reference = RICE_background_sasi }
 
 	right_portrait = {
 		character = root
@@ -881,15 +933,45 @@ oceania.0042 = {
 		name = oceania.0042.a
 		#create_story = RICE_sasi_ceremony_story
 		RICE_oceania_sasi_ceremony_completed_log_entry_effect = yes
-		scope:activity = {
-			activity_location = {
-				county = {
-					trigger_event = {
-						id = oceania.0044
-						days = 1
-					}						
+		if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_oceania_sasi_ceremony_type_water
+					}
 				}
-			}		
+			}
+			scope:activity = {
+				activity_location = {
+					county = {
+						trigger_event = {
+							id = oceania.0044
+							days = 1
+						}						
+					}
+				}		
+			}
+		}
+		else_if = {
+			limit = {
+				scope:activity = {
+					has_activity_option = {
+						category = special_type
+						option = RICE_oceania_sasi_ceremony_type_land
+					}
+				}
+			}
+			scope:activity = {
+				activity_location = {
+					county = {
+						trigger_event = {
+							id = oceania.0046
+							days = 1
+						}						
+					}
+				}		
+			}
 		}
 	}
 	
@@ -921,7 +1003,7 @@ oceania.0044 = {
 	}
 }
 
-# Sasi 
+# Water Sasi reopens 
 oceania.0045 = {
 	type = character_event
 	title = oceania.0045.t
@@ -936,7 +1018,46 @@ oceania.0045 = {
 	option = {
 		name = oceania.0045.a
 		scope:sasi_open_county = {
-			RICE_oceania_sasi_opened_modifier_effect = yes
+			RICE_oceania_water_sasi_opened_modifier_effect = yes
+		}
+	}
+
+}
+
+
+# Trigger on county, not on the person who held the Sasi ceremony, in case someone else inherits it
+oceania.0046 = {
+	hidden = yes
+	scope = landed_title
+
+	trigger = {
+		has_county_modifier = RICE_oceania_sasi_closed_modifier
+	}
+
+	immediate = {
+		save_scope_as = sasi_open_county
+		holder = {
+			trigger_event = oceania.0047
+		}
+	}
+}
+
+# Land Sasi reopens 
+oceania.0047 = {
+	type = character_event
+	title = oceania.0047.t
+	desc = oceania.0047.desc
+	theme = RICE_theme_west_papua_village
+
+	left_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+
+	option = {
+		name = oceania.0047.a
+		scope:sasi_open_county = {
+			RICE_oceania_land_sasi_opened_modifier_effect = yes
 		}
 	}
 
@@ -1006,7 +1127,7 @@ oceania.0050 = {
 		custom_tooltip = oceania.0050.general.tooltip
 		trigger_event = {
 			id = oceania.0051
-			days = { 30 90 }
+			#days = { 30 90 }
 		}
 	}
 
@@ -1231,32 +1352,38 @@ oceania.0051 = {
 			}
 			add_prestige = { RICE_oceania_stone_money_min_prestige_gain_value RICE_oceania_stone_money_max_prestige_gain_value }
 			add_gold = { RICE_oceania_stone_money_min_gold_gain_value RICE_oceania_stone_money_max_gold_gain_value }
-		}
-		if = {
-			limit = {
-				has_character_flag = RICE_oceania_stone_money_crew_loss_low
+			if = {
+				limit = {
+					NOT = { has_trait = RICE_stone_money }
+				}
+				add_trait = RICE_stone_money
 			}
-			add_trait_xp = {
-				trait = RICE_stone_money
-				value = RICE_oceania_stone_money_small_trait_xp_gain_value
+			if = {
+				limit = {
+					has_character_flag = RICE_oceania_stone_money_crew_loss_low
+				}
+				add_trait_xp = {
+					trait = RICE_stone_money
+					value = RICE_oceania_stone_money_small_trait_xp_gain_value
+				}
 			}
-		}
-		else_if = {
-			limit = {
-				has_character_flag = RICE_oceania_stone_money_crew_loss_medium
+			else_if = {
+				limit = {
+					has_character_flag = RICE_oceania_stone_money_crew_loss_medium
+				}
+				add_trait_xp = {
+					trait = RICE_stone_money
+					value = RICE_oceania_stone_money_medium_trait_xp_gain_value
+				}
 			}
-			add_trait_xp = {
-				trait = RICE_stone_money
-				value = RICE_oceania_stone_money_medium_trait_xp_gain_value
-			}
-		}
-		else_if = {
-			limit = {
-				has_character_flag = RICE_oceania_stone_money_crew_loss_high
-			}
-			add_trait_xp = {
-				trait = RICE_stone_money
-				value = RICE_oceania_stone_money_large_trait_xp_gain_value
+			else_if = {
+				limit = {
+					has_character_flag = RICE_oceania_stone_money_crew_loss_high
+				}
+				add_trait_xp = {
+					trait = RICE_stone_money
+					value = RICE_oceania_stone_money_large_trait_xp_gain_value
+				}
 			}
 		}
 		if = {
