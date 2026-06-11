@@ -1357,7 +1357,8 @@ oceania.0051 = {
 				has_character_flag = RICE_oceania_stone_money_success
 			}
 			add_prestige = { 25 RICE_oceania_stone_money_max_prestige_gain_value }
-			add_gold = { RICE_oceania_stone_money_min_gold_gain_value RICE_oceania_stone_money_max_gold_gain_value }
+			#add_gold = { RICE_oceania_stone_money_min_gold_gain_value RICE_oceania_stone_money_max_gold_gain_value }
+			add_gold = { 25 RICE_oceania_stone_money_max_gold_gain_value }
 			if = {
 				limit = {
 					NOT = { has_trait = RICE_stone_money }
@@ -2234,4 +2235,478 @@ oceania.0064 = {
 
 
 
+
+
+######################################################################################
+# 
+# GENERIC FLAVOR EVENTS
+# 
+# oceania.0080-oceania.0099
+# 
+######################################################################################
+
+
+
+# Successful turtle hunter offers you turtle they hunted
+oceania.0080 = {
+	type = character_event
+	title = oceania.0080.t
+	desc = oceania.0080.desc
+	theme = hunt_activity_camp
+	override_background = RICE_background_southeast_asia_beach
+
+	left_portrait = {
+		character = root
+		animation = idle
+	}
+
+	right_portrait = {
+		character = scope:hunter
+		animation = throne_room_two_handed_passive_1
+	}
+		
+	trigger = {
+		is_vegetarian_trigger = no
+		OR = {
+			RICE_culture_has_oceanic_heritage_pillar_trigger = yes
+			RICE_culture_has_australian_heritage_pillar_trigger = yes
+			culture = {
+				OR = {
+					this = culture:biak
+					any_parent_culture_or_above = { this = culture:biak }
+				}
+			}	
+			capital_county = {
+				any_county_province = {
+					geographical_region = RICE_eastern_indonesia_region
+				}
+				is_vegetarian_trigger = no
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+	}
+
+	immediate = {
+		capital_county = {
+			save_scope_as = target_county
+		}
+		target_county.culture = {
+			save_scope_as = local_culture
+		}
+		create_character = {
+			location = root.location
+			template = hunter_template
+			culture = scope:target_county.culture
+			faith = scope:target_county.faith
+			save_scope_as = hunter
+		}
+	}
+
+	option = { # Ok
+		name = oceania.0080.a
+		add_character_modifier = {
+			modifier = RICE_oceania_turtle_meat_and_shells
+			years = 4
+		}
+		stress_impact = {
+			generous = minor_stress_impact_gain
+			just = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+			lifestyle_hunter = minor_stress_impact_gain
+		}
+		scope:hunter ?= {
+			add_prestige = 25
+			add_character_modifier = {
+				modifier = RICE_oceania_turtle_hunter_modifier
+			}
+			add_opinion = {
+				target = root
+				modifier = disappointed_opinion
+				opinion = -10
+			}
+			silent_disappearance_effect = yes
+		}
+	}
+
+	option = { # Ok
+		name = oceania.0080.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 25
+			}
+		}
+		remove_short_term_gold = 25
+		add_prestige = 50
+		add_character_modifier = {
+			modifier = RICE_oceania_turtle_meat_and_shells
+			years = 4
+		}
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			callous = minor_stress_impact_gain
+			arrogant = minor_stress_impact_gain
+			paranoid = miniscule_stress_impact_gain
+			arbitrary = miniscule_stress_impact_gain
+		}
+		scope:hunter ?= {
+			add_prestige = 100
+			add_opinion = {
+				target = root
+				modifier = pleased_opinion
+				opinion = 10
+			}
+			silent_disappearance_effect = yes
+		}
+	}
+
+	option = { # Ok
+		name = oceania.0080.c
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		add_prestige = 100
+		add_character_modifier = {
+			modifier = RICE_oceania_turtle_meat_and_shells
+			years = 4
+		}
+		stress_impact = {
+			generous = minor_stress_impact_gain
+			just = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+			lifestyle_hunter = minor_stress_impact_gain
+		}
+		scope:hunter ?= {
+			add_prestige = 100
+			add_opinion = {
+				target = root
+				modifier = pleased_opinion
+				opinion = 10
+			}
+		}
+		add_courtier = scope:hunter
+		if = {
+			limit = {
+				can_add_hook = {
+					target = scope:hunter
+					type = loyalty_hook
+				}
+			}
+			add_hook = {
+				target = scope:hunter
+				type = loyalty_hook
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = oceania.0080.info
+		}
+	}
+
+}
+
+
+
+# Contemplating the Biak saying, "if you don't sing and dance, you die"
+oceania.0081 = {
+	type = character_event
+	title = oceania.0081.t
+	desc = oceania.0081.desc
+	theme = feast_activity
+	override_background = RICE_background_southeast_asia_beach
+
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+		
+	trigger = {
+		culture = { has_cultural_tradition = tradition_RICE_biak_songs }
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = 0.2
+			has_trait = shy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = gregarious
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	option = { # Ok
+		name = oceania.0081.a
+		add_piety = 25
+		stress_impact = {
+			gregarious = minor_stress_impact_loss
+			lifestyle_reveler = minor_stress_impact_loss
+			zealous = minor_stress_impact_loss
+			trusting = miniscule_stress_impact_loss
+			content = miniscule_stress_impact_loss
+			generous = miniscule_stress_impact_loss
+		}
+	}
+
+	option = { # Ok
+		name = oceania.0081.b
+		add_prestige = 25
+		stress_impact = {
+			shy = minor_stress_impact_loss
+			paranoid = minor_stress_impact_loss
+			patient = minor_stress_impact_loss
+			calm = miniscule_stress_impact_loss
+			deceitful = miniscule_stress_impact_loss
+			fickle = miniscule_stress_impact_loss
+		}
+	}
+
+}
+
+
+# Drinking sago pearls
+oceania.0082 = {
+	type = character_event
+	title = oceania.0082.t
+	desc = oceania.0082.desc
+	theme = feast_activity
+
+	left_portrait = {
+		character = root
+		animation = admiration
+	}
+		
+	trigger = {
+		capital_county = {
+			any_county_province = {
+				OR = {
+					geographical_region = world_asia_southeast_islands
+					geographical_region = world_asia_malaysia					
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = gluttonous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = temperate
+		}
+		modifier = {
+			add = 0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = -0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+	}
+
+	option = { # Ok
+		name = oceania.0082.a
+		add_character_modifier = {
+			modifier = RICE_oceania_sago_pearls
+			years = 3
+		}
+		stress_impact = {
+			base = minor_stress_impact_loss
+		}
+	}
+
+}
+
+
+# Giving offerings of Sago to spirits
+oceania.0083 = {
+	type = character_event
+	title = oceania.0083.t
+	desc = oceania.0083.desc
+	theme = faith
+	override_background = RICE_background_west_papua_village
+
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+
+	right_portrait = {
+		character = scope:chaplain
+		animation = storyteller
+	}
+		
+	trigger = {
+		OR = { 
+			NOT = { religion = { is_in_family = rf_abrahamic } }
+			faith = { has_doctrine = tenet_unreformed_syncretism }
+		}
+		RICE_is_southeast_asian_or_oceanic_culture = yes
+		any_held_county = {
+			any_county_province = {
+				OR = {
+					geographical_region = world_asia_southeast_islands
+					geographical_region = world_asia_malaysia					
+				}
+			}
+		}
+		cp:councillor_court_chaplain ?= {
+			is_available_at_peace_ai_adult = yes
+		}	
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = zealous
+		}
+		modifier = {
+			add = -0.2
+			has_trait = cynical
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = paranoid
+		}
+		modifier = {
+			add = -0.2
+			has_trait = trusting
+		}
+	}
+
+	immediate = {
+		cp:councillor_court_chaplain ?= {
+			save_scope_as = chaplain
+		}
+		random_held_county = {
+			limit = {
+				any_county_province = {
+					OR = {
+						geographical_region = world_asia_southeast_islands
+						geographical_region = world_asia_malaysia					
+					}
+				}
+			}
+			save_scope_as = county
+		}		
+	}
+
+	option = { # Ok
+		name = oceania.0083.a
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		scope:chaplain = {
+			add_opinion = {
+				modifier = pious_opinion
+				target = root
+				opinion = 10
+			}
+		}
+		add_piety = 50
+		scope:county = {
+			add_character_modifier = {
+				modifier = RICE_oceania_sago_offerings
+				years = 5
+			}
+		}
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			cynical = minor_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = oceania.0083.b
+		scope:chaplain = {
+			add_opinion = {
+				target = root
+				modifier = disappointed_opinion
+				opinion = -10
+			}			
+		}
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			trusting = minor_stress_impact_gain
+		}
+	}
+
+}
 
