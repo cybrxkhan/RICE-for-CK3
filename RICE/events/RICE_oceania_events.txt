@@ -2317,7 +2317,7 @@ oceania.0080 = {
 		capital_county = {
 			save_scope_as = target_county
 		}
-		target_county.culture = {
+		scope:target_county.culture = {
 			save_scope_as = local_culture
 		}
 		create_character = {
@@ -2709,4 +2709,470 @@ oceania.0083 = {
 	}
 
 }
+
+# Cockatoo birds are a popular export
+oceania.0084 = {
+	type = character_event
+	title = oceania.0084.t
+	desc = oceania.0084.desc
+	theme = stewardship_wealth_focus
+	override_background = RICE_background_southeast_asia_beach
+
+	left_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+		
+	trigger = {
+		any_held_county = {
+			any_county_province = {
+				geographical_region = RICE_eastern_southeast_asia_region
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = -0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	immediate = {
+		random_held_county = {
+			limit = {
+				any_county_province = {
+					geographical_region = RICE_eastern_southeast_asia_region
+				}
+			}
+			save_scope_as = county
+		}	
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_oceania_cockatoo_modifier
+				years = 20
+			}
+		}
+	}
+
+	option = { # Ok
+		name = oceania.0084.a
+		stress_impact = {
+			greedy = minor_stress_impact_gain
+			ambitious = minor_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = oceania.0084.b
+		trigger = {
+			OR = {
+				is_ai = no
+				gold >= 50
+			}
+		}
+		remove_short_term_gold = 50
+		add_prestige = 100
+		add_character_modifier = {
+			modifier = RICE_oceania_supports_cockatoo_trade
+			years = 20
+		}
+		stress_impact = {
+			lazy = minor_stress_impact_gain
+			content = miniscule_stress_impact_gain
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = oceania.0084.info
+		}
+	}
+
+}
+
+# Birds of Paradise are a popular export
+oceania.0085 = {
+	type = character_event
+	title = oceania.0085.t
+	desc = oceania.0085.desc
+	theme = stewardship_wealth_focus
+	override_background = RICE_background_southeast_asia_beach
+
+	left_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+		
+	trigger = {
+		any_held_county = {
+			any_county_province = {
+				OR = {
+					geographical_region = RICE_papuan_region
+					geographical_region = world_asia_sulawesi_maluku
+				}
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = arrogant
+		}
+		modifier = {
+			add = -0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = 0.2
+			has_trait = diligent
+		}
+		modifier = {
+			add = -0.2
+			has_trait = lazy
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	immediate = {
+		random_held_county = {
+			limit = {
+				any_county_province = {
+					OR = {
+						geographical_region = RICE_papuan_region
+						geographical_region = world_asia_sulawesi_maluku
+					}
+				}
+			}
+			save_scope_as = county
+		}
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_oceania_birds_of_paradise_modifier
+				years = 10
+			}
+		}		
+	}
+
+	option = { # Ok
+		name = oceania.0085.a
+		stress_impact = {
+			greedy = minor_stress_impact_loss
+			ambitious = miniscule_stress_impact_loss
+		}
+	}
+
+	after = {
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = oceania.0085.info
+		}
+	}
+
+}
+
+
+
+# Encounter a Cassowary
+oceania.0086 = {
+	type = character_event
+	title = oceania.0086.t
+	desc = oceania.0086.desc
+	theme = travel_danger
+	override_background = { reference = RICE_background_southeast_asia_beach }
+	
+	left_portrait = {
+		character = scope:traveler
+		animation = survey_staff
+		camera = camera_event_right_forward
+	}	
+	
+	right_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = {
+				OR = {
+					has_trait = brave
+					has_trait = arrogant
+					has_trait = callous
+					has_trait = sadistic
+					has_trait = impatient
+					has_trait = wrathful
+				}
+				NOR = {
+					has_trait = craven
+					has_trait = paranoid
+				}
+			}
+			animation = war_defender
+		}
+		animation = fear
+		camera = camera_event_right_forward
+	}	
+
+	trigger = {
+		is_location_valid_for_travel_event_on_land = yes
+		location = {
+			geographical_region = RICE_papua_and_seram_region
+		}
+		current_travel_plan = {
+			any_entourage_character = {	
+				count >= 1		
+				is_available_travelling = yes
+				probably_unintelligent_trigger = no
+			}
+		}
+	}
+	
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = brave
+		}
+		modifier = {
+			add = -0.2
+			has_trait = craven
+		}
+		modifier = {
+			add = 0.2
+			has_trait = patient
+		}
+		modifier = {
+			add = -0.2
+			has_trait = impatient
+		}
+		modifier = {
+			add = 0.2
+			has_trait = humble
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arrogant
+		}
+	}
+
+	immediate = {
+		current_travel_plan = {
+			every_entourage_character = {	
+				limit = {
+					is_available_travelling = yes
+					probably_unintelligent_trigger = no
+				}
+				add_to_list = entourage_character_candidates
+			}
+		}
+		random_in_list = {
+			list = entourage_character_candidates
+			weight = {
+				base = 20
+				modifier = {
+					has_trait = lifestyle_hunter
+					add = 10
+				}
+				modifier = {
+					has_trait = lifestyle_traveler
+					add = 10
+				}
+				modifier = {
+					has_trait = patient
+					add = 5
+				}
+				modifier = {
+					has_trait = calm
+					add = 5
+				}
+				modifier = {
+					has_trait = impatient
+					add = -5
+				}
+				modifier = {
+					has_trait = wrathful
+					add = -5
+				}
+			}
+			save_scope_as = traveler
+		}
+	}
+
+	option = { # It's not scary!
+		name = oceania.0086.a
+		add_prestige = 50
+		random = {
+			chance = 15
+			increase_wounds_effect = { REASON = wild_animal }
+		}
+		scope:traveler = {
+			add_opinion = {
+				target = scope:first
+				modifier = annoyed_opinion
+				opinion = -15
+			}
+			random = {
+				chance = 5
+				increase_wounds_effect = { REASON = wild_animal }
+			}
+		}
+		stress_impact = {
+			craven = major_stress_impact_gain
+			paranoid = minor_stress_impact_gain
+			patient = miniscule_stress_impact_gain
+			calm = miniscule_stress_impact_gain
+			compassionate = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # kk
+		name = oceania.0086.b
+		current_travel_plan = {
+			delay_travel_plan = { days = 3 }
+		}
+		stress_impact = {
+			brave = major_stress_impact_gain
+			impatient = minor_stress_impact_gain
+			arrogant = minor_stress_impact_gain
+			wrathful = miniscule_stress_impact_gain
+			callous = miniscule_stress_impact_gain
+		}
+	}
+
+}
+
+
+
+# Traditional ritual practices around harvesting the eggs of megapode birds
+oceania.0087 = {
+	type = character_event
+	title = oceania.0087.t
+	desc = oceania.0087.desc
+	theme = stewardship_domain_focus
+	override_background = RICE_background_southeast_asia_beach
+
+	left_portrait = {
+		character = root
+		animation = personality_callous
+	}
+		
+	trigger = {
+		any_held_county = {
+			any_county_province = {
+				geographical_region = RICE_eastern_southeast_asia_region
+			}
+		}
+	}
+
+	weight_multiplier = {
+		base = 1
+		modifier = {
+			add = 0.2
+			has_trait = just
+		}
+		modifier = {
+			add = -0.2
+			has_trait = arbitrary
+		}
+		modifier = {
+			add = 0.2
+			has_trait = compassionate
+		}
+		modifier = {
+			add = -0.2
+			has_trait = callous
+		}
+		modifier = {
+			add = 0.2
+			has_trait = ambitious
+		}
+		modifier = {
+			add = -0.2
+			has_trait = content
+		}
+	}
+
+	immediate = {
+		random_held_county = {
+			limit = {
+				any_county_province = {
+					geographical_region = RICE_eastern_southeast_asia_region
+				}
+			}
+			save_scope_as = county
+		}	
+		scope:county.culture = {
+			save_scope_as = county_culture
+		}
+	}
+
+	option = { # Ok
+		name = oceania.0087.a
+		add_prestige = 50
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_oceania_harvesting_more_megapode_eggs
+				years = 10
+			}
+		}
+		stress_impact = {
+			zealous = minor_stress_impact_gain
+			generous = minor_stress_impact_gain
+			patient = miniscule_stress_impact_gain
+			just = miniscule_stress_impact_gain
+		}
+	}
+
+	option = { # Ok
+		name = oceania.0087.b
+		add_piety = 50
+		scope:county = {
+			add_county_modifier = {
+				modifier = RICE_oceania_restrained_harvest_of_megapode_eggs
+				years = 10
+			}
+		}
+		stress_impact = {
+			greedy = medium_stress_impact_gain
+			cynical = minor_stress_impact_gain
+			arbitrary = miniscule_stress_impact_gain
+			arrogant = miniscule_stress_impact_gain
+		}
+	}
+
+}
+
 
