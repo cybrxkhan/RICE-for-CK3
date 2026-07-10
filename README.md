@@ -1,13 +1,13 @@
-<img src="https://i.imgur.com/w6LVrn2.jpg">
+<img src="https://i.imgur.com/BCR2i6O.jpg">
 
-## Latest Version: Version 1.19.0.b Hotfix for "Strait of Malacca" (Released 5/15/26, for vanilla patch 1.19.x)
+## Latest Version: Version 1.19.1 "Pacific" (Released 7/10/26, for vanilla patch 1.19.x)
 
-**Newest Flavor Pack: *Mayo: Heather and Yew***
+**Newest Flavor Pack: *Oceania: The Final Frontier***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_“All the merchants from above the winds and below the winds came to Melaka [...] It was named Malakat by all the Arabs, meaning the meeting place of all merchants, because there are many different types of commerce there.”_
-_– The Malay Annals (c. 15th-16th century)_
+_“We should not be defined by the smallness of our islands, but by the greatness of our oceans.”_
+_– Dr. Epeli Hau’ofa (1939 – 2009), Tongan and Fijian Anthropologist_
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
@@ -36,7 +36,7 @@ If you wish to install the RICE+EPE compatch, do the same thing for its folder a
 
 There is a [RICE Wiki](https://ck3.paradoxwikis.com/RICE) that goes over the mod's features, thanks to feringghithebroken for working on most of it! Please note some of it may not be up to date with the latest version of RICE.
 
-At the moment, RICE includes **43** flavor packs:
+At the moment, RICE includes **44** flavor packs:
 
 - Aachen: Charlemagne's Capital
 - Aslians: The Jungle Pacifists
@@ -55,12 +55,13 @@ At the moment, RICE includes **43** flavor packs:
 - Lesbos: Island of Poets
 - Magadha: Diamond Throne of Buddhism
 - Manichean: The Religion of Light
-- Mayo: Heather and Yew **(NEW!!!)**
+- Mayo: Heather and Yew
 - Mordvin: Along the Volga
 - Niger Delta: Heirs of Odudwa
 - Normandy: Adventurers and Aristocrats
 - North Atlantic: From Iceland to Vinland
 - Nubia: Heirs of Kush
+- Oceania: The Final Frontier **(NEW!!!)**
 - Pamir and Zunist: Roof of the World
 - Polabians: Defenders of Svetovit
 - Red Sea: Treasures of the Eastern Desert
@@ -85,78 +86,25 @@ At the moment, RICE includes **43** flavor packs:
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/cOhfhNP.jpg">
+<img src="https://i.imgur.com/1hpJyLw.jpg">
 
-### Version 1.19.0.b Hotfix for "Strait of Malacca"
+### Version 1.19.1 "Pacific"
 
-- Many RICE decisions no longer require you to be in good health
-- Changed hot springs activity to be available in one’s realm/domicile, rather than all provinces, in order to improve performance and significantly reduce error log spam (thanks to user @claus for catching this!)
-- Added rice cultivators tradition to Kutai
-- Sunda culture now has Maritime Mercantilism instead of Maritime Way of Life
-- Switched Agrarian tradition with Staunch Traditionalists for Abui culture
-- A few Oceanic cultures now have more traditions to be consistent with RICE cultures having 3-5 traditions (these will be changed once the Oceania Flavor Pack comes out)
-- Switched back COA for Socotra’s rulers now that PI fixed the mix-up between the Nestorian and Coptic COAs
-- Decreased chances of Silk Road community events
-- Qinghaicong Horse modifiers’ localization now references the relevant game concepts
-- Fixed loyalty hook not being given correctly for Sicilian refugee/immigrant courtier spawn events
-- Fixed Filipino courtier spawn in RICE’s Silk Road mechanic not triggering properly
-- Fixed Viet courtier spawn in RICE’s Silk Road mechanic having normal Mahayana instead of East Asian Buddhist faiths
-- Fixed several Celtic soundtracks being enabled if you have the game rule to disable vocal music on
-- Fixed issue with Rus culture decision when playing with Cultures Expanded
-- Fixed error log spam when doing the hot springs activity due to how barony/provinces work now
-- Fixed missing loc for the Larrakia language
-- Fixed error log spam from bookmark portraits when using the RICE+EPE compatch
-- Miscellaneous bugfixes and loc fixes
-
-### Version 1.19.0.a Hotfix for "Strait of Malacca"
-
-- Created RICE+CE Compatch sub-mod as a one time temporary measure due to the large amount of new languages/heritages added (the compatch will be depreciated once the CE devs find time to update to account for RICE’s new stuff)
-- Changed traditions around for a few Dayak cultures
-- Changed Sardinian Industrious tradition to Legalism
-- Kaifeng Jews now start with West Iranian rather than Chinese language
-- Kaifeng Jews are now a hybrid of Persian Jews and Han
-- Tweaked ethnicities of Kaifeng Jews
-- Added some additional French translation, courtesy of French translation team
-- Disabled a couple of Egyptian rulers in 867 when playing with Muslim Enhancements because they were buggy
-- Fixed missing loc for several Southeast Asian religions
-- Fixed issue with Muslim Enhancements where Sa’id ibn Najah can start off as both an adventurer and a landed ruler in 1066
-- Fixed Oceanic and South American cultures not starting off with any innovations
-- Fixed Sasi innovation having no effects
-- Fixed Sasi innovation not being given to many cultures that it should’ve been given to
-- Fixed missing loc for Sweet Potatoes innovation
-- Miscellaneous bugfixes
-
-### Version 1.19.0 "Strait of Malacca"
-
-- Added new cultures, faiths, and innovations coming with the future Oceania Flavor Pack to ensure save-game compatibility when it comes out later
-- Added several new Dayak cultures, courtesy of Rajas of Asia
-- Added placeholder faiths, religion, cultures, languages, and namelists, for use in the future for save-game compatibility just in case
-- Added new adventurers: Bernard the Pilgrim (867), Subhuticandra (1066)
-- Added Ade tradition to several Sulawesi and Dayak cultures, courtesy of Rajas of Asia
-- Added “Aficionado of Ancient History” modifier to RICE’s adventurer Abd al-Latif al-Baghdadi in 1178
-- Added Aari and Oropom courtiers to randomly spawn in a few South Ethiopian courts at game start
-- Added Caravaneers tradition to Marka
-- Added Brewing Culture tradition to Franconians
-- Added Maritime Mercantilism to Saxons
-- Added Artisans tradition to Kashmiris
-- Added Storytellers tradition to Gonds
-- Added Prolific Hunters tradition to Eeyou
-- Pudgalavada Canon doctrine now has a bonus to theocratic vassal tax, to distinguish it from the Pali (Theravada) Canon
-- Tantric Canon doctrine now has a bonus to resisting hostile schemes, to distinguish it more from the Mahayana Canon
-- Integrated Raja of Asia’s tweaks to the Aluk faith’s localization
-- Several Alhambra related decisions now have exceptions to the requirement of having the Alhambra building to avoid issues with the Medieval Arts mod
-- Stronghold raids no longer happen if the Sicilian struggle is resolved with a “true” ending
-- Buffed Sorcerous Corsair’s bonus to knight effectiveness from intrigue
-- Kehin trait now costs more in ruler designer to be in line with other traits
-- Reduced the ruler designer costs of several RICE traits
-- Fixed missing localization for the modifier from the Ayo Visto Mappamundi event
-- Fixed Sicilian refugee/immigrant events wrongly giving the new courtier a hook on you
-- Fixed Sa’id ibn Najah starting off with a claim on Nubia instead of titles in Yemen
-- Fixed Turkish Dictionary decision not working with CE
-- Fixed Cranial Trophies being available to a few faiths without the AUH DLC
-- Fixed Nile Flood mitigation modifier being applied even during a good flood (instead of only a bad flood)
-- Fixed missing localization for several Nubian titles in Spanish
-- Fixed missing Sabaki parent culture for the Chagga in the RICE+EPE Compatch
+- Added Oceania Flavor Pack: The Final Frontier
+- Added new holy sites for Munda/Kherwal paganism from Rajas of Asia’s WIP content
+- Althing decision can now be taken by Goidelic culture characters and result in a Goidelic heritage Icelandic culture if taken by one
+- Tweaked pillars and traditions for some South American and Oceanic cultures to account for new Oceania Flavor Pack content
+- Rebalanced costs of working with merchants for various RICE merchant events
+- Failing negotiations with Norse and Norman adventurers will now make rulers of counties affected by the raids get negative opinion of you
+- Changed religious tenets for Idoism, Illuism, and Yakushism now have Sacred Mountains instead
+- The decision to Influence the Future of Uyghur Manicheism will now effect other faiths with the Liberation of Light doctrine as well, not just Manicheism (since you could be non-Manichean in theory)
+- Fictitious Mandaean ruler in 867 now starts with Clan government
+- Fixed No Stone Unturned perk (from the Wanderer lifestyle tree) not applying to RICE activities
+- Fixed some counties in Alodia being tribal holdings like in vanilla instead of feudal
+- Fixed mismatches with some South American cultures in the RICE+EPE version compared to the normal RICE version
+- Fixed two different Rock of Cashel special buildings if running with Medieval Arts
+- Fixed a scoping error in a Seletar courtier spawn event (aslian.0007)
+- Fixed a few missing localization files in some languages
 - Miscellaneous bugfixes
 
 
