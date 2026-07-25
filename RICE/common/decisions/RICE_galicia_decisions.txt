@@ -1692,3 +1692,229 @@ RICE_galicia_pray_to_santiago = {
 	}
 }
 
+
+# Pray to Pico Sacro
+RICE_galicia_pico_sacro_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_hammerfell.dds" }
+	decision_group_type = RICE_religious
+	desc = RICE_galicia_pico_sacro_decision_desc
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 64
+		duchy = 64
+		kingdom = 48
+		empire = 48
+		hegemony = 48
+	}
+	
+	cooldown = { days = 3650 }
+
+	is_shown = {
+		highest_held_title_tier > tier_barony
+		is_landed = yes
+		OR = {
+			capital_province = {
+				geographical_region = RICE_galicia_region
+			}
+			domicile.domicile_location ?= {
+				geographical_region = RICE_galicia_region
+			}
+		}
+	}
+
+	is_valid = {	
+		OR = {
+			custom_description = {
+				text = RICE_galicia_geographical_capital_req
+				capital_province = {
+					geographical_region = RICE_galicia_region
+				}
+			}
+			custom_description = {
+				text = RICE_galicia_geographical_domicile_req
+				domicile.domicile_location ?= {
+					geographical_region = RICE_galicia_region
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		RICE_is_available_adult_even_if_sick_trigger = yes
+	}
+
+	cost = {
+		gold = { value = minor_gold_value }
+	}
+	
+	ai_potential = {
+		short_term_gold > RICE_galicia_pico_sacro_decision_gold_cost_value
+	}
+
+	effect = {
+
+		if = {
+			limit = {
+				NOT = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:RICE_galicia_pico_sacro_chapel_decision_done
+					}
+				}				
+			}
+			custom_tooltip = RICE_galicia_pico_sacro_decision_effect_tooltip_1
+		}
+
+		show_as_tooltip = {
+			RICE_galicia_pico_sacro_decision_effect = yes
+		}
+
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_galicia_pico_sacro_decision_context_tooltip
+		}
+		
+		trigger_event = {
+			id = galicia.0001
+		}
+
+	}
+
+	ai_will_do = {
+		base = 30
+		modifier = {
+			add = -15
+			has_trait = lazy
+		}
+		modifier = {
+			add = 15
+			has_trait = diligent
+		}
+		modifier = {
+			add = -15
+			has_trait = content
+		}
+		modifier = {
+			add = 15
+			has_trait = ambitious
+		}
+	}
+}
+
+
+# Pico Sacro chapel decision
+RICE_galicia_pico_sacro_chapel_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_hammerfell.dds" }
+	decision_group_type = major
+	desc = RICE_galicia_pico_sacro_chapel_decision_desc
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 80
+		kingdom = 64
+		empire = 64
+		hegemony = 64
+	}
+
+	is_shown = {
+		is_landed = yes
+		root.capital_county = {
+			title_province = { geographical_region = RICE_close_to_galicia_region }
+		}
+		faith.religion = { is_in_family = rf_abrahamic }
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_unique_decisions
+				target = flag:RICE_galicia_pico_sacro_chapel_decision_done
+			}
+		}
+	}
+
+	is_valid = {
+		faith.religion = { is_in_family = rf_abrahamic }
+		piety_level >= 3
+		has_title = title:c_santiago
+		custom_description = {
+			text = RICE_santiago_county_faith_req
+			title:c_santiago = {
+				faith = root.faith
+			}
+		}
+		custom_description = {
+			text = RICE_has_court_chaplain
+			exists = cp:councillor_court_chaplain
+			cp:councillor_court_chaplain = {
+				is_available_adult = yes
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_adult = yes
+	}
+
+	cost = { 
+		gold = { value = medium_gold_value }
+	}	
+
+	ai_potential = {
+		short_term_gold > medium_gold_value
+	}
+
+	effect = {
+
+		save_scope_as = chapel_builder
+
+		cp:councillor_court_chaplain ?= {
+			save_scope_as = chaplain
+		}
+
+		#Can only happen once
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_galicia_pico_sacro_chapel_decision_done
+		}
+		
+		show_as_tooltip = {
+			RICE_galicia_pico_sacro_chapel_decision_effect = yes			
+		}
+
+		# Trigger the ending event
+		every_ruler = {
+			limit = {
+				OR = {
+					this = scope:chapel_builder
+					is_ai = no
+				}
+				OR = {
+					this = scope:chapel_builder
+					any_held_title = {
+						tier = tier_county
+						any_county_province = {
+							geographical_region = RICE_close_to_galicia_region
+						}
+					}
+				}
+			}
+			trigger_event = galicia.0002
+		}
+		
+		if = {
+			limit = {
+				has_game_rule = RICE_historical_context_on
+			}
+			custom_tooltip = RICE_galicia_pico_sacro_chapel_decision_context_tooltip
+		}
+
+		# add_to_list = notification_sent
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

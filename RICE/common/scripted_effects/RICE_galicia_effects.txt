@@ -64,6 +64,17 @@
 			target = flag:RICE_santiago_altered
 		}
 	}
+		
+	# Historically the chapel on Pico Sacro was built in 899 by Bishop Sisnando, though a later one was rebuilt on the site
+	if = {
+		limit = {
+			game_start_date >= 899.1.1
+		}
+		add_to_global_variable_list = {
+			name = unavailable_unique_decisions
+			target = flag:RICE_galicia_pico_sacro_chapel_decision_done
+		}
+	}
 
 }
 
@@ -5566,4 +5577,48 @@ RICE_galicia_fortify_coastal_regions_effect = {
 	}
 }
 
+
+RICE_galicia_pico_sacro_decision_effect = {
+	if = {
+		limit = {
+			faith.religion = { is_in_family = rf_abrahamic }
+			NOT = {
+				is_target_in_global_variable_list = {
+					name = unavailable_unique_decisions
+					target = flag:RICE_galicia_pico_sacro_chapel_decision_done
+				}
+			}				
+		}
+		add_piety = minor_piety_loss
+		cp:councillor_court_chaplain ?= {
+			add_opinion = {
+				target = root
+				modifier = disappointed_opinion
+				opinion = -10
+			}
+		}
+	}
+	else = {
+		add_piety = minor_piety_gain
+	}
+	add_character_modifier = {
+		modifier = RICE_galicia_pico_sacro_modifier
+		years = 10
+	}
+}
+
+RICE_galicia_pico_sacro_chapel_decision_effect = {		
+	custom_tooltip = RICE_galicia_pico_sacro_chapel_decision_effect_tooltip_1
+	add_piety = major_piety_gain
+	add_legitimacy = minor_legitimacy_gain
+	title:c_santiago.holder = {
+		cp:councillor_court_chaplain = {
+			add_opinion = {
+				modifier = pleased_opinion
+				target = title:c_santiago.holder
+				opinion = 20
+			}			
+		}		
+	}
+}
 

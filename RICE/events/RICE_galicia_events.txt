@@ -22,6 +22,105 @@ namespace = galicia
 ######################################################################################
 
 
+# Pray to Pico Sacro
+galicia.0001 = {
+	type = character_event
+	title = galicia.0001.t
+	desc = {
+		desc = galicia.0001.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					is_target_in_global_variable_list = {
+						name = unavailable_unique_decisions
+						target = flag:RICE_galicia_pico_sacro_chapel_decision_done
+					}
+					religion = religion:christianity_religion
+				}
+				desc = galicia.0001.desc.christian
+			}
+			desc = galicia.0001.desc.other
+		}
+		desc = galicia.0001.desc.conclusion
+	}
+	theme = RICE_theme_galicia_pico_sacro
+
+	right_portrait = {
+		character = root
+		animation = prayer
+		camera = camera_event_right_away
+	}
+
+	option = {
+		name = galicia.0001.a
+		RICE_galicia_pico_sacro_decision_effect = yes
+	}
+}
+
+
+# Build a Chapel on Pico Sacro
+galicia.0002 = {
+	type = character_event
+	title = galicia.0002.t
+	desc = {
+		desc = galicia.0002.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:chapel_builder = { religion = religion:christianity_religion }
+				}
+				desc = galicia.0002.desc.christian
+			}
+			triggered_desc = {
+				trigger = {
+					NOT = { scope:chapel_builder = { religion = religion:christianity_religion } }
+				}
+				desc = galicia.0002.desc.non_christian
+			}
+		}
+		desc = galicia.0002.desc.conclusion
+	}
+	theme = RICE_theme_galicia_pico_sacro
+
+	left_portrait = {
+		character = scope:chaplain
+		animation = interested
+		camera = camera_event_center_mostly_away_right
+		#camera = camera_event_very_right_pointing_very_left
+	}
+
+	right_portrait = {
+		character = scope:chapel_builder
+		animation = debating
+		camera = camera_event_far_right_very_right
+	}
+
+
+	immediate = {
+		
+		play_music_cue = "mx_cue_sacredrite"
+		
+		if = {
+			limit = {
+				root = scope:chapel_builder
+			}
+			RICE_galicia_pico_sacro_chapel_decision_effect = yes
+		}
+		else = {
+			show_as_tooltip = {
+				scope:chapel_builder = {
+					RICE_galicia_pico_sacro_chapel_decision_effect = yes
+				}
+			}
+		}
+
+	}
+
+	option = {
+		name = galicia.0002.a
+	}
+}
+
 # Way of Saint James infrastructure
 galicia.0010 = {
 	type = character_event
@@ -645,10 +744,10 @@ galicia.0015 = {
 
 
 # Fortifying the Coast
-galicia.0017 = {
+galicia.0016 = {
 	type = character_event
-	title = galicia.0017.t
-	desc = galicia.0017.desc
+	title = galicia.0016.t
+	desc = galicia.0016.desc
 	theme = martial
 	override_background = { reference = RICE_background_iberian_beach }
 
@@ -658,7 +757,7 @@ galicia.0017 = {
 	}
 
 	option = {
-		name = galicia.0017.a
+		name = galicia.0016.a
 		RICE_galicia_fortify_coastal_regions_effect = yes
 	}
 }
