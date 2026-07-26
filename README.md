@@ -1,13 +1,15 @@
-<img src="https://i.imgur.com/BCR2i6O.jpg">
+<img src="https://i.imgur.com/iiQaOfK.jpg">
 
-## Latest Version: Version 1.19.1 "Pacific" (Released 7/10/26, for vanilla patch 1.19.x)
+## Latest Version: Version 1.19.2 "Al-Andalus" (Released 7/26/26, for vanilla patch 1.19.x)
 
 **Newest Flavor Pack: *Oceania: The Final Frontier***
 
 [**Discord**](https://discord.gg/9KuyXv2uZA) | [**Official Website**](https://cybrxkhansmods.godaddysites.com) | [**Twitter**](https://twitter.com/Cybrxkhans_Mods)
 
-_“We should not be defined by the smallness of our islands, but by the greatness of our oceans.”_
-_– Dr. Epeli Hau’ofa (1939 – 2009), Tongan and Fijian Anthropologist_
+_“O people of al-Andalus!_
+_How God showered you with water, shade, rivers, and trees!_
+_The Garden of Paradise is nowhere if not in your land.”_
+_– Ibn Khajafa, Andalusian poet (1058–1138/9)_
 
 RICE, or Regional Immersion and Cultural Enrichment, adds immersion to different regions, cultures, and religions in CK3. As a spiritual successor to my Immersion Packs for CK2, it is a collection of "flavor packs" similar to PI's official flavor pack DLCs. RICE's guiding philosophy is to keep a focused scope that won't change gameplay significantly, but instead adds flavor across the world that is grounded in historical authenticity, especially for lesser-known places, peoples, and histories.
 
@@ -86,25 +88,26 @@ At the moment, RICE includes **44** flavor packs:
 
 ## Latest Changelog
 
-<img src="https://i.imgur.com/1hpJyLw.jpg">
+<img src="https://i.imgur.com/DGFtVHr.jpg">
 
-### Version 1.19.1 "Pacific"
+### Version 1.19.2 "Al-Andalus"
 
-- Added Oceania Flavor Pack: The Final Frontier
-- Added new holy sites for Munda/Kherwal paganism from Rajas of Asia’s WIP content
-- Althing decision can now be taken by Goidelic culture characters and result in a Goidelic heritage Icelandic culture if taken by one
-- Tweaked pillars and traditions for some South American and Oceanic cultures to account for new Oceania Flavor Pack content
-- Rebalanced costs of working with merchants for various RICE merchant events
-- Failing negotiations with Norse and Norman adventurers will now make rulers of counties affected by the raids get negative opinion of you
-- Changed religious tenets for Idoism, Illuism, and Yakushism now have Sacred Mountains instead
-- The decision to Influence the Future of Uyghur Manicheism will now effect other faiths with the Liberation of Light doctrine as well, not just Manicheism (since you could be non-Manichean in theory)
-- Fictitious Mandaean ruler in 867 now starts with Clan government
-- Fixed No Stone Unturned perk (from the Wanderer lifestyle tree) not applying to RICE activities
-- Fixed some counties in Alodia being tribal holdings like in vanilla instead of feudal
-- Fixed mismatches with some South American cultures in the RICE+EPE version compared to the normal RICE version
-- Fixed two different Rock of Cashel special buildings if running with Medieval Arts
-- Fixed a scoping error in a Seletar courtier spawn event (aslian.0007)
-- Fixed a few missing localization files in some languages
+- Added decisions to Pray to Pico Sacro and Construct Chapel on Pico Sacro in Galicia
+- Added innovation and decision related to the Atarazanas or shipyards of Iberia
+- Added new unique hot springs location and event for Ourense in Galicia and the Hedionda Baths in Andalusia
+- Added new Spanish translations in various places, courtesy of Danny
+- Added new French translations in various places, courtesy of Bacchurion
+- Added a few new Iberian event backgrounds and adjusted them to apply to certain existing events
+- Siberian Courtiers now also show up in eastern Siberia, Sakhalin, and Hokkaido as well
+- Tweaked bonuses for the Sing and Dance or Die tradition
+- Samoan culture now has equal military doctrine
+- Fixed encoding for several Spanish localization files, causing the translation to not display properly
+- Fixed Cao Yijin not showing as Dhyana on RICE’s 867 bookmark
+- Fixed Sing and Dance or Die tradition referring to inexistent Wor mechanics
+- Fixed Traveler trait xp not being applied correctly to Sicilian courtiers spawned from events
+- Fixed missing localization for Marapu deities
+- Fixed missing names for old versions of some Indonesian pagan religions
+- Fixed missing localization for some Oceania game concepts and gloss tooltips
 - Miscellaneous bugfixes
 
 
