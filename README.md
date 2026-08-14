@@ -1,6 +1,6 @@
 <img src="https://i.imgur.com/iiQaOfK.jpg">
 
-## Latest Version: Version 1.19.2 "Al-Andalus" (Released 7/26/26, for vanilla patch 1.19.x)
+## Latest Version: Version 1.19.2.a Hotfix for "Al-Andalus" (Released 8/14/26, for vanilla patch 1.19.x)
 
 **Newest Flavor Pack: *Oceania: The Final Frontier***
 
@@ -89,6 +89,21 @@ At the moment, RICE includes **44** flavor packs:
 ## Latest Changelog
 
 <img src="https://i.imgur.com/DGFtVHr.jpg">
+
+### Version 1.19.2.a Hotfix for "Al-Andalus"
+
+- Added easter egg characters as rewards for the joint winners who guessed the upcoming RICE update (Squid, Destacius, and Cruci)
+- Added game rule for Yazidi and Yarsani to exist at game start like in vanilla and that Yazidi characters won’t automatically convert to Mehrism
+- Added new Spanish translations in various places, courtesy of Danny
+- Added new French translations in various places, courtesy of Bacchurion
+- Replaced fictitious Manichean Archegos in 867 with Abu Ali Sa’id
+- Gave Cainitism the Procreation as Purification doctrine
+- Removed aspirations for several Fatimid warlords in 1066 for now, since no events/content had ever been coded for them
+- Fixed some missing localization in the Spanish translation
+- Fixed missing loc string for RICE_every_courtier_prefers_indigenous_clothing 
+- Fixed missing loc for MODERN_SOUTH_ARABIAN_LANGUAGES_GLOSS and OLD_SOUTH_ARABIAN_LANGUAGES_GLOSS
+- Fixed borked description for the Perform Administrative Nile Border decision when you don’t have the Governor of Aswan or Lord of the Mountain traits
+- Miscellaneous bugfixes
 
 ### Version 1.19.2 "Al-Andalus"
 
