@@ -7,5 +7,5 @@ tags={
 	"Balance"
 }
 name="RICE+CE Compatch for 1.19 (Temp)"
-supported_version="1.19.*"
+supported_version="1.20.*"
 path="mod/RICE+CE Compatch for 1.19"

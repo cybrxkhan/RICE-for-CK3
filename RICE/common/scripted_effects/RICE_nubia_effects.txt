@@ -1968,7 +1968,15 @@
 	#
 	############################################################
 
-	faith:coptic = {
+	# No mummification attested in Nubia after the early Meroitic period
+	faith:kushitism_pagan = {
+		remove_doctrine = tenet_consolamentum
+		add_doctrine = tenet_christian_syncretism # Evidence of mixing of Christian and pagan Nubian religious traditions in late antiquity as Nubia gradually Christianized
+		remove_doctrine = doctrine_funeral_mummification
+		add_doctrine = doctrine_funeral_stoic
+	}
+
+	rite:coptic_rite = {
 		add_doctrine = special_doctrine_rice_doctrine_northeast_african_tattoo
 	}
 
@@ -2128,10 +2136,10 @@
 			limit = {
 				game_start_date < 1050.1.1
 			}
-			title:c_wadi_el-milk = {
-				set_county_culture = culture:daju
-				set_county_faith = faith:daju_pagan
-			}
+			# title:c_wadi_el-milk = {
+			# 	set_county_culture = culture:daju
+			# 	set_county_faith = faith:daju_pagan
+			# }
 			title:c_ushara = {
 				set_county_culture = culture:daju
 				set_county_faith = faith:daju_pagan
@@ -2180,10 +2188,10 @@
 				game_start_date >= 1050.1.1
 				game_start_date <= 1150.1.1
 			}
-			title:c_wadi_el-milk = {
-				set_county_culture = culture:daju
-				set_county_faith = faith:daju_pagan
-			}
+			# title:c_wadi_el-milk = {
+			# 	set_county_culture = culture:daju
+			# 	set_county_faith = faith:daju_pagan
+			# }
 			title:c_ushara = {
 				set_county_culture = culture:daju
 				set_county_faith = faith:daju_pagan
@@ -2593,7 +2601,157 @@
 			}
 		}	
 
+
+		
+		# Beja Pagans
+		every_county = {
+			limit = {
+				culture = culture:beja
+				faith.religion = { is_in_family = rf_pagan }
+			}
+			set_county_faith = faith:beja_pagan
+			holder = {
+				every_courtier_or_guest = {
+					limit = {
+						culture = culture:beja
+						is_lowborn = yes
+						faith.religion = { is_in_family = rf_pagan }
+					}
+					set_character_faith = faith:beja_pagan
+				}				
+			}
+		}
+		every_ruler = {
+			limit = {
+				culture = culture:beja
+				faith.religion = { is_in_family = rf_pagan }
+			}
+			if = {
+				limit = {
+					faith.religion = { is_in_family = rf_pagan }
+				}
+				set_character_faith_with_conversion = faith:beja_pagan
+				every_courtier_or_guest = {
+					limit = {
+						culture = culture:beja
+						faith.religion = { is_in_family = rf_pagan }
+					}
+					set_character_faith = faith:beja_pagan
+				}
+				every_vassal_or_below = {
+					limit = {
+						culture = culture:beja
+						faith.religion = { is_in_family = rf_pagan }
+					}
+					set_character_faith_with_conversion = faith:beja_pagan
+					every_courtier_or_guest = {
+						set_character_faith = faith:beja_pagan
+					}
+				}
+			}
+			else = {
+				every_courtier_or_guest = {
+					limit = {
+						culture = culture:beja
+						is_lowborn = yes
+						faith.religion = { is_in_family = rf_pagan }
+					}
+					set_character_faith = faith:beja_pagan
+				}
+
+			}
+		}			
+
+		# Remnants of Nubian pagans, possibly attested into the medieval period
+		title:c_wadi_el-milk = {
+			set_county_faith = faith:kushitism_pagan
+			holder = {
+				every_courtier_or_guest = {
+					limit = {
+						is_lowborn = yes
+						faith.religion = { is_in_family = rf_pagan }
+					}
+					random = {
+						chance = 20
+						set_character_faith = faith:kushitism_pagan
+					}
+				}				
+			}
+		}
+
+		# Nubian Church
+		every_county_in_region = {
+			region = RICE_greater_nubia_region
+			limit = {
+				religion = religion:christianity_religion
+			}
+			set_county_rite = rite:nubian_rite
+			holder = {
+				if = {
+					limit = {
+						religion = religion:christianity_religion
+						NOT = { rite = rite:nubian_rite }
+						OR = {
+							culture = culture:nubian					
+							culture = {
+								any_parent_culture_or_above = {
+									this = culture:nubian
+								}
+							}
+						}
+					}
+				}
+				every_spouse = {
+					limit = {
+						religion = religion:christianity_religion
+						NOT = { rite = rite:nubian_rite }
+						OR = {
+							culture = culture:nubian					
+							culture = {
+								any_parent_culture_or_above = {
+									this = culture:nubian
+								}
+							}
+						}
+					}
+					set_character_rite = rite:nubian_rite
+				}
+				every_close_or_extended_family_member = {
+					limit = {
+						religion = religion:christianity_religion
+						NOT = { rite = rite:nubian_rite }
+						OR = {
+							culture = culture:nubian					
+							culture = {
+								any_parent_culture_or_above = {
+									this = culture:nubian
+								}
+							}
+						}
+					}
+					set_character_rite = rite:nubian_rite
+				}
+				every_courtier_or_guest = {
+					limit = {
+						religion = religion:christianity_religion
+						NOT = { rite = rite:nubian_rite }
+						OR = {
+							culture = culture:nubian					
+							culture = {
+								any_parent_culture_or_above = {
+									this = culture:nubian
+								}
+							}
+						}
+					}
+					set_character_rite = rite:nubian_rite
+				}	
+			}
+		}
+
 	}
+
+
 
 	############################################################ 
 	#
@@ -3126,6 +3284,74 @@ RICE_setup_nubia_flavor_pack_after_game_start_effect = {
 		}
 		title:d_nobatia_fake.holder = {
 			destroy_title = title:d_nobatia_fake
+		}
+	}
+	# For some reason spouses and children don't sometimes get converted to Nubian rite
+	every_county_in_region = {
+		region = RICE_greater_nubia_region
+		limit = {
+			religion = religion:christianity_religion
+		}
+		holder = {
+			if = {
+				limit = {
+					religion = religion:christianity_religion
+					NOT = { rite = rite:nubian_rite }
+					OR = {
+						culture = culture:nubian					
+						culture = {
+							any_parent_culture_or_above = {
+								this = culture:nubian
+							}
+						}
+					}
+				}
+			}
+			every_spouse = {
+				limit = {
+					religion = religion:christianity_religion
+					NOT = { rite = rite:nubian_rite }
+					OR = {
+						culture = culture:nubian					
+						culture = {
+							any_parent_culture_or_above = {
+								this = culture:nubian
+							}
+						}
+					}
+				}
+				set_character_rite = rite:nubian_rite
+			}
+			every_close_or_extended_family_member = {
+				limit = {
+					religion = religion:christianity_religion
+					NOT = { rite = rite:nubian_rite }
+					OR = {
+						culture = culture:nubian					
+						culture = {
+							any_parent_culture_or_above = {
+								this = culture:nubian
+							}
+						}
+					}
+				}
+				set_character_rite = rite:nubian_rite
+			}
+			every_courtier_or_guest = {
+				limit = {
+					religion = religion:christianity_religion
+					NOT = { rite = rite:nubian_rite }
+					OR = {
+						culture = culture:nubian					
+						culture = {
+							any_parent_culture_or_above = {
+								this = culture:nubian
+							}
+						}
+					}
+				}
+				set_character_rite = rite:nubian_rite
+			}	
 		}
 	}
 }
