@@ -12,22 +12,18 @@
 	#
 	############################################################
 
-	faith:manichean = {		
-		#remove_doctrine = rice_food_purification_doctrine	
-		#add_doctrine = rice_light_purification_doctrine	
+	rite:manichean = {
+		#remove_doctrine = rice_food_purification_doctrine
+		#add_doctrine = rice_light_purification_doctrine
 		# Mani preached that magic was bad
 		if = {
-			limit = { has_doctrine = doctrine_witchcraft_accepted }
-			remove_doctrine = doctrine_witchcraft_accepted
-			add_doctrine = doctrine_witchcraft_crime
+			limit = { rite_has_doctrine = doctrine_witchcraft_accepted }
+			change_rite_doctrine = doctrine_witchcraft_crime
 		}
 		if = {
-			limit = { has_doctrine = doctrine_clerical_marriage_allowed }
-			remove_doctrine = doctrine_clerical_marriage_allowed
-			add_doctrine = doctrine_clerical_marriage_disallowed
+			limit = { rite_has_doctrine = doctrine_clerical_marriage_allowed }
+			change_rite_doctrine = doctrine_clerical_marriage_disallowed
 		}
-		remove_doctrine = tenet_esotericism	
-		add_doctrine = tenet_monasticism	
 	}
 
 	# Uyghur Manichean remnants in the 11th century, since it is attested as surviving into at least the early 11th century
@@ -38,7 +34,7 @@
 			roa_is_active = no # Rajas of Asia has their own setup
 		}
 		title:c_yangjibaliq = {
-			set_county_faith = faith:manichean
+			set_county_rite = rite:manichean
 		}
 		title:c_yangjibaliq.holder = {
 			every_courtier_or_guest = {
@@ -48,7 +44,7 @@
 				}
 				random = {
 					chance = 25
-					set_character_faith = faith:manichean
+					set_character_rite = rite:manichean
 				}
 			}
 		}
@@ -122,7 +118,7 @@
 				limit = {
 					has_doctrine = rice_light_purification_doctrine
 				}
-				add_doctrine = special_doctrine_rice_doctrine_late_manicheism_abandon
+				every_faith_rite = { add_rite_doctrine = special_doctrine_rice_doctrine_late_manicheism_abandon }
 			}		
 		}
 	}
@@ -235,7 +231,7 @@ RICE_manichean_uyghur_decision_support_effect = {
 				value = 5
 				desc = fervor_gain_RICE_manichean_increased_government_patronage
 			}
-			add_doctrine = special_doctrine_rice_doctrine_late_manicheism_support
+			every_faith_rite = { add_rite_doctrine = special_doctrine_rice_doctrine_late_manicheism_support }
 		}		
 	}
 }
@@ -275,7 +271,7 @@ RICE_manichean_uyghur_decision_reform_effect = {
 				value = 10
 				desc = fervor_gain_RICE_manichean_religious_reforms
 			}
-			add_doctrine = special_doctrine_rice_doctrine_late_manicheism_reform
+			every_faith_rite = { add_rite_doctrine = special_doctrine_rice_doctrine_late_manicheism_reform }
 		}		
 	}
 }
@@ -315,7 +311,7 @@ RICE_manichean_uyghur_decision_abandon_effect = {
 				value = -15
 				desc = fervor_loss_RICE_manichean_declining_elite_support
 			}
-			add_doctrine = special_doctrine_rice_doctrine_late_manicheism_abandon
+			every_faith_rite = { add_rite_doctrine = special_doctrine_rice_doctrine_late_manicheism_abandon }
 		}		
 	}
 }
@@ -324,7 +320,8 @@ RICE_manichean_create_archegos_effect = {
 	hidden_effect = {
 		create_character = {
 			gender = male
-			faith = faith:manichean
+			faith = faith:manichaean_faith
+			rite = rite:manichean
 			culture = culture:assyrian
 			employer = root
 			template = religious_leader_character
@@ -358,7 +355,7 @@ RICE_manichean_change_archegos_capital_to_turfan_effect = {
 RICE_manichean_change_archegos_capital_to_samarkand_effect = {
 	custom_tooltip = manichean.0004.tooltip
 	title:d_manichean = { set_capital_county = title:c_samarkand }
-	faith:manichean = {
+	faith:manichaean_faith = {
 		change_fervor = {
 			value = -15
 			desc = fervor_loss_RICE_manichean_archegos_flee
@@ -381,13 +378,13 @@ RICE_persecute_manicheans_in_mesopotamia_effect = {
 			holder.top_liege = root
 			NOT = {
 				holder = {					
-					faith = {
-						has_doctrine = rice_light_purification_doctrine
+					rite = {
+						rite_has_doctrine = rice_light_purification_doctrine
 					}	
 				}
 			}
-			faith = {
-				has_doctrine = rice_light_purification_doctrine
+			rite = {
+				rite_has_doctrine = rice_light_purification_doctrine
 			}	
 		}
 		custom = RICE_every_manichean_county_owned_or_vassal_mesopotamia
@@ -696,7 +693,7 @@ RICE_manichean_bema_festival_lose_sin_effect = {
 
 RICE_manichean_confession_decision_effect = {
 	RICE_lin_deng_add_trait_xp_small = yes
-	stress_impact = {
+	stress_and_fulfillment_impact = {
 		base = miniscule_stress_impact_loss
 		zealous = miniscule_stress_impact_loss
 		diligent = miniscule_stress_impact_loss
@@ -719,7 +716,7 @@ RICE_manichean_confession_decision_effect = {
 		limit = {
 			any_equipped_character_artifact = { has_variable = RICE_manichean_artifact_confessional_texts_variable }
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = minor_stress_impact_loss
 		}
 	}
@@ -867,7 +864,7 @@ RICE_manichean_recruit_ming_cultists_effect = {
 
 	if = {
 		limit = {
-			has_trait = scholar
+			has_trait = erudite
 		}
 		RICE_manichean_recruit_ming_cultist_random_maa_effect = yes
 	}
@@ -992,7 +989,7 @@ RICE_manichean_manuscript_event_chain_cleanup_effect = {
 RICE_manichean_lin_deng_decision_effect = {	
 	RICE_lin_deng_add_trait_xp_large = yes
 	add_piety = minor_piety_gain
-	stress_impact = {
+	stress_and_fulfillment_impact = {
 		base = miniscule_stress_impact_loss
 		zealous = miniscule_stress_impact_loss
 	}
@@ -1153,7 +1150,7 @@ RICE_manichean_bema_festival_completed_log_entry_effect = {
 							}
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = medium_stress_impact_loss
 					}
 				}
@@ -1166,7 +1163,7 @@ RICE_manichean_bema_festival_completed_log_entry_effect = {
 							}
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_loss
 					}
 				}
@@ -1179,7 +1176,7 @@ RICE_manichean_bema_festival_completed_log_entry_effect = {
 							}
 						}
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = miniscule_stress_impact_loss
 					}
 				}
@@ -1248,7 +1245,7 @@ RICE_manichean_bema_festival_completed_log_entry_effect = {
 							opinion = 10
 						}			
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						ambitious = miniscule_stress_impact_loss
 						diligent = miniscule_stress_impact_loss
 					}
@@ -1259,7 +1256,7 @@ RICE_manichean_bema_festival_completed_log_entry_effect = {
 					}
 					RICE_major_lifestyle_experience_gain_effect = yes
 					add_legitimacy = minor_legitimacy_gain
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						patient = miniscule_stress_impact_loss
 						content = miniscule_stress_impact_loss
 					}
@@ -1269,7 +1266,7 @@ RICE_manichean_bema_festival_completed_log_entry_effect = {
 						has_activity_intent = RICE_manichean_bema_festival_confession_intent
 					}
 					add_piety = minor_piety_gain
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						honest = miniscule_stress_impact_loss
 						humble = miniscule_stress_impact_loss
 					}
@@ -1279,12 +1276,14 @@ RICE_manichean_bema_festival_completed_log_entry_effect = {
 					limit = {
 						scope:host = { any_equipped_character_artifact = { has_variable = RICE_manichean_artifact_arzhang_variable } }
 					}
-					every_attending_character = {
-						limit = { NOT = { this = scope:host } }
-						custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT	
-						add_opinion = {
-							target = scope:host
-							modifier = RICE_arzhang_opinion
+					scope:activity = {
+						every_attending_character = {
+							limit = { NOT = { this = scope:host } }
+							custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT	
+							add_opinion = {
+								target = scope:host
+								modifier = RICE_arzhang_opinion
+							}
 						}
 					}
 				}
@@ -1298,7 +1297,7 @@ RICE_manichean_bema_festival_completed_log_entry_effect = {
 					limit = {
 						scope:host = { any_equipped_character_artifact = { has_variable = RICE_manichean_artifact_confessional_texts_variable } }
 					}
-					stress_impact = {
+					stress_and_fulfillment_impact = {
 						base = minor_stress_impact_loss
 					}
 				}
@@ -1309,15 +1308,17 @@ RICE_manichean_bema_festival_completed_log_entry_effect = {
 					RICE_minor_lifestyle_experience_gain_effect = yes
 				}
 				# Other attendee bonuses
-				every_attending_character = {
-					limit = { NOT = { this = scope:host } }
-					custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
-					add_piety = RICE_manichean_bema_festival_base_piety_small
-					add_prestige = RICE_manichean_bema_festival_base_prestige_small
-					stress_impact = {
-						base = miniscule_stress_impact_loss
-					}
-				}	
+				scope:activity = {
+					every_attending_character = {
+						limit = { NOT = { this = scope:host } }
+						custom = EVERY_ACTIVITY_PARTICIPANT_EFFECT
+						add_piety = RICE_manichean_bema_festival_base_piety_small
+						add_prestige = RICE_manichean_bema_festival_base_prestige_small
+						stress_and_fulfillment_impact = {
+							base = miniscule_stress_impact_loss
+						}
+					}	
+				}
 			}
 		}
 	}
@@ -1354,7 +1355,7 @@ RICE_manichean_uyghur_church_supported_yearly_effect = {
 		region = RICE_greater_qocho_region
 		limit = {
 			holder = {
-				faith = { has_doctrine = rice_light_purification_doctrine }
+				rite = { rite_has_doctrine = rice_light_purification_doctrine }
 			}
 		}
 		holder = {
@@ -1379,7 +1380,7 @@ RICE_manichean_uyghur_church_reformed_yearly_effect = {
 		region = RICE_greater_qocho_region
 		limit = {
 			holder = {
-				faith = { has_doctrine = rice_light_purification_doctrine }
+				rite = { rite_has_doctrine = rice_light_purification_doctrine }
 			}
 		}
 		holder = {
@@ -1404,7 +1405,7 @@ RICE_manichean_uyghur_church_abandoned_yearly_effect = {
 		region = RICE_greater_qocho_region
 		limit = {
 			holder = {
-				faith = { has_doctrine = rice_light_purification_doctrine }
+				rite = { rite_has_doctrine = rice_light_purification_doctrine }
 			}
 		}
 		holder = {
@@ -1422,95 +1423,95 @@ RICE_manichean_uyghur_church_abandoned_yearly_effect = {
 
 
 
-RICE_manichean_show_new_revival_tenet = {
-	if = {
-		limit = {
-			scope:manichean_reviver = {
-				exists = var:RICE_manichean_faith_change
-			}
-		}
-		show_as_tooltip = {
-			if = {
-				limit = {
-					scope:manichean_reviver.var:RICE_manichean_faith_change ?= flag:adaptive
-				}
-				scope:manichean_reviver.faith = {
-					remove_doctrine = tenet_monasticism
-					add_doctrine = tenet_adaptive
-				}
-			}
-			else_if = {
-				limit = {
-					scope:manichean_reviver.var:RICE_manichean_faith_change ?= flag:esotericism
-				}
-				scope:manichean_reviver.faith = {
-					remove_doctrine = tenet_monasticism
-					add_doctrine = tenet_esotericism
-				}
-			}			
-			else_if = {
-				limit = {
-					scope:manichean_reviver.var:RICE_manichean_faith_change ?= flag:mendicant_preachers
-				}
-				scope:manichean_reviver.faith = {
-					remove_doctrine = tenet_monasticism
-					add_doctrine = tenet_mendicant_preachers
-				}
-			}			
-			else_if = {
-				limit = {
-					scope:manichean_reviver.var:RICE_manichean_faith_change ?= flag:asceticism
-				}
-				scope:manichean_reviver.faith = {
-					remove_doctrine = tenet_monasticism
-					add_doctrine = tenet_asceticism
-				}
-			}			
-			else_if = {
-				limit = {
-					scope:manichean_reviver.var:RICE_manichean_faith_change ?= flag:pacifism
-				}
-				scope:manichean_reviver.faith = {
-					remove_doctrine = tenet_monasticism
-					add_doctrine = tenet_pacifism
-				}
-			}			
-			else_if = {
-				limit = {
-					scope:manichean_reviver.var:RICE_manichean_faith_change ?= flag:astrology
-				}
-				scope:manichean_reviver.faith = {
-					remove_doctrine = tenet_monasticism
-					add_doctrine = tenet_astrology
-				}
-			}			
-			else_if = {
-				limit = {
-					scope:manichean_reviver.var:RICE_manichean_faith_change ?= flag:communion
-				}
-				scope:manichean_reviver.faith = {
-					remove_doctrine = tenet_monasticism
-					add_doctrine = tenet_communion
-				}
-			}			
-			else_if = {
-				limit = {
-					scope:manichean_reviver.var:RICE_manichean_faith_change ?= flag:literalism
-				}
-				scope:manichean_reviver.faith = {
-					remove_doctrine = tenet_monasticism
-					add_doctrine = tenet_literalism
-				}
-			}			
-			else_if = {
-				limit = {
-					scope:manichean_reviver.var:RICE_manichean_faith_change ?= flag:reincarnation
-				}
-				scope:manichean_reviver.faith = {
-					remove_doctrine = tenet_monasticism
-					add_doctrine = tenet_reincarnation
-				}
-			}				
-		}
-	}
-}
+# RICE_manichean_show_new_revival_tenet = {
+# 	if = {
+# 		limit = {
+# 			scope:manichean_reviver = {
+# 				exists = var:RICE_manichean_faith_change
+# 			}
+# 		}
+# 		show_as_tooltip = {
+# 			if = {
+# 				limit = {
+# 					scope:manichean_reviver.var:RICE_manichean_faith_change ?= flag:adaptive
+# 				}
+# 				scope:manichean_reviver.faith = {
+# 					remove_doctrine = tenet_monasticism
+# 					add_doctrine = tenet_adaptive
+# 				}
+# 			}
+# 			else_if = {
+# 				limit = {
+# 					scope:manichean_reviver.var:RICE_manichean_faith_change ?= flag:esotericism
+# 				}
+# 				scope:manichean_reviver.faith = {
+# 					remove_doctrine = tenet_monasticism
+# 					add_doctrine = tenet_esotericism
+# 				}
+# 			}			
+# 			else_if = {
+# 				limit = {
+# 					scope:manichean_reviver.var:RICE_manichean_faith_change ?= flag:mendicant_preachers
+# 				}
+# 				scope:manichean_reviver.faith = {
+# 					remove_doctrine = tenet_monasticism
+# 					add_doctrine = tenet_mendicant_preachers
+# 				}
+# 			}			
+# 			else_if = {
+# 				limit = {
+# 					scope:manichean_reviver.var:RICE_manichean_faith_change ?= flag:asceticism
+# 				}
+# 				scope:manichean_reviver.faith = {
+# 					remove_doctrine = tenet_monasticism
+# 					add_doctrine = tenet_asceticism
+# 				}
+# 			}			
+# 			else_if = {
+# 				limit = {
+# 					scope:manichean_reviver.var:RICE_manichean_faith_change ?= flag:pacifism
+# 				}
+# 				scope:manichean_reviver.faith = {
+# 					remove_doctrine = tenet_monasticism
+# 					add_doctrine = tenet_pacifism
+# 				}
+# 			}			
+# 			else_if = {
+# 				limit = {
+# 					scope:manichean_reviver.var:RICE_manichean_faith_change ?= flag:astrology
+# 				}
+# 				scope:manichean_reviver.faith = {
+# 					remove_doctrine = tenet_monasticism
+# 					add_doctrine = tenet_astrology
+# 				}
+# 			}			
+# 			else_if = {
+# 				limit = {
+# 					scope:manichean_reviver.var:RICE_manichean_faith_change ?= flag:communion
+# 				}
+# 				scope:manichean_reviver.faith = {
+# 					remove_doctrine = tenet_monasticism
+# 					add_doctrine = tenet_communion
+# 				}
+# 			}			
+# 			else_if = {
+# 				limit = {
+# 					scope:manichean_reviver.var:RICE_manichean_faith_change ?= flag:literalism
+# 				}
+# 				scope:manichean_reviver.faith = {
+# 					remove_doctrine = tenet_monasticism
+# 					add_doctrine = tenet_literalism
+# 				}
+# 			}			
+# 			else_if = {
+# 				limit = {
+# 					scope:manichean_reviver.var:RICE_manichean_faith_change ?= flag:reincarnation
+# 				}
+# 				scope:manichean_reviver.faith = {
+# 					remove_doctrine = tenet_monasticism
+# 					add_doctrine = tenet_reincarnation
+# 				}
+# 			}				
+# 		}
+# 	}
+# }
