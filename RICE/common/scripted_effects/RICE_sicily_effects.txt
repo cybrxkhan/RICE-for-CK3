@@ -132,6 +132,9 @@
 		title:c_palermo = {
 			set_county_culture = culture:siqilli
 		}
+		title:c_trapani = {
+			set_county_culture = culture:siqilli
+		}
 	}
 	
 	if = {
@@ -155,6 +158,12 @@
 			set_county_culture = culture:siqilli # culture:greek
 		}
 		title:c_siracusa = {
+			set_county_culture = culture:siqilli
+		}
+		title:c_catania = {
+			set_county_culture = culture:siqilli
+		}
+		title:c_caltagirone = {
 			set_county_culture = culture:siqilli
 		}
 	}
@@ -185,6 +194,24 @@
 		}
 	}
 	title:c_siracusa = {
+		set_variable = {
+			name = had_sicilian_county_conversion
+			value = yes
+		}
+	}
+	title:c_trapani = {
+		set_variable = {
+			name = had_sicilian_county_conversion
+			value = yes
+		}
+	}
+	title:c_catania = {
+		set_variable = {
+			name = had_sicilian_county_conversion
+			value = yes
+		}
+	}
+	title:c_caltagirone = {
 		set_variable = {
 			name = had_sicilian_county_conversion
 			value = yes
@@ -276,6 +303,16 @@
 				set_county_faith = faith:sunni
 			}
 		}
+		if = {
+			limit = {
+				title:c_trapani = {
+					NOT = { faith = faith:sunni }
+				}
+			}
+			title:c_trapani = {
+				set_county_faith = faith:sunni
+			}
+		}
 	}
 
 
@@ -343,11 +380,11 @@
 	if = {
 		limit = {
 			title:b_cassino = {
-				title_province = { has_special_building = no }
+				title_province = { has_special_district = no }
 			}
 		}
 		title:b_cassino.title_province = {
-			add_special_building = RICE_sicily_monte_cassino
+			add_special_district = RICE_sicily_monte_cassino_district
 		}
 	}
 
@@ -355,11 +392,11 @@
 	if = {
 		limit = {
 			title:b_catania = {
-				title_province = { has_special_building = no }
+				title_province = { has_special_district = no }
 			}
 		}
 		title:b_catania.title_province = {
-			add_special_building = RICE_sicily_mount_etna
+			add_special_district = RICE_sicily_mount_etna_district
 		}
 	}
 
@@ -367,11 +404,11 @@
 	if = {
 		limit = {
 			title:b_benevento = {
-				title_province = { has_special_building = no }
+				title_province = { has_special_district = no }
 			}
 		}
 		title:b_benevento.title_province = {
-			add_special_building = RICE_sicily_arch_of_trajan
+			add_special_district = RICE_sicily_arch_of_trajan_district
 		}
 	}
 
@@ -379,11 +416,11 @@
 	if = {
 		limit = {
 			title:b_matera = {
-				title_province = { has_special_building = no }
+				title_province = { has_special_district = no }
 			}
 		}
 		title:b_matera.title_province = {
-			add_special_building = RICE_sicily_sassi_of_matera_01
+			add_special_district = RICE_sicily_sassi_of_matera_01_district
 		}
 	}
 
@@ -391,13 +428,13 @@
 	if = {
 		limit = {
 			title:b_salerno = {
-				title_province = { has_special_building = no }
+				title_province = { has_special_district = no }
 			}
 		}
 		title:b_salerno.title_province = {
-			add_special_building = RICE_sicily_salerno_medical_school
-			# add_special_building_slot = generic_university
-			# add_special_building = generic_university
+			add_special_district = RICE_sicily_salerno_medical_school_district
+			# add_special_district_slot = generic_university_district
+			# add_special_district = generic_university_district
 		}
 	}
 	# title:c_salerno = {
@@ -410,7 +447,7 @@
 	# if = {
 	# 	limit = {
 	# 		title:b_palermo = {
-	# 			title_province = { has_special_building = no }
+	# 			title_province = { has_special_district = no }
 	# 		}
 	# 	}
 
@@ -575,8 +612,10 @@
 		character:1132 = {
 			give_nickname = RICE_nick_bosso
 			add_unpressed_claim = title:c_palermo
+			add_unpressed_claim = title:c_trapani
 			add_unpressed_claim = title:c_agrigento
 			add_unpressed_claim = title:c_siracusa
+			add_unpressed_claim = title:c_caltagirone
 			add_unpressed_claim = title:c_malta
 			add_character_modifier = {
 				modifier = RICE_sicily_aspiration_complete_conquest_of_sicily
@@ -1068,6 +1107,11 @@
 				modifier = RICE_sicily_stronghold_arabic
 			}
 		}
+		title:c_trapani = {
+			add_county_modifier = {
+				modifier = RICE_sicily_stronghold_arabic
+			}
+		}
 		title:c_agrigento = {
 			add_county_modifier = {
 				modifier = RICE_sicily_stronghold_arabic
@@ -1107,6 +1151,11 @@
 			game_start_date >= 850.1.1
 		}
 		title:c_bari = {
+			add_county_modifier = {
+				modifier = RICE_sicily_stronghold_greek
+			}
+		}
+		title:c_taranto = {
 			add_county_modifier = {
 				modifier = RICE_sicily_stronghold_greek
 			}
@@ -2350,10 +2399,10 @@ RICE_sicily_cb_stronghold_disappear_effect = {
 RICE_sicily_border_raid_cb_damage_effect = {
 
 	change_county_control = fp2_border_raid_control_change_value
-	change_development_level = fp2_border_raid_development_change_value
+	change_prosperity_level = fp2_border_raid_prosperity_change_value
 	if = {
-		limit = { exists = scope:raid_province }
-		show_as_tooltip = { destroy_random_building_effect = yes }
+		limit = { scope:raid_province.county ?= this }
+		scope:raid_province = { destroy_random_building_effect = yes }
 	}
 	scope:attacker = { add_gold = fp2_border_raid_gold_change_value }
 
@@ -3368,7 +3417,7 @@ RICE_sicily_1066_muslim_aspiration_completed_effect = {
 		limit = {
 			holder = root
 		}
-		change_development_level = RICE_red_sea_al_umari_aspiration_dev_bonus		
+		change_prosperity_level = RICE_red_sea_al_umari_aspiration_dev_bonus		
 	}
 
 	# Bonus Objective Reward(s)
@@ -3711,7 +3760,7 @@ RICE_sicily_imperial_county_effect = {
 	# every_county_in_region = {
 	# 	region = custom_sicily
 	# 	custom = RICE_every_county_sicily
-	# 	change_development_level = minor_development_level_loss
+	# 	change_prosperity_level = minor_development_level_loss
 	# }
 
 	if = {
@@ -5349,7 +5398,7 @@ RICE_sicily_second_pavia_decision_effect = {
 		modifier = RICE_sicily_second_pavia_character_modifier
 	}
 	capital_county = {
-		change_development_level = 3
+		change_prosperity_level = 3
 		add_county_modifier = {
 			modifier = RICE_sicily_second_pavia_county_modifier
 		}
@@ -5483,8 +5532,8 @@ RICE_sicily_byzantine_syracuse_decision_effect = {
 RICE_sicily_catania_statue_decision_effect = {
 	add_prestige = medium_prestige_gain
 	#add_legitimacy = miniscule_legitimacy_gain
-	title:c_messina = {
-		change_development_level = 2
+	title:c_catania = {
+		change_prosperity_level = 2
 	}
 	title:b_catania = {
 		title_province = {
@@ -5527,7 +5576,7 @@ RICE_sicily_almadraba_decision_effect = {
 			holder = root
 			is_coastal_county = yes
 		}
-		change_development_progress = minimal_development_progress_gain
+		change_prosperity_progress = minimal_prosperity_progress_gain
 		add_county_modifier = {
 			modifier = RICE_sicily_almadraba_modifier
 			years = 10
